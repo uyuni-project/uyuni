@@ -850,6 +850,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleFailedActions")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -864,6 +865,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleAllActions")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -889,6 +891,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleSingleServerAction(Action action, Long tries,
             Long server) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleSingleServerAction")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -919,6 +922,11 @@ public class ActionFactory extends HibernateFactory {
             .setParameter("queued", ActionFactory.STATUS_QUEUED)
             .executeUpdate();
         }
+    }
+
+    private static void updateActionEarliestDate(Action action) {
+        action.setEarliestAction(new Date());
+        HibernateFactory.getSession().save(action);
     }
 
     /**

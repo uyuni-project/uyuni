@@ -1,3 +1,4 @@
+- Update earliest date when rescheduling failed actions (bsc#1206562)
 - Fix reconnection of postgres event stream
 - fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix duplicate keys in image tables (bsc#1207799)

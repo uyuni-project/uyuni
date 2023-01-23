@@ -62,6 +62,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -269,36 +272,78 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-    public void testRescheduleFailedServerActions() throws Exception {
+    public void testRescheduleSingleActionUpdatesEarliestDate() throws Exception {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
+
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
         sa.setRemainingTries(0L);
+        ActionFactory.save(a1);
+
+        ActionFactory.rescheduleSingleServerAction(a1, 5L, sa.getServerId());
+
+        a1 = HibernateFactory.reload(a1);
+        sa = HibernateFactory.reload(sa);
+
+        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
+        assertTrue(sa.getRemainingTries() > 0);
+
+        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
+        assertTrue(originalInstant.isBefore(newEarliestInstant));
+        assertFalse(testStartInstant.isAfter(newEarliestInstant));
+    }
+
+    public void testRescheduleFailedServerActions() throws Exception {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
+
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
+
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
-        sa = HibernateFactory.reload(sa);
+        sa1 = HibernateFactory.reload(sa1);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
-        assertTrue(sa.getRemainingTries() > 0);
+        assertEquals(ActionFactory.STATUS_QUEUED, sa1.getStatus());
+        assertTrue(sa1.getRemainingTries() > 0);
 
+        assertEquals(ActionFactory.STATUS_COMPLETED, sa2.getStatus());
+
+        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
+        assertTrue(originalInstant.isBefore(newEarliestInstant));
+        assertFalse(testStartInstant.isAfter(newEarliestInstant));
     }
 
     public void testRescheduleAllServerActions() throws Exception {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
-        sa.setRemainingTries(0L);
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleAllServerActions(a1, 5L);
-        sa = HibernateFactory.reload(sa);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
-        assertTrue(sa.getRemainingTries() > 0);
+        sa1 = HibernateFactory.reload(sa1);
+        sa2 = HibernateFactory.reload(sa2);
+
+        assertEquals(ActionFactory.STATUS_QUEUED, sa1.getStatus());
+        assertTrue(sa1.getRemainingTries() > 0);
+
+        assertEquals(ActionFactory.STATUS_QUEUED, sa2.getStatus());
+        assertTrue(sa2.getRemainingTries() > 0);
     }
 
 
@@ -528,6 +573,27 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return newA;
     }
 
+    private static ServerAction addServerAction(User user, Action newA, ActionStatus status) {
+        Server newS = ServerFactoryTest.createTestServer(user, true);
+        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, status);
+        newA.addServerAction(serverAction);
+        return serverAction;
+    }
+
+    public static Action createEmptyAction(User user, ActionType type) {
+        Action newA = ActionFactory.createAction(type);
+        newA.setSchedulerUser(user);
+        newA.setName("RHN-JAVA Test Action #" + RandomStringUtils.randomAlphanumeric(16));
+        newA.setActionType(type);
+        newA.setOrg(user.getOrg());
+        newA.setEarliestAction(new Date());
+        newA.setVersion(0L);
+        newA.setArchived(0L);
+        newA.setCreated(new Date());
+        newA.setModified(new Date());
+        return newA;
+    }
+
     /**
      * Create a new ServerAction
      * @param newS new system
@@ -555,4 +621,5 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa.setParentActionWithCheck(newA);
         return sa;
     }
+
 }

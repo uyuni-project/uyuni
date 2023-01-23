@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.server.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import java.util.Date;
 
 /**
@@ -131,11 +133,21 @@ public class ServerActionTest extends RhnBaseTestCase {
      * @return ServerAction created
      * @throws Exception something bad happened
      */
-    public static ServerAction createServerAction(Server newS, Action newA)
-        throws Exception {
+    public static ServerAction createServerAction(Server newS, Action newA) {
+        return createServerAction(newS, newA, ActionFactory.STATUS_QUEUED);
+    }
+
+    /**
+     * Create a new ServerAction
+     * @param newS new server
+     * @param newA new action
+     * @param status action status
+     * @return ServerAction created
+     */
+    public static ServerAction createServerAction(Server newS, Action newA, ActionStatus status) {
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
-        sa.setRemainingTries(10L);
+        sa.setStatus(status);
+        sa.setRemainingTries(ActionFactory.STATUS_FAILED.equals(status) ? 0L : 10L);
         sa.setServerWithCheck(newS);
         sa.setParentActionWithCheck(newA);
         newA.addServerAction(sa);
