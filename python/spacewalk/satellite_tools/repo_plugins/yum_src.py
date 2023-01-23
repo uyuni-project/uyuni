@@ -1279,7 +1279,8 @@ type=rpm-md
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 
         if len(self.repo.urls) == 1:
-            # when we have only 1 url copy it to have a 2nd try
+            # When the repository has only 1 possible URL, we duplicate it and add it as possible next mirror to try.
+            # This will cause reposync does a 2nd try in case of possible spurious errors while downloading files from this repository.
             params['urls'].append(self.repo.urls[0])
 
     def get_file(self, path, local_base=None):
