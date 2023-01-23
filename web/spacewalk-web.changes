@@ -1,9 +1,13 @@
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
-- Fix salt keys page keeps loading when no key exists (bsc#1206799)
-- Fix link to documentation in monitoring page
-- Added CLM filters to match product temporary fixes packages
-- fix frontend logging in react pages
-- Fix virtual systems list for unentitled systems
+-------------------------------------------------------------------
+Mon Jan 23 08:32:14 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Fix salt keys page keeps loading when no key exists (bsc#1206799)
+  * Fix link to documentation in monitoring page
+  * Added CLM filters to match product temporary fixes packages
+  * fix frontend logging in react pages
+  * Fix virtual systems list for unentitled systems
 
 -------------------------------------------------------------------
 Mon Dec 19 11:42:59 CET 2022 - jgonzalez@suse.com
