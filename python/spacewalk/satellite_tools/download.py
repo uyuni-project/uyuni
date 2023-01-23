@@ -201,6 +201,10 @@ class DownloadThread(Thread):
                                    checksum=params['checksum']):
                 return True
 
+        retrycodes = URLGrabberOptions().retrycodes
+        if 14 not in retrycodes:
+            retrycodes.append(14)
+
         opts = URLGrabberOptions(
             ssl_ca_cert=params["ssl_ca_cert"],
             ssl_cert=params["ssl_client_cert"],
@@ -211,6 +215,8 @@ class DownloadThread(Thread):
             timeout=params["timeout"],
             minrate=params["minrate"],
             keepalive=True,
+            retry=3,
+            retrycodes=retrycodes,
         )
 
         mirrors = len(params['urls'])
