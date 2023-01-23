@@ -10,6 +10,8 @@ require 'jwt'
 require 'securerandom'
 require 'pathname'
 
+$cobbler_test = CobblerTest.new
+
 # Used for debugging purposes
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)

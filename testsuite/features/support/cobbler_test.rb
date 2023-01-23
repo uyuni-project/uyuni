@@ -36,9 +36,9 @@ class CobblerTest
   # Logs out of Cobbler.
   #
   # Args:
-  #
-  def logout
-    @server.call('logout', @token)
+  #   
+  def logout()
+    @server.call('logout')
   rescue StandardError
     raise(StandardError, "Logout to cobbler failed. #{$ERROR_INFO}")
   end

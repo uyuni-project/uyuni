@@ -6,18 +6,19 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
+    And I am logged into Cobbler API as user "testing" with password "testing"
 
   Scenario: Copy cobbler profiles on the server
     When I copy autoinstall mocked files on server
 
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
-    When I create distro "testdistro" as user "testing" with password "testing"
+    When I create distro "testdistro"
 
   Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
-    When I create profile "testprofile" for distro "testdistro" as user "testing" with password "testing"
+    When I create profile "testprofile" for distro "testdistro"
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -151,3 +152,4 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Cleanup: delete test distro and profiles
     When I remove kickstart profiles and distros
+    And I log out from Cobbler API
