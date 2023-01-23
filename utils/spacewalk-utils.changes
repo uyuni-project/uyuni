@@ -1,5 +1,9 @@
-- Add Uyuni SLE-Micro Client Tools repositories
-- fix Oracle Linux 9 repository definition
+-------------------------------------------------------------------
+Mon Jan 23 08:24:57 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add Uyuni SLE-Micro Client Tools repositories
+  * fix Oracle Linux 9 repository definition
 
 -------------------------------------------------------------------
 Wed Dec 14 14:08:09 CET 2022 - jgonzalez@suse.com
