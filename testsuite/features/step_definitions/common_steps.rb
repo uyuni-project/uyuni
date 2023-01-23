@@ -273,6 +273,88 @@ Given(/^I am on the Systems page$/) do
   )
 end
 
+Given(/^cobblerd is running$/) do
+  raise 'cobblerd is not running' unless $cobbler_test.running?
+end
+
+Given(/^I am logged into Cobbler API as user "([^"]*)" with password "([^"]*)"$/) do |user, pwd|
+  $cobbler_test.login(user, pwd)
+end
+
+When(/^I log out from Cobbler API$/) do
+  $cobbler_test.logout
+end
+
+When(/^I create distro "([^"]*)"$/) do |distro|
+  raise "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
+  $cobbler_test.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+end
+
+When(/^I create profile "([^"]*)" for distro "([^"]*)"$/) do |profile, distro|
+  raise "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
+  $cobbler_test.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
+end
+
+When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
+  raise "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
+  $cobbler_test.system_create(system, profile)
+end
+
+When(/^I remove system "([^"]*)"$/) do |system|
+  $cobbler_test.system_remove(system)
+end
+
+When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
+  space = 'spacecmd -u admin -p admin'
+  system_name = get_system_name(host)
+  $server.run("#{space} clear_caches")
+  out, _code = $server.run("#{space} system_details #{system_name}")
+  unless out.include? 'ssh-push-tunnel'
+    steps %(
+      Given I am authorized as "testing" with password "testing"
+      And I am on the Systems overview page of this "#{host}"
+      And I follow "Provisioning"
+      And I click on "Create PXE installation configuration"
+      And I click on "Continue"
+      And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
+    )
+  end
+end
+
+Given(/^distro "([^"]*)" exists$/) do |distro|
+  ct = CobblerTest.new
+  raise "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
+end
+
+Given(/^profile "([^"]*)" exists$/) do |profile|
+  ct = CobblerTest.new
+  raise "Profile #{profile} does not exist" unless $cobbler_test.element_exists('profiles', profile)
+end
+
+When(/^I remove kickstart profiles and distros$/) do
+  host = $server.full_hostname
+  # -------------------------------
+  # Cleanup kickstart distros and their profiles, if any.
+
+  # Get all distributions: created from UI or from API.
+  distros = $server.run('cobbler distro list')[0].split
+
+  # The name of distros created in the UI has the form: distro_label + suffix
+  user_details = $api_test.user.get_details('testing')
+  suffix = ":#{user_details['org_id']}:#{user_details['org_name'].delete(' ')}"
+
+  distros_ui = distros.select { |distro| distro.end_with? suffix }.map { |distro| distro.split(':')[0] }
+  distros_api = distros.reject { |distro| distro.end_with? suffix }
+  distros_ui.each { |distro| $api_test.kickstart.tree.delete_tree_and_profiles(distro) }
+  # -------------------------------
+  # Remove profiles and distros created with the API.
+
+  # We have already deleted the profiles from the UI; delete all the remaning ones.
+  profiles = $server.run('cobbler profile list')[0].split
+  profiles.each { |profile| $server.run("cobbler profile remove --name '#{profile}'") }
+  distros_api.each { |distro| $server.run("cobbler distro remove --name '#{distro}'") }
+end
+
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/', path)).cleanpath
   attach_file(field, canonical_path)
