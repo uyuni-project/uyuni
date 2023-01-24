@@ -1,3 +1,5 @@
+- Include a static reboot needed warning message for transactional systems
+
 -------------------------------------------------------------------
 Mon Jan 23 14:24:31 CET 2023 - jgonzalez@suse.com
 

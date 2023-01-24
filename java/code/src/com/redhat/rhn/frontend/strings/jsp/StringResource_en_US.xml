@@ -24890,6 +24890,9 @@ given channel.</source>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
       </trans-unit>
+      <trans-unit id="overview.jsp.transactionalupdate.reboot-static" xml:space="preserve">
+        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+      </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
       </trans-unit>

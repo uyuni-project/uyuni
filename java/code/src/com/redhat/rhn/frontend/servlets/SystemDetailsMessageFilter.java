@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 @WebFilter("/systems/details/*")
 public class SystemDetailsMessageFilter implements Filter {
 
-    private static final String REBOOT_MESSAGE_KEY = "overview.jsp.transactionalupdate.reboot";
+    private static final String REBOOT_MESSAGE_STATIC_KEY = "overview.jsp.transactionalupdate.reboot-static";
     public static final String TRADITIONAL_STACK_MESSAGE_KEY = "overview.jsp.traditionalstack.deprecated";
 
     @Override
@@ -86,8 +86,8 @@ public class SystemDetailsMessageFilter implements Filter {
     private void processMinionMessages(HttpServletRequest req, MinionServer minion) {
         addMessageIfNecessary(
             req,
-            minion.doesOsSupportsTransactionalUpdate() && Boolean.TRUE.equals(minion.isRebootNeeded()),
-            REBOOT_MESSAGE_KEY
+            minion.doesOsSupportsTransactionalUpdate(),
+            REBOOT_MESSAGE_STATIC_KEY
         );
     }
 
