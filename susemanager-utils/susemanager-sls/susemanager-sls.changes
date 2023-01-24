@@ -1,3 +1,5 @@
+- Prevent possible errors from "mgractionschains" module when there is no action chain to resume.
+
 -------------------------------------------------------------------
 Mon Jan 23 08:30:18 CET 2023 - jgonzalez@suse.com
 
