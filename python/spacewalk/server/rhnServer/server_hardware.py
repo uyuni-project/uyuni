@@ -365,6 +365,7 @@ class CPUDevice(Device):
             "model_version": "version",
             "speed": "mhz",
             "count": "nrcpu",
+            "count": "nrcore", # set total number of cpus also for cores as we do not get threads
             "socket_count": "nrsocket",
             "other": "flags",
             "desc": None,
@@ -396,6 +397,7 @@ class CPUDevice(Device):
                 self.data["nrcpu"] = 1
             if self.data["nrcpu"] == 0:
                 self.data["nrcpu"] = 1
+            self.data["nrcore"] = self.data["nrcpu"]
 
 class NetIfaceInformation(Device):
     key_mapping = {
