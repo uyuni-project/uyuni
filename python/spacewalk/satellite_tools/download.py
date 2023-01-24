@@ -201,6 +201,7 @@ class DownloadThread(Thread):
                                    checksum=params['checksum']):
                 return True
 
+        # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)
         retrycodes = URLGrabberOptions().retrycodes
         if 14 not in retrycodes:
             retrycodes.append(14)
