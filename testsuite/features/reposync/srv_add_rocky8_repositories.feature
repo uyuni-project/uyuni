@@ -113,6 +113,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text
     And I should not see a "Failed" text
+    And I save a screenshot as "CLM.png"
 
   Scenario: Create the bootstrap repository for the Rocky 8 minion
     When I create the bootstrap repository for "rhlike_minion" on the server
