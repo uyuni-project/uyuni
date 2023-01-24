@@ -1687,13 +1687,13 @@ When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
 end
 
 When(/^I start local monitoring of Cobbler$/) do
-  $server.run("tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log")
+  $server.run("tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log", dropresults: true)
 end
 
 When(/^I check for Cobbler errors in the local logs$/) do
   command_output, _code = $server.run('ps axo pid,cmd | grep tail | grep -v grep', check_errors: false)
   pid = command_output.split(' ')[0]
   $server.run("kill #{pid}", check_errors: false)
-  _output, code = $server.run("grep -i error /var/log/cobbler/testsuite_cobbler_watch")
-  raise "Errors in Cobbler logs" if code.zero?
+  output, code = $server.run("grep -i error /var/log/cobbler/testsuite_cobbler_watch.log", check_errors: false)
+  raise "Errors in Cobbler logs:\n #{output}" if code.zero?
 end
