@@ -59,8 +59,24 @@ def _get_ac_storage_filenamepath():
     return os.path.join(minion_d_dir, '_mgractionchains.conf')
 
 def check_reboot_required(target_sls):
+    '''
+    Used this function for transactional update system. 
+    Check if the sls file contains reboot_required paramer in schedule_next_chuck. 
+    If it exists and set to true, the system is reboot when the sls file execution is completed
+    :param target_sls: sls filename
+    :return: True if the system requires a reboot at the end of the transaction
+    '''
     sls_file_on_minion = __salt__['cp.cache_file']('{0}{1}.sls'.format('salt://actionchains/', target_sls.replace('actionchains.','')))
     current_state_info = _read_sls_file(sls_file_on_minion)
+    if not current_state_info or not 'schedule_next_chunk' in current_state_info:
+        # schedule_next_chunk contains information about how to restart the action chain after a reboot, so it's present
+        # only if there's a reboot action or a salt upgrade. If there's no action that perform a reboot, schedule_next_chunk
+        # it's not present.
+        return False
+    if not 'mgrcompat.module_run' in current_state_info['schedule_next_chunk']:
+        log.error("Cannot check if reboot is needed as \"schedule_next_chunk\" is not containing expected attributes.")
+        return False
+
     list_param = current_state_info['schedule_next_chunk']['mgrcompat.module_run']
 
     for dic in list_param:
