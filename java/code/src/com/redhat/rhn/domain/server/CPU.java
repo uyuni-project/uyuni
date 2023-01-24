@@ -34,6 +34,8 @@ public class CPU extends BaseDomainHelper {
     private String vendor;
     private Long nrCPU;
     private Long nrsocket;
+    private Long nrCore;
+    private Long nrThread;
     private String acpiVersion;
     private String apic;
     private String apmVersion;
@@ -237,6 +239,33 @@ public class CPU extends BaseDomainHelper {
         this.nrsocket = nrsocketIn;
     }
 
+    /**
+     * @return the number of Cores per Socket
+     */
+    public Long getNrCore() {
+        return nrCore;
+    }
+
+    /**
+     * @param nrCoreIn The number of cores per socket to set
+     */
+    public void setNrCore(Long nrCoreIn) {
+        nrCore = nrCoreIn;
+    }
+
+    /**
+     * @return the number of threads per core
+     */
+    public Long getNrThread() {
+        return nrThread;
+    }
+
+    /**
+     * @param nrThreadIn the number of threads per core to set
+     */
+    public void setNrThread(Long nrThreadIn) {
+        nrThread = nrThreadIn;
+    }
     /**
      * @return Returns the server.
      */
