@@ -1,4 +1,8 @@
-- Fix reposync error about missing "content-type" key when syncing certain channels
+-------------------------------------------------------------------
+Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Fix reposync error about missing "content-type" key when syncing certain channels
 
 -------------------------------------------------------------------
 Mon Jan 23 08:29:58 CET 2023 - jgonzalez@suse.com
