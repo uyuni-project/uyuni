@@ -8,6 +8,9 @@ Feature: Cobbler and distribution autoinstallation
     Given I am authorized as "testing" with password "testing"
     And I am logged into Cobbler API as user "testing" with password "testing"
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Copy cobbler profiles on the server
     When I copy autoinstall mocked files on server
 
@@ -153,3 +156,6 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Cleanup: delete test distro and profiles
     When I remove kickstart profiles and distros
     And I log out from Cobbler API
+
+  Scenario: Check for errors in Cobbler monitoring
+    When I check for Cobbler errors in the local logs

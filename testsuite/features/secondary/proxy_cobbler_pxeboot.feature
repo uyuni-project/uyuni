@@ -14,6 +14,9 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Configure PXE part of DHCP on the proxy
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -148,3 +151,6 @@ Feature: PXE boot a terminal with Cobbler
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+  Scenario: Check for errors in Cobbler monitoring
+    When I check for Cobbler errors in the local logs

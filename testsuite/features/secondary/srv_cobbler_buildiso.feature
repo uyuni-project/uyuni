@@ -9,6 +9,9 @@ Feature: Cobbler buildiso
     Given I am authorized as "testing" with password "testing"
     And I am logged into Cobbler API as user "testing" with password "testing"
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Copy cobbler profiles on the server in the cobbler buildiso context
     When I copy autoinstall mocked files on server
 
@@ -77,3 +80,6 @@ Feature: Cobbler buildiso
   Scenario: Cleanup: Remove buildiso tmpdir and built ISO file in the cobbler buildiso context
     When I cleanup after Cobbler buildiso
     And I log out from Cobbler API
+
+  Scenario: Check for errors in Cobbler monitoring
+    When I check for Cobbler errors in the local logs
