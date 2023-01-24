@@ -278,8 +278,10 @@ public class VirtualHostManagerProcessor {
 
         cpu.setArch(ServerFactory.lookupCPUArchByName(host.getCpuArch()));
         cpu.setMHz(Long.valueOf(Math.round(host.getCpuMhz())).toString());
-        cpu.setNrCPU(host.getTotalCpuCores().longValue());
+        cpu.setNrCPU(host.getTotalCpuThreads().longValue());
         cpu.setNrsocket(host.getTotalCpuSockets().longValue());
+        cpu.setNrCore(host.getTotalCpuCores().longValue() / host.getTotalCpuSockets().longValue());
+        cpu.setNrThread(host.getTotalCpuThreads().longValue() / host.getTotalCpuCores().longValue());
         cpu.setVendor(host.getCpuVendor());
         cpu.setModel(host.getCpuDescription());
 
