@@ -600,7 +600,7 @@ class apacheHandler(rhnApache):
             called from apacheServer.Cleanup()
         """
 
-        log_debug(1)
+        log_debug(2)
         self.input = None
         # kill all of our child processes (if any)
         while 1:
