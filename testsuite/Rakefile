@@ -190,16 +190,16 @@ namespace :jenkins do
   end
 
   desc 'Generate rake files for Maintenance Update Channels and repositories'
-  task :generate_rake_files_custom_repositories, [:instances] do |_t, args|
+  task :generate_rake_files_add_maintenance_update_repository, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
       if minion.include?('ssh')
         next
       else
-        Rake::Task['jenkins:generate_rake_run_step'].invoke("_add_custom_repositories",
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("_add_maintenance_update_repositories",
                                                             File.basename(minion,".feature"),
                                                             "features/build_validation/add_custom_repositories",
-                                                            "run_sets/build_validation_add_custom_repositories_#{minion}.yml")
+                                                            "run_sets/build_validation_add_maintenance_update_repositories_#{minion}.yml")
         Rake::Task['jenkins:generate_rake_run_step'].reenable
       end
     end
@@ -249,8 +249,8 @@ namespace :jenkins do
     Rake::Task['jenkins:generate_rake_files_init_clients'].reenable
     Rake::Task['jenkins:generate_rake_files_add_activation_keys'].invoke(instances)
     Rake::Task['jenkins:generate_rake_files_add_activation_keys'].reenable
-    Rake::Task['jenkins:generate_rake_files_custom_repositories'].invoke(instances)
-    Rake::Task['jenkins:generate_rake_files_custom_repositories'].reenable
+    Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].reenable
   end
 
 end
