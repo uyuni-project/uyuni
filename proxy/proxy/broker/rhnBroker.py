@@ -211,7 +211,7 @@ class BrokerHandler(SharedHandler):
         """ Main handler to handle all requests pumped through this server. """
 
         # pylint: disable=R0915
-        log_debug(1)
+        log_debug(2)
         self._prepHandler()
 
         _oto = rhnFlags.get('outputTransportOptions')
@@ -410,7 +410,7 @@ class BrokerHandler(SharedHandler):
     # --- PRIVATE METHODS ---
 
     def __handleAction(self, headers):
-        log_debug(1)
+        log_debug(2)
         # Check if proxy is interested in this action, and execute any
         # action required:
         if 'X-RHN-Action' not in headers:
@@ -516,7 +516,7 @@ class BrokerHandler(SharedHandler):
     @staticmethod
     def __getSessionToken():
         """ Get/test-for session token in headers (rhnFlags) """
-        log_debug(1)
+        log_debug(2)
         if not rhnFlags.test("AUTH_SESSION_TOKEN"):
             raise rhnFault(33, "Missing session token")
         return rhnFlags.get("AUTH_SESSION_TOKEN")
@@ -524,7 +524,7 @@ class BrokerHandler(SharedHandler):
     def __cacheClientSessionToken(self, headers):
         """pull session token from headers and push to caching daemon. """
 
-        log_debug(1)
+        log_debug(2)
         # Get the server ID
         if 'X-RHN-Server-ID' not in headers:
             log_debug(3, "Client server ID not found in headers")
