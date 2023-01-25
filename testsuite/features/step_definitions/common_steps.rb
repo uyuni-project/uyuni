@@ -433,7 +433,7 @@ end
 # setup wizard
 
 Then(/^HTTP proxy verification should have succeeded$/) do
-  raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+  raise 'Success icon not found' unless find('i.text-success', wait: 5)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
@@ -455,13 +455,13 @@ end
 Then(/^the SCC credentials should be valid$/) do
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
-    raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+    raise 'Success icon not found' unless find('i.text-success', wait: 5)
   end
 end
 
 Then(/^the credentials for "([^"]*)" should be invalid$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Failure icon not found' unless find('i.text-danger', wait: DEFAULT_TIMEOUT)
+    raise 'Failure icon not found' unless find('i.text-danger', wait: 5)
   end
 end
 
