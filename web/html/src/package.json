@@ -18,7 +18,7 @@
     "test:watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation\" BABEL_ENV=test jest --watch",
     "tsc": "tsc",
     "storybook": "styleguidist server",
-    "sort-package": "yarn sort-package-json package.json",
+    "sort-package": "sort-package-json package.json",
     "postinstall": "yarn sort-package",
     "clean": "rm -rf node_modules && rm -rf dist",
     "zip": "rm -f node-modules.tar.gz && (tar czf node-modules.tar.gz node_modules/)"
@@ -100,6 +100,7 @@
     "select2-bootstrap-css": "1.4.6",
     "senna": "^2.7.8",
     "shelljs": "0.8.5",
+    "sort-package-json": "2.2.0",
     "speed-measure-webpack-plugin": "^1.5.0",
     "style-loader": "^0.23.1",
     "timepicker": "1.11.14",
@@ -143,7 +144,6 @@
     "path-browserify": "^1.0.1",
     "react-select-event": "^5.3.0",
     "react-styleguidist": "11.2.0",
-    "sort-package-json": "^2.2.0",
     "ts-jest": "27.1.2",
     "webpack-dev-server": "4.7.3"
   },
