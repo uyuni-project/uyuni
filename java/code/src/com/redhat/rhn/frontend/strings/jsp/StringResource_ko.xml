@@ -15271,7 +15271,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit approved="yes" id="system.event.details.execute" xml:space="preserve">
           <source>This action will be executed after {0}</source>
-        <target>이 작업은 {1} 이후에 실행됩니다.</target>
+        <target>이 작업은 {0} 이후에 실행됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -17114,7 +17114,7 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
         <target>로컬 오버라이드</target>
       </trans-unit>
-      <trans-unit id="copy2systems.jsp.description" xml:space="preserve">
+      <trans-unit id="copy2systems.jsp.description" xml:space="preserve" approved="yes">
         <source>Choose the servers into whose local overrides you'd like to copy the files you selected:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/Copy2Systems.do</context>
