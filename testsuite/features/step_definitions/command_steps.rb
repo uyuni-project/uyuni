@@ -1695,5 +1695,6 @@ When(/^I check for Cobbler errors in the local logs$/) do
   pid = command_output.split(' ')[0]
   $server.run("kill #{pid}", check_errors: false)
   output, code = $server.run("grep -i error /var/log/cobbler/testsuite_cobbler_watch.log", check_errors: false)
+  $server.run("rm /var/log/cobbler/testsuite_cobbler_watch.log", check_errors: false)
   raise "Errors in Cobbler logs:\n #{output}" if code.zero?
 end
