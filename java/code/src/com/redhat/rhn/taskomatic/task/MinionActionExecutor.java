@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
@@ -110,7 +111,7 @@ public class MinionActionExecutor extends RhnJavaJob {
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. Wait for some minutes checking if it appears
         int waitedTime = 0;
-        while (action == null && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
             action = ActionFactory.lookupById(actionId);
             try {
                 Thread.sleep(ACTION_DATABASE_POLL_TIME);
@@ -126,9 +127,13 @@ public class MinionActionExecutor extends RhnJavaJob {
             log.error("Action not found: {}", actionId);
             return;
         }
-        else {
-            log.debug("Action {} found after: {}ms", actionId, waitedTime);
+
+        if (countQueuedServerActions(action) == 0) {
+            log.error("Action with id={} has no server with status QUEUED", actionId);
+            return;
         }
+
+        log.debug("Action {} found after: {}ms", actionId, waitedTime);
 
         // calculate offset between scheduled time of
         // actions and (now)
@@ -177,4 +182,14 @@ public class MinionActionExecutor extends RhnJavaJob {
         });
     }
 
+    private long countQueuedServerActions(Action action) {
+        if (action == null || CollectionUtils.isEmpty(action.getServerActions())) {
+            return 0;
+        }
+
+        return action.getServerActions()
+                     .stream()
+                     .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                     .count();
+    }
 }
