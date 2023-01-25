@@ -19,6 +19,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I enter "Custom Channel for Rocky 8 DVD" as "Channel Name"
     And I enter "rocky-8-iso" as "Channel Label"
     And I select "RHEL8-Pool for x86_64" from "Parent Channel"
+    And I select "sha1" from "Repository Checksum Type"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for Rocky 8 DVD created" text
