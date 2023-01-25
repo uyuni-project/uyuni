@@ -78,6 +78,11 @@ export const DateTimePicker = (props: Props) => {
           </span>
           <ReactDatePicker
             key="date-picker"
+            /**
+             * Here and below, since an element with this id doesn't exist it will be created for the portal in the document
+             * body. Please don't remove this as it otherwise breaks z-index stacking.
+             */
+            portalId="date-picker-portal"
             id={datePickerId}
             ref={datePickerRef}
             selected={props.value.toDate()}
@@ -97,6 +102,7 @@ export const DateTimePicker = (props: Props) => {
           </span>
           <ReactDatePicker
             key="date-picker"
+            portalId="time-picker-portal"
             id={timePickerId}
             ref={timePickerRef}
             selected={props.value.toDate()}

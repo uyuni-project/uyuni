@@ -1,3 +1,8 @@
+/* This element already has `position: absolute` */
+.react-datepicker-popper {
+  z-index: 1010 !important;
+}
+
 .react-datepicker {
   font-size: 12px;
 }
@@ -19,7 +24,7 @@
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected,
 .react-datepicker__time-list-item--selected {
-  background: var(--input-selected) !important;
+  background: #666 !important;
   border-radius: 0 !important;
 }
 
