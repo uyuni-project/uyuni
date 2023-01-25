@@ -14,8 +14,11 @@
 #
 
 import os
-from rhn.i18n import bstr
 from uyuni.common import checksum
+try:
+    from rhn.stringutils import bstr
+except:
+    from rhn.i18n import bstr
 
 def get_package_header(filename=None, file_obj=None, fd=None):
     # pylint: disable=E1103

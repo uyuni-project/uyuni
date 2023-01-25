@@ -58,8 +58,10 @@ from .sslToolConfig import ConfigFile, figureSerial, getOption, CERT_PATH, \
         DEFS, MD, CRYPTO, LEGACY_SERVER_RPM_NAME1, LEGACY_SERVER_RPM_NAME2, \
         CA_OPENSSL_CNF_NAME, SERVER_OPENSSL_CNF_NAME, POST_UNINSTALL_SCRIPT, \
         SERVER_RPM_SUMMARY, CA_CERT_RPM_SUMMARY
-
-from rhn.i18n import bstr, sstr
+try:
+    from rhn.stringutils import bstr, sstr
+except:
+    from rhn.i18n import bstr, sstr
 
 class GenPrivateCaKeyException(RhnSslToolException):
     """ private CA key generation error """
