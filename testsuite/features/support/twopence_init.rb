@@ -121,13 +121,13 @@ end
 $nodes.each do |node|
   next if node.nil?
 
-  hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
   node.init_hostname(hostname)
 
-  fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
 
