@@ -91,5 +91,5 @@ Feature: Bootstrap the monitoring server
     # These are the 4 dashboards created by default when enabling the Grafana formula
     Then I should see a "Apache2" text
     And I should see a "PostgreSQL database insights" text
-    And I should see a "Client Systems" text
-    And I should see a "Server" text
+    And I should see a "SUSE Manager Client Systems" text
+    And I should see a "SUSE Manager Server" text
