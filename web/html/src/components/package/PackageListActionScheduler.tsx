@@ -79,14 +79,13 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
-              {t("Action has been successfully added to the ")}
-              <ActionChainLink id={data}>{this.state.actionChain.text}</ActionChainLink>
+              {t(
+                "Action has been successfully added to the action chain '{0}'.",
+                <ActionChainLink id={data}>{this.state.actionChain.text}</ActionChainLink>
+              )}
             </span>
           ) : (
-            <span>
-              {t("The action has been ")}
-              <ActionLink id={data}>{t("scheduled.")}</ActionLink>
-            </span>
+            <span>{t("The action has been {0}.", <ActionLink id={data}>{t("scheduled")}</ActionLink>)}</span>
           )
         );
 
