@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
@@ -79,11 +80,17 @@ public class ModularDependencyValidator implements ContentValidator {
         try {
             DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
 
-            // Add a message with the list of resolved modules
-            String selectedModules =
-                    result.getModules().stream().map(Module::getFullName).distinct().collect(Collectors.joining(", "));
-            messages.add(ContentValidationMessage.contentFiltersMessage(
-                    loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
+            if (DependencyResolver.isModulesDisabled(result.getFilters())) {
+                messages.add(ContentValidationMessage.contentFiltersMessage(
+                        loc.getMessage("contentmanagement.validation.nomodules"), TYPE_INFO));
+            }
+            else {
+                // Add a message with the list of resolved modules
+                String selectedModules = result.getModules().stream()
+                        .map(Module::getFullName).distinct().collect(Collectors.joining(", "));
+                messages.add(ContentValidationMessage.contentFiltersMessage(
+                        loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
+            }
         }
         catch (DependencyResolutionException e) {
             if (e.getCause() instanceof ModuleNotFoundException) {
@@ -102,10 +109,9 @@ public class ModularDependencyValidator implements ContentValidator {
                         loc.getMessage("contentmanagement.validation.moduleconflict",
                                 module.getFullName(), other.getFullName()), TYPE_ERROR));
             }
-            else if (e.getModule().isPresent()) {
+            else if (e.getCause() instanceof ModularityDisabledException) {
                 messages.add(ContentValidationMessage.contentFiltersMessage(
-                        loc.getMessage("contentmanagement.validation.dependencyerror.formodule",
-                                e.getModule().get().getFullName()), TYPE_ERROR));
+                        loc.getMessage("contentmanagement.validation.modularitydisabled"), TYPE_ERROR));
             }
             else {
                 messages.add(ContentValidationMessage.contentFiltersMessage(

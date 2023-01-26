@@ -69,6 +69,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Create a new filter" text
     And I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
@@ -78,6 +79,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Create a new filter" text
     When I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "python36" as "moduleName"
     And I enter "3.6" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
