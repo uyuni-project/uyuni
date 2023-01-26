@@ -495,17 +495,13 @@ public class SaltActionChainGeneratorService {
      */
     public List<String> findFileRefsToDelete(Path targetFilePath) {
         try {
-            List<String> res = new LinkedList<>();
-            if (!targetFilePath.toFile().exists()) {
-                LOG.debug("{} does not exists", targetFilePath.toFile());
-                return res;
-            }
             String slsContent = FileUtils.readFileToString(targetFilePath.toFile());
             // first remove line containing ssh_extra_filerefs because it contains
             // all the files used for an action chain and we want to delete
             // salt:// refs that belong only to the given file
             slsContent = slsContent.replaceAll("ssh_extra_filerefs.+", "");
             Matcher m = SALT_FILE_REF.matcher(slsContent);
+            List<String> res = new LinkedList<>();
             int start = 0;
             while (m.find(start)) {
                 String ref = m.group(2);
