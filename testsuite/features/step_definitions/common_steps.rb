@@ -209,7 +209,9 @@ Then(/^the salt event log on server should contain no failures$/) do
   if count_failures == 1 && !$build_validation
     ignore_error = output.include?('remove lock')
   end
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+  if count_failures.nonzero? 
+    raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" unless ignore_error
+  end
 end
 
 # action chains
