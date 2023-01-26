@@ -449,8 +449,8 @@ postgresql_service() {
 
 test_postgres_user() {
     set +e
-    POSTGRES_USER_ENABLED=$(su - postgres -c /bin/true)
-    if [ $POSTGRES_USER_ENABLED != "0" ] ; then
+    su - postgres -c /bin/true
+    if [ $? != "0" ] ; then
         echo "Cannot use postgres user. Terminating" >&2 
         exit 1
     fi
