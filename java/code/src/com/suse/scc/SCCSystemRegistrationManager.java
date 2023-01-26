@@ -33,6 +33,7 @@ import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -212,5 +213,30 @@ public class SCCSystemRegistrationManager {
 
         return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products,
                 srv.getServerInfo().getCheckin());
+    }
+
+    /**
+     * Insert or Update virtualization host data at SCC
+     * @param virtHosts the virtual host data
+     * @param primaryCredential primary credential
+     */
+    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, Credentials primaryCredential) {
+        ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
+                IntStream.range(0, virtHosts.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(e -> virtHosts.get(e), Collectors.toList())
+                        )).values());
+        for (List<SCCVirtualizationHostJson> batch: batches) {
+            try {
+                sccClient.setVirtualizationHost(batch, primaryCredential.getUsername(),
+                        primaryCredential.getPassword());
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating virtualization hosts", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating virtualization hosts", e);
+            }
+        }
     }
 }

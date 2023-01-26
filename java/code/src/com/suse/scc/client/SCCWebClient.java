@@ -27,6 +27,7 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -328,6 +329,43 @@ public class SCCWebClient implements SCCClient {
         }
     }
 
+    @Override
+    public void setVirtualizationHost(List<SCCVirtualizationHostJson> virtHostInfo, String username, String password)
+            throws SCCClientException {
+
+        HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/virtualization_hosts");
+        // Additional request headers
+        addHeaders(request);
+        request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
+                ContentType.APPLICATION_JSON));
+
+        Reader streamReader = null;
+        try {
+            // Connect and parse the response on success
+            HttpResponse response = httpClient.executeRequest(request, username, password);
+
+            int responseCode = response.getStatusLine().getStatusCode();
+
+            //TODO only created is documented by scc we still need to check what they return on update.
+            if (responseCode != HttpStatus.SC_CREATED) {
+                // Request was not successful
+                throw new SCCClientException(responseCode, request.getURI().toString(),
+                        "Got response code " + responseCode + " connecting to " + request.getURI());
+            }
+        }
+        catch (NoRouteToHostException e) {
+            String proxy = ConfigDefaults.get().getProxyHost();
+            throw new SCCClientException("No route to SCC" +
+                    (proxy != null ? " or the Proxy: " + proxy : ""));
+        }
+        catch (IOException e) {
+            throw new SCCClientException(e);
+        }
+        finally {
+            request.releaseConnection();
+            SCCClientUtils.closeQuietly(streamReader);
+        }
+    }
     /**
      * Perform HTTP request and parse the result into a given result type.
      *
