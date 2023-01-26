@@ -144,7 +144,7 @@ module LavandaBasic
   #   successcodes: An array with the values to be accepted as success codes from the command run.
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
-  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
+  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false, dropresults: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
     else
@@ -187,6 +187,17 @@ module LavandaBasic
       sleep 2
       result
     end
+  end
+
+  ##
+  # Runs a command and drops the results
+  #
+  # Args:
+  #   cmd: The command to run.
+  #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
+  #   user: The user to be used to run the command. Defaults to root.
+  def run_and_drop_results(cmd, timeout: DEFAULT_TIMEOUT, user: 'root')
+      test_and_drop_results(cmd, user, timeout)
   end
 
   ##
