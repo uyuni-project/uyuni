@@ -1,4 +1,5 @@
 - Improve _mgractionchains.conf logs
+- Prevent possible errors from "mgractionschains" module when there is no action chain to resume.
 
 -------------------------------------------------------------------
 Wed Jan 18 13:18:45 CET 2023 - jgonzalez@suse.com
