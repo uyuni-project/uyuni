@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
@@ -625,5 +626,18 @@ public class SCCCachingFactory extends HibernateFactory {
                     item.setSccRegistrationRequired(rereg);
                     saveRegCacheItem(item);
                 });
+    }
+
+    /**
+     * @return a list of Virtualization Hosts which need to be send to SCC
+     */
+    public static List<SCCVirtualizationHostJson> listVirtualizationHosts() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession().createNamedQuery("SCCRegCache.hypervisorInfo", SCCVirtualizationHostJson.class)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .getResultList();
     }
 }
