@@ -25781,12 +25781,12 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
       </trans-unit>
-      <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve">
+      <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve" approved="yes">
           <source>Unable to lookup system default base channel.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">无法查找系统默认基础频道。</target>
+        <target state="final">无法查找系统默认基础频道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams" xml:space="preserve">
           <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source>
