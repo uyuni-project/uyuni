@@ -98,7 +98,7 @@ def _read_next_ac_chunk(clear=True):
 
 def _read_sls_file(filename):
     if not os.path.isfile(filename):
-        log.error("File {0} not found".format(filename))
+        log.debug("File {0} does not exists".format(filename))
         return None
     ret = None
     try:
