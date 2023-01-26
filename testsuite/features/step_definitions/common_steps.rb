@@ -197,8 +197,8 @@ end
 Then(/^the salt event log on server should contain no failures$/) do
   # upload salt event parser log
   file = 'salt_event_parser.py'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/tmp/" + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   # print failures from salt event log
@@ -206,7 +206,9 @@ Then(/^the salt event log on server should contain no failures$/) do
   count_failures = output.to_s.scan(/false/).length
   output = output.join.to_s if output.respond_to?(:join)
   # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
-  ignore_error = (count_failures == 1) && output.include?('remove lock') && !$build_validation
+  if count_failures == 1 && !$build_validation
+    ignore_error = output.include?('remove lock')
+  end
   raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
 end
 
