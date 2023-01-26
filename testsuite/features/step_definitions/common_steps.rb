@@ -555,7 +555,7 @@ When(/^I install the needed packages for highstate in build host"$/) do
   xtables-plugins"
   $build_host.run("zypper --non-interactive in #{packages}", timeout: 600)
 end
-# rubocop:disable Metrics/BlockLength
+# rubocop:enable Metrics/BlockLength
 
 Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
