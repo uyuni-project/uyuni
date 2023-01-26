@@ -3,9 +3,8 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { PackageListActionScheduler } from "components/package/PackageListActionScheduler";
-import { Column } from "components/table/Column";
 
-import { Utils } from "utils/functions";
+import { PTF_COLUMN_ARCH, PTF_COLUMN_INSTALL_DATE, PTF_COLUMN_SUMMARY } from "./ptf-column-definition";
 
 // See java/code/src/com/suse/manager/webui/templates/minion/ptf-list-remove.jade
 declare global {
@@ -13,18 +12,6 @@ declare global {
     serverId?: any;
     actionChains?: any;
   }
-}
-
-function renderPackageArch(item) {
-  return item.arch;
-}
-
-function renderPackageSummary(item) {
-  return item.summary;
-}
-
-function renderPackageInstallDate(item) {
-  return item.summary;
 }
 
 export const renderer = (id) =>
@@ -46,29 +33,7 @@ export const renderer = (id) =>
       )}
       listEmptyText={t("No Product Temporary Fixes installed.")}
       listActionLabel={t("Remove PTF")}
-      listColumns={[
-        <Column
-          key="extra-column-summary"
-          columnKey="summary"
-          comparator={Utils.sortByText}
-          header={t("Summary")}
-          cell={renderPackageSummary}
-        />,
-        <Column
-          key="extra-column-arch"
-          columnKey="arch"
-          comparator={Utils.sortByText}
-          header={t("Architecture")}
-          cell={renderPackageArch}
-        />,
-        <Column
-          key="extra-column-installed"
-          columnKey="installed"
-          comparator={Utils.sortByDate}
-          header={t("Installed")}
-          cell={renderPackageInstallDate}
-        />,
-      ]}
+      listColumns={[PTF_COLUMN_SUMMARY, PTF_COLUMN_ARCH, PTF_COLUMN_INSTALL_DATE]}
       confirmTitle={t("Confirm Product Temporary Fixes Removal")}
     />,
     document.getElementById(id)
