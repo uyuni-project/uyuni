@@ -141,14 +141,19 @@ public class SCCSystemRegistrationManager {
         items.forEach(cacheItem -> {
             try {
                 Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                LOG.debug("Forward registration of {}", cacheItem);
-                SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
-                        getPayload(cacheItem),
-                        itemCredentials.getUsername(),
-                        itemCredentials.getPassword());
-                cacheItem.setSccId(systemCredentials.getId());
-                cacheItem.setSccLogin(systemCredentials.getLogin());
-                cacheItem.setSccPasswd(systemCredentials.getPassword());
+                if (cacheItem.getOptServer().filter(s -> s.isForeign()).isEmpty()) {
+                    LOG.debug("Forward registration of {}", cacheItem);
+                    SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
+                            getPayload(cacheItem),
+                            itemCredentials.getUsername(),
+                            itemCredentials.getPassword());
+                    cacheItem.setSccId(systemCredentials.getId());
+                    cacheItem.setSccLogin(systemCredentials.getLogin());
+                    cacheItem.setSccPasswd(systemCredentials.getPassword());
+                }
+                // Foreign systems will not be send to SCC
+                // but we need the entry in case it is a hypervisor and we need to send
+                // virtualization host data to SCC
                 cacheItem.setSccRegistrationRequired(false);
                 cacheItem.setRegistrationErrorTime(null);
                 cacheItem.setCredentials(itemCredentials);
