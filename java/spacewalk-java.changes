@@ -1,4 +1,3 @@
-- Improve logs when sls action chain file is missing
 - Do not forward ssh command if proxy and tunnel are present (bsc#1200096)
 - Fix not being able to delete CLM environment if there are custom child
   channels that where not built by the environment (bsc#1206932)
