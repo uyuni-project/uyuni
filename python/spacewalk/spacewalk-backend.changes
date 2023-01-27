@@ -1,3 +1,4 @@
+- Fix reposync error about missing "content-type" key when syncing certain channels
 - Enhance passwords cleanup and add extra files in spacewalk-debug (bsc#1201059)
 
 -------------------------------------------------------------------

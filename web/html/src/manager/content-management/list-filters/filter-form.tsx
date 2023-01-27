@@ -258,7 +258,7 @@ const FilterForm = (props: Props) => {
 
             {clmFilterOptions.STREAM.key === filterType && (
               <>
-                <AppStreamsForm />
+                <AppStreamsForm matcher={filter.matcher} />
               </>
             )}
 

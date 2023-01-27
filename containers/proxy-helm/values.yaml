@@ -1,6 +1,17 @@
-
+# The default repository and image version if not defined otherwise
 repository: registry.opensuse.org/uyuni
 version: latest
+
+## Allows to override the default URI for an image if defined
+## Requires a full URI in a form of <registry>/<image>:<version-tag>
+##
+images:
+    # proxy-httpd: <registry>/<image>:<version>
+    # proxy-salt-broker: <registry>/<image>:<version>
+    # proxy-squid: <registry>/<image>:<version>
+    # proxy-ssh: <registry>/<image>:<version>
+    # proxy-tftpd: <registry>/<image>:<version>
+
 
 ## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 ##

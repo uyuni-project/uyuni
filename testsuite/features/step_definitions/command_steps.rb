@@ -793,14 +793,6 @@ When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, 
   @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
 end
 
-When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
-end
-
-When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
-end
-
 When(/^I register this client for SSH push via tunnel$/) do
   # create backups of /etc/hosts and up2date config
   $server.run('cp /etc/hosts /etc/hosts.BACKUP')

@@ -33,6 +33,7 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MODULE_NONE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -41,10 +42,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -67,41 +68,40 @@ public class FilterCriteria {
     private String field;
     private String value;
 
-    private static HashSet<Triple<ContentFilter.EntityType, Matcher, String>> validCombinations = new HashSet<>();
-
-    static {
-        validCombinations.add(Triple.of(PACKAGE, CONTAINS, "name"));
-        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevr"));
-        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevr"));
-        validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevr"));
-        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevr"));
-        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevr"));
-        validCombinations.add(Triple.of(PACKAGE, LOWER, "nevra"));
-        validCombinations.add(Triple.of(PACKAGE, LOWEREQ, "nevra"));
-        validCombinations.add(Triple.of(PACKAGE, EQUALS, "nevra"));
-        validCombinations.add(Triple.of(PACKAGE, GREATEREQ, "nevra"));
-        validCombinations.add(Triple.of(PACKAGE, GREATER, "nevra"));
-        validCombinations.add(Triple.of(PACKAGE, MATCHES, "name"));
-        validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_name"));
-        validCombinations.add(Triple.of(ERRATUM, EQUALS, "advisory_type"));
-        validCombinations.add(Triple.of(ERRATUM, EQUALS, "synopsis"));
-        validCombinations.add(Triple.of(ERRATUM, MATCHES, "advisory_name"));
-        validCombinations.add(Triple.of(ERRATUM, MATCHES, "synopsis"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS, "synopsis"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS, "keyword"));
-        validCombinations.add(Triple.of(ERRATUM, GREATER, "issue_date"));
-        validCombinations.add(Triple.of(ERRATUM, GREATEREQ, "issue_date"));
-        validCombinations.add(Triple.of(ERRATUM, MATCHES_PKG_NAME, "package_name"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_NAME, "package_name"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LT_EVR, "package_nevr"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_LE_EVR, "package_nevr"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_EQ_EVR, "package_nevr"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"));
-        validCombinations.add(Triple.of(MODULE, EQUALS, "module_stream"));
-        validCombinations.add(Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"));
-        validCombinations.add(Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name"));
-    }
+    private static final Set<Triple<ContentFilter.EntityType, Matcher, String>> VALID_COMBINATIONS = Set.of(
+        Triple.of(PACKAGE, CONTAINS, "name"),
+        Triple.of(PACKAGE, LOWER, "nevr"),
+        Triple.of(PACKAGE, LOWEREQ, "nevr"),
+        Triple.of(PACKAGE, EQUALS, "nevr"),
+        Triple.of(PACKAGE, GREATEREQ, "nevr"),
+        Triple.of(PACKAGE, GREATER, "nevr"),
+        Triple.of(PACKAGE, LOWER, "nevra"),
+        Triple.of(PACKAGE, LOWEREQ, "nevra"),
+        Triple.of(PACKAGE, EQUALS, "nevra"),
+        Triple.of(PACKAGE, GREATEREQ, "nevra"),
+        Triple.of(PACKAGE, GREATER, "nevra"),
+        Triple.of(PACKAGE, MATCHES, "name"),
+        Triple.of(ERRATUM, EQUALS, "advisory_name"),
+        Triple.of(ERRATUM, EQUALS, "advisory_type"),
+        Triple.of(ERRATUM, EQUALS, "synopsis"),
+        Triple.of(ERRATUM, MATCHES, "advisory_name"),
+        Triple.of(ERRATUM, MATCHES, "synopsis"),
+        Triple.of(ERRATUM, CONTAINS, "synopsis"),
+        Triple.of(ERRATUM, CONTAINS, "keyword"),
+        Triple.of(ERRATUM, GREATER, "issue_date"),
+        Triple.of(ERRATUM, GREATEREQ, "issue_date"),
+        Triple.of(ERRATUM, MATCHES_PKG_NAME, "package_name"),
+        Triple.of(ERRATUM, CONTAINS_PKG_NAME, "package_name"),
+        Triple.of(ERRATUM, CONTAINS_PKG_LT_EVR, "package_nevr"),
+        Triple.of(ERRATUM, CONTAINS_PKG_LE_EVR, "package_nevr"),
+        Triple.of(ERRATUM, CONTAINS_PKG_EQ_EVR, "package_nevr"),
+        Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"),
+        Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"),
+        Triple.of(MODULE, EQUALS, "module_stream"),
+        Triple.of(MODULE, MODULE_NONE, "module_stream"),
+        Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"),
+        Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name")
+    );
 
     /**
      * The matcher type
@@ -122,7 +122,8 @@ public class FilterCriteria {
         GREATEREQ("greatereq"),
         MATCHES("matches"),
         PROVIDES_NAME("provides_name"),
-        CONTAINS_PROVIDES_NAME("contains_provides_name");
+        CONTAINS_PROVIDES_NAME("contains_provides_name"),
+        MODULE_NONE("module_none");
 
         private String label;
 
@@ -185,7 +186,7 @@ public class FilterCriteria {
      */
     public static void validate(ContentFilter.EntityType entityType, Matcher matcher, String field)
             throws IllegalArgumentException {
-        if (!validCombinations.contains(Triple.of(entityType, matcher, field))) {
+        if (!VALID_COMBINATIONS.contains(Triple.of(entityType, matcher, field))) {
             throw new IllegalArgumentException(
                     String.format("Invalid criteria combination (entityType: '%s', matcher: '%s', field: '%s')",
                             entityType, matcher, field));
@@ -199,7 +200,7 @@ public class FilterCriteria {
      */
     public static List<Map<String, String>> listFilterCriteria() {
         List<Map<String, String>> result = new LinkedList<>();
-        for (Triple<ContentFilter.EntityType, Matcher, String> c : validCombinations) {
+        for (Triple<ContentFilter.EntityType, Matcher, String> c : VALID_COMBINATIONS) {
             Map<String, String> criteria = new HashMap<>();
             criteria.put("type", c.getLeft().getLabel());
             criteria.put("matcher", c.getMiddle().getLabel());

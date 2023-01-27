@@ -1,3 +1,4 @@
+- improve postgres user check
 - uyuni-setup-reportdb: Test postgres user (bsc#1205088)
 
 -------------------------------------------------------------------

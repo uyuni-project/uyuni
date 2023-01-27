@@ -1,8 +1,16 @@
+- Do not pass server grains to minions (bsc#1207087)
 - Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
 - Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
 - Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
 - filter out libvirt engine events (bsc#1206146)
-- Improve _mgractionchains.conf logs
+
+-------------------------------------------------------------------
+Thu Jan 26 12:28:58 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.29-1
+  * Improve _mgractionchains.conf logs
+  * Prevent possible errors from "mgractionschains" module when there
+    is no action chain to resume
 
 -------------------------------------------------------------------
 Wed Jan 18 13:18:45 CET 2023 - jgonzalez@suse.com

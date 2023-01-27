@@ -1,7 +1,17 @@
+- Fix not being able to delete CLM environment if there are custom child
+  channels that where not built by the environment (bsc#1206932)
+- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+- Makes systems column sortable on relevant patch page, to list by most affected systems
+- Fix issue where subscription warning would show incorrectly
 - Include missing 'gpg' states to avoid issues on SSH minions.
 - Standardize the login response format with other HTTP API endpoints (bsc#1206800)
 - Add `mgr_server_is_uyuni` minion pillar item
-- Improve logs when sls action chain file is missing
+
+-------------------------------------------------------------------
+Thu Jan 26 12:28:36 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.45-1
+  * Improve logs when sls action chain file is missing
 
 -------------------------------------------------------------------
 Wed Jan 11 12:47:55 CET 2023 - jgonzalez@suse.com
