@@ -65,6 +65,11 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   end
 end
 
+When(/^I simulate a salt-minion crash on "(.*?)"$/) do |minion|
+  node = get_target(minion)
+  node.run("pkill salt-minion; pkill venv-salt-minion; pkill python.original", check_errors: false)
+end
+
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
   salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"

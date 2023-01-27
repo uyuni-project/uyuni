@@ -116,8 +116,7 @@ Feature: Salt package states
 
   Scenario: Use Salt presence mechanism on an unreachable minion
     When I follow "States" in the content area
-    And I run "pkill salt-minion" on "sle_minion" without error control
-    And I run "pkill python.original" on "sle_minion" without error control
+    And I simulate a salt-minion crash on "sle_minion"
     And I follow "Highstate" in the content area
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
