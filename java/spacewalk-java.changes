@@ -1,3 +1,4 @@
+- Handle taskomatic failures during action creation
 - Reduce taskomatic memory consumption while processing Ubuntu Erratas
 - send virtualization information to SCC
 - Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
