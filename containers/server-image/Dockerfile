@@ -15,7 +15,8 @@ RUN sh add_repos.sh
 RUN zypper ref
 RUN zypper -n in vi
 RUN zypper -n in python3-simplejson
-RUN zypper --non-interactive install --auto-agree-with-licenses --force-resolution patterns-uyuni_server
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
+    patterns-uyuni_server
 RUN zypper mr -d repo-backports-update repo-sle-update
 
 # Additional configuration
@@ -59,7 +60,7 @@ VOLUME [ \
 # Logs
 "/var/log/rhn/", \
 # configurations
-"/etc/rhn", "/etc/pki/", "/etc/apache2/", "/etc/tomcat/"
+"/etc/rhn", "/etc/pki/", "/etc/apache2/", "/etc/tomcat/" \
 ]
 
 CMD ["/usr/lib/systemd/systemd"]
