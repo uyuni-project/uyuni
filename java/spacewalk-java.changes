@@ -1,4 +1,8 @@
-- action chains: recognize transactional_update.reboot as a reboot action
+-------------------------------------------------------------------
+Fri Jan 27 17:10:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.11-1
+  * action chains: recognize transactional_update.reboot as a reboot action
 
 -------------------------------------------------------------------
 Mon Jan 23 14:24:31 CET 2023 - jgonzalez@suse.com
