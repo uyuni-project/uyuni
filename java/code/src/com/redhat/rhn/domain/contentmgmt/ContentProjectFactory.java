@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -237,6 +238,23 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param toRemove environment to remove.
      */
     public static void removeEnvironment(ContentEnvironment toRemove) {
+
+        // Check for custom child channels that were not built by the environment to be removed
+        List<Channel> channels = toRemove.getTargets().stream()
+                .map(EnvironmentTarget::asSoftwareTarget).flatMap(Optional::stream)
+                .map(SoftwareEnvironmentTarget::getChannel).collect(Collectors.toList());
+
+        List<Channel> childChannels = channels.stream().filter(c -> !c.isBaseChannel()).collect(Collectors.toList());
+        channels.stream().filter(Channel::isBaseChannel).findAny().ifPresent(bc -> {
+            List<String> rogueChannels = ChannelFactory.listAllChildrenForChannel(bc).stream()
+                    .filter(b -> !childChannels.contains(b))
+                    .map(Channel::getName).collect(Collectors.toList());
+            if (!rogueChannels.isEmpty()) {
+                throw  new ContentManagementException(LocalizationService.getInstance().getMessage(
+                        "contentmanagement.non_environment_channels_found", rogueChannels));
+            }
+        });
+
         // let's purge all the targets in the environment firstly
         new ArrayList<>(toRemove.getTargets()).stream()
                 .sorted((t1, t2) -> Boolean.compare(// make sure a parent channel goes first
@@ -299,8 +317,10 @@ public class ContentProjectFactory extends HibernateFactory {
                 .orElse(false);
 
         if (hasDistributions) {
-            throw new ContentManagementException("The target " + target.toString() +
-                    " is being used in an autoinstallation profile. Cannot remove.");
+            log.error("The target " + target + " is being used in an autoinstallation profile. Cannot remove.");
+            throw new ContentManagementException(LocalizationService.getInstance().getMessage(
+                    "contentmanagement.used_in_autoinstallation_profile"
+            ));
         }
 
         // firstly fix the original/clone relations of channels

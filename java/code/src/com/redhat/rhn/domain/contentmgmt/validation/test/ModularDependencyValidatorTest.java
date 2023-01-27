@@ -68,4 +68,19 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertSingleMessage(loc.getMessage("contentmanagement.validation.moduleconflict", "postgresql:10",
                 "postgresql:12"), TYPE_ERROR, ENTITY_FILTERS, validator.validate(project));
     }
+
+    public void testDisabledModularity() throws Exception {
+        attachModularSource();
+        attachModuleNoneFilter();
+        assertSingleMessage(loc.getMessage("contentmanagement.validation.nomodules"), TYPE_INFO,
+                ENTITY_FILTERS, validator.validate(project));
+    }
+
+    public void testModuleFiltersWithDisabledModularity() throws Exception {
+        attachModularSource();
+        attachModuleNoneFilter();
+        attachModularFilter();
+        assertSingleMessage(loc.getMessage("contentmanagement.validation.modularitydisabled"), TYPE_ERROR,
+                ENTITY_FILTERS, validator.validate(project));
+    }
 }

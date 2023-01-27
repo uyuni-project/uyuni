@@ -1,3 +1,5 @@
+- some i18n functions moved to new module which needs to be loaded
+  (bsc#1201142)
 - Generated bootstrap scripts installs all needed Salt 3004 dependencies
   for Ubuntu 18.04 (bsc#1204517)
 
