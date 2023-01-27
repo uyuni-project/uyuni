@@ -1720,3 +1720,11 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   node.init_os_family(os_family)
   node.init_os_version(os_version)
 end
+
+When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, file, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "Entry #{text} in file #{file} on #{host} not found") do
+    _output, code = node.run("tail -n 10 #{file} | grep '#{text}' ", check_errors: false)
+    break if code.zero?
+  end
+end
