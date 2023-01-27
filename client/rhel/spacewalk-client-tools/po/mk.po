@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-11 15:43+0100\n"
-"PO-Revision-Date: 2022-11-20 22:13+0000\n"
+"PO-Revision-Date: 2023-01-26 08:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-2/mk/>\n"
@@ -35,8 +35,8 @@ msgid ""
 "This client requires the server to support %s, which the current server does "
 "not support"
 msgstr ""
-"Овој клиент има потреба од поддршка од страна на серверот %s. Но овој сервер "
-"не ја нуди таа поддршка."
+"Овој клиент има потреба од поддршка на %s од страна на серверот, што овој "
+"сервер не го поддржува."
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -120,9 +120,8 @@ msgstr ""
 "Овој систем може да не биде надграден се додека не се асоцира со некој канал."
 
 #: ../src/up2date_client/rhncli.py:65
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "Покажи додатен излез"
+msgstr "Покажи додатен излез. Повтори за повеќе детали."
 
 #: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
@@ -329,7 +328,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
-msgstr "Проблем при регистрација на системот."
+msgstr "Регистрирање на систем"
 
 #: ../src/up2date_client/rhnregGui.py:734
 #: ../src/up2date_client/rhnregGui.py:739
@@ -864,13 +863,12 @@ msgid ""
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
 msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Бројот за претлатата е невалиден"
+msgstr "Претлати беа активирани за следните продукти/сервиси:"
 
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "Software Channel Subscriptions:"
-msgstr "Информации за каналите"
+msgstr "Претлатен Софтверски Канал:"
 
 #: ../src/up2date_client/rhnreg_constants.py:175
 msgid "This system will receive updates from the following software channels:"
@@ -1380,7 +1378,7 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
-msgstr "Регистрирај го системот иако е веќе регистриран."
+msgstr "Регистрирај го системот иако е веќе регистриран"
 
 #: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
@@ -1531,7 +1529,7 @@ msgstr ""
 
 #: ../data/gui.glade.h:4
 msgid "Provide a security certificate"
-msgstr "Мора да внесете име."
+msgstr "Внесете безбеден сертификат"
 
 #: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
 msgid "Red Hat Account"
@@ -1600,7 +1598,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:14
 msgid "Please enter your Red Hat account information:"
-msgstr "Информации за сметката"
+msgstr "Молиме внесете ја информацијата за вашиот Red Hat акаунт:"
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
@@ -1765,7 +1763,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:51
 msgid "_Activate a subscription now..."
-msgstr "Активирајте ја вашата претплата"
+msgstr "_Активирајте ја претплатата сега..."
 
 #: ../data/rh_register.glade.h:52
 msgid "Review system..."
@@ -1791,7 +1789,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:58
 msgid "system name"
-msgstr "Презиме:"
+msgstr "Име на системот"
 
 #: ../data/rh_register.glade.h:59
 msgid "<big><b>Profile Data</b></big>"
@@ -1996,7 +1994,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:107
 msgid "proxy password field"
-msgstr "Лозинка:"
+msgstr "поле за прокси лозинка"
 
 #: ../data/rh_register.glade.h:108
 msgid "Confirm operation system release selection"

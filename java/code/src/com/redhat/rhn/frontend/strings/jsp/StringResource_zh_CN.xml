@@ -20661,9 +20661,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <!-- configuration/sdc/channellist.jsp  -->
-      <trans-unit id="sdc.configlist.jsp.header" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.configlist.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="translated">配置频道</target>
+        <target state="final">配置频道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -24996,12 +24996,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <!-- outage-policy.jsp -->
       <!-- download-ISOs pages -->
-      <trans-unit id="common.download.channelAlt" xml:space="preserve">
+      <trans-unit approved="yes" id="common.download.channelAlt" xml:space="preserve">
           <source>Software Channel</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-        <target state="translated">软件频道</target>
+        <target state="final">软件频道</target>
       </trans-unit>
       <!-- downloads.jsp -->
       <trans-unit id="isodownload.hosted-only.warn" xml:space="preserve">
@@ -25781,12 +25781,12 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
       </trans-unit>
-      <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve">
+      <trans-unit approved="yes" id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve">
           <source>Unable to lookup system default base channel.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">无法查找系统默认基础频道。</target>
+        <target state="final">无法查找系统默认基础频道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams" xml:space="preserve">
           <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source>

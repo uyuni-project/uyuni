@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 13:56+0100\n"
+"POT-Creation-Date: 2023-01-27 10:28+0100\n"
 "PO-Revision-Date: 2022-08-03 18:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-2/sk/"
@@ -1402,7 +1402,7 @@ msgstr "Odkaz SUSE Security CVE"
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:154
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:129
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
@@ -2141,7 +2141,7 @@ msgstr "Žiadne dostupné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:207
 msgid "Stream"
 msgstr "Prúd"
 
@@ -2268,7 +2268,7 @@ msgid "Product Enhancement Advisory"
 msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:154
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
 msgid "Advisory Type"
 msgstr "Typ upozornenia"
 
@@ -2277,7 +2277,7 @@ msgid "Issued"
 msgstr "Vydané"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:160
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:165
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "Súhrn"
@@ -2299,7 +2299,7 @@ msgid "Package Provides Name"
 msgstr "Balík poskytuje názov"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:142
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:147
 msgid "Provides Name"
 msgstr "Poskytuje názov"
 
@@ -2530,36 +2530,47 @@ msgstr "poskytuje názov"
 msgid "provides name equal"
 msgstr "poskytuje rovnaký názov"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:122
+#, fuzzy
+msgid "none (disable modularity)"
+msgstr "(žiadne, zakázať službu)"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:148
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:153
 msgid "Advisory Name"
 msgstr "Názov upozornenia"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:166
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:171
 msgid "Keyword"
 msgstr "Kľúčové slovo"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:172
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:177
 msgid "Issue date"
 msgstr "Dátum vydania"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:178
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:183
 msgid "Contains Package Name"
 msgstr "Obsahuje názov balíka"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:184
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:189
 msgid "Contains Package Provides Name"
 msgstr "Obsahuje balík poskytujúci názov"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:190
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:195
 msgid "Contains Package"
 msgstr "Obsahuje balík"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "enable module"
+msgstr "povoliť modul"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
+#, fuzzy
+msgid "disable all modules"
 msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
