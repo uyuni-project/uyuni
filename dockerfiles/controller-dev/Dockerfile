@@ -29,6 +29,10 @@ RUN zypper ref -f && \
       chromium \
       chromedriver \
       npm8 \
+      openssh-server \
+      openssh-clients \
+      hostname \
+      iproute2 \
       && \
     zypper clean -a
-
+CMD ssh-keygen -A && /usr/sbin/sshd -De
