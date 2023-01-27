@@ -9,7 +9,7 @@ ARG PRODUCT_REPO
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
-RUN sh add_repos.sh
+RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Main packages
 RUN zypper ref
