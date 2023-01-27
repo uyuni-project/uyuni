@@ -1687,7 +1687,7 @@ When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
 end
 
 When(/^I start local monitoring of Cobbler$/) do
-  $server.run_and_drop_results("tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log")
+  $server.run("tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log", timeout: 1)
 end
 
 When(/^I check for Cobbler errors in the local logs$/) do

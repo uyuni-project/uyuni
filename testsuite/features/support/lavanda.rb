@@ -190,17 +190,6 @@ module LavandaBasic
   end
 
   ##
-  # Runs a command and drops the results
-  #
-  # Args:
-  #   cmd: The command to run.
-  #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
-  #   user: The user to be used to run the command. Defaults to root.
-  def run_and_drop_results(cmd, timeout: DEFAULT_TIMEOUT, user: 'root')
-    test_and_drop_results(cmd, user, timeout)
-  end
-
-  ##
   # It waits until the process is no longer running.
   #
   # Args:
