@@ -1018,6 +1018,10 @@ public class SaltServerActionService {
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
+                case "transactional_update.reboot":
+                    // this function will be excluded to the sls file by createActionChainSLSFiles
+                    return new SaltSystemReboot(stateId,
+                            serverAction.getParentAction().getId(), 0);
                 default:
                     throw new RhnRuntimeException("Salt module call " + fun + " can't be converted to a state.");
             }
