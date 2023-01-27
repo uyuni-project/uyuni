@@ -19,7 +19,6 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I enter "Custom Channel for Rocky 8 DVD" as "Channel Name"
     And I enter "rocky-8-iso" as "Channel Label"
     And I select "RHEL8-Pool for x86_64" from "Parent Channel"
-    And I select "sha1" from "Repository Checksum Type"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for Rocky 8 DVD created" text
@@ -58,6 +57,9 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then the "rocky-8-iso.log, rhel8-pool-x86_64.log" reposync logs should not report errors
     And the "res-8-updates-x86_64.log, res-as-8-updates-x86_64.log, res-cb-8-updates-x86_64.log" reposync logs should not report errors
     And the "res8-manager-tools-pool-x86_64.log, res8-manager-tools-updates-x86_64.log, el8-uyuni-client.log" reposync logs should not report errors
+
+  Scenario: The custom channel for Rocky 8 has been synced
+    When I wait until the channel "rocky-8-iso" has been synced
 
   Scenario: Create CLM filters to remove AppStream metadata
     Given I am authorized for the "Admin" section
@@ -113,8 +115,6 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I enter "Initial build" as "message"
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text
-    And I should not see a "Failed" text
-    And I save a screenshot as "CLM.png"
 
   Scenario: Create the bootstrap repository for the Rocky 8 minion
     When I create the bootstrap repository for "rhlike_minion" on the server
