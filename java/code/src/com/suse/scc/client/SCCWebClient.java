@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -212,6 +213,9 @@ public class SCCWebClient implements SCCClient {
         // overwrite the default
         request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
                 ConfigDefaults.get().getProductVersion());
+        if (log.isDebugEnabled()) {
+            Arrays.asList(request.getAllHeaders()).stream().map(h -> h.toString()).forEach(s -> log.debug(s));
+        }
     }
 
     @Override
@@ -336,6 +340,9 @@ public class SCCWebClient implements SCCClient {
         HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/virtualization_hosts");
         // Additional request headers
         addHeaders(request);
+        if (log.isDebugEnabled()) {
+            log.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
+        }
         request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
                 ContentType.APPLICATION_JSON));
 
@@ -349,6 +356,7 @@ public class SCCWebClient implements SCCClient {
             //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode != HttpStatus.SC_CREATED) {
                 // Request was not successful
+                log.error(response.toString());
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         "Got response code " + responseCode + " connecting to " + request.getURI());
             }
