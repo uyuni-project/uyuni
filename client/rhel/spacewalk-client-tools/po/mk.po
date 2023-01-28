@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-25 16:22+0100\n"
-"PO-Revision-Date: 2023-01-26 08:14+0000\n"
+"PO-Revision-Date: 2023-01-28 08:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/mk/>\n"
@@ -36,7 +36,7 @@ msgid ""
 "not support"
 msgstr ""
 "Овој клиент има потреба од поддршка на %s од страна на серверот, што овој "
-"сервер не го поддржува."
+"сервер не го поддржува"
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -1695,7 +1695,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:37
 msgid "Why Should I Register?"
-msgstr "Веќе регистриран"
+msgstr "Зашто да се регистрирам?"
 
 #: ../data/rh_register.glade.h:38
 msgid ""
@@ -1815,7 +1815,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:64
 msgid "View Package Profile"
-msgstr "Надградувам профил на пакетот..."
+msgstr "Види го профилот на пакетот"
 
 #: ../data/rh_register.glade.h:65
 msgid "Send _hardware profile"
@@ -2043,7 +2043,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:121
 msgid "Register Later"
-msgstr "Проблем при регистрација на системот."
+msgstr "Регистрирај подоцна"
 
 #: ../data/rh_register.glade.h:122
 msgid ""
