@@ -1,0 +1,35 @@
+--
+-- Copyright (c) 2023 SUSE
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+CREATE TABLE IF NOT EXISTS suseImageSyncSource
+(
+    id                   NUMERIC NOT NULL
+                           CONSTRAINT suse_imgsync_src_pk PRIMARY KEY,
+    sync_proj_id         NUMERIC NOT NULL
+                           CONSTRAINT suse_imgsync_src_prj_fk
+			     REFERENCES suseImageSyncProject(id)
+			     ON DELETE CASCADE,
+    org_id               NUMERIC NOT NULL
+                           CONSTRAINT suse_imgsync_src_org_fk
+                             REFERENCES web_customer (id),
+    src_store_id         NUMERIC NOT NULL
+                           CONSTRAINT suse_imgsync_src_sid_fk
+                             REFERENCES suseImageStore (id)
+			     ON DELETE CASCADE,
+    src_repository       VARCHAR(255) NOT NULL,
+    src_tags             JSONB,
+    src_tags_regex       VARCHAR(255),
+    created              TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    modified             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
+);
+
+CREATE SEQUENCE IF NOT EXISTS suse_imgsync_src_id_seq;
+
