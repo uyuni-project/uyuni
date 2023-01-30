@@ -354,7 +354,7 @@ public class SCCWebClient implements SCCClient {
             int responseCode = response.getStatusLine().getStatusCode();
 
             //TODO only created is documented by scc we still need to check what they return on update.
-            if (responseCode != HttpStatus.SC_CREATED) {
+            if (responseCode != HttpStatus.SC_OK) {
                 // Request was not successful
                 log.error(response.toString());
                 throw new SCCClientException(responseCode, request.getURI().toString(),
