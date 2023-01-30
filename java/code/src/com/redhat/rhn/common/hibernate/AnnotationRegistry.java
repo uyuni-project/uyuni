@@ -40,6 +40,8 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.ImageSyncProject;
+import com.redhat.rhn.domain.image.ImageSyncSource;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -163,7 +165,10 @@ public class AnnotationRegistry {
         RecurringState.class,
         RecurringConfigChannel.class,
         RecurringInternalState.class,
-        InternalState.class
+        InternalState.class,
+        Task.class,
+        ImageSyncProject.class,
+        ImageSyncSource.class
     );
 
     /**
