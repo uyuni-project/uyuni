@@ -167,7 +167,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro();
+        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
     }
 
     @Override
