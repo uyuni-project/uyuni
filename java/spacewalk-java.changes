@@ -13,6 +13,7 @@
 - Fix not being able to delete CLM environment if there are custom child
   channels that where not built by the environment (bsc#1206932)
 - Makes systems column sortable on relevant patch page, to list by most affected systems
+- Detect openSUSE Leap Micro and openSUSE microOS as transactional systems
 
 -------------------------------------------------------------------
 Fri Jan 27 17:10:35 CET 2023 - jgonzalez@suse.com

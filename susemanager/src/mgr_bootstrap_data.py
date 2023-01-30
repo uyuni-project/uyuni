@@ -266,6 +266,50 @@ AMAZONLINUX2 = [
     "zip"
 ]
 
+PKGLISTUMBLEWEED_SALT_NO_BUNDLE = [
+    "libgomp1",
+    "libmpdec3",
+    "libpgm-5_2-0",
+    "libpython3_10-1_0",
+    "librpmbuild9",
+    "libsodium23",
+    "libunwind8",
+    "libyaml-0-2",
+    "libzmq5",
+    "python3-salt",
+    "python310",
+    "python310-Jinja2",
+    "python310-M2Crypto",
+    "python310-MarkupSafe",
+    "python310-PyYAML",
+    "python310-apipkg",
+    "python310-base",
+    "python310-certifi",
+    "python310-cffi",
+    "python310-charset-normalizer",
+    "python310-contextvars",
+    "python310-cryptography",
+    "python310-distro",
+    "python310-idna",
+    "python310-immutables",
+    "python310-iniconfig",
+    "python310-msgpack",
+    "python310-psutil",
+    "python310-py",
+    "python310-pyOpenSSL",
+    "python310-pycparser",
+    "python310-pyzmq",
+    "python310-requests",
+    "python310-rpm",
+    "python310-six",
+    "python310-urllib3",
+    "python310-zypp-plugin",
+    "salt",
+    "salt-minion",
+    "salt-transactional-update",
+    "update-alternatives",
+]
+
 PKGLIST15_SALT_NO_BUNDLE = [
     "hostname",
     "iproute2",
@@ -1152,7 +1196,23 @@ DATA = {
     'openSUSE-Leap-15.4-aarch64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
-    },    
+    },
+    'openSUSE-Leap-Micro-5.3-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_3-x86_64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/3/bootstrap/'
+    },
+    'openSUSE-Leap-Micro-5.3-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_3-aarch64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/3/bootstrap/'
+    },
+    'openSUSE-MicroOS-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_microos-x86_64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
+    },
+    'openSUSE-MicroOS-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_microos-aarch64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
+    },
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
