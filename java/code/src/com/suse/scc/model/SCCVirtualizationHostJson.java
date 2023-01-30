@@ -19,6 +19,9 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * SCCVirtualizationHostJson
  */
@@ -31,7 +34,7 @@ public class SCCVirtualizationHostJson {
 
     private SCCVirtualizationHostPropertiesJson properties;
 
-    private SCCVirtualizationHostSystemsJson systems;
+    private List<SCCVirtualizationHostSystemsJson> systems;
 
     /**
      * Constructor
@@ -42,7 +45,7 @@ public class SCCVirtualizationHostJson {
      */
     public SCCVirtualizationHostJson(String identifierIn, String groupNameIn,
                                      SCCVirtualizationHostPropertiesJson propertiesIn,
-                                     SCCVirtualizationHostSystemsJson systemsIn) {
+                                     List<SCCVirtualizationHostSystemsJson> systemsIn) {
         identifier = identifierIn;
         groupName = groupNameIn;
         properties = propertiesIn;
@@ -59,7 +62,10 @@ public class SCCVirtualizationHostJson {
         identifier = identifierIn;
         groupName = s.getName();
         properties = new SCCVirtualizationHostPropertiesJson(s, vi);
-        systems = new SCCVirtualizationHostSystemsJson(vi);
+        systems = s.getGuests().stream()
+                .filter(guest -> guest.isRegisteredGuest())
+                .map(guest -> new SCCVirtualizationHostSystemsJson(guest))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -86,7 +92,7 @@ public class SCCVirtualizationHostJson {
     /**
      * @return the virtual systems
      */
-    public SCCVirtualizationHostSystemsJson getSystems() {
+    public List<SCCVirtualizationHostSystemsJson> getSystems() {
         return systems;
     }
 }
