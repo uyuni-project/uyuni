@@ -12,13 +12,13 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.image;
+package com.suse.manager.utils.skopeo;
 
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 
-import com.suse.manager.webui.controllers.image.beans.ImageTags;
-import com.suse.manager.webui.controllers.image.beans.RepositoryImageList;
+import com.suse.manager.utils.skopeo.beans.ImageTags;
+import com.suse.manager.utils.skopeo.beans.RepositoryImageList;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;

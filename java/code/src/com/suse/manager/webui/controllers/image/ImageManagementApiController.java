@@ -24,8 +24,9 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.webui.controllers.image.beans.ImageTags;
-import com.suse.manager.webui.controllers.image.beans.RepositoryImageList;
+import com.suse.manager.utils.skopeo.SkopeoCommandManager;
+import com.suse.manager.utils.skopeo.beans.ImageTags;
+import com.suse.manager.utils.skopeo.beans.RepositoryImageList;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;

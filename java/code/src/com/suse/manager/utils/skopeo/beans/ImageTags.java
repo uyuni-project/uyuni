@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.image.beans;
+package com.suse.manager.utils.skopeo.beans;
 
 import com.google.gson.annotations.SerializedName;
 
