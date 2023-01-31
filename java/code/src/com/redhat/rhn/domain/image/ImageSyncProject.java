@@ -20,13 +20,18 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -46,8 +51,29 @@ public class ImageSyncProject extends BaseDomainHelper {
 
     private ImageStore destStore;
 
-    private Boolean scroped;
+    private Boolean scoped;
 
+    private List<ImageSyncSource> syncSources = new ArrayList<>();
+
+    /**
+     * Standard Constructor
+     */
+    public ImageSyncProject() {
+    }
+
+    /**
+     * Constructor
+     * @param nameIn the project name
+     * @param orgIn the organizatiom
+     * @param destStoreIn the destination image store
+     * @param scopedIn store images scoped with the store name
+     */
+    public ImageSyncProject(String nameIn, Org orgIn, ImageStore destStoreIn, Boolean scopedIn) {
+        name = nameIn;
+        org = orgIn;
+        destStore = destStoreIn;
+        scoped = scopedIn;
+    }
 
     /**
      * @return the id
@@ -88,7 +114,15 @@ public class ImageSyncProject extends BaseDomainHelper {
      */
     @Column
     public boolean isScoped() {
-        return scroped;
+        return scoped;
+    }
+
+    /**
+     * @return returns image sync sources
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageSyncProject", orphanRemoval = true)
+    public List<ImageSyncSource> getSyncSources() {
+        return syncSources;
     }
 
     /**
@@ -115,15 +149,22 @@ public class ImageSyncProject extends BaseDomainHelper {
     /**
      * @param store the destination image store to set
      */
-    public void setDestinationImageStoreStore(ImageStore store) {
+    public void setDestinationImageStore(ImageStore store) {
         destStore = store;
     }
 
     /**
-     * @param scropedIn scoped
+     * @param scopedIn scoped
      */
-    public void setScroped(boolean scropedIn) {
-        scroped = scropedIn;
+    public void setScoped(boolean scopedIn) {
+        scoped = scopedIn;
+    }
+
+    /**
+     * @param sources the image sync sources to set
+     */
+    public void setSyncSources(List<ImageSyncSource> sources) {
+        syncSources = sources;
     }
 
     /**
@@ -138,7 +179,7 @@ public class ImageSyncProject extends BaseDomainHelper {
         return new EqualsBuilder().append(name, castOther.name)
                                   .append(org, castOther.org)
                                   .append(destStore, castOther.destStore)
-                                  .append(scroped, castOther.scroped)
+                                  .append(scoped, castOther.scoped)
                                   .isEquals();
     }
 
@@ -150,7 +191,7 @@ public class ImageSyncProject extends BaseDomainHelper {
         return new HashCodeBuilder().append(name)
                                     .append(org)
                                     .append(destStore)
-                                    .append(scroped)
+                                    .append(scoped)
                                     .toHashCode();
     }
 }

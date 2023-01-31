@@ -30,6 +30,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,6 +65,80 @@ public class ImageSyncSource extends BaseDomainHelper {
     private String srcTagsRegexp;
 
     /**
+     * Standard Constructor
+     */
+    public ImageSyncSource() {
+    }
+
+    /**
+     * Constructor
+     * @param imageSyncProjectIn the project
+     * @param orgIn the organization
+     * @param srcStoreIn the source image store
+     * @param srcRepositoryIn the repository
+     * @param srcTagsIn list of static tags
+     * @param srcTagsRegexpIn regexp to match tags
+     */
+    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
+                           String srcRepositoryIn, List<String> srcTagsIn, String srcTagsRegexpIn) {
+        imageSyncProject = imageSyncProjectIn;
+        org = orgIn;
+        srcStore = srcStoreIn;
+        srcRepository = srcRepositoryIn;
+        srcTags = srcTagsIn;
+        srcTagsRegexp = srcTagsRegexpIn;
+    }
+
+    /**
+     * Constructor
+     * @param imageSyncProjectIn the project
+     * @param orgIn the organization
+     * @param srcStoreIn the source image store
+     * @param srcRepositoryIn the repository
+     * @param srcTagsIn list of static tags
+     */
+    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
+                           String srcRepositoryIn, List<String> srcTagsIn) {
+        imageSyncProject = imageSyncProjectIn;
+        org = orgIn;
+        srcStore = srcStoreIn;
+        srcRepository = srcRepositoryIn;
+        srcTags = srcTagsIn;
+    }
+
+    /**
+     * Constructor
+     * @param imageSyncProjectIn the project
+     * @param orgIn the organization
+     * @param srcStoreIn the source image store
+     * @param srcRepositoryIn the repository
+     * @param srcTagsRegexpIn regexp to match tags
+     */
+    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
+                           String srcRepositoryIn, String srcTagsRegexpIn) {
+        imageSyncProject = imageSyncProjectIn;
+        org = orgIn;
+        srcStore = srcStoreIn;
+        srcRepository = srcRepositoryIn;
+        srcTagsRegexp = srcTagsRegexpIn;
+    }
+
+    /**
+     * Constructor - sync all available tags
+     * @param imageSyncProjectIn the project
+     * @param orgIn the organization
+     * @param srcStoreIn the source image store
+     * @param srcRepositoryIn the repository
+     */
+    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
+                           String srcRepositoryIn) {
+        imageSyncProject = imageSyncProjectIn;
+        org = orgIn;
+        srcStore = srcStoreIn;
+        srcRepository = srcRepositoryIn;
+    }
+
+    /**
      * @return the id
      */
     @Id
@@ -77,7 +152,7 @@ public class ImageSyncSource extends BaseDomainHelper {
     /**
      * @return the image sync project
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sync_proj_id")
     public ImageSyncProject getImageSyncProject() {
         return imageSyncProject;
@@ -111,7 +186,7 @@ public class ImageSyncSource extends BaseDomainHelper {
     /**
      * @return return tag regexp if set
      */
-    @Column
+    @Column(name = "src_tags_regex")
     public String getSrcTagsRegexp() {
         return srcTagsRegexp;
     }
