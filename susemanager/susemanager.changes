@@ -1,6 +1,7 @@
 - Create repostories with sha256 instead of sha1.
 - Bootstrap repository definitions for openSUSE Leap Micro 5.3 and
   openSUSE MicroOS for Uyuni
+- Add openSUSE Leap 15.5 uyuni bootstrap repositories
 
 -------------------------------------------------------------------
 Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com
