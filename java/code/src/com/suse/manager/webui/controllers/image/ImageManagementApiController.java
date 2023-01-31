@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,23 +23,20 @@ import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 
+import com.suse.manager.webui.controllers.image.beans.ListImage;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -79,50 +76,19 @@ public class ImageManagementApiController {
                 userIn.getOrg());
 
         if (store.isEmpty()) {
-            return json(responseIn, ResultJson.error("not_found"));
+            return json(responseIn, HttpStatus.SC_BAD_REQUEST, ResultJson.error("not_found"));
         }
 
-        List<String> cmd = new ArrayList<>();
-        cmd.add("skopeo");
-        cmd.add("list-repos");
-        cmd.add("--tls-verify=false");
-        cmd.add("--limit=5000");
-        cmd.add(store.get().getUri());
-
-        String[] args = cmd.toArray(new String[cmd.size()]);
-
-        ResultJson result = executeExtCmd(args);
-        return json(responseIn, result);
-    }
-
-    private static ResultJson executeExtCmd(String[] args) {
-        SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(log);
-        int exitCode = ce.execute(args);
-
-        if (exitCode != 0) {
-            String msg = ce.getLastCommandErrorMessage();
-            if (msg.isBlank()) {
-                msg = ce.getLastCommandOutput();
-            }
-            if (msg.length() > 2300) {
-                msg = "... " + msg.substring(msg.length() - 2300);
-            }
-            return ResultJson.error(msg);
-            /*throw new RuntimeException(
-                    "Command '" + Arrays.asList(args) +
-                            "' exited with error code " + exitCode +
-                            (msg.isBlank() ? "" : ": " + msg));*/
-        }
-        else {
-            String rawData = ce.getLastCommandOutput();
-            Type collectionType = new TypeToken<List<Map<String, Object>>>() { }.getType();
-            List<Map<String, Object>> data = GSON.fromJson(rawData, collectionType);
-            List<String> listNames = data.stream().map(t -> t.get("name").toString()).collect(Collectors.toList());
-
+        try {
+            List<ListImage> images = SkopeoCommandManager.getImageList(store.get());
+            List<String> listNames = images.stream().map(t -> t.getName()).collect(Collectors.toList());
             JsonObject json = new JsonObject();
             json.addProperty("size", listNames.size());
             json.addProperty("images", GSON.toJson(listNames));
-            return ResultJson.success(json);
+            return json(responseIn, ResultJson.success(json));
+        }
+        catch (RuntimeException e) {
+            return json(responseIn, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
     }
 }
