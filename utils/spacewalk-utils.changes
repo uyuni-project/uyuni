@@ -1,4 +1,5 @@
 - Add openSUSE Leap Micro 5.3 and openSUSE MicroOS repositories 
+- Add SLES 15 SP5 client tools repositories to spacewalk-common-channels.ini
 
 -------------------------------------------------------------------
 Mon Jan 23 08:24:57 CET 2023 - jgonzalez@suse.com
