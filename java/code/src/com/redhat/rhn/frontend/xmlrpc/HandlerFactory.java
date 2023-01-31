@@ -36,6 +36,7 @@ import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.ImageSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
@@ -169,6 +170,7 @@ public class HandlerFactory {
         factory.addHandler("image.delta", new DeltaImageInfoHandler());
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
+        factory.addHandler("image.sync", new ImageSyncHandler());
         factory.addHandler("image", new ImageInfoHandler(saltApi));
         factory.addHandler("kickstart", new KickstartHandler());
         factory.addHandler("kickstart.filepreservation", new FilePreservationListHandler());
