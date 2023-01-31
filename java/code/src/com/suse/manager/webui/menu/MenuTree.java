@@ -255,7 +255,9 @@ public class MenuTree {
                 .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
                         .withDir("/rhn/manager/cm/imageprofiles"))
                 .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
-                        .withDir("/rhn/manager/cm/imagestores"));
+                        .withDir("/rhn/manager/cm/imagestores"))
+                .addChild(new MenuItem("Sync").withPrimaryUrl("/rhn/manager/cm/imagesync")
+                        .withDir("/rhn/manager/cm/imagesync"));
     }
 
     private MenuItem getPatchesNode(User user) {

@@ -69,6 +69,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.image.ImageManagementApiController;
+import com.suse.manager.webui.controllers.image.ImageManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
@@ -271,6 +272,7 @@ public class Router implements SparkApplication {
         ImageStoreController.initRoutes(jade);
         ImageProfileController.initRoutes(jade);
         ImageBuildController.initRoutes(jade, imageBuildController);
+        ImageManagementViewsController.initRoutes(jade);
         ImageManagementApiController.initRoutes();
     }
 }

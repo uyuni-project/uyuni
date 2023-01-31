@@ -1,0 +1,13 @@
+include /templates/common.jade
+
+#image-sync-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.isAdmin = #{is_admin};
+
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('images/image-sync-list')
+        .then(function(module) { module.renderer('image-sync-list') });

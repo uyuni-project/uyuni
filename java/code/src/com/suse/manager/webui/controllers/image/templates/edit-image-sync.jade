@@ -1,0 +1,11 @@
+include /templates/common.jade
+
+#image-sync-edit
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.projectId = "#{project_id}"
+
+script(type='text/javascript').
+    spaImportReactPage('images/image-sync-edit')
+        .then(function(module) { module.renderer('image-sync-edit') });
