@@ -1,27 +1,30 @@
+# Copyright (c) 2014-2023 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 source 'https://rubygems.org'
 
-gem 'require_all'
+gem 'require_all', "~> 3.0"
 gem 'capybara', '3.35.3'
 gem 'cucumber', '7.1.0'
-gem 'cucumber-html-formatter'
-gem 'selenium-webdriver'
-gem 'rack'
-gem 'rack-test'
-gem 'nokogiri'
-gem 'rake'
-gem 'jwt'
-gem 'mime-types'
-gem 'xmlrpc'
+gem 'cucumber-html-formatter', "~> 17.0"
+gem 'selenium-webdriver', "~> 3.142"
+gem 'rack', "~> 3.0"
+gem 'rack-test', "~> 2.0"
+gem 'nokogiri', "~> 1.12"
+gem 'rake', "~> 13.0"
+gem 'jwt', "~> 2.6"
+gem 'mime-types', "~> 3.4"
+gem 'xmlrpc', "~> 0.3"
 gem 'faraday', '1.10.0'
-gem 'minitest'
-gem 'websocket'
-gem 'websocket-driver'
-gem 'syntax'
-gem 'parallel_tests'
-gem 'simplecov'
-gem 'rubocop'
+gem 'minitest', "~> 5.15"
+gem 'websocket', "~> 1.2"
+gem 'websocket-driver', "~> 0.7"
+gem 'syntax', "~> 1.2"
+gem 'parallel_tests', "~> 3.12"
+gem 'simplecov', "~> 0.22"
+gem 'rubocop', "~> 1.28"
 # Pre-requisite:
 # Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
 # or build and install from https://github.com/openSUSE/twopence
-gem 'twopence'
-gem 'pg'
+gem 'twopence', "~> 0.4"
+gem 'pg', "~> 1.4"
