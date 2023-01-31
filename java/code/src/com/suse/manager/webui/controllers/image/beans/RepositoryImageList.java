@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers.image.beans;
 
-public class ListImage {
+public class RepositoryImageList {
     private String name;
     private String description;
     private Integer starCount;
@@ -29,7 +29,7 @@ public class ListImage {
      * @param isTrustedIn
      * @param isOfficialIn
      */
-    public ListImage(String nameIn, String descriptionIn, Integer starCountIn, Boolean isTrustedIn, Boolean isOfficialIn) {
+    public RepositoryImageList(String nameIn, String descriptionIn, Integer starCountIn, Boolean isTrustedIn, Boolean isOfficialIn) {
         name = nameIn;
         description = descriptionIn;
         starCount = starCountIn;

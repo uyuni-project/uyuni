@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers.image;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.image.ImageStore;
@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.webui.controllers.image.beans.ListImage;
+import com.suse.manager.webui.controllers.image.beans.ImageTags;
+import com.suse.manager.webui.controllers.image.beans.RepositoryImageList;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -32,6 +33,7 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,11 +61,13 @@ public class ImageManagementApiController {
      *
      */
     public static void initRoutes() {
-        get("/manager/api/cm/imagestores/listimages/:id", withOrgAdmin(ImageManagementApiController::listImages));
+        get("/manager/api/cm/imagestores/listimages/:id", withImageAdmin(ImageManagementApiController::getStoreImages));
+        get("/manager/api/cm/imagestores/imagetags/:id", withImageAdmin(ImageManagementApiController::getImageTags));
     }
 
 
-    private static String listImages(Request requestIn, Response responseIn, User userIn) {
+    private static String getStoreImages(Request requestIn, Response responseIn, User userIn) {
+        //FIXME get image information can be refactored to be handle in rout manager
         Long storeId;
         try {
             storeId = Long.parseLong(requestIn.params("id"));
@@ -72,6 +76,8 @@ public class ImageManagementApiController {
             throw new NotFoundException();
         }
 
+        String filter = requestIn.queryParams("q");
+
         Optional<ImageStore> store = ImageStoreFactory.lookupByIdAndOrg(storeId,
                 userIn.getOrg());
 
@@ -79,12 +85,59 @@ public class ImageManagementApiController {
             return json(responseIn, HttpStatus.SC_BAD_REQUEST, ResultJson.error("not_found"));
         }
 
+        if (!ImageStoreFactory.TYPE_REGISTRY.equals(store.get().getStoreType())) {
+            // FIXME pass message to message string
+            return json(responseIn, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Store is not a container image registry"));
+        }
+
         try {
-            List<ListImage> images = SkopeoCommandManager.getImageList(store.get());
+            List<RepositoryImageList> images = SkopeoCommandManager.getStoreImages(store.get(), filter);
             List<String> listNames = images.stream().map(t -> t.getName()).collect(Collectors.toList());
             JsonObject json = new JsonObject();
             json.addProperty("size", listNames.size());
             json.addProperty("images", GSON.toJson(listNames));
+            return json(responseIn, ResultJson.success(json));
+        }
+        catch (RuntimeException e) {
+            return json(responseIn, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
+        }
+    }
+
+
+    private static String getImageTags(Request requestIn, Response responseIn, User userIn) {
+        //FIXME get image information can be refactored to be handle in rout manager
+        Long storeId;
+        try {
+            storeId = Long.parseLong(requestIn.params("id"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+        Optional<ImageStore> store = ImageStoreFactory.lookupByIdAndOrg(storeId,
+                userIn.getOrg());
+
+        String image = requestIn.queryParams("image");
+
+        if (store.isEmpty()) {
+            return json(responseIn, HttpStatus.SC_BAD_REQUEST, ResultJson.error("not_found"));
+        }
+        // FIXME should be a different message
+        if (StringUtils.isEmpty(image)) {
+            return json(responseIn, HttpStatus.SC_BAD_REQUEST, ResultJson.error("not_found"));
+        }
+
+        if (!ImageStoreFactory.TYPE_REGISTRY.equals(store.get().getStoreType())) {
+            // FIXME pass message to message string
+            return json(responseIn, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Store is not a container image registry"));
+        }
+
+        try {
+            ImageTags tags = SkopeoCommandManager.getImageTags(store.get(), image);
+            JsonObject json = new JsonObject();
+            json.addProperty("size", tags.getTags().size());
+            json.addProperty("tags", GSON.toJson(tags.getTags()));
             return json(responseIn, ResultJson.success(json));
         }
         catch (RuntimeException e) {

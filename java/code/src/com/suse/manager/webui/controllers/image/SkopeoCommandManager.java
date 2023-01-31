@@ -17,12 +17,14 @@ package com.suse.manager.webui.controllers.image;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 
-import com.suse.manager.webui.controllers.image.beans.ListImage;
+import com.suse.manager.webui.controllers.image.beans.ImageTags;
+import com.suse.manager.webui.controllers.image.beans.RepositoryImageList;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,24 +43,54 @@ public class SkopeoCommandManager {
     /**
      * Get the list of available images
      * @param store to collect iamges from
+     * @param filter filter the results base on the parameter
      * @return list of images available in the stores
      */
-    public static List<ListImage> getImageList(ImageStore store) {
+    public static List<RepositoryImageList> getStoreImages(ImageStore store, String filter) {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("list-repos");
+        // FIXME should be a option in the store
         cmd.add("--tls-verify=false");
         cmd.add("--limit=5000");
+        if (!StringUtils.isEmpty(filter)) {
+            // FIXME this will change, and should be a parameter at the end, after the URL
+            cmd.add("--search=" + filter);
+        }
+        // FIXME set username and password to connect registry
         cmd.add(store.getUri());
 
         String[] args = cmd.toArray(new String[cmd.size()]);
 
         String rawData = executeExtCmd(args);
-        Type collectionType = new TypeToken<List<ListImage>>() { }.getType();
-        List<ListImage> data = GSON.fromJson(rawData, collectionType);
+        Type collectionType = new TypeToken<List<RepositoryImageList>>() { }.getType();
+        List<RepositoryImageList> data = GSON.fromJson(rawData, collectionType);
         return data;
     }
 
+    /**
+     * Get the list of available images
+     * @param store to collect iamges from
+     * @param image image name to obtain tags from
+     * @return list of images available in the stores
+     */
+    public static ImageTags getImageTags(ImageStore store, String image) {
+        List<String> cmd = new ArrayList<>();
+        cmd.add("skopeo");
+        cmd.add("list-tags");
+        // FIXME should be a option in the store
+        cmd.add("--tls-verify=false");
+
+        // FIXME set username and password to connect registry
+        cmd.add(String.format("docker://%s/%s", store.getUri(), image));
+
+        String[] args = cmd.toArray(new String[cmd.size()]);
+
+        String rawData = executeExtCmd(args);
+        Type collectionType = new TypeToken<ImageTags>() { }.getType();
+        ImageTags data = GSON.fromJson(rawData, ImageTags.class);
+        return data;
+    }
 
     private static String executeExtCmd(String[] args) {
         SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(log);
