@@ -1097,6 +1097,22 @@ DATA = {
         'PDID' : [2299, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
+    'SLE-15-SP5-aarch64' : {
+        'PDID' : [2462, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
+    },
+    'SLE-15-SP5-ppc64le' : {
+        'PDID' : [2463, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
+    },
+    'SLE-15-SP5-s390x' : {
+        'PDID' : [2464, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
+    },
+    'SLE-15-SP5-x86_64' : {
+        'PDID' : [2465, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
+    },
     'SUMA-43-PROXY-x86_64' : {
         'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
