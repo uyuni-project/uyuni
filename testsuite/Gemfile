@@ -4,10 +4,10 @@
 source 'https://rubygems.org'
 
 gem 'require_all', "~> 3.0"
-gem 'capybara', '3.35.3'
-gem 'cucumber', '7.1.0'
-gem 'cucumber-html-formatter', "~> 17.0"
-gem 'selenium-webdriver', "~> 3.142"
+gem 'capybara', '3.38.0'
+gem 'cucumber', '8.0.0'
+gem 'cucumber-html-formatter', "19.1.0"
+gem 'selenium-webdriver', "3.142.7"
 gem 'rack', "~> 3.0"
 gem 'rack-test', "~> 2.0"
 gem 'nokogiri', "~> 1.12"
