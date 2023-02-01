@@ -1262,7 +1262,7 @@
       </trans-unit>
 
 
- 
+
       <trans-unit id="preferences.recently-registered-systems.name" xml:space="preserve">
         <source>Recently Registered Systems</source>
         <context-group name="ctx">
@@ -23800,6 +23800,12 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
         <source>Schedule System Profile refresh on all managed systems</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
+        <trans-unit id="bunch.jsp.description.image-registry-sync-bunch" xml:space="preserve">
+        <source>Synchronize container registry images</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>

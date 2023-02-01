@@ -188,4 +188,9 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'system-profile-refresh-d
         (SELECT id FROM rhnTaskoBunch WHERE name='system-profile-refresh-bunch'),
         current_timestamp, '0 0 5 15 * ?');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'image-registry-sync-default',
+       (SELECT id FROM rhnTaskoBunch WHERE name='image-registry-sync-bunch'),
+       current_timestamp, '0 0/10 * * * ?');
+
 commit;

@@ -138,4 +138,9 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-system-overview-bunc
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-profile-refresh-bunch', 'Refresh System Profiles of all registered servers', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'image-registry-sync-bunch', 'Runs ImageRegistrySyncTask:
+- integer parameter sync project id
+- without parameter updates data for all projects', null);
+
 commit;

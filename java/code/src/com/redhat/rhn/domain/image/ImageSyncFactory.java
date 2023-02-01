@@ -128,6 +128,29 @@ public class ImageSyncFactory extends HibernateFactory {
                 .getResultList();
     }
 
+    /**
+     * Lookup {@link ImageSyncProject} by project id
+     * @param id the project id
+     * @return optional Image Sync Project
+     */
+    public Optional<ImageSyncProject> lookupProjectById(Long id) {
+        return getSession()
+                .createQuery("FROM ImageSyncProject WHERE id = :id", ImageSyncProject.class)
+                .setParameter("id", id)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * List all {@link ImageSyncProject}
+     * @return list with all existing images
+     */
+    public List<ImageSyncProject> listAll() {
+        return getSession()
+                .createQuery("FROM ImageSyncProject", ImageSyncProject.class)
+                .getResultList();
+    }
+
+
     @Override
     protected Logger getLogger() {
         return log;

@@ -15,7 +15,10 @@
 package com.suse.manager.webui.utils;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.representer.Representer;
 
 /**
  * Helper class for serializing objects into YAML.
@@ -52,6 +55,19 @@ public enum YamlHelper {
     }
 
     /**
+     * Dump a given object into Yaml.
+     * @param typeDescriptionIn
+     * @param object
+     * @return the YAML representation of the given object
+     */
+    public String dump(TypeDescription typeDescriptionIn, Object object) {
+        Representer rep = new Representer(options);
+        rep.addTypeDescription(typeDescriptionIn);
+        Yaml yaml = new Yaml(new Constructor(), rep, options);
+        return yaml.dump(object);
+    }
+
+    /**
      * Dump a given object into Yaml with plain scalar types rather than double quoted.
      *
      * @param object the object to dump
@@ -64,5 +80,6 @@ public enum YamlHelper {
         options.setDefaultScalarStyle(oldStyle);
         return result;
     }
+
 }
 
