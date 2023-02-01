@@ -639,10 +639,10 @@ When(/^I enter the SCC credentials$/) do
   )
 end
 
-Then(/^the SCC credentials should be valid$/) do
+When(/^I wait until the SCC credentials are valid$/) do
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
-    raise 'Success icon not found' unless find('i.text-success', wait: 5)
+    raise 'Success icon not found' unless find('i.text-success', wait: 30)
   end
 end
 
