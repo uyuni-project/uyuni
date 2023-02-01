@@ -53,6 +53,7 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
         exportDesc.substituteProperty("images-by-tag-regex", SkopeoImageSync.class, "getImagesRegex", "setImagesRegex");
         exportDesc.substituteProperty("tls-verify", SkopeoImageSync.class, "isTlsVerify", "setTlsVerify");
         exportDesc.setExcludes("imagesRegex", "tlsVerify");
+
     }
 
     @Override

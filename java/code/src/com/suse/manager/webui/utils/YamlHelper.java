@@ -14,10 +14,13 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.taskomatic.task.image.SkopeoImageSync;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 /**
@@ -63,6 +66,8 @@ public enum YamlHelper {
     public String dump(TypeDescription typeDescriptionIn, Object object) {
         Representer rep = new Representer(options);
         rep.addTypeDescription(typeDescriptionIn);
+        //FIXME hard coded stuff
+        rep.addClassTag(SkopeoImageSync.class, Tag.MAP);
         Yaml yaml = new Yaml(new Constructor(), rep, options);
         return yaml.dump(object);
     }
