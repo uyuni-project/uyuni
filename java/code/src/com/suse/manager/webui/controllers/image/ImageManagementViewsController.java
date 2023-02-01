@@ -15,33 +15,25 @@
 
 package com.suse.manager.webui.controllers.image;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpStatus;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.errors.NotFoundException;
-import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -122,29 +114,5 @@ public class ImageManagementViewsController {
         Map<String, Object> data = new HashMap<>();
         data.put("projectId", projectId);
         return new ModelAndView(data, "controllers/image/templates/edit-image-sync.jade");
-    }
-
-    /**
-     * TODO: Move to API controller?
-     * Processes a DELETE request
-     *
-     * @param req the request object
-     * @param res the response object
-     * @param user the authorized user
-     * @return the result JSON object
-     */
-    public static Object delete(Request req, Response res, User user) {
-        List<Long> ids;
-        try {
-            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
-        }
-        catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
-        }
-
-        // TODO: Call delete on Manager class (when available)
-
-        return json(res, ResultJson.success());
     }
 }

@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.image;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static spark.Spark.get;
+import static spark.Spark.halt;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.image.ImageStore;
@@ -36,12 +37,14 @@ import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,7 +77,7 @@ public class ImageManagementApiController {
         get("/manager/api/cm/imagesync/:id", withImageAdmin(ImageManagementApiController::getSingle));
         post("/manager/api/cm/imagesync/create", withImageAdmin(ImageManagementApiController::create));
         post("/manager/api/cm/imagesync/update/:id", withImageAdmin(ImageManagementApiController::update));
-        post("/manager/api/cm/imagesync/delete", withImageAdmin(ImageManagementApiController::delete));
+        post("/manager/api/cm/imagesync/delete", withImageAdmin(imageManagementApiController::delete));
     }
 
 
@@ -182,8 +185,35 @@ public class ImageManagementApiController {
         return null;
     }
 
-    private static Object delete(Request request1, Response response2, User user3) {
-        return null;
+    /**
+     * Processes a POST request to delete a list of image sync projects
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object delete(Request req, Response res, User user) {
+        List<Long> ids;
+        try {
+            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+        }
+        catch (JsonParseException e) {
+            throw halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        List<ImageSyncProject> projects = ids.stream()
+                .map(id -> imageSyncManager.lookupProject(id, user))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        if (projects.size() < ids.size()) {
+            return json(res, ResultJson.error("not_found"));
+        }
+
+        projects.forEach(p -> imageSyncManager.deleteProject(p.getId(), user));
+        return json(res, ResultJson.success(projects.size()));
     }
 
     /**
