@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.image.ImageSyncManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -75,6 +76,7 @@ public class GlobalInstanceHolder {
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(SALT_API, SALT_UTILS);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
+    public static final ImageSyncManager IMAGE_SYNC_MANAGER = new ImageSyncManager();
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
             new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API);

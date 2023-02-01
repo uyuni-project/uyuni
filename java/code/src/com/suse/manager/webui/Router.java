@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.manager.image.ImageSyncManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -110,6 +111,7 @@ public class Router implements SparkApplication {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         KubernetesManager kubernetesManager = GlobalInstanceHolder.KUBERNETES_MANAGER;
+        ImageSyncManager imageSyncManager = GlobalInstanceHolder.IMAGE_SYNC_MANAGER;
         VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
@@ -135,7 +137,7 @@ public class Router implements SparkApplication {
         //CVEAudit
         CVEAuditController.initRoutes(jade);
 
-        initContentManagementRoutes(jade, kubernetesManager);
+        initContentManagementRoutes(jade, kubernetesManager, imageSyncManager);
 
         // Virtual Host Managers
         VirtualHostManagerController.initRoutes(jade);
@@ -267,12 +269,13 @@ public class Router implements SparkApplication {
         virtualPoolsController.initRoutes(jade);
     }
 
-    private void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {
+    private void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager, ImageSyncManager imageSyncManager) {
         ImageBuildController imageBuildController = new ImageBuildController(kubernetesManager);
         ImageStoreController.initRoutes(jade);
         ImageProfileController.initRoutes(jade);
         ImageBuildController.initRoutes(jade, imageBuildController);
         ImageManagementViewsController.initRoutes(jade);
-        ImageManagementApiController.initRoutes();
+        ImageManagementApiController imageManagementApiController = new ImageManagementApiController(imageSyncManager);
+        ImageManagementApiController.initRoutes(imageManagementApiController);
     }
 }

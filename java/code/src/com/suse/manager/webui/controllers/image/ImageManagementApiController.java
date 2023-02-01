@@ -57,18 +57,20 @@ public class ImageManagementApiController {
     private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
     private static Logger log = LogManager.getLogger(ImageManagementApiController.class);
+    private ImageSyncManager imageSyncManager;
 
-    private ImageManagementApiController() { }
+    public ImageManagementApiController(ImageSyncManager imageSyncManagerIn) {
+        this.imageSyncManager = imageSyncManagerIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
-     *
      */
-    public static void initRoutes() {
+    public static void initRoutes(ImageManagementApiController imageManagementApiController) {
         get("/manager/api/cm/imagestores/listimages/:id", withImageAdmin(ImageManagementApiController::getStoreImages));
         get("/manager/api/cm/imagestores/imagetags/:id", withImageAdmin(ImageManagementApiController::getImageTags));
 
-        get("/manager/api/cm/imagesync", withImageAdmin(ImageManagementApiController::list));
+        get("/manager/api/cm/imagesync", withImageAdmin(imageManagementApiController::list));
         get("/manager/api/cm/imagesync/:id", withImageAdmin(ImageManagementApiController::getSingle));
         post("/manager/api/cm/imagesync/create", withImageAdmin(ImageManagementApiController::create));
         post("/manager/api/cm/imagesync/update/:id", withImageAdmin(ImageManagementApiController::update));
@@ -163,9 +165,8 @@ public class ImageManagementApiController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object list(Request req, Response res, User user) {
-        // FIXME: don't create an instance here, pass it in as parameter
-        List<ImageSyncProject> imageSyncProjects = new ImageSyncManager().listProjects(user);
+    public Object list(Request req, Response res, User user) {
+        List<ImageSyncProject> imageSyncProjects = imageSyncManager.listProjects(user);
         return json(res, getJsonList(imageSyncProjects));
     }
 
