@@ -5,7 +5,7 @@ We want features that that do not change their environment, so we get:
 * idempotency: the faculty to run same the feature any number of times
 * commutativity: the ability to change the order in which features are run.
 
-Always try to create an idempotent feature, and to run it as a secondary feature 
+Always try to create an idempotent feature, and to run it as a secondary feature
 (a feature that is run after all core features).
 
 We want idempotency at feature level. The individual scenarios are usually not idempotent.

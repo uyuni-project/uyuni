@@ -32,7 +32,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @proxy
 ```
 
@@ -56,7 +56,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @sle_minion
 ```
 
@@ -80,7 +80,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @buildhost
 ```
 
@@ -104,7 +104,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @ssh_minion
 ```
 
@@ -127,7 +127,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @rhlike_minion
 ```
 
@@ -152,7 +152,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @deblike_minion
 ```
 
@@ -165,7 +165,7 @@ is running Uyuni or SUSE Manager.
 
 Inside the test suite, the scenarios that are tagged with
 
-```
+```bash
 @susemanager
 ```
 
@@ -174,7 +174,7 @@ not run if Uyuni is detected.
 
 Inside the test suite, the scenarios that are tagged with
 
-```
+```bash
 @uyuni
 ```
 
@@ -199,7 +199,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @no_mirror
 ```
 
@@ -241,7 +241,7 @@ place `https://github.com/uyuni-project/uyuni/tree/master/testsuite/features/pro
 
 Using a virtualization host with the test suite is not mandatory.
 
-If you do not want a virtualization host minion, do not define `VIRTHOST_KVM_URL` environment 
+If you do not want a virtualization host minion, do not define `VIRTHOST_KVM_URL` environment
 variable before you run the test suite. That's all.
 
 If you want virtualization minions, make these variables point to the machines that
@@ -270,7 +270,7 @@ the controller SSH public key needs to be added to the `authorized_keys` file.
 
 Inside of the test suite, the scenarios that are tagged with:
 
-```
+```bash
 @virtualization_kvm
 ```
 
@@ -302,7 +302,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @private_net
 ```
 
@@ -335,7 +335,7 @@ Currently supported images are `sles12sp3` and `sles15sp1`.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```
+```bash
 @pxeboot_minion
 ```
 
@@ -357,7 +357,7 @@ export SERVER_HTTP_PROXY = "hostname:port"
 
 Inside the test suite, the scenarios that are tagged with
 
-```
+```bash
 @server_http_proxy
 ```
 
@@ -379,7 +379,7 @@ export CUSTOM_DOWNLOAD_ENDPOINT = "protocol://hostname:port"
 
 Inside the test suite, the scenarios that are tagged with
 
-```
+```bash
 @custom_download_endpoint
 ```
 

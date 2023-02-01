@@ -60,6 +60,7 @@ Use the [data tables](https://cucumber.io/docs/cucumber/api/?lang=ruby) feature 
 Do not just conditionally fail based on a flag, because the test will look green. In reality it never ran.
 
 There are several solutions:
+
 * tag the tests and do not run them under that environment
 * use a common `Given` clause and the `pending` feature:
 
