@@ -17,12 +17,15 @@ package com.suse.manager.webui.controllers.image;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ImageSyncProject;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.image.ImageSyncManager;
 
 import com.suse.manager.utils.skopeo.SkopeoCommandManager;
 import com.suse.manager.utils.skopeo.beans.ImageTags;
@@ -64,6 +67,12 @@ public class ImageManagementApiController {
     public static void initRoutes() {
         get("/manager/api/cm/imagestores/listimages/:id", withImageAdmin(ImageManagementApiController::getStoreImages));
         get("/manager/api/cm/imagestores/imagetags/:id", withImageAdmin(ImageManagementApiController::getImageTags));
+
+        get("/manager/api/cm/imagesync", withImageAdmin(ImageManagementApiController::list));
+        get("/manager/api/cm/imagesync/:id", withImageAdmin(ImageManagementApiController::getSingle));
+        post("/manager/api/cm/imagesync/create", withImageAdmin(ImageManagementApiController::create));
+        post("/manager/api/cm/imagesync/update/:id", withImageAdmin(ImageManagementApiController::update));
+        post("/manager/api/cm/imagesync/delete", withImageAdmin(ImageManagementApiController::delete));
     }
 
 
@@ -144,5 +153,51 @@ public class ImageManagementApiController {
         catch (RuntimeException e) {
             return json(responseIn, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
+    }
+
+    /**
+     * Processes a GET request to get a list of all image sync projects
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object list(Request req, Response res, User user) {
+        // FIXME: don't create an instance here, pass it in as parameter
+        List<ImageSyncProject> imageSyncProjects = new ImageSyncManager().listProjects(user);
+        return json(res, getJsonList(imageSyncProjects));
+    }
+
+    private static Object getSingle(Request request1, Response response2, User user3) {
+        return null;
+    }
+
+    private static Object create(Request request1, Response response2, User user3) {
+        return null;
+    }
+
+    private static Object update(Request request1, Response response2, User user3) {
+        return null;
+    }
+
+    private static Object delete(Request request1, Response response2, User user3) {
+        return null;
+    }
+
+    /**
+     * Creates a list of JSON objects for a list of {@link ImageSyncProject} instances
+     *
+     * @param imageSyncProjects the list of image sync projects
+     * @return the list of JSON objects
+     */
+    private static List<JsonObject> getJsonList(List<ImageSyncProject> imageSyncProjects) {
+        return imageSyncProjects.stream().map(project -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", project.getId());
+            json.addProperty("label", project.getName());
+            json.addProperty("target", project.getDestinationImageStore().getLabel());
+            return json;
+        }).collect(Collectors.toList());
     }
 }

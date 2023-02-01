@@ -1,6 +1,6 @@
 include /templates/common.jade
 
-#image-sync-list
+#image-sync
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -9,5 +9,5 @@ script(type='text/javascript').
 +userPreferences
 
 script(type='text/javascript').
-    spaImportReactPage('images/image-sync-list')
-        .then(function(module) { module.renderer('image-sync-list') });
+    spaImportReactPage('images/image-sync')
+        .then(function(module) { module.renderer('image-sync') });

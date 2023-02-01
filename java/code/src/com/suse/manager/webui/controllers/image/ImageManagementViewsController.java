@@ -78,7 +78,7 @@ public class ImageManagementViewsController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("isAdmin", user.hasRole(ADMIN_ROLE));
+        data.put("is_admin", user.hasRole(ADMIN_ROLE));
         return new ModelAndView(data, "controllers/image/templates/list-image-sync.jade");
     }
 
