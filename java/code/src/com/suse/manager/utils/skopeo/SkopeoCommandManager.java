@@ -36,7 +36,7 @@ import java.util.List;
 
 public class SkopeoCommandManager {
 
-    private static Logger log = LogManager.getLogger(SkopeoCommandManager.class);
+    private static Logger logger = LogManager.getLogger(SkopeoCommandManager.class);
     private static final Gson GSON = Json.GSON;
 
     private SkopeoCommandManager() { }
@@ -63,7 +63,7 @@ public class SkopeoCommandManager {
 
         String[] args = cmd.toArray(new String[cmd.size()]);
 
-        String rawData = executeExtCmd(args);
+        String rawData = executeExtCmd(logger, args);
         Type collectionType = new TypeToken<List<RepositoryImageList>>() { }.getType();
         List<RepositoryImageList> data = GSON.fromJson(rawData, collectionType);
         return data;
@@ -87,7 +87,7 @@ public class SkopeoCommandManager {
 
         String[] args = cmd.toArray(new String[cmd.size()]);
 
-        String rawData = executeExtCmd(args);
+        String rawData = executeExtCmd(logger, args);
         Type collectionType = new TypeToken<ImageTags>() { }.getType();
         ImageTags data = GSON.fromJson(rawData, ImageTags.class);
         return data;
@@ -95,10 +95,11 @@ public class SkopeoCommandManager {
 
     /**
      *
+     * @param log
      * @param projectIn
      * @param ymlFilePathIn
      */
-    public static void runSyncFromYaml(ImageSyncProject projectIn, String ymlFilePathIn) {
+    public static void runSyncFromYaml(Logger log, ImageSyncProject projectIn, String ymlFilePathIn) {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("sync");
@@ -121,10 +122,10 @@ public class SkopeoCommandManager {
 
         String[] args = cmd.toArray(new String[cmd.size()]);
 
-        log.info(executeExtCmd(args));
+        log.info(executeExtCmd(log, args));
     }
 
-    private static String executeExtCmd(String[] args) {
+    private static String executeExtCmd(Logger log, String[] args) {
         SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(log);
         int exitCode = ce.execute(args);
 
@@ -136,6 +137,7 @@ public class SkopeoCommandManager {
             if (msg.length() > 2300) {
                 msg = "... " + msg.substring(msg.length() - 2300);
             }
+            log.info("Command out: " + ce.getLastCommandOutput());
             throw new RuntimeException(
                     "Command '" + Arrays.asList(args) +
                             "' exited with error code " + exitCode +
