@@ -569,6 +569,28 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
 
+    <sql-query name="Channel.packageByNevra">
+        <![CDATA[SELECT {p.*}
+          FROM rhnPackage {p},
+             rhnChannelPackage CP,
+             rhnPackageName PN,
+             rhnPackageEvr PE,
+             rhnPackageArch PA
+             WHERE CP.channel_id = :channel_id
+               AND CP.package_id = P.id
+               AND P.name_id = PN.id
+               AND P.evr_id = PE.id
+               AND P.package_arch_id = PA.id
+               AND PN.name = :name
+               AND PA.label = :arch
+               AND PE.version = :version
+               AND PE.release = :release
+               AND PE.type = :type
+               AND ((PE.epoch IS NULL AND :epoch IS NULL) OR (:epoch IS NOT NULL AND PE.epoch = :epoch))
+        ]]>
+        <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
+    </sql-query>
+
     <sql-query name="Channel.packageByFileNameAndRange">
 	    <![CDATA[SELECT {p.*},
                             (CASE WHEN C.id = :channel_id THEN 1 ELSE 0 end) as chanprio
