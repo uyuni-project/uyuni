@@ -14,43 +14,37 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.domain.image.ImageSyncProject;
+import com.redhat.rhn.domain.image.ImageSyncItem;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
 /**
- * ImageSyncProjectSerializer
+ * ImageSyncItemSerializer
  *
  * @apidoc.doc
- *  #struct_begin("project")
+ *  #struct_begin("item")
  *      #prop("int", "id")
- *      #prop("string", "name")
- *      #prop("string", "src_store_label")
- *      #prop("string", "dest_store_label")
- *      #prop_array_begin("items")
- *          $ImageSyncItemSerializer
- *      #prop_array_end()
- *      #prop("boolean", "scoped")
+ *      #prop("string", "repository")
+ *      #prop_array("tags", "string", "list of tags")
+ *      #prop("string", "tags_regex")
  *  #struct_end()
  */
-public class ImageSyncProjectSerializer extends ApiResponseSerializer<ImageSyncProject> {
+public class ImageSyncItemSerializer extends ApiResponseSerializer<ImageSyncItem> {
 
     @Override
-    public Class<ImageSyncProject> getSupportedClass() {
-        return ImageSyncProject.class;
+    public Class<ImageSyncItem> getSupportedClass() {
+        return ImageSyncItem.class;
     }
 
     @Override
-    public SerializedApiResponse serialize(ImageSyncProject prj) {
+    public SerializedApiResponse serialize(ImageSyncItem src) {
         return new SerializationBuilder()
-                .add("id", prj.getId().intValue())
-                .add("name", prj.getName())
-                .add("store_label", prj.getSrcStore().getLabel())
-                .add("dest_store_label", prj.getDestinationImageStore().getLabel())
-                .add("scoped", prj.isScoped())
-                .add("items", prj.getSyncItems())
+                .add("id", src.getId().intValue())
+                .add("repository", src.getSrcRepository())
+                .add("tags", src.getSrcTags())
+                .add("tags_regex", src.getSrcTagsRegexp())
                 .build();
     }
 }

@@ -103,6 +103,7 @@ public class ImageSyncManager {
 
     /**
      * List Image Sync Projects for the given user
+     *
      * @param user the user
      * @return list of {@link ImageSyncProject}
      */

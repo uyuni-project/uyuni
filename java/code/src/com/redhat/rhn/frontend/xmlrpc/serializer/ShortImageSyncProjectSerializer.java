@@ -14,27 +14,39 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import com.redhat.rhn.domain.image.ImageSyncSource;
+import com.redhat.rhn.frontend.dto.ShortImageSyncProject;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
-public class ImageSyncSourceSerializer extends ApiResponseSerializer<ImageSyncSource> {
+/**
+ * ShortImageSyncProjectSerializer
+ *
+ * @apidoc.doc
+ *  #struct_begin("project")
+ *      #prop("int", "id")
+ *      #prop("string", "name")
+ *      #prop("string", "src_store_label")
+ *      #prop("string", "dest_store_label")
+ *      #prop("boolean", "scoped")
+ *  #struct_end()
+ */
+public class ShortImageSyncProjectSerializer extends ApiResponseSerializer<ShortImageSyncProject> {
 
     @Override
-    public Class<ImageSyncSource> getSupportedClass() {
-        return ImageSyncSource.class;
+    public Class<ShortImageSyncProject> getSupportedClass() {
+        return ShortImageSyncProject.class;
     }
 
     @Override
-    public SerializedApiResponse serialize(ImageSyncSource src) {
+    public SerializedApiResponse serialize(ShortImageSyncProject prj) {
         return new SerializationBuilder()
-                .add("id", src.getId().intValue())
-                .add("store_label", src.getSrcStore().getLabel())
-                .add("repository", src.getSrcRepository())
-                .add("tags", src.getSrcTags())
-                .add("tags_regex", src.getSrcTagsRegexp())
+                .add("id", prj.getId().intValue())
+                .add("name", prj.getName())
+                .add("src_store_label", prj.getSrcStore().getLabel())
+                .add("dest_store_label", prj.getDestinationImageStore().getLabel())
+                .add("scoped", prj.isScoped())
                 .build();
     }
 }

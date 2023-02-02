@@ -160,8 +160,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(SystemEventDtoSerializer.class);
         SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
         SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
+        SERIALIZER_CLASSES.add(ShortImageSyncProjectSerializer.class);
         SERIALIZER_CLASSES.add(ImageSyncProjectSerializer.class);
-        SERIALIZER_CLASSES.add(ImageSyncSourceSerializer.class);
+        SERIALIZER_CLASSES.add(ImageSyncItemSerializer.class);
     }
 
     /**
