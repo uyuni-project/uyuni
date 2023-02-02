@@ -22,7 +22,7 @@ gem 'websocket-driver', "~> 0.7"
 gem 'syntax', "~> 1.2"
 gem 'parallel_tests', "~> 3.12"
 gem 'simplecov', "~> 0.22"
-gem 'rubocop', "~> 1.28"
+gem 'rubocop', '0.83.0'
 # Pre-requisite:
 # Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
 # or build and install from https://github.com/openSUSE/twopence
