@@ -73,7 +73,7 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
     }
 
     private void syncProject(ImageSyncProject project) {
-        if (project.getSyncSources().size() == 0) {
+        if (project.getSyncItems().size() == 0) {
             return;
         }
         String ymlFilePath = generateYmlConfig(project);
@@ -85,29 +85,29 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
     private String generateYmlConfig(ImageSyncProject project) {
         // source store fqdn, images to sync
         Map<String, SkopeoImageSync> storesSync = new ConcurrentHashMap();
-        project.getSyncSources().stream().forEach(source -> {
-            // store
-            ImageStore store = source.getSrcStore();
-            SkopeoImageSync syncStore = storesSync.getOrDefault(store.getUri(), new SkopeoImageSync());
-            if (store.getCreds() != null) {
-                syncStore.setCredentials(
-                        new SkopeoCredential(
-                                store.getCreds().getUsername(),
-                                store.getCreds().getPassword()));
-            }
+        // store
+        ImageStore store = project.getSrcStore();
+        SkopeoImageSync syncStore = storesSync.getOrDefault(store.getUri(), new SkopeoImageSync());
+        if (store.getCreds() != null) {
+            syncStore.setCredentials(
+                    new SkopeoCredential(
+                            store.getCreds().getUsername(),
+                            store.getCreds().getPassword()));
+        }
+        project.getSyncItems().stream().forEach(syncItem -> {
             // image on store
-            if (!StringUtils.isEmpty(source.getSrcTagsRegexp())) {
-                syncStore.getImagesRegex().put(source.getSrcRepository(), source.getSrcTagsRegexp());
+            if (!StringUtils.isEmpty(syncItem.getSrcTagsRegexp())) {
+                syncStore.getImagesRegex().put(syncItem.getSrcRepository(), syncItem.getSrcTagsRegexp());
             }
 
-            if (source.getSrcTags() != null && !source.getSrcTags().isEmpty()) {
-                syncStore.getImages().put(source.getSrcRepository(), source.getSrcTags());
+            if (syncItem.getSrcTags() != null && !syncItem.getSrcTags().isEmpty()) {
+                syncStore.getImages().put(syncItem.getSrcRepository(), syncItem.getSrcTags());
             }
-            else if (StringUtils.isEmpty(source.getSrcTagsRegexp())) {
-                syncStore.getImages().put(source.getSrcRepository(), new ArrayList<>());
+            else if (StringUtils.isEmpty(syncItem.getSrcTagsRegexp())) {
+                syncStore.getImages().put(syncItem.getSrcRepository(), new ArrayList<>());
             }
 
-            storesSync.put(source.getSrcStore().getUri(), syncStore);
+            storesSync.put(store.getUri(), syncStore);
         });
 
         String filePath = String.format("%s/sync_project_%s_%s.yml",
