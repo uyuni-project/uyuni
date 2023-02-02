@@ -9,21 +9,17 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-CREATE TABLE IF NOT EXISTS suseImageSyncSource
+CREATE TABLE suseImageSyncItem
 (
     id                   NUMERIC NOT NULL
-                           CONSTRAINT suse_imgsync_src_pk PRIMARY KEY,
+                           CONSTRAINT suse_imgsync_it_pk PRIMARY KEY,
     sync_proj_id         NUMERIC NOT NULL
-                           CONSTRAINT suse_imgsync_src_prj_fk
+                           CONSTRAINT suse_imgsync_it_prj_fk
 			     REFERENCES suseImageSyncProject(id)
 			     ON DELETE CASCADE,
     org_id               NUMERIC NOT NULL
-                           CONSTRAINT suse_imgsync_src_org_fk
+                           CONSTRAINT suse_imgsync_it_org_fk
                              REFERENCES web_customer (id),
-    src_store_id         NUMERIC NOT NULL
-                           CONSTRAINT suse_imgsync_src_sid_fk
-                             REFERENCES suseImageStore (id)
-			     ON DELETE CASCADE,
     src_repository       VARCHAR(255) NOT NULL,
     src_tags             JSONB,
     src_tags_regex       VARCHAR(255),
@@ -31,5 +27,5 @@ CREATE TABLE IF NOT EXISTS suseImageSyncSource
     modified             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 );
 
-CREATE SEQUENCE IF NOT EXISTS suse_imgsync_src_id_seq;
+CREATE SEQUENCE suse_imgsync_it_id_seq;
 

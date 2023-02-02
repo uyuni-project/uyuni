@@ -17,6 +17,10 @@ CREATE TABLE suseImageSyncProject
     org_id               NUMERIC NOT NULL
                            CONSTRAINT suse_imgsync_prj_org_fk
                              REFERENCES web_customer (id),
+    src_store_id         NUMERIC NOT NULL
+                           CONSTRAINT suse_imgsync_prj_sid_fk
+                             REFERENCES suseImageStore (id)
+                             ON DELETE CASCADE,
     dest_store_id        NUMERIC NOT NULL
                            CONSTRAINT suse_imgsync_prj_dsid_fk
                              REFERENCES suseImageStore (id)
