@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageSyncFactory;
+import com.redhat.rhn.domain.image.ImageSyncItem;
 import com.redhat.rhn.domain.image.ImageSyncProject;
-import com.redhat.rhn.domain.image.ImageSyncSource;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
@@ -58,16 +58,16 @@ public class ImageSyncProjectTest extends JMockBaseTestCaseWithUser {
         prj.setName("test-project");
         prj.setOrg(user.getOrg());
         prj.setScoped(true);
+        prj.setSrcStore(srcStore);
         prj.setDestinationImageStore(destStore);
         syncFactory.save(prj);
 
-        ImageSyncSource src = new ImageSyncSource();
-        src.setSrcRepository("/opensuse/leap");
-        src.setSrcTagsRegexp("^15\\.4.*$");
-        src.setOrg(user.getOrg());
-        src.setSrcStore(srcStore);
-        src.setImageSyncProject(prj);
-        syncFactory.save(src);
+        ImageSyncItem item = new ImageSyncItem();
+        item.setSrcRepository("/opensuse/leap");
+        item.setSrcTagsRegexp("^15\\.4.*$");
+        item.setOrg(user.getOrg());
+        item.setImageSyncProject(prj);
+        syncFactory.save(item);
 
         Long prjId = prj.getId();
         HibernateFactory.getSession().flush();
@@ -83,14 +83,14 @@ public class ImageSyncProjectTest extends JMockBaseTestCaseWithUser {
         ImageSyncProject tPrj = imageSyncProjects.get(0);
         assertEquals("test-project", tPrj.getName());
         assertEquals(destStore, tPrj.getDestinationImageStore());
+        assertEquals(srcStore, tPrj.getSrcStore());
 
-        List<ImageSyncSource> syncSources = tPrj.getSyncSources();
-        assertEquals(1, syncSources.size());
+        List<ImageSyncItem> syncItems = tPrj.getSyncItems();
+        assertEquals(1, syncItems.size());
 
-        ImageSyncSource tSrc = syncSources.get(0);
-        assertEquals("/opensuse/leap", tSrc.getSrcRepository());
-        assertEquals("^15\\.4.*$", tSrc.getSrcTagsRegexp());
-        assertEquals(srcStore, tSrc.getSrcStore());
+        ImageSyncItem tItems = syncItems.get(0);
+        assertEquals("/opensuse/leap", tItems.getSrcRepository());
+        assertEquals("^15\\.4.*$", tItems.getSrcTagsRegexp());
     }
 
     /**
@@ -102,64 +102,76 @@ public class ImageSyncProjectTest extends JMockBaseTestCaseWithUser {
         ImageStore srcStore2 = ImageTestUtils.createImageStore("externalRegistry2", user);
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
 
-        ImageSyncProject prj = new ImageSyncProject("test-project2", user.getOrg(), destStore, true);
-        syncFactory.save(prj);
+        ImageSyncProject prj1 = new ImageSyncProject("test-project2", user.getOrg(), srcStore1, destStore, true);
+        syncFactory.save(prj1);
 
-        ImageSyncSource src1 = new ImageSyncSource(prj, user.getOrg(), srcStore1, "/opensuse/leap",
-                "^15\\.4.*$");
-        syncFactory.save(src1);
+        ImageSyncProject prj2 = new ImageSyncProject("test-project3", user.getOrg(), srcStore2, destStore, true);
+        syncFactory.save(prj2);
 
-        ImageSyncSource src2 = new ImageSyncSource(prj, user.getOrg(), srcStore2, "/suse/sles",
-                Arrays.asList("15-SP4"));
-        syncFactory.save(src2);
+        ImageSyncItem item1 = new ImageSyncItem(prj1, user.getOrg(), "/opensuse/leap", "^15\\.4.*$");
+        syncFactory.save(item1);
 
-        ImageSyncSource src3 = new ImageSyncSource(prj, user.getOrg(), srcStore1, "/suse/sles",
-                Arrays.asList("15-SP4"), "^15-SP3.*$");
-        syncFactory.save(src3);
+        ImageSyncItem item2 = new ImageSyncItem(prj2, user.getOrg(), "/suse/sles", Arrays.asList("15-SP4"));
+        syncFactory.save(item2);
 
-        ImageSyncSource src4 = new ImageSyncSource(prj, user.getOrg(), srcStore2, "redhat/rhel/9");
-        syncFactory.save(src4);
+        ImageSyncItem item3 = new ImageSyncItem(prj1, user.getOrg(), "/suse/sles", Arrays.asList("15-SP4"),
+                "^15-SP3.*$");
+        syncFactory.save(item3);
+
+        ImageSyncItem item4 = new ImageSyncItem(prj2, user.getOrg(), "redhat/rhel/9");
+        syncFactory.save(item4);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
         List<ImageSyncProject> imageSyncProjects = syncFactory.listProjectsByUser(user);
-        assertEquals(1, imageSyncProjects.size());
+        assertEquals(2, imageSyncProjects.size());
 
-        ImageSyncProject tPrj = imageSyncProjects.get(0);
-        assertEquals("test-project2", tPrj.getName());
-        assertEquals(destStore, tPrj.getDestinationImageStore());
+        ImageSyncProject tPrj1 = imageSyncProjects.get(0);
+        assertEquals("test-project2", tPrj1.getName());
+        assertEquals(destStore, tPrj1.getDestinationImageStore());
+        assertEquals(srcStore1, tPrj1.getSrcStore());
 
-        List<ImageSyncSource> syncSources = tPrj.getSyncSources();
-        assertEquals(4, syncSources.size());
+        List<ImageSyncItem> syncItems = tPrj1.getSyncItems();
+        assertEquals(2, syncItems.size());
 
-        for (ImageSyncSource tSrc : syncSources) {
-            if (tSrc.equals(src1)) {
-                assertEquals("/opensuse/leap", tSrc.getSrcRepository());
-                assertEquals("^15\\.4.*$", tSrc.getSrcTagsRegexp());
-                assertEquals(Collections.emptyList(), tSrc.getSrcTags());
-                assertEquals(srcStore1, tSrc.getSrcStore());
+        for (ImageSyncItem tItem : syncItems) {
+            if (tItem.equals(item1)) {
+                assertEquals("/opensuse/leap", tItem.getSrcRepository());
+                assertEquals("^15\\.4.*$", tItem.getSrcTagsRegexp());
+                assertEquals(Collections.emptyList(), tItem.getSrcTags());
             }
-            else if (tSrc.equals(src2)) {
-                assertEquals("/suse/sles", tSrc.getSrcRepository());
-                assertNull(tSrc.getSrcTagsRegexp());
-                assertEquals(Arrays.asList("15-SP4"), tSrc.getSrcTags());
-                assertEquals(srcStore2, tSrc.getSrcStore());
-            }
-            else if (tSrc.equals(src3)) {
-                assertEquals("/suse/sles", tSrc.getSrcRepository());
-                assertEquals("^15-SP3.*$", tSrc.getSrcTagsRegexp());
-                assertEquals(Arrays.asList("15-SP4"), tSrc.getSrcTags());
-                assertEquals(srcStore1, tSrc.getSrcStore());
-            }
-            else if (tSrc.equals(src4)) {
-                assertEquals("redhat/rhel/9", tSrc.getSrcRepository());
-                assertNull(tSrc.getSrcTagsRegexp());
-                assertEquals(Collections.emptyList(), tSrc.getSrcTags());
-                assertEquals(srcStore2, tSrc.getSrcStore());
+            else if (tItem.equals(item3)) {
+                assertEquals("/suse/sles", tItem.getSrcRepository());
+                assertEquals("^15-SP3.*$", tItem.getSrcTagsRegexp());
+                assertEquals(Arrays.asList("15-SP4"), tItem.getSrcTags());
             }
             else {
-                assertFalse(true, String.format("Unexpected Source found %s", tSrc.toString()));
+                assertFalse(true, String.format("Unexpected Source found %s", tItem.toString()));
+            }
+        }
+
+        ImageSyncProject tPrj2 = imageSyncProjects.get(1);
+        assertEquals("test-project3", tPrj2.getName());
+        assertEquals(destStore, tPrj2.getDestinationImageStore());
+        assertEquals(srcStore2, tPrj2.getSrcStore());
+
+        syncItems = tPrj2.getSyncItems();
+        assertEquals(2, syncItems.size());
+
+        for (ImageSyncItem tItem : syncItems) {
+            if (tItem.equals(item2)) {
+                assertEquals("/suse/sles", tItem.getSrcRepository());
+                assertNull(tItem.getSrcTagsRegexp());
+                assertEquals(Arrays.asList("15-SP4"), tItem.getSrcTags());
+            }
+            else if (tItem.equals(item4)) {
+                assertEquals("redhat/rhel/9", tItem.getSrcRepository());
+                assertNull(tItem.getSrcTagsRegexp());
+                assertEquals(Collections.emptyList(), tItem.getSrcTags());
+            }
+            else {
+                assertFalse(true, String.format("Unexpected Source found %s", tItem.toString()));
             }
         }
     }
