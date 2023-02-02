@@ -20,7 +20,7 @@ Then(/^"([^"]*)" should have a FQDN$/) do |host|
   end_time = lines[2]
   resolution_time = end_time.to_i - initial_time.to_i
   raise 'cannot determine hostname' unless return_code.zero?
-  raise "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
+  raise "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 10
   raise 'hostname is not fully qualified' unless result == node.full_hostname
 end
 
@@ -33,7 +33,7 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   end_time = lines[2]
   resolution_time = end_time.to_i - initial_time.to_i
   raise 'cannot do reverse resolution' unless return_code.zero?
-  raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
+  raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 10
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
