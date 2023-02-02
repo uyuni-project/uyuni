@@ -15,6 +15,7 @@
 package com.suse.manager.utils.skopeo;
 
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageSyncProject;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 
 import com.suse.manager.utils.skopeo.beans.ImageTags;
@@ -92,6 +93,37 @@ public class SkopeoCommandManager {
         return data;
     }
 
+    /**
+     *
+     * @param projectIn
+     * @param ymlFilePathIn
+     */
+    public static void runSyncFromYaml(ImageSyncProject projectIn, String ymlFilePathIn) {
+        List<String> cmd = new ArrayList<>();
+        cmd.add("skopeo");
+        cmd.add("sync");
+        // FIXME should be a option in the store
+        cmd.add("--tls-verify=false");
+        // FIXME needed to sync all archs, and should be solved when we manage archs correctly
+        cmd.add("-a");
+
+        if (projectIn.isScoped()) {
+            cmd.add("--scoped=true");
+        }
+        // is hardcoded with docker but we can have more
+        cmd.add("--dest=docker");
+
+        cmd.add("--src=yaml");
+        // yaml file to be synced
+        cmd.add(ymlFilePathIn);
+        // FIXME set username and password to connect registry
+        cmd.add(projectIn.getDestinationImageStore().getUri());
+
+        String[] args = cmd.toArray(new String[cmd.size()]);
+
+        log.info(executeExtCmd(args));
+    }
+
     private static String executeExtCmd(String[] args) {
         SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(log);
         int exitCode = ce.execute(args);
@@ -113,4 +145,5 @@ public class SkopeoCommandManager {
             return ce.getLastCommandOutput();
         }
     }
+
 }

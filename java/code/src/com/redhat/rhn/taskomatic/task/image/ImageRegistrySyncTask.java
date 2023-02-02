@@ -21,11 +21,10 @@ import com.redhat.rhn.domain.image.ImageSyncFactory;
 import com.redhat.rhn.domain.image.ImageSyncProject;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 
+import com.suse.manager.utils.skopeo.SkopeoCommandManager;
 import com.suse.manager.webui.utils.YamlHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.yaml.snakeyaml.TypeDescription;
 
@@ -36,8 +35,6 @@ import java.util.Optional;
 import EDU.oswego.cs.dl.util.concurrent.ConcurrentHashMap;
 
 public class ImageRegistrySyncTask extends RhnJavaJob {
-
-    private static final Logger LOG = LogManager.getLogger(ImageRegistrySyncTask.class);
 
     private static final String KEY_ID = "project_id";
     private final ImageSyncFactory syncFactory;
@@ -63,7 +60,7 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        LOG.debug("Running ImageRegistrySyncTask");
+        log.debug("Running ImageRegistrySyncTask");
         if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
             Optional<ImageSyncProject> paygData = syncFactory.lookupProjectById(
                     Long.parseLong((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
@@ -79,7 +76,10 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
         if (project.getSyncSources().size() == 0) {
             return;
         }
-        String filePath = generateYmlConfig(project);
+        String ymlFilePath = generateYmlConfig(project);
+        log.info(String.format("yml file to generated for project %s located at: %s", project.getId(), ymlFilePath));
+
+        SkopeoCommandManager.runSyncFromYaml(project, ymlFilePath);
     }
 
     private String generateYmlConfig(ImageSyncProject project) {
