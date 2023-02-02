@@ -49,11 +49,13 @@ public class ImageSyncProject extends BaseDomainHelper {
 
     private Org org;
 
+    private ImageStore srcStore;
+
     private ImageStore destStore;
 
     private Boolean scoped;
 
-    private List<ImageSyncSource> syncSources = new ArrayList<>();
+    private List<ImageSyncItem> syncItems = new ArrayList<>();
 
     /**
      * Standard Constructor
@@ -65,12 +67,14 @@ public class ImageSyncProject extends BaseDomainHelper {
      * Constructor
      * @param nameIn the project name
      * @param orgIn the organizatiom
+     * @param srcStoreIn the source image store
      * @param destStoreIn the destination image store
      * @param scopedIn store images scoped with the store name
      */
-    public ImageSyncProject(String nameIn, Org orgIn, ImageStore destStoreIn, Boolean scopedIn) {
+    public ImageSyncProject(String nameIn, Org orgIn, ImageStore srcStoreIn, ImageStore destStoreIn, Boolean scopedIn) {
         name = nameIn;
         org = orgIn;
+        srcStore = srcStoreIn;
         destStore = destStoreIn;
         scoped = scopedIn;
     }
@@ -99,6 +103,14 @@ public class ImageSyncProject extends BaseDomainHelper {
         return org;
     }
 
+    /**
+     * @return the source image store
+     */
+    @ManyToOne
+    @JoinColumn(name = "src_store_id")
+    public ImageStore getSrcStore() {
+        return srcStore;
+    }
 
     /**
      * @return the destination image Store
@@ -118,11 +130,11 @@ public class ImageSyncProject extends BaseDomainHelper {
     }
 
     /**
-     * @return returns image sync sources
+     * @return returns image sync items
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageSyncProject", orphanRemoval = true)
-    public List<ImageSyncSource> getSyncSources() {
-        return syncSources;
+    public List<ImageSyncItem> getSyncItems() {
+        return syncItems;
     }
 
     /**
@@ -147,6 +159,13 @@ public class ImageSyncProject extends BaseDomainHelper {
     }
 
     /**
+     * @param srcStoreIn the store to set
+     */
+    public void setSrcStore(ImageStore srcStoreIn) {
+        srcStore = srcStoreIn;
+    }
+
+    /**
      * @param store the destination image store to set
      */
     public void setDestinationImageStore(ImageStore store) {
@@ -161,10 +180,10 @@ public class ImageSyncProject extends BaseDomainHelper {
     }
 
     /**
-     * @param sources the image sync sources to set
+     * @param items the image sync items to set
      */
-    public void setSyncSources(List<ImageSyncSource> sources) {
-        syncSources = sources;
+    public void setSyncItems(List<ImageSyncItem> items) {
+        syncItems = items;
     }
 
     /**
@@ -176,11 +195,13 @@ public class ImageSyncProject extends BaseDomainHelper {
             return false;
         }
         ImageSyncProject castOther = (ImageSyncProject) other;
-        return new EqualsBuilder().append(name, castOther.name)
-                                  .append(org, castOther.org)
-                                  .append(destStore, castOther.destStore)
-                                  .append(scoped, castOther.scoped)
-                                  .isEquals();
+        return new EqualsBuilder()
+                .append(name, castOther.name)
+                .append(org, castOther.org)
+                .append(srcStore, castOther.srcStore)
+                .append(destStore, castOther.destStore)
+                .append(scoped, castOther.scoped)
+                .isEquals();
     }
 
     /**
@@ -188,10 +209,12 @@ public class ImageSyncProject extends BaseDomainHelper {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name)
-                                    .append(org)
-                                    .append(destStore)
-                                    .append(scoped)
-                                    .toHashCode();
+        return new HashCodeBuilder()
+                .append(name)
+                .append(org)
+                .append(srcStore)
+                .append(destStore)
+                .append(scoped)
+                .toHashCode();
     }
 }

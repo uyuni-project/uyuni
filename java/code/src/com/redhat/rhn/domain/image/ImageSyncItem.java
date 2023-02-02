@@ -40,14 +40,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * ImageSyncSource
+ * ImageSyncItem
  */
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonType.class)
 })
 @Entity
-@Table(name = "suseImageSyncSource")
-public class ImageSyncSource extends BaseDomainHelper {
+@Table(name = "suseImageSyncItem")
+public class ImageSyncItem extends BaseDomainHelper {
 
     /** The id. */
     private Long id;
@@ -55,8 +55,6 @@ public class ImageSyncSource extends BaseDomainHelper {
     private ImageSyncProject imageSyncProject;
 
     private Org org;
-
-    private ImageStore srcStore;
 
     private String srcRepository;
 
@@ -67,23 +65,21 @@ public class ImageSyncSource extends BaseDomainHelper {
     /**
      * Standard Constructor
      */
-    public ImageSyncSource() {
+    public ImageSyncItem() {
     }
 
     /**
      * Constructor
      * @param imageSyncProjectIn the project
      * @param orgIn the organization
-     * @param srcStoreIn the source image store
      * @param srcRepositoryIn the repository
      * @param srcTagsIn list of static tags
      * @param srcTagsRegexpIn regexp to match tags
      */
-    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
-                           String srcRepositoryIn, List<String> srcTagsIn, String srcTagsRegexpIn) {
+    public ImageSyncItem(ImageSyncProject imageSyncProjectIn, Org orgIn, String srcRepositoryIn,
+                         List<String> srcTagsIn, String srcTagsRegexpIn) {
         imageSyncProject = imageSyncProjectIn;
         org = orgIn;
-        srcStore = srcStoreIn;
         srcRepository = srcRepositoryIn;
         srcTags = srcTagsIn;
         srcTagsRegexp = srcTagsRegexpIn;
@@ -93,15 +89,13 @@ public class ImageSyncSource extends BaseDomainHelper {
      * Constructor
      * @param imageSyncProjectIn the project
      * @param orgIn the organization
-     * @param srcStoreIn the source image store
      * @param srcRepositoryIn the repository
      * @param srcTagsIn list of static tags
      */
-    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
-                           String srcRepositoryIn, List<String> srcTagsIn) {
+    public ImageSyncItem(ImageSyncProject imageSyncProjectIn, Org orgIn, String srcRepositoryIn,
+                         List<String> srcTagsIn) {
         imageSyncProject = imageSyncProjectIn;
         org = orgIn;
-        srcStore = srcStoreIn;
         srcRepository = srcRepositoryIn;
         srcTags = srcTagsIn;
     }
@@ -110,15 +104,13 @@ public class ImageSyncSource extends BaseDomainHelper {
      * Constructor
      * @param imageSyncProjectIn the project
      * @param orgIn the organization
-     * @param srcStoreIn the source image store
      * @param srcRepositoryIn the repository
      * @param srcTagsRegexpIn regexp to match tags
      */
-    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
-                           String srcRepositoryIn, String srcTagsRegexpIn) {
+    public ImageSyncItem(ImageSyncProject imageSyncProjectIn, Org orgIn, String srcRepositoryIn,
+                         String srcTagsRegexpIn) {
         imageSyncProject = imageSyncProjectIn;
         org = orgIn;
-        srcStore = srcStoreIn;
         srcRepository = srcRepositoryIn;
         srcTagsRegexp = srcTagsRegexpIn;
     }
@@ -127,14 +119,11 @@ public class ImageSyncSource extends BaseDomainHelper {
      * Constructor - sync all available tags
      * @param imageSyncProjectIn the project
      * @param orgIn the organization
-     * @param srcStoreIn the source image store
      * @param srcRepositoryIn the repository
      */
-    public ImageSyncSource(ImageSyncProject imageSyncProjectIn, Org orgIn, ImageStore srcStoreIn,
-                           String srcRepositoryIn) {
+    public ImageSyncItem(ImageSyncProject imageSyncProjectIn, Org orgIn, String srcRepositoryIn) {
         imageSyncProject = imageSyncProjectIn;
         org = orgIn;
-        srcStore = srcStoreIn;
         srcRepository = srcRepositoryIn;
     }
 
@@ -142,9 +131,8 @@ public class ImageSyncSource extends BaseDomainHelper {
      * @return the id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgsyncsrc_seq")
-    @SequenceGenerator(name = "imgsyncsrc_seq", sequenceName = "suse_imgsync_src_id_seq",
-                       allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgsyncit_seq")
+    @SequenceGenerator(name = "imgsyncit_seq", sequenceName = "suse_imgsync_it_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -192,15 +180,6 @@ public class ImageSyncSource extends BaseDomainHelper {
     }
 
     /**
-     * @return the source image store
-     */
-    @ManyToOne
-    @JoinColumn(name = "src_store_id")
-    public ImageStore getSrcStore() {
-        return srcStore;
-    }
-
-    /**
      * @param idIn the id to set
      */
     public void setId(Long idIn) {
@@ -219,13 +198,6 @@ public class ImageSyncSource extends BaseDomainHelper {
      */
     public void setOrg(Org orgIn) {
         this.org = orgIn;
-    }
-
-    /**
-     * @param srcStoreIn the store to set
-     */
-    public void setSrcStore(ImageStore srcStoreIn) {
-        srcStore = srcStoreIn;
     }
 
     /**
@@ -254,13 +226,12 @@ public class ImageSyncSource extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageSyncSource)) {
+        if (!(other instanceof ImageSyncItem)) {
             return false;
         }
-        ImageSyncSource castOther = (ImageSyncSource) other;
+        ImageSyncItem castOther = (ImageSyncItem) other;
         return new EqualsBuilder()
                 .append(imageSyncProject, castOther.imageSyncProject)
-                .append(srcStore, castOther.srcStore)
                 .append(org, castOther.org)
                 .append(srcRepository, castOther.srcRepository)
                 .append(srcTags, castOther.srcTags)
@@ -275,7 +246,6 @@ public class ImageSyncSource extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageSyncProject)
-                .append(srcStore)
                 .append(org)
                 .append(srcRepository)
                 .append(srcTags)

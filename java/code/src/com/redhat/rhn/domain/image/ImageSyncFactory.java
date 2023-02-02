@@ -39,11 +39,11 @@ public class ImageSyncFactory extends HibernateFactory {
     }
 
     /**
-     * Save an {@link ImageSyncSource}
-     * @param source the source to save
+     * Save an {@link ImageSyncItem}
+     * @param item the item to save
      */
-    public void save(ImageSyncSource source) {
-        saveObject(source);
+    public void save(ImageSyncItem item) {
+        saveObject(item);
     }
 
     /**
@@ -55,11 +55,11 @@ public class ImageSyncFactory extends HibernateFactory {
     }
 
     /**
-     * Remove an {@link ImageSyncSource}
-     * @param source the source to remove
+     * Remove an {@link ImageSyncItem}
+     * @param item the item to remove
      */
-    public void remove(ImageSyncSource source) {
-        removeObject(source);
+    public void remove(ImageSyncItem item) {
+        removeObject(item);
     }
 
     /**
@@ -103,27 +103,27 @@ public class ImageSyncFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup {@link ImageSyncSource} by id and user
-     * @param sourceId the source id
+     * Lookup {@link ImageSyncItem} by id and user
+     * @param itemId the item id
      * @param user the calling user
-     * @return optional Image Sync Source
+     * @return optional Image Sync Item
      */
-    public Optional<ImageSyncSource> lookupSourceByIdAndUser(Long sourceId, User user) {
+    public Optional<ImageSyncItem> lookupSyncItemByIdAndUser(Long itemId, User user) {
         return getSession()
-                .createQuery("FROM ImageSyncSource WHERE org = :org and id = :id", ImageSyncSource.class)
+                .createQuery("FROM ImageSyncItem WHERE org = :org and id = :id", ImageSyncItem.class)
                 .setParameter("org", user.getOrg())
-                .setParameter("id", sourceId)
+                .setParameter("id", itemId)
                 .uniqueResultOptional();
     }
 
     /**
-     * List all {@link ImageSyncSource} available for given User
+     * List all {@link ImageSyncItem} available for given User
      * @param user the user
-     * @return returns a list of Image Sync Sources
+     * @return returns a list of Image Sync Items
      */
-    public List<ImageSyncSource> listSources(User user) {
+    public List<ImageSyncItem> listSyncItems(User user) {
         return getSession()
-                .createQuery("FROM ImageSyncSource WHERE org = :org", ImageSyncSource.class)
+                .createQuery("FROM ImageSyncItem WHERE org = :org", ImageSyncItem.class)
                 .setParameter("org", user.getOrg())
                 .getResultList();
     }
