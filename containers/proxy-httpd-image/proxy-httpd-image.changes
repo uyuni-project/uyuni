@@ -1,3 +1,5 @@
+- Adapt to log_level default value being 1
+
 -------------------------------------------------------------------
 Mon Jan 23 07:33:34 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
