@@ -1,3 +1,6 @@
+- Add bootstrap repository definitions for openEuler 22.03
+- Make the Salt Bundle optional for bootstrap repositories
+  for Debian 9 and SUSE Manager Proxy 4.2
 -------------------------------------------------------------------
 Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com
 

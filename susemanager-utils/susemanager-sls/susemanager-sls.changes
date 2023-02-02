@@ -1,3 +1,6 @@
+- Add openEuler 22.03 support 
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
 -------------------------------------------------------------------
 Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
 

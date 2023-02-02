@@ -9,7 +9,7 @@ include:
 {%- endif %}
 {% include 'channels/disablelocalrepos.sls' %}
 
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 
 {%- set yum_version = salt['pkg.version']("yum") %}
 {%- set is_yum = yum_version and salt['pkg.version_cmp'](yum_version, "4") < 0 %}
@@ -79,7 +79,7 @@ mgrchannels_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
     - name: "/etc/zypp/repos.d/susemanager:channels.repo"
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
     - name: "/etc/apt/sources.list.d/susemanager:channels.list"
@@ -92,7 +92,7 @@ mgrchannels_repo:
     - mode: 644
     - require:
        - file: mgr_ca_cert
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 {%- if is_dnf %}
        - file: mgrchannels_susemanagerplugin_dnf
        - file: mgrchannels_susemanagerplugin_conf_dnf
@@ -118,7 +118,7 @@ aptauth_conf:
     - mode: 600
 {%- endif %}
 
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 {%- if is_dnf %}
 mgrchannels_dnf_clean_all:
   cmd.run:

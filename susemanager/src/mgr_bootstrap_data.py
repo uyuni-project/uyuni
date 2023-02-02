@@ -232,6 +232,10 @@ RES9 = [
     "venv-salt-minion", 
 ]
 
+OPENEULER2203 = [
+        "venv-salt-minion",
+]
+
 AMAZONLINUX2 = [
     "dwz",
     "groff-base",
@@ -1475,5 +1479,13 @@ DATA = {
          'BASECHANNEL' : 'astralinux-orel-pool-amd64', 'PKGLIST' : PKGLISTASTRALINUXOREL,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/astra/orel/bootstrap/',
          'TYPE' : 'deb'
+     },
+     'openeuler22.03-x86_64-uyuni': {
+         'BASECHANNEL' : 'openeuler2203-x86_64', 'PKGLIST' : OPENEULER2203,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
+     },
+     'openeuler22.03-aarch64-uyuni': {
+         'BASECHANNEL' : 'openeuler2203-aarch64', 'PKGLIST' : OPENEULER2203,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
      }
 }

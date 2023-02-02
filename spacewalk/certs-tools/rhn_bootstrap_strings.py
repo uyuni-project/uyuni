@@ -441,6 +441,9 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/redhat-release ]; then
             grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/openEuler-release ]; then
+            grep -v '^#' /etc/openEuler-release | grep -q '\(openEuler\)' && BASE="openEuler"
+            VERSION=`grep -v '^#' /etc/openEuler-release | grep -Po '(?<=release )(\d+\.)+\d+'`
         elif [ -f /etc/os-release ]; then
             BASE=$(source /etc/os-release; echo $ID)
             VERSION=$(source /etc/os-release; echo $VERSION_ID)
@@ -474,6 +477,7 @@ if [ "$INSTALLER" == yum ]; then
       [ "$Y_CLIENT_CODE_BASE" == rockylinux ] || \
       [ "$Y_CLIENT_CODE_BASE" == oracle ] || \
       [ "$Y_CLIENT_CODE_BASE" == alibaba ] || \
+      [ "$Y_CLIENT_CODE_BASE" == openEuler ] || \
       [ "$Y_CLIENT_CODE_BASE" == centos ] ; then
         $FETCH $CLIENT_REPO_URL/repodata/repomd.xml &> /dev/null
         if [ $? -ne 0 ]; then
