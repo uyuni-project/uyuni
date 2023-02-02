@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageSyncItem;
 import com.redhat.rhn.domain.image.ImageSyncProject;
-import com.redhat.rhn.domain.image.ImageSyncSource;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.image.ImageSyncManager;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -49,8 +49,10 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateProjectAndLookup() {
+        ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
         Optional<ImageSyncProject> optProject = syncManager.lookupProject(project.getId(), user);
@@ -65,14 +67,16 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPermissions() {
+        ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
 
         user.removePermanentRole(RoleFactory.IMAGE_ADMIN);
         assertThrows(PermissionException.class,
-                () -> syncManager.createProject("test-project", destStore.getId(), true, user));
+                () -> syncManager.createProject("test-project", srcStore.getId(), destStore.getId(), true, user));
 
         user.addPermanentRole(RoleFactory.IMAGE_ADMIN);
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
         user.removePermanentRole(RoleFactory.IMAGE_ADMIN);
@@ -85,15 +89,16 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateProjectWithSource() {
+    public void testCreateProjectWithSyncItems() {
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
         ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
-        ImageSyncSource source = syncManager.createSource(project.getId(), srcStore.getId(), "/suse/sles",
-                Arrays.asList("15-SP4"), "^12-SP.*$", user);
-        assertNotNull(source.getId());
+        ImageSyncItem item = syncManager.createSyncItem(project.getId(), "/suse/sles", List.of("15-SP4"),
+                "^12-SP.*$", user);
+        assertNotNull(item.getId());
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -101,24 +106,25 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
         Optional<ImageSyncProject> optProject = syncManager.lookupProject(project.getId(), user);
         assertEquals(project, optProject.get());
 
-        List<ImageSyncSource> syncSources = optProject.get().getSyncSources();
-        assertEquals(1, syncSources.size());
-        assertEquals(source, syncSources.get(0));
+        List<ImageSyncItem> syncItems = optProject.get().getSyncItems();
+        assertEquals(1, syncItems.size());
+        assertEquals(item, syncItems.get(0));
     }
 
     @Test
-    public void testUpdateProjectAndSource() {
+    public void testUpdateProjectAndSyncItems() {
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
         ImageStore newDestStore = ImageTestUtils.createImageStore("newLocalRegistry", user);
         ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
         ImageStore newSrcStore = ImageTestUtils.createImageStore("newExternalRegistry", user);
 
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
-        ImageSyncSource source = syncManager.createSource(project.getId(), srcStore.getId(), "/suse/sles",
-                Arrays.asList("15-SP4"), "^12-SP.*$", user);
-        assertNotNull(source.getId());
+        ImageSyncItem item = syncManager.createSyncItem(project.getId(), "/suse/sles", List.of("15-SP4"),
+                "^12-SP.*$", user);
+        assertNotNull(item.getId());
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -126,42 +132,43 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
         ImageSyncProject dbProject = syncManager.lookupProject(project.getId(), user).orElseThrow();
         assertEquals(project, dbProject);
 
-        syncManager.updateProject(dbProject.getId(), user, newDestStore.getId(), null);
-        syncManager.updateProject(dbProject.getId(), user, null, false);
+        syncManager.updateProject(dbProject.getId(), user, newSrcStore.getId(), null, null);
+        syncManager.updateProject(dbProject.getId(), user, null, newDestStore.getId(), null);
+        syncManager.updateProject(dbProject.getId(), user, null, null, false);
 
-        List<ImageSyncSource> syncSources = dbProject.getSyncSources();
-        assertEquals(1, syncSources.size());
-        ImageSyncSource dbSource = syncSources.get(0);
+        List<ImageSyncItem> syncItems = dbProject.getSyncItems();
+        assertEquals(1, syncItems.size());
+        ImageSyncItem dbItem = syncItems.get(0);
 
-        syncManager.updateSource(dbSource.getId(), user, newSrcStore.getId(), null, null, null);
-        syncManager.updateSource(dbSource.getId(), user, null, "/opensuse/leap", null, null);
-        syncManager.updateSource(dbSource.getId(), user, null, null, Arrays.asList("15.3", "15.4"), null);
-        syncManager.updateSource(dbSource.getId(), user, null, null, null, "^42\\..*$");
+        syncManager.updateSyncItem(dbItem.getId(), user, "/opensuse/leap", null, null);
+        syncManager.updateSyncItem(dbItem.getId(), user, null, Arrays.asList("15.3", "15.4"), null);
+        syncManager.updateSyncItem(dbItem.getId(), user, null, null, "^42\\..*$");
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
         dbProject = syncManager.lookupProject(project.getId(), user).orElseThrow();
+        assertEquals(newSrcStore, dbProject.getSrcStore());
         assertEquals(newDestStore, dbProject.getDestinationImageStore());
         assertEquals(false, dbProject.isScoped());
 
-        dbSource = dbProject.getSyncSources().get(0);
-        assertEquals(newSrcStore, dbSource.getSrcStore());
-        assertEquals("/opensuse/leap", dbSource.getSrcRepository());
-        assertEquals(Arrays.asList("15.3", "15.4"), dbSource.getSrcTags());
-        assertEquals("^42\\..*$", dbSource.getSrcTagsRegexp());
+        dbItem = dbProject.getSyncItems().get(0);
+        assertEquals("/opensuse/leap", dbItem.getSrcRepository());
+        assertEquals(Arrays.asList("15.3", "15.4"), dbItem.getSrcTags());
+        assertEquals("^42\\..*$", dbItem.getSrcTagsRegexp());
     }
 
     @Test
     public void testDeleteProject() {
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
         ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
-        ImageSyncSource source = syncManager.createSource(project.getId(), srcStore.getId(), "/suse/sles",
-                Arrays.asList("15-SP4"), "^12-SP.*$", user);
-        assertNotNull(source.getId());
+        ImageSyncItem item = syncManager.createSyncItem(project.getId(), "/suse/sles", List.of("15-SP4"),
+                "^12-SP.*$", user);
+        assertNotNull(item.getId());
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -169,8 +176,8 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
         Optional<ImageSyncProject> optProject = syncManager.lookupProject(project.getId(), user);
         assertEquals(project, optProject.get());
 
-        List<ImageSyncSource> syncSources = optProject.get().getSyncSources();
-        Long oldSourceId = syncSources.get(0).getId();
+        List<ImageSyncItem> syncItems = optProject.get().getSyncItems();
+        //Long oldItemId = syncItems.get(0).getId();
 
         syncManager.deleteProject("test-project", user);
 
@@ -178,31 +185,31 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         assertEquals(Optional.empty(), syncManager.lookupProject("test-project", user));
-        assertEquals(0, syncManager.listSources(user).size());
+        assertEquals(0, syncManager.listSyncItems(user).size());
     }
 
     @Test
-    public void testDeleteSource() {
+    public void testDeleteItem() {
         ImageStore destStore = ImageTestUtils.createImageStore("localRegistry", user);
-        ImageStore srcStore1 = ImageTestUtils.createImageStore("externalRegistry1", user);
-        ImageStore srcStore2 = ImageTestUtils.createImageStore("externalRegistry2", user);
-        ImageSyncProject project = syncManager.createProject("test-project", destStore.getId(), true, user);
+        ImageStore srcStore = ImageTestUtils.createImageStore("externalRegistry", user);
+        ImageSyncProject project = syncManager.createProject("test-project", srcStore.getId(), destStore.getId(),
+                true, user);
         assertNotNull(project.getId());
 
-        ImageSyncSource source1 = syncManager.createSource(project.getId(), srcStore1.getId(), "/suse/sles",
-                Arrays.asList("15-SP4"), "^12-SP.*$", user);
-        assertNotNull(source1.getId());
+        ImageSyncItem item1 = syncManager.createSyncItem(project.getId(), "/suse/sles", List.of("15-SP4"),
+                "^12-SP.*$", user);
+        assertNotNull(item1.getId());
 
-        ImageSyncSource source2 = syncManager.createSource(project.getId(), srcStore2.getId(), "/opensuse/leap",
-                null, "^15\\..*$", user);
-        assertNotNull(source2.getId());
+        ImageSyncItem item2 = syncManager.createSyncItem(project.getId(), "/opensuse/leap", null,
+                "^15\\..*$", user);
+        assertNotNull(item2.getId());
 
-        Long sourceId1 = source1.getId();
+        Long itemId1 = item1.getId();
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        syncManager.deleteSource(sourceId1, user);
+        syncManager.deleteSyncItem(itemId1, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -210,10 +217,10 @@ public class ImageSyncManagerTest extends JMockBaseTestCaseWithUser {
         Optional<ImageSyncProject> optProject = syncManager.lookupProject(project.getId(), user);
         assertTrue(optProject.isPresent());
 
-        List<ImageSyncSource> syncSources = optProject.get().getSyncSources();
-        assertEquals(1, syncSources.size());
-        assertEquals(1, syncManager.listSources(user).size());
+        List<ImageSyncItem> syncItems = optProject.get().getSyncItems();
+        assertEquals(1, syncItems.size());
+        assertEquals(1, syncManager.listSyncItems(user).size());
 
-        assertEquals(source2, syncSources.get(0));
+        assertEquals(item2, syncItems.get(0));
     }
 }
