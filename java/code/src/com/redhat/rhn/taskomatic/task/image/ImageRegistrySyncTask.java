@@ -79,7 +79,7 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
         String ymlFilePath = generateYmlConfig(project);
         log.info(String.format("yml file to generated for project %s located at: %s", project.getId(), ymlFilePath));
 
-        SkopeoCommandManager.runSyncFromYaml(project, ymlFilePath);
+        SkopeoCommandManager.runSyncFromYaml(log, project, ymlFilePath);
     }
 
     private String generateYmlConfig(ImageSyncProject project) {
