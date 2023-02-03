@@ -341,7 +341,7 @@ def client_public_ip(host)
       return output.split[1].split('/')[0]
     end
   end
-  raise 'Cannot resolve public ip'
+  raise "Cannot resolve public ip of #{host}"
 end
 
 # Initialize IP address or domain name
