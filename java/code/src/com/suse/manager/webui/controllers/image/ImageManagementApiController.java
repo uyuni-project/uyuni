@@ -22,6 +22,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ImageSyncItem;
 import com.redhat.rhn.domain.image.ImageSyncProject;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -31,6 +32,7 @@ import com.redhat.rhn.manager.image.ImageSyncManager;
 import com.suse.manager.utils.skopeo.SkopeoCommandManager;
 import com.suse.manager.utils.skopeo.beans.ImageTags;
 import com.suse.manager.utils.skopeo.beans.RepositoryImageList;
+import com.suse.manager.webui.controllers.image.request.ImageSyncProjectCreateRequest;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -44,6 +46,7 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +54,7 @@ import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class for image store pages and API endpoints.
@@ -72,9 +76,10 @@ public class ImageManagementApiController {
         get("/manager/api/cm/imagestores/imagetags/:id", withImageAdmin(ImageManagementApiController::getImageTags));
 
         get("/manager/api/cm/imagesync", withImageAdmin(imageManagementApiController::list));
-        get("/manager/api/cm/imagesync/:id", withImageAdmin(ImageManagementApiController::getSingle));
-        post("/manager/api/cm/imagesync/create", withImageAdmin(ImageManagementApiController::create));
-        post("/manager/api/cm/imagesync/update/:id", withImageAdmin(ImageManagementApiController::update));
+        get("/manager/api/cm/imagesync/find/:label", withImageAdmin(imageManagementApiController::getSingleByLabel));
+        get("/manager/api/cm/imagesync/:id", withImageAdmin(imageManagementApiController::getSingle));
+        post("/manager/api/cm/imagesync/create", withImageAdmin(imageManagementApiController::create));
+        post("/manager/api/cm/imagesync/update/:id", withImageAdmin(imageManagementApiController::update));
         post("/manager/api/cm/imagesync/delete", withImageAdmin(imageManagementApiController::delete));
     }
 
@@ -173,16 +178,140 @@ public class ImageManagementApiController {
         return json(res, getJsonList(imageSyncProjects));
     }
 
-    private static Object getSingle(Request request1, Response response2, User user3) {
-        return null;
+    /**
+     * Processes a GET request to get a single image sync project given an id
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object getSingle(Request req, Response res, User user) {
+        Long syncId;
+        try {
+            syncId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Optional<ImageSyncProject> syncProject = imageSyncManager.lookupProject(syncId, user);
+
+        return syncProject.map(sync -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", sync.getId());
+            json.addProperty("label", sync.getName());
+            json.addProperty("sourceRegistry", sync.getSrcStore().getLabel());
+            json.addProperty("targetRegistry", sync.getDestinationImageStore().getLabel());
+
+            if (sync.getSyncItems().size() > 0) {
+                json.addProperty("image", sync.getSyncItems().get(0).getSrcRepository());
+            }
+
+            return json(res, ResultJson.success(json));
+        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
-    private static Object create(Request request1, Response response2, User user3) {
-        return null;
+    /**
+     * Processes a GET request to get a single image sync project by a given label
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object getSingleByLabel(Request req, Response res, User user) {
+        String label = req.params("label");
+        Optional<ImageSyncProject> syncProject = imageSyncManager.lookupProject(label, user);
+
+        return syncProject.map(sync -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", sync.getId());
+            json.addProperty("label", sync.getName());
+            json.addProperty("sourceRegistry", sync.getSrcStore().getLabel());
+            json.addProperty("targetRegistry", sync.getDestinationImageStore().getLabel());
+
+            if (sync.getSyncItems().size() > 0) {
+                json.addProperty("image", sync.getSyncItems().get(0).getSrcRepository());
+            }
+
+            return json(res, ResultJson.success(json));
+        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
     }
 
-    private static Object update(Request request1, Response response2, User user3) {
-        return null;
+    /**
+     * Processes a POST request to create a new image sync project
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object create(Request req, Response res, User user) {
+        ImageSyncProjectCreateRequest createRequest;
+        try {
+            createRequest = GSON.fromJson(req.body(), ImageSyncProjectCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        ImageSyncProject syncProject = imageSyncManager.createProject(
+                createRequest.getLabel(),
+                createRequest.getSourceRegistry(),
+                createRequest.getTargetRegistry(),
+                true,
+                user);
+
+        imageSyncManager.createSyncItem(syncProject.getId(), createRequest.getImage(), new ArrayList<>(), user);
+        return json(res, ResultJson.success());
+    }
+
+    /**
+     * Processes a POST request to update an existing image sync project
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public Object update(Request req, Response res, User user) {
+        ImageSyncProjectCreateRequest updateRequest;
+        try {
+            updateRequest = GSON.fromJson(req.body(), ImageSyncProjectCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        // Lookup the project and update with the new values
+        Long syncId = Long.parseLong(req.params("id"));
+        Optional<ImageSyncProject> syncProject = imageSyncManager.lookupProject(syncId, user);
+        if (syncProject.isPresent()) {
+
+            Optional<ImageStore> source = ImageStoreFactory
+                    .lookupBylabelAndOrg(updateRequest.getSourceRegistry(), user.getOrg());
+            Optional<ImageStore> target = ImageStoreFactory
+                    .lookupBylabelAndOrg(updateRequest.getTargetRegistry(), user.getOrg());
+
+            imageSyncManager.updateProject(
+                    syncId,
+                    user,
+                    source.get().getId(),
+                    target.get().getId(),
+                    null);
+
+            List<ImageSyncItem> items = syncProject.get().getSyncItems();
+            if (items.size() > 0) {
+                imageSyncManager.updateSyncItem(items.get(0).getId(), user, updateRequest.getImage(),
+                        new ArrayList<>(), null);
+            }
+
+            return json(res, ResultJson.success());
+        }
+        else {
+            return json(res, ResultJson.error("not_found"));
+        }
     }
 
     /**

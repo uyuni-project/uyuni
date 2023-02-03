@@ -23,11 +23,14 @@ import static spark.Spark.get;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gson.Gson;
+import com.redhat.rhn.domain.image.ImageSyncProject;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.image.ImageSyncManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.utils.Json;
 
@@ -103,15 +106,14 @@ public class ImageManagementViewsController {
             throw new NotFoundException();
         }
 
-        // TODO: Wait for corresponding Manager class to be implemented
-        // Optional<ImageSyncProject> project =
-        //         ImageSyncFactory.lookupByIdAndOrg(projectId, user.getOrg());
-        // if (!project.isPresent()) {
-        //     res.redirect("/rhn/manager/cm/imagesync/create");
-        // }
+        // FIXME: Do not create an instance of ImageSyncManager each time
+        Optional<ImageSyncProject> project = new ImageSyncManager().lookupProject(projectId, user);
+        if (!project.isPresent()) {
+            res.redirect("/rhn/manager/cm/imagesync/create");
+        }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("projectId", projectId);
+        data.put("project_id", projectId);
         return new ModelAndView(data, "controllers/image/templates/edit-image-sync.jade");
     }
 }

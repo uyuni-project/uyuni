@@ -7,4 +7,5 @@ export default {
   "images/image-stores": () => import("./image-stores"),
   "images/image-view": () => import("./image-view"),
   "images/image-sync": () => import("./image-sync"),
+  "images/image-sync-edit": () => import("./image-sync-edit"),
 };
