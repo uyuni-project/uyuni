@@ -1,5 +1,15 @@
-- Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
-- Updated logrotate configuration (bsc#1206470)
+-------------------------------------------------------------------
+Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Fix reposync error about missing "content-type" key when syncing certain channels
+
+-------------------------------------------------------------------
+Mon Jan 23 08:29:58 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
+  * Updated logrotate configuration (bsc#1206470)
 
 -------------------------------------------------------------------
 Wed Dec 14 14:14:34 CET 2022 - jgonzalez@suse.com

@@ -71,6 +71,8 @@ Feature: Bootstrap a Salt build host via the GUI
     When I wait until no Salt job is running on "build_host"
     And I apply highstate on "build_host"
     And I wait until "docker" service is active on "build_host"
+    # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
+    And I install the needed packages for highstate in build host
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "build_host"
 
   Scenario: Check that the build host is now a build host

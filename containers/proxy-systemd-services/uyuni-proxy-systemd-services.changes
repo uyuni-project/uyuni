@@ -1,4 +1,9 @@
-- Allow using container images from different registry paths
+-------------------------------------------------------------------
+Mon Jan 23 08:26:05 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Fix script for allowing using container images from different registry paths
+  * Allow using container images from different registry paths
 
 -------------------------------------------------------------------
 Wed Sep 28 10:48:48 CEST 2022 - jgonzalez@suse.com

@@ -1,16 +1,29 @@
-- Reuse DB connection on compiling pillar with suma_minion
-- Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
-- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
-- Add missing transactional_update.conf for SLE Micro
-- filter out libvirt engine events (bsc#1206146)
-- Improve _mgractionchains.conf logs
-- install SUSE Liberty v2 GPG key
-- Detect bootstrap repository path for SLE Micro
-- Fix reboot info beacon installation
-- Add state to properly configure the reboot action for transactional systems
-- enforce installation of the PTF GPG key package
-- Optimize the number of salt calls on minion startup (bsc#1203532)
-- Updated logrotate configuration (bsc#1206470)
+-------------------------------------------------------------------
+Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Prevent possible errors from "mgractionschains" module when there
+    is no action chain to resume
+
+-------------------------------------------------------------------
+Mon Jan 23 08:30:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Do not pass server grains to minions (bsc#1207087)
+  * Reuse DB connection on compiling pillar with suma_minion
+  * Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
+  * Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+  * Add missing transactional_update.conf for SLE Micro
+  * filter out libvirt engine events (bsc#1206146)
+  * Improve _mgractionchains.conf logs
+  * install SUSE Liberty v2 GPG key
+  * Detect bootstrap repository path for SLE Micro
+  * Fix reboot info beacon installation
+  * Add state to properly configure the reboot action for transactional systems
+  * enforce installation of the PTF GPG key package
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+
 -------------------------------------------------------------------
 Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
 

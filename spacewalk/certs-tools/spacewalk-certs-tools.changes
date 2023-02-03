@@ -1,5 +1,10 @@
-- add transactional system support to the bootstrap generator
-- change bootstrap script generator to detect SLE Micro
+-------------------------------------------------------------------
+Mon Jan 23 08:27:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * add transactional system support to the bootstrap generator
+  * change bootstrap script generator to detect SLE Micro
+
 -------------------------------------------------------------------
 Wed Dec 14 14:12:51 CET 2022 - jgonzalez@suse.com
 

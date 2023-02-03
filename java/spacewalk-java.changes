@@ -1,36 +1,54 @@
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
-- Include missing 'gpg' states to avoid issues on SSH minions.
-- Fix reconnection of postgres event stream
-- Standardize the login response format with other HTTP API endpoints (bsc#1206800)
-- Add `mgr_server_is_uyuni` minion pillar item
-- Improve logs when sls action chain file is missing
-- Fix modular channel check during system update via XMLRPC (bsc#1206613)
-- Fix transaction commit behavior for Spark routes
-- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
-- Fix CVE Audit ignoring errata in parent channels if patch in successor
-  product exists (bsc#1206168)
-- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
-- Rename monitoring entitlement
-- Remove outdated advice from errata mail
-- Fix name for autoinstall snippets after Cobbler 3.3.3
-- prevent ISE on activation key page when selected base channel value is null
-- Add systems and hibernate metrics collectors (#14240)
-- Fix HTTP API login status code when using wrong credentials (bsc#1206666)
-- Fix physical systems list
-- Configure the reboot action for transactional systems appropriately
-- Fix link to documentation in monitoring page
-- Fix server error in product migration outside maintenance window (bsc#1206276)
-- Show the package summary where applicable to better describe PTF packages
-- Added CLM filters to match product temporary fixes packages
-- Restrict product temporary fixes visibility in the UI and in the
-  APIs responses
-- Fixed empty selection warning in the lock/unlock page
-- set GPG Key Url for PTF repositories
-- Optimize the number of salt calls on minion startup (bsc#1203532)
-- Updated logrotate configuration (bsc#1206470)
-- Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
-- Virtual systems list performance improvements
-- Do not show systems from other organizations in virtual systems list
+- Makes systems column sortable on relevant patch page, to list by most affected systems
+
+-------------------------------------------------------------------
+Fri Jan 27 17:10:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.11-1
+  * action chains: recognize transactional_update.reboot as a reboot action
+
+-------------------------------------------------------------------
+Mon Jan 23 14:24:31 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.10-1
+  * Fix issue where subscription warning would show incorrectly
+
+-------------------------------------------------------------------
+Mon Jan 23 08:31:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.9-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Include missing 'gpg' states to avoid issues on SSH minions.
+  * Fix reconnection of postgres event stream
+  * Standardize the login response format with other HTTP API endpoints (bsc#1206800)
+  * Add `mgr_server_is_uyuni` minion pillar item
+  * Improve logs when sls action chain file is missing
+  * Fix modular channel check during system update via XMLRPC (bsc#1206613)
+  * Fix transaction commit behavior for Spark routes
+  * Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+  * Fix CVE Audit ignoring errata in parent channels if patch in successor
+    product exists (bsc#1206168)
+  * Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+  * Rename monitoring entitlement
+  * Remove outdated advice from errata mail
+  * Fix name for autoinstall snippets after Cobbler 3.3.3
+  * prevent ISE on activation key page when selected base channel value is null
+  * Add systems and hibernate metrics collectors (#14240)
+  * Fix HTTP API login status code when using wrong credentials (bsc#1206666)
+  * Fix physical systems list
+  * Configure the reboot action for transactional systems appropriately
+  * Fix link to documentation in monitoring page
+  * Fix server error in product migration outside maintenance window (bsc#1206276)
+  * Show the package summary where applicable to better describe PTF packages
+  * Added CLM filters to match product temporary fixes packages
+  * Restrict product temporary fixes visibility in the UI and in the
+    APIs responses
+  * Fixed empty selection warning in the lock/unlock page
+  * set GPG Key Url for PTF repositories
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+  * Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
+  * Virtual systems list performance improvements
+  * Do not show systems from other organizations in virtual systems list
 
 -------------------------------------------------------------------
 Mon Dec 19 11:42:37 CET 2022 - jgonzalez@suse.com

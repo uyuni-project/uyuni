@@ -1,8 +1,12 @@
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
-- Rename monitoring entitlement
-- Added view to handle ptf packages and updated the procedures
-  to refresh the updatable/installable packages
-- migration to fix invalid Oracle Linux 9 URLs
+-------------------------------------------------------------------
+Mon Jan 23 08:25:41 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Rename monitoring entitlement
+  * Added view to handle ptf packages and updated the procedures
+    to refresh the updatable/installable packages
+  * migration to fix invalid Oracle Linux 9 URLs
 
 -------------------------------------------------------------------
 Wed Dec 14 14:09:35 CET 2022 - jgonzalez@suse.com

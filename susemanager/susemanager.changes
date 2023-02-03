@@ -1,10 +1,16 @@
-- fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
-- show RHEL target for bootstrap repo creation only if it is
-  really connected to the CDN (bsc#1206861)
-- fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
-  (bsc#1207136)
-- fix tools channel detection on Uyuni
-- add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
+- Create repostories with sha256 instead of sha1.
+
+-------------------------------------------------------------------
+Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
+  * show RHEL target for bootstrap repo creation only if it is
+    really connected to the CDN (bsc#1206861)
+  * fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
+    (bsc#1207136)
+  * fix tools channel detection on Uyuni
+  * add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
 
 -------------------------------------------------------------------
 Wed Dec 14 14:15:50 CET 2022 - jgonzalez@suse.com
