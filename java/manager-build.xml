@@ -91,6 +91,32 @@
     </jar>
   </target>
 
+  <target name="session-cleanup-jar" depends="jar"
+        description="Compiles and builds the Cleanup session jar">
+    <mkdir dir="${build.dir}/session-cleanup" />
+    <path id="session-cleanup-jars">
+        <fileset dir="${lib.dir}" includes="jakarta-persistence-api*.jar" />
+        <fileset dir="${lib.dir}" includes="hibernate*.jar" />
+        <fileset dir="${lib.dir}" includes="log4j-api*.jar" />
+        <fileset dir="${build.dir}" includes="rhn.jar" />
+    </path>
+
+    <javac destdir="${build.dir}/session-cleanup"
+        source="11"
+        target="11"
+        includeantruntime="no"
+        nowarn="true"
+        srcdir="code/session_cleanup"
+        classpathref="session-cleanup-jars"/>
+
+    <jar destfile="${build.dir}/session-cleanup.jar" includes="">
+      <fileset dir="${build.dir}/session-cleanup" />
+      <manifest>
+          <attribute name="Main-Class" value="com.suse.manager.tasks.SessionCleanup" />
+      </manifest>
+    </jar>
+  </target>
+
   <target name="compile"
           depends="maybe-clean"
           unless="precompiled"
