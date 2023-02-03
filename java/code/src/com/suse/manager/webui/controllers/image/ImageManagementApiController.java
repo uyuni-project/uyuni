@@ -58,8 +58,6 @@ import spark.Response;
 public class ImageManagementApiController {
 
     private static final Gson GSON = Json.GSON;
-    private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
-    private static Logger log = LogManager.getLogger(ImageManagementApiController.class);
     private ImageSyncManager imageSyncManager;
 
     public ImageManagementApiController(ImageSyncManager imageSyncManagerIn) {

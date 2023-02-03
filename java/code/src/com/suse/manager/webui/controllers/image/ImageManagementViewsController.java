@@ -41,7 +41,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class ImageManagementViewsController {
 
-    private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private ImageManagementViewsController() { }
