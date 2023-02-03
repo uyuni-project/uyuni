@@ -940,8 +940,9 @@ sub postgresql_reportdb_setup {
 }
 
 sub postgresql_start {
-    system('service postgresql status >&/dev/null');
-    system('service postgresql start >&/dev/null') if ($? >> 8);
+    my $pgservice=`systemctl list-unit-files | grep postgresql | cut -f1 -d.`;
+    system("service $pgservice status >&/dev/null");
+    system("service $pgservice start >&/dev/null") if ($? >> 8);
     return ($? >> 8);
 }
 
