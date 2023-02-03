@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-20 14:16+0100\n"
-"PO-Revision-Date: 2022-12-25 21:13+0000\n"
+"PO-Revision-Date: 2023-01-21 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2253,9 +2253,8 @@ msgstr "poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
-#, fuzzy
 msgid "none (disable modularity)"
-msgstr "(žiadne, zakázať službu)"
+msgstr "žiadne (zakázať modularitu)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
@@ -2306,9 +2305,8 @@ msgid "enable module"
 msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
-#, fuzzy
 msgid "disable all modules"
-msgstr "povoliť modul"
+msgstr "zakázať všetky moduly"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
 msgid "Build ({0})"
