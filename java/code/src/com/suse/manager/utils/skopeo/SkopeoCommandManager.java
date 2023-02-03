@@ -51,14 +51,15 @@ public class SkopeoCommandManager {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("list-repos");
-        // FIXME should be a option in the store
-        cmd.add("--tls-verify=false");
         cmd.add("--limit=5000");
         if (!StringUtils.isEmpty(filter)) {
             // FIXME this will change, and should be a parameter at the end, after the URL
             cmd.add("--search=" + filter);
         }
-        // FIXME set username and password to connect registry
+        if (store.getCreds() != null) {
+            cmd.add(String.format("--username=%s", store.getCreds().getUsername()));
+            cmd.add(String.format("--password%s", store.getCreds().getPassword()));
+        }
         cmd.add(store.getUri());
 
         String[] args = cmd.toArray(new String[cmd.size()]);
@@ -79,10 +80,11 @@ public class SkopeoCommandManager {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("list-tags");
-        // FIXME should be a option in the store
-        cmd.add("--tls-verify=false");
 
-        // FIXME set username and password to connect registry
+        if (store.getCreds() != null) {
+            cmd.add(String.format("--username=%s", store.getCreds().getUsername()));
+            cmd.add(String.format("--password%s", store.getCreds().getPassword()));
+        }
         cmd.add(String.format("docker://%s/%s", store.getUri(), image));
 
         String[] args = cmd.toArray(new String[cmd.size()]);
@@ -103,10 +105,9 @@ public class SkopeoCommandManager {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("sync");
-        // FIXME should be a option in the store
-        cmd.add("--tls-verify=false");
         // FIXME needed to sync all archs, and should be solved when we manage archs correctly
         cmd.add("-a");
+        cmd.add("--keep-going=true");
 
         if (projectIn.isScoped()) {
             cmd.add("--scoped=true");
@@ -117,7 +118,10 @@ public class SkopeoCommandManager {
         cmd.add("--src=yaml");
         // yaml file to be synced
         cmd.add(ymlFilePathIn);
-        // FIXME set username and password to connect registry
+        if (projectIn.getDestinationImageStore().getCreds() != null) {
+            cmd.add(String.format("--dest-username=%s", projectIn.getDestinationImageStore().getCreds().getUsername()));
+            cmd.add(String.format("--dest-password%s", projectIn.getDestinationImageStore().getCreds().getPassword()));
+        }
         cmd.add(projectIn.getDestinationImageStore().getUri());
 
         String[] args = cmd.toArray(new String[cmd.size()]);
