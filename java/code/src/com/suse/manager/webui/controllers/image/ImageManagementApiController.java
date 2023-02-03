@@ -229,6 +229,7 @@ public class ImageManagementApiController {
             JsonObject json = new JsonObject();
             json.addProperty("id", project.getId());
             json.addProperty("label", project.getName());
+            json.addProperty("source", project.getSrcStore().getLabel());
             json.addProperty("target", project.getDestinationImageStore().getLabel());
             return json;
         }).collect(Collectors.toList());

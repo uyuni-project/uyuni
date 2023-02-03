@@ -167,14 +167,21 @@ class ImageSync extends React.Component<Props, State> {
           >
             <Column
               columnKey="label"
-              width="50%"
+              width="35%"
               comparator={Utils.sortByText}
               header={t("Label")}
               cell={(row) => row.label}
             />
             <Column
+              columnKey="source"
+              width="25%"
+              comparator={Utils.sortByText}
+              header={t("Source Registry")}
+              cell={(row) => row.source}
+            />
+            <Column
               columnKey="target"
-              width="35%"
+              width="25%"
               comparator={Utils.sortByText}
               header={t("Target Registry")}
               cell={(row) => row.target}
@@ -188,12 +195,6 @@ class ImageSync extends React.Component<Props, State> {
                 cell={(row) => {
                   return (
                     <div className="btn-group">
-                      <LinkButton
-                        className="btn-default btn-sm"
-                        title={t("Browse")}
-                        icon="fa-list"
-                        href={"/rhn/manager/cm/imagesync/edit/" + row.id}
-                      />
                       <LinkButton
                         className="btn-default btn-sm"
                         title={t("Edit")}
