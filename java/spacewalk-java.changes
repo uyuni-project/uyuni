@@ -8,6 +8,12 @@
 - Add `mgr_server_is_uyuni` minion pillar item
 
 -------------------------------------------------------------------
+Fri Jan 27 17:05:20 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.46-1
+  * action chains: recognize transactional_update.reboot as a reboot action
+
+-------------------------------------------------------------------
 Thu Jan 26 12:28:36 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.45-1

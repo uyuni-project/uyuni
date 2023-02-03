@@ -361,7 +361,8 @@ public class SaltActionChainGeneratorService {
     private boolean isRebootAction(SaltState state) {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun) state;
-            if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
+            if ("system.reboot".equalsIgnoreCase(moduleRun.getName()) ||
+                    "transactional_update.reboot".equalsIgnoreCase(moduleRun.getName())) {
                 return true;
             }
         }
