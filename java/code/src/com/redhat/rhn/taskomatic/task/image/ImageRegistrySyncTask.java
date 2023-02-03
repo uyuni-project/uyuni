@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageSyncFactory;
 import com.redhat.rhn.domain.image.ImageSyncProject;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 
 import com.suse.manager.utils.skopeo.SkopeoCommandManager;
@@ -28,6 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.yaml.snakeyaml.TypeDescription;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -46,11 +49,15 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
      */
     public ImageRegistrySyncTask() {
         syncFactory = new ImageSyncFactory();
+
+        if (!Files.exists(Path.of(YAML_SYNC_CACHE))) {
+            log.error("Cache directory does not exist: " + YAML_SYNC_CACHE);
+            throw new EntityNotExistsException("Cache directory does not exist: " + YAML_SYNC_CACHE);
+        }
         exportDesc = new TypeDescription(SkopeoImageSync.class);
         exportDesc.substituteProperty("images-by-tag-regex", SkopeoImageSync.class, "getImagesRegex", "setImagesRegex");
         exportDesc.substituteProperty("tls-verify", SkopeoImageSync.class, "isTlsVerify", "setTlsVerify");
         exportDesc.setExcludes("imagesRegex", "tlsVerify");
-
     }
 
     @Override
