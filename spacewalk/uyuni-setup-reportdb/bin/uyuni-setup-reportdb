@@ -93,7 +93,7 @@ def_regexes() {
 def_regexes
 unset -f def_regexes
 
-PG_DATA=/var/lib/pgsql/data
+PG_DATA=$(sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=)
 PG_HBA="$PG_DATA/pg_hba.conf"
 PG_IDENT="$PG_DATA/pg_ident.conf"
 POSTGRESQL="$PG_DATA/postgresql.conf"

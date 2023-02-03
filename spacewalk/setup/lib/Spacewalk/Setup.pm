@@ -966,7 +966,9 @@ EOQ
         exit 24;
     }
 
-    if (-d "/var/lib/pgsql/data/base" and
+    my $pgdata=`sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=`;
+
+    if (-d "$pgdata/base" and
         ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {
         my $shared_dir = SHARED_DIR;
         print loc(<<EOQ);
@@ -981,7 +983,7 @@ EOQ
 
     if (not $opts->{"skip-db-diskspace-check"}) {
         system_or_exit(['python3', SHARED_DIR .
-            '/embedded_diskspace_check.py', '/var/lib/pgsql/data', '12288'], 14,
+            '/embedded_diskspace_check.py', '$pgdata', '12288'], 14,
             'There is not enough space available for the embedded database.');
     }
     else {
