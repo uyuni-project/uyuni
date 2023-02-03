@@ -93,6 +93,7 @@ public class ImageManagementApiController {
 
         String filter = requestIn.queryParams("q");
 
+        //FIXME: user ImageSyncManager::listImagesInStore(...)
         Optional<ImageStore> store = ImageStoreFactory.lookupByIdAndOrg(storeId,
                 userIn.getOrg());
 
@@ -133,6 +134,7 @@ public class ImageManagementApiController {
                 userIn.getOrg());
 
         String image = requestIn.queryParams("image");
+        //FIXME: use ImageSyncManager::listImagesInStore(...)
 
         if (store.isEmpty()) {
             return json(responseIn, HttpStatus.SC_BAD_REQUEST, ResultJson.error("not_found"));
