@@ -58,7 +58,7 @@ public class SkopeoCommandManager {
         }
         if (store.getCreds() != null) {
             cmd.add(String.format("--username=%s", store.getCreds().getUsername()));
-            cmd.add(String.format("--password%s", store.getCreds().getPassword()));
+            cmd.add(String.format("--password=%s", store.getCreds().getPassword()));
         }
         cmd.add(store.getUri());
 

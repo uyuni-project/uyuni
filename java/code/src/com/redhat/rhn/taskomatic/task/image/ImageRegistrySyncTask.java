@@ -19,7 +19,6 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageSyncFactory;
 import com.redhat.rhn.domain.image.ImageSyncProject;
-import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 
 import com.suse.manager.utils.skopeo.SkopeoCommandManager;
@@ -29,8 +28,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.yaml.snakeyaml.TypeDescription;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -47,12 +48,11 @@ public class ImageRegistrySyncTask extends RhnJavaJob {
     /**
      * default constructor
      */
-    public ImageRegistrySyncTask() {
+    public ImageRegistrySyncTask() throws IOException {
         syncFactory = new ImageSyncFactory();
-
-        if (!Files.exists(Path.of(YAML_SYNC_CACHE))) {
-            log.error("Cache directory does not exist: " + YAML_SYNC_CACHE);
-            throw new EntityNotExistsException("Cache directory does not exist: " + YAML_SYNC_CACHE);
+        Path yamlCacheDir = Paths.get(YAML_SYNC_CACHE);
+        if (!Files.exists(yamlCacheDir)) {
+            Files.createDirectory(yamlCacheDir);
         }
         exportDesc = new TypeDescription(SkopeoImageSync.class);
         exportDesc.substituteProperty("images-by-tag-regex", SkopeoImageSync.class, "getImagesRegex", "setImagesRegex");
