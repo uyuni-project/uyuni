@@ -33,18 +33,22 @@ import org.junit.jupiter.api.Test;
  */
 public class CPUTest extends RhnBaseTestCase {
 
-    public static final String ARCH_NAME = "athlon";
-    public static final String FAMILY = "Laconia";
-    public static final String MODEL = "Inevitable";
-    public static final String MHZ = "500";
-    public static final long MHZ_NUMERIC = 500;
+    public static final String ARCH_NAME = "x86_64";
+    public static final String FAMILY = "6";
+    public static final String MODEL = "Intel(R) Xeon(R) Gold 5115 CPU @ 2.40GHz";
+    public static final String MHZ = "2400";
+    public static final long MHZ_NUMERIC = 2400;
+    public static final long NR_SOCKET = 2;
+    public static final long NR_CORES = 10;
+    public static final long NR_THREADS = 2;
 
     @Test
     public void testCreateLookup() throws Exception {
-        CPU unit = createTestCpu();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser("testuser",
+                UserTestUtils.createOrg("testorg"));
+
         Server server = ServerFactoryTest.createTestServer(user);
+        CPU unit = createTestCpu(server);
 
         unit.setServer(server);
         server.setCpu(unit);
@@ -62,19 +66,22 @@ public class CPUTest extends RhnBaseTestCase {
 
     /**
      * Helper method to create a test CPU object
+     * @param s server to attach the CPU to
      * @return Returns test CPU object
      * @throws Exception something bad happened
      */
-    public static CPU createTestCpu() throws Exception {
+    public static CPU createTestCpu(Server s) throws Exception {
         CPU cpu = new CPU();
-        User user = UserTestUtils.createUser("testuser",
-                UserTestUtils.createOrg("testorg"));
-        Server s = ServerFactoryTest.createTestServer(user);
+
         cpu.setArch(ServerFactory.lookupCPUArchByName(ARCH_NAME));
         cpu.setServer(s);
         cpu.setFamily(FAMILY);
         cpu.setMHz(MHZ);
         cpu.setModel(MODEL);
+        cpu.setNrsocket(NR_SOCKET);
+        cpu.setNrCore(NR_CORES);
+        cpu.setNrThread(NR_THREADS);
+        cpu.setNrCPU(NR_SOCKET * NR_CORES * NR_THREADS);
 
         assertNull(cpu.getId());
         TestUtils.saveAndFlush(cpu);
