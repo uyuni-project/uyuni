@@ -1,3 +1,4 @@
+- set new CPU core value for traditional registration
 - Fix reposync error about missing "content-type" key when syncing certain channels
 - Enhance passwords cleanup and add extra files in spacewalk-debug (bsc#1201059)
 - Do not specify a cobbler version, as that is now centralized at the
