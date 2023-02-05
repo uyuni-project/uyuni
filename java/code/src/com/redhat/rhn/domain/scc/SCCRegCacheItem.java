@@ -86,15 +86,17 @@ import javax.persistence.Transient;
                         "ORDER BY rci.sccId ASC"),
         @NamedQuery(
                 name = "SCCRegCache.hypervisorInfo",
-                query = "SELECT new com.suse.scc.model.SCCVirtualizationHostJson(rci.sccLogin, s, vi) " +
+                query = "SELECT new com.suse.scc.model.SCCVirtualizationHostJson(rci.sccLogin, s) " +
                         "FROM SCCRegCacheItem rci " +
                         "JOIN rci.server s " +
-                        "JOIN s.virtualGuests vi " +
-                        "WHERE vi.guestSystem is not null " +
-                        "AND vi.uuid is not null " +
-                        "AND rci.sccRegistrationRequired = 'Y' " +
+                        "WHERE rci.sccRegistrationRequired = 'Y' " +
                         "AND (rci.registrationErrorTime IS NULL " +
-                        "     OR rci.registrationErrorTime < :retryTime) "),
+                        "     OR rci.registrationErrorTime < :retryTime) " +
+                        "AND EXISTS (SELECT distinct 1 " +
+                        "              FROM VirtualInstance vi" +
+                        "             WHERE vi.hostSystem = s" +
+                        "               AND vi.uuid IS NOT NULL" +
+                        "               AND vi.guestSystem IS NOT NULL)"),
 })
 public class SCCRegCacheItem extends BaseDomainHelper {
 
