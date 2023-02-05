@@ -15,7 +15,6 @@
 package com.suse.scc.model;
 
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.VirtualInstance;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -68,16 +67,19 @@ public class SCCVirtualizationHostPropertiesJson {
     /**
      * Constructor
      * @param s the server
-     * @param vi the virtual instance
      */
-    public SCCVirtualizationHostPropertiesJson(Server s, VirtualInstance vi) {
+    public SCCVirtualizationHostPropertiesJson(Server s) {
         name = s.getHostname();
         arch = s.getServerArch().getLabel().split("-")[0];
         sockets = s.getCpu().getNrsocket();
         cores = s.getCpu().getNrCore() * sockets;
         threads = s.getCpu().getNrThread() * cores;
         ramMb = s.getRam();
-        type = vi.getType().getHypervisor().orElse("");
+        type = s.getGuests().stream()
+                .map(vi -> vi.getType().getHypervisor().orElse(""))
+                .filter(st -> !st.isBlank())
+                .findFirst()
+                .orElse("");
     }
 
     /**
