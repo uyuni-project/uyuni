@@ -61,6 +61,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 
+BuildRequires:  make
 %if "%{_vendor}" == "debbuild" || 0%{?rhel}
 BuildRequires:  gettext
 %endif

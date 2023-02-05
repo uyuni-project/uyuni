@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  perl-macros
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
