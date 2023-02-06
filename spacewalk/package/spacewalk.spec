@@ -84,7 +84,7 @@ Requires:       susemanager-sls
 
 Obsoletes:      spacewalk-monitoring < 2.3
 
-Requires:       cobbler >= 3
+Requires:       cobbler
 Requires:       susemanager-jsp_en
 
 # weakremover used on SUSE to get rid of orphan packages which are

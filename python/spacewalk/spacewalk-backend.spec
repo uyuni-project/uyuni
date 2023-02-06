@@ -253,7 +253,7 @@ Requires:       mod_ssl
 %endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 
