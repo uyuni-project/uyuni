@@ -181,7 +181,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       classmate
 %endif
 Requires:       %{ehcache}
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       (gnu-jaf or jakarta-activation)
@@ -370,7 +370,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       classmate
 %endif
 Requires:       %{ehcache}
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       hibernate-types
 Requires:       hibernate-commons-annotations

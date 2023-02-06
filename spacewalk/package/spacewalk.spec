@@ -86,7 +86,7 @@ Requires:       susemanager-sls
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
-Requires:       cobbler >= 3
+Requires:       cobbler
 Requires:       susemanager-jsp_en
 
 %description common

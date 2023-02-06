@@ -1,3 +1,6 @@
+- Do not specify a cobbler version, as that is now centralized at the
+  patterns
+
 -------------------------------------------------------------------
 Wed Jul 27 14:14:38 CEST 2022 - jgonzalez@suse.com
 

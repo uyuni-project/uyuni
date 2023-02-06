@@ -1,3 +1,5 @@
+- Do not specify a cobbler version, as that is now centralized at the
+  patterns
 - Fix not being able to delete CLM environment if there are custom child
   channels that where not built by the environment (bsc#1206932)
 - Add 'none' matcher to CLM AppStream filters (bsc#1206817)
