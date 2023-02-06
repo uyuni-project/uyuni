@@ -43,7 +43,9 @@ public class SCCVirtualizationHostSystemsJson {
      * @param vi the virtual instance
      */
     public SCCVirtualizationHostSystemsJson(VirtualInstance vi) {
-        uuid = vi.getUuid().replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+        uuid = vi.getUuid()
+                // SCC require UUID in the RFC format
+                .replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
         properties = new HashMap<>();
         properties.put("vm_name", vi.getName());
         properties.put("vm_state", vi.getState().getLabel());
