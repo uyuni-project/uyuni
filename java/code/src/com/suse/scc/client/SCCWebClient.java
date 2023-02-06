@@ -346,7 +346,6 @@ public class SCCWebClient implements SCCClient {
         request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
                 ContentType.APPLICATION_JSON));
 
-        Reader streamReader = null;
         try {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request, username, password);
@@ -371,7 +370,6 @@ public class SCCWebClient implements SCCClient {
         }
         finally {
             request.releaseConnection();
-            SCCClientUtils.closeQuietly(streamReader);
         }
     }
     /**
