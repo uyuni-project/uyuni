@@ -369,7 +369,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
-      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+      URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
         tmpfile.write(urlfile.read)
       end
     rescue OpenURI::HTTPError => e
