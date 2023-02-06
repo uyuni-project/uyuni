@@ -1,6 +1,8 @@
 - Improve automatic dependency selection for vendor clones
 - Fix taskomatic logging (bsc#1207867)
 - Added APIs to allow frontend to install and remove ptf
+- Do not specify a cobbler version, as that is now centralized at the
+  patterns
 - Fix not being able to delete CLM environment if there are custom child
   channels that where not built by the environment (bsc#1206932)
 - Makes systems column sortable on relevant patch page, to list by most affected systems
