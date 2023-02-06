@@ -214,7 +214,7 @@ public class SCCWebClient implements SCCClient {
         request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
                 ConfigDefaults.get().getProductVersion());
         if (log.isDebugEnabled()) {
-            Arrays.asList(request.getAllHeaders()).stream().map(h -> h.toString()).forEach(s -> log.debug(s));
+            Arrays.stream(request.getAllHeaders()).forEach(h -> log.debug(h.toString()));
         }
     }
 
