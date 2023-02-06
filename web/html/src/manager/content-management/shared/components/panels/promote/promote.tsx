@@ -41,7 +41,7 @@ const Promote = (props: Props) => {
     }
   }, [open]);
 
-  const modalNameId = `${props.environmentPromote.label}-cm-promote-env-modal`;
+  const modalNameId = `cm-promote-env-modal-${props.environmentPromote.id}`;
 
   const disabled =
     !hasEditingPermissions ||
@@ -55,7 +55,7 @@ const Promote = (props: Props) => {
       <DownArrow />
       <div className="text-center">
         <ModalButton
-          id={`${props.environmentPromote.label}-promote-modal-link`}
+          id={`promote-modal-link-${props.environmentPromote.id}`}
           className="btn-default"
           text={t("Promote")}
           disabled={disabled}
@@ -80,7 +80,7 @@ const Promote = (props: Props) => {
                 <dt className="col-xs-4">{t("Version")}:</dt>
                 <dd className="col-xs-8">
                   <BuildVersion
-                    id={`${props.environmentPromote.version}_promote_${props.environmentTarget.label}`}
+                    id={`${props.environmentPromote.version}_promote_${props.environmentTarget.id}`}
                     text={
                       getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) ||
                       t("not built")
