@@ -53,7 +53,9 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: Synchronize the repositories in the custom channel for Rocky 8 DVD
     When I call spacewalk-repo-sync to sync the channel "rocky-8-iso"
     And I wait until all spacewalk-repo-sync finished
-    Then the reposync logs should not report errors
+    Then the "rocky-8-iso.log, rhel8-pool-x86_64.log" reposync logs should not report errors
+    And the "res-8-updates-x86_64.log, res-as-8-updates-x86_64.log, res-cb-8-updates-x86_64.log" reposync logs should not report errors
+    And the "res8-manager-tools-pool-x86_64.log, res8-manager-tools-updates-x86_64.log, el8-uyuni-client.log" reposync logs should not report errors
 
   Scenario: The custom channel for Rocky 8 has been synced
     When I wait until the channel "rocky-8-iso" has been synced
