@@ -21,17 +21,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * CPUTest
  */
-public class CPUTest extends RhnBaseTestCase {
+public class CPUTest extends BaseTestCaseWithUser {
 
     public static final String ARCH_NAME = "x86_64";
     public static final String FAMILY = "6";
@@ -44,9 +42,6 @@ public class CPUTest extends RhnBaseTestCase {
 
     @Test
     public void testCreateLookup() throws Exception {
-        User user = UserTestUtils.createUser("testuser",
-                UserTestUtils.createOrg("testorg"));
-
         Server server = ServerFactoryTest.createTestServer(user);
         CPU unit = createTestCpu(server);
 
