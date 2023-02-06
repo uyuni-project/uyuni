@@ -11,7 +11,7 @@ require 'openssl'
 When(/^I retrieve any static resource$/) do
   resource = %w[/img/action-add.gif /css/susemanager-light.css /fonts/DroidSans.ttf /javascript/actionchain.js].sample
   @url = Capybara.app_host + resource
-  open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|
+  URI.open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|
     @headers = f.meta
   end
 end
