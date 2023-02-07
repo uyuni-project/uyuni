@@ -47,7 +47,6 @@ jobs:
         cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
         cat buildconf/test/rhn.conf
         find lib/
-        rm lib/junit*
         ant -f manager-build.xml refresh-branding-jar test-pr 2>&1
 
     - name: log output

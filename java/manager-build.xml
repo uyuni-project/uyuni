@@ -319,10 +319,12 @@
          Before it outputs useless over-verbose Junit5 summary for each test summary for each test summary for each test... -->
     <junitlauncher>
 	    <classpath>
+		    <!--
             <fileset dir="/usr/share/java/junit5/">
                 <include name="**/junit-platform-*.jar" />
                 <include name="**/junit-jupiter-*.jar" />
-            </fileset>
+			    </fileset>
+		    -->
         </classpath>
 
         <classpath refid="managertestjars" />
