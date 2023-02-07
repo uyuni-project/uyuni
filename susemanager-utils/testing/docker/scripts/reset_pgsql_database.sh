@@ -37,7 +37,7 @@ ln -s $WORKDIR/schema/spacewalk/spacewalk-sql /usr/bin/spacewalk-sql
 ln -s $WORKDIR/schema/spacewalk/spacewalk-schema-upgrade /usr/bin/spacewalk-schema-upgrade
 
 /usr/bin/uyuni-setup-reportdb remove --db reportdb --user pythia ||:
-/usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password oracle --local
+bash -x /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password oracle --local
 
 echo "Creating First Org"
 
