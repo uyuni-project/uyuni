@@ -19,6 +19,7 @@ java/buildconf/tempjars/*
 java/.checkstyle
 java/.classpath
 java/.externalToolBuilders
+java/.obs-to-maven-cache
 java/.pmd
 java/.project
 java/.settings/*
