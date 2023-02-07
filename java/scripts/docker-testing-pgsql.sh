@@ -8,8 +8,10 @@ if [ -n "$1" ]; then
 fi
 
 WORKDIR=$(pwd)
-if [ -d /manager ]; then
-	WORKDIR=/manager
+if [ ! -d /manager ]; then
+  ln -s $WORKDIR /manager
+else
+  WORKDIR=/manager
 fi
 cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
