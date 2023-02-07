@@ -16,9 +16,6 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.repomd.ChannelRepodataDriver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  *
  *
@@ -26,14 +23,6 @@ import org.apache.logging.log4j.Logger;
 public class ChannelRepodata extends RhnQueueJob<ChannelRepodataDriver> {
 
     public static final String DISPLAY_NAME = "channel_repodata";
-    private static Logger log = null;
-
-    protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ChannelRepodata.class);
-        }
-        return log;
-    }
 
     @Override
     public String getConfigNamespace() {

@@ -95,8 +95,8 @@ public class RhnJavaJobTest {
         var appenders = config.getAppenders();
         var appenderRefs = config.getAppenderRefs();
 
-        assertEquals(1, config.getAppenderRefs().size());
-        assertEquals(1, config.getAppenders().size());
+        assertEquals(2, config.getAppenderRefs().size());
+        assertEquals(2, config.getAppenders().size());
         assertEquals(
                 appenderRefs.stream().map(AppenderRef::getRef).collect(Collectors.toSet()),
                 appenders.keySet()
