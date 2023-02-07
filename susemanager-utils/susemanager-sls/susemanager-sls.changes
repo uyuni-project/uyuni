@@ -1,3 +1,4 @@
+- Fix current limitation on Action Chains for SLE Micro
 - Support SLE Micro migration (bsc#1205011)
 
 -------------------------------------------------------------------
