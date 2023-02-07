@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.channel.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,7 +67,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         c.addPackage(p);
         ChannelFactory.save(c);
         c.removePackage(p, user);
-        assertTrue(c.getPackageCount() == 0);
+        assertEquals(0, c.getPackageCount());
         assertTrue(c.getPackages().isEmpty());
 
     }
@@ -124,13 +125,13 @@ public class ChannelTest extends BaseTestCaseWithUser {
     public void testEquals() throws Exception {
         Channel c1 = ChannelFactoryTest.createTestChannel(user);
         Channel c2 = ChannelFactoryTest.createTestChannel(user);
-        assertFalse(c1.equals(c2));
+        assertNotEquals(c1, c2);
         Channel c3 = ChannelFactory.lookupById(c1.getId());
         Set<Channel> testSet = new HashSet<>();
         testSet.add(c1);
         testSet.add(c2);
         testSet.add(c3);
-        assertTrue(testSet.size() == 2);
+        assertEquals(2, testSet.size());
     }
 
     @Test
@@ -139,7 +140,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         ChannelTestUtils.addDistMapToChannel(c);
         c = (Channel) reload(c);
         assertNotNull(c.getDistChannelMaps());
-        assertTrue(c.getDistChannelMaps().size() > 0);
+        assertFalse(c.getDistChannelMaps().isEmpty());
     }
 
     @Test
@@ -252,11 +253,9 @@ public class ChannelTest extends BaseTestCaseWithUser {
     @Test
     public void testIsModular() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        assertNull(c.getModules());
         assertFalse(c.isModular());
 
         c.addModules(new Modules("filename", new Date()));
-        assertNotNull(c.getModules());
         assertTrue(c.isModular());
     }
 

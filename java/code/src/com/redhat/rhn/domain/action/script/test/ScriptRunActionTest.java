@@ -32,6 +32,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -79,8 +80,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         sad.addResult(result1);
         sad.addResult(result2);
         String expectedScript = "#!/bin/csh";
-        //sad.setScript(expectedScript.getBytes("UTF-8"));
-        sad.setScript(expectedScript.getBytes("UTF-8"));
+        sad.setScript(expectedScript.getBytes(StandardCharsets.UTF_8));
         action.setScriptActionDetails(sad);
 
         ActionFactory.save(action);
@@ -100,8 +100,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
         assertEquals(expectedScript,
                      scriptaction.getScriptActionDetails().getScriptContents());
-        assertTrue(scriptaction.getScriptActionDetails().getParentAction()
-                .equals(scriptaction));
+        assertEquals(scriptaction.getScriptActionDetails().getParentAction(), scriptaction);
 
     }
 

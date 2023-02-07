@@ -17,7 +17,7 @@ package com.redhat.rhn.common.util;
 
 import org.apache.commons.codec.binary.Hex;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -250,16 +250,7 @@ public class SHA256Crypt {
      * @return sha256hexed String.
      */
     public static String sha256Hex(String inputString) {
-        byte[] secretBytes;
-        try {
-            secretBytes = inputString.getBytes("UTF-8");
-
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UnsupportedEncodingException when" +
-                    " trying to convert a String into UTF-8.  This shouldn't happen.", e);
-        }
-        return sha256Hex(secretBytes);
+        return sha256Hex(inputString.getBytes(StandardCharsets.UTF_8));
     }
 
     /**

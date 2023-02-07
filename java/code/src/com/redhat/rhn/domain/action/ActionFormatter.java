@@ -15,12 +15,20 @@
 package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.ConstructorException;
+
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ActionFormatter - Class that is responsible for properly formatting the fields
@@ -107,7 +115,7 @@ public class ActionFormatter {
         // The default StringBuilder with nothing in it
         // has the value of "null" so we also want to check
         // for that.
-        if (retval.toString().length() == 0 ||
+        if (retval.toString().isEmpty() ||
                 retval.toString().equals("null")) {
             return LocalizationService.getInstance().getMessage("no notes");
         }
@@ -193,8 +201,17 @@ public class ActionFormatter {
             retval.append(ls.getMessage("system.event.details.completed",
                     ls.formatDate(sa.getCompletionTime())));
             retval.append("</br>");
-            retval.append(ls.getMessage("system.event.details.returned",
-                    StringEscapeUtils.escapeHtml4(sa.getResultMsg()), sa.getResultCode()));
+            if (server instanceof MinionServer &&
+                    (sa.getParentAction().getActionType().equals(ActionFactory.TYPE_ERRATA) ||
+                     sa.getParentAction().getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
+                     sa.getParentAction().getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD))) {
+                retval.append(ls.getMessage("system.event.details.returned",
+                        formatResultMessage(sa.getResultMsg()), sa.getResultCode()));
+            }
+            else {
+                retval.append(ls.getMessage("system.event.details.returned",
+                        StringEscapeUtils.escapeHtml4(sa.getResultMsg()), sa.getResultCode()));
+            }
         }
         else {
             retval.append(ls.getMessage("system.event.details.notCompleted"));
@@ -211,6 +228,44 @@ public class ActionFormatter {
      */
     public Object getDetails(Server server) {
         return getDetails(server, null);
+    }
+
+    private String formatResultMessage(String msg) {
+        Yaml yaml = new Yaml();
+        List<StateResult> result = new LinkedList<>();
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Map<String, Object>> payload = yaml.loadAs(msg, Map.class);
+            payload.entrySet().stream().forEach(e -> result.add(new StateResult(e)));
+        }
+        catch (ConstructorException ce) {
+            return StringEscapeUtils.escapeHtml4(msg);
+        }
+        return ActionFormatter.formatSaltResultMessage(result);
+    }
+
+    /**
+     * Format a list of StateResults into human readable and formatted text
+     * @param result list of state results
+     * @return human readable and formatted text
+     */
+    public static String formatSaltResultMessage(List<StateResult> result) {
+        StringBuilder retval = new StringBuilder();
+        result.stream()
+                .sorted(Comparator.comparingDouble(StateResult::getRunNum))
+                .forEach(entry -> {
+                    if (!entry.isResult()) {
+                        retval.append("<strong><span class='text-danger'>");
+                    }
+                    else if (!entry.getChanges().equals("{}")) {
+                        retval.append("<strong><span class='text-info'>");
+                    }
+                    retval.append(StringEscapeUtils.escapeHtml4(entry.toString()));
+                    if (!entry.isResult() || !entry.getChanges().equals("{}")) {
+                        retval.append("</span></strong>");
+                    }
+                });
+        return retval.toString();
     }
 
 }

@@ -21,6 +21,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
@@ -31,37 +32,50 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 
-
 /**
  * RhnJavaJob
  */
 public abstract class RhnJavaJob implements RhnJob {
 
+    protected static String defaultPluginName = "File";
     protected Logger log = LogManager.getLogger(getClass());
 
     protected Logger getLogger() {
         return log;
     }
 
-    void enableLogging(TaskoRun run) {
+    protected void enableLogging(TaskoRun run) {
+
+        var loggerName = this.getClass().getName();
+        cleanLogging();
 
         var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
 
         var layoutBuilder = builder
                 .newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = this.getClass().getName() + "fileAppender";
+        var appenderName = loggerName + "fileAppender";
         var appenderBuilder = builder
-                .newAppender(appenderName, "File")
+                .newAppender(appenderName, defaultPluginName)
                 .addAttribute("fileName", run.buildStdOutputLogPath())
                 .add(layoutBuilder);
         builder.add(appenderBuilder);
 
-        var out = builder.newLogger(this.getClass().getName(), Level.INFO);
-        var err = builder.newLogger(this.getClass().getName(), Level.ERROR);
+        var out = builder.newLogger(loggerName, Level.INFO);
+        var err = builder.newLogger(loggerName, Level.ERROR);
         builder.add(out.add(builder.newAppenderRef(appenderName)));
         builder.add(err.add(builder.newAppenderRef(appenderName)));
-        Configurator.initialize(builder.build());
+        Configurator.reconfigure(builder.build());
+    }
+
+    private void cleanLogging() {
+        var loggerName = this.getClass().getName();
+        final var config = ((LoggerContext) LogManager.getContext(false)).getConfiguration();
+        for (var appender : config.getLoggerConfig(loggerName).getAppenders().values()) {
+            appender.stop();
+            config.getLoggerConfig(loggerName).removeAppender(appender.getName());
+        }
+        Configurator.reconfigure(config);
     }
 
     /**
@@ -96,6 +110,7 @@ public abstract class RhnJavaJob implements RhnJob {
         finishJob();
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
+        cleanLogging();
     }
 
     /**

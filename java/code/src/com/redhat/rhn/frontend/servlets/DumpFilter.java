@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,9 +41,10 @@ public class DumpFilter implements Filter {
     private static Logger log = LogManager.getLogger(DumpFilter.class);
 
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest req,
-            ServletResponse resp,
-            FilterChain chain)
+                         ServletResponse resp,
+                         FilterChain chain)
             throws IOException, ServletException {
 
         if (log.isDebugEnabled()) {
@@ -51,20 +54,19 @@ public class DumpFilter implements Filter {
             log.debug("AuthType: {}", request.getAuthType());
             log.debug("Method: {}", request.getMethod());
             log.debug("PathInfo: {}", request.getPathInfo());
-            log.debug("Translated path: {}", request.getPathTranslated());
+            log.debug("Translated path: {}", StringUtil.sanitizeLogInput(request.getPathTranslated()));
             log.debug("ContextPath: {}", request.getContextPath());
-            log.debug("Query String: {}", request.getQueryString());
-            log.debug("Remote User: {}", request.getRemoteUser());
+            log.debug("Query String: {}", StringUtil.sanitizeLogInput(request.getQueryString()));
+            log.debug("Remote User: {}", StringUtil.sanitizeLogInput(request.getRemoteUser()));
             log.debug("Remote Host: {}", request.getRemoteHost());
             log.debug("Remote Addr: {}", request.getRemoteAddr());
-            log.debug("SessionId: {}", request.getRequestedSessionId());
             log.debug("uri: {}", request.getRequestURI());
             log.debug("url: {}", request.getRequestURL());
             log.debug("Servlet path: {}", request.getServletPath());
             log.debug("Server Name: {}", request.getServerName());
             log.debug("Server Port: {}", request.getServerPort());
             log.debug("RESPONSE encoding: {}", resp.getCharacterEncoding());
-            log.debug("REQUEST encoding: {}", request.getCharacterEncoding());
+            log.debug("REQUEST encoding: {}", StringUtil.sanitizeLogInput(request.getCharacterEncoding()));
             log.debug("JVM encoding: {}", System.getProperty("file.encoding"));
             logSession(request.getSession());
             logHeaders(request);
@@ -85,11 +87,13 @@ public class DumpFilter implements Filter {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void destroy() {
         // nop
     }
 
     /** {@inheritDoc} */
+    @Override
     public void init(FilterConfig filterConfig) {
         // nop
     }
@@ -102,19 +106,20 @@ public class DumpFilter implements Filter {
             }
 
             for (Cookie cookieIn : cookies) {
-                log.debug(ReflectionToStringBuilder.toString(cookieIn));
+                log.debug(StringUtil.sanitizeLogInput(ReflectionToStringBuilder.toString(cookieIn)));
             }
         }
     }
 
     private void logHeaders(HttpServletRequest req) {
         if (log.isDebugEnabled()) {
-            Enumeration items = req.getHeaderNames();
+            Enumeration<String> items = req.getHeaderNames();
             while (items.hasMoreElements()) {
-                String name = (String) items.nextElement();
-                Enumeration hdrs = req.getHeaders(name);
+                String name = items.nextElement();
+                Enumeration<String> hdrs = req.getHeaders(name);
                 while (hdrs.hasMoreElements()) {
-                    log.debug("Header: name [{}] value [{}]", name, (String) hdrs.nextElement());
+                    log.debug("Header: name [{}] value [{}]",
+                            StringUtil.sanitizeLogInput(name), StringUtil.sanitizeLogInput(hdrs.nextElement()));
                 }
             }
         }
@@ -128,12 +133,13 @@ public class DumpFilter implements Filter {
 
     private void logParameters(HttpServletRequest req) {
         if (log.isDebugEnabled()) {
-            Enumeration items = req.getParameterNames();
+            Enumeration<String> items = req.getParameterNames();
             while (items.hasMoreElements()) {
-                String name = (String) items.nextElement();
+                String name = items.nextElement();
                 String[] values = req.getParameterValues(name);
                 for (String valueIn : values) {
-                    log.debug("Parameter: name [{}] value [{}]", name, valueIn);
+                    log.debug("Parameter: name [{}] value [{}]", StringUtil.sanitizeLogInput(name),
+                            StringUtil.sanitizeLogInput(valueIn));
                 }
             }
         }
@@ -141,15 +147,16 @@ public class DumpFilter implements Filter {
 
     private void logAttributes(HttpServletRequest req) {
         if (log.isDebugEnabled()) {
-            Enumeration items = req.getAttributeNames();
+            Enumeration<String> items = req.getAttributeNames();
             while (items.hasMoreElements()) {
-                String name = (String) items.nextElement();
+                String name = items.nextElement();
                 Object obj = req.getAttribute(name);
                 if (obj != null) {
-                    log.debug("Attribute: name [{}] value [{}]", name, ReflectionToStringBuilder.toString(obj));
+                    log.debug("Attribute: name [{}] value [{}]", StringUtil.sanitizeLogInput(name),
+                            StringUtil.sanitizeLogInput(ReflectionToStringBuilder.toString(obj)));
                 }
                 else {
-                    log.debug("Attribute: name [{}] value [null]", name);
+                    log.debug("Attribute: name [{}] value [null]", StringUtil.sanitizeLogInput(name));
                 }
             }
         }

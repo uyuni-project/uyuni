@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,10 +60,7 @@ public class ProfileFactory extends HibernateFactory {
      * @return statetype whose name matches the given name.
      */
     public static ProfileType lookupByLabel(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", name);
-        return (ProfileType) singleton.lookupObjectByNamedQuery(
-                "ProfileType.findByLabel", params, true);
+        return singleton.lookupObjectByNamedQuery("ProfileType.findByLabel", Map.of("label", name), true);
     }
 
     /**
@@ -74,11 +70,8 @@ public class ProfileFactory extends HibernateFactory {
      * @return the Profile found
      */
     public static Profile lookupByIdAndOrg(Long id, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("org_id", org.getId());
-        return (Profile) singleton.lookupObjectByNamedQuery("Profile.findByIdAndOrg",
-                params, true);
+        return singleton.lookupObjectByNamedQuery("Profile.findByIdAndOrg",
+                Map.of("id", id, "org_id", org.getId()), true);
     }
 
     /**
@@ -87,13 +80,9 @@ public class ProfileFactory extends HibernateFactory {
      * @param org Org owner
      * @return  a list of Profiles which are compatible with the given server.
      */
-    @SuppressWarnings("unchecked")
     public static List<Profile> compatibleWithServer(Server server, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", server.getId());
-        params.put("org_id", org.getId());
-        return (List<Profile>)singleton.listObjectsByNamedQuery(
-                "Profile.compatibleWithServer", params, false);
+        return singleton.listObjectsByNamedQuery("Profile.compatibleWithServer",
+                Map.of("sid", server.getId(), "org_id", org.getId()), false);
     }
 
      /**
@@ -116,6 +105,7 @@ public class ProfileFactory extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -129,11 +119,8 @@ public class ProfileFactory extends HibernateFactory {
      * given org, or null if none found.
      */
     public static Profile findByNameAndOrgId(String name, Long orgid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        params.put("org_id", orgid);
-        return (Profile) singleton.lookupObjectByNamedQuery(
-                "Profile.findByNameAndOrgId", params, true);
+        return singleton.lookupObjectByNamedQuery("Profile.findByNameAndOrgId",
+                Map.of("name", name, "org_id", orgid), true);
     }
 
 }

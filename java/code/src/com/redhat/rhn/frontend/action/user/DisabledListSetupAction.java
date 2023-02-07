@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -50,6 +51,7 @@ public class DisabledListSetupAction extends RhnAction {
     public static final String LIST_NAME = "disabledUserList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -79,9 +81,9 @@ public class DisabledListSetupAction extends RhnAction {
             RhnHelper.handleEmptySelection(request);
         }
 
-        DataResult dr = UserManager.disabledInOrg(user, pc);
+        DataResult<UserOverview> dr = UserManager.disabledInOrg(user, pc);
 
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         // if its a list action update the set and the selections
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(set, LIST_NAME, dr);

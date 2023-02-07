@@ -58,6 +58,7 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
      * Returs id of xccdf:TestResult
      * @return the xid
      */
+    @Override
     public Long getId() {
         return getXid();
     }

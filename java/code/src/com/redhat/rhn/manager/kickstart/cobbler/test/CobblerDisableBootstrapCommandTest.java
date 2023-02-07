@@ -40,10 +40,9 @@ public class CobblerDisableBootstrapCommandTest extends BaseTestCaseWithUser {
 
     /**
      * Tests the execution of this Cobbler command.
-     * @throws Exception if unforeseen problems arise
      */
     @Test
-    public void testStore() throws Exception {
+    public void testStore() {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 
         new CobblerEnableBootstrapCommand(user).store();

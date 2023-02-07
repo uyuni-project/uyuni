@@ -261,7 +261,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemoveInvalidAnsiblePath() throws Exception {
+    public void testRemoveInvalidAnsiblePath() {
         try {
             handler.lookupAnsiblePathById(admin, -1234);
             fail("An exception shold have been thrown");

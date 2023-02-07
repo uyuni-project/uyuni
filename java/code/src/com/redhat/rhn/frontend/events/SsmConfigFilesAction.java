@@ -33,6 +33,7 @@ public class SsmConfigFilesAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(SsmConfigFilesAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public void execute(EventMessage msg) {
         SsmConfigFilesEvent event = (SsmConfigFilesEvent) msg;
 

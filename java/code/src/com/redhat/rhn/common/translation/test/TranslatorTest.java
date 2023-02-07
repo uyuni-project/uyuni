@@ -45,7 +45,7 @@ public class TranslatorTest extends RhnBaseTestCase {
     @Test
     public void testInt2List() {
         Integer i = 42;
-        List list = Translator.int2List(i);
+        List<Integer> list = List.of(i);
         assertEquals(1, list.size());
         Integer result = (Integer) list.iterator().next();
         assertEquals(i, result);
@@ -140,7 +140,7 @@ public class TranslatorTest extends RhnBaseTestCase {
 
     @Test
     public void testMap2String() {
-        Map foo = new HashMap();
+        Map foo = new HashMap<>();
         foo.put("bar", "nut");
         foo.put("java", "sucks");
         assertEquals(foo.toString(), Translator.map2String(foo));
@@ -149,7 +149,7 @@ public class TranslatorTest extends RhnBaseTestCase {
 
     @Test
     public void testList2String() {
-        List l = new ArrayList();
+        List l = new ArrayList<>();
         l.add(1);
         l.add(2);
         assertEquals(l.toString(), Translator.list2String(l));

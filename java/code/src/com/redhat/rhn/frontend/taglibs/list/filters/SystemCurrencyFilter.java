@@ -29,14 +29,13 @@ public class SystemCurrencyFilter extends BaseListFilter {
     /**
      * ${@inheritDoc}
      */
-    public void processMap(Map map, Locale userLocale) {
+    @Override
+    public void processMap(Map<String, String> map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();
         String label = ls.getMessage("system.common.systemName",
                 userLocale);
         map.put(label, "name");
-      //  map.put(label, "channelLabels");
-
     }
 
 

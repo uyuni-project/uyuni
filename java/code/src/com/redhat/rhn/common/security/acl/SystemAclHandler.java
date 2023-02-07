@@ -16,6 +16,7 @@ package com.redhat.rhn.common.security.acl;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -59,13 +60,12 @@ public class SystemAclHandler extends BaseHandler {
      * @return true if the client is capable of performing the given
      * task.
      */
-    public boolean aclClientCapable(Object ctx, String[] params) {
+    public boolean aclClientCapable(Map<String, Object> ctx, String[] params) {
         if (params == null) {
             return false;
         }
 
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getAsLong(ctx.get("sid"));
         return SystemManager.clientCapable(sid, params[0]);
     }
 
@@ -78,29 +78,16 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclChildChannelCandidate(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclChildChannelCandidate(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         String label = params[0];
 
         SelectMode m = ModeFactory.getMode("Channel_queries", "child_channel_candidate");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
-    }
-
-    /**
-     * FIXME not implemented. Currently this method
-     * is unimplemented and ALWAYS returns false
-     * @param ctx Context Map to pass in
-     * @param params Parameters to use to fetch from Context
-     * @return true if access is granted, false otherwise
-     */
-    public boolean aclSystemProfileCapable(Object ctx, String[] params) {
-        // FIXME implement
-        throw new UnsupportedOperationException("aclSystemProfileCapable not implemented");
+        DataResult<Row> dr = m.execute(queryParams);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -109,15 +96,14 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a satellite, false otherwise
      */
-    public boolean aclSystemIsMgrServer(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemIsMgrServer(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
 
         SelectMode m = ModeFactory.getMode("System_queries", "is_mgr_server");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        DataResult<Row> dr = m.execute(queryParams);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -126,15 +112,14 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a proxy, false otherwise
      */
-    public boolean aclSystemIsProxy(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemIsProxy(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
 
         SelectMode m = ModeFactory.getMode("System_queries", "is_proxy");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        DataResult<Row> dr = m.execute(queryParams);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -143,9 +128,8 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system has a session
      */
-    public boolean aclSystemKickstartSessionExists(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemKickstartSessionExists(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         return (KickstartFactory.lookupKickstartSessionByServer(sid) != null);
     }
 
@@ -155,10 +139,9 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system has a session
      */
-    public boolean aclCobblerSystemRecordExists(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User)map.get("user");
+    public boolean aclCobblerSystemRecordExists(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User)ctx.get("user");
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         if (StringUtils.isBlank(server.getCobblerId())) {
             return false;
@@ -180,11 +163,10 @@ public class SystemAclHandler extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if the org has proxies
      */
-    public boolean aclOrgHasProxies(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User)map.get("user");
-        List  proxies = ServerFactory.lookupProxiesByOrg(user);
-        return proxies.size() > 0;
+    public boolean aclOrgHasProxies(Map<String, Object> ctx, String[] params) {
+        User user = (User)ctx.get("user");
+        List<Server>  proxies = ServerFactory.lookupProxiesByOrg(user);
+        return !proxies.isEmpty();
     }
 
     /**
@@ -194,13 +176,11 @@ public class SystemAclHandler extends BaseHandler {
      * @param params  Parameters to use
      * @return true if system is minion and uses the contact method
      */
-    public boolean aclSystemHasSaltEntitlementAndContactMethod(
-            Object ctx, String[] params) {
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemHasSaltEntitlementAndContactMethod(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
-            User user = (User) map.get("user");
+            User user = (User) ctx.get("user");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server != null) {
                 ret = server.hasEntitlement(EntitlementManager.SALT) &&

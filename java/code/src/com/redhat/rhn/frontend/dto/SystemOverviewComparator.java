@@ -25,6 +25,7 @@ public class SystemOverviewComparator implements Comparator<SystemOverview> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare(SystemOverview firstObj, SystemOverview secondObj) {
         /*
          * Sorts in descending order:

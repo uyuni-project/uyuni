@@ -60,11 +60,13 @@ public class LookupExceptionHandler extends ExceptionHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void logException(Exception ex) {
         Logger log = LogManager.getLogger(LookupExceptionHandler.class);
         log.warn(ex.getMessage());
     }
 
+    @Override
     protected void storeException(HttpServletRequest request, String property,
                                   ActionMessage msg, ActionForward forward, String scope) {
         if (Config.get().getBoolean(ConfigDefaults.LOOKUP_EXCEPT_SEND_EMAIL)) {

@@ -34,6 +34,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -47,14 +48,14 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         actionPerform();
         assertNotNull(request.getAttribute(KickstartAdvancedOptionsAction.OPTIONS));
     }
 
     @Test
-    public void testSubmit() throws Exception {
+    public void testSubmit() {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         addRequestParameter(KickstartAdvancedOptionsAction.SUBMITTED,
                 Boolean.TRUE.toString());
@@ -107,7 +108,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
      * set. The reqeste params will replace the existing option set
      */
     @Test
-    public void testReplaceSubmit() throws Exception {
+    public void testReplaceSubmit() {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         addRequestParameter(KickstartAdvancedOptionsAction.SUBMITTED,
                 Boolean.TRUE.toString());

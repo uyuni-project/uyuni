@@ -37,6 +37,7 @@ public class PendingActionsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         LocalizationService ls = LocalizationService.getInstance();
         String pendingActionsCSSTable = null;
@@ -87,6 +88,7 @@ public class PendingActionsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/scheduledActions.jsp";
     }

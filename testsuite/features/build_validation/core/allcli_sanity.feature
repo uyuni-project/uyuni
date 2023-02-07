@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -13,10 +13,6 @@ Feature: Sanity checks
     And service "apache2" is active on "server"
     And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "jabberd" is enabled on "server"
-    And service "jabberd" is active on "server"
-    And service "osa-dispatcher" is enabled on "server"
-    And service "osa-dispatcher" is active on "server"
     And service "rhn-search" is enabled on "server"
     And service "rhn-search" is active on "server"
     And service "salt-api" is enabled on "server"
@@ -64,20 +60,6 @@ Feature: Sanity checks
     And reverse resolution should work for "sle12sp5_minion"
     And "sle12sp5_minion" should communicate with the server using public interface
     And the clock from "sle12sp5_minion" should be exact
-
-@sle15_minion
-  Scenario: The SLES 15 minion is healthy
-    Then "sle15_minion" should have a FQDN
-    And reverse resolution should work for "sle15_minion"
-    And "sle15_minion" should communicate with the server using public interface
-    And the clock from "sle15_minion" should be exact
-
-@sle15_ssh_minion
-  Scenario: The SLES 15 Salt SSH minion is healthy
-    Then "sle15_ssh_minion" should have a FQDN
-    And reverse resolution should work for "sle15_ssh_minion"
-    And "sle15_ssh_minion" should communicate with the server using public interface
-    And the clock from "sle15_ssh_minion" should be exact
 
 @sle15sp1_minion
   Scenario: The SLES 15 SP1 minion is healthy
@@ -135,7 +117,7 @@ Feature: Sanity checks
     And "sle15sp4_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp4_ssh_minion" should be exact
 
-@ceos7_minion
+@centos7_minion
   Scenario: The CentOS 7 Salt minion is healthy
     Then "centos7_minion" should have a FQDN
     And reverse resolution should work for "centos7_minion"
@@ -162,6 +144,55 @@ Feature: Sanity checks
     And reverse resolution should work for "rocky8_ssh_minion"
     And "rocky8_ssh_minion" should communicate with the server using public interface
     And the clock from "rocky8_ssh_minion" should be exact
+
+@rocky9_minion
+  Scenario: The Rocky 9 Salt minion is healthy
+    Then "rocky9_minion" should have a FQDN
+    And reverse resolution should work for "rocky9_minion"
+    And "rocky9_minion" should communicate with the server using public interface
+    And the clock from "rocky9_minion" should be exact
+
+@rocky9_ssh_minion
+  Scenario: The Rocky 9 Salt SSH minion is healthy
+    Then "rocky9_ssh_minion" should have a FQDN
+    And reverse resolution should work for "rocky9_ssh_minion"
+    And "rocky9_ssh_minion" should communicate with the server using public interface
+    And the clock from "rocky9_ssh_minion" should be exact
+
+@alma9_minion
+  Scenario: The Alma 9 Salt minion is healthy
+    Then "alma9_minion" should have a FQDN
+    And reverse resolution should work for "alma9_minion"
+    And "alma9_minion" should communicate with the server using public interface
+    And the clock from "alma9_minion" should be exact
+
+@alma9_ssh_minion
+  Scenario: The Alma 9 Salt SSH minion is healthy
+    Then "alma9_ssh_minion" should have a FQDN
+    And reverse resolution should work for "alma9_ssh_minion"
+    And "alma9_ssh_minion" should communicate with the server using public interface
+    And the clock from "alma9_ssh_minion" should be exact
+
+@oracle9_minion
+  Scenario: The Oracle 9 Salt minion is healthy
+    Then "oracle9_minion" should have a FQDN
+    And reverse resolution should work for "oracle9_minion"
+    And "oracle9_minion" should communicate with the server using public interface
+    And the clock from "oracle9_minion" should be exact
+
+@oracle9_ssh_minion
+  Scenario: The Oracle 9 Salt SSH minion is healthy
+    Then "oracle9_ssh_minion" should have a FQDN
+    And reverse resolution should work for "oracle9_ssh_minion"
+    And "oracle9_ssh_minion" should communicate with the server using public interface
+    And the clock from "oracle9_ssh_minion" should be exact
+
+@rhel9_minion
+Scenario: The Red Hat Linux 9 Salt minion is healthy
+  Then "rhel9_minion" should have a FQDN
+  And reverse resolution should work for "rhel9_minion"
+  And "rhel9_minion" should communicate with the server using public interface
+  And the clock from "rhel9_minion" should be exact
 
 @ubuntu1804_minion
   Scenario: The Ubuntu 18.04 Salt minion is healthy
@@ -247,6 +278,20 @@ Feature: Sanity checks
     And "debian11_ssh_minion" should communicate with the server using public interface
     And the clock from "debian11_ssh_minion" should be exact
 
+@opensuse154arm_minion
+  Scenario: The openSUSE 15.4 ARM minion is healthy
+    Then "opensuse154arm_minion" should have a FQDN
+    And reverse resolution should work for "opensuse154arm_minion"
+    And "opensuse154arm_minion" should communicate with the server using public interface
+    And the clock from "opensuse154arm_minion" should be exact
+
+@opensuse154arm_ssh_minion
+  Scenario: The openSUSE 15.4 ARM SSH minion is healthy
+    Then "opensuse154arm_ssh_minion" should have a FQDN
+    And reverse resolution should work for "opensuse154arm_ssh_minion"
+    And "opensuse154arm_ssh_minion" should communicate with the server using public interface
+    And the clock from "opensuse154arm_ssh_minion" should be exact
+
 @sle12sp5_buildhost
   Scenario: The SLES 12 SP5 build host is healthy
     Then "sle12sp5_buildhost" should have a FQDN
@@ -261,9 +306,9 @@ Feature: Sanity checks
     And "sle15sp4_buildhost" should communicate with the server using public interface
     And the clock from "sle15sp4_buildhost" should be exact
 
-@opensuse154arm_minion
-  Scenario: The openSUSE 15.4 ARM minion is healthy
-    Then "opensuse154arm_minion" should have a FQDN
-    And reverse resolution should work for "opensuse154arm_minion"
-    And "opensuse154arm_minion" should communicate with the server using public interface
-    And the clock from "opensuse154arm_minion" should be exact
+@monitoring_server
+  Scenario: The monitoring server is healthy
+    Then "monitoring_server" should have a FQDN
+    And reverse resolution should work for "monitoring_server"
+    And "monitoring_server" should communicate with the server using public interface
+    And the clock from "monitoring_server" should be exact

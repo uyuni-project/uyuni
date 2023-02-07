@@ -633,7 +633,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param channelFamilyIn The channelFamily to add
      */
     public void addChannelFamily(ChannelFamily channelFamilyIn) {
-        if (this.getChannelFamilies().size() > 0) {
+        if (!this.getChannelFamilies().isEmpty()) {
             throw new TooManyChannelFamiliesException(this.getId(),
                     "A channel can only have one channel family");
         }

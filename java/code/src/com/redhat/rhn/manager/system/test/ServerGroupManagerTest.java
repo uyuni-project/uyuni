@@ -51,6 +51,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     private ServerGroupManager manager;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -78,14 +79,14 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAccess() throws Exception {
+    public void testAccess() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         assertTrue(manager.canAccess(user, sg));
 
         User newUser = UserTestUtils.createUser("testDiffUser", user.getOrg().getId());
         assertFalse(manager.canAccess(newUser, sg));
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
         assertTrue(manager.canAccess(newUser, sg));
@@ -99,7 +100,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         sg = (ManagedServerGroup) reload(sg);
@@ -113,7 +114,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
             //passed
         }
 
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
         try {
@@ -146,7 +147,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListNoAssociatedAdmins() throws Exception {
+    public void testListNoAssociatedAdmins() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         TestUtils.flushAndEvict(sg);
@@ -158,17 +159,17 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
           //passed
         }
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Collection groups = manager.listNoAdminGroups(user);
+        Collection<ServerGroup> groups = manager.listNoAdminGroups(user);
 
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(NAME + "ALPHA", DESCRIPTION,
                 user.getOrg());
         TestUtils.flushAndEvict(sg1);
 
-        Collection groups1 = manager.listNoAdminGroups(user);
+        Collection<ServerGroup> groups1 = manager.listNoAdminGroups(user);
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
-        assertEquals(new HashSet(groups), new HashSet(groups1));
+        assertEquals(new HashSet<>(groups), new HashSet<>(groups1));
 
     }
 
@@ -178,18 +179,18 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         User newUser = UserTestUtils.
             createUser("testDiffUser", user.getOrg().getId());
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
 
-        Set expected = new HashSet(admins);
+        Set expected = new HashSet<>(admins);
         expected.add(user);
         assertEquals(expected, sg.getAssociatedAdminsFor(user));
 
         User orgAdmin = UserTestUtils.createUser("testDiffUser",
                 user.getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        List admins1 = new ArrayList();
+        List admins1 = new ArrayList<>();
         admins1.add(orgAdmin);
         manager.associateAdmins(sg, admins1, user);
         //even though we asked the

@@ -1,6 +1,45 @@
-- move web.system_checkin_threshold configuration to database
-- Upgrade Bootstrap to 3.4.1
-- Update translation strings
+- Added pages to install and remove ptf
+
+-------------------------------------------------------------------
+Mon Jan 23 08:32:14 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Fix salt keys page keeps loading when no key exists (bsc#1206799)
+  * Fix link to documentation in monitoring page
+  * Added CLM filters to match product temporary fixes packages
+  * fix frontend logging in react pages
+  * Fix virtual systems list for unentitled systems
+
+-------------------------------------------------------------------
+Mon Dec 19 11:42:59 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+
+-------------------------------------------------------------------
+Wed Dec 14 14:16:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
+
+-------------------------------------------------------------------
+Tue Dec 13 13:30:49 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Prevent proxy data from being logged (bsc#1205339)
+
+-------------------------------------------------------------------
+Fri Nov 18 15:14:52 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Fix checkbox and radio input misalignment
+  * move web.system_checkin_threshold configuration to database
+  * Upgrade Bootstrap to 3.4.1
+  * Update translation strings
 
 -------------------------------------------------------------------
 Thu Sep 29 15:49:30 CEST 2022 - jgonzalez@suse.com

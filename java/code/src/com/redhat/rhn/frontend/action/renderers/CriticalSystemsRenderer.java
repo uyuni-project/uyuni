@@ -42,6 +42,7 @@ public class CriticalSystemsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         DataResult<SystemOverview> mcdr = SystemManager.mostCriticalSystems(user, pc);
 
@@ -72,6 +73,7 @@ public class CriticalSystemsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/mostCriticalSystems.jsp";
     }

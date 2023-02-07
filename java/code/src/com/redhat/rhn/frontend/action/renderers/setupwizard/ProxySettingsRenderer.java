@@ -23,8 +23,6 @@ import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,18 +36,17 @@ public class ProxySettingsRenderer {
 
     /**
      * Save the given proxy settings to the configuration.
+     * @param request the request
      * @param settings map with the keys hostname, username, password
      * @return saved settings
      */
-    public ProxySettingsDto saveProxySettings(ProxySettingsDto settings) {
+    public ProxySettingsDto saveProxySettings(HttpServletRequest request, ProxySettingsDto settings) {
         ProxySettingsDto oldSettings = retrieveProxySettings();
         if (oldSettings.equals(settings)) {
             return settings;
         }
 
         // Find the current user
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
 
@@ -78,12 +75,11 @@ public class ProxySettingsRenderer {
 
     /**
      * Verify the configured proxy settings with SUSE Customer Center.
+     * @param request the request
      * @param refreshCache used to force a cache refresh
      * @return true if the proxy works, false otherwise.
      */
-    public boolean verifyProxySettings(boolean refreshCache) {
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
+    public boolean verifyProxySettings(HttpServletRequest request, boolean refreshCache) {
         return SetupWizardSessionCache.getProxyStatus(refreshCache, request);
     }
 }

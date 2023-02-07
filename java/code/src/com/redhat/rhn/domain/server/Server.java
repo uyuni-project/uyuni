@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
@@ -67,6 +69,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -85,6 +88,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Org org;
     private String digitalServerId;
     private String os;
+    private String osFamily;
     private String release;
     private String name;
     private String description;
@@ -133,6 +137,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String hostname;
     private boolean payg;
     private MaintenanceSchedule maintenanceSchedule;
+    private Boolean hasConfigFeature;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -390,9 +395,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return getConfigChannels().size();
     }
 
+    public void setHasConfigFeature(Boolean hasConfig) {
+        hasConfigFeature = hasConfig;
+    }
+
     private void ensureConfigManageable() {
         if (!getIgnoreEntitlementsForMigration()) {
-            ConfigurationManager.getInstance().ensureConfigManageable(this);
+            if (hasConfigFeature != null) {
+                if (Boolean.FALSE.equals(hasConfigFeature)) {
+                    String msg = "Config feature needs to be enabled on the server" +
+                            " for handling Config Management. The provided server [%s]" +
+                            " does not have have this enabled. Add provisioning" +
+                            " capabilities to the system to enable this..";
+                    throw new PermissionException(String.format(msg, getId()));
+                }
+            }
+            else {
+                ConfigurationManager.getInstance().ensureConfigManageable(this);
+            }
         }
     }
 
@@ -413,7 +433,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param user The user doing the action
      */
     public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
-        configChannelList.forEach(cc -> configListProc.add(getConfigChannels(), cc));
+        ensureConfigManageable();
+        configChannelList.forEach(cc -> configListProc.add(getConfigChannelsHibernate(), cc));
     }
 
     /**
@@ -444,6 +465,28 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Save configuration channels to the database. Only needed if the server has been created using the constructor
+     */
+    public void storeConfigChannels() {
+        HibernateFactory.getSession().createNativeQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid ;")
+                .setParameter("sid", getId())
+                .executeUpdate();
+
+        if (!configChannels.isEmpty()) {
+            String values = IntStream.range(0, configChannels.size())
+                    .boxed()
+                    .map(i -> String.format("(%s, %s, %s)", getId(), configChannels.get(i).getId(), i + 1))
+                    .collect(Collectors.joining(","));
+
+
+            HibernateFactory.getSession().createNativeQuery(
+                            "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
+                                    "VALUES " + values + ";")
+                    .executeUpdate();
+        }
+    }
+
+    /**
      * Protected constructor
      */
     protected Server() {
@@ -453,6 +496,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
         customDataValues = new HashSet<>();
         fqdns = new HashSet<>();
 
+        ignoreEntitlementsForMigration = Boolean.FALSE;
+    }
+
+    /**
+     * Minimal constructor used to avoid loading all properties in SSM config channel subscription
+     *
+     * @param idIn the server id
+     * @param machineIdIn the machine id
+     */
+    public Server(long idIn, String machineIdIn) {
+        id = idIn;
+        machineId = machineIdIn;
+        hasConfigFeature = Boolean.TRUE;
         ignoreEntitlementsForMigration = Boolean.FALSE;
     }
 
@@ -569,22 +625,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public String getOs() {
         return this.os;
-    }
-
-    /**
-     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
-     * @return <code>false</code>.
-     */
-    public boolean doesOsSupportsContainerization() {
-        return false;
-    }
-
-    /**
-     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
-     * @return <code>false</code>.
-     */
-    public boolean doesOsSupportsOSImageBuilding() {
-        return false;
     }
 
     /**
@@ -979,7 +1019,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Optional<ServerFQDN> lookupFqdn(String fqdnName) {
         return this.fqdns.stream()
-                .filter((fqdn) -> fqdn.getName().equals(fqdnName))
+                .filter(fqdn -> fqdn.getName().equals(fqdnName))
                 .findFirst();
     }
 
@@ -1017,7 +1057,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return primaryInterface;
         }
         if (!networkInterfaces.isEmpty()) {
-            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             // First pass look for names
             NetworkInterface ni = null;
 
@@ -1042,7 +1081,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 return ni;
             }
             // Second pass look for localhost
-            i = networkInterfaces.iterator();
+            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             while (i.hasNext()) {
                 NetworkInterface n = i.next();
                 for (ServerNetAddress4 ad4 : n.getIPv4Addresses()) {
@@ -1183,7 +1222,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return String of RAM.
      */
     public String getRamString() {
-        return Long.valueOf(getRam()).toString();
+        return Long.toString(getRam());
     }
 
     /**
@@ -1571,11 +1610,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
      *
      * @return the virtual guests
      */
-    private Set<VirtualInstance> getVirtualGuests() {
+    public Set<VirtualInstance> getVirtualGuests() {
         return guests;
     }
 
-    private void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+    /**
+     * @param virtualGuests the virtual guests to use
+     */
+    public void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+        // This function is used by hibernate
         this.guests = virtualGuests;
     }
 
@@ -1655,7 +1698,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof Server)) {
+        if (!(other instanceof Server)) {
             return false;
         }
         Server castOther = (Server) other;
@@ -1789,7 +1832,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     retval.add(c);
                 }
             }
-            if (retval.size() == 0) {
+            if (retval.isEmpty()) {
                 return new HashSet<>();
             }
             return retval;
@@ -1890,7 +1933,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the ignoreEntitlementsForMigration.
      */
-    public Boolean getIgnoreEntitlementsForMigration() {
+    public boolean getIgnoreEntitlementsForMigration() {
         return ignoreEntitlementsForMigration;
     }
 
@@ -2026,7 +2069,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return active Set of active interaces without lo
      */
     public Set<NetworkInterface> getActiveNetworkInterfaces() {
-        Set<NetworkInterface> active = new HashSet();
+        Set<NetworkInterface> active = new HashSet<>();
         for (NetworkInterface n : networkInterfaces) {
             if (!n.isDisabled()) {
                 active.add(n);
@@ -2136,14 +2179,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Whether server supports monitoring or not.
-     * @return false per default
-     */
-    public boolean doesOsSupportsMonitoring() {
-        return false;
-    }
-
-    /**
      *
      * @return payg
      */
@@ -2235,4 +2270,172 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public PackageType getPackageType() {
         return getServerArch().getArchType().getPackageType();
     }
+
+    /**
+     * Return <code>true</code> if OS on this system supports OS Image building,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports OS Image building
+     */
+    public boolean doesOsSupportsOSImageBuilding() {
+        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
+    }
+
+    /**
+     * Return <code>true</code> if OS on this system supports Containerization,
+     * <code>false</code> otherwise.
+     * <p>
+     * Note: For SLES, we are only checking if it's not 10 nor 11.
+     * Older than SLES 10 are not being checked.
+     * </p>
+     *
+     * @return <code>true</code> if OS supports Containerization
+     */
+    public boolean doesOsSupportsContainerization() {
+        return !isSLES10() && !isSLES11();
+    }
+
+    /**
+     * Return <code>true</code> if OS on this system supports Transactional Update,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports Transactional Update
+     */
+    public boolean doesOsSupportsTransactionalUpdate() {
+        return isSLEMicro();
+    }
+
+    /**
+     * Return <code>true</code> if OS on supports monitoring
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports monitoring
+     */
+    public boolean doesOsSupportsMonitoring() {
+        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
+                isRocky9() || isDebian11() || isDebian10();
+    }
+
+    /**
+     * Return <code>true</code> if OS supports Product Temporary Fixes (PTF)
+     *
+     * @return <code>true</code> if OS supports PTF uninstallation
+     */
+    public boolean doesOsSupportPtf() {
+        return ServerConstants.SLES.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of SLES 10
+     */
+    boolean isSLES10() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("10");
+    }
+
+    /**
+     * @return true if the installer type is of SLES 11
+     */
+    boolean isSLES12() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("12");
+    }
+
+    /**
+     * @return true if the installer type is of SLES 11
+     */
+    boolean isSLES11() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("11");
+    }
+
+    /**
+     * @return true if the installer type is of SLE Micro
+     */
+    boolean isSLEMicro() {
+        return ServerConstants.SLEMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of SLES 15
+     */
+    boolean isSLES15() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
+    }
+
+    boolean isLeap15() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+
+    boolean isUbuntu1804() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
+    }
+
+    boolean isUbuntu2004() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
+    }
+
+    boolean isUbuntu2204() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
+    }
+
+    boolean isDebian11() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
+    }
+
+    boolean isDebian10() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    /**
+     * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
+     */
+    boolean isRedHat6() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
+    }
+
+    boolean isRedHat7() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
+    }
+
+    boolean isRedHat8() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
+    }
+
+    boolean isRedHat9() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
+    }
+
+    boolean isAlibaba2() {
+        return ServerConstants.ALIBABA.equals(getOs());
+    }
+
+    boolean isAmazon2() {
+        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
+    }
+
+    boolean isRocky8() {
+        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("8.");
+    }
+
+    boolean isRocky9() {
+        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("9.");
+    }
+
+    /**
+     * Getter for os family
+     *
+     * @return String to get
+     */
+    public String getOsFamily() {
+        return this.osFamily;
+    }
+
+    /**
+     * Setter for os family
+     *
+     * @param osFamilyIn to set
+     */
+    public void setOsFamily(String osFamilyIn) {
+        this.osFamily = osFamilyIn;
+    }
+
 }

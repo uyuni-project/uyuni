@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,8 +38,9 @@ public class ActionFormatterTest extends RhnBaseTestCase {
 
     private User user;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
@@ -54,10 +56,10 @@ public class ActionFormatterTest extends RhnBaseTestCase {
 
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
-        assertTrue(af.getName().equals("RHN-JAVA Test Action"));
-        assertTrue(af.getActionType().equals("Hardware List Refresh"));
-        assertTrue(af.getNotes().equals("(none)"));
-        assertTrue(af.getScheduler().equals(a.getSchedulerUser().getLogin()));
+        assertEquals("RHN-JAVA Test Action", af.getName());
+        assertEquals("Hardware List Refresh", af.getActionType());
+        assertEquals("(none)", af.getNotes());
+        assertEquals(af.getScheduler(), a.getSchedulerUser().getLogin());
         assertNotNull(af.getEarliestDate());
 
     }
@@ -99,7 +101,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
-        assertTrue(af.getActionType().equals("Patch Update"));
+        assertEquals("Patch Update", af.getActionType());
         String start = "<strong><a href=\"/rhn/errata/details/Details.do?eid=";
         String end = "</a></strong><br/><br/><strong>Test synopsis</strong><br/>" +
             "<br/>" + ErrataFactory.ERRATA_TYPE_BUG +
@@ -120,7 +122,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         a.setSchedulerUser(user);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
-        assertTrue(af.getActionType().equals("Run an arbitrary script"));
+        assertEquals("Run an arbitrary script", af.getActionType());
         String start = "Run as: <strong>AFTestTestUser:AFTestTestGroup";
         String end = "</strong><br/><br/><div style=\"padding-left: 1em\">" +
             "<code>#!/bin/csh<br/>ls -al</code></div><br/>";

@@ -17,14 +17,6 @@ package com.redhat.rhn.frontend.action;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.renderers.CriticalSystemsRenderer;
-import com.redhat.rhn.frontend.action.renderers.FragmentRenderer;
-import com.redhat.rhn.frontend.action.renderers.InactiveSystemsRenderer;
-import com.redhat.rhn.frontend.action.renderers.LatestErrataRenderer;
-import com.redhat.rhn.frontend.action.renderers.PendingActionsRenderer;
-import com.redhat.rhn.frontend.action.renderers.RecentSystemsRenderer;
-import com.redhat.rhn.frontend.action.renderers.SystemGroupsRenderer;
-import com.redhat.rhn.frontend.action.renderers.TasksRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -34,9 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,64 +40,24 @@ public class YourRhnAction extends RhnAction {
 
     public static final String ANY_LISTS_SELECTED = "anyListsSelected";
 
-    /**
-     * No-arg constructor
-     */
-    public YourRhnAction() {
-        Map renderers = new HashMap();
-
-        List tasks = Arrays.asList(Pane.ALL_PANES);
-        for (Object taskIn : tasks) {
-            String key = (String) taskIn;
-            FragmentRenderer renderer = null;
-            if (key.equals(Pane.TASKS)) {
-                renderer = new TasksRenderer();
-            }
-            else if (key.equals(Pane.CRITICAL_SYSTEMS)) {
-                renderer = new CriticalSystemsRenderer();
-            }
-            else if (key.equals(Pane.INACTIVE_SYSTEMS)) {
-                renderer = new InactiveSystemsRenderer();
-            }
-            else if (key.equals(Pane.LATEST_ERRATA)) {
-                renderer = new LatestErrataRenderer();
-            }
-            else if (key.equals(Pane.PENDING_ACTIONS)) {
-                renderer = new PendingActionsRenderer();
-            }
-            else if (key.equals(Pane.RECENTLY_REGISTERED_SYSTEMS)) {
-                renderer = new RecentSystemsRenderer();
-            }
-            else if (key.equals(Pane.SYSTEM_GROUPS)) {
-                renderer = new SystemGroupsRenderer();
-            }
-            else if (key.equals(Pane.TASKS)) {
-                renderer = new TasksRenderer();
-            }
-            if (renderer != null) {
-                renderers.put(key, renderer);
-            }
-        }
-    }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
-        Map panes = getDisplayPanes(user);
+        Map<String, Pane> panes = getDisplayPanes(user);
         boolean anyListsSelected = false;
 
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(5);
 
-        if (panes != null && panes.size() > 0) {
+        if (!panes.isEmpty()) {
             anyListsSelected = true;
-            for (Object oIn : panes.keySet()) {
-                String key = (String) oIn;
-                key = formatKey(key);
-                request.setAttribute(key, "y");
+            for (String key : panes.keySet()) {
+                request.setAttribute(formatKey(key), "y");
             }
         }
         request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
@@ -130,15 +80,14 @@ public class YourRhnAction extends RhnAction {
         return buf.toString();
     }
 
-    private Map getDisplayPanes(User user) {
-        Map panes = PaneFactory.getAllPanes();
-        Set hiddenPanes = user.getHiddenPanes();
-        Map mergedPanes = new HashMap();
+    private Map<String, Pane> getDisplayPanes(User user) {
+        Map<String, Pane> panes = PaneFactory.getAllPanes();
+        Set<Pane> hiddenPanes = user.getHiddenPanes();
+        Map<String, Pane> mergedPanes = new HashMap<>();
 
-        for (Object oIn : panes.values()) {
-            Pane pane = (Pane) oIn;
+        for (Pane pane : panes.values()) {
             if (!hiddenPanes.contains(pane)) {
-                Pane actualPane = (Pane) panes.get(pane.getLabel());
+                Pane actualPane = panes.get(pane.getLabel());
                 if (actualPane.isValidFor(user)) {
                     mergedPanes.put(actualPane.getLabel(), actualPane);
                 }

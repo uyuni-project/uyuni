@@ -29,6 +29,7 @@ public class RhnMockPageContext extends MockPageContext {
     /**
      * @return Returns the response.
      */
+    @Override
     public ServletResponse getResponse() {
         return response;
     }

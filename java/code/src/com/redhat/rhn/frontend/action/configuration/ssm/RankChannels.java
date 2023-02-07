@@ -113,8 +113,7 @@ public class RankChannels extends BaseRankChannels {
     @Override
     protected void populateWidgetLabels(LinkedHashSet labelValues,
                                             RequestContext context) {
-        // TODO Auto-generated method stub
-
+        // Not needed
     }
 
     private void updateSet(DynaActionForm form, RhnSet set) {
@@ -129,9 +128,8 @@ public class RankChannels extends BaseRankChannels {
     }
 
     @Override
-    protected void processParams(RequestContext context, Map map) {
-        // TODO Auto-generated method stub
-
+    protected void processParams(RequestContext context, Map<String, String> map) {
+        // Not needed
     }
 
 }

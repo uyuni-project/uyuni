@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.util.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
@@ -25,33 +25,28 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DynamicComparatorTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testComparatorMaps() {
-        List list = generateRandomList();
-        DynamicComparator comp = new DynamicComparator("stringField",
+        List<TestObject> list = generateRandomList();
+        DynamicComparator<TestObject> comp = new DynamicComparator<>("stringField",
                 RequestContext.SORT_ASC);
         list.sort(comp);
-        assertTrue(((TestObject) list.get(0)).getStringField().equals("A"));
-        assertTrue(((TestObject) list.get(list.size() - 1)).getStringField().equals("Z"));
+        assertEquals("A", list.get(0).getStringField());
+        assertEquals("Z", list.get(list.size() - 1).getStringField());
     }
 
-    public static List generateRandomList() {
-        List retval = new LinkedList();
-        List letters = LocalizationService.getInstance().getAlphabet();
+    public static List<TestObject> generateRandomList() {
+        List<String> letters = LocalizationService.getInstance().getAlphabet();
         Collections.shuffle(letters);
-        for (Object letterIn : letters) {
+        return letters.stream().map(letter -> {
             TestObject to = new TestObject();
-            to.setStringField((String) letterIn);
-            retval.add(to);
-        }
-        return retval;
+            to.setStringField(letter);
+            return to;
+        }).collect(Collectors.toList());
     }
-
-
-
 }

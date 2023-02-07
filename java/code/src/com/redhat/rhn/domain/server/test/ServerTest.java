@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -34,6 +37,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -41,6 +45,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -76,7 +81,32 @@ public class ServerTest extends BaseTestCaseWithUser {
     );
 
     @Test
-    public void testIsInactive() throws Exception {
+    public void testSsmForSubscribe() throws Exception {
+        Server s = ServerTestUtils.createTestSystem(user);
+        s.setMachineId("themachineid");
+
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 2", "cfg-channel-2");
+        s.subscribeConfigChannels(List.of(channel1, channel2), user);
+        long sid = s.getId();
+        TestUtils.saveAndFlush(s);
+        RhnSetDecl.SYSTEMS.get(user).addElement(sid);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        ssm.addElement(sid);
+        RhnSetFactory.save(ssm);
+        List<Server> inSSM = ServerFactory.listSystemsInSsm(user);
+        assertEquals(1, inSSM.size());
+
+        List<Server> servers = ServerFactory.getSsmSystemsForSubscribe(user);
+        assertEquals(1, servers.size());
+        assertNull(servers.get(0).getName());
+        assertEquals(2, servers.get(0).getConfigChannelCount());
+    }
+
+    @Test
+    public void testIsInactive() {
         Server s = ServerFactory.createServer();
         s.setServerInfo(new ServerInfo());
         Calendar pcal = Calendar.getInstance();
@@ -96,7 +126,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
         s = reload(s);
-        assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
+        assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
     }
 
     @Test
@@ -262,6 +292,19 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 9.
+     */
+    @Test
+    public void testOsSupportsMonitoringRedHat9() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("9");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
     @Test
@@ -352,7 +395,7 @@ public class ServerTest extends BaseTestCaseWithUser {
             setOrg(user.getOrg());
             EntitlementServerGroup group = serverGroupManager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
-            List servers = new ArrayList();
+            List servers = new ArrayList<>();
             servers.add(this);
             serverGroupManager.addServers(group, servers, user);
         }

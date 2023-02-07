@@ -32,10 +32,11 @@ import javax.servlet.http.HttpServletResponse;
 public class MiscIndexAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm)formIn;

@@ -13,8 +13,6 @@ Feature: Use salt formulas
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
-     And I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
-     And I refresh the metadata for "sle_minion"
 
   Scenario: The new formula appears on the server
      When I follow the left menu "Salt > Formula Catalog"
@@ -164,8 +162,6 @@ Feature: Use salt formulas
 
   Scenario: Cleanup: uninstall formula package from the server
      When I manually uninstall the "locale" formula from the server
-     And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
-     And I refresh the metadata for "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I click on "Clear"
+     When I click on the clear SSM button

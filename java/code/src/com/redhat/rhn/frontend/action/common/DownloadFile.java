@@ -172,8 +172,7 @@ public class DownloadFile extends DownloadAction {
             super.execute(mapping, formIn, request, response);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            log.error("Package retrieval error on file download url: {}", url);
+            log.error("Package retrieval error on file download url: {}", url, e);
             return mapping.findForward("error");
         }
 

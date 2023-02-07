@@ -54,10 +54,10 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         ConfigRevisionActionResult result = new ConfigRevisionActionResult();
 
         cra.setCreated(now);
-        assertTrue(now.equals(cra.getCreated()));
+        assertEquals(now, cra.getCreated());
 
         cra.setModified(now);
-        assertTrue(now.equals(cra.getModified()));
+        assertEquals(now, cra.getModified());
 
         cra.setFailureId(three);
         assertEquals(three, cra.getFailureId());
@@ -66,16 +66,16 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         assertEquals(three, cra.getId());
 
         cra.setParentAction(parent);
-        assertTrue(parent.equals(cra.getParentAction()));
+        assertEquals(parent, cra.getParentAction());
 
         cra.setServer(server);
-        assertTrue(server.equals(cra.getServer()));
+        assertEquals(server, cra.getServer());
 
         cra.setConfigRevision(revision);
-        assertTrue(revision.equals(cra.getConfigRevision()));
+        assertEquals(revision, cra.getConfigRevision());
 
         cra.setConfigRevisionActionResult(result);
-        assertTrue(result.equals(cra.getConfigRevisionActionResult()));
+        assertEquals(result, cra.getConfigRevisionActionResult());
     }
 
     /**

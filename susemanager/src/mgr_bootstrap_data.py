@@ -330,6 +330,10 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
     "venv-salt-minion*",
 ]
 
+PKGLISTMICRO_BUNDLE_ONLY = [
+    "venv-salt-minion",
+]
+
 ONLYSLE15 = [
     "gio-branding-SLE",
 ]
@@ -775,7 +779,7 @@ DATA = {
     },
     'SLES4SAP-12-x86_64' : {
         'PDID' : 1319, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLE-12-SP1-ppc64le' : {
         'PDID' : 1334, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
@@ -791,11 +795,11 @@ DATA = {
     },
     'SLES4SAP-12-SP1-ppc64le' : {
         'PDID' : 1437, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-x86_64' : {
         'PDID' : 1346, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'RES6-x86_64' : {
         'PDID' : [1138], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1053,6 +1057,42 @@ DATA = {
         'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
+    'SLE-MICRO-5.1-aarch64' : {
+        'PDID' : [2282, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-s390x' : {
+        'PDID' : [2287, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-x86_64' : {
+        'PDID' : [2283, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.2-aarch64' : {
+        'PDID' : [2399, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-s390x' : {
+        'PDID' : [2400, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-x86_64' : {
+        'PDID' : [2401, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.3-aarch64' : {
+        'PDID' : [2426, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
+    },
+    'SLE-MICRO-5.3-s390x' : {
+        'PDID' : [2427, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
+    },
+    'SLE-MICRO-5.3-x86_64' : {
+        'PDID' : [2428, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
+    },
     'openSUSE-Leap-15-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/0/bootstrap/'
@@ -1201,6 +1241,14 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
+    'oracle-9-x86_64' : {
+        'PDID' : [-41, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
+    'oracle-9-aarch64' : {
+        'PDID' : [-40, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
     'oracle-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux9-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
@@ -1253,6 +1301,14 @@ DATA = {
         'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
+    'SUSE-LibertyLinux9-x86_64' : {
+        'PDID' : [-35, 2538, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
+    'RHEL9-x86_64' : {
+        'PDID' : [-35, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
     'RHEL9-x86_64-uyuni' : {
         'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
@@ -1280,6 +1336,14 @@ DATA = {
     'almalinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-9-x86_64' : {
+        'PDID' : [-38, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-aarch64' : {
+        'PDID' : [-39, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
     },
     'almalinux-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux9-x86_64', 'PKGLIST' : RES9,
@@ -1312,6 +1376,14 @@ DATA = {
     'rockylinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
+    },
+    'rockylinux-9-x86_64' : {
+        'PDID' : [-36, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
+    'rockylinux-9-aarch64' : {
+        'PDID' : [-37, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
     },
     'rockylinux-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'rockylinux9-x86_64', 'PKGLIST' : RES9,

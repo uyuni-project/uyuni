@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -232,7 +233,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Org org,
             String moduleName,
             Map<String, String> parameters) {
-        getLogger().debug("Creating VirtualHostManager with label '{}'.", label);
+        if (getLogger().isDebugEnabled()) {
+            getLogger().debug("Creating VirtualHostManager with label '{}'.", StringUtil.sanitizeLogInput(label));
+        }
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -64,7 +65,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         satAdmin = UserTestUtils.createSatAdminInOrgOne();
 
         assertTrue(admin.hasRole(RoleFactory.ORG_ADMIN));
-        assertTrue(!regular.hasRole(RoleFactory.ORG_ADMIN));
+        assertFalse(regular.hasRole(RoleFactory.ORG_ADMIN));
         assertTrue(satAdmin.hasRole(RoleFactory.SAT_ADMIN));
 
         //setup session keys

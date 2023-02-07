@@ -92,14 +92,12 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param id the system id of the guest
      * @return the guest's virtual instance
      */
+    @SuppressWarnings("unchecked")
     public VirtualInstance lookupByGuestId(Long id) {
         Session session = HibernateFactory.getSession();
-        VirtualInstance results = (VirtualInstance) session.getNamedQuery(
+        return (VirtualInstance) session.getNamedQuery(
                 "VirtualInstance.lookupGuestBySid").
                 setParameter("sid", id).uniqueResult();
-
-        return results;
-
     }
 
     /**
@@ -162,18 +160,19 @@ public class VirtualInstanceFactory extends HibernateFactory {
      *
      * @see GuestAndNonVirtHostView
      */
-    public Set findGuestsWithNonVirtHostByOrg(Org org) {
+    @SuppressWarnings("unchecked")
+    public Set<GuestAndNonVirtHostView> findGuestsWithNonVirtHostByOrg(Org org) {
         Session session = HibernateFactory.getSession();
-        List results = session.getNamedQuery(
+        List<Object[]> results = session.getNamedQuery(
                 "VirtualInstance.findGuestsWithNonVirtHostByOrg").
                 setParameter("org_id", org.getId()).list();
 
-        return new HashSet(convertToView(results));
+        return new HashSet<>(convertToView(results));
     }
 
     /**
      * transforms a result set of
-     * guest.id as guest_id,
+     * guest.id as guest_id
      * guest.org_id as guest_org_id,
      * guest.name as guest_name,
      * host.org_id as host_org_id,
@@ -182,21 +181,20 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param result a list of Object array of  id,name, count
      * @return list of GuestAndNonVirtHostView objects
      */
-    private static List convertToView(List out) {
-        List ret = new ArrayList(out.size());
-        /**
-         * guest.id as guest_id,
+    private static List<GuestAndNonVirtHostView> convertToView(List<Object[]> out) {
+        List<GuestAndNonVirtHostView> ret = new ArrayList<>(out.size());
+        /*
+         guest.id as guest_id,
          guest.org_id as guest_org_id,
          guest.name as guest_name,
          host.org_id as host_org_id,
          host.id as host_id,
          host.name as host_name
          */
-        for (Object oIn : out) {
-            Object[] row = (Object[]) oIn;
+        for (Object[] row : out) {
 
-            /**
-             * guest.id as guest_id,
+            /*
+             guest.id as guest_id,
              guest.org_id as guest_org_id,
              guest.name as guest_name,
              host.org_id as host_org_id,
@@ -235,14 +233,15 @@ public class VirtualInstanceFactory extends HibernateFactory {
      *
      * @see GuestAndNonVirtHostView
      */
-    public Set findGuestsWithoutAHostByOrg(Org org) {
+    @SuppressWarnings("unchecked")
+    public Set<GuestAndNonVirtHostView> findGuestsWithoutAHostByOrg(Org org) {
         Session session = HibernateFactory.getSession();
 
-        List results = session.getNamedQuery(
+        List<GuestAndNonVirtHostView> results = session.getNamedQuery(
                 "VirtualInstance.findGuestsWithoutAHostByOrg").setParameter("org", org)
                 .list();
 
-        return new HashSet(results);
+        return new HashSet<>(results);
     }
 
     /**

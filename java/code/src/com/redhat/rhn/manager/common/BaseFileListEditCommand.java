@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.common;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.user.User;
@@ -45,6 +44,7 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
     /**
      * @return Returns the user.
      */
+    @Override
     public User getUser() {
         return user;
     }
@@ -64,13 +64,6 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
     public void setLabel(String labelIn) {
         this.newLabel = labelIn;
     }
-
-    /**
-     * Store the FileList.
-     *
-     * @return ValidatorError[] if there were errors before the save.
-     */
-    public abstract ValidatorError store();
 
     /**
      * Parse the incoming list of files by newline.

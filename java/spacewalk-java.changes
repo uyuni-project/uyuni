@@ -1,17 +1,161 @@
-- Process salt events in FIFO order (bsc#1203532)
-- Added a warning message for traditional stack deprecation
-- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
-- Remove 'SSM' column text where not applicable (bsc#1203588)
-- Improve systems lists queries performance by using an overview table
-- Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
-- Deny packages from older module metadata when building CLM projects (bsc#1201893)
-- Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
-- Upgrade Bootstrap to 3.4.1
-- Improve Amazon EC2/Nitro detection (bsc#1203685)
-- Add channel availability check for product migration (bsc#1200296)
-- delay hardware refresh action to avoid missing channels (bsc#1204208)
-- fix xmlrpc call randomly failing with translation error (bsc#1203633)
-- Do not explicitely remove old pillars on minion rename (bsc#1203451)
+- Added APIs to allow frontend to install and remove ptf
+- Fix not being able to delete CLM environment if there are custom child
+  channels that where not built by the environment (bsc#1206932)
+- Makes systems column sortable on relevant patch page, to list by most affected systems
+
+-------------------------------------------------------------------
+Fri Jan 27 17:10:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.11-1
+  * action chains: recognize transactional_update.reboot as a reboot action
+
+-------------------------------------------------------------------
+Mon Jan 23 14:24:31 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.10-1
+  * Fix issue where subscription warning would show incorrectly
+
+-------------------------------------------------------------------
+Mon Jan 23 08:31:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.9-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Include missing 'gpg' states to avoid issues on SSH minions.
+  * Fix reconnection of postgres event stream
+  * Standardize the login response format with other HTTP API endpoints (bsc#1206800)
+  * Add `mgr_server_is_uyuni` minion pillar item
+  * Improve logs when sls action chain file is missing
+  * Fix modular channel check during system update via XMLRPC (bsc#1206613)
+  * Fix transaction commit behavior for Spark routes
+  * Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+  * Fix CVE Audit ignoring errata in parent channels if patch in successor
+    product exists (bsc#1206168)
+  * Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+  * Rename monitoring entitlement
+  * Remove outdated advice from errata mail
+  * Fix name for autoinstall snippets after Cobbler 3.3.3
+  * prevent ISE on activation key page when selected base channel value is null
+  * Add systems and hibernate metrics collectors (#14240)
+  * Fix HTTP API login status code when using wrong credentials (bsc#1206666)
+  * Fix physical systems list
+  * Configure the reboot action for transactional systems appropriately
+  * Fix link to documentation in monitoring page
+  * Fix server error in product migration outside maintenance window (bsc#1206276)
+  * Show the package summary where applicable to better describe PTF packages
+  * Added CLM filters to match product temporary fixes packages
+  * Restrict product temporary fixes visibility in the UI and in the
+    APIs responses
+  * Fixed empty selection warning in the lock/unlock page
+  * set GPG Key Url for PTF repositories
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+  * Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
+  * Virtual systems list performance improvements
+  * Do not show systems from other organizations in virtual systems list
+
+-------------------------------------------------------------------
+Mon Dec 19 11:42:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.8-1
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+
+-------------------------------------------------------------------
+Fri Dec 16 17:36:28 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Don't use hash in apidoc links
+
+-------------------------------------------------------------------
+Thu Dec 15 14:31:15 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Limit changelog data in generated metadata to 20 entries
+
+-------------------------------------------------------------------
+Wed Dec 14 14:16:07 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Fix internal server error when transferring system between organizations
+  * Fix products controller to keep loading mandatory channels even when there are
+    broken channels (bsc#1204270)
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * send notifications also as email if email notifications are enabled
+  * remove jabberd and osa-dispatcher
+  * Add subscription warning notification to overview page
+  * Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
+  * Remove invalid errata selection after patch installation (bsc#1204235)
+  * Ignore insert conflicts during reporting database update (bsc#1202150)
+  * Honor page size preference in new system lists
+  * Fix kickstart for RHEL 9 to not add install command
+  * Remove RHEL kickstart types below 6
+  * Removed contents of certificates from the web UI logs (bsc#1204715)
+  * Add SUSE Liberty Linux support for RHEL9 based clients
+  * Don't persist the YAML parser in FormulaFactory (bsc#1205754)
+  * check for NULL in DEB package install size value
+  * Add vendor_advisory to errata.getDetails (bsc#1205207)
+  * Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
+  * disable cloned vendor channel auto selection by default (bsc#1204186)
+
+-------------------------------------------------------------------
+Tue Dec 13 13:30:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Changed proxy settings retrieval to not include password (bsc#1205339)
+
+-------------------------------------------------------------------
+Fri Nov 18 15:14:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+  * Fixed traditional stack warning message to be displayed only when the system
+    has enterprise entitlement (bsc#1205350)
+  * Update jackson-databind version
+  * adapt permissions of temporary ssh key directory
+  * format results for package, errata and image build actions in
+    system history similar to state apply results
+  * Run only minion actions that are in the pending status (bsc#1205012)
+  * Fix ClassCastException
+  * Migrate formulas with default values to database (bsc#1204932)
+  * Improved reboot needed handling for transactional systems
+  * Manage reboot in transactional update action chain (bsc#1201476)
+  * Enable monitoring for RHEL 9 Salt clients
+  * Optimize performance of config channels operations for UI and API (bsc#1204029)
+  * Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+  * Improved taskomatic error logging
+  * Optimize action chain processing on job return event (bsc#1203532)
+  * Re-calculate salt event queue numbers on restart
+  * Check if system has all formulas correctly assigned
+    (bsc#1201607)
+  * Remove group formula assignements and data on group delete
+    (bsc#1201606)
+  * Process salt events in FIFO order (bsc#1203532)
+  * Added a warning message for traditional stack deprecation
+  * Fix rendering of ssm/MigrateSystems page (bsc#1204651)
+  * Remove 'SSM' column text where not applicable (bsc#1203588)
+  * Improve systems lists queries performance by using an overview table
+  * Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
+  * Deny packages from older module metadata when building CLM projects (bsc#1201893)
+  * Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
+  * Upgrade Bootstrap to 3.4.1
+  * Improve Amazon EC2/Nitro detection (bsc#1203685)
+  * Add channel availability check for product migration (bsc#1200296)
+  * delay hardware refresh action to avoid missing channels (bsc#1204208)
+  * fix xmlrpc call randomly failing with translation error (bsc#1203633)
+  * Do not explicitely remove old pillars on minion rename (bsc#1203451)
+
+-------------------------------------------------------------------
+Fri Nov 04 17:14:18 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Fix directory path traversal vulnerability CVE-2022-31255 (bsc#1204543)
+  * Fix reflected cross site scripting vulnerability CVE-2022-43754 (bsc#1204741)
+  * Fix arbitrary file disclosure vulnerability CVE-2022-43753 (bsc#1204716)
+  * Fix number of handlers for deleted files managed by taskomatic
+    growing continuously (bsc#1204050)
 
 -------------------------------------------------------------------
 Wed Sep 28 11:15:58 CEST 2022 - jgonzalez@suse.com

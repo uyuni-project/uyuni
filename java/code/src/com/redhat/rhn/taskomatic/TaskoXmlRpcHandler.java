@@ -16,6 +16,11 @@ package com.redhat.rhn.taskomatic;
 
 import static org.quartz.TriggerKey.triggerKey;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
@@ -29,9 +34,11 @@ import org.quartz.Trigger;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -125,12 +132,12 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 startTime, endTime, cronExpression);
         TaskoFactory.save(schedule);
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
         }
         return scheduleDate;
     }
@@ -256,7 +263,7 @@ public class TaskoXmlRpcHandler {
      * @throws InvalidParamException shall not be thrown
      */
     public Date scheduleSingleSatBunchRun(String bunchName, String jobLabel,
-            Map<?, ?> params, Date start)
+                                          Map<?, ?> params, Date start)
         throws NoSuchBunchTaskException, InvalidParamException {
         return scheduleSingleBunchRun(null, bunchName, jobLabel, params, start);
     }
@@ -325,12 +332,12 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 start, null, null);
         TaskoFactory.save(schedule);
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
         }
         return scheduleDate;
     }
@@ -366,7 +373,7 @@ public class TaskoXmlRpcHandler {
                     .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
             TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params, start, null, null);
             TaskoFactory.save(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
 
             // create job
             Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
@@ -375,7 +382,7 @@ public class TaskoXmlRpcHandler {
             }
             scheduleDates.add(scheduleDate);
         }
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         return scheduleDates;
     }
 
@@ -651,5 +658,19 @@ public class TaskoXmlRpcHandler {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Create a BootstrapRepoFailed Notification and assign it to SUSE Manager administrators
+     * @param identifier bootstrap repo identifier label
+     * @param details error details
+     * @return 1 when finished
+     */
+    public int createBootstrapRepoFailedNotification(String identifier, String details) {
+        NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                new CreateBootstrapRepoFailed(identifier, details));
+        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                Collections.singleton(RoleFactory.SAT_ADMIN), Optional.empty());
+        return 1;
     }
 }

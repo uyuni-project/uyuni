@@ -96,13 +96,11 @@ public class RegistrationUtils {
      * @param activationKey the activation key
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
+     * @param isSaltSSH true if the minion is ssh push minion
      */
     public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
-            Optional<User> creator, boolean enableMinionService) {
+            Optional<User> creator, boolean enableMinionService, boolean isSaltSSH) {
         String minionId = minion.getMinionId();
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
         // Generate pillar data
         try {
@@ -130,10 +128,13 @@ public class RegistrationUtils {
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+        if (minion.doesOsSupportsTransactionalUpdate()) {
+            statesToApply.add(ApplyStatesEventMessage.TRANSACTIONAL_REBOOT_CONFIG);
+        }
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
-        else {
+        if (isSaltSSH) {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
@@ -207,10 +208,10 @@ public class RegistrationUtils {
                     e.isAllowedOnServer(server, grains) &&
                     systemEntitlementManager.canEntitleServer(server, e)) {
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     LOG.warn(vr.getWarnings().toString());
                 }
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     LOG.error(vr.getErrors().toString());
                 }
             }
@@ -375,9 +376,9 @@ public class RegistrationUtils {
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
-                            x.getOracleReleaseContent(), x.getAlibabaReleaseContent(), x.getAlmaReleaseContent(),
-                            x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
+                            server, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
+                            x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
+                            x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

@@ -98,7 +98,6 @@ public class CheckinCandidatesResolver {
      *
      * @return list of checkin candidates
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> findCheckinCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME, this.findCheckinCandidatesQuery);
         Map<String, Object> params = new HashMap<>();

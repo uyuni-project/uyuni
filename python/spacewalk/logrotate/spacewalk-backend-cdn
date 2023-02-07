@@ -2,23 +2,21 @@
 #
 
 /var/log/rhn/cdnsync.log {
-    weekly
     rotate 5
     copytruncate
     compress
     notifempty
     missingok
-    size=10M
+    size 10M
 #LOGROTATE-3.8#    su root apache
 }
 
 /var/log/rhn/cdnsync/*.log {
-    weekly
     rotate 5
     copytruncate
     compress
     delaycompress
     notifempty
     missingok
-    size=10M
+    size 10M
 }

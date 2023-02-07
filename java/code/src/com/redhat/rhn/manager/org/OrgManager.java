@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.MultiOrgAllUserOverview;
 import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
 import com.redhat.rhn.frontend.dto.OrgChannelDto;
 import com.redhat.rhn.frontend.dto.OrgDto;
@@ -87,8 +88,7 @@ public class OrgManager extends BaseManager {
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "orgs_in_satellite");
 
-        return DataList.getDataList(m, Collections.EMPTY_MAP,
-                Collections.EMPTY_MAP);
+        return DataList.getDataList(m, Collections.emptyMap(), Collections.emptyMap());
     }
 
     private static PermissionException getNoAdminError(Role role, String list) {
@@ -114,8 +114,7 @@ public class OrgManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
 
-        return DataList.getDataList(m, params,
-                Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -124,7 +123,6 @@ public class OrgManager extends BaseManager {
      * @param orgIdIn The org to check.
      * @return A list of orgs with a trusted indicator for each.
      */
-    @SuppressWarnings("unchecked")
     public static DataList<OrgTrustOverview> orgTrusts(User user, Long orgIdIn) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw getNoAdminError(RoleFactory.SAT_ADMIN, "trusted org list");
@@ -132,7 +130,7 @@ public class OrgManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Org_queries", "trust_overview");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -144,7 +142,7 @@ public class OrgManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_multiorg");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -159,18 +157,16 @@ public class OrgManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", cid);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
      *
      * @return all users on sat
      */
-    public static DataList allUsers() {
-        SelectMode m = ModeFactory.getMode("User_queries",
-                "all_users_in_multiorg");
-        return DataList.getDataList(m, Collections.EMPTY_MAP,
-                Collections.EMPTY_MAP);
+    public static DataList<MultiOrgAllUserOverview> allUsers() {
+        SelectMode m = ModeFactory.getMode("User_queries", "all_users_in_multiorg");
+        return DataList.getDataList(m, Collections.emptyMap(), Collections.emptyMap());
     }
 
     /**
@@ -281,7 +277,7 @@ public class OrgManager extends BaseManager {
      */
     public static void checkOrgName(String newOrgName) throws ValidatorException {
         if (newOrgName == null ||
-                newOrgName.trim().length() == 0 ||
+                newOrgName.trim().isEmpty() ||
                 newOrgName.trim().length() < 3 ||
                 newOrgName.trim().length() > 128) {
             ValidatorException.raiseException("orgname.jsp.error");

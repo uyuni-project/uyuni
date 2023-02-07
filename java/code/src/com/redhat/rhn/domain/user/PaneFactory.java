@@ -44,23 +44,22 @@ public class PaneFactory {
      * @return Map of Pane objects, with the label as the key
      *            Also preserves the ordering returned by the Pane query.
      */
-    public static Map getAllPanes() {
-        Session session = null;
+    public static Map<String, Pane> getAllPanes() {
+        Session session;
         try {
             session = HibernateFactory.getSession();
-            List list = session.getNamedQuery("Pane.findAllPanes").list();
-            Map paneMap = new LinkedHashMap();
-            for (Object oIn : list) {
-                Pane pane = (Pane) oIn;
+            List<Pane> list = session.getNamedQuery("Pane.findAllPanes").list();
+            Map<String, Pane> paneMap = new LinkedHashMap<>();
+            for (Pane pane : list) {
                 paneMap.put(pane.getLabel(), pane);
             }
             return paneMap;
         }
         catch (HibernateException he) {
-            log.error("Hibernate exception while retirevieng panes: ", he);
+            log.error("Hibernate exception while retrieving panes: ", he);
 
         }
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
 }

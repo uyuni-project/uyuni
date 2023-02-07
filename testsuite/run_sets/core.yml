@@ -22,6 +22,7 @@
 # initialize Uyuni proxy
   # one of: proxy_register_as_minion_with_script.feature
   #         proxy_register_as_minion_with_gui.feature
+  #         proxy_register_as_pod.feature
 - features/core/proxy_register_as_minion_with_script.feature
 - features/core/proxy_branch_network.feature
 

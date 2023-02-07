@@ -98,4 +98,3 @@ select
 from
     rhnServer S
 ;
-

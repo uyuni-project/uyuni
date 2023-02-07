@@ -38,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -71,6 +70,8 @@ public abstract class HibernateFactory {
     private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
     private static final Logger LOG = LogManager.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
+
+    public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
 
     protected HibernateFactory() {
     }
@@ -119,6 +120,14 @@ public abstract class HibernateFactory {
     }
 
     /**
+     * Register Prometheus Statistics Collector component name
+     * @param componentName Name of the application component which will be added to the metric as the `unit` label
+     */
+    public static void registerComponentName(String componentName) {
+        connectionManager.setComponentName(componentName);
+    }
+
+    /**
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      * @return Logger for this class.
@@ -131,32 +140,27 @@ public abstract class HibernateFactory {
      * class of the given object.
      * @param query Query to be modified.
      * @param parameters named query parameters to be bound.
-     * @return Modified Query.
      * @throws HibernateException if there is a problem with updating the Query.
      * @throws ClassCastException if the key in the given Map is NOT a String.
      */
-    private Query bindParameters(Query query, Map parameters)
+    private <T> void bindParameters(Query<T> query, Map<String, Object> parameters)
         throws HibernateException {
         if (parameters == null) {
-            return query;
+            return;
         }
 
-        Set entrySet = parameters.entrySet();
-        for (Object oIn : entrySet) {
-            Map.Entry entry = (Map.Entry) oIn;
+        for (Map.Entry<String, Object> entry: parameters.entrySet()) {
             if (entry.getValue() instanceof Collection) {
-                Collection c = (Collection) entry.getValue();
+                Collection<?> c = (Collection<?>) entry.getValue();
                 if (c.size() > 1000) {
                     LOG.error("Query executed with Collection larger than 1000");
                 }
-                query.setParameterList((String) entry.getKey(), c);
+                query.setParameterList(entry.getKey(), c);
             }
             else {
-                query.setParameter((String) entry.getKey(), entry.getValue());
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
-
-        return query;
     }
 
     /**
@@ -168,7 +172,7 @@ public abstract class HibernateFactory {
      * map can also be null.
      * @return Object found by named query or null if nothing found.
      */
-    protected Object lookupObjectByNamedQuery(String qryName, Map qryParams) {
+    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams) {
         return lookupObjectByNamedQuery(qryName, qryParams, false);
     }
 
@@ -182,18 +186,15 @@ public abstract class HibernateFactory {
      * @param cacheable if we should cache the results of this object
      * @return Object found by named query or null if nothing found.
      */
-    protected Object lookupObjectByNamedQuery(String qryName, Map qryParams,
+    @SuppressWarnings("unchecked")
+    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams,
             boolean cacheable) {
-        Object retval = null;
-        Session session = null;
-
         try {
-            session = HibernateFactory.getSession();
+            Session session = HibernateFactory.getSession();
 
-            Query query = session.getNamedQuery(qryName)
-                    .setCacheable(cacheable);
+            Query<T> query = session.getNamedQuery(qryName).setCacheable(cacheable);
             bindParameters(query, qryParams);
-            retval = query.uniqueResult();
+            return query.uniqueResult();
         }
         catch (MappingException me) {
             throw new HibernateRuntimeException("Mapping not found for " + qryName, me);
@@ -202,8 +203,6 @@ public abstract class HibernateFactory {
             throw new HibernateRuntimeException("Executing query " + qryName +
                     " with params " + qryParams + " failed", he);
         }
-
-        return retval;
     }
 
     /**
@@ -216,7 +215,7 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams) {
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams) {
         return listObjectsByNamedQuery(qryName, qryParams, false);
     }
 
@@ -232,24 +231,23 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams,
-                                        Collection col, String colLabel) {
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams,
+                                        Collection<Long> col, String colLabel) {
 
         if (col.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
-        ArrayList<Long> tmpList = new ArrayList<>();
-        List<Long> toRet = new ArrayList<>();
-        tmpList.addAll(col);
+        List<Long> tmpList = new ArrayList<>(col);
+        List<T> toRet = new ArrayList<>();
 
         for (int i = 0; i < col.size();) {
-            int initial = i;
-            int fin = i + 500 < col.size() ? i + 500 : col.size();
+            int fin = Math.min(i + 500, col.size());
             List<Long> sublist = tmpList.subList(i, fin);
 
-            qryParams.put(colLabel, sublist);
-            toRet.addAll(listObjectsByNamedQuery(qryName, qryParams, false));
+            Map<String, Object> params = new HashMap<>(qryParams);
+            params.put(colLabel, sublist);
+            toRet.addAll(listObjectsByNamedQuery(qryName, params, false));
             i = fin;
         }
         return toRet;
@@ -268,16 +266,13 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams,
-            boolean cacheable) {
-        Session session = null;
-        List retval = null;
-        session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery(qryName);
+    @SuppressWarnings("unchecked")
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams, boolean cacheable) {
+        Session session = HibernateFactory.getSession();
+        Query<T> query = session.getNamedQuery(qryName);
         query.setCacheable(cacheable);
         bindParameters(query, qryParams);
-        retval = query.list();
-        return retval;
+        return query.list();
     }
 
     /**
@@ -369,6 +364,32 @@ public abstract class HibernateFactory {
      */
     public static void commitTransaction() throws HibernateException {
         connectionManager.commitTransaction();
+    }
+
+    /**
+     * Roll back transaction in case it is not committed and close the Hibernate session.
+     *
+     * @param committed - if it was possible to commit the transaction.
+     */
+    public static void rollbackTransactionAndCloseSession(boolean committed) {
+        try {
+            if (!committed) {
+                try {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Rolling back transaction");
+                    }
+                    HibernateFactory.rollbackTransaction();
+                }
+                catch (HibernateException e) {
+                    final String msg = "Additional error during rollback";
+                    LOG.warn(msg, e);
+                }
+            }
+        }
+        finally {
+            // cleanup the session
+            HibernateFactory.closeSession();
+        }
     }
 
     /**
@@ -515,14 +536,7 @@ public abstract class HibernateFactory {
         String retval = "";
 
         if (barr != null) {
-            try {
-                retval = new String(barr, "UTF-8");
-            }
-            catch (UnsupportedEncodingException uee) {
-                throw new RuntimeException("Illegal Argument: " +
-              "This VM or environment doesn't support UTF-8: Data - " +
-                                                 barr, uee);
-            }
+            retval = new String(barr, StandardCharsets.UTF_8);
         }
         return retval;
     }
@@ -575,14 +589,7 @@ public abstract class HibernateFactory {
             return null;
         }
 
-        try {
-            return data.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Illegal Argument: " +
-            "This VM or environment doesn't support UTF-8 - Data - " +
-                                             data, e);
-        }
+        return data.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -729,7 +736,7 @@ public abstract class HibernateFactory {
 
     protected static void executeCallableMode(String name, String mode, Map params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
 
     /**

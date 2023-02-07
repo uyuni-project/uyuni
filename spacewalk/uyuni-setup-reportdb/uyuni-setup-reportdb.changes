@@ -1,3 +1,17 @@
+- improve postgres user check
+
+-------------------------------------------------------------------
+Mon Jan 23 08:26:26 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * uyuni-setup-reportdb: Test postgres user (bsc#1205088)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:10:46 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Fix password generation in uyuni-setup-reportdb (bsc#1205919)
+
 -------------------------------------------------------------------
 Wed Sep 28 11:01:10 CEST 2022 - jgonzalez@suse.com
 

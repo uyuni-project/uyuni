@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
  */
-public class SSHPush extends RhnQueueJob {
+public class SSHPush extends RhnQueueJob<SSHPushDriver> {
 
     public static final String QUEUE_NAME = "ssh_push";
     private static Logger log = null;
@@ -47,7 +47,7 @@ public class SSHPush extends RhnQueueJob {
      * {@inheritDoc}
      */
     @Override
-    protected Class<?> getDriverClass() {
+    protected Class<SSHPushDriver> getDriverClass() {
         return SSHPushDriver.class;
     }
 

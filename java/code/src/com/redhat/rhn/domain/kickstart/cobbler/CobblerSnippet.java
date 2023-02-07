@@ -30,7 +30,7 @@ import java.io.File;
 /**
  * CobblerSnippet - Class representation of a Cobbler snippet
  */
-public class CobblerSnippet implements Comparable {
+public class CobblerSnippet implements Comparable<CobblerSnippet> {
     private File path;
     private Org org;
 
@@ -125,7 +125,7 @@ public class CobblerSnippet implements Comparable {
         validateFileName(nameIn);
         CobblerSnippet snippy = new CobblerSnippet();
         snippy.org = orgIn;
-        snippy.path = new File(getPrefixFor(snippy.org) + "/" + nameIn);
+        snippy.path = new File(getPrefixFor(snippy.org) + File.separator + nameIn);
         return snippy;
     }
 
@@ -138,7 +138,7 @@ public class CobblerSnippet implements Comparable {
      * @return the cobbler snippet. or null if doesn't exist
      */
     public static CobblerSnippet loadEditableIfExists(String nameIn, Org orgIn) {
-        File f = new File(getPrefixFor(orgIn) + "/" + nameIn);
+        File f = new File(getPrefixFor(orgIn) + File.separator + nameIn);
         if (f.exists()) {
             return loadEditable(nameIn, orgIn);
         }
@@ -225,8 +225,7 @@ public class CobblerSnippet implements Comparable {
     public void delete() {
         verifyEditable();
         if (!path.exists() || !path.delete()) {
-            ValidatorException.raiseException("cobbler.snippet.couldnotdelete.message",
-                                                                    getName());
+            ValidatorException.raiseException("cobbler.snippet.couldnotdelete.message", getName());
         }
     }
 
@@ -326,16 +325,15 @@ public class CobblerSnippet implements Comparable {
     }
 
     private static boolean isCommonPath(File path) {
-        boolean isFileInsideSpacewalkTopLevelDir = path.isFile() &&
-                    path.getParentFile().equals(getSpacewalkSnippetsDir());
+        File normalizedPath = path.toPath().toAbsolutePath().normalize().toFile();
+        boolean isFileInsideSpacewalkTopLevelDir = normalizedPath.isFile() &&
+                    normalizedPath.getParentFile().equals(getSpacewalkSnippetsDir());
         if (isFileInsideSpacewalkTopLevelDir) {
             return true;
         }
 
-        return !path.getAbsolutePath().startsWith(
-                        getSpacewalkSnippetsDir().getAbsolutePath()) &&
-                    path.getAbsolutePath().
-                            startsWith(getCobblerSnippetsDir().getAbsolutePath());
+        return !normalizedPath.getAbsolutePath().startsWith(getSpacewalkSnippetsDir().getAbsolutePath()) &&
+                normalizedPath.getAbsolutePath().startsWith(getCobblerSnippetsDir().getAbsolutePath());
     }
 
     private void verifyEditable() {
@@ -347,6 +345,7 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -362,6 +361,7 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder b = new HashCodeBuilder();
         b.append(getPath());
@@ -371,11 +371,11 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
-    public int compareTo(Object o) {
-        if (equals(o)) {
+    @Override
+    public int compareTo(CobblerSnippet that) {
+        if (equals(that)) {
             return 0;
         }
-        CobblerSnippet that = (CobblerSnippet) o;
         return that.getPath().compareTo(getPath());
     }
 }

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.domain;
 
-import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -89,7 +89,7 @@ public class TaskoSchedule {
             if ((cronExpr == null) || (cronExpr.isEmpty())) {
                 // set activeTill for single runs
                 setActiveTill(new Date());
-                TaskoFactory.commitTransaction();
+                HibernateFactory.commitTransaction();
             }
         }
     }
@@ -117,7 +117,7 @@ public class TaskoSchedule {
         return baos.toByteArray();
     }
 
-    private Map getDataMapFromBlob(byte[] blob) {
+    private Map<String, Object> getDataMapFromBlob(byte[] blob) {
         Object obj = null;
 
         try {
@@ -129,9 +129,9 @@ public class TaskoSchedule {
             }
         }
         catch (Exception e) {
-            // return null;
+            // Do nothing
         }
-        return (Map) obj;
+        return (Map<String, Object>) obj;
     }
 
     /**
@@ -146,7 +146,7 @@ public class TaskoSchedule {
      * get job parameters
      * @return job paramters
      */
-    public Map getDataMap() {
+    public Map<String, Object> getDataMap() {
         return getDataMapFromBlob(getData());
     }
 

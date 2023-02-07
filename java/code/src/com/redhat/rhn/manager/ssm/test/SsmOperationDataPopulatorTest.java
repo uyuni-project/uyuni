@@ -42,8 +42,9 @@ import java.util.List;
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
+    @Override
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         // Override so the base class' tearDown doesn't rollback the transaction;
         // for this class we want the data to be persisted and remain there
     }
@@ -87,7 +88,7 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
         super.commitAndCloseSession();
     }
 
-    private List<Server> createServersForUser(User user, int count) throws Exception {
+    private List<Server> createServersForUser(User user, int count) {
         List<Server> servers = new ArrayList<>(count);
 
         for (int ii = 0; ii < count; ii++) {

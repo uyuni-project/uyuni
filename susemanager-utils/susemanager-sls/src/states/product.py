@@ -100,4 +100,4 @@ def all_installed(name, refresh=False, **kwargs):
         log.debug("All products are already installed. Nothing to do.")
         return ret
 
-    return __states__['pkg.installed'](name, pkgs=to_install)
+    return __states__['pkg.installed'](name, pkgs=to_install, no_recommends=True)

@@ -1,5 +1,7 @@
-# Copyright (c) 2014-2022 SUSE LLC.
+# Copyright (c) 2014-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the execution of commands on a system.
 
 require 'timeout'
 require 'nokogiri'
@@ -42,7 +44,12 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}", check_errors: false)
+  unless return_code.zero?
+    sleep 2
+    puts "re-try ping"
+    node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  end
   $server.run("ping -c 1 #{node.public_ip}")
 end
 
@@ -73,7 +80,7 @@ Then(/^it should be possible to use the HTTP proxy$/) do
 end
 
 Then(/^it should be possible to use the custom download endpoint$/) do
-  url = "#{$custom_download_endpoint}/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml"
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -162,7 +169,6 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
   end
   node = get_target(host)
   if deb_host?(host)
-    node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
     pkg_version_regexp = pkg_version.gsub('.', '\\.')
@@ -171,6 +177,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     else
       node.run_until_fail("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
     end
+    node.wait_while_process_running('apt-get')
   else
     node.wait_while_process_running('zypper')
     if status == 'installed'
@@ -236,10 +243,14 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
-When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" service is (active|inactive) on "([^"]*)"$/) do |service, status, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
-  node.run_until_ok(cmd)
+  repeat_until_timeout do
+    out, _err, _code = node.run(cmd, check_errors: false, separated_results: true)
+    break if out.strip == status
+    sleep 2
+  end
 end
 
 When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
@@ -367,8 +378,19 @@ end
 # rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
   raise "Errors during reposync:\n#{result}" if code.zero?
+end
+
+Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
+  logfiles = list.split(",")
+  logfiles.each do |logs|
+    _result, code = $server.run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
+    if code.zero?
+      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: true)
+      raise "Errors during #{logs} reposync:\n#{result}" if code.zero?
+    end
+  end
 end
 
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
@@ -497,6 +519,15 @@ end
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
   return_code = file_inject(node, file, File.basename(file))
+  raise 'File injection failed' unless return_code.zero?
+end
+
+When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_host, to_host|
+  from_node = get_target(from_host)
+  to_node = get_target(to_host)
+  return_code = file_extract(from_node, file_path, file_path)
+  raise 'File extraction failed' unless return_code.zero?
+  return_code = file_inject(to_node, file_path, file_path)
   raise 'File injection failed' unless return_code.zero?
 end
 
@@ -632,7 +663,6 @@ end
 
 When(/^I wait until rhn-search is responding$/) do
   step %(I wait until "rhn-search" service is active on "server")
-  $api_test.auth.login('admin', 'admin')
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     begin
       log "Search by hostname: #{$minion.hostname}"
@@ -644,7 +674,6 @@ When(/^I wait until rhn-search is responding$/) do
       sleep 3
     end
   end
-  $api_test.auth.logout
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
@@ -659,6 +688,11 @@ end
 
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
   raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
+end
+
+When(/^I (start|stop) "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
+  node = get_target(host)
+  node.run("systemctl #{action} #{service}")
 end
 
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -747,14 +781,6 @@ When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, 
   @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
 end
 
-When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
-end
-
-When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
-end
-
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
@@ -781,16 +807,10 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
-    opt_repos = ''
     repos.split(' ').map do |repo|
-      if repo =~ /_ltss_/
-        opt_repos = "#{opt_repos} #{repo}"
-      else
-        mand_repos = "#{mand_repos} #{repo}"
-      end
+      mand_repos = "#{mand_repos} #{repo}"
     end
-    cmd = "zypper mr --#{action} #{opt_repos} ||:;" unless opt_repos.empty?
-    cmd += "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
+    cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
   elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
@@ -929,7 +949,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1031,18 +1051,6 @@ When(/^I restart squid service on the proxy$/) do
   $proxy.run("systemctl restart squid.service")
 end
 
-Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
-  # for testing buildtime of generated metadata - See bsc#1078056
-  node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
-  metadata_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
-  rpm_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
-end
-
 When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|
   command = "spacecmd -u admin -p admin -- configchannel_create -n #{name} -t  #{type}"
   $server.run(command)
@@ -1076,13 +1084,13 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
-  raise '/var/testsuite-data/disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
-  node.run("cp /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+  raise '/var/testsuite-data/leap-disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/leap-disk-image-template.qcow2')
+  node.run("cp /var/testsuite-data/leap-disk-image-template.qcow2 #{disk_path}")
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   # Use 'ide' bus for Xen and 'virtio' bus for KVM
-  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  bus_type = 'virtio'
   node.run(
     "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
     "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
@@ -1468,11 +1476,10 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  os_version = node.os_version
+  os_version = node.os_version.gsub('-SP', '.')
   os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    repositories.concat(' os_pool_repo os_update_repo')
     if $product != 'Uyuni'
       repositories.concat(' tools_additional_repo')
       # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
@@ -1518,7 +1525,7 @@ When(/^I copy unset package file on server$/) do
   raise 'File injection failed' unless return_code.zero?
 end
 
-And(/^I copy vCenter configuration file on server$/) do
+When(/^I copy vCenter configuration file on server$/) do
   base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
   return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
@@ -1540,12 +1547,14 @@ Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
-Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
-  raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
+  node = get_target(host)
+  raise "Folder exists" if folder_exists?(node, folder)
 end
 
-When(/^I ensure folder "(.*?)" doesn't exist$/) do |folder|
-  folder_delete($server, folder) if folder_exists?($server, folder)
+When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
+  node = get_target(host)
+  folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
 ## ReportDB ##
@@ -1673,4 +1682,40 @@ end
 Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node = get_target(target)
   node.run("iptables -F INPUT")
+end
+
+When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
+  # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
+  command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+            " -- -o #{file_path} -p 8022 #{$proxy.full_hostname.sub('pxy', 'pod-pxy')} #{$server.full_hostname}" \
+            " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
+            " && rm cert_pass"
+  $server.run(command)
+end
+
+When(/^I add avahi hosts in Containerized Proxy configuration$/) do
+  if $server.full_hostname.include? 'tf.local'
+    hosts_list = ""
+    $host_by_node.each do |node, _host|
+      hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
+    end
+    hosts_list = escape_regex(hosts_list)
+    regex = "s/^#?EXTRA_POD_ARGS=.*$/EXTRA_POD_ARGS=#{hosts_list}/g;"
+    $proxy.run("sed -i.bak -Ee '#{regex}' /etc/sysconfig/uyuni-proxy-systemd-services")
+    log "Avahi hosts added: #{hosts_list}"
+    log 'The Development team has not been working to support avahi in Containerized Proxy, yet. This is best effort.'
+  else
+    log 'Record not added - avahi domain was not detected'
+  end
+end
+
+When(/^I remove offending SSH key of "([^"]*)" at port "([^"]*)" for "([^"]*)" on "([^"]*)"$/) do |key_host, key_port, known_hosts_path, host|
+  system_name = get_system_name(key_host)
+  node = get_target(host)
+  node.run("ssh-keygen -R [#{system_name}]:#{key_port} -f #{known_hosts_path}")
+end
+
+When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
+  node = get_target(host)
+  node.run_until_ok("lsof  -i:#{port}")
 end

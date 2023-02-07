@@ -39,6 +39,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -49,7 +50,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
 
 
         actionPerform();

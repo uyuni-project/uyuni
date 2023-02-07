@@ -314,6 +314,7 @@ class TestSCErrata:
                               "XF:weblogic-http-response-information(00000) "
                               "URL:http://www.iss.net/security_center/static/00000.php ",
                 "advisory_status": "retracted",
+                "vendor_advisory": "https://www.test.com/support/update/update-up-123456-1",
 
             },
             {
@@ -343,6 +344,7 @@ class TestSCErrata:
                               "URL:http://www.securityfocus.com/bid/1111 "
                               "XF:weblogic-http-response-information(11111) "
                               "URL:http://www.iss.net/security_center/static/11111.php ",
+                "vendor_advisory": "https://www.test.com/support/update/update-up-123456-2",
 
             },
         ])
@@ -403,7 +405,8 @@ class TestSCErrata:
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
                                  'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
                                  'Integer ac justo\narcu.',
-                                 '', 'CVEs', '----', 'CVE-1\nCVE-1a', '', 'Solution', '--------',
+                                 '', 'CVEs', '----', 'CVE-1\nCVE-1a', '', 'Vendor Advisory', '---------------',
+                                 'https://www.test.com/support/update/update-up-123456-1', '', 'Solution', '--------',
                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
                                  'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
@@ -428,7 +431,8 @@ class TestSCErrata:
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
                                  'cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. '
                                  'Integer ac justo\narcu.',
-                                 '', 'CVEs', '----', 'CVE-2\nCVE-2a\nCVE-2b', '', 'Solution', '--------',
+                                 '', 'CVEs', '----', 'CVE-2\nCVE-2a\nCVE-2b', '', 'Vendor Advisory', '---------------',
+                                 'https://www.test.com/support/update/update-up-123456-2', '', 'Solution', '--------',
                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
                                  'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
@@ -484,13 +488,15 @@ class TestSCErrata:
         assert_list_args_expect(mprint.call_args_list,
                                 ['Name:       cve-one', 'Product:    N/A', 'Type:       N/A', 'Status:     N/A',
                                  'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------', 'N/A',
-                                 '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '', 'References',
+                                 '', 'CVEs', '----', '', '', 'Vendor Advisory', '---------------', 'N/A',
+                                 '', 'Solution', '--------', 'N/A', '', 'References',
                                  '----------', 'N/A', '', 'Affected Channels',
                                  '-----------------', '', '', 'Affected Systems', '----------------', '0', '',
                                  'Affected Packages', '-----------------', 'pico-1-234.x86\nvim-42-123.x86',
                                  '----------', 'Name:       cve-two', 'Product:    N/A', 'Type:       N/A',
                                  'Status:     N/A', 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description',
-                                 '-----------', 'N/A', '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '',
+                                 '-----------', 'N/A', '', 'CVEs', '----', '', '', 'Vendor Advisory', '---------------',
+                                 'N/A', '', 'Solution', '--------', 'N/A', '',
                                  'References', '----------', 'N/A', '', 'Affected Channels', '-----------------', '',
                                  '', 'Affected Systems', '----------------', '0', '', 'Affected Packages',
                                  '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])

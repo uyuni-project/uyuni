@@ -51,7 +51,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.4.1
+Version:        4.4.7
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -71,7 +71,7 @@ Requires(pre):  %{apache_pkg}
 Requires:       %{apache_pkg}
 Requires:       python3-pycurl
 # for Debian support
-Requires:       python3-debian
+Requires:       python3-debian >= 0.1.44
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif

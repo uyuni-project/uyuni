@@ -15,7 +15,6 @@ Feature: Disable and re-enable monitoring of the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
   # This assumes that monitoring is enabled via sumaform
   Scenario: Disable monitoring from the UI
     When I follow the left menu "Admin > Manager Configuration > Monitoring"

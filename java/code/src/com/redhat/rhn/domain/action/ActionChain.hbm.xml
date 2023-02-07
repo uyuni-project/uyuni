@@ -96,4 +96,20 @@
         ]]>
     </query>
 
+    <query name="ActionChain.getActionChainsByServer">
+        <![CDATA[
+            SELECT DISTINCT ac
+            FROM
+                com.redhat.rhn.domain.action.ActionChainEntry ace,
+                com.redhat.rhn.domain.action.ActionChain ac,
+                com.redhat.rhn.domain.action.Action a,
+                com.redhat.rhn.domain.action.server.ServerAction sa
+            WHERE
+                ac.id = ace.actionChain.id
+                AND a.id = ace.action.id
+                AND a.id = sa.parentAction.id
+                AND sa.server.id = :id
+        ]]>
+    </query>
+
 </hibernate-mapping>

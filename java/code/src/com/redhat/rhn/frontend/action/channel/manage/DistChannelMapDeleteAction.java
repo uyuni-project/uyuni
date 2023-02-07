@@ -35,10 +35,11 @@ import javax.servlet.http.HttpServletResponse;
 public class DistChannelMapDeleteAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
 

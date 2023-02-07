@@ -20,7 +20,6 @@ package com.redhat.rhn.domain.action;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -67,12 +66,9 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, String label) {
         log.debug("Looking up Action Chain with label {}", label);
-        return (ActionChain) singleton.lookupObjectByNamedQuery(
+        return singleton.lookupObjectByNamedQuery(
                 "ActionChain.getActionChainByLabel",
-                new HashMap<String, Object>() { {
-                    put("user", requestor);
-                    put("label", label);
-                } }
+                Map.of("user", requestor, "label", label)
         );
     }
 
@@ -89,17 +85,12 @@ public class ActionChainFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        ActionChain ac = (ActionChain) singleton.lookupObjectByNamedQuery(
-            "ActionChain.getActionChain",
-            new HashMap<String, Object>() { {
-                put("user", requestor);
-                put("id", id);
-            } }
+        ActionChain ac = singleton.lookupObjectByNamedQuery("ActionChain.getActionChain",
+           Map.of("user", requestor, "id", id)
         );
         if (ac == null) {
             throw new ObjectNotFoundException(ActionChain.class,
-                            "ActionChain Id " + id + " not found for User " +
-                            requestor.getLogin());
+                            "ActionChain Id " + id + " not found for User " + requestor.getLogin());
         }
         return ac;
     }
@@ -120,20 +111,17 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain Entry
      * @throws ObjectNotFoundException if there is no such id accessible to the requestor
      */
-    public static ActionChainEntry getActionChainEntry(User requestor, Long id)
-    throws ObjectNotFoundException {
+    public static ActionChainEntry getActionChainEntry(User requestor, Long id) throws ObjectNotFoundException {
         if (id == null) {
             return null;
         }
-        ActionChainEntry ace = (ActionChainEntry) getSession()
-                        .load(ActionChainEntry.class, id);
+        ActionChainEntry ace = getSession().load(ActionChainEntry.class, id);
 
-        if (ace.getActionChain().getUser().getId().longValue() ==
-                        requestor.getId().longValue()) {
+        if (ace.getActionChain().getUser().getId().longValue() == requestor.getId().longValue()) {
             return ace;
         }
         throw new ObjectNotFoundException(ActionChainEntry.class,
-        "ActionChainEntry Id " + id + " not found for User " + requestor.getLogin());
+            "ActionChainEntry Id " + id + " not found for User " + requestor.getLogin());
     }
 
     /**
@@ -210,40 +198,13 @@ public class ActionChainFactory extends HibernateFactory {
      * @param action the action
      * @param actionChain the action chain
      * @param serverId the server id
-     * @return the action chain entry
-     */
-    public static ActionChainEntry queueActionChainEntry(Action action,
-        ActionChain actionChain, Long serverId) {
-        // this does not hit the database, as it returns a lazy object
-        Server server = (Server) getSession().load(Server.class, serverId);
-        return queueActionChainEntry(action, actionChain, server);
-    }
-
-    /**
-     * Creates a new entry in an Action Chain object.
-     * @param action the action
-     * @param actionChain the action chain
-     * @param serverId the server id
      * @param sortOrder the required sort order
      * @return the action chain entry
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Long serverId, int sortOrder) {
-        Server server = (Server) getSession().load(Server.class, serverId);
+        Server server = getSession().load(Server.class, serverId);
         return queueActionChainEntry(action, actionChain, server, sortOrder);
-    }
-
-    /**
-     * Creates a new entry in an Action Chain object.
-     *
-     * @param action the action
-     * @param actionChain the action chain
-     * @param systemOverview the server overview object
-     * @return the action chain entry
-     */
-    public static ActionChainEntry queueActionChainEntry(Action action,
-        ActionChain actionChain, SystemOverview systemOverview) {
-        return queueActionChainEntry(action, actionChain, systemOverview.getId());
     }
 
     /**
@@ -251,12 +212,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @param requestor the user whose chains we're looking for
      * @return action chains
      */
-    @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChains(User requestor) {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChains",
-                new HashMap<String, Object>() { { put("user", requestor); } }
-        );
+        return singleton.listObjectsByNamedQuery("ActionChain.getActionChains", Map.of("user", requestor));
     }
 
     /**
@@ -264,11 +221,9 @@ public class ActionChainFactory extends HibernateFactory {
      * @param requestor the user whose chain we're looking for
      * @return action chains
      */
-    @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChainsByModificationDate(User requestor) {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChainsByModificationDate",
-                new HashMap<String, Object>() { { put("user", requestor); } }
+        return singleton.listObjectsByNamedQuery("ActionChain.getActionChainsByModificationDate",
+                Map.of("user", requestor)
         );
     }
 
@@ -278,13 +233,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain an Action Chain
      * @return a list of corresponding groups
      */
-    @SuppressWarnings("unchecked")
-    public static List<ActionChainEntryGroup> getActionChainEntryGroups(
-        final ActionChain actionChain) {
-        return singleton.listObjectsByNamedQuery(
-            "ActionChainEntry.getGroups",
-            new HashMap<String, Object>() { { put("id", actionChain.getId()); } }
-        );
+    public static List<ActionChainEntryGroup> getActionChainEntryGroups(final ActionChain actionChain) {
+        return singleton.listObjectsByNamedQuery("ActionChainEntry.getGroups", Map.of("id", actionChain.getId()));
     }
 
     /**
@@ -293,27 +243,22 @@ public class ActionChainFactory extends HibernateFactory {
      * @param sortOrder the sort order
      * @return an entry list
      */
-    @SuppressWarnings("unchecked")
-    public static List<ActionChainEntry> getActionChainEntries(
-        final ActionChain actionChain, final Integer sortOrder) {
-        return singleton.listObjectsByNamedQuery(
-            "ActionChainEntry.getActionChainEntries",
-            new HashMap<String, Object>() { {
-                put("id", actionChain.getId());
-                put("sortOrder", sortOrder);
-            } }
+    public static List<ActionChainEntry> getActionChainEntries(final ActionChain actionChain, final Integer sortOrder) {
+        return singleton.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
+           Map.of("id", actionChain.getId(), "sortOrder", sortOrder)
         );
     }
 
     /**
-     * Returns all existing ActionChains in the database
-     *
-     * @return an ActionChain list
+     * Gets all action chains scheduled for given server
+     * @param server the server
+     * @return action chains
      */
-    public static List<ActionChain> getAllActionChains() {
+    public static List<ActionChain> getActionChainsByServer(Server server) {
         return singleton.listObjectsByNamedQuery(
-                "ActionChain.getAllActionChains", new HashMap<String, Object>());
+                "ActionChain.getActionChainsByServer", Map.of("id", server.getId()));
     }
+
 
     /**
      * Gets the next sort order value.
@@ -321,10 +266,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the next sort order value
      */
     public static int getNextSortOrderValue(final ActionChain actionChain) {
-        return (Integer) singleton.lookupObjectByNamedQuery(
-            "ActionChain.getNextSortOrderValue",
-            new HashMap<String, Object>() { { put("id", actionChain.getId()); } }
-        );
+        return singleton.lookupObjectByNamedQuery("ActionChain.getNextSortOrderValue",
+            Map.of("id", actionChain.getId()));
     }
 
     /**
@@ -342,14 +285,11 @@ public class ActionChainFactory extends HibernateFactory {
      * @param date first action's minimum timestamp
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static void schedule(ActionChain actionChain, Date date)
-        throws TaskomaticApiException {
-
+    public static void schedule(ActionChain actionChain, Date date) throws TaskomaticApiException {
         log.debug("Scheduling Action Chain {} to date {}", actionChain, date);
         Map<Server, Action> latest = new HashMap<>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
-        Map<Server, List<Action>> minionActions = new HashMap<>();
 
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {
@@ -387,8 +327,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain An ActionChain from which to be removed.
      * @param removedOrder sort order of the (already) removed entry
      */
-    public static void removeActionChainEntrySortGaps(ActionChain actionChain,
-            int removedOrder) {
+    public static void removeActionChainEntrySortGaps(ActionChain actionChain, int removedOrder) {
         Set<ActionChainEntry> entries = actionChain.getEntries();
 
         for (ActionChainEntry entry : entries) {
@@ -430,9 +369,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @return if the action chains contains any minion
      */
     public static boolean isActionChainTargettingMinions(final ActionChain actionChain) {
-        return ((Long)singleton.lookupObjectByNamedQuery(
-            "ActionChain.countMinionsInActionChain",
-            new HashMap<String, Object>() { { put("actionchain_id", actionChain.getId()); } }
+        return ((Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
+            Map.of("actionchain_id", actionChain.getId())
         ) > 0);
     }
 }

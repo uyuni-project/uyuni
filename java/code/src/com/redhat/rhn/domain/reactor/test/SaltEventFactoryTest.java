@@ -26,7 +26,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +83,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPopSaltEvents() throws NoSuchAlgorithmException {
+    public void testPopSaltEvents() {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
@@ -181,6 +180,44 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
+
+    @Test
+    public void testFixQueueNumbers() {
+        // verify there are no salt events
+        List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(5);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L, 0L), saltEventsCount);
+
+        // create events in queue 1
+        SaltEvent saltEvent1 = new SaltEvent(1L, "minion_1", "data_minion_1", 1);
+        insertIntoSuseSaltEvent(saltEvent1);
+        SaltEvent saltEvent2 = new SaltEvent(2L, "minion_2", "data_minion_2", 1);
+        insertIntoSuseSaltEvent(saltEvent2);
+        SaltEvent saltEvent3 = new SaltEvent(3L, "minion_3", "data_minion_3", 1);
+        insertIntoSuseSaltEvent(saltEvent3);
+        SaltEvent saltEvent4 = new SaltEvent(4L, "minion_4", "data_minion_4", 1);
+        insertIntoSuseSaltEvent(saltEvent4);
+
+        SaltEventFactory.fixQueueNumbers(4);
+        // events should be spread across queues 1-4
+        // particular queue number depends on the hashing algorithm
+        saltEventsCount = SaltEventFactory.countSaltEvents(5);
+        assertEquals(Arrays.asList(0L, 2L, 0L, 1L, 1L), saltEventsCount);
+
+        SaltEventFactory.fixQueueNumbers(2);
+        // events should be re-arranged in queues 1-2, queues 3-4 should be emptied
+        saltEventsCount = SaltEventFactory.countSaltEvents(5);
+        assertEquals(Arrays.asList(0L, 3L, 1L, 0L, 0L), saltEventsCount);
+
+        // pop the events
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 1).collect(Collectors.toList());
+        assertEquals(popedSaltEvents.size(), 3);
+        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 2).collect(Collectors.toList());
+        assertEquals(popedSaltEvents.size(), 1);
+
+        saltEventsCount = SaltEventFactory.countSaltEvents(5);
+        assertEquals(Arrays.asList(0L, 0L, 0L, 0L, 0L), saltEventsCount);
+    }
+
 
     private void insertIntoSuseSaltEvent(SaltEvent saltEvent) {
         Query query = HibernateFactory.getSession().createNativeQuery(INSERT_INTO_SUSE_SALT_EVENT_QUERY);

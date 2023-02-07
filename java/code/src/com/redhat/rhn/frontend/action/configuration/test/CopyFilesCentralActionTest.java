@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class CopyFilesCentralActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         //Create the revision to copy

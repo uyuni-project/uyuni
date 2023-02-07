@@ -46,7 +46,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
      */
     public KickstartOptionsCommand(Long ksid, User userIn) {
         super(ksid, userIn);
-        this.availableOptions = KickstartFactory.lookupKickstartCommandNames(this.ksdata);
+        this.availableOptions = KickstartFactory.lookupKickstartCommandNames();
         this.requiredOptions = KickstartFactory.lookupKickstartRequiredOptions();
     }
 
@@ -119,7 +119,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
      * @return new display list of values for ui
      */
     public List refreshOptions(Map mapIn) {
-        List l = new LinkedList();
+        List l = new LinkedList<>();
 
         for (KickstartCommandName cn : availableOptions) {
             String name = cn.getName();

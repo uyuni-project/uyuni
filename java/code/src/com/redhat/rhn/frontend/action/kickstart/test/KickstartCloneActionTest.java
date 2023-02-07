@@ -31,14 +31,14 @@ import org.junit.jupiter.api.Test;
 public class KickstartCloneActionTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/KickstartClone");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
     @Test
-    public void testExecuteSubmit() throws Exception {
+    public void testExecuteSubmit() {
         addRequestParameter(BaseKickstartEditAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RequestContext.LABEL,
                 "KickstartCloneActionTestLabel" + TestUtils.randomString());

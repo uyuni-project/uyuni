@@ -53,12 +53,14 @@ public class EnvironmentFilter implements Filter {
     /**
      * {@inheritDoc}
      */
-    public void init(FilterConfig arg0) throws ServletException {
+    @Override
+    public void init(FilterConfig arg0) {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain chain)
@@ -121,6 +123,7 @@ public class EnvironmentFilter implements Filter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void destroy() {
       // Nothing to do here
     }

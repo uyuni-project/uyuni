@@ -71,17 +71,18 @@ public class KickstartOverviewAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
        RequestContext rctx = new RequestContext(request);
        User user = rctx.getCurrentUser();
 
-       DataResult ksdr = KickstartLister.getInstance()
+       DataResult<KickstartOverviewSummaryDto> ksdr = KickstartLister.getInstance()
                                   .getKickstartSummary(user.getOrg(), null);
-       DataResult ckdr = KickstartLister.getInstance()
+       DataResult<KickstartOverviewSystemsDto> ckdr = KickstartLister.getInstance()
                             .getSystemsCurrentlyKickstarting(user.getOrg(), null);
-       DataResult skdr = KickstartLister.getInstance()
+       DataResult<KickstartOverviewSystemsDto> skdr = KickstartLister.getInstance()
                               .getSystemsScheduledToBeKickstarted(user.getOrg(), null);
 
        formatKSSummary(ksdr);
@@ -112,12 +113,10 @@ public class KickstartOverviewAction extends RhnAction {
      * formats dr for web UI
      * @param dr The dr to format
      */
-    public void formatKSSummary(DataResult dr) {
+    public void formatKSSummary(DataResult<KickstartOverviewSummaryDto> dr) {
         if (!dr.isEmpty()) {
             LocalizationService ls = LocalizationService.getInstance();
-            KickstartOverviewSummaryDto kdto = new KickstartOverviewSummaryDto();
-            for (Object oIn : dr) {
-                kdto = (KickstartOverviewSummaryDto) oIn;
+            for (KickstartOverviewSummaryDto kdto : dr) {
                 kdto.setName(kdto.getName() +
                         ls.getMessage("filter-form.jsp.ksoverviewprofiles"));
             }
@@ -128,10 +127,9 @@ public class KickstartOverviewAction extends RhnAction {
      * formats dr for web UI
      * @param dr The dr to format
      */
-    public void formatKSSystemInfo(DataResult dr) {
+    public void formatKSSystemInfo(DataResult<KickstartOverviewSystemsDto> dr) {
        if (!dr.isEmpty()) {
-           for (Object oIn : dr) {
-               KickstartOverviewSystemsDto ksdto = (KickstartOverviewSystemsDto) oIn;
+           for (KickstartOverviewSystemsDto ksdto : dr) {
                Date modified = ksdto.getLastModified();
                String timeStr = StringUtil.categorizeTime(modified.getTime(),
                        StringUtil.DAYS_UNITS);

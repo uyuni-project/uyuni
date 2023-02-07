@@ -63,8 +63,9 @@ public class TaskomaticHandler extends BaseHandler {
      * @return forwarded result of the internal xmlrpc API
      * @throws XmlRpcFault in case of any exception
      */
+    @Override
     public Object invoke(String methodCalled, List arguments) throws XmlRpcFault {
-        List params = new ArrayList(arguments);
+        List params = new ArrayList<>(arguments);
         String sessionKey = (String) params.remove(0);
         User loggedInUser =  getLoggedInUser(sessionKey);
         checkUserRole(loggedInUser);

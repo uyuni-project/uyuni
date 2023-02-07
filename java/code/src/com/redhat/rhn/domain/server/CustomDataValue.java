@@ -127,6 +127,7 @@ public class CustomDataValue implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof ServerAction)) {
             return false;
@@ -139,6 +140,7 @@ public class CustomDataValue implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(key.getId()).append(server)
                 .toHashCode();

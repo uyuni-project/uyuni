@@ -30,7 +30,6 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -94,7 +93,7 @@ public class SystemUnentitler {
                 try {
                     monitoringManager.disableMonitoring(s);
                 }
-                catch (ValidatorException | IOException e) {
+                catch (ValidatorException e) {
                     LOG.warn("Error disabling monitoring: {}", e.getMessage());
                 }
             }

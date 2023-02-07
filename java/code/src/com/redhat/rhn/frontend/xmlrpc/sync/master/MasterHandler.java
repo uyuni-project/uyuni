@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.sync.master;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -81,7 +82,7 @@ public class MasterHandler extends BaseHandler {
         IssMaster master = new IssMaster();
         master.setLabel(label);
         IssFactory.save(master);
-        master = (IssMaster) IssFactory.reload(master);
+        master = HibernateFactory.reload(master);
         return master;
     }
 

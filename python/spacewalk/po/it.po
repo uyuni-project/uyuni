@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 04:14+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
 "PO-Revision-Date: 2021-09-21 12:12+0000\n"
 "Last-Translator: Francesco Esposito <email@francescoesposito.org>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend/it/"
@@ -66,7 +66,7 @@ msgstr ""
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -163,7 +163,7 @@ msgstr "Informativa sulla privacy"
 msgid "Expected a dictionary as a product argument"
 msgstr "Previsto un dizionario come argomento del prodotto"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Valore '%s' non valido per %s (%s)"

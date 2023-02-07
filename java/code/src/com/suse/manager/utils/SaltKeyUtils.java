@@ -15,6 +15,7 @@
 package com.suse.manager.utils;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -184,7 +185,9 @@ public class SaltKeyUtils {
             });
         }
         else {
-            LOG.info("No key found for minionID [{}]", minionId);
+            if (LOG.isInfoEnabled()) {
+                LOG.info("No key found for minionID [{}]", StringUtil.sanitizeLogInput(minionId));
+            }
             return false;
         }
     }

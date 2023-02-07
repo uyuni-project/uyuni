@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.PtfFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
@@ -82,8 +83,6 @@ import java.util.List;
 
 
 /**
- * AnnotationRegistry
- *
  * Stores a list of hibernate annotation classes for registration the first time the
  * ConnectionManager.
  */
@@ -128,6 +127,7 @@ public class AnnotationRegistry {
         PackageFilter.class,
         ErrataFilter.class,
         ModuleFilter.class,
+        PtfFilter.class,
         EnvironmentTarget.class,
         SoftwareEnvironmentTarget.class,
         ContentProjectHistoryEntry.class,

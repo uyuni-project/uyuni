@@ -10682,18 +10682,18 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <target state="needs-adaptation">Você especificou uma variante inválida: '{0}'. Variantes devem ser pares do valor do nome, separado por um simbolo '=', com cada par separado por uma nova linha. Por exemplo: 'ip=192.168.0.1'</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Existem erros em seu modelo de kickstart. Por favor, verifique a aba '{0}' para determinar o problema com o modelo.</target>
+        <target state="needs-adaptation">Existem erros em seu modelo de kickstart. Por favor, verifique a aba '{0}' para determinar o problema com o modelo.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Estes são erros em seu modelo de kickstart. Por favor, verifique a mensagem de erro abaixo.</target>
+        <target state="needs-adaptation">Estes são erros em seu modelo de kickstart. Por favor, verifique a mensagem de erro abaixo.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
@@ -13004,11 +13004,11 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <target>Visualizar Todos os Sistemas Inativos ({0})</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;Nenhum sistema inativo.&lt;/strong&gt; &lt;p&gt;Todos os seus sistema estão atualmente se autenticando regularmente ao @@PRODUCT_NAME@@. Você pode visualizar uma lista de todos os seus sistemas em &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Sistemas &gt; Todos&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
+        <target state="needs-adaptation">&lt;strong&gt;Nenhum sistema inativo.&lt;/strong&gt; &lt;p&gt;Todos os seus sistema estão atualmente se autenticando regularmente ao @@PRODUCT_NAME@@. Você pode visualizar uma lista de todos os seus sistemas em &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Sistemas &gt; Todos&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata" xml:space="preserve">
         <source>Relevant Security Patches</source>
@@ -28715,7 +28715,8 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
+        <source>Monitored Host</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29110,8 +29111,8 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="new"/>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
     <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29263,6 +29264,121 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+            <source>Extra Packages</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+            <source>Config Diffs</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+            <source>Proxy</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+            <source>Manager Server</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+            <source>Virtual Host</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+            <source>Virtual Guest</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+            <source>Requires Reboot</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+            <source>Status Type</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+      <target state="new"/>
+  </trans-unit>
+        <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
       <target state="new"/>
   </trans-unit>
       </body>

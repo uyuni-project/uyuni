@@ -34,8 +34,9 @@ public class ChannelProvideAction extends BaseChannelTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult<ChannelTreeNode> getDataResult(RequestContext requestContext,
-            ListControl lc) {
+                                                        ListControl lc) {
 
         Long oid = requestContext.getParamAsLong(RequestContext.ORG_ID);
         //grab the trusted org id passed in
@@ -53,6 +54,7 @@ public class ChannelProvideAction extends BaseChannelTreeAction {
      * adds attributes to the request
      * @param requestContext the Request Context
      */
+    @Override
     protected void addAttributes(RequestContext requestContext) {
         Long oid = requestContext.getParamAsLong(RequestContext.ORG_ID);
         //grab the trusted org id passed in

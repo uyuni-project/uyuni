@@ -71,7 +71,7 @@ public class Tuple2<A, B> {
         if (!(otherObject instanceof Tuple2)) {
             return false;
         }
-        Tuple2 other = (Tuple2) otherObject;
+        Tuple2<?, ?> other = (Tuple2<?, ?>) otherObject;
         return new EqualsBuilder()
                 .append(getA(), other.getA())
                 .append(getB(), other.getB())

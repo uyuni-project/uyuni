@@ -57,7 +57,7 @@ public class CancelKickstartTest extends BaseTestCaseWithUser {
         Action lookupreload = ActionFactory.lookupById(aid1);
         lookupreload = (Action) reload(lookupreload);
         assertTrue(lookupreload.getServerActions() == null ||
-                lookupreload.getServerActions().size() == 0);
+                lookupreload.getServerActions().isEmpty());
     }
 
     private Channel setupKickstartDownloadTest(KickstartData ksdata,

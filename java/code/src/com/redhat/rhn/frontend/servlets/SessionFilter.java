@@ -34,61 +34,52 @@ import javax.servlet.ServletResponse;
 /**
  * SessionFilter is a simple servlet filter to handle cleaning up the Hibernate
  * Session after each request.
+ *
+ * See also {@link com.suse.manager.webui.utils.SparkApplicationHelper#setupHibernateSessionFilter()}
  */
 public class SessionFilter implements Filter {
 
-
-private static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
     private static final Logger LOG = LogManager.getLogger(SessionFilter.class);
 
     /** {@inheritDoc} */
-    public void init(FilterConfig config) throws ServletException {
+    @Override
+    public void init(FilterConfig config) {
         // no-op
     }
 
+
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+                         FilterChain chain) throws IOException, ServletException {
         boolean committed = false;
         try {
             logHere("Calling doFilter");
             // pass up stack
             chain.doFilter(request, response);
-            HibernateFactory.commitTransaction();
+
+            if (HibernateFactory.inTransaction()) {
+                HibernateFactory.commitTransaction();
+            }
             logHere("Transaction committed");
             committed = true;
         }
         catch (IOException | AssertionError | ServletException e) {
-            LOG.error(ROLLBACK_MSG, e);
+            LOG.error(HibernateFactory.ROLLBACK_MSG, e);
             throw e;
         }
         catch (HibernateException e) {
-            LOG.error(ROLLBACK_MSG, e);
-            throw new HibernateRuntimeException(ROLLBACK_MSG, e);
+            LOG.error(HibernateFactory.ROLLBACK_MSG, e);
+            throw new HibernateRuntimeException(HibernateFactory.ROLLBACK_MSG, e);
         }
         catch (RuntimeException e) {
-            LOG.error(ROLLBACK_MSG, e);
+            LOG.error(HibernateFactory.ROLLBACK_MSG, e);
             request.setAttribute("exception", LocalizationService.getInstance()
                     .getMessage("errors.unexpected"));
             throw e;
         }
         finally {
-            try {
-                if (!committed) {
-                    try {
-                        logHere("Rolling back transaction");
-                        HibernateFactory.rollbackTransaction();
-                    }
-                    catch (HibernateException e) {
-                        final String msg = "Additional error during rollback";
-                        LOG.warn(msg, e);
-                    }
-                }
-            }
-            finally {
-                // cleanup the session
-                HibernateFactory.closeSession();
-            }
+            HibernateFactory.rollbackTransactionAndCloseSession(committed);
         }
 
     }
@@ -100,6 +91,7 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
     }
 
     /** {@inheritDoc} */
+    @Override
     public void destroy() {
         // no-op
     }

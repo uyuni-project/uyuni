@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -39,23 +40,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelSystemDeploySubmit extends BaseSetOperateOnSelectedItemsAction {
 
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS;
     }
 
-    protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(User user, ActionForm formIn,
+                                                        HttpServletRequest request) {
         User usr = new RequestContext(request).getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         return ConfigurationManager.getInstance().listSystemInfoForChannel(usr, cc, null);
     }
 
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
-            Map<String, Object> m) {
+                                   Map<String, Object> m) {
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.processParamMap(cc, m);
     }
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("deploysystems.jsp.deployconfirmbutton", "doConfirm");
     }

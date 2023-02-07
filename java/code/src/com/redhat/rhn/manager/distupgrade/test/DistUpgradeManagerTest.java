@@ -470,10 +470,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCapabilityMissing() throws Exception {
+    public void testCapabilityMissing() {
         Server server = ServerFactoryTest.createTestServer(user, true);
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
@@ -783,10 +782,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      *
      * @param family the channel family
      * @return the channel product
-     * @throws Exception if anything goes wrong
      */
-    public static SUSEProduct createTestSUSEProductNoArch(ChannelFamily family)
-            throws Exception {
+    public static SUSEProduct createTestSUSEProductNoArch(ChannelFamily family) {
         SUSEProduct product = new SUSEProduct();
         String name = TestUtils.randomString().toLowerCase();
         product.setName(name);

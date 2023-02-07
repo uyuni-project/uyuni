@@ -215,7 +215,9 @@ _lookupToolsProductIds = """
 SELECT sp.product_id
   FROM suseProducts sp
   JOIN rhnChannelFamily cf ON sp.channel_family_id = cf.id
- WHERE cf.label = 'SLE-M-T';
+ WHERE cf.label = 'SLE-M-T'
+    OR cf.label = 'SLE-M-T-BETA'
+    OR cf.label = 'SLE-M-T-ALPHA';
 """;
 
 def releaseLOCK():
@@ -386,6 +388,12 @@ def list_labels(mgr_bootstrap_data, force=False, do_print=True):
             (all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID']) or
                 (force and any(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID'])))):
 
+            if label in ('RHEL8-x86_64', 'RHEL9-x86_64'):
+                if not connected_to_rhel_cdn(find_root_channel_labels(', '.join(mgr_bootstrap_data.DATA[label]['PDID']))):
+                    # skip native RHEL if not connected to cdn
+                    log("{} not connected to CDN. Skipping".format(label), 1)
+                    continue
+
             if do_print:
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
@@ -415,6 +423,11 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
 
     if 'PDID' in mgr_bootstrap_data.DATA[label]:
         pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
+        if label in ('RHEL8-x86_64', 'RHEL9-x86_64'):
+            if not connected_to_rhel_cdn(find_root_channel_labels(pdids)):
+                log("WARNING: {} not connected to CDN.".format(label))
+
+
         if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu')):
             usecustomchannels = True
         if isUyuni():
@@ -550,7 +563,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
             log("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdirtmp, "bootstrap", debs))
         else:
-            log("createrepo -s sha %s" % destdirtmp)
+            log("createrepo -s sha256 %s" % destdirtmp)
     else:
         if repotype == 'deb':
             reprepro_conf_tmpl = Template("Origin: $origin\n" \
@@ -578,7 +591,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 log(err, 2)
                 return 1
         else:
-            os.system("createrepo -s sha %s" % destdirtmp)
+            os.system("createrepo -s sha256 %s" % destdirtmp)
         # ensure venv-enabled-{ARCH}.txt doesn't exist in repo with no salt bundle package
         # create venv-enabled-{ARCH}.txt for repos with salt bundle package
         for file_path in glob.glob(os.path.join(destdirtmp, 'venv-enabled-*.txt')):
@@ -626,9 +639,40 @@ def generate_repo_view(mgr_bootstrap_data):
         repos[mgr_bootstrap_data.DATA[dist]['DEST']][dist] = mgr_bootstrap_data.DATA[dist]
     return repos
 
+def connected_to_rhel_cdn(root_channel_labels):
+    # only 1 entry in root_channel_labels expected
+    if len(root_channel_labels) != 1:
+        return False
+    rcl = root_channel_labels.pop()
+    _child_connected_to_redhat_cdn = """
+    select ch.id
+      from rhnchannel ch
+      join rhnchannelcontentsource chcc on ch.id = chcc.channel_id
+      join rhncontentsource cc on chcc.source_id = cc.id
+     where ch.parent_channel in (select c.id
+                                   from rhnchannel c
+                                  where c.label = :parentlabel
+                                    and c.parent_channel is NULL)
+       and ch.org_id IS NOT NULL
+       and (cc.source_url like '%cdn.redhat.com%'
+            or LOWER(cc.source_url) like '%/baseos%'
+            or LOWER(cc.source_url) like '%/appstream%');
+    """
+    h = rhnSQL.prepare(rhnSQL.Statement(_child_connected_to_redhat_cdn))
+    h.execute(parentlabel=rcl)
+    res = h.fetchall_dict() or False
+    if not res:
+        return False
+    return True
+
 def find_dists_for_regeneration(dest, dists, doall=False):
     regenerate = []
     for label, dist in dists.items():
+        if label in ('RHEL8-x86_64', 'RHEL9-x86_64') and 'PDID' in dist:
+            if not connected_to_rhel_cdn(find_root_channel_labels(', '.join(dist['PDID']))):
+                # skip native RHEL if not connected to cdn
+                log("{} not connected to CDN. Skipping".format(label), 1)
+                continue
         destfile = os.path.join(dest, 'repodata', 'repomd.xml')
         if 'TYPE' in dist and dist['TYPE'] == 'deb':
             destfile = os.path.join(dest, 'dists', 'bootstrap', 'Release')

@@ -182,8 +182,7 @@ public class MgrSyncUtils {
      * @return product name
      */
     public static ProductName findOrCreateProductName(String name) {
-        ProductName productName = ChannelFactory.lookupProductNameByLabel(
-                name);
+        ProductName productName = ChannelFactory.lookupProductNameByLabel(name);
         if (productName == null) {
             productName = new ProductName();
             productName.setLabel(name);

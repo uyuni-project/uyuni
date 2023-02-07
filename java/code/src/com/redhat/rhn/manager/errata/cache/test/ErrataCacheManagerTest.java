@@ -130,12 +130,11 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         });
     }
 
-    public static Map createServerNeededCache(User userIn,
-            String errataType) throws Exception {
-        Map retval = new HashMap();
+    public static Map<String, Object> createServerNeededCache(User userIn, String errataType) throws Exception {
+        Map<String, Object> retval = new HashMap<>();
         Errata e = ErrataFactoryTest.createTestErrata(userIn.getOrg().getId());
         e.setAdvisoryType(errataType);
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         retval.put("errata", e);
         Server s = ServerFactoryTest.createTestServer(userIn);
         ServerFactory.save(s);
@@ -144,11 +143,11 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         Package p = PackageTest.createTestPackage(userIn.getOrg());
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr(
                 p.getPackageEvr().getEpoch(), p.getPackageEvr().getVersion(), "2", s.getPackageType());
-        evr = (PackageEvr) TestUtils.saveAndReload(evr);
+        evr = TestUtils.saveAndReload(evr);
         Package newPackage = PackageTest.createTestPackage(userIn.getOrg());
         newPackage.setPackageName(p.getPackageName());
         newPackage.setPackageEvr(evr);
-        newPackage = (Package) TestUtils.saveAndReload(newPackage);
+        newPackage = TestUtils.saveAndReload(newPackage);
 
         InstalledPackage ip = new InstalledPackage();
         ip.setServer(s);

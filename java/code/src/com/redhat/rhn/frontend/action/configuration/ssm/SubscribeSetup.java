@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -43,10 +44,11 @@ public class SubscribeSetup extends RhnListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -76,7 +78,7 @@ public class SubscribeSetup extends RhnListAction {
         return RhnSetDecl.CONFIG_CHANNELS;
     }
 
-    private DataResult getDataResult(User user, PageControl pc) {
+    private DataResult<ConfigChannelDto> getDataResult(User user, PageControl pc) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.ssmChannelListForSubscribe(user, pc);
     }

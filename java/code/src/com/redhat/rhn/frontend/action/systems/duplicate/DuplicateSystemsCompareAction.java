@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * DuplicateSystemsCompareAction
  */
-public class DuplicateSystemsCompareAction extends RhnAction implements Listable {
+public class DuplicateSystemsCompareAction extends RhnAction implements Listable<SystemOverview> {
     public static final String KEY = "key";
     public static final String KEY_TYPE = "key_type";
     private static final int MAX_LIMIT = 3;
@@ -64,10 +64,11 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         Map<String, Object> params = new HashMap<>();
@@ -138,7 +139,8 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
+    @Override
+    public List<SystemOverview> getResult(RequestContext contextIn) {
         String key = contextIn.getRequiredParamAsString(KEY);
         String keyType = contextIn.getRequiredParamAsString(KEY_TYPE);
         if (DuplicateSystemsAction.HOSTNAME.equals(keyType)) {

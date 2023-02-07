@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
+import com.mockobjects.ExpectationValue;
 import com.mockobjects.servlet.MockHttpServletResponse;
 
 import java.util.HashMap;
@@ -27,12 +28,14 @@ import javax.servlet.http.Cookie;
  * implementation of MockHttpServletResponse.
  */
 public class RhnMockHttpServletResponse extends MockHttpServletResponse {
-    private Map cookies = new HashMap();
-    private Map header = new HashMap();
+    private final Map<String, Cookie> cookies = new HashMap<>();
+    private final Map<String, String> header = new HashMap<>();
     private String redirect;
     private String encoding;
+    private final ExpectationValue myStatus = new ExpectationValue("RhnMockHttpServletResponse.setStatus");
 
     /** {@inheritDoc} */
+    @Override
     public void addCookie(Cookie cookie) {
         cookies.put(cookie.getName(), cookie);
     }
@@ -41,6 +44,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      *
      * {@inheritDoc}
      */
+    @Override
     public void addHeader(String key, String value) {
         header.put(key, value);
     }
@@ -50,8 +54,9 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      * @param key the header name
      * @return header value or null...
      */
+    @Override
     public String getHeader(String key) {
-        return (String) header.get(key);
+        return header.get(key);
     }
 
     /**
@@ -60,15 +65,15 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      * @return a Cookie matching the given name, null otherwise.
      */
     public Cookie getCookie(String name) {
-        return (Cookie) cookies.get(name);
+        return cookies.get(name);
     }
 
     /**
      * Saves the url sent through a redirect so we can test it.
      * @param aURL The URL for this redirect
-     * @throws java.io.IOException will never throw
      */
-    public void sendRedirect(String aURL) throws java.io.IOException {
+    @Override
+    public void sendRedirect(String aURL) {
         redirect = aURL;
     }
 
@@ -90,6 +95,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCharacterEncoding(String encodingIn) {
         this.encoding = encodingIn;
     }
@@ -97,6 +103,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCharacterEncoding() {
         return this.encoding;
     }
@@ -104,7 +111,22 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCommitted() {
         return false;
+    }
+
+    /**
+     * Set the expected response status
+     * @param status the response status
+     */
+    public void setExpectedStatus(int status) {
+        myStatus.setExpected(status);
+    }
+
+    @Override
+    public void setStatus(int status) {
+        super.setStatus(status);
+        myStatus.setActual(status);
     }
 }

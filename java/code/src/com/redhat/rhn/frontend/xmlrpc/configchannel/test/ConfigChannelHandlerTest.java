@@ -234,7 +234,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSyncSaltFiles() throws Exception {
+    public void testSyncSaltFiles() {
 
         // Remove all channels
         var deleted = removeAllGlobals();
@@ -264,7 +264,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSyncSaltFilesNoChannels() throws Exception {
+    public void testSyncSaltFilesNoChannels() {
 
         // Remove all channels.
         var deleted = removeAllGlobals();
@@ -376,7 +376,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPath() throws Exception {
+    public void testAddPath() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -423,7 +423,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPathStateChannel() throws Exception {
+    public void testAddPathStateChannel() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -532,7 +532,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePaths() throws Exception {
+    public void testRemovePaths() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> paths = new LinkedList<>();
         Map<String, ConfigRevision> revisions = new HashMap<>();
@@ -545,7 +545,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testScheduleFileComparisons() throws Exception {
+    public void testScheduleFileComparisons() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
@@ -676,7 +676,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListAssignedGroups() throws Exception {
+    public void testListAssignedGroups() {
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
 

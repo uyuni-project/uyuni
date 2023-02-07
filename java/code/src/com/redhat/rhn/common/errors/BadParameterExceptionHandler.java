@@ -58,13 +58,15 @@ public class BadParameterExceptionHandler extends ExceptionHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void logException(Exception ex) {
         Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         log.error("Missing Parameter Error", ex);
     }
 
+    @Override
     protected void storeException(HttpServletRequest request, String property,
-            ActionMessage msg, ActionForward forward, String scope) {
+                                  ActionMessage msg, ActionForward forward, String scope) {
         TraceBackEvent evt = new TraceBackEvent();
         User usr = new RequestContext(request).getCurrentUser();
         evt.setUser(usr);

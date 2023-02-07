@@ -59,7 +59,6 @@ public class SystemRebootAction extends RhnAction implements MaintenanceWindowsA
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
         HttpServletRequest request, HttpServletResponse response) {
 

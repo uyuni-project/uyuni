@@ -127,7 +127,7 @@ public class AlphaBarHelper {
         params.put(makeAlphaKey(listName), String.valueOf(alpha));
 
         StringBuilder enabled = new StringBuilder("<li><a href=\"");
-        List ignoreList = new ArrayList();
+        List ignoreList = new ArrayList<>();
         ignoreList.add("submitted");
         enabled.append(ListTagUtil.makeParamsLink(request, listName, params,
                 ignoreList));

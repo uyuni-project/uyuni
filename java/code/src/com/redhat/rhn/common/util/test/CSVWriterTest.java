@@ -38,7 +38,7 @@ import java.util.Map;
 public class CSVWriterTest {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         TestUtils.disableLocalizationLogging();
     }
 
@@ -50,9 +50,9 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListOutput() throws Exception {
+    public void testListOutput() {
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List values = new LinkedList();
+        List values = new LinkedList<>();
         values.add("val1");
         values.add("val2");
         values.add("val3");
@@ -63,16 +63,16 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListofMaps() throws Exception {
+    public void testListofMaps() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List columns = new LinkedList();
+        List columns = new LinkedList<>();
         columns.add("column1");
         columns.add("column2");
         columns.add("column3");
         columns.add("nullColumn");
 
-        List values = getTestListOfMaps();
+        List<Map<String, String>> values = getTestListOfMaps();
         boolean failed = false;
         try {
             writer.write(values);
@@ -91,16 +91,16 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListofDtos() throws Exception {
+    public void testListofDtos() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List columns = new LinkedList();
+        List columns = new LinkedList<>();
         columns.add("fieldOne");
         columns.add("fieldTwo");
         columns.add("fieldThree");
         writer.setColumns(columns);
 
-        List values = new LinkedList();
+        List values = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             TestCsvDto dto = new TestCsvDto();
             dto.setFieldOne("f1 - " + i);
@@ -117,11 +117,11 @@ public class CSVWriterTest {
                 endsWith("f1 - 9,f2 - 9,f3 - 9\n"));
     }
 
-    public static List getTestListOfMaps() {
-        List values = new LinkedList();
+    public static List<Map<String, String>> getTestListOfMaps() {
+        List<Map<String, String>> values = new LinkedList<>();
 
         for (int i = 0; i < 10; i++) {
-            Map testmap = new HashMap();
+            Map<String, String> testmap = new HashMap<>();
             testmap.put("column1", "cval1-" + i);
             testmap.put("column2", "cval2-" + i);
             testmap.put("column3", "cval3-" + i);
@@ -136,6 +136,7 @@ public class CSVWriterTest {
         private String fieldTwo;
         private String fieldThree;
 
+        @Override
         public Long getId() {
             return id;
         }

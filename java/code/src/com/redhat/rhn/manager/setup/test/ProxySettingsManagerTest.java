@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
@@ -33,13 +34,16 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void testGetProxySettings() throws Exception {
+    public void testGetProxySettings() {
         ProxySettingsDto proxy = new ProxySettingsDto();
         proxy.setHostname("proxy.foobar.com");
         proxy.setUsername("foobaruser");
         proxy.setPassword("foobarpassword");
         setProxySettings(proxy);
-        assertTrue(proxy.equals(ProxySettingsManager.getProxySettings()));
+        ProxySettingsDto proxySettingsResult = ProxySettingsManager.getProxySettings();
+        assertEquals(proxy.getHostname(), proxySettingsResult.getHostname());
+        assertEquals(proxy.getUsername(), proxySettingsResult.getUsername());
+        assertNull(proxySettingsResult.getPassword());
     }
 
     /**

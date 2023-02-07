@@ -63,6 +63,7 @@ import java.util.Set;
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -118,7 +119,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testCreateProfileFails() throws Exception {
+    public void testCreateProfileFails() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         try {
@@ -198,7 +199,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
                 user.getOrg(), null);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
         assertTrue(dr.iterator().next() instanceof ProfileDto);
 
     }
@@ -615,7 +616,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testBz204345() throws Exception {
+    public void testBz204345() {
         // kernel-2.6.9-22.EL
         // kernel-2.6.9-42.0.2.EL
 

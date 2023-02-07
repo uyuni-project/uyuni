@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateDelete;
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateInsertWithDate;
+import static com.redhat.rhn.common.conf.ConfigDefaults.REPORT_DB_BATCH_SIZE;
+import static com.redhat.rhn.taskomatic.task.ReportDBHelper.LOCAL_MGM_ID;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -33,36 +32,59 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.Map;
-
+import java.util.Set;
 
 
 public class ReportDbUpdateTask extends RhnJavaJob {
 
-    private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
+    private static final String GENERAL_REPORT_QUERIES = "GeneralReport_queries";
+    private static final String SYSTEM_REPORT_QUERIES = "SystemReport_queries";
+    private static final String CHANNEL_REPORT_QUERIES = "ChannelReport_queries";
+    private static final String SCAP_REPORT_QUERIES = "ScapReport_queries";
 
+    private final int batchSize;
 
-    private void fillReportDbTable(Session session, String xmlName, String tableName, long mgmId) {
+    private final ReportDBHelper dbHelper;
+
+    /**
+     * Default constructor
+     */
+    public ReportDbUpdateTask() {
+        this(ReportDBHelper.INSTANCE, Config.get().getInt(REPORT_DB_BATCH_SIZE, 2000));
+    }
+
+    /**
+     * Constructor used for unit test to specify the {@link ReportDBHelper}
+     * @param dbHelperIn the {@link ReportDBHelper}
+     * @param batchSizeIn the batch size
+     */
+    public ReportDbUpdateTask(ReportDBHelper dbHelperIn, int batchSizeIn) {
+        this.dbHelper = dbHelperIn;
+        this.batchSize = batchSizeIn;
+    }
+
+    private void fillReportDbTable(Session session, String xmlName, String tableName) {
         TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
             SelectMode query = ModeFactory.getMode(xmlName, tableName, Map.class);
 
             // Remove all the existing data
             log.debug("Deleting existing data in table {}", tableName);
-            WriteMode delete = generateDelete(session, tableName);
-            delete.executeUpdate(Map.of("mgm_id", 1));
+            WriteMode delete = dbHelper.generateDelete(session, tableName);
+            delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
 
             // Extract the first batch
-            @SuppressWarnings("unchecked")
-            DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", BATCH_SIZE));
+            DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", batchSize));
             if (!firstBatch.isEmpty()) {
                 // Generate the insert using the column name retrieved from the select
-                WriteMode insert = generateInsertWithDate(session, tableName, mgmId, firstBatch.get(0).keySet());
+                Set<String> columnParameters = firstBatch.get(0).keySet();
+                WriteMode insert = dbHelper.generateInsertWithDate(session, tableName, LOCAL_MGM_ID, columnParameters);
+
                 insert.executeUpdates(firstBatch);
                 log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
-                if (firstBatch.size() == BATCH_SIZE) {
-                    ReportDBHelper.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
+                if (firstBatch.size() == batchSize) {
+                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
                         .forEach(batch -> {
                             insert.executeUpdates(batch);
                             log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
@@ -79,43 +101,42 @@ public class ReportDbUpdateTask extends RhnJavaJob {
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
-        long mgmId = 1;
 
         try {
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroup", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroupPermission", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "Account", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "AccountGroup", mgmId);
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroup");
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroupPermission");
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "Account");
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "AccountGroup");
 
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemChannel", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemConfigChannel", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetInterface", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV4", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV6", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroupMember", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemErrata", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageInstalled", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageUpdate", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemCustomInfo", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "System");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHistory");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemAction");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemChannel");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemConfigChannel");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemVirtualData");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetInterface");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV4");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV6");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemOutdated");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemGroupMember");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemEntitlement");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo");
 
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelErrata", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelPackage", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelRepository", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Repository", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Channel");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelErrata");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelPackage");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelRepository");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Errata");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Package");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Repository");
 
-            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
-            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScan");
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScanResult");
 
-            ReportDBHelper.analyzeReportDb(rh.getSession());
+            dbHelper.analyzeReportDb(rh.getSession());
 
             rh.commitTransaction();
             log.info("Reporting db updated successfully.");

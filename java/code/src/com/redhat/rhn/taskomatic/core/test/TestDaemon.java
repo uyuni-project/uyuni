@@ -20,10 +20,12 @@ import org.apache.commons.cli.CommandLine;
 
 public class TestDaemon extends TaskomaticDaemon {
 
+    @Override
     protected int onShutdown(boolean breakFromUser) {
         return TaskomaticDaemon.SUCCESS;
     }
 
+    @Override
     protected int onStartup(CommandLine commandLine) {
         new Thread(new DaemonLogic()).start();
         return TaskomaticDaemon.SUCCESS;
@@ -35,6 +37,7 @@ public class TestDaemon extends TaskomaticDaemon {
     }
 
     class DaemonLogic implements Runnable {
+        @Override
         public void run() {
             System.out.println("Hello, world!");
             try {

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
@@ -38,9 +39,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * PackageListSetupAction
  */
-public class PackageListSetupAction extends RhnAction implements Listable {
+public class PackageListSetupAction extends RhnAction implements Listable<Row> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -75,7 +77,8 @@ public class PackageListSetupAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long actionId = context.getParamAsLong("aid");
         return ActionManager.getPackageList(actionId, null);
     }

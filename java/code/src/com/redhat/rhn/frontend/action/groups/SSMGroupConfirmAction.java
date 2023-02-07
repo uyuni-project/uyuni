@@ -69,7 +69,7 @@ public class SSMGroupConfirmAction extends RhnAction
     public ActionForward execute(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();

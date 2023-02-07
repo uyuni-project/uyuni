@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
@@ -39,7 +40,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.FALSE.toString());
         actionPerform();
@@ -48,7 +49,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testCreateSubmit() throws Exception {
+    public void testCreateSubmit() {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(CryptoKeyCreateAction.DESCRIPTION, "somedesc");
@@ -62,7 +63,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testEdit() throws Exception {
+    public void testEdit() {
         setRequestPathInfo("/keys/CryptoKeyEdit");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());

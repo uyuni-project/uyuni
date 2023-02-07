@@ -21,7 +21,6 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.exception.SaltException;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class TestSystemQuery implements SystemQuery {
     }
 
     @Override
-    public void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException {
+    public void notifySystemIdGenerated(MinionServer minion) {
         throw new UnsupportedOperationException();
     }
 

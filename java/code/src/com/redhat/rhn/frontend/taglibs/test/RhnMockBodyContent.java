@@ -37,6 +37,7 @@ public class RhnMockBodyContent extends MockBodyContent {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getString() {
         return text;
     }

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -17,8 +17,8 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "no-appstream-result-RHEL8-Pool for x86_64"
-    And I check "no-appstream-result-Custom Channel for Rocky 8 DVD"
+    And I check radio button "no-appstream-8-result-RHEL8-Pool for x86_64"
+    And I check "no-appstream-8-result-Custom Channel for Rocky 8 DVD"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -26,7 +26,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
     When I enable repository "Rocky-BaseOS" on this "rhlike_minion"
-    And I enable client tools repositories on "rhlike_minion"
+    And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
     And I refresh the metadata for "rhlike_minion"
 
   Scenario: Install the OpenSCAP packages on the Red Hat-like minion
@@ -50,7 +50,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Check the results of the OpenSCAP scan on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
+    And I follow "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_standard"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-8" text
     And I should see a "XCCDF Rule Results" text
@@ -88,14 +88,14 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
     And I disable repository "Rocky-BaseOS" on this "rhlike_minion"
-    And I disable client tools repositories on "rhlike_minion"
+    And I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
 
   Scenario: Cleanup: restore the base channel for the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
+    And I check radio button "Fake Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

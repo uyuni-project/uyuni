@@ -2907,6 +2907,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="packagelist.jsp.packagearch" xml:space="preserve">
         <source>Architecture</source>
         <context-group name="ctx">
@@ -5469,6 +5475,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="ssm.misc.reboot.message.scheduled">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="ssm.misc.reboot.no-system">
           <source>There are no selected systems.</source>
         <context-group name="ctx">
@@ -5803,6 +5815,13 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.updates" xml:space="preserve">
         <source>Updates available</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -9425,13 +9444,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
@@ -20878,6 +20897,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
         <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
         <context-group name="ctx">
@@ -21000,6 +21025,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.overview.requires_reboot" xml:space="preserve">
         <source>The system requires a reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -23111,6 +23142,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="targetsystems.jsp.installpackage" xml:space="preserve">
         <source>Install</source>
         <context-group name="ctx">
@@ -24152,6 +24189,12 @@ given channel.</source>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
       </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+      </trans-unit>
+        <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+      </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
       </trans-unit>
@@ -24845,7 +24888,7 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
       </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
@@ -24951,6 +24994,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration" xml:space="preserve">
         <source>Channel subscriptions after the migration:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
@@ -25098,7 +25144,7 @@ given channel.</source>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
+        <source>Monitored Host</source>
       </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>

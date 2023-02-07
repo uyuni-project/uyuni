@@ -25,7 +25,6 @@ import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,7 @@ public class GathererJob extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext jobExecutionContext)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
 
         String vhmLabel = null;
         if (jobExecutionContext.getJobDetail().getJobDataMap().containsKey(VHM_LABEL)) {

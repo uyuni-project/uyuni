@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.audit;
 
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.Server;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ScapDownloadAction extends DownloadAction {
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         Logger log = LogManager.getLogger(ScapDownloadAction.class);
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
@@ -49,7 +50,9 @@ public class ScapDownloadAction extends DownloadAction {
         String filename = context.getRequiredParamAsString("name");
         ScapResultFile file = new ScapResultFile(testResult, filename);
 
-        log.debug("Serving {}", file);
+        if (log.isDebugEnabled()) {
+            log.debug("Serving {}", StringUtil.sanitizeLogInput(file.toString()));
+        }
         if (!file.getHTML()) {
             response.setHeader("Content-Disposition", "attachment; filename=" + filename);
         }

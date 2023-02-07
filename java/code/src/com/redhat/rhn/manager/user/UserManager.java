@@ -21,6 +21,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -41,9 +42,11 @@ import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.UserServerPreference;
+import com.redhat.rhn.frontend.dto.ChannelPerms;
 import com.redhat.rhn.frontend.dto.SystemGroupOverview;
 import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.dto.UserOverview;
+import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
@@ -65,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.LoginException;
 
@@ -132,7 +136,7 @@ public class UserManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_user");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
-        DataResult dr = m.execute(params, packageIds);
+        DataResult<Row> dr = m.execute(params, packageIds);
         /*
          * Ok... this query will result in returning a single row containing '1' if the
          * org has access to this channel. If the org *does not* have access to the given
@@ -283,13 +287,13 @@ public class UserManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static void updateServerGroupPermsForUser(User user, List<Long> serverGroupIds) {
         boolean needsToUpdateServerPerms = false;
-        List<Long> userServerGroupIds = (List<Long>) user.getAssociatedServerGroups()
-                .stream().map(sg -> ((ServerGroup) sg).getId()).collect(toList());
+        List<Long> userServerGroupIds = user.getAssociatedServerGroups()
+                .stream().map(sg -> sg.getId()).collect(toList());
 
         List<Long> serverGroupIdsToRevoke = userServerGroupIds.stream()
                 .filter(id -> !serverGroupIds.contains(id)).collect(toList());
         if (!serverGroupIdsToRevoke.isEmpty()) {
-            needsToUpdateServerPerms |= executeRevokeServerGroupPermsQuery(user.getId(), serverGroupIdsToRevoke);
+            needsToUpdateServerPerms = executeRevokeServerGroupPermsQuery(user.getId(), serverGroupIdsToRevoke);
         }
 
         List<Long> serverGroupIdsToGrant = serverGroupIds.stream()
@@ -471,20 +475,15 @@ public class UserManager extends BaseManager {
      * @param usr User for which to get the default system groups.
      * @return groupSet Set of default system groups IDs for the user.
      */
-    public static Set getDefaultSystemGroupIds(User usr) {
+    public static Set<Long> getDefaultSystemGroupIds(User usr) {
         SelectMode prefixMode = ModeFactory.getMode("User_queries",
                                                     "default_system_groups");
 
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", usr.getId());
-        DataResult dr = prefixMode.execute(params);
+        DataResult<Row> dr = prefixMode.execute(params);
 
-        Set groupSet = new HashSet();
-        for (Object oIn : dr) {
-            Map row = (Map) oIn;
-            groupSet.add(row.get("system_group_id"));
-        }
-        return groupSet;
+        return dr.stream().map(row -> (Long)row.get("system_group_id")).collect(Collectors.toSet());
     }
 
     /**
@@ -496,7 +495,7 @@ public class UserManager extends BaseManager {
      * @param usr User for which to set the default groups.
      * @param groups Set of groups to associate with the user.
      */
-    public static void setDefaultSystemGroupIds(final User usr, final Set groups) {
+    public static void setDefaultSystemGroupIds(final User usr, final Set<Long> groups) {
         WriteMode m = ModeFactory.getWriteMode("User_queries",
                 "delete_all_system_groups_for_user");
         Map<String, Object> params = new HashMap<>();
@@ -504,8 +503,7 @@ public class UserManager extends BaseManager {
         m.executeUpdate(params);
 
         m = ModeFactory.getWriteMode("User_queries", "set_system_group");
-        for (Object groupIn : groups) {
-            Long sgid = (Long) groupIn;
+        for (Long sgid : groups) {
             params.put("sgid", sgid);
             m.executeUpdate(params);
         }
@@ -733,7 +731,7 @@ public class UserManager extends BaseManager {
      * @param clazz The class you want the returned DataResult to contain.
      * @return A DataResult containing the specified number of users.
      */
-    public static DataResult usersInOrg(User user,
+    public static DataResult<UserOverview> usersInOrg(User user,
                                             PageControl pc, Class clazz) {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_org", clazz);
         return getUsersInOrg(user, pc, m);
@@ -746,14 +744,14 @@ public class UserManager extends BaseManager {
      * @param m The select mode.
      * @return A list containing the specified number of users.
      */
-    private static DataResult getUsersInOrg(User user,
+    private static DataResult<UserOverview> getUsersInOrg(User user,
                                                 PageControl pc, SelectMode m) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -762,14 +760,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of users.
      */
-    public static DataResult activeInOrg(User user, PageControl pc) {
+    public static DataResult<UserOverview> activeInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "active_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return  makeDataResult(params, new HashMap(), pc, m);
+        return  makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -792,14 +790,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of users.
      */
-    public static DataResult disabledInOrg(User user, PageControl pc) {
+    public static DataResult<UserOverview> disabledInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "disabled_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     private static PermissionException getNoAdminError() {
@@ -817,13 +815,13 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of channels.
      */
-    public static DataResult channelSubscriptions(User user, PageControl pc) {
+    public static DataResult<ChannelPerms> channelSubscriptions(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                                            "user_subscribe_perms");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -832,12 +830,12 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of channels.
      */
-    public static DataResult channelManagement(User user, PageControl pc) {
+    public static DataResult<ChannelPerms> channelManagement(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "user_manage_perms");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -846,14 +844,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the visible systems for the user
      */
-    public static DataResult visibleSystems(User user, PageControl pc) {
+    public static DataResult<VisibleSystems> visibleSystems(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
         Map<String, Object> params = new HashMap<>();
         params.put("formvar_uid", user.getId());
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<VisibleSystems> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -864,7 +862,7 @@ public class UserManager extends BaseManager {
      * @param user The user in question
      * @return A list containing the visible systems for the user
      */
-    public static DataResult visibleSystems(User user) {
+    public static DataResult<VisibleSystems> visibleSystems(User user) {
         return visibleSystems(user, null);
     }
 
@@ -887,7 +885,7 @@ public class UserManager extends BaseManager {
         params.put("user_id", user.getId());
 
         DataResult<SystemSearchResult> dr = m.execute(params, ids);
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         return dr;
     }
 
@@ -898,12 +896,12 @@ public class UserManager extends BaseManager {
      * @param pc Page Control
      * @return completed DataResult
      */
-    public static DataResult usersInSet(User user, String label, PageControl pc) {
+    public static DataResult<UserOverview> usersInSet(User user, String label, PageControl pc) {
         SelectMode m = ModeFactory.getMode("User_queries", "in_set");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -926,17 +924,17 @@ public class UserManager extends BaseManager {
      * @param pc Bounding PageControl
      * @return The DataResult of the SystemGroups.
      */
-    public static DataResult getSystemGroups(User user, PageControl pc) {
+    public static DataResult<SystemGroupOverview> getSystemGroups(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                                            "user_permissions", SystemGroupOverview.class);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(params);
+        DataResult<SystemGroupOverview> dr = m.execute(params);
         dr.setTotalSize(dr.size());
-        if (pc != null && dr.size() > 0) {
+        if (pc != null && !dr.isEmpty()) {
                 dr = dr.subList(pc.getStart() - 1, pc.getEnd());
-                dr.elaborate(new HashMap());
+                dr.elaborate(new HashMap<>());
         }
         return dr;
     }

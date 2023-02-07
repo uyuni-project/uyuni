@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.schedule.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
@@ -27,7 +28,9 @@ import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -47,7 +50,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         // setup
 
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -94,7 +97,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
         // setup
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -131,7 +134,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     public void testListCompletedActions() throws Exception {
 
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.completedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.completedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -179,7 +182,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListFailedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.failedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.failedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -203,7 +206,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListArchivedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.archivedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.archivedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -228,7 +231,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListAllArchivedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allArchivedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allArchivedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -265,7 +268,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListAllCompletedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allCompletedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allCompletedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -307,7 +310,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_COMPLETED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.completedSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.completedSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same
@@ -328,7 +331,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_QUEUED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.inProgressSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.inProgressSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same
@@ -349,7 +352,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_FAILED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.failedSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.failedSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same
@@ -359,4 +362,38 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiSystems.length > 0);
         assertEquals(numSystems, apiSystems.length);
     }
+
+    @Test
+    public void testCannotCancelPendingActionsWithPrerequisite() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Action parent = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerActionTest.createServerAction(server, parent);
+
+        Action child = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_SCRIPT_RUN);
+        child.setPrerequisite(parent);
+        ActionFactory.save(child);
+        ServerActionTest.createServerAction(server, child);
+
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+            () -> handler.cancelActions(admin, List.of(child.getId().intValue())));
+        assertEquals("Cannot cancel an action with a pending prerequisite.", exception.getMessage());
+    }
+
+    @Test
+    public void testCannotCancelPickedUpAction() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Action action = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+
+        ActionFactory.save(action);
+        ActionFactory.save(serverAction);
+
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
+            () -> handler.cancelActions(admin, List.of(action.getId().intValue())));
+        assertEquals("Cannot cancel an action in PICKED UP state.", exception.getMessage());
+    }
+
 }

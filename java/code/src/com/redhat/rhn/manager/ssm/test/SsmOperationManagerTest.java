@@ -52,6 +52,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     private RhnSet serverSet;
     private String serverSetLabel;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         ssmUser = UserTestUtils.findNewUser("ssmuser", "ssmorg");
@@ -59,7 +60,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateAndAllOperations() throws Exception {
+    public void testCreateAndAllOperations() {
         // Test
         SsmOperationManager.createOperation(ssmUser, "Test operation", serverSetLabel);
 
@@ -72,7 +73,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testCreateAndAllOperations2() throws Exception {
+    public void testCreateAndAllOperations2() {
         long operationId = SsmOperationManager.createOperation(ssmUser,
                                             "Test testCreateAndAllOperations2 ", null);
         SsmOperationManager.associateServersWithOperation(operationId, ssmUser.getId(),
@@ -86,7 +87,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateCompleteAndInProgressOperations() throws Exception {
+    public void testCreateCompleteAndInProgressOperations() {
         // Test
         long completeMeId =
             SsmOperationManager.createOperation(ssmUser,
@@ -115,7 +116,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateAndFindOperation() throws Exception {
+    public void testCreateAndFindOperation() {
         // Test
         long operationId =
             SsmOperationManager.createOperation(ssmUser,
@@ -144,7 +145,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFindServerDataForOperation() throws Exception {
+    public void testFindServerDataForOperation() {
         // Setup
         long operationId =
             SsmOperationManager.createOperation(ssmUser, "Test operation", serverSetLabel);
@@ -163,7 +164,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testAssociateServersWithOperation() throws Exception {
+    public void testAssociateServersWithOperation() {
         // Setup
 
         //   Pass null label so no servers are associated
@@ -198,10 +199,9 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      * The driving use case behind this is the scenario where a server is subscribed to
      * one channel and unsubscribed from another in the same SSM batch task.
      *
-     * @throws Exception if there is an error running the test
      */
     @Test
-    public void testAssociateServersWithOperationMultipleSets() throws Exception {
+    public void testAssociateServersWithOperationMultipleSets() {
         // Setup
 
         //   Pass null label so no servers are associated
@@ -246,10 +246,9 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      * The driving use case behind this is the scenario where a server is subscribed to
      * two different channels in the same SSM batch task.
      *
-     * @throws Exception if there is an error running the test
      */
     @Test
-    public void testAssociateServersWithOperationDuplicateServer() throws Exception {
+    public void testAssociateServersWithOperationDuplicateServer() {
         // Setup
 
         //   Pass null label so no servers are associated
@@ -291,11 +290,10 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
 
     /**
      * Tests a failed server-operation association.
-     * @throws Exception when things go wrong
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testAssociateServersWithFailedOperation() throws Exception {
+    public void testAssociateServersWithFailedOperation() {
         //   Pass null label so no servers are associated
         long operationId =
             SsmOperationManager.createOperation(ssmUser, "Test operation", null);
@@ -309,12 +307,12 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         }
 
         // Verify
-        DataResult<Object> result = SsmOperationManager
+        DataResult<ServerOperationDataDto> result = SsmOperationManager
             .findServerDataForOperation(operationId);
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertEquals(EXPECTED_NOTE, serverData.getNote());
@@ -324,9 +322,8 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      * Populates an RhnSet with server IDs.
      *
      * @return label referencing the set that was populated
-     * @throws Exception if there is an error creating a server
      */
-    private String populateRhnSet() throws Exception {
+    private String populateRhnSet() {
         RhnSetDecl setDecl =
             RhnSetDecl.findOrCreate("SsmOperationManagerTestSet", SetCleanup.NOOP);
         serverSet = setDecl.create(ssmUser);

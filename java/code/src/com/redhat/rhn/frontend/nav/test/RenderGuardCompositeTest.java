@@ -95,6 +95,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
 
     public static class TrueGuard implements RenderGuard {
 
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return true;
         }
@@ -102,6 +103,7 @@ public class RenderGuardCompositeTest extends RhnBaseTestCase {
 
     public static class FalseGuard implements RenderGuard {
 
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return false;
         }

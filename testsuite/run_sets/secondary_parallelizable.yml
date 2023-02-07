@@ -37,6 +37,9 @@
 - features/secondary/srv_payg_ssh_connection.feature
 - features/secondary/srv_push_package.feature
 - features/secondary/srv_reportdb.feature
+- features/secondary/srv_dist_channel_mapping.feature
+- features/secondary/srv_task_status_engine.feature
+- features/secondary/srv_cobbler_sync.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature

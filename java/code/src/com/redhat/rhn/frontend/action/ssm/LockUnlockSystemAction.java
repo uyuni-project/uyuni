@@ -56,8 +56,7 @@ public class LockUnlockSystemAction extends RhnListAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-            throws Exception {
+                                 HttpServletResponse response) {
 
         ActionMessages actionMessages = new ActionMessages();
         ActionErrors actionErrors = new ActionErrors();

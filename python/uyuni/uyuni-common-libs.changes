@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 14 14:13:10 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * unify user notification code on java side
+
+-------------------------------------------------------------------
 Wed Sep 28 11:05:47 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -25,7 +25,7 @@ Feature: Build OS images
     And I follow "Create"
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"
-    And I select "1-KIWI-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter the image filename for "pxeboot_minion" relative to profiles as "path"
     And I click on "create-btn"
 
@@ -52,23 +52,9 @@ Feature: Build OS images
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "pxeboot_minion"
 
-@proxy
-@private_net
-  Scenario: Move the image to the branch server
-    When I manually install the "image-sync" formula on the server
-    And I enable repositories before installing branch server
-    And I synchronize all Salt dynamic modules on "proxy"
-    And I apply state "image-sync" to "proxy"
-    Then the image for "pxeboot_minion" should exist on the branch server
-
-@proxy
-@private_net
-  Scenario: Cleanup: Disable the repositories on branch server
-    When I disable repositories after installing branch server
-
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I go to the home page
-    And I click on "Clear"
+    And I click on the clear SSM button
 
   Scenario: Cleanup: remove OS image profile
     When I follow the left menu "Images > Profiles"

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -57,7 +58,7 @@ public class CryptoKeysHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List listAllKeys(User loggedInUser) {
+    public List<CryptoKeyDto> listAllKeys(User loggedInUser) {
 
         if (loggedInUser == null) {
             throw new NoSuchUserException();

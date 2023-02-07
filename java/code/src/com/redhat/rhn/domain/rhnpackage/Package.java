@@ -68,21 +68,21 @@ public class Package extends BaseDomainHelper {
     private PackageGroup packageGroup;
     private SourceRpm sourceRpm;
     private PackageArch packageArch;
-    private Set<PackageKey> packageKeys = new HashSet();
+    private Set<PackageKey> packageKeys = new HashSet<>();
 
     private Long headerStart = 0L;
     private Long headerEnd = 0L;
 
-    private Set<PackageProvides> provides = new HashSet();
-    private Set<PackageRequires> requires = new HashSet();
-    private Set<PackageObsoletes> obsoletes = new HashSet();
-    private Set<PackageConflicts> conflicts = new HashSet();
-    private Set<PackageRecommends> recommends = new HashSet();
-    private Set<PackageSuggests> suggests = new HashSet();
-    private Set<PackageSupplements> supplements = new HashSet();
-    private Set<PackageEnhances> enhances = new HashSet();
-    private Set<PackagePreDepends> preDepends = new HashSet();
-    private Set<PackageBreaks> breaks = new HashSet();
+    private Set<PackageProvides> provides = new HashSet<>();
+    private Set<PackageRequires> requires = new HashSet<>();
+    private Set<PackageObsoletes> obsoletes = new HashSet<>();
+    private Set<PackageConflicts> conflicts = new HashSet<>();
+    private Set<PackageRecommends> recommends = new HashSet<>();
+    private Set<PackageSuggests> suggests = new HashSet<>();
+    private Set<PackageSupplements> supplements = new HashSet<>();
+    private Set<PackageEnhances> enhances = new HashSet<>();
+    private Set<PackagePreDepends> preDepends = new HashSet<>();
+    private Set<PackageBreaks> breaks = new HashSet<>();
 
     private Map<PackageExtraTagsKeys, String> extraTags = new HashMap<>();
 
@@ -96,7 +96,7 @@ public class Package extends BaseDomainHelper {
     /**
      * @return Returns the status of being locked.
      */
-    public Boolean isLockPending() {
+    public boolean isLockPending() {
         return lockPending;
     }
 
@@ -106,6 +106,24 @@ public class Package extends BaseDomainHelper {
      */
     public Boolean isPartOfRetractedPatch() {
         return errata.stream().anyMatch(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+    }
+
+    /**
+     * Check if this package is the main one of a PTF.
+     *
+     * @return true if the package is PTF master package
+     */
+    public boolean isMasterPtfPackage() {
+        return provides.stream().anyMatch(p -> SpecialCapabilityNames.PTF.equals(p.getCapability().getName()));
+    }
+
+    /**
+     * Check if the package is part of a PTF.
+     *
+     * @return true if the package is part of PTF
+     */
+    public boolean isPartOfPtf() {
+        return provides.stream().anyMatch(p -> SpecialCapabilityNames.PTF_PACKAGE.equals(p.getCapability().getName()));
     }
 
     /**

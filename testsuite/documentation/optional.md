@@ -241,12 +241,11 @@ place `https://github.com/uyuni-project/uyuni/tree/master/testsuite/features/pro
 
 Using a virtualization host with the test suite is not mandatory.
 
-If you do not want a virtualization host minion, do not define `VIRTHOST_KVM_URL` or
-`VIRTHOST_XEN_URL` environment variables before you run the test suite. That's all.
+If you do not want a virtualization host minion, do not define `VIRTHOST_KVM_URL` environment 
+variable before you run the test suite. That's all.
 
 If you want virtualization minions, make these variables point to the machines that
-will be the virtualization KVM or Xen host minions and define the `VIRTHOST_KVM_PASSWORD`
-and `VIRTHOST_XEN_PASSWORD` variables:
+will be the virtualization KVM host minions and define the `VIRTHOST_KVM_PASSWORD` variable:
 
 ```bash
 export VIRTHOST_KVM_URL=myvirthost.example.com
@@ -254,16 +253,14 @@ export VIRTHOST_KVM_PASSWORD=therootpwd
 ```
 
 Make sure the image to use for the test virtual machines is located in
-`/var/testsuite-data/disk-image-template.qcow2` on the virtual hosts.
-A `/var/testsuite-data/disk-image-template-xenpv.qcow2` disk image to use for Xen ParaVirtualized
-guests is needed on the machine pointed by `VIRTHOST_XEN_URL`.
+`/var/testsuite-data/` on the virtual hosts.
 
 In order for the virtual hosts to be able to report to the test server,
 use a bridge virtual network for the test machines.
 
-The `disk-image-template.qcow2` virtual disk image should
+The `leap-disk-image-template.qcow2` virtual disk image should
 have avahi daemon installed and running at first boot, and should be capable to be booted
-as either a Xen HVM or KVM guest. The disk images used by sumaform are good candidates
+as a KVM guest. The disk images used by sumaform are good candidates
 for this.
 
 Note that the virtualization host needs to be a physical machine that needs
@@ -271,11 +268,10 @@ to be accessible via SSH without a passphrase from the machine running the test 
 also requires the `qemu-img`, `virt-install` and `virt-customize` tools to be installed and
 the controller SSH public key needs to be added to the `authorized_keys` file.
 
-Inside of the test suite, the scenarios that are tagged with one of:
+Inside of the test suite, the scenarios that are tagged with:
 
 ```
 @virtualization_kvm
-@virtualization_xen
 ```
 
 are executed only if the corresponding virtualization host minion is available.

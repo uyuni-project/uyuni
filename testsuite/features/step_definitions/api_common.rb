@@ -1,20 +1,16 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the API.
 
 require 'json'
 require 'socket'
 
-$api_test = $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
-
-## auth namespace
-
-When(/^I am logged in API as user "([^"]*)" and password "([^"]*)"$/) do |user, password|
-  $api_test.auth.login(user, password)
-end
-
-When(/^I logout from API$/) do
-  $api_test.auth.logout
-end
+$api_test = if $debug_mode
+              ApiTestXmlrpc.new($server.full_hostname)
+            else
+              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+            end
 
 ## system namespace
 
@@ -241,21 +237,31 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel)
 
-  # Select all the child channels for this client
-  client.sub! 'ssh_minion', 'minion'
-  if client.include? 'buildhost'
-    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
-  elsif client.include? 'terminal'
-    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
-  else
-    custom_channel = "custom_channel_#{client}"
-    selected_child_channels = [custom_channel]
-  end
-  child_channels.each do |child_channel|
-    selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
-  end
+  # Filter out the custom channels
+  # This is needed because we might have both a traditional custom channel and a Salt custom channel
+  child_channels.reject! { |channel| channel.include? 'custom_channel' }
 
-  $api_test.activationkey.add_child_channels(key, selected_child_channels)
+  # Re-add the desired custom channel
+  # This too can go away when we get rid of traditional clients for good
+  client.sub! 'ssh_minion', 'minion'
+  client.sub! 'buildhost', 'minion'
+  client.sub! 'terminal', 'minion'
+  client.sub! 'monitoring_server', 'sle15sp4_minion'
+  custom_channel = if client.include? 'rocky8'
+                     'no-appstream-8-result-custom_channel_rocky8_minion'
+                   elsif client.include? 'rocky9'
+                     'no-appstream-9-result-custom_channel_rocky9_minion'
+                   elsif client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+                   else
+                     "custom_channel_#{client}"
+                   end
+  child_channels.push(custom_channel)
+
+  # Add child channels to the key
+  $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 ## actionchain namespace
@@ -477,9 +483,9 @@ Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'
-              'test-channel-i586'
+              'fake-i586-channel'
             else
-              'test-channel-x86_64'
+              'fake-rpm-sles-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))

@@ -39,7 +39,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
     private boolean threadsFail = false;
 
     @Test
-    public void testFactory() throws Exception {
+    public void testFactory() {
         String s = (String)PrimitiveFactory.getObject("string-object-foo");
         assertEquals("Foo", s);
 
@@ -52,7 +52,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFactorySingleton() throws Exception {
+    public void testFactorySingleton() {
         String foo1 = (String)PrimitiveFactory.getObject("string-object-foo");
         String foo2 = (String)PrimitiveFactory.getObject("string-object-foo");
         assertSame(foo1, foo2);
@@ -71,10 +71,11 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
 
     public class TestGetObjectThread extends Thread {
 
+        @Override
         public void run() {
             try {
                 Collection keys = PrimitiveFactory.getKeys();
-                assertTrue(keys.size() == 3);
+                assertEquals(3, keys.size());
                 String s = (String)PrimitiveFactory.getObject("string-object-foo");
                 assertEquals("Foo", s);
             }

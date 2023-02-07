@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 
@@ -37,8 +36,8 @@ public class UuidCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-            throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
 
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_UUID_CLEANUP);
@@ -46,7 +45,7 @@ public class UuidCleanup extends RhnJavaJob {
             log.debug("Calling WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_UUID_CLEANUP);
         }
-        m.executeUpdate(new HashMap());
+        m.executeUpdate(new HashMap<>());
         if (log.isDebugEnabled()) {
             log.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_UUID_CLEANUP + " returned");
@@ -58,7 +57,7 @@ public class UuidCleanup extends RhnJavaJob {
             log.debug("Calling CallableMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP);
         }
-        m2.executeUpdate(new HashMap());
+        m2.executeUpdate(new HashMap<>());
         if (log.isDebugEnabled()) {
             log.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP +

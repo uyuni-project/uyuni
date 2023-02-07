@@ -46,6 +46,7 @@ class ActionExecutor implements Runnable {
      * Iterates over the list of handlers and dispatches
      * the message to each
      */
+    @Override
     public void run() {
         for (MessageAction action : actionHandlers) {
             LOG.debug("run() - got action: {}", action.getClass().getName());
@@ -70,7 +71,6 @@ class ActionExecutor implements Runnable {
             }
             catch (Throwable t) {
                 LOG.error(t);
-                t.printStackTrace();
             }
         }
     }

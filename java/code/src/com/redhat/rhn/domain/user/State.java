@@ -55,6 +55,7 @@ public class State {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof State)) {
             return false;
@@ -65,6 +66,7 @@ public class State {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return label.hashCode();
     }

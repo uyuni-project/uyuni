@@ -28,7 +28,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,17 +60,17 @@ public class AutoErrataTask extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
 
         List<Long> systems = getAutoErrataSystems();
-        if (systems == null || systems.size() == 0) {
+        if (systems == null || systems.isEmpty()) {
             log.debug("No systems with auto errata enabled");
             return;
         }
 
         List<Map<String, Long>> results = getErrataToProcess(filterSystemsInMaintenanceMode(systems));
-        if (results == null || results.size() == 0) {
+        if (results == null || results.isEmpty()) {
             log.debug("No unapplied auto errata found. Skipping systems not in maintenance mode... exiting");
             return;
         }
@@ -111,7 +110,6 @@ public class AutoErrataTask extends RhnJavaJob {
     protected List<Long> getAutoErrataSystems() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_SYSTEMS);
-        @SuppressWarnings("unchecked")
         List<Map<String, Long>> results = select.execute();
         return results.stream().map(system -> system.get("id")).collect(Collectors.toList());
     }
@@ -158,14 +156,12 @@ public class AutoErrataTask extends RhnJavaJob {
          * where rtb.name = 'repo-sync-bunch'
          *   and rtr.status in ('RUNNING','READY')
          */
-        if (sids == null || sids.size() == 0) {
+        if (sids == null || sids.isEmpty()) {
             return new ArrayList<>();
         }
 
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_CANDIDATES);
-        @SuppressWarnings("unchecked")
-        List<Map<String, Long>> results = select.execute(sids);
-        return results;
+        return select.execute(sids);
     }
 }

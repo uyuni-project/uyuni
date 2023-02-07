@@ -20,7 +20,6 @@ import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
 
 import org.quartz.JobExecutionContext;
 
@@ -51,13 +50,8 @@ public class MinionCheckin extends RhnJavaJob {
         }
 
         List<String> minionIds = this.findCheckinCandidatesIds();
-        try {
-            if (!minionIds.isEmpty()) {
-                this.saltApi.checkIn(new MinionList(minionIds));
-            }
-        }
-        catch (SaltException e) {
-            log.warn(String.format("Unable to perform checkin on regular minions: %s", e.getMessage()));
+        if (!minionIds.isEmpty()) {
+            this.saltApi.checkIn(new MinionList(minionIds));
         }
     }
 

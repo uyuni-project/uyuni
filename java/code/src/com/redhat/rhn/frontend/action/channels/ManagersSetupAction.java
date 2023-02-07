@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ManagersSetupAction
  */
-public class ManagersSetupAction extends RhnAction implements Listable {
+public class ManagersSetupAction extends RhnAction implements Listable<UserOverview> {
 
 
     /** {@inheritDoc} */
@@ -126,7 +126,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<UserOverview> getResult(RequestContext context) {
         User currentUser = context.getCurrentUser();
         List<UserOverview> userList = UserManager.activeInOrg2(currentUser);
         for (UserOverview uo : userList) {

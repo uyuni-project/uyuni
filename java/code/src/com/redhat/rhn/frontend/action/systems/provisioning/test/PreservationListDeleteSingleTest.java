@@ -36,7 +36,7 @@ import java.util.List;
 public class PreservationListDeleteSingleTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testForwardToDelete() throws Exception {
+    public void testForwardToDelete() {
         setRequestPathInfo(
                 "/systems/provisioning/preservation/PreservationListDeleteSingle");
         FileList list = FileListTest.createTestFileList(user.getOrg());

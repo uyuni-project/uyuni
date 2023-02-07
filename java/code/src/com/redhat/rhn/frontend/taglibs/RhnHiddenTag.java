@@ -58,6 +58,7 @@ public class RhnHiddenTag extends TagSupport {
     /**
      * @param inId the id to set
      */
+    @Override
     public void setId(String inId) {
         this.id = inId;
     }
@@ -65,6 +66,7 @@ public class RhnHiddenTag extends TagSupport {
     /**
      * @return the id
      */
+    @Override
     public String getId() {
         return id;
     }

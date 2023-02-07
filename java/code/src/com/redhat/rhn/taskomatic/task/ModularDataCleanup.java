@@ -23,7 +23,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -46,7 +45,7 @@ public class ModularDataCleanup extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         Set<String> usedModularDataPaths = HibernateFactory.getSession()
                 .createQuery("SELECT DISTINCT(m.relativeFilename) FROM Modules m", String.class)
                 .stream()
@@ -77,7 +76,7 @@ public class ModularDataCleanup extends RhnJavaJob {
     }
 
     private void logCleaning(List<Path> unusedModularPaths) {
-        if (unusedModularPaths.size() > 0) {
+        if (!unusedModularPaths.isEmpty()) {
             log.info("Cleaning {} unused modular data files", unusedModularPaths.size());
             if (log.isDebugEnabled()) {
                 log.debug("Cleaning: {}",

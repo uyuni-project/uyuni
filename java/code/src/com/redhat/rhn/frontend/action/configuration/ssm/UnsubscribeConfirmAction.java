@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -26,14 +27,16 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class UnsubscribeConfirmAction extends BaseListAction {
 
-    /**
+    /*
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         return ConfigurationManager.getInstance().ssmSystemListForChannels(user, pcIn);
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

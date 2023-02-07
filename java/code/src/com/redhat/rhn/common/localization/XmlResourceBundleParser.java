@@ -18,7 +18,6 @@ package com.redhat.rhn.common.localization;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -32,25 +31,24 @@ import java.util.Map;
 
 class XmlResourceBundleParser  extends DefaultHandler {
 
-    private Map messages;
-    private StringBuffer thisText;
+    private final Map<String, String> messages = new HashMap<>();
+    private StringBuilder thisText = new StringBuilder();
     private String currKey;
-    private static Logger log = LogManager.getLogger(XmlResourceBundleParser.class);
+    private static final Logger LOG = LogManager.getLogger(XmlResourceBundleParser.class);
 
     /** constructor
      */
     XmlResourceBundleParser() {
         super();
-        thisText = new StringBuffer();
-        messages = new HashMap();
     }
 
 
     /** {@inheritDoc} */
+    @Override
     public void startElement(String namespaceUri, String localName,
                              String qualifiedName, Attributes attributes) {
 
-        thisText = new StringBuffer();
+        thisText = new StringBuilder();
         if (qualifiedName.equals("trans-unit")) {
             currKey = attributes.getValue("id");
         }
@@ -58,58 +56,63 @@ class XmlResourceBundleParser  extends DefaultHandler {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endElement(String namespaceUri, String localName,
-                           String qualifiedName) throws SAXException {
+                           String qualifiedName) {
 
         if (thisText.length() > 0) {
             // For the en_US files we use source
             if (qualifiedName.equals("source")) {
                 if (messages.containsKey(currKey)) {
-                    log.warn("Duplicate message key found in XML Resource file: {}", currKey);
+                    LOG.warn("Duplicate message key found in XML Resource file: {}", currKey);
                 }
-                log.debug("Adding: [{}] value: [{}]", currKey, thisText);
+                LOG.debug("Adding: [{}] value: [{}]", currKey, thisText);
                 messages.put(currKey, thisText.toString());
             }
             // For other languages we use target and overwrite the previously
             // placed "source" tag.  Depends on the fact that the target tag
             // comes after the source tag.
             if (qualifiedName.equals("target")) {
-                log.debug("Adding: [{}] value: [{}]", currKey, thisText);
+                LOG.debug("Adding: [{}] value: [{}]", currKey, thisText);
                 messages.put(currKey, thisText.toString());
             }
         }
     }
 
     /** {@inheritDoc} */
-    public void warning(SAXParseException e) throws SAXException {
-        log.error("SAXParseException Warning: ");
+    @Override
+    public void warning(SAXParseException e) {
+        LOG.error("SAXParseException Warning: ");
         printInfo(e);
     }
 
     /** {@inheritDoc} */
-    public void error(SAXParseException e) throws SAXException {
-        log.error("SAXParseException Error: ");
+    @Override
+    public void error(SAXParseException e) {
+        LOG.error("SAXParseException Error: ");
         printInfo(e);
     }
 
     /** {@inheritDoc} */
-    public void fatalError(SAXParseException e) throws SAXException {
-        log.error("SAXParseException Fatal error: ");
+    @Override
+    public void fatalError(SAXParseException e) {
+        LOG.error("SAXParseException Fatal error: ");
         printInfo(e);
     }
 
     private void printInfo(SAXParseException e) {
-        log.error("   Message key: {}", currKey);
-        log.error("   Public ID: {}", e.getPublicId());
-        log.error("   System ID: {}", e.getSystemId());
-        log.error("   Line number: {}", e.getLineNumber());
-        log.error("   Column number: {}", e.getColumnNumber());
-        log.error("   Message: {}", e.getMessage());
+        LOG.error("   Message key: {}", currKey);
+        LOG.error("   Public ID: {}", e.getPublicId());
+        LOG.error("   System ID: {}", e.getSystemId());
+        LOG.error("   Line number: {}", e.getLineNumber());
+        LOG.error("   Column number: {}", e.getColumnNumber());
+        LOG.error("   Message: {}", e.getMessage());
     }
 
 
 
     /** {@inheritDoc} */
+    @Override
     public void characters(char[] ch, int start, int length) {
         String appendme = new String(ch, start, length);
         thisText.append(appendme);
@@ -120,7 +123,7 @@ class XmlResourceBundleParser  extends DefaultHandler {
      * produced while parsing the file
      * @return The map ..
      */
-    public Map getMessages() {
+    public Map<String, String> getMessages() {
         return messages;
     }
 

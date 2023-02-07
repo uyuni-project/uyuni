@@ -267,7 +267,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testBackupAndCleanup() throws IOException {
-        assertTrue(legacyStatesBackupDirectory.toFile().list().length == 0);
+        assertEquals(0, legacyStatesBackupDirectory.toFile().list().length);
 
         // this dir must be imported with all its contents
         File dir1 = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "1").toFile();

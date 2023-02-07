@@ -18,7 +18,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -35,7 +34,7 @@ public class NotificationsCleanup extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext arg0In) throws JobExecutionException {
+    public void execute(JobExecutionContext arg0In) {
         if (log.isDebugEnabled()) {
             log.debug("start notifications cleanup");
         }

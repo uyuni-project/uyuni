@@ -83,7 +83,6 @@ things that make a computer program efficient are second class citizens with Cuc
   * "minssh": feature testing SSH SLES minions
   * "buildhost": feature using Kiwi and Docker build host
   * "minkvm": feature testing KVM host SLES minions
-  * "minxen": feature testing Xen host SLES minions
   * "rhlike": feature testing Red Hat-like minions (CentOS, Alma, Rocky, ...)
   * "deblike": feature testing Debian-like minions (Debian, Ubuntu, ...)
   * "allcli: feature testing all clients

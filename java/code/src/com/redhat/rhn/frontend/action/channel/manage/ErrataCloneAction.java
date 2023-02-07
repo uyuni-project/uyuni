@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.channel.manage;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
@@ -36,7 +35,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataCloneAction extends RhnListAction {
 
-    private static final String CONFIRM = "channel.jsp.errata.clone.button";
     private static final String CID = "cid";
     private static final String LIST_NAME = "errata";
     private static final String DISPATCH = "dispatch";
@@ -57,10 +54,11 @@ public class ErrataCloneAction extends RhnListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
@@ -74,8 +72,6 @@ public class ErrataCloneAction extends RhnListAction {
         request.setAttribute("channel_name", channel.getName());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute("emptyKey", EMPTY_KEY);
-
-        List<SelectableChannel> channelList = null;
 
         RhnSet set = getDecl(channel).get(user);
         //if its not submitted

@@ -34,27 +34,27 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 
     /** Context Path */
     private String requestURL;
-    private Map attributes;
-    private Map headers;
+    private Map<String, Object> attributes;
+    private Map<String, String> headers;
     private Map parameterMap;
-    private List locales;
+    private List<Locale> locales;
     private int port;
     private boolean secure;
-    private List cookies;
+    private List<Cookie> cookies;
     private String encoding;
     private String method;
-    private Enumeration headerNames;
+    private Enumeration<String> headerNames;
 
     /**
      * default constructor
      */
     public RhnMockHttpServletRequest() {
         super();
-        attributes = new HashMap();
-        headers = new HashMap();
-        locales = new ArrayList();
-        parameterMap = new HashMap();
-        cookies = new ArrayList();
+        attributes = new HashMap<>();
+        headers = new HashMap<>();
+        locales = new ArrayList<>();
+        parameterMap = new HashMap<>();
+        cookies = new ArrayList<>();
         setupServerName("somehost.rhn.redhat.com");
         setupGetRequestURI("/rhn/network/somepage.do");
         setLocale(Locale.getDefault());
@@ -67,6 +67,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * The Mock version returns null
      * @return StringBuffer Context Path
      */
+    @Override
     public java.lang.StringBuffer getRequestURL() {
         return new StringBuffer(requestURL);
     }
@@ -84,6 +85,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * @param name Name of attribute whose value is sought.
      * @return Object value of attribute with given name.
      */
+    @Override
     public Object getAttribute(String name) {
         return attributes.get(name);
     }
@@ -102,17 +104,20 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * @param name attribute name
      * @param value attribute value
      */
+    @Override
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
     }
 
 
     /** {@inheritDoc} */
+    @Override
     public String getHeader(String name) {
-        return (String)headers.get(name);
+        return headers.get(name);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Enumeration getHeaderNames() {
         return this.headerNames;
     }
@@ -121,7 +126,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * Header Names
      * @param headerNamesIn attribute headerNames
      */
-    public void setupGetHeaderNames(Enumeration headerNamesIn) {
+    public void setupGetHeaderNames(Enumeration<String> headerNamesIn) {
         this.headerNames = headerNamesIn;
     }
 
@@ -132,6 +137,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * @param paramName name of param to look up
      * @return value of paramName, or 'null' if paramName isn't in the request
      */
+    @Override
     public String getParameter(String paramName) {
         try {
             return super.getParameter(paramName);
@@ -143,6 +149,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Map getParameterMap() {
         return parameterMap;
     }
@@ -150,13 +157,15 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setupGetParameterMap(Map map) {
         parameterMap = map;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Locale getLocale() {
-        return (Locale) this.locales.get(0);
+        return this.locales.get(0);
     }
 
     /**
@@ -176,6 +185,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Enumeration getLocales() {
         return java.util.Collections.enumeration(this.locales);
     }
@@ -190,11 +200,13 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Cookie[] getCookies() {
         return (Cookie[]) cookies.toArray(new Cookie[0]);
     }
 
     /** {@inheritDoc} */
+    @Override
     public int getServerPort() {
         return port;
     }
@@ -225,16 +237,19 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isSecure() {
         return secure;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getCharacterEncoding() {
         return encoding;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCharacterEncoding(String encodingIn) {
         this.encoding = encodingIn;
     }
@@ -243,6 +258,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /**
      * @return Returns the method.
      */
+    @Override
     public String getMethod() {
         return method;
     }
@@ -258,6 +274,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getRemoteUser() {
         return null;
     }

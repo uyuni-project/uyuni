@@ -59,6 +59,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(
             ActionForm form, HttpServletRequest request, Map<String, Object> params) {
         ConfigActionHelper.processParamMap(request, params);
@@ -67,6 +68,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("deployconfirm.jsp.deploybutton", "scheduleDeploy");
     }
@@ -100,7 +102,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             user);
 
         //create the set needed for the action
-        Set revisions = new HashSet();
+        Set revisions = new HashSet<>();
         revisions.add(cr.getId());
 
         ActionType deploy = ActionFactory.TYPE_CONFIGFILES_DEPLOY;
@@ -108,13 +110,13 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
         //go through all of the selected systems
         for (RhnSetElement rhnSetElementIn : systems.getElements()) {
             // Each server-deploy should succeed or fail on its own merits (?)
-            Set servers = new HashSet();
+            Set servers = new HashSet<>();
             //the current system
             Long sid = rhnSetElementIn.getElement();
             servers.add(sid);
             //created the action.  One action per server.
             try {
-                if (revisions.size() > 0 && !ActionChainManager.createConfigActions(user,
+                if (!revisions.isEmpty() && !ActionChainManager.createConfigActions(user,
                         revisions, servers, deploy, earliest, actionChain).isEmpty()) {
                     successes++;
                 }

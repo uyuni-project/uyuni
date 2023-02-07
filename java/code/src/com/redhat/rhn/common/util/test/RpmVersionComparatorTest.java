@@ -36,12 +36,12 @@ public class RpmVersionComparatorTest  {
     private RpmVersionComparator cmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         cmp = new RpmVersionComparator();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         cmp = null;
     }
 
@@ -165,8 +165,8 @@ public class RpmVersionComparatorTest  {
     private int testRPMVersionCompareInDatabase(String operand1, String operand2) {
         // test the stored function
         CallableMode m = ModeFactory.getCallableMode("test_queries", "rpmstrcmp");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         outParams.put("compareResult", Types.INTEGER);
         Integer result;
         inParams.put("operand1", operand1);

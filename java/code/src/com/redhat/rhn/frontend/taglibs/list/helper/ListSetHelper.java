@@ -81,13 +81,13 @@ import javax.servlet.http.HttpServletRequest;
  * }</pre>
  * @author paji
  */
-abstract class ListSetHelper extends ListHelper {
+public abstract class ListSetHelper extends ListHelper {
     private boolean dispatched = false;
     private boolean ignoreEmptySelection = false;
     private boolean willClearSet = true;
     private boolean preSelectAll = false;
     private boolean parentIsElement = true;
-    private Set initSet = Collections.EMPTY_SET;
+    private Set initSet = Collections.emptySet();
     private List dataList;
 
     /**
@@ -106,7 +106,7 @@ abstract class ListSetHelper extends ListHelper {
      * @param request the servlet request
      */
     ListSetHelper(Listable inp, HttpServletRequest request) {
-        this(inp, request, Collections.EMPTY_MAP);
+        this(inp, request, Collections.emptyMap());
     }
 
 
@@ -132,6 +132,7 @@ abstract class ListSetHelper extends ListHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void execute() {
         RequestContext context = getContext();
         HttpServletRequest request = context.getRequest();
@@ -166,7 +167,7 @@ abstract class ListSetHelper extends ListHelper {
 
 
         if (!context.isSubmitted() && alphaBarPressed == null && preSelectAll) {
-            Set selSet = new HashSet();
+            Set selSet = new HashSet<>();
             for (BaseDto bdto : (List<BaseDto>) dataList) {
                 selSet.add(bdto.getId());
             }

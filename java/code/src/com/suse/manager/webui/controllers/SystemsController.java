@@ -21,6 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -29,7 +30,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -42,7 +42,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -61,18 +60,17 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
-import com.suse.manager.webui.utils.gson.VirtualSystem;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +79,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
@@ -132,9 +129,9 @@ public class SystemsController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
-                withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::virtualListPage)))), jade);
         get("/manager/systems/list/all",
-                withCsrfToken(withDocsLocale(withUser(this::allListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::allListPage)))), jade);
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);
@@ -151,10 +148,32 @@ public class SystemsController {
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+        PageControlHelper pageHelper = new PageControlHelper(request, "VII.name");
+        PageControl pc = pageHelper.getPageControl();
+        pc.setFilterColumn("VII.name");
 
-        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
+        Map<String, String> columnNamesMapping = Map.of(
+                "hostServerName", "host_server_name",
+                "name", "VII.name",
+                "stateName", "state_name",
+                "statusType", "S.status_type",
+                "channelLabels", "S.channel_labels"
+        );
+        if (columnNamesMapping.containsKey(pc.getFilterColumn())) {
+            pc.setFilterColumn(columnNamesMapping.get(pc.getFilterColumn()));
+        }
+        if (columnNamesMapping.containsKey(pc.getSortColumn())) {
+            pc.setSortColumn(columnNamesMapping.get(pc.getSortColumn()));
+        }
+
         if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListQueryBuilder()
+                    .select("S.id, S.selectable")
+                    .run(Map.of("user_id", user.getId()), pc, PagedSqlQueryBuilder::parseFilterAsText,
+                            VirtualSystemOverview.class);
             return json(response, virtual.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(VirtualSystemOverview::getUuid)
@@ -162,19 +181,10 @@ public class SystemsController {
             );
         }
 
-        virtual = pageHelper.processPageControl(virtual, new HashMap<>());
-        List<VirtualSystem> systems = virtual.stream()
-                .map(system -> {
-                    system.setSystemId(system.getVirtualSystemId());
-                    if (system.getSystemId() != null) {
-                        system.updateStatusType(user);
-                    }
-                    return new VirtualSystem(system);
-                })
-                .collect(Collectors.toList());
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, pc);
         RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
 
-        return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize(), ssmSet.getElementValues()));
+        return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()));
     }
 
     private Object allSystems(Request request, Response response, User user) {
@@ -199,11 +209,13 @@ public class SystemsController {
                             List<String> values = List.of("proxy", "mgr_server", "virtual_host",
                                                           "virtual_guest", "physical");
                             if (values.contains(control.getFilterData())) {
-                                control.setFilterColumn(control.getFilterData());
-                                control.setFilterData("true");
                                 if ("physical".equals(control.getFilterData())) {
                                     control.setFilterColumn("virtual_guest");
                                     control.setFilterData("false");
+                                }
+                                else {
+                                    control.setFilterColumn(control.getFilterData());
+                                    control.setFilterData("true");
                                 }
                             }
                             else {
@@ -363,7 +375,9 @@ public class SystemsController {
              SystemManager.setReportDbUser(minion.get(), true);
          }
          else {
-             LOG.error("System ({}) not a Mgr Server", sidStr);
+             if (LOG.isErrorEnabled()) {
+                 LOG.error("System ({}) not a Mgr Server", StringUtil.sanitizeLogInput(sidStr));
+             }
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
          }
          return json(response, ResultJson.success());
@@ -489,7 +503,7 @@ public class SystemsController {
                     HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("invalid_server_id"));
         }
-        Server server = ServerFactory.lookupById(serverId);
+        Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
         if (server == null) {
             return json(response,
                     HttpStatus.SC_NOT_FOUND,
@@ -546,15 +560,8 @@ public class SystemsController {
                     ResultJson.error("child_not_found_or_not_authorized", e.getMessage()));
         }
 
-        ActionChain actionChain = json.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
-                .orElse(null);
-
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        Date earliest = Date.from(
-                json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
-        );
+        ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
+        Date earliest = MinionActionUtils.getScheduleDate(json.getEarliest());
 
         try {
             Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
@@ -598,7 +605,7 @@ public class SystemsController {
      * @return the json response
      */
     public Object getAccessibleChannelChildren(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             long channelId;
             try {
                 channelId = Long.parseLong(request.params("channelId"));

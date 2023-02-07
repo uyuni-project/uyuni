@@ -65,17 +65,18 @@ public abstract class RhnWizardAction extends RhnAction {
     public static final String STEP_START = "start";
     public static final String STEP_PARAM = "wizardStep";
 
-    private Map steps = new HashMap();
+    private final Map<String, WizardStep> steps = new HashMap<>();
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         synchronized (this) {
-            if (this.steps.size() == 0) {
+            if (this.steps.isEmpty()) {
                 generateWizardSteps(steps);
             }
         }
@@ -91,13 +92,13 @@ public abstract class RhnWizardAction extends RhnAction {
         return retval;
     }
 
-    protected  abstract void generateWizardSteps(Map wizardSteps);
+    protected  abstract void generateWizardSteps(Map<String, WizardStep> wizardSteps);
 
     protected ActionForward dispatch(String step, ActionMapping mapping, ActionForm form,
             RequestContext ctx, HttpServletResponse response) throws Exception {
-        WizardStep wizardStep = (WizardStep) steps.get(step);
+        WizardStep wizardStep = steps.get(step);
         if (wizardStep == null) {
-            wizardStep = (WizardStep) steps.get(STEP_START);
+            wizardStep = steps.get(STEP_START);
         }
         if (wizardStep != null) {
             return wizardStep.invoke(mapping, form, ctx, response, this);
@@ -105,10 +106,10 @@ public abstract class RhnWizardAction extends RhnAction {
         return null;
     }
 
-    protected List findMethods(String methodPrefix) {
-        List retval = new LinkedList();
+    protected List<Method> findMethods(String methodPrefix) {
+        List<Method> retval = new LinkedList<>();
         Method[] methods = this.getClass().getDeclaredMethods();
-        if (methods != null && methods.length > 0) {
+        if (methods.length > 0) {
             for (Method methodIn : methods) {
                 if (methodIn.getName().startsWith(methodPrefix)) {
                     retval.add(methodIn);

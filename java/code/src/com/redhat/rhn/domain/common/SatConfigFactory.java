@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -35,7 +36,6 @@ import java.util.Objects;
  */
 public class SatConfigFactory extends HibernateFactory {
 
-    private static SatConfigFactory singleton = new SatConfigFactory();
     private static final Logger LOG = LogManager.getLogger(SatConfigFactory.class);
 
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
@@ -88,9 +88,8 @@ public class SatConfigFactory extends HibernateFactory {
     public static String getSatConfigValue(String key) {
         Map<String, Object> params = new HashMap<>();
         params.put("key", key);
-        SelectMode m = ModeFactory.getMode("util_queries",
-                "get_satconfig_value");
-        DataResult<Map> dr = m.execute(params);
+        SelectMode m = ModeFactory.getMode("util_queries", "get_satconfig_value");
+        DataResult<Row> dr = m.execute(params);
         if (!dr.isEmpty()) {
             return (String) dr.get(0).get("value");
         }

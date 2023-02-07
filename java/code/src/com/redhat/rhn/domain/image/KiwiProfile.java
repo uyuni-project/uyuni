@@ -71,6 +71,7 @@ public class KiwiProfile extends ImageProfile {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KiwiProfile)) {
             return false;
@@ -86,6 +87,7 @@ public class KiwiProfile extends ImageProfile {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())

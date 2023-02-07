@@ -303,6 +303,8 @@ class SSLSocket:
 
             try:
                 data = self._connection.recv(bufsize)
+                if len(data) == 0:
+                    break
                 self._buffer = self._buffer + data
             except SSL.SSLError as err:
                 if err.args[0] == SSL.SSL_ERROR_ZERO_RETURN:

@@ -43,6 +43,8 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
+import com.suse.manager.maintenance.NotInMaintenanceModeException;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,6 +83,8 @@ public class SPMigrationAction extends RhnAction {
     private static final String LATEST_SP = "latestServicePack";
     private static final String MISSING_SUCCESSOR_EXTENSIONS = "missingSuccessorExtensions";
     private static final String TARGET_PRODUCTS = "targetProducts";
+
+    private static final String NO_MAINTENANCE_WINDOW = "noMaintenanceWindow";
     private static final String CHANNEL_MAP = "channelMap";
     private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
     private static final String IS_MINION = "isMinion";
@@ -239,7 +243,7 @@ public class SPMigrationAction extends RhnAction {
                     ctx.getCurrentUser()
             );
 
-            if (migrationTargets.size() == 0) {
+            if (migrationTargets.isEmpty()) {
                 // Latest SP is apparently installed
                 logger.debug("Latest SP is apparently installed");
                 request.setAttribute(LATEST_SP, true);
@@ -300,25 +304,8 @@ public class SPMigrationAction extends RhnAction {
             request.setAttribute(CHANNEL_MAP, channelMap);
         }
         else if (forward.getName().equals(CONFIRM)) {
-            // Put product data
-            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
-            setMissingSuccessorsInfo(request,  server.getInstalledProductSet(), List.of(targetProductSet));
-            request.setAttribute(TARGET_PRODUCTS, targetProductSet);
-            request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
-            request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
-            request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
-            // Put channel data
-            Channel baseChannel = ChannelFactory.lookupByIdAndUser(targetBaseChannel, ctx.getCurrentUser());
-            request.setAttribute(BASE_CHANNEL, baseChannel);
-            // Add those child channels that will be subscribed
-            List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel,
-                    Arrays.asList(targetChildChannels));
-            request.setAttribute(CHILD_CHANNELS, childChannels);
-
-            // Pre-populate the date picker
-            DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
-                    "date", DatePicker.YEAR_RANGE_POSITIVE);
-            request.setAttribute("date", picker);
+            setConfirmAttributes(request, ctx, server, form, targetBaseProduct, targetAddonProducts,
+                    targetBaseChannel, targetChildChannels, allowVendorChange);
         }
         else if (forward.getName().equals(SCHEDULE)) {
             // Create target product set from parameters
@@ -332,20 +319,73 @@ public class SPMigrationAction extends RhnAction {
             // Schedule the dist upgrade action
             Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
-            Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                    server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest);
+            try {
+                Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
+                        server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest);
 
-            // Display a message to the user
-            String product = targetProductSet.getBaseProduct().getFriendlyName();
-            String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-            String[] msgParams = new String[] {server.getId().toString(), actionID.toString(), product};
-            getStrutsDelegate().saveMessage(msgKey, msgParams, request);
-            Map<String, Long> params = new HashMap<>();
-            params.put("sid", server.getId());
-            return getStrutsDelegate().forwardParams(forward, params);
+                // Display a message to the user
+                String product = targetProductSet.getBaseProduct().getFriendlyName();
+                String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
+                String[] msgParams = new String[]{server.getId().toString(), actionID.toString(), product};
+                getStrutsDelegate().saveMessage(msgKey, msgParams, request);
+                Map<String, Long> params = new HashMap<>();
+                params.put("sid", server.getId());
+                return getStrutsDelegate().forwardParams(forward, params);
+            }
+            catch (NotInMaintenanceModeException e) {
+                setConfirmAttributes(request, ctx, server, form, targetBaseProduct, targetAddonProducts,
+                        targetBaseChannel, targetChildChannels, allowVendorChange);
+                request.setAttribute(NO_MAINTENANCE_WINDOW, true);
+                forward = actionMapping.findForward(CONFIRM);
+            }
         }
 
         return forward;
+    }
+
+    /**
+     * Set in the request the parameters for the confirm forward. Public only for testing
+     *
+     * @param request - the request
+     * @param ctx - request context
+     * @param server - the server
+     * @param form - dyna form
+     * @param targetBaseProduct - target base product
+     * @param targetAddonProducts - target addon products
+     * @param targetBaseChannel - target base channel
+     * @param targetChildChannels - target child channels
+     * @param allowVendorChange - allow vendor change
+     */
+    public void setConfirmAttributes(
+            HttpServletRequest request,
+            RequestContext ctx,
+            Server server,
+            DynaActionForm form,
+            Long targetBaseProduct,
+            Long[] targetAddonProducts,
+            Long targetBaseChannel,
+            Long[] targetChildChannels,
+            boolean allowVendorChange
+    ) {
+        // Put product data
+        SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
+        setMissingSuccessorsInfo(request,  server.getInstalledProductSet(), List.of(targetProductSet));
+        request.setAttribute(TARGET_PRODUCTS, targetProductSet);
+        request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
+        request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
+        request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
+        // Put channel data
+        Channel baseChannel = ChannelFactory.lookupByIdAndUser(targetBaseChannel, ctx.getCurrentUser());
+        request.setAttribute(BASE_CHANNEL, baseChannel);
+        // Add those child channels that will be subscribed
+        List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel,
+                Arrays.asList(targetChildChannels));
+        request.setAttribute(CHILD_CHANNELS, childChannels);
+
+        // Pre-populate the date picker
+        DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
+                "date", DatePicker.YEAR_RANGE_POSITIVE);
+        request.setAttribute("date", picker);
     }
 
     /**
@@ -403,18 +443,16 @@ public class SPMigrationAction extends RhnAction {
      * @param requiredChannels
      * @return
      */
-    @SuppressWarnings("unchecked")
     private List<ChildChannelDto> getChildChannels(Channel baseChannel,
             RequestContext ctx, Server s, List<Long> requiredChannels) {
         User user = ctx.getCurrentUser();
         List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
         // Sort channels by name
-        channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
+        channels.sort(new DynamicComparator<>("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<>();
-        for (Channel channelIn : channels) {
-            Channel child = (Channel) channelIn;
+        for (Channel child : channels) {
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
                     child.getName(),
                     s.isSubscribed(child),
@@ -435,13 +473,12 @@ public class SPMigrationAction extends RhnAction {
      * @param channelIDs
      * @return List of channels
      */
-    @SuppressWarnings("unchecked")
     private List<EssentialChannelDto> getChannelDTOs(RequestContext ctx,
             Channel baseChannel, List<Long> channelIDs) {
         List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(ctx.getCurrentUser());
 
         // Sort channels by name
-        childChannels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
+        childChannels.sort(new DynamicComparator<>("name", RequestContext.SORT_ASC));
 
         List<EssentialChannelDto> channelDTOs = new ArrayList<>();
         for (Channel child : childChannels) {

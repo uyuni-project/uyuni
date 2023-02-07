@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.common.util;
 
-import java.util.Collection;
-
 /**
  * Assertions that should be used to check parameters on public methods.
  * Note that, as opposed to the <code>assert</code> keyword, these checks
@@ -99,8 +97,8 @@ public final class Asserts {
      */
     public static void assertNotEmpty(String s, String label)
         throws IllegalStateException {
-        if (s == null || s.trim().length() == 0) {
-            assertTrue(s != null && s.trim().length() > 0,
+        if (s == null || s.trim().isEmpty()) {
+            assertTrue(s != null && !s.trim().isEmpty(),
                     "Value of " + label + " is empty.");
         }
     }
@@ -173,26 +171,5 @@ public final class Asserts {
                     " '" + expected + "', " + actualLabel + " '" + actual +
                     "'");
         }
-    }
-
-    /**
-     * Assert that <code>coll</code> contains <code>elem</code>
-     * @param coll a collection
-     * @param elem the element that should be in the collection
-     */
-    public static void assertContains(Collection coll, Object elem) {
-        if (!coll.contains(elem)) {
-            fail("Expected " + elem + " to be in " + coll);
-        }
-    }
-
-    /**
-     * This is the equivalent of assertTrue(false, msg).
-     *
-     * @param msg A string describing the condition of failure.
-     * @throws IllegalStateException always
-     */
-    public static void fail(String msg) throws IllegalStateException {
-        assertTrue(false, msg);
     }
 }

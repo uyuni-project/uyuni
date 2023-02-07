@@ -77,7 +77,7 @@ public class HttpApiLoggingInvocationProcessorTest {
         Map<String, String> params = new HashMap<>();
         params.put("sid", "100001");
         params.put("user", "userTest");
-        StringBuffer result = processor.processParams(
+        StringBuilder result = processor.processParams(
             params, "system.provisioning.powermanagement", "getDetails"
         );
         assertEquals("user=userTest, sid=100001", result.toString());

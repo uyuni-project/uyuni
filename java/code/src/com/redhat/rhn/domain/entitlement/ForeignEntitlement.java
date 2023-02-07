@@ -39,6 +39,7 @@ public class ForeignEntitlement extends Entitlement {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPermanent() {
         return true;
     }

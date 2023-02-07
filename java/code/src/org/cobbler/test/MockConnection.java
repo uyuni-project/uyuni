@@ -127,6 +127,7 @@ public class MockConnection extends CobblerConnection {
         url = urlIn;
     }
 
+    @Override
     public Object invokeMethod(String name, Object... args) {
         //no op -> mock version ..
         log.debug(String.format("No-Op Mock called: \"%s\" args: \"%s\"", name, Arrays.toString(args)));
@@ -474,6 +475,7 @@ public class MockConnection extends CobblerConnection {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object invokeTokenMethod(String procedureName,
                                     Object... args) {
         List<Object> params = new LinkedList<>(Arrays.asList(args));
@@ -486,6 +488,7 @@ public class MockConnection extends CobblerConnection {
      *
      * @param tokenIn the cobbler auth token
      */
+    @Override
     public void setToken(String tokenIn) {
         token = tokenIn;
     }
@@ -498,6 +501,7 @@ public class MockConnection extends CobblerConnection {
         return url + "/cobbler_api";
     }
 
+    @Override
     public Double getVersion() {
         return 2.2;
     }

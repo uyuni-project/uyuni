@@ -60,6 +60,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return keyword;
     }
@@ -67,6 +68,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Keyword)) {
             return false;
@@ -80,6 +82,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(keyword)
                                     .append(errata)

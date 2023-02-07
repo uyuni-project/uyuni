@@ -44,6 +44,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -60,6 +61,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAddress1() {
         if (address1 == null) {
             address1 = " ";
@@ -70,6 +72,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddress1(String address1In) {
         this.address1 = address1In;
     }
@@ -77,6 +80,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAddress2() {
         if (address2 == null) {
             address2 = " ";
@@ -87,6 +91,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddress2(String address2In) {
         this.address2 = address2In;
     }
@@ -94,6 +99,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCity() {
         if (city == null) {
             city = " ";
@@ -104,6 +110,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCity(String cityIn) {
         this.city = cityIn;
     }
@@ -111,6 +118,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getState() {
         if (state == null) {
             state = " ";
@@ -121,6 +129,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setState(String stateIn) {
         this.state = stateIn;
     }
@@ -128,6 +137,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getZip() {
         if (zip == null) {
             zip = " ";
@@ -138,6 +148,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setZip(String zipIn) {
         this.zip = zipIn;
     }
@@ -145,6 +156,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCountry() {
         if (country == null) {
             country = " ";
@@ -155,6 +167,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCountry(String countryIn) {
         this.country = countryIn;
     }
@@ -162,6 +175,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getPhone() {
         if (phone == null) {
             phone = " ";
@@ -172,6 +186,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPhone(String phoneIn) {
         this.phone = phoneIn;
     }
@@ -179,6 +194,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFax() {
         if (fax == null) {
             fax = " ";
@@ -189,6 +205,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFax(String faxIn) {
         this.fax = faxIn;
     }
@@ -196,6 +213,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getIsPoBox() {
         if (isPoBox == null) {
             isPoBox = "0";
@@ -206,6 +224,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setIsPoBox(String isPoBoxIn) {
         this.isPoBox = isPoBoxIn;
     }
@@ -213,6 +232,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getType() {
         if (privType == null || privType.equals("")) {
             return Address.TYPE_MARKETING;
@@ -224,6 +244,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      * Output this object to a string
      * @return String value of AddressImpl object
      */
+    @Override
     public String toString() {
         return "{ID: " + getId() + ", type: " + getType() + ", created: " + getCreated() +
                 ", modified: " + getModified() + ", address1: " + getAddress1() + "}";

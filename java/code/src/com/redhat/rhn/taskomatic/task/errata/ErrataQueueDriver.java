@@ -24,20 +24,20 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Driver for the threaded errata queue
  */
-public class ErrataQueueDriver implements QueueDriver {
+public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
 
     private Logger logger = null;
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canContinue() {
         return true;
     }
@@ -45,11 +45,12 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-    public List getCandidates() {
+    @Override
+    public List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
         try {
-            return select.execute(new HashMap());
+            return select.execute();
         }
         finally {
             HibernateFactory.closeSession();
@@ -59,6 +60,7 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
@@ -66,6 +68,7 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Logger getLogger() {
         return logger;
     }
@@ -73,6 +76,7 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_queue_workers", 2);
     }
@@ -80,14 +84,16 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-    public QueueWorker makeWorker(Object workItem) {
-        return new ErrataQueueWorker((Map) workItem, logger);
+    @Override
+    public QueueWorker makeWorker(Map<String, Long> workItem) {
+        return new ErrataQueueWorker(workItem, logger);
     }
 
     /**
     *
     * {@inheritDoc}
     */
+    @Override
     public void initialize() {
         // empty
     }

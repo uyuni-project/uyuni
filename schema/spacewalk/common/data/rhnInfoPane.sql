@@ -18,4 +18,5 @@ insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id
 insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'),'latest-errata',null);
 insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'),'inactive-systems',null);
 insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'),'pending-actions',null);
-insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'), 'recently-registered-systems', null);
+insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'),'recently-registered-systems', null);
+insert into RHNINFOPANE(ID,LABEL,ACL) values (sequence_nextval('rhn_info_pane_id_seq'),'subscription-warning', null);

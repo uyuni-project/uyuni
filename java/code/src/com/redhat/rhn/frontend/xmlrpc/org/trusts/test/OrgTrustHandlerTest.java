@@ -58,6 +58,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
     private OrgTrustHandler handler = new OrgTrustHandler();
     private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -216,7 +217,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.containsKey("systems_transferred_from"));
     }
 
-    private Org createOrg() throws Exception {
+    private Org createOrg() {
         String random = TestUtils.randomString();
         String orgName = "EdwardNortonOrg" + random;
         String login = "edward" + random;

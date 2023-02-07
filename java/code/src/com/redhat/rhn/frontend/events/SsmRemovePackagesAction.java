@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.events;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.user.User;
@@ -39,27 +40,30 @@ import java.util.Set;
 public class SsmRemovePackagesAction extends SsmPackagesAction {
     private static Logger log = LogManager.getLogger(SsmRemovePackagesAction.class);
 
+    @Override
     protected String getOperationName() {
         return "ssm.package.remove.operationname";
     }
 
+    @Override
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
         List<Long> sids = new ArrayList<>();
-        List<Map<String, Object>> result = srpe.getResult();
-        for (Map<String, Object> data : result) {
+        List<Row> result = srpe.getResult();
+        for (Row data : result) {
             Long sid = (Long) data.get("id");
             sids.add(sid);
         }
         return sids;
     }
 
+    @Override
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+                                      Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
 
-        List<Map<String, Object>> result = srpe.getResult();
+        List<Row> result = srpe.getResult();
 
         /*
          * 443500 - The following was changed to be able to stuff all of the package

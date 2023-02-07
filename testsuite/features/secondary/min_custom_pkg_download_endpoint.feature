@@ -16,9 +16,9 @@ Feature: Repos file generation based on custom pillar data
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
+    And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -42,9 +42,9 @@ Feature: Repos file generation based on custom pillar data
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
+    And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -66,9 +66,11 @@ Feature: Repos file generation based on custom pillar data
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -79,4 +81,3 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Cleanup: recheck the default RPM download point values
     Then the susemanager repo file should exist on the "sle_minion"
     And the repo file should contain the normal download endpoint on the "sle_minion"
-

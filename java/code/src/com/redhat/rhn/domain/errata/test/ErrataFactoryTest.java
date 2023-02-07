@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -82,6 +83,8 @@ import java.util.stream.Collectors;
  * ErrataFactoryTest
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
+
+    private static int advisorySeq = 1000;
 
     @Test
     public void testAddToChannel()  throws Exception {
@@ -215,7 +218,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testBugs() throws Exception {
         var e = createTestErrata(user.getOrg().getId());
-        assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
+        assertTrue(e.getBugs() == null || e.getBugs().isEmpty());
         e.addBug(ErrataFactory.createBug(123L, "test bug",
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + (Long) 123L));
         assertEquals(1, e.getBugs().size());
@@ -260,8 +263,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         return e;
     }
 
-    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
-        String name = Opt.fold(advisory, () -> "JAVA Test " + TestUtils.randomString(), Function.identity());
+    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) {
+        String name = Opt.fold(advisory, () -> "JAVA-Test-" + advisorySeq++, Function.identity());
         Org org = null;
         if (orgId != null) {
             org = OrgFactory.lookupById(orgId);
@@ -281,12 +284,13 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setAdvisoryName(name);
         e.setAdvisoryRel(2L);
+        e.setErrataFrom("maint-coord@suse.de");
         e.setLocallyModified(Boolean.FALSE);
         e.addKeyword("keyword");
         Package testPackage = PackageTest.createTestPackage(org);
 
         ErrataFile ef;
-        Set errataFilePackages = new HashSet();
+        Set<Package> errataFilePackages = new HashSet<>();
         errataFilePackages.add(testPackage);
         e.addPackage(testPackage);
         ef = ErrataFactory.createErrataFile(ErrataFactory.
@@ -326,7 +330,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(1, list.size());
         var clone = (ClonedErrata) list.get(0);
-        assertTrue(clone.getOriginal().equals(testErrata));
+        assertEquals(clone.getOriginal(), testErrata);
     }
 
     @Test
@@ -351,7 +355,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         }
         catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
     }
 

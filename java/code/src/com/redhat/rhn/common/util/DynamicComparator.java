@@ -33,8 +33,10 @@ import java.util.Comparator;
  * Usefull if you have a Collection of Beans that you
  * want to sort based on a specific property.
  *
+ * @param <T> type to compare
+ *
  */
-public class DynamicComparator implements Comparator  {
+public class DynamicComparator<T> implements Comparator<T>  {
 
     private String fieldName;
     private int order;
@@ -73,12 +75,14 @@ public class DynamicComparator implements Comparator  {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public int compare(Object o1, Object o2) {
-        Comparable val1 = null;
-        Comparable val2 = null;
+        Object val1;
+        Object val2;
         try {
-            val1 = (Comparable)PropertyUtils.getProperty(o1, fieldName);
-            val2 = (Comparable)PropertyUtils.getProperty(o2, fieldName);
+            val1 = PropertyUtils.getProperty(o1, fieldName);
+            val2 = PropertyUtils.getProperty(o2, fieldName);
             if (val1 instanceof String  && val2 instanceof String) {
                 return order * getCollator().compare(val1, val2);
             }
@@ -88,12 +92,12 @@ public class DynamicComparator implements Comparator  {
                 return order * -1;
             }
             else if (val1 != null && val2 == null) {
-                return order * 1;
+                return order;
             }
             else if (val1 == val2) {
                 return 0;
             }
-            return order * val1.compareTo(val2);
+            return order * ((Comparable<Object>)val1).compareTo(val2);
         }
         catch (Exception e) {
             throw new IllegalArgumentException("Exception trying to compare " +

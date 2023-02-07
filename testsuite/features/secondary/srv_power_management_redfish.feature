@@ -48,7 +48,7 @@ Feature: Redfish Power management
 
   Scenario: Check power management SSM configuration for Redfish
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
@@ -78,13 +78,11 @@ Feature: Redfish Power management
     And I should see a "Reboot" button
 
   Scenario: Cleanup: reset Redfish values
-    Given I am logged in API as user "admin" and password "admin"
-    And I want to operate on this "sle_minion"
+    Given I want to operate on this "sle_minion"
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
     And I set power management value "ipmilan" for "powerType"
-    And I logout from API
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"
@@ -94,4 +92,4 @@ Feature: Redfish Power management
     When the server stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I click on "Clear"
+    When I click on the clear SSM button

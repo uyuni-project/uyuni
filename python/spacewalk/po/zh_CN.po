@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 04:14+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
 "PO-Revision-Date: 2022-08-26 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -71,7 +71,7 @@ msgstr "无效的 URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -163,7 +163,7 @@ msgstr "隐私声明"
 msgid "Expected a dictionary as a product argument"
 msgstr "预期需要提供一个字典作为产品参数"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "值 '%s'（为 %s (%s) 提供）无效"

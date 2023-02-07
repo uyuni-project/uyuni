@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -43,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserPrefAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -87,10 +89,10 @@ public class UserPrefAction extends RhnAction {
     }
 
     private void handlePanes(DynaActionForm form, User user) {
-        Map allPanes = PaneFactory.getAllPanes();
+        Map<String, Pane> allPanes = PaneFactory.getAllPanes();
 
         String[] selections = (String[]) form.get("selectedPanes");
-        Set hiddenPanes = new HashSet(allPanes.values());
+        Set<Pane> hiddenPanes = new HashSet<>(allPanes.values());
 
         if (selections != null) {
             for (String selectionIn : selections) {
@@ -116,23 +118,4 @@ public class UserPrefAction extends RhnAction {
         }
         return i;
     }
-
-    /**
-     * Returns the Boolean property from the given form as an boolean.  If
-     * property does not exist we return the default value specified by flag.
-     * @param form DynaActionForm containing the property.
-     * @param property Property to be transformed.
-     * @param flag Default value if property is null.
-     * @return the Boolean property from the given form as an boolean.  If
-     * property does not exist we return the default value specified by flag.
-     */
-    /*private Boolean getBoolean(DynaActionForm form, String property,
-                              Boolean flag) {
-
-        Boolean b = (Boolean) form.get(property);
-        if (b == null) {
-            return flag;
-        }
-        return b;
-    }*/
 }

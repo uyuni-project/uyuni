@@ -60,6 +60,7 @@ public class TreeEditOperation extends BaseTreeEditOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected CobblerCommand getCobblerCommand() {
         if (StringUtils.isBlank(tree.getCobblerId())) {
             return new CobblerDistroCreateCommand(tree, user, true);

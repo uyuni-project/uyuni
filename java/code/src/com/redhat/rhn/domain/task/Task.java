@@ -171,6 +171,7 @@ public class Task implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof Task)) {
             return false;
@@ -187,6 +188,7 @@ public class Task implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(org)
                                     .append(name)

@@ -11,6 +11,7 @@ import sys
 import salt.config
 import salt.syspaths
 import yaml
+from salt.utils.yamlloader import SaltYamlSafeLoader
 
 # Prevent issues due 'salt.utils.fopen' deprecation
 try:
@@ -57,22 +58,55 @@ def _get_ac_storage_filenamepath():
 
     return os.path.join(minion_d_dir, '_mgractionchains.conf')
 
+def check_reboot_required(target_sls):
+    '''
+    Used this function for transactional update system. 
+    Check if the sls file contains reboot_required paramer in schedule_next_chuck. 
+    If it exists and set to true, the system is reboot when the sls file execution is completed
+    :param target_sls: sls filename
+    :return: True if the system requires a reboot at the end of the transaction
+    '''
+    sls_file_on_minion = __salt__['cp.cache_file']('{0}{1}.sls'.format('salt://actionchains/', target_sls.replace('actionchains.','')))
+    current_state_info = _read_sls_file(sls_file_on_minion)
+    if not current_state_info or not 'schedule_next_chunk' in current_state_info:
+        # schedule_next_chunk contains information about how to restart the action chain after a reboot, so it's present
+        # only if there's a reboot action or a salt upgrade. If there's no action that perform a reboot, schedule_next_chunk
+        # it's not present.
+        return False
+    if not 'mgrcompat.module_run' in current_state_info['schedule_next_chunk']:
+        log.error("Cannot check if reboot is needed as \"schedule_next_chunk\" is not containing expected attributes.")
+        return False
+
+    list_param = current_state_info['schedule_next_chunk']['mgrcompat.module_run']
+
+    for dic in list_param:
+        if 'reboot_required' in dic:
+            return dic["reboot_required"]
+    return False
+
 def _read_next_ac_chunk(clear=True):
     '''
     Read and remove the content of '_mgractionchains.conf' file. Return the parsed YAML.
     '''
     f_storage_filename = _get_ac_storage_filenamepath()
-    if not os.path.isfile(f_storage_filename):
+    ret = _read_sls_file(f_storage_filename)
+    if ret is None:
+        return None
+    if clear:
+        os.remove(f_storage_filename)
+    return ret
+
+def _read_sls_file(filename):
+    if not os.path.isfile(filename):
+        log.debug("File {0} does not exists".format(filename))
         return None
     ret = None
     try:
-        with fopen(f_storage_filename, "r") as f_storage:
-            ret = yaml.load(f_storage.read())
-        if clear:
-            os.remove(f_storage_filename)
+        with fopen(filename, "r") as f:
+            ret = yaml.load(f.read(), Loader=SaltYamlSafeLoader)
         return ret
     except (IOError, yaml.scanner.ScannerError) as exc:
-        err_str = "Error processing YAML from '{0}': {1}".format(f_storage_filename, exc)
+        err_str = "Error processing YAML from '{0}': {1}".format(filename, exc)
         log.error(err_str)
         raise CommandExecutionError(err_str)
 
@@ -128,9 +162,15 @@ def start(actionchain_id):
     except Exception as exc:
         log.error("There was an error while syncing custom states and execution modules")
 
-    inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
-    if __grains__.get("transactional") and not inside_transaction:
-        ret = __salt__['transactional_update.sls'](target_sls, queue=True)
+    transactional_update = __grains__.get("transactional")
+    reboot_required = False
+    inside_transaction = False
+    if transactional_update:
+        reboot_required = check_reboot_required(target_sls)
+        inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
+
+    if transactional_update and not inside_transaction:
+        ret = __salt__['transactional_update.sls'](target_sls, queue=True, activate_transaction=reboot_required)
     else:
         ret = __salt__['state.sls'](target_sls, queue=True)
 
@@ -138,7 +178,7 @@ def start(actionchain_id):
         raise CommandExecutionError(ret)
     return ret
 
-def next(actionchain_id, chunk, next_action_id=None, ssh_extra_filerefs=None):
+def next(actionchain_id, chunk, next_action_id=None, current_action_id=None,  ssh_extra_filerefs=None, reboot_required=False):
     '''
     Persist the next Action Chain chunk to be executed by the 'resume' method.
 
@@ -154,11 +194,17 @@ def next(actionchain_id, chunk, next_action_id=None, ssh_extra_filerefs=None):
     yaml_dict = {
         'next_chunk': _calculate_sls(actionchain_id, __grains__['machine_id'], chunk)
     }
+    yaml_dict['actionchain_id'] = actionchain_id
     if next_action_id:
         yaml_dict['next_action_id'] = next_action_id
+    if current_action_id:
+        yaml_dict['current_action_id'] = current_action_id
     if ssh_extra_filerefs:
         yaml_dict['ssh_extra_filerefs'] = ssh_extra_filerefs
+    if reboot_required:
+        yaml_dict['reboot_required'] = reboot_required
     _persist_next_ac_chunk(yaml_dict)
+    return yaml_dict
 
 def get_pending_resume():
     '''
@@ -178,27 +224,45 @@ def resume():
 
     This method is called by the Salt Reactor as a response to the 'minion/start/event'.
     '''
-    next_chunk = _read_next_ac_chunk()
-    if not next_chunk:
+    ac_resume_info = _read_next_ac_chunk()
+    if not ac_resume_info:
         return {}
-    if type(next_chunk) != dict:
+    if type(ac_resume_info) != dict:
         err_str = "Not able to resume Action Chain execution! Malformed " \
-                  "'_mgractionchains.conf' found: {0}".format(next_chunk)
+                  "'_mgractionchains.conf' found: {0}".format(ac_resume_info)
         log.error(err_str)
         raise CommandExecutionError(err_str)
-    next_chunk = next_chunk.get('next_chunk')
+    next_chunk = ac_resume_info.get('next_chunk')
     log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
               "{0}".format(next_chunk))
+    
+    transactional_update = __grains__.get("transactional")
+    reboot_required = False
+    inside_transaction = False
+    if transactional_update:
+        reboot_required = ac_resume_info.get('reboot_required')
+        inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
 
-    inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
-    if __grains__.get("transactional") and not inside_transaction:
-        return __salt__['transactional_update.sls'](next_chunk, queue=True)
+    if transactional_update and not inside_transaction:
+        ret = __salt__['transactional_update.sls'](next_chunk, queue=True, activate_transaction=reboot_required)
     else:
-        return __salt__['state.sls'](next_chunk, queue=True)
+        ret = __salt__['state.sls'](next_chunk, queue=True)
 
-def clean():
+    if isinstance(ret, list):
+        raise CommandExecutionError(ret)
+    return ret
+
+def clean(actionchain_id=None, current_action_id=None, reboot_required=None):
     '''
     Clean execution of an Action Chain by removing '_mgractionchains.conf'.
     '''
     _read_next_ac_chunk()
-    return {"success": True}
+    yaml_dict = {}
+    yaml_dict['success'] = True
+    if actionchain_id:
+        yaml_dict['actionchain_id'] = actionchain_id
+    if current_action_id:
+        yaml_dict['current_action_id'] = current_action_id
+    if reboot_required:
+        yaml_dict['reboot_required'] = reboot_required
+    return yaml_dict

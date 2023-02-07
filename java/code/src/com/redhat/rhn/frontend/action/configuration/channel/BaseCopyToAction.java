@@ -54,10 +54,11 @@ public abstract class BaseCopyToAction extends RhnAction {
      * On dispatch, do the copy - otherwise, we're just displaying/handling set updates
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest req,
-            HttpServletResponse resp) throws Exception {
+                                 ActionForm form,
+                                 HttpServletRequest req,
+                                 HttpServletResponse resp) {
 
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();

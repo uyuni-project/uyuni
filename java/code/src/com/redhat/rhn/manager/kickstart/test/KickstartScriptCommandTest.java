@@ -15,8 +15,8 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -37,6 +37,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -44,7 +45,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testPreCreate() throws Exception {
+    public void testPreCreate() {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
@@ -66,11 +67,11 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertFalse(ksdata.getScripts().isEmpty());
     }
 
     @Test
-    public void testPreEdit() throws Exception {
+    public void testPreEdit() {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         String language = "/usr/bin/perl";
         String contents = "print \"some string\";\n";
@@ -83,11 +84,11 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertFalse(ksdata.getScripts().isEmpty());
     }
 
     @Test
-    public void testScriptDelete() throws Exception {
+    public void testScriptDelete() {
 
         KickstartScript kss = ksdata.getScripts().iterator().next();
         assertEquals(5, ksdata.getScripts().size());

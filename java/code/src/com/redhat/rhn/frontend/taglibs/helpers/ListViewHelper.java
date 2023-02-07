@@ -75,7 +75,7 @@ public class ListViewHelper {
      */
     public String getFilterParam() {
         String retval = this.ctx.getParam("filter_string", false);
-        if (retval != null && retval.length() == 0) {
+        if (retval != null && retval.isEmpty()) {
             retval = null;
         }
         else if (retval != null) {
@@ -90,7 +90,7 @@ public class ListViewHelper {
      */
     public String getPreviousFilterParam() {
         String retval = this.ctx.getParam("prev_filter_value", false);
-        if (retval != null && retval.length() == 0) {
+        if (retval != null && retval.isEmpty()) {
             retval = null;
         }
         else if (retval != null) {
@@ -174,10 +174,10 @@ public class ListViewHelper {
     }
 
     private void filterData() {
-        if (result.size() == 0 || getFilterParam() == null) {
+        if (result.isEmpty() || getFilterParam() == null) {
             return;
         }
-        List filteredData = new LinkedList();
+        List filteredData = new LinkedList<>();
         Object datum = result.get(0);
         if (datum instanceof Map) {
             filterMaps(filteredData);
@@ -218,8 +218,7 @@ public class ListViewHelper {
                 }
             }
             catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
-                continue;
+                // ignore
             }
         }
     }

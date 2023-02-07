@@ -546,7 +546,6 @@ public class ToolbarTag extends TagSupport {
             return (EVAL_PAGE);
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new JspException("Error writing to JSP file:", e);
         }
     }

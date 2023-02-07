@@ -27,6 +27,7 @@ public class InstallPackageSetupAction extends BaseSystemPackagesAction {
      * @param server The system.
      * @return List of packages that can be installed..
      */
+    @Override
     protected DataResult getDataResult(Server server) {
         return PackageManager.systemAvailablePackages(server.getId(), null);
     }

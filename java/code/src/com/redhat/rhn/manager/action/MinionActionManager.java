@@ -100,7 +100,7 @@ public class MinionActionManager {
 
             if (org.getOrgConfig().isStagingContentEnabled()) {
 
-             List<MinionSummary> minionSummaries = MinionServerFactory.findMinionSummaries(action.getId());
+             List<MinionSummary> minionSummaries = MinionServerFactory.findAllMinionSummaries(action.getId());
 
             ZonedDateTime earliestAction =
                     action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
@@ -163,6 +163,6 @@ public class MinionActionManager {
                 }
             }
         }
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 }

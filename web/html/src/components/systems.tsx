@@ -61,7 +61,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
   const type = system["statusType"];
 
   const systems = {
-    untitled: {
+    unentitled: {
       iconTitle: "System not entitled",
       iconType: "system-unknown",
       url: isAdmin && "/rhn/systems/details/Edit.do?sid=" + sid,
@@ -75,6 +75,11 @@ function statusDisplay(system: any, isAdmin: boolean) {
       iconType: "system-kickstarting",
       iconTitle: "Kickstart in progress",
       url: "/rhn/systems/details/kickstart/SessionStatus.do?sid=" + sid,
+    },
+    "reboot needed": {
+      iconType: "system-reboot",
+      iconTitle: "System requires reboot",
+      url: "/rhn/systems/details/RebootSystem.do?sid=" + sid,
     },
     "updates scheduled": {
       iconType: "action-pending",

@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.ChannelArchSerializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -32,7 +31,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class ChannelArchSerializerTest  {
 
     @Test
-    public void testSerialize() throws XmlRpcException, IOException {
+    public void testSerialize() throws XmlRpcException {
         ChannelArchSerializer cas = new ChannelArchSerializer();
         ChannelArch ca = new ChannelArch();
         ca.setName("name");

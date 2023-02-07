@@ -2851,8 +2851,8 @@ a skúste to znova.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
-        <target>Nahrať súbor Kickstart/Autoyast</target>
+        <source>Upload Kickstart/AutoYaST File</source>
+        <target state="translated">Nahrať súbor Kickstart/AutoYaST</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -7271,13 +7271,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <target>Názov hostiteľa</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -8220,48 +8213,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <target>z/VM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <target>za posledný deň</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <target>za posledný týždeň</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <target>za posledných 30 dní</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <target>za posledných 180 dní</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target>za posledný rok</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <target>Všetky systémy</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
@@ -11264,6 +11215,72 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
         <target state="translated">IPMI lanplus</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="translated">Pravidelne zabezpečiť aktuálnosť údajov prehľadu systémov</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="translated">Aktualizovať údaje prehľadu systémov</target>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+        <target state="translated">Nie je možné zrušiť akciu v stave PICKED UP.</target>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+        <target state="translated">Nie je možné zrušiť akciu s nevyriešenou podmienkou.</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="translated">Názov hostiteľa</target>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="translated">Máte predplatné, ktoré si vyžaduje pozornosť.</target>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="translated">Vaše predplatné čoskoro vyprší alebo už vypršalo. Prosím, skontrolujte stránku &lt;a href="/rhn/manager/subscription-matching"&gt;Priraďovanie predplatného&lt;/a&gt; page.</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <target state="translated">Balíky sú súčasťou Product Temporary Fixes (PTF): {0}</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <target state="translated">Balíky Product Temporary Fixes (PTF): {0}</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="translated">Nie je vybraný žiadny základný kanál.</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">Modularita je v súčasnosti zakázaná. Ak chcete moduly povoliť, odstráňte filter 'zakázať všetky moduly'.</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">Modularita je zakázaná. Do cieľových repozitárov nebudú zahrnuté žiadne moduly.</target>
       </trans-unit>
     </body>
   </file>

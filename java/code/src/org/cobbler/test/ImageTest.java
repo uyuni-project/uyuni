@@ -63,10 +63,9 @@ public class ImageTest {
     /**
      * Sets up a connection and image.
      *
-     * @throws Exception in case anything goes wrong
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         MockConnection.clear();
         connection = new MockConnection("http://localhost", "token");
         image = Image.create(connection, EXPECTED_NAME, EXPECTED_TYPE, EXPECTED_FILE);
@@ -76,10 +75,9 @@ public class ImageTest {
     /**
      * Removes the image created by setUp().
      *
-     * @throws Exception in case anything goes wrong
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         Assertions.assertTrue(image.remove());
     }
 

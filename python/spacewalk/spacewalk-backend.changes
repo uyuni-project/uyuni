@@ -1,8 +1,4 @@
 - add logspec param in rhn.conf to set urlgrabber loglevel
-- Update system overview table in reposync
-- Keep older module metadata files in database (bsc#1201893)
-- Used the legacy reporting system in spacewalk-debug to obtain
-  up-to-date information
 
 -------------------------------------------------------------------
 Wed Sep 28 11:14:14 CEST 2022 - jgonzalez@suse.com

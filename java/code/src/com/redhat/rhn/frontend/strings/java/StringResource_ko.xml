@@ -2843,11 +2843,11 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <target>통지 필터 생성</target>
       </trans-unit>
       <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>킥스타트/Autoyast 파일 업로드</target>
+        <target state="final">킥스타트/AutoYaST 파일 업로드</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -7263,13 +7263,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>이메일 주소</target>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>호스트명</target>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -8213,48 +8206,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>z/VM</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난날</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난주</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난 30일 사이</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난 180일 사이</target>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target>1년 이내</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>모든 시스템</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -11263,6 +11214,72 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    </body>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+        <target state="final">PICKED UP 상태에서는 작업을 취소할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+        <target state="final">대기 중인 전제 조건이 있는 작업을 취소할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="final">주의가 필요한 구독이 있습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="final">선택한 기본 채널이 없습니다.</target>
+      </trans-unit>
+    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

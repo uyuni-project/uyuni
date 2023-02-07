@@ -54,10 +54,9 @@ public class EnableConfigHelper {
      */
     public void enableSystems(String setLabel, Date earliestIn)
         throws TaskomaticApiException {
-        // earliest = earliestIn;
         ConfigurationManager cm = ConfigurationManager.getInstance();
         //Get the list of systems and what we need to do to them.
-        DataResult dr = cm.listNonManagedSystemsInSetElaborate(user, setLabel);
+        DataResult<ConfigSystemDto> dr = cm.listNonManagedSystemsInSetElaborate(user, setLabel);
 
         /*
          * The set going to store the system ids and an error code
@@ -77,8 +76,7 @@ public class EnableConfigHelper {
         RhnSet set = RhnSetDecl.CONFIG_ENABLE_SYSTEMS.create(user);
 
         //iterate through the dataresult and perform actions
-        for (int n = 0; n < dr.getTotalSize(); n++) {
-            ConfigSystemDto dto = (ConfigSystemDto)dr.get(n);
+        for (ConfigSystemDto dto : dr) {
             Long sid = dto.getId();
             Server current = SystemManager.lookupByIdAndUser(sid, user);
             set.addElement(dto.getId(),
@@ -114,7 +112,7 @@ public class EnableConfigHelper {
     private boolean installPackages(ConfigSystemDto dto, Server current, Date earliest)
         throws TaskomaticApiException {
         boolean error = false;
-        List packages = new ArrayList();
+        List packages = new ArrayList<>();
 
         /*
          * If there is ever an error, we will stop what we are doing.  Utilizing
@@ -132,7 +130,7 @@ public class EnableConfigHelper {
         if (error) {
             return false;  //there was an error, bail out
         }
-        else if (packages.size() == 0) {
+        else if (packages.isEmpty()) {
             return true;  //This particular system didn't need any packages
         }
 
@@ -146,7 +144,7 @@ public class EnableConfigHelper {
     private boolean installPackagesHelper(Server current,
             List packages, String packageName, int status) {
         if (status == ConfigSystemDto.NEEDED) {
-            Map map = PackageManager.lookupEvrIdByPackageName(current.getId(), packageName);
+            Map<String, Long> map = PackageManager.lookupEvrIdByPackageName(current.getId(), packageName);
             if (map == null) {
                 return true;
             }

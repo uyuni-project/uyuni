@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 04:14+0000\n"
-"PO-Revision-Date: 2022-08-18 06:13+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
+"PO-Revision-Date: 2023-01-22 07:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -64,7 +64,7 @@ msgstr "Невалиден URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -158,7 +158,7 @@ msgstr "Изјава за Приватност"
 msgid "Expected a dictionary as a product argument"
 msgstr "Се очекуваше речник како аргумент на продуктот"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Невалидна вредност '%s' за %s (%s)"

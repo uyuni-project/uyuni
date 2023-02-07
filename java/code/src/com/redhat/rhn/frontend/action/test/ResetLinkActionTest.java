@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.domain.common.ResetPassword;
@@ -56,7 +57,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
             assertTrue(true, "Caught BPE");
             return;
         }
-        assertTrue(false, "Expected BadParameterException, didn't get one!");
+        fail("Expected BadParameterException, didn't get one!");
     }
 
     @Test

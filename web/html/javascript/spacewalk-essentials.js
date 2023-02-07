@@ -188,7 +188,7 @@ jQuery(document).on('click', '.navbar-toggle', function() {
   columnHeight();
 });
 
-// returns an object that can be passed to DWR renderer as a callback
+// returns an object that can be passed to ajax renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if
 // debug is true
 function makeRendererHandler(divId, debug) {
@@ -202,7 +202,7 @@ function makeRendererHandler(divId, debug) {
   });
 }
 
-// returns an object that can be passed to DWR as a callback
+// returns an object that can be passed to ajax calls as a callback
 // callbackFunction: function to call when AJAX requests succeeds
 // errorHandlerFunction: function to call when AJAX requests fail
 // (can be omitted for showFatalError)
@@ -232,9 +232,9 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
     }
 }
 
-// shows a fatal DWR/AJAX error
+// shows a fatal AJAX error
 function showFatalError(message, exception) {
-  console.log("DWR AJAX call failed with message: " + message);
+  console.log("AJAX call failed with message: " + message);
   console.log(exception);
   var message = "Unexpected error, please reload the page and check server logs.";
   if (window.showErrorToastr) {

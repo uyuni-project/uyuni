@@ -39,6 +39,7 @@ public class RestartAction extends RhnAction {
     public static final String RESTART_DELAY_LABEL = "restartDelay";
     public static final int RESTART_DELAY_IN_MINUTES = 1;
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

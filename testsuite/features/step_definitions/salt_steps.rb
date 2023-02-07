@@ -1,5 +1,8 @@
-# Copyright 2015-2022 SUSE LLC
+# Copyright 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains all step definitions concerning Salt and bootstrapping
+### Salt minions.
 
 require 'timeout'
 require 'open-uri'
@@ -137,16 +140,12 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   refute_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   assert_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should have been reformatted$/) do |host|
@@ -223,12 +222,12 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
-    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
+  if has_xpath?(xpath_query, wait: 2)
+    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
+    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
@@ -387,6 +386,10 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
+  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+    break unless find('button#search').disabled?
+    sleep 1
+  end
   find('button#search').click
 end
 
@@ -437,10 +440,8 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
-When(/^I enter "([^"]*)" password$/) do |host|
-  raise "#{host} minion password is unknown" unless %w[kvm_server xen_server].include?(host)
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm_server"
-  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
+When(/^I enter KVM Server password$/) do
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password")
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|

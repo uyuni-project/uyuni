@@ -47,6 +47,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -74,10 +75,9 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
 
     /**
      * Tests creating Cobbler system records with a chosen profile from SSM.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/systems/ssm/provisioning/PowerManagementConfiguration");
         request.setMethod(HttpServletRequestSimulator.POST);
 

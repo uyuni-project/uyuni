@@ -212,6 +212,12 @@ begin
                   AND (to_date('1970-01-01', 'YYYY-MM-DD')
                        + numtodsinterval(S.last_boot, 'second')) < SP.installtime at time zone 'UTC'
                 )
+         OR EXISTS
+               (SELECT 1
+                FROM suseMinionInfo smi
+                WHERE smi.server_id = S.id
+                AND smi.reboot_needed = 'Y'
+               )
         );
 
     SELECT TRUE into new_kickstarting
@@ -256,6 +262,8 @@ begin
         new_status_type = 'awol';
     elsif coalesce(new_kickstarting, FALSE) then
         new_status_type = 'kickstarting';
+    elsif new_requires_reboot then
+        new_status_type = 'reboot needed';
     elsif new_enhancement_errata + new_bug_errata + new_security_errata > 0 and new_unscheduled_errata_count = 0 then
         new_status_type = 'updates scheduled';
     elsif new_actions_count > 0 then

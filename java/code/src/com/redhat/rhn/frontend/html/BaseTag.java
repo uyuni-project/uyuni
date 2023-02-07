@@ -41,7 +41,7 @@ public abstract class BaseTag {
     protected BaseTag(String tagIn, boolean spaceBefore) {
         attribs = new LinkedHashMap<>();
         tag = tagIn;
-        body = new ArrayList();
+        body = new ArrayList<>();
         spaceBeforeEndTag = spaceBefore;
     }
 
@@ -183,7 +183,7 @@ public abstract class BaseTag {
      * @return true if this tag has a body defined.
      */
     public boolean hasBody() {
-        return (body.size() > 0);
+        return (!body.isEmpty());
     }
 
 }

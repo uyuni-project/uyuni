@@ -23,13 +23,13 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,7 +42,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
-    // private Long scheduler;
     private Date earliestAction;
     private Long version;
     private Long archived;
@@ -51,7 +50,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private Action prerequisite;
     private ActionType actionType;
 
-    private Set serverActions;
+    private Set<ServerAction> serverActions;
     private User schedulerUser;
     private Org org;
 
@@ -61,7 +60,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * The ActionFormatter associated with this Action.  Protected
      * so subclasses can init it.
      */
-    protected ActionFormatter formatter;
+    protected transient ActionFormatter formatter;
 
     /**
      * Getter for ageString
@@ -127,22 +126,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
             this.name = StringUtil.getBytesTruncatedString(nameIn, NAME_LENGTH_LIMIT);
         }
     }
-
-    /**
-     * Getter for scheduler
-     * @return Long to get
-
-    public Long getScheduler() {
-        return this.scheduler;
-    }*/
-
-    /**
-     * Setter for scheduler
-     * @param schedulerIn to set
-
-    public void setScheduler(Long schedulerIn) {
-        this.scheduler = schedulerIn;
-    }*/
 
     /**
      * Getter for earliestAction
@@ -258,7 +241,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * a collection of: com.redhat.rhn.domain.action.server.ServerAction classes
      * @param serverActionsIn to set
     */
-    public void setServerActions(Set serverActionsIn) {
+    public void setServerActions(Set<ServerAction> serverActionsIn) {
         this.serverActions = serverActionsIn;
     }
 
@@ -268,7 +251,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     public void addServerAction(ServerAction saIn) {
         if (serverActions == null) {
-            serverActions = new HashSet();
+            serverActions = new HashSet<>();
         }
         saIn.setParentActionWithCheck(this);
         serverActions.add(saIn);
@@ -333,7 +316,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     // Get the number of ServerAction objects that match
     // the passed in ActionStatus
     private long getActionStatusCount(ActionStatus status) {
-        return ActionFactory.getServerActionCountByStatus(this.getOrg(), this, status);
+        return ActionFactory.getServerActionCountByStatus(this, status);
     }
 
     /**
@@ -352,7 +335,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof Action)) {
+        if (!(other instanceof Action)) {
             return false;
         }
         Action castOther = (Action) other;
@@ -404,30 +387,12 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
     /**
-     * Hook when action is deleted.
-     * @param params A map of params. Each implementation should have its own keys.
-     */
-    public void onDeleteAction(Map params) {
-        // Something to do, when action is deleted.
-        // Override this method for specific action.
-    }
-
-    /**
-     * Hook when action is created.
-     * @param params A map of params. Each implementation should have its own keys.
-     */
-    public void onCreateAction(Map params) {
-        // Something to do, when action is created.
-        // Override this method for specific action.
-    }
-
-    /**
      * @param server server to which action is linked
      * @param currentUser user
      * @return string which is used on system history details
      */
     public String getHistoryDetails(Server server, User currentUser) {
-        return "";
+        return StringUtils.EMPTY;
     }
 
     @Override

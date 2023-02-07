@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jan 23 08:32:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:17:08 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * fix logging configuration of the search daemon (bsc#1206336)
+  * Remove unneeded sysv init script
+
+-------------------------------------------------------------------
+Fri Nov 18 15:15:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Remove unneeded toString() calls
+
+-------------------------------------------------------------------
 Wed Sep 28 11:19:48 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

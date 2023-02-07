@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,7 +50,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
         KickstartOptionsCommand command = new KickstartOptionsCommand(k.getId(), ksUser);
 
         assertNotNull(command);
-        assertTrue(command.getDisplayOptions().size() > 0);
+        assertFalse(command.getDisplayOptions().isEmpty());
         assertTrue(command.getDisplayOptions().size() >=
             command.getKickstartData().getOptions().size());
 

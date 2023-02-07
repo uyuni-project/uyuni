@@ -362,7 +362,7 @@ public class PagedSqlQueryBuilder {
                 catch (IllegalAccessException |
                        InstantiationException | InvocationTargetException e) {
                     // Should never happen given the type has to be a BaseTupleDto
-                    LOG.error("Failed to create {} from SQL tuple", clazz.getName());
+                    LOG.error("Failed to create {} from SQL tuple", clazz.getName(), e);
                     return null;
                 }
             }).collect(Collectors.toList());

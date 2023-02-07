@@ -1,7 +1,9 @@
+import { showErrorToastr, showSuccessToastr, showWarningToastr } from "components/toastr";
+
 type Theme = "susemanager-light" | "susemanager-dark" | "uyuni";
 
-class Debug {
-  public toggleTheme(toTheme?: Theme) {
+const debug = {
+  toggleTheme(toTheme?: Theme) {
     const lightTheme = document.querySelector('link[href^="/css/susemanager-light"]');
     if (lightTheme) {
       lightTheme.setAttribute(
@@ -25,17 +27,20 @@ class Debug {
       );
       return;
     }
-  }
-}
+  },
+  showSuccessToastr,
+  showWarningToastr,
+  showErrorToastr,
+};
 
 declare global {
   interface Window {
-    debug?: Debug;
+    debug?: typeof debug;
   }
 }
 
 const bindDebugHelpers = () => {
-  window.debug = new Debug();
+  window.debug = debug;
 };
 
 if (window.location.host.startsWith("localhost")) {

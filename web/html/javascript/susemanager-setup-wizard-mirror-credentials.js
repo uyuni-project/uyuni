@@ -59,16 +59,15 @@ function saveCredentials() {
 
     var responseHandler = function(result) {
       if (result == "ok") {
-        MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));
+        ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback)
       }
       else {
-        jQuery('#mirror-credentials-error-container').show(); // show the error container
-        jQuery('#' + result).show(); //result contains the id of the error element to be shown
+        jQuery("#mirror-credentials-error-container").show(); // show the error container
+        jQuery("#" + result).show(); //result contains the id of the error element to be shown
       }
     };
 
-    MirrorCredentialsRenderer.saveCredentials(editId, user, password,
-        makeAjaxHandler(responseHandler));
+    ajax("save-mirror-credentials", { id: editId, user, password }, responseHandler)
 
     jQuery("#edit-credentials-spinner").hide();
   }
@@ -77,15 +76,13 @@ function saveCredentials() {
 // Delete credentials from modal
 function deleteCredentials() {
   showSpinner("delete-credentials-spinner");
-  MirrorCredentialsRenderer.deleteCredentials(deleteId,
-      makeRendererHandler("listset-container", false));
+  ajax('delete-mirror-credentials', { id: deleteId }, makeRendererHandler("listset-container", false).callback)
 }
 
 // Make primary credentials
 function makePrimaryCredentials(id) {
   showSpinner("primary-" + id);
-  MirrorCredentialsRenderer.makePrimaryCredentials(id,
-      makeRendererHandler("listset-container", false));
+  ajax("make-primary-mirror-credentials", { id }, makeRendererHandler("listset-container", false).callback)
 }
 
 function setDeleteAllowed(id, allowed) {
@@ -116,8 +113,7 @@ function verifyCredentials(id, refresh) {
 
   showSpinner(elemId);
   setDeleteAllowed(id, false);
-  MirrorCredentialsRenderer.verifyCredentials(id, refresh,
-      makeAjaxHandler(responseHandler));
+  ajax("verify-mirror-credentials", { id, refresh }, responseHandler, "application/json")
 }
 
 // relevant for the mirror credentials page
@@ -130,7 +126,6 @@ jQuery(document).ready(function() {
   // Load subscriptions when modal is shown
   jQuery('#modal-list-subscriptions').on('show.bs.modal', function() {
     showSpinner("modal-list-subscriptions-body");
-    MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
-      makeRendererHandler("modal-list-subscriptions-body", false));
+    ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
   });
 });

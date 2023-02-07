@@ -51,6 +51,7 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void handle(Request request, Response response) {
         String uri = request.getURI();
         InetAddress ip = request.getInetAddress();
@@ -81,14 +82,14 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error handling request", e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error sending response", e);
             }
         }
 

@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SelfEditAction extends UserEditActionHelper {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

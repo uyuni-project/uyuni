@@ -131,7 +131,7 @@ public class ChannelTestUtils {
         dcm.setChannelArch(c.getChannelArch());
         dcm.setOs(os);
         dcm.setRelease(release);
-        Set maps = new HashSet();
+        Set maps = new HashSet<>();
         maps.add(dcm);
         c.setDistChannelMaps(maps);
         ChannelFactory.save(c);

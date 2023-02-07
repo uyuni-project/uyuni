@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * MissingPackageSetupAction
  */
-public class MissingPackageSetupAction extends RhnAction implements Listable {
+public class MissingPackageSetupAction extends RhnAction implements Listable<PackageMetadata> {
 
     private static final CompareProfileSetupAction DECL_PROFILE_ACTION =
         new CompareProfileSetupAction();
@@ -46,6 +47,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         new CompareSystemSetupAction();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -63,7 +65,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         helper.execute();
 
         if (request.getParameter(RequestContext.DISPATCH) != null) {
-            Map param = new HashMap();
+            Map<String, Object> param = new HashMap<>();
             param.put(RequestContext.SID, sid);
             param.put(RequestContext.SID1, sid1);
             param.put(RequestContext.PRID, prid);
@@ -83,7 +85,8 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<PackageMetadata> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         String type = context.getParam("sync", true);
 

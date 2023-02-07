@@ -8,7 +8,6 @@ Feature: Build image with authenticated registry
 
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
-    And I am logged in API as user "docker" and password "docker"
 
   Scenario: Create an authenticated image store as Docker admin
     When I follow the left menu "Images > Stores"
@@ -24,7 +23,7 @@ Feature: Build image with authenticated registry
     And I follow "Create"
     And I enter "auth_registry_profile" as "label"
     And I select "auth_registry" from "imageStore"
-    And I select "1-DOCKER-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
     Then I wait until I see "auth_registry_profile" text
@@ -59,4 +58,3 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
-    And I logout from API

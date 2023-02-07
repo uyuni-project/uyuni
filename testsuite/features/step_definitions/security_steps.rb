@@ -1,3 +1,9 @@
+# Copyright 2017-2023 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
+### This file contains the definitions of all steps concerning
+### URI and SSL integrity.
+
 require 'open-uri'
 require 'uri'
 require 'openssl'

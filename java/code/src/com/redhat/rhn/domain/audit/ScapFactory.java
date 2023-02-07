@@ -22,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,10 +42,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the XccdfTestResult found
      */
     public static XccdfTestResult lookupTestResultById(Long xid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("xid", xid);
-        return (XccdfTestResult)singleton.lookupObjectByNamedQuery(
-                "XccdfTestResult.findById", params);
+        return singleton.lookupObjectByNamedQuery("XccdfTestResult.findById", Map.of("xid", xid));
     }
 
     /**
@@ -149,6 +145,7 @@ public class ScapFactory extends HibernateFactory {
      * show up on the correct class.
      * @return Logger
      */
+     @Override
      protected Logger getLogger() {
          return log;
      }

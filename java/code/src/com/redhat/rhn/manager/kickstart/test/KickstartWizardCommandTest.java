@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,7 +56,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         List trees = cmd.getKickstartableTrees();
         assertNotNull(trees);
-        assertTrue(trees.size() > 0);
+        assertFalse(trees.isEmpty());
         boolean foundBaseTree = false;
         for (Object treeIn : trees) {
             KickstartableTree t = (KickstartableTree) treeIn;

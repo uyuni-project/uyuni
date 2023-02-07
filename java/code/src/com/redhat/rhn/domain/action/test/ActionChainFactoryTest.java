@@ -57,10 +57,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests createActionChain() and getActionChain().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testCreateActionChain() throws Exception {
+    public void testCreateActionChain() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         assertNotNull(actionChain);
@@ -78,10 +77,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests delete().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         assertNotNull(actionChain);
@@ -93,10 +91,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests getActionChains().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testGetActionChains() throws Exception {
+    public void testGetActionChains() {
         int previousSize = ActionChainFactory.getActionChains(user).size();
 
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
@@ -106,12 +103,60 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(previousSize + 3, ActionChainFactory.getActionChains(user).size());
     }
 
+
     /**
-     * Tests getOrCreateActionChain().
+     * Tests getActionChainsByServer().
      * @throws Exception if something bad happens
      */
     @Test
-    public void testGetOrCreateActionChain() throws Exception {
+    public void testGetActionChainsByServer() throws Exception {
+        ActionChain actionChain1 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain2 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain3 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+
+        Action action1 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action1.setOrg(user.getOrg());
+        Server server1 = ServerFactoryTest.createTestServer(user);
+
+        ActionChainEntry entry1 = ActionChainFactory.queueActionChainEntry(action1,
+            actionChain1, server1);
+
+        Action action2 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action2.setOrg(user.getOrg());
+
+        ActionChainEntry entry2 = ActionChainFactory.queueActionChainEntry(action2,
+            actionChain2, server1);
+
+        Action action3 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action3.setOrg(user.getOrg());
+        Server server2 = ServerFactoryTest.createTestServer(user);
+
+        ActionChainEntry entry3 = ActionChainFactory.queueActionChainEntry(action3,
+            actionChain3, server2);
+
+        ActionChainFactory.schedule(actionChain1, new Date());
+        ActionChainFactory.schedule(actionChain2, new Date());
+        ActionChainFactory.schedule(actionChain3, new Date());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<ActionChain> list1 = ActionChainFactory.getActionChainsByServer(server1);
+        assertEquals(2, list1.size());
+        assertContains(list1, actionChain1);
+        assertContains(list1, actionChain2);
+
+
+        List<ActionChain> list2 = ActionChainFactory.getActionChainsByServer(server2);
+        assertEquals(1, list2.size());
+        assertContains(list2, actionChain3);
+    }
+
+    /**
+     * Tests getOrCreateActionChain().
+     */
+    @Test
+    public void testGetOrCreateActionChain() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.getActionChain(user, label);
         assertNull(actionChain);

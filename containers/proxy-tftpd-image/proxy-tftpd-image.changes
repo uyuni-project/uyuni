@@ -1,3 +1,20 @@
+- Adapt to log_level default value being 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:34:24 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:54:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.12
+
+-------------------------------------------------------------------
+Fri Nov 18 14:18:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.11
+
 -------------------------------------------------------------------
 Wed Sep 28 07:45:24 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 

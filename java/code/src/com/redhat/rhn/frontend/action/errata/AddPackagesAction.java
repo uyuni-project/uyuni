@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -47,14 +48,14 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddPackagesAction extends RhnAction implements Listable {
+public class AddPackagesAction extends RhnAction implements Listable<PackageOverview> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
@@ -96,7 +97,8 @@ public class AddPackagesAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<PackageOverview> getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
 
@@ -109,7 +111,7 @@ public class AddPackagesAction extends RhnAction implements Listable {
 
         String viewChannel = getSelectedCid(context);
 
-        DataResult result;
+        DataResult<PackageOverview> result;
         if (viewChannel.equals("any_channel")) {
             // Packages from all channels should be displayed
             result = PackageManager.packagesAvailableToErrata(errata);

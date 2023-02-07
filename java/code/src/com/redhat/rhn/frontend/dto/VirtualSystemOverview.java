@@ -14,20 +14,17 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.filter.DepthAware;
 
 import java.util.Objects;
+
+import javax.persistence.Tuple;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
  */
-public class VirtualSystemOverview extends SystemOverview
-                                        implements DepthAware {
-
-    public static final String FAKENODE_LABEL = "(Unknown Host)";
+public class VirtualSystemOverview extends SystemOverview {
 
     private Long systemId;
     private String uuid;
@@ -47,24 +44,34 @@ public class VirtualSystemOverview extends SystemOverview
     private boolean accessible;
     private boolean subscribable;
 
+    /**
+     * Default constructor
+     */
+    public VirtualSystemOverview() {
+    }
 
     /**
-     * If we do not know the host for a virtual system,
-     *  insert a 'fake' system into the list before the
-     *  current one.
-     * @param result list of nodes to solve
+     * Construct from a query result Tuple
+     *
+     * @param tuple the row containing the data
      */
-    public static void processList(DataResult result) {
-        for (int i = 0; i < result.size(); i++) {
-            VirtualSystemOverview current = (VirtualSystemOverview) result.get(i);
-            if ((current.getUuid() != null) && (current.getHostSystemId() == null)) {
-                VirtualSystemOverview fakeSystem = new VirtualSystemOverview();
-                fakeSystem.setServerName(FAKENODE_LABEL);
-                fakeSystem.setHostSystemId(0L);
-                result.add(i, fakeSystem);
-                i++;
-            }
+    public VirtualSystemOverview(Tuple tuple) {
+        super(tuple);
+
+        if (tuple.getElements().size() > 2) {
+            hostSystemId = getTupleValue(tuple, "host_system_id", Number.class).map(Number::longValue).orElse(null);
+            virtualSystemId = getTupleValue(tuple, "virtual_system_id", Number.class)
+                    .map(Number::longValue).orElse(null);
+            uuid = getTupleValue(tuple, "uuid", String.class).orElse(null);
+            stateName = getTupleValue(tuple, "state_name", String.class).orElse(null);
+            stateLabel = getTupleValue(tuple, "state_label", String.class).orElse(null);
+            vcpus = getTupleValue(tuple, "vcpus", Number.class).map(Number::longValue).orElse(0L);
+            memory = getTupleValue(tuple, "memory", Number.class).map(Number::longValue).orElse(0L);
+            hostServerName = getTupleValue(tuple, "host_server_name", String.class).orElse(null);
+            subscribable = getTupleValue(tuple, "subscribable", Number.class).map(n -> n.intValue() == 1).orElse(false);
         }
+        setId(virtualSystemId);
+        systemId = virtualSystemId;
     }
 
     /**
@@ -126,13 +133,11 @@ public class VirtualSystemOverview extends SystemOverview
      */
     public Long getSystemIdForCsv() {
         Long retval = null;
-        if (!isFakeNode()) {
-            if (getUuid() == null && getHostSystemId() != null) {
-                retval = getHostSystemId();
-            }
-            else {
-                retval = getVirtualSystemId();
-            }
+        if (getUuid() == null && getHostSystemId() != null) {
+            retval = getHostSystemId();
+        }
+        else {
+            retval = getVirtualSystemId();
         }
         return retval;
     }
@@ -349,17 +354,6 @@ public class VirtualSystemOverview extends SystemOverview
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long depth() {
-        if (getIsVirtualHost()) {
-            return 0;
-        }
-        return 1;
-    }
-
-    /**
      *  gets the current virtual entitlement string (none if the system has no virt ent)
      * @return the current virtual entitlement label
      */
@@ -376,20 +370,11 @@ public class VirtualSystemOverview extends SystemOverview
     }
 
     /**
-     * Checks if node is fake
-     * @return if node is fake or not
-     */
-    public boolean isFakeNode() {
-        return (FAKENODE_LABEL.equals(this.getServerName()) &&
-                (Long.valueOf(0L).equals(this.getHostSystemId())));
-    }
-
-    /**
     *
     * {@inheritDoc}
     */
-   @Override
-public String getSelectionKey() {
+    @Override
+    public String getSelectionKey() {
        return String.valueOf(getSystemId());
    }
 }

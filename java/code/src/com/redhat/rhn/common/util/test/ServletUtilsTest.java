@@ -28,8 +28,8 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     private String param2Value;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
 
         param1Name = "param1";
@@ -77,8 +77,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
         return parameterMap;
     }
 
-    private String encode(String string) throws UnsupportedEncodingException {
-        return URLEncoder.encode(string, "UTF-8");
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 
     @Test
@@ -162,7 +162,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     @Test
-    public final void testRequestParamsToQueryStringWithNoParams() throws Exception {
+    public final void testRequestParamsToQueryStringWithNoParams() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterNames();
             will(returnValue(new Vector<String>().elements()));
@@ -175,7 +175,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     @Test
-    public final void testRequestParamsToQueryStringWithParams() throws Exception {
+    public final void testRequestParamsToQueryStringWithParams() {
         final Hashtable<String, String> parameterMap = createParameterMap();
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterMap();

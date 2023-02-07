@@ -104,7 +104,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         WebSession session = null;
         User user = null;
 
-        if (params.size() > 0 && params.get(0) instanceof String &&
+        if (!params.isEmpty() && params.get(0) instanceof String &&
                 isSessionKey((String)params.get(0))) {
             if (!myClass.getName().endsWith("AuthHandler") &&
                 !myClass.getName().endsWith("SearchHandler")) {

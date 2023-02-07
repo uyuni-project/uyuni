@@ -195,15 +195,16 @@ def do_scap_schedulexccdfscan(self, args):
         self.help_scap_schedulexccdfscan()
         return 1
 
-    path = args[0]
-    param = "--"
-    param += args[1]
-
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
+        args.pop(0)
     else:
         systems = self.expand_systems(args[2:])
+
+    path = args[0]
+    param = "--"
+    param += args[1]
 
     if not systems:
         logging.warning(_N('No systems selected'))

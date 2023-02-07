@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
-        public void testPlaintextExecute() throws Exception {
+        public void testPlaintextExecute() {
             UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
@@ -51,7 +51,7 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
         }
 
     @Test
-        public void testBinaryExecute() throws Exception {
+        public void testBinaryExecute() {
             UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());

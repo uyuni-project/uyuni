@@ -44,7 +44,7 @@ public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
         actionPerform();
     }
 
-    private void setupForDisplay(KickstartData k) throws Exception {
+    private void setupForDisplay(KickstartData k) {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/KickstartPackagesEdit");
         addRequestParameter("ksid", k.getId().toString());

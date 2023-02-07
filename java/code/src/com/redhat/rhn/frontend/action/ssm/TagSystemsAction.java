@@ -83,6 +83,7 @@ public class TagSystemsAction extends RhnAction implements Listable<SystemOvervi
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),

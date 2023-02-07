@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -49,6 +49,7 @@ public class ConfigChannelTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         StringBuilder result = new StringBuilder();
         if (nolink || id == null) {
@@ -68,12 +69,13 @@ public class ConfigChannelTag extends TagSupport {
         catch (IOException e) {
             throw new JspException(e);
         }
-        return BodyTagSupport.SKIP_BODY;
+        return Tag.SKIP_BODY;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         id = null;
         name = null;
@@ -86,6 +88,7 @@ public class ConfigChannelTag extends TagSupport {
     /**
      * @param val the id to set
      */
+    @Override
     public void setId(String val) {
         this.id = val;
     }
@@ -114,7 +117,7 @@ public class ConfigChannelTag extends TagSupport {
         this.name = value;
     }
 
-    private String writeIcon() throws JspException {
+    private String writeIcon() {
         IconTag i = new IconTag();
         if (type.equals("central") || type.equals("global")) {
             i.setType("header-channel-configuration");

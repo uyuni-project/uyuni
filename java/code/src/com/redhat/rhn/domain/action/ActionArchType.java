@@ -79,6 +79,7 @@ public class ActionArchType extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ActionArchType)) {
             return false;
@@ -91,6 +92,7 @@ public class ActionArchType extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(archTypeId).append(actionStyle)
                 .toHashCode();

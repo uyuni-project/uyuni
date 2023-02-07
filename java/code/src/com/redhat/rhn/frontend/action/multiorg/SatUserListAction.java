@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.MultiOrgAllUserOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -40,8 +41,9 @@ public class SatUserListAction extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
@@ -49,7 +51,7 @@ public class SatUserListAction extends RhnAction {
         Org org = OrgFactory.lookupById(oid);
         String name = org.getName();
 
-        DataList result = OrgManager.allUsers();
+        DataList<MultiOrgAllUserOverview> result = OrgManager.allUsers();
 
         Long canModify =  (user.getOrg().getId().longValue() ==
             oid.longValue()) &&

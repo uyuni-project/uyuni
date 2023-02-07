@@ -27,7 +27,7 @@ public class TaskoBunch {
     private String name;
     private String description;
     private String orgBunch;
-    private List<TaskoTemplate> templates = new ArrayList();
+    private List<TaskoTemplate> templates = new ArrayList<>();
     private Date created;
     private Date modified;
 

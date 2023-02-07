@@ -10,17 +10,18 @@ Feature: Clone a channel
   Scenario: Clone a channel without patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Test-Channel-x86_64" as the origin channel
+    And I select "Fake-RPM-SLES-Channel" as the origin channel
     And I choose "original"
     And I click on "Clone Channel"
+    And I enter "Fake-Clone-RPM-SLES15SP4-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Original state of the channel" text
     And I click on "Clone Channel"
-    Then I should see a "Clone of Test-Channel-x86_64" text
+    Then I should see a "Fake-Clone-RPM-SLES15SP4-Channel" text
 
   Scenario: Check that this channel has no patches
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Test-Channel-x86_64"
+    And I follow "Fake-Clone-RPM-SLES15SP4-Channel"
     And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "There are no patches associated with this channel." text
@@ -28,17 +29,18 @@ Feature: Clone a channel
   Scenario: Clone a channel with patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Test-Channel-x86_64" as the origin channel
+    And I select "Fake-RPM-SLES-Channel" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
+    And I enter "Fake-Clone-2-RPM-SLES15SP4-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     And I click on "Clone Channel"
-    Then I should see a "Clone 2 of Test-Channel-x86_64" text
+    Then I should see a "Fake-Clone-2-RPM-SLES15SP4-Channel" text
 
   Scenario: Check that this channel has patches
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone 2 of Test-Channel-x86_64"
+    And I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
     And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "CL-hoag-dummy-7890" link
@@ -49,15 +51,16 @@ Feature: Clone a channel
   Scenario: Clone a channel with selected patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Test-Channel-x86_64" as the origin channel
+    And I select "Fake-RPM-SLES-Channel" as the origin channel
     And I choose "select"
     And I click on "Clone Channel"
+    And I enter "Fake-Clone-3-RPM-SLES15SP4-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Select patches" text
     And I click on "Clone Channel"
-    And I should see a "Clone 3 of Test-Channel-x86_64" text
-    And I should see a "Channel Clone 3 of Test-Channel-x86_64 cloned from channel Test-Channel-x86_64." text
-    And I should see a "You may now wish to clone the patches associated with Test-Channel-x86_64." text
+    And I should see a "Fake-Clone-3-RPM-SLES15SP4-Channel" text
+    And I should see a "Channel Fake-Clone-3-RPM-SLES15SP4-Channel cloned from channel Fake-RPM-SLES-Channel." text
+    And I should see a "You may now wish to clone the patches associated with Fake-RPM-SLES-Channel." text
     And I check the row with the "hoag-dummy-7890" link
     And I check the row with the "virgo-dummy-3456" link
     And I click on "Clone Patches"
@@ -91,10 +94,10 @@ Feature: Clone a channel
 
   Scenario: Compare channel packages
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone 2 of Test-Channel-x86_64"
+    And I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
     And I follow "Packages" in the content area
     And I follow "Compare"
-    And I select "Clone 3 of Test-Channel-x86_64" from "selected_channel"
+    And I select "Fake-Clone-3-RPM-SLES15SP4-Channel" from "selected_channel"
     And I click on "View Packages"
     Then I should see a "andromeda-dummy" text
     And I should see a "2.0-1.1" link
@@ -102,26 +105,26 @@ Feature: Clone a channel
 
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Test-Channel-x86_64"
+    And I follow "Fake-Clone-RPM-SLES15SP4-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Test-Channel-x86_64" text
+    Then I should see a "Fake-Clone-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
-    When I follow "Clone 2 of Test-Channel-x86_64"
+    When I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone 2 of Test-Channel-x86_64" text
+    Then I should see a "Fake-Clone-2-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
-    When I follow "Clone 3 of Test-Channel-x86_64"
+    When I follow "Fake-Clone-3-RPM-SLES15SP4-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone 3 of Test-Channel-x86_64" text
+    Then I should see a "Fake-Clone-3-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove remaining systems from SSM after channel cloning tests
-    When I click on "Clear"
+    When I click on the clear SSM button

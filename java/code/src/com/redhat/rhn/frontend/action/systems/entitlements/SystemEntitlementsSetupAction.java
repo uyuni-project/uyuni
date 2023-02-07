@@ -103,7 +103,7 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
         }
 
         log.debug("addonents.size(): {}", addOnEntitlements.size());
-        if (addOnEntitlements.size() > 0) {
+        if (!addOnEntitlements.isEmpty()) {
             log.debug("sorting list");
             Collections.sort(addOnEntitlements);
             request.setAttribute(ADDON_ENTITLEMENTS, addOnEntitlements);

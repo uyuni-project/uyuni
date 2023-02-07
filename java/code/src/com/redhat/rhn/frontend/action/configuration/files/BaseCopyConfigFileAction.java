@@ -33,11 +33,13 @@ public abstract class BaseCopyConfigFileAction extends BaseSetListAction {
 
     public static final String TYPE_ATTR = "type";
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn(getFilterAttr());
         pc.setFilter(true);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
         rctxIn.getRequest().setAttribute(TYPE_ATTR, getType());

@@ -86,6 +86,7 @@ public class PackageProvider extends BaseDomainHelper implements
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).toHashCode();
     }
@@ -94,6 +95,7 @@ public class PackageProvider extends BaseDomainHelper implements
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object archIn) {
 
         if (archIn instanceof PackageProvider) {
@@ -107,6 +109,7 @@ public class PackageProvider extends BaseDomainHelper implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageProvider o) {
         if (equals(o)) {
             return 0;

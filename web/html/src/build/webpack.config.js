@@ -37,6 +37,45 @@ module.exports = (env, argv) => {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
+      {
+        from: path.resolve(__dirname, "../node_modules/jquery-ui/jquery-ui.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+      },
+      // Font-awesome
+      {
+        from: path.resolve(__dirname, "../node_modules/font-awesome/fonts"),
+        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/font-awesome/css"),
+        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+      },
+      // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
+      {
+        from: path.resolve(__dirname, "../node_modules/select2"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/select2-bootstrap-css/select2-bootstrap.css"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.css"),
+        to: path.resolve(__dirname, "../dist/css/legacy"),
+      },
+      // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
+      {
+        from: path.resolve(__dirname, "../node_modules/ace-builds/src-min-noconflict"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/ace-editor"),
+      },
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: "css/[name].css",

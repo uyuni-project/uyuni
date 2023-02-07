@@ -171,6 +171,7 @@ public class Pillar implements Identifiable {
         this.group = groupIn;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

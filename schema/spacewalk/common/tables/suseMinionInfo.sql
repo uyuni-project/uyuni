@@ -23,6 +23,7 @@ CREATE TABLE suseMinionInfo
     os_family           VARCHAR(32),
     kernel_live_version VARCHAR(255),
     ssh_push_port       NUMERIC,
+    reboot_needed       CHAR(1),
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ

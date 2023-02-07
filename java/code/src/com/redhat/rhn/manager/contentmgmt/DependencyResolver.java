@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
-import static com.suse.utils.Opt.stream;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,12 +25,14 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -74,8 +75,8 @@ import java.util.stream.Stream;
  */
 public class DependencyResolver {
 
-    private ContentProject project;
-    private ModulemdApi modulemdApi;
+    private final ContentProject project;
+    private final ModulemdApi modulemdApi;
 
     /**
      * Initialize a new instance with a content project and a {@link ModulemdApi} instance
@@ -99,15 +100,21 @@ public class DependencyResolver {
     public DependencyResolutionResult resolveFilters(List<ContentFilter> filters) throws DependencyResolutionException {
 
         List<ModuleFilter> moduleFilters = filters.stream()
-                .flatMap(f -> stream((Optional<ModuleFilter>) f.asModuleFilter()))
+                .filter(f -> f instanceof ModuleFilter)
+                .map(ModuleFilter.class::cast)
+                .filter(f -> FilterCriteria.Matcher.EQUALS.equals(f.getCriteria().getMatcher()))
                 .collect(toList());
+
+        if (isModulesDisabled(filters) && !moduleFilters.isEmpty()) {
+            throw new DependencyResolutionException("Modularity is disabled.", new ModularityDisabledException());
+        }
 
         List<ContentFilter> updatedFilters = new ArrayList<>(filters);
 
         // Transform module filters to package filters
         // If no module filters are attached, no modular package should be filtered out
         DependencyResolutionResult resolved = null;
-        if (moduleFilters.size() > 0) {
+        if (!moduleFilters.isEmpty()) {
             resolved = resolveModularDependencies(moduleFilters);
             updatedFilters.addAll(resolved.getFilters());
             updatedFilters.removeAll(moduleFilters);
@@ -170,6 +177,16 @@ public class DependencyResolver {
         // Concatenate filter streams into the list
         return new DependencyResolutionResult(Stream.of(pkgDenyFilters, providedRpmApiFilters, pkgAllowFilters)
                 .flatMap(s -> s).collect(toList()), resolvedModules);
+    }
+
+    /**
+     * Returns true if modularity is disabled via the 'Module(Stream): None' filter
+     * @param filters the list of enabled filters
+     * @return true if modularity is disabled
+     */
+    public static boolean isModulesDisabled(Collection<ContentFilter> filters) {
+        return filters.stream()
+                .anyMatch(f -> FilterCriteria.Matcher.MODULE_NONE.equals(f.getCriteria().getMatcher()));
     }
 
     private static PackageFilter initFilterFromPackageNevra(String nevra, ContentFilter.Rule rule) {

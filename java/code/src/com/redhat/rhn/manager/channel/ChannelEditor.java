@@ -91,7 +91,7 @@ public class ChannelEditor {
         }
 
         // make sure we work with long ids
-        List<Long> longPackageIds = new ArrayList();
+        List<Long> longPackageIds = new ArrayList<>();
         for (Object packageIdIn : packageIds) {
             longPackageIds.add(((Number) packageIdIn).longValue());
         }
@@ -124,6 +124,6 @@ public class ChannelEditor {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "update_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", channel.getId());
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
  }

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
     private HttpServletRequest mockRequest;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
     }
 
@@ -97,7 +98,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
         final String paramName = "foo";
         final String paramValue = "param value = bar#$%!";
 
-        String expected = "/YourRhn.do?foo=" + URLEncoder.encode(paramValue, "UTF-8") + "&";
+        String expected = "/YourRhn.do?foo=" + URLEncoder.encode(paramValue, StandardCharsets.UTF_8) + "&";
 
         final Vector<String> paramNames = new Vector<>();
         paramNames.add(paramName);

@@ -56,6 +56,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         Channel oldChannel = server.getBaseChannel();
         Channel newChannel = null;

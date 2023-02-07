@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 SUSE LLC
+# Copyright (c) 2010-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -32,6 +32,7 @@ Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV["PROVIDER"].include? 'aws'
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
@@ -171,10 +172,6 @@ Before('@virthost_kvm') do
   skip_this_scenario unless $kvm_server
 end
 
-Before('@virthost_xen') do
-  skip_this_scenario unless $xen_server
-end
-
 Before('@centos7_minion') do
   skip_this_scenario unless $centos7_minion
 end
@@ -189,6 +186,38 @@ end
 
 Before('@rocky8_ssh_minion') do
   skip_this_scenario unless $rocky8_ssh_minion
+end
+
+Before('@rocky9_minion') do
+  skip_this_scenario unless $rocky9_minion
+end
+
+Before('@rhel9_minion') do
+  skip_this_scenario unless $rhel9_minion
+end
+
+Before('@rhel9_ssh_minion') do
+  skip_this_scenario unless $rhel9_ssh_minion
+end
+
+Before('@rocky9_ssh_minion') do
+  skip_this_scenario unless $rocky9_ssh_minion
+end
+
+Before('@alma9_minion') do
+  skip_this_scenario unless $alma9_minion
+end
+
+Before('@alma9_ssh_minion') do
+  skip_this_scenario unless $alma9_ssh_minion
+end
+
+Before('@oracle9_minion') do
+  skip_this_scenario unless $oracle9_minion
+end
+
+Before('@oracle9_ssh_minion') do
+  skip_this_scenario unless $oracle9_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -255,14 +284,6 @@ Before('@sle12sp5_minion') do
   skip_this_scenario unless $sle12sp5_minion
 end
 
-Before('@sle15_ssh_minion') do
-  skip_this_scenario unless $sle15_ssh_minion
-end
-
-Before('@sle15_minion') do
-  skip_this_scenario unless $sle15_minion
-end
-
 Before('@sle15sp1_ssh_minion') do
   skip_this_scenario unless $sle15sp1_ssh_minion
 end
@@ -295,6 +316,14 @@ Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
 end
 
+Before('@opensuse154arm_minion') do
+  skip_this_scenario unless $opensuse154arm_minion
+end
+
+Before('@opensuse154arm_ssh_minion') do
+  skip_this_scenario unless $opensuse154arm_ssh_minion
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless $sle12sp5_buildhost
 end
@@ -307,12 +336,12 @@ Before('@sle15sp4_buildhost') do
   skip_this_scenario unless $sle15sp4_buildhost
 end
 
-Before('@sle15sp4_terminal') do
-  skip_this_scenario unless $sle15sp4_terminal_mac
+Before('@monitoring_server') do
+  skip_this_scenario unless $monitoring_server
 end
 
-Before('@opensuse154arm_minion') do
-  skip_this_scenario unless $opensuse154arm_minion
+Before('@sle15sp4_terminal') do
+  skip_this_scenario unless $sle15sp4_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|
@@ -328,6 +357,15 @@ end
 
 Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
+end
+
+# TODO: remove these 2 "skip" tags when Rocky and Alma have patches available.
+Before('@skip_for_alma9') do
+  skip_this_scenario if $alma9_minion || $alma9_ssh_minion
+end
+
+Before('@skip_for_rocky9') do
+  skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
 # do some tests only if we have SCC credentials

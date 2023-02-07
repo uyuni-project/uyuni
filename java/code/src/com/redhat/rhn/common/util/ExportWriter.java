@@ -33,9 +33,9 @@ public interface ExportWriter {
     /**
      * Write the List of values to the contents of this Writer.
      *
-     * @param listIn that you want writen to the contents
+     * @param listIn that you want written to the contents
      */
-    void write(List listIn);
+    void write(List<?> listIn);
 
     /**
      * Get the String version of the values written so far.

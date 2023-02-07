@@ -66,6 +66,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
     * @param channel channel info
     * @return repodata sanity
     */
+    @Override
     public boolean isChannelRepodataStale(Channel channel) {
         File theFile = new File(mountPoint + File.separator + pathPrefix +
                 File.separator + channel.getLabel() + File.separator +
@@ -94,6 +95,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
      * Create repository for APT
      * @param channel channel
      */
+    @Override
     public void writeRepomdFiles(Channel channel) {
         PackageManager.createRepoEntrys(channel.getId());
 

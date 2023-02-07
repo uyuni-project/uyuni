@@ -77,6 +77,11 @@ public class SystemListHelper {
             i.setType("system-kickstarting");
             i.setTitle("systemlist.jsp.kickstart");
         }
+        else if (type.equals(SystemOverview.STATUS_TYPE_REBOOT_NEEDED)) {
+            url.setAttribute("href", "/rhn/systems/details/RebootSystem.do?sid=" + next.getId());
+            i.setType("system-reboot");
+            i.setTitle("systemlist.jsp.rebootneeded");
+        }
         else if (type.equals(SystemOverview.STATUS_TYPE_UPDATES_SCHEDULED)) {
             url.setAttribute("href",
                     "/rhn/systems/details/history/Pending.do?sid=" +

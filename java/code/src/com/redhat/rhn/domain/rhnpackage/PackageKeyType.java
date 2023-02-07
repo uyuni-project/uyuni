@@ -59,6 +59,7 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getLabel()).toHashCode();
     }
@@ -67,6 +68,7 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object keyType) {
 
         if (keyType instanceof PackageKeyType) {
@@ -80,6 +82,7 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageKeyType o) {
         if (equals(o)) {
             return 0;

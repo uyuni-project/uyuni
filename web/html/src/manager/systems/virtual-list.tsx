@@ -57,7 +57,6 @@ export function VirtualSystems(props: Props) {
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
-        defaultSearchField="name"
         emptyText={t("No Virtual Systems.")}
       >
         <Column

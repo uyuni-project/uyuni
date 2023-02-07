@@ -30,7 +30,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.4.1
+Version:        4.4.5
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -102,7 +102,7 @@ cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor
 cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
 # Manually install Python part to already prepared structure
-cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
+cp src/beacons/*.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/grains/*.py %{buildroot}/usr/share/susemanager/salt/_grains/
 rm %{buildroot}/usr/share/susemanager/salt/_grains/__init__.py
 cp src/modules/*.py %{buildroot}/usr/share/susemanager/salt/_modules

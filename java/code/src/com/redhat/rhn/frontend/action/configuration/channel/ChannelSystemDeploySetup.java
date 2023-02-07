@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -36,16 +37,19 @@ public class ChannelSystemDeploySetup extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS;
     }
 
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctx, PageControl pc) {
         User usr = rctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(rctx.getRequest());
         return ConfigurationManager.getInstance().listSystemInfoForChannel(usr, cc, pc);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         if (!rctx.isSubmitted()) {
             getSetDecl().clear(rctx.getCurrentUser());
@@ -55,6 +59,7 @@ public class ChannelSystemDeploySetup extends BaseSetListAction {
         ConfigActionHelper.setupRequestAttributes(rctx, cc);
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
         Map m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
@@ -62,6 +67,7 @@ public class ChannelSystemDeploySetup extends BaseSetListAction {
         return m;
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("name");
         pc.setFilter(true);

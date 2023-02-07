@@ -41,21 +41,21 @@ public class ErrataFile extends BaseDomainHelper {
 
     protected Date modified;
 
-    protected Set channels;
+    protected Set<Channel> channels;
 
-    protected Set packages;
+    protected Set<Package> packages;
 
     /**
      * @return Returns the channels.
      */
-    public Set getChannels() {
+    public Set<Channel> getChannels() {
         return channels;
     }
 
     /**
      * @param channelsIn The channels to set.
      */
-    public void setChannels(Set channelsIn) {
+    public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
     }
 
@@ -65,7 +65,7 @@ public class ErrataFile extends BaseDomainHelper {
      */
     public void addChannel(Channel c) {
         if (this.getChannels() == null) {
-            this.channels = new HashSet();
+            this.channels = new HashSet<>();
         }
         this.channels.add(c);
     }
@@ -155,6 +155,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Created
      * @param createdIn created
      */
+    @Override
     public void setCreated(Date createdIn) {
         created = createdIn;
     }
@@ -163,6 +164,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Created
      * @return created
      */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -171,6 +173,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Modified
      * @param mod modified
      */
+    @Override
     public void setModified(Date mod) {
         modified = mod;
     }
@@ -179,6 +182,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Modified
      * @return modified
      */
+    @Override
     public Date getModified() {
         return modified;
     }
@@ -200,14 +204,14 @@ public class ErrataFile extends BaseDomainHelper {
     /**
      * @return Returns the packages for this errata file.
      */
-    public Set getPackages() {
+    public Set<Package> getPackages() {
         return packages;
     }
 
     /**
      * @param packagesIn The packages to set.
      */
-    public void setPackages(Set packagesIn) {
+    public void setPackages(Set<Package> packagesIn) {
         this.packages = packagesIn;
     }
 
@@ -217,7 +221,7 @@ public class ErrataFile extends BaseDomainHelper {
      */
     public void addPackage(Package p) {
         if (this.packages == null) {
-            this.packages = new HashSet();
+            this.packages = new HashSet<>();
         }
         this.packages.add(p);
     }

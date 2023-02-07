@@ -590,6 +590,7 @@ public class ImageOverview {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageOverview)) {
             return false;
@@ -605,6 +606,7 @@ public class ImageOverview {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(name)

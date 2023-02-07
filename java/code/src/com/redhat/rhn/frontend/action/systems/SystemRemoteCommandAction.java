@@ -294,6 +294,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
     /**
     * {@inheritDoc}
     */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,

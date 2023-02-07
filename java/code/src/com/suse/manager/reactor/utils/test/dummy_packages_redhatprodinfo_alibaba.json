@@ -9,6 +9,16 @@
     "__run_num__": 2,
     "changes": {}
   },
+  "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+    "comment": "onlyif execution failed",
+    "name": "rpm -q --whatprovides 'sll-release'",
+    "start_time": "14:04:57.901731",
+    "skip_watch": true,
+    "result": true,
+    "duration": 139.57,
+    "__run_num__": 2,
+    "changes": {}
+  },
   "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
     "comment": "onlyif execution failed",
     "name": "cat /etc/centos-release",

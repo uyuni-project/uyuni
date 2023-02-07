@@ -26,6 +26,7 @@ public class KickstartScriptCreateAction extends BaseKickstartScriptAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartScriptCreateCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),

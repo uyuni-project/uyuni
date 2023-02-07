@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.audit.ScapManager;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
  * SSM OpenSCAP XCCDF scanning.
  */
 public abstract class BaseSsmScheduleXccdfAction
-        extends RhnAction implements Listable {
+        extends RhnAction implements Listable<Map<String, Object>> {
 
     protected static final String DATE = "date";
     protected static final String PATH = "path";
@@ -46,7 +47,8 @@ public abstract class BaseSsmScheduleXccdfAction
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Map<String, Object>> getResult(RequestContext context) {
         return ScapManager.systemsInSsmAndScapCapability(context.getCurrentUser());
     }
 

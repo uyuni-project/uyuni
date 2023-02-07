@@ -65,6 +65,7 @@ public class ConfigDateFileAction extends ActionChild implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof ConfigDateFileAction)) {
             return false;
@@ -77,6 +78,7 @@ public class ConfigDateFileAction extends ActionChild implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getParentAction().getId()).append(fileName)
                 .toHashCode();

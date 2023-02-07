@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.common;
 
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -41,16 +42,18 @@ public class TinyUrlAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
         throws Exception {
         String token = request.getParameter(TY_TOKEN);
         if (log.isDebugEnabled()) {
-            log.debug("token: {}", token);
-            Enumeration e = request.getParameterNames();
+            log.debug("token: {}", StringUtil.sanitizeLogInput(token));
+            Enumeration<String> e = request.getParameterNames();
             while (e.hasMoreElements()) {
-                String name = (String) e.nextElement();
-                log.debug("param.name: {} val: {}", name, request.getParameter(name));
+                String name = e.nextElement();
+                log.debug("param.name: {} val: {}", StringUtil.sanitizeLogInput(name),
+                        StringUtil.sanitizeLogInput(request.getParameter(name)));
             }
         }
 

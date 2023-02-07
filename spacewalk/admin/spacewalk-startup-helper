@@ -154,16 +154,6 @@ check_database() {
     exit 0
 }
 
-wait_for_jabberd() {
-    RETRIES=10
-    while [ $RETRIES -gt 0 ]
-    do
-        $LSOF -t -i :5222 > /dev/null && break
-        ((RETRIES--))
-        sleep 0.5
-    done
-}
-
 wait_for_tomcat() {
 if [ -x /etc/init.d/tomcat5 ]; then
    TOMCAT_PID=$(cat /var/run/tomcat5.pid 2>/dev/null)
@@ -233,7 +223,6 @@ ensure_httpd_down() {
 
 case $1 in
         ensure-httpd-down) ensure_httpd_down;;
-        wait-for-jabberd) wait_for_jabberd;;
         wait-for-tomcat) wait_for_tomcat;;
         wait-for-database) check_database;;
         check-database) check_database;;

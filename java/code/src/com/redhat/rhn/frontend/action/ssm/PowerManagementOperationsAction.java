@@ -127,6 +127,7 @@ public class PowerManagementOperationsAction extends RhnAction implements
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),

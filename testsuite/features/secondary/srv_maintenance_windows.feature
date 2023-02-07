@@ -65,7 +65,7 @@ Feature: Maintenance windows
 
   Scenario: Assign systems to a multi schedule using SSM
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -80,10 +80,10 @@ Feature: Maintenance windows
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     When I wait until I do not see "Loading..." text
-    Then I should see "Test-Channel-x86_64 Child Channel" as unchecked
-    When I check "Test-Channel-x86_64 Child Channel"
+    Then I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    When I check "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I pick "17:30" as time
@@ -101,6 +101,8 @@ Feature: Maintenance windows
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I select the next maintenance window
@@ -109,7 +111,7 @@ Feature: Maintenance windows
 
   Scenario: Detach systems from schedules
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -118,9 +120,7 @@ Feature: Maintenance windows
     Then I should see a "Maintenance schedule has been cleared" text
 
   Scenario: Cleanup: cancel all scheduled actions
-    Given I am logged in API as user "admin" and password "admin"
     When I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Delete maintenance schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"

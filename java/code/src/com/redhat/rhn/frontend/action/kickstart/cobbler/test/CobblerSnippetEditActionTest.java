@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetEdit");
         addRequestParameter("name", "redhat_register");
         actionPerform();

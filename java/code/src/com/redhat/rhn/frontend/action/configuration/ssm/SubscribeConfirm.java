@@ -14,16 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.action.configuration.ConfigChannelSetComparator;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -31,12 +32,15 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +54,9 @@ import javax.servlet.http.HttpServletResponse;
  * SubscribeConfirmSetup, for ssm config subscribe.
  */
 public class SubscribeConfirm extends RhnAction {
+
+    private static final Logger LOG = LogManager.getLogger(SubscribeConfirm.class);
+
     public static final String REPLACE = "replace";
     public static final String LOWEST = "lowest";
     public static final String HIGHEST = "highest";
@@ -63,9 +70,10 @@ public class SubscribeConfirm extends RhnAction {
      * @param response HttpServletResponse
      * @return an ActionForward to the same page
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn, HttpServletRequest request,
+                                 HttpServletResponse response) {
         //check that we have a viable priority
         checkPosition(request);
 
@@ -88,8 +96,8 @@ public class SubscribeConfirm extends RhnAction {
             HttpServletRequest request, User user) {
         //Get the data
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List channels = cm.ssmChannelsInSetForSubscribe(user);
-        List systems = cm.ssmSystemsForSubscribe(user);
+        List<ConfigChannelDto> channels = cm.ssmChannelsInSetForSubscribe(user);
+        List<ConfigSystemDto> systems = cm.ssmSystemsForSubscribe(user);
 
         //Create the parent url. Copy the one important parameter.
 
@@ -116,25 +124,32 @@ public class SubscribeConfirm extends RhnAction {
         String position = request.getParameter(POSITION);
         checkPosition(request);
 
-        List systems = ConfigurationManager.getInstance().ssmSystemsForSubscribe(user);
-        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+        List<Server> systems = ServerFactory.getSsmSystemsForSubscribe(user);
 
         //visit every server and change their subscriptions
         //keep track of how many servers we have changed
-        int successes = 0;
-        for (Object systemIn : systems) {
-            Long sid = ((ConfigSystemDto) systemIn).getId();
-            try {
-                Server server = SystemManager.lookupByIdAndUser(sid, user);
+        LocalDateTime start = LocalDateTime.now();
 
-                if (subscribeServer(user, server, position)) {
-                    successes++;
-                }
-            }
-            catch (LookupException e) {
-                //skip this server
+        // Order the new channels in the order requested by user
+        ConfigurationManager cm = ConfigurationManager.getInstance();
+        List<RhnSetElement> rankElements = new ArrayList<>(RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
+        rankElements.sort(new ConfigChannelSetComparator());
+
+        RhnSet selectedChannels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+
+        List<ConfigChannel> configChannels = rankElements.stream()
+                .filter(elm -> selectedChannels.contains(elm.getElement()))
+                .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
+                .collect(Collectors.toList());
+
+        LOG.debug("Start adding config state");
+        int successes = 0;
+        for (Server server : systems) {
+            if (subscribeServer(user, server, configChannels, position)) {
+                successes++;
             }
         }
+        LOG.debug("End adding config state, duration: {}", Duration.between(start, LocalDateTime.now()));
 
         ConfigActionHelper.clearRhnSets(user);
 
@@ -152,33 +167,22 @@ public class SubscribeConfirm extends RhnAction {
         return mapping.findForward("success");
     }
 
-    private boolean subscribeServer(User user, Server server, String position) {
-        ConfigurationManager cm = ConfigurationManager.getInstance();
+    private boolean subscribeServer(User user, Server server, List<ConfigChannel> channels, String position) {
 
         // Position:
         //   LOWEST: Subscribe to new channels at the lowest priority
         //   REPLACE: Replace subscriptions with the new list
         //   HIGHEST: Subscripe to new channels at the highest priority
 
-        // Order the new channels in the order requested by user
-        List rankElements = new ArrayList(
-                RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
-        rankElements.sort(new ConfigChannelSetComparator());
-
-        RhnSet selectedChannels = RhnSetDecl.CONFIG_CHANNELS.get(user);
-
-        List<ConfigChannel> channels = ((List<RhnSetElement>) rankElements).stream()
-                .filter(elm -> selectedChannels.contains(elm.getElement()))
-                .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
-                .collect(Collectors.toList());
-
         List<ConfigChannel> existingChannels = server.getConfigChannelList();
+        ArrayList<ConfigChannel> newChannels = new ArrayList<>(channels);
 
         if (LOWEST.equals(position)) {
             // Subscribe the new channels in the end. No re-ordering needed.
-            channels.removeAll(existingChannels);
-            if (!channels.isEmpty()) {
-                server.subscribeConfigChannels(channels, user);
+            newChannels.removeAll(existingChannels);
+            if (!newChannels.isEmpty()) {
+                server.subscribeConfigChannels(newChannels, user);
+                server.storeConfigChannels();
                 return true;
             }
         }
@@ -186,12 +190,13 @@ public class SubscribeConfirm extends RhnAction {
             // Previously subscribed channels to append in the end,
             // or nothing in case of REPLACE
             if (HIGHEST.equals(position)) {
-                channels.addAll(existingChannels);
+                newChannels.addAll(existingChannels);
             }
 
-            if (!channels.equals(existingChannels)) {
+            if (!newChannels.equals(existingChannels)) {
                 // Replace config channel subscriptions with the new list
-                server.setConfigChannels(channels, user);
+                server.setConfigChannels(newChannels, user);
+                server.storeConfigChannels();
                 return true;
             }
         }

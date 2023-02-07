@@ -20,6 +20,7 @@ import com.sun.source.doctree.DeprecatedTree;
 import com.sun.source.doctree.DocCommentTree;
 import com.sun.source.doctree.EntityTree;
 import com.sun.source.doctree.IdentifierTree;
+import com.sun.source.doctree.ParamTree;
 import com.sun.source.doctree.SinceTree;
 import com.sun.source.doctree.TextTree;
 import com.sun.source.doctree.UnknownBlockTagTree;
@@ -363,6 +364,13 @@ public abstract class ApiDoclet implements Doclet {
             call.setSinceAvailable(true);
             String text = new TextExtractor().scan(node.getBody(), null);
             call.setSinceVersion(text);
+            return null;
+        }
+
+        @Override
+        public Void visitParam(ParamTree node, ApiCall call) {
+            log("Visiting param tag: " + node.getName().getName());
+            call.addParamName(node.getName().getName().toString());
             return null;
         }
 

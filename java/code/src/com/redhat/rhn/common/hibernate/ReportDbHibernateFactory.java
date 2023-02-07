@@ -33,7 +33,7 @@ import org.hibernate.query.Query;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -238,7 +238,7 @@ public class ReportDbHibernateFactory {
                                         Collection col, String colLabel) {
 
         if (col.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         ArrayList<Long> tmpList = new ArrayList<Long>();
@@ -525,14 +525,7 @@ public class ReportDbHibernateFactory {
         String retval = "";
 
         if (barr != null) {
-            try {
-                retval = new String(barr, "UTF-8");
-            }
-            catch (UnsupportedEncodingException uee) {
-                throw new RuntimeException("Illegal Argument: " +
-              "This VM or environment doesn't support UTF-8: Data - " +
-                                                 barr, uee);
-            }
+            retval = new String(barr, StandardCharsets.UTF_8);
         }
         return retval;
     }
@@ -585,14 +578,7 @@ public class ReportDbHibernateFactory {
             return null;
         }
 
-        try {
-            return data.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Illegal Argument: " +
-            "This VM or environment doesn't support UTF-8 - Data - " +
-                                             data, e);
-        }
+        return data.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -739,7 +725,7 @@ public class ReportDbHibernateFactory {
 
     protected void executeCallableMode(String name, String mode, Map params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
 
     /**

@@ -82,6 +82,7 @@ public class ActionedSystem extends SystemOverview {
      * We need to override the selectable from system overview query/dto.
      * @return Whether or not this system is selectable, always true.
      */
+    @Override
     public boolean isSelectable() {
         return true;
     }

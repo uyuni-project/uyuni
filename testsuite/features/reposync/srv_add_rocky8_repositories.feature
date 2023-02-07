@@ -53,7 +53,9 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: Synchronize the repositories in the custom channel for Rocky 8 DVD
     When I call spacewalk-repo-sync to sync the channel "rocky-8-iso"
     And I wait until all spacewalk-repo-sync finished
-    Then the reposync logs should not report errors
+    Then the "rocky-8-iso.log, rhel8-pool-x86_64.log" reposync logs should not report errors
+    And the "res-8-updates-x86_64.log, res-as-8-updates-x86_64.log, res-cb-8-updates-x86_64.log" reposync logs should not report errors
+    And the "res8-manager-tools-pool-x86_64.log, res8-manager-tools-updates-x86_64.log, el8-uyuni-client.log" reposync logs should not report errors
 
   Scenario: The custom channel for Rocky 8 has been synced
     When I wait until the channel "rocky-8-iso" has been synced
@@ -66,6 +68,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Create a new filter" text
     When I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
@@ -75,6 +78,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Create a new filter" text
     When I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "python36" as "moduleName"
     And I enter "3.6" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
@@ -82,9 +86,11 @@ Feature: Add the Rocky 8 distribution custom repositories
 
   Scenario: Create a CLM project to remove AppStream metadata
     When I follow the left menu "Content Lifecycle > Projects"
-    And I follow "Create Project"
+    Then I should see a "Content Lifecycle Projects" text
+    And I should see a "There are no entries to show." text
+    When I follow "Create Project"
     And I enter "Remove AppStream metadata" as "name"
-    And I enter "no-appstream" as "label"
+    And I enter "no-appstream-8" as "label"
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
     When I click on "Attach/Detach Sources"

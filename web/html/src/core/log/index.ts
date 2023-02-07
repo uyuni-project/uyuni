@@ -2,9 +2,13 @@
 import LoggerheadInstance from "./loggerhead";
 
 const setHeaders = function (headers) {
-  const csrf_token = document.getElementsByName("csrf_token") as NodeListOf<HTMLInputElement>;
-  if (csrf_token?.[0]) {
-    headers["X-CSRF-Token"] = csrf_token[0].value;
+  if (window.csrfToken) {
+    headers["X-CSRF-Token"] = window.csrfToken;
+  } else {
+    const csrf_token = document.getElementsByName("csrf_token") as NodeListOf<HTMLInputElement>;
+    if (csrf_token?.[0]) {
+      headers["X-CSRF-Token"] = csrf_token[0].value;
+    }
   }
   return headers;
 };

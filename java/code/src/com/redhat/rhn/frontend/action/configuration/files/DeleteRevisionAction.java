@@ -42,8 +42,9 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteRevisionAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         Map params = makeParamMap(request);
         ConfigFileForm cff = (ConfigFileForm)form;

@@ -93,7 +93,7 @@ def add_to_system_overview_update_queue(sid):
     h = rhnSQL.prepare("""
     INSERT INTO rhnTaskQueue (org_id, task_name, task_data, priority, earliest)
     VALUES (
-        coalesce(c.org_id, 1),
+        (select org_id from rhnserver where id = :sid),
         'update_system_overview',
         :sid,
         0,

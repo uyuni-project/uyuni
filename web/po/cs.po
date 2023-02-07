@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-28 16:14+0200\n"
+"POT-Creation-Date: 2023-01-20 14:16+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -244,7 +244,7 @@ msgstr "Zrušit"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:123
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -466,7 +466,7 @@ msgid "Custom Quartz format:"
 msgstr "Vlastní Quartz formát:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:345
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "There are no entries to show."
 msgstr "Žádné položky k zobrazení."
 
@@ -498,33 +498,76 @@ msgstr "Upravit"
 msgid "Edit Configuration Channel"
 msgstr "Upravit konfigurační kanál"
 
+#: ../html/src/components/systems.tsx:21
+#, fuzzy
+msgid "Unprovisioned System"
+msgstr "Neregistrovaný systém"
+
+#: ../html/src/components/systems.tsx:26
+#, fuzzy
+msgid "Virtual Guest"
+msgstr "Virtuální hostitel"
+
+#: ../html/src/components/systems.tsx:31
+#: ../html/src/manager/systems/virtual-list.tsx:65
+msgid "Virtual Host"
+msgstr "Virtuální hostitel"
+
+#: ../html/src/components/systems.tsx:36
+#, fuzzy
+msgid "Non-Virtual System"
+msgstr "Virtuální systém"
+
+#: ../html/src/components/systems.tsx:44
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+msgid "Proxy"
+msgstr "Proxy"
+
 #: ../html/src/components/systems.tsx:45
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr "Periferní server"
+
+#: ../html/src/components/systems.tsx:102
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Security Advisory"
 msgstr "Bezpečnostní poradenství"
 
-#: ../html/src/components/systems.tsx:58
+#: ../html/src/components/systems.tsx:115
 msgid "System Locked"
 msgstr "Systém uzamčen"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchField.tsx:49
+#, fuzzy
+msgid "Filter"
+msgstr "Filtry"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#, fuzzy
+msgid "Select a filter"
+msgstr "Vybrat plán"
+
+#: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
 msgstr "Položky {0} - {1} z {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "({0} selected)"
 msgstr "(Vybráno: {0})"
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.tsx:61
 #: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:33
 msgid "Clear"
 msgstr "Vyčistit"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:68
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/components/table/TableDataHandler.tsx:372
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -534,7 +577,7 @@ msgstr "Vybrat vše"
 msgid "Loading..."
 msgstr "Načítání..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:377
+#: ../html/src/components/table/TableDataHandler.tsx:405
 msgid "items per page"
 msgstr "položek na stránku"
 
@@ -664,6 +707,8 @@ msgstr "Nastala chyba. Stav monitorování neznámý. Obnovte stránku."
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:21
+#: ../html/src/manager/systems/all-list.tsx:76
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
@@ -696,57 +741,57 @@ msgstr "Povoleno"
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
 msgid "Server Monitoring"
 msgstr "Monitorování serveru"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid "The server uses "
 msgstr "Server používá "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
 msgid " exporters to expose metrics about your environment."
 msgstr " exportéry pro zobrazení metriky o vašem prostředí."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
 msgid "Refer to the "
 msgstr "Odkaz na "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:172
 msgid "documentation"
 msgstr "dokumentace"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to to consume these metrics."
 msgstr " naučit se, jak tyto metriky využívat."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:296
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:318
 msgid "Enable"
 msgstr "Povolit"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:303
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:326
 msgid "Disable"
 msgstr "Zakázat"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:339
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "Konfigurace SUSE Manageru - monitorování"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:344
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "Nastavte monitorování svého serveru SUSE Manager."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -754,38 +799,38 @@ msgstr "Nastavte monitorování svého serveru SUSE Manager."
 msgid "General"
 msgstr "Všeobecné"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
 msgid "Bootstrap Script"
 msgstr "Zavlékací (Bootstrap) skript"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
 msgid "Organizations"
 msgstr "Organizace"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "Restart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
 msgid "Bare-metal systems"
 msgstr "Serverové systémy s jediným virtuálem"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
 msgid "Monitoring"
 msgstr "Monitorování"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
 msgid "Restarting"
 msgstr "Restart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -864,7 +909,7 @@ msgstr "Hostitel"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:302
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
@@ -993,7 +1038,7 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:373
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -1261,7 +1306,7 @@ msgid " seconds"
 msgstr " sekund"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:296
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
 #: ../html/src/manager/systems/virtual-list.tsx:59
@@ -1300,7 +1345,7 @@ msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:572
+#: ../html/src/manager/notifications/notification-messages.tsx:576
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
@@ -1308,7 +1353,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:574
+#: ../html/src/manager/notifications/notification-messages.tsx:578
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
@@ -1333,35 +1378,35 @@ msgstr "Neovlivněno"
 msgid "Patched"
 msgstr "Opraveno"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:185
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:186
 msgid "CVE Audit"
 msgstr "Audit CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:192
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:193
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:247
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Audit Servers"
 msgstr "Auditovat servery"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
 msgid "Audit Images"
 msgstr "Auditovat obrazy"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
 msgid "MITRE CVE link"
 msgstr "Odkaz na MITRE CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:285
 msgid "SUSE Security CVE link"
 msgstr "Odkaz na SUSE Security CVE"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:124
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
@@ -1379,7 +1424,7 @@ msgstr "Odkaz na SUSE Security CVE"
 msgid "Name"
 msgstr "Název"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:333
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:681
@@ -1393,51 +1438,51 @@ msgstr "Název"
 msgid "Actions"
 msgstr "Akce"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
 msgid "No action required"
 msgstr "Nevyžaduje se žádná akce"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:344
 msgid "Install a new patch on this system."
 msgstr "Instalovat novou opravu na tento systém."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 "Záplata je k dispozici, ale systém je třeba migrovat na novější produkt."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:380
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:407
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:381
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:411
 msgid "If you see this report a bug."
 msgstr "Vidíte-li toto, ohlaste chybu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:392
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr "Přebudovat"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:400
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
 msgid "Channel"
 msgstr "Kanál"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
 msgid "Errata"
 msgstr "Opravník chyb"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:429
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
@@ -1794,7 +1839,7 @@ msgstr "Nejsou dostupné žádné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:202
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
 msgid "Stream"
 msgstr "Proud"
 
@@ -1882,6 +1927,7 @@ msgstr "Párovač"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
@@ -1922,7 +1968,7 @@ msgid "Product Enhancement Advisory"
 msgstr "Poradenství k vylepšení produktu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:154
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Type"
 msgstr "Typ poradenství"
 
@@ -1931,7 +1977,7 @@ msgid "Issued"
 msgstr "Vydáno"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:160
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "Synopse"
@@ -1953,21 +1999,26 @@ msgid "Package Provides Name"
 msgstr "Balíček poskytuje název"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:142
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr "Poskytuje název"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "Number"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr "Odmítnout"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr "Povolit"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:273
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
 msgid "Rule"
 msgstr "Pravidlo"
 
@@ -2070,150 +2121,183 @@ msgstr "Balíček"
 msgid "Patch"
 msgstr "Záplata (rychlá oprava)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
+msgid "Product Temporary Fix"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
 msgstr "obsahuje"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:42
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "containing"
 msgstr "obsahující"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:50
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "matches"
 msgstr "shoduje se"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 msgid "regular expression matches package name"
 msgstr "regulární výraz odpovídá názvu balíčku"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:55
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:100
 msgid "equals"
 msgstr "shoduje se"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 msgid "contains package name equals"
 msgstr "obsahuje shodný název balíčku"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:60
 msgid "version lower than"
 msgstr "verze nižší než"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
 msgid "contains package with epoch/version/release lower than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním nižší/-m než"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:65
 msgid "version lower or equal than"
 msgstr "verze nižší nebo rovna"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "contains package with epoch/version/release lower or equal than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním nižší/-m nebo rovnou/-ým"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:70
 msgid "version equal"
 msgstr "verze se rovná"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
 msgid "contains package with epoch/version/release equal than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním rovnou/-ým"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:75
 msgid "version greater or equal than"
 msgstr "verze větší nebo rovna"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:76
 msgid "contains package with epoch/version/release greater or equal than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním větší/-m nebo rovnou/-ým"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
 msgid "contains package with epoch/version/release greater than"
 msgstr "obsahuje balíček s epochou/verzí/vydáním větší/-m než"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "contains package which provides name equal"
 msgstr "obsahuje balíček poskytující shodný název"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:90
 msgid "lower"
 msgstr "menší"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower than"
 msgstr "menší než"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:95
 msgid "lower or equal"
 msgstr "menší nebo rovno"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal than"
 msgstr "menší než nebo rovno"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "equal"
 msgstr "roven / stejný"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:105
 msgid "greater or equal"
 msgstr "větší nebo rovno"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal than"
 msgstr "větší než nebo rovno"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:110
 msgid "greater"
 msgstr "větší"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater than"
 msgstr "větší než"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "matches regular expression"
 msgstr "vyhovuje regulárnímu výrazu"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:120
 msgid "provides name"
 msgstr "poskytuje název"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 msgid "provides name equal"
 msgstr "poskytuje shodný název"
 
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
+#, fuzzy
+msgid "none (disable modularity)"
+msgstr "(žádný, deaktivovat službu)"
+
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
+msgid "all"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
+msgid "all product temporary fixes"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:148
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
 msgid "Advisory Name"
 msgstr "Název poradenství"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:166
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 msgid "Keyword"
 msgstr "Klíčové slovo"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:172
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Issue date"
 msgstr "Datum vydání"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:178
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Contains Package Name"
 msgstr "Obsahuje název balíčku"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:184
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Provides Name"
 msgstr "Obsahuje balíček poskytující název"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:190
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package"
 msgstr "Obsahuje balíček"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+#, fuzzy
+msgid "All"
+msgstr "Povolit"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
+#, fuzzy
+msgid "Fixes Package Name"
+msgstr "Název balíčku"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
+msgstr "povolit modul"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
+#, fuzzy
+msgid "disable all modules"
 msgstr "povolit modul"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
@@ -2501,7 +2585,7 @@ msgstr "žádné podřízené kanály"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:514
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2615,12 +2699,16 @@ msgstr "Systémy"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:665
 #: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/systems/all-list.tsx:25
+#: ../html/src/manager/systems/all-list.tsx:106
 msgid "Packages"
 msgstr "Balíčky"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/systems/all-list.tsx:24
+#: ../html/src/manager/systems/all-list.tsx:93
 msgid "Patches"
 msgstr "Záplaty"
 
@@ -3268,6 +3356,8 @@ msgid "(obsolete)"
 msgstr "(zastaralé)"
 
 #: ../html/src/manager/images/image-view.tsx:649
+#: ../html/src/manager/systems/all-list.tsx:23
+#: ../html/src/manager/systems/all-list.tsx:82
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
@@ -3761,11 +3851,6 @@ msgstr "Přidat soubor inventáře"
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "např. /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
-msgstr "Zavádění..."
-
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
 msgid "Nothing configured. Please add paths in the "
 msgstr "Nic není konfigurováno. Přidejte cesty do "
@@ -3927,97 +4012,102 @@ msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 msgid "End of Life Period"
 msgstr "Konec životního cyklu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:145
+#: ../html/src/manager/notifications/notification-messages.tsx:58
+#, fuzzy
+msgid "Subscription Warning"
+msgstr "Párování předplatného"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:149
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Info"
 msgstr "Informace"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
+#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:266
 msgid "Warning"
 msgstr "Výstraha"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:269
-#: ../html/src/manager/notifications/notification-messages.tsx:270
+#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:274
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:332
+#: ../html/src/manager/notifications/notification-messages.tsx:336
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:381
+#: ../html/src/manager/notifications/notification-messages.tsx:385
 msgid "Retry onboarding"
 msgstr "Zkuste se registrovat znovu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:391
+#: ../html/src/manager/notifications/notification-messages.tsx:395
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:415
+#: ../html/src/manager/notifications/notification-messages.tsx:419
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:452
-#: ../html/src/manager/notifications/notification-messages.tsx:453
+#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:457
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:460
-#: ../html/src/manager/notifications/notification-messages.tsx:461
+#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:465
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:478
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:482
+#: ../html/src/manager/notifications/notification-messages.tsx:564
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.tsx:487
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:502
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:516
+#: ../html/src/manager/notifications/notification-messages.tsx:520
 msgid "Summary"
 msgstr "Souhrn"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:522
+#: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Action"
 msgstr "Akce"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:537
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:546
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:546
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:552
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -4612,6 +4702,60 @@ msgstr ""
 "Každý systém registrovaný tímto aktivačním klíčem bude předplacen vybraným "
 "podřízeným kanálům."
 
+#: ../html/src/manager/systems/all-list.tsx:22
+#, fuzzy
+msgid "System Kind"
+msgstr "Název systému"
+
+#: ../html/src/manager/systems/all-list.tsx:26
+#: ../html/src/manager/systems/all-list.tsx:120
+#, fuzzy
+msgid "Extra Packages"
+msgstr "Balíčky"
+
+#: ../html/src/manager/systems/all-list.tsx:27
+#: ../html/src/manager/systems/all-list.tsx:134
+#, fuzzy
+msgid "Config Diffs"
+msgstr "Konfigurace URL"
+
+#: ../html/src/manager/systems/all-list.tsx:28
+#: ../html/src/manager/systems/all-list.tsx:149
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
+msgid "Base Channel"
+msgstr "Základní kanál"
+
+#: ../html/src/manager/systems/all-list.tsx:29
+#: ../html/src/manager/systems/all-list.tsx:160
+#, fuzzy
+msgid "System Type"
+msgstr "Typ úložiště"
+
+#: ../html/src/manager/systems/all-list.tsx:30
+msgid "Requires Reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:31
+#, fuzzy
+msgid "Registered Days"
+msgstr "Registrované systémy"
+
+#: ../html/src/manager/systems/all-list.tsx:32
+#, fuzzy
+msgid "Groups"
+msgstr "Skupina"
+
+#: ../html/src/manager/systems/all-list.tsx:51
+#, fuzzy
+msgid " Systems "
+msgstr "Systémy"
+
+#: ../html/src/manager/systems/all-list.tsx:71
+#, fuzzy
+msgid "No Systems."
+msgstr "Systémy"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
 msgstr "Podrobnosti chyb"
@@ -4727,10 +4871,6 @@ msgstr "Re-aktivační klíč"
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
-msgid "Proxy"
-msgstr "Proxy"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
@@ -4785,10 +4925,6 @@ msgstr "Systém není periferním serverem"
 msgid "New password generated and action for peripheral server scheduled"
 msgstr "Vygenerováno nové heslo a naplánována akce pro periferní server"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
-msgid "Peripheral Server"
-msgstr "Periferní server"
-
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
 msgstr "Název databáze hlášení"
@@ -4835,11 +4971,16 @@ msgstr "Připojení jednoho či více pomahačů k jinému proxy serveru."
 msgid "New Proxy"
 msgstr "Nový proxy server"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:24
+#, fuzzy
+msgid "Manage"
+msgstr "Manažer"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 msgid "system selected"
 msgstr "vybraný systém"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 msgid "systems selected"
 msgstr "vybrané systémy"
 
@@ -4881,11 +5022,6 @@ msgstr "Odhlásit odběr"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:142
 msgid "System Default Base Channel"
 msgstr "Výchozí základní kanál systému"
-
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
-msgid "Base Channel"
-msgstr "Základní kanál"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
 msgid ""
@@ -5069,10 +5205,6 @@ msgstr "Virtuální systémy"
 #: ../html/src/manager/systems/virtual-list.tsx:60
 msgid "No Virtual Systems."
 msgstr "Žádné virtuální systémy."
-
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr "Virtuální hostitel"
 
 #: ../html/src/manager/systems/virtual-list.tsx:73
 msgid "Virtual System"
@@ -6168,6 +6300,9 @@ msgstr "nedefinováno"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} čaj {1}"
+
+#~ msgid "Loading.."
+#~ msgstr "Zavádění..."
 
 #~ msgid "Time"
 #~ msgstr "Čas"

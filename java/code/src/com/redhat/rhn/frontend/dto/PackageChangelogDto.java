@@ -33,6 +33,7 @@ public class PackageChangelogDto extends BaseDto {
     /**
      * @return the id
      */
+    @Override
     public Long getId() {
         return id;
     }

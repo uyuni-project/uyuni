@@ -53,6 +53,7 @@ public class DockerfileProfile extends ImageProfile {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof DockerfileProfile)) {
             return false;
@@ -67,6 +68,7 @@ public class DockerfileProfile extends ImageProfile {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())

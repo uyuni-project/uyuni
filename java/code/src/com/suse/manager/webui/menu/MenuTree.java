@@ -580,7 +580,7 @@ public class MenuTree {
                     activeItem = item;
                     return activeItem;
                 }
-                if (item.getUrls() != null && item.getUrls().size() > 0) {
+                if (item.getUrls() != null && !item.getUrls().isEmpty()) {
                     for (String link : item.getUrls()) {
                         if (url.equalsIgnoreCase(link)) {
                             activeItem = item;

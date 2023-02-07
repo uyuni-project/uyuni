@@ -46,14 +46,14 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     static {
         // Login routes
-        TreeSet set = new TreeSet();
+        TreeSet set = new TreeSet<>();
         set.add("/rhn/newlogin/");
         set.add("/rhn/manager/login");
 
         LOGIN_URIS = UnmodifiableSet.decorate(set);
 
         // Unauthenticated routes
-        set = new TreeSet(set);
+        set = new TreeSet<>(set);
         set.add("/rhn/rpc/api");
         set.add("/rhn/help/");
         set.add("/rhn/apidoc");
@@ -75,7 +75,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
 
         // CSRF whitelist
-        set = new TreeSet(set);
+        set = new TreeSet<>(set);
         set.add("/rhn/common/DownloadFile");
         // search (safe to be unprotected, since it has no modifying side-effects)
         set.add("/rhn/Search.do");
@@ -119,6 +119,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean skipCsfr(HttpServletRequest request) {
         return requestURIdoesLogin(request) || requestPostCsfrWhitelist(request);
     }
@@ -126,6 +127,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response) {
         if (requestURIRequiresAuthentication(request)) {
             if (isAuthenticationRequired(request)) {
@@ -159,6 +161,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void redirectToLogin(HttpServletRequest request, HttpServletResponse response)
         throws ServletException {
 
@@ -197,9 +200,9 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void redirectTo(HttpServletRequest request, HttpServletResponse response,
-            String path)
-        throws ServletException {
+                           String path) {
             response.setHeader("Location", path);
             response.setStatus(response.SC_SEE_OTHER);
     }
@@ -207,6 +210,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void invalidate(HttpServletRequest request, HttpServletResponse response) {
         pxtDelegate.invalidatePxtSession(request, response);
     }

@@ -42,6 +42,7 @@ import java.util.HashSet;
 public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     private ManagedServerGroup managedGroup;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -51,7 +52,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
                             user.getOrg());
     }
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         String name = ServerGroupTestUtils.NAME;
         String description = ServerGroupTestUtils.DESCRIPTION;
 
@@ -74,7 +75,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void testSave() {
         ServerGroupTest.createTestServerGroup(user.getOrg(), ServerConstants
                 .getServerGroupTypeEnterpriseEntitled());
         EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(user.getOrg(),
@@ -84,7 +85,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookup() throws Exception {
+    public void testLookup() {
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());
@@ -95,21 +96,21 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListNoAssociatedAdmins() throws Exception {
+    public void testListNoAssociatedAdmins() {
         TestUtils.flushAndEvict(managedGroup);
-        Collection groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
+        Collection<ServerGroup> groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(ServerGroupTestUtils.NAME + "ALPHA",
                 ServerGroupTestUtils.DESCRIPTION,
                 user.getOrg());
-        Collection groups1 = ServerGroupFactory.listNoAdminGroups(sg1.getOrg());
+        Collection<ServerGroup> groups1 = ServerGroupFactory.listNoAdminGroups(sg1.getOrg());
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
-        assertEquals(new HashSet(groups), new HashSet(groups1));
+        assertEquals(new HashSet<>(groups), new HashSet<>(groups1));
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         ServerGroupFactory.remove(new TestSaltApi(), managedGroup);
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),

@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * HttpHelper for easy doing HTTP requests
@@ -99,7 +100,7 @@ public class HttpHelper {
      * @return body as String
      * @throws IOException
      */
-    public String getBodyAsString(HttpResponse response, String defaultCharset) throws IOException {
+    public String getBodyAsString(HttpResponse response, Charset defaultCharset) throws IOException {
         return EntityUtils.toString(response.getEntity(), defaultCharset);
     }
 

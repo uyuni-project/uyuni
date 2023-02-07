@@ -60,9 +60,10 @@ public class RhnUnpagedListActionTest extends RhnBaseTestCase {
 
         private ListControl lc;
 
+        @Override
         public final ActionForward execute(ActionMapping mapping,
-                ActionForm formIn, HttpServletRequest request,
-                HttpServletResponse response) {
+                                           ActionForm formIn, HttpServletRequest request,
+                                           HttpServletResponse response) {
 
             RequestContext requestContext = new RequestContext(request);
             StrutsDelegate strutsDelegate = StrutsDelegate.getInstance();

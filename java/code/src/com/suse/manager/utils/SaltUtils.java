@@ -340,10 +340,12 @@ public class SaltUtils {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
                 e.getKey().endsWith("-release") ||
+                // Live patching requires refresh to fetch the updated LP version
+                e.getKey().startsWith("kernel-livepatch-") ||
                 (e.getValue().getNewValue().isLeft() &&
                  e.getValue().getOldValue().isLeft())
-
         );
+
         if (fullRefreshNeeded) {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
@@ -1282,12 +1284,17 @@ public class SaltUtils {
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
                                 .map(CmdResult::getStdout);
+                Optional<String> sllReleasePkg =
+                        Optional.ofNullable(ret.getWhatProvidesSLLReleasePkg())
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
                         almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                         rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
-                            imageInfo, resReleasePkg,
+                            imageInfo, resReleasePkg, sllReleasePkg,
                             rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
                             almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
                     imageInfo.setInstalledProducts(products);
@@ -1385,6 +1392,11 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
+        Optional<String> sllReleasePkg =
+                Optional.ofNullable(result.getWhatProvidesSLLReleasePkg())
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
 
         ValueMap grains = new ValueMap(result.getGrains());
 
@@ -1393,7 +1405,7 @@ public class SaltUtils {
                 almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                 rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
-                    server, resReleasePkg,
+                    server, resReleasePkg, sllReleasePkg,
                     rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
                     almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
             server.setInstalledProducts(products);
@@ -1774,6 +1786,7 @@ public class SaltUtils {
     private static Set<InstalledProduct> getInstalledProductsForRhel(
            MinionServer server,
            Optional<String> resPackage,
+           Optional<String> sllPackage,
            Optional<String> rhelReleaseFile,
            Optional<String> centosRelaseFile,
            Optional<String> oracleReleaseFile,
@@ -1783,7 +1796,7 @@ public class SaltUtils {
            Optional<String> rockyReleaseFile) {
 
         Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                RhelUtils.detectRhelProduct(server, resPackage,
+                RhelUtils.detectRhelProduct(server, resPackage, sllPackage,
                         rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                         rockyReleaseFile);
@@ -1815,6 +1828,7 @@ public class SaltUtils {
     private static Set<InstalledProduct> getInstalledProductsForRhel(
             ImageInfo image,
             Optional<String> resPackage,
+            Optional<String> sllPackage,
             Optional<String> rhelReleaseFile,
             Optional<String> centosReleaseFile,
             Optional<String> oracleReleaseFile,
@@ -1824,7 +1838,7 @@ public class SaltUtils {
             Optional<String> rockyReleaseFile) {
 
          Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                 RhelUtils.detectRhelProduct(image, resPackage,
+                 RhelUtils.detectRhelProduct(image, resPackage, sllPackage,
                          rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
                          alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                          rockyReleaseFile);
@@ -1927,14 +1941,13 @@ public class SaltUtils {
      * @param minion the minion
      * @param uptimeSeconds uptime time in seconds
      */
-    public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+    public static void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
         LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        @SuppressWarnings("unchecked")
         List<ServerAction> serverActions = ActionFactory
                 .listServerActionsForServer(minion);
         int actionsChanged = 0;
@@ -1953,7 +1966,7 @@ public class SaltUtils {
         }
     }
 
-    private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+    private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {

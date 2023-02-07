@@ -37,7 +37,6 @@ Feature: Action chains on Salt minions
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
 
@@ -66,6 +65,8 @@ Feature: Action chains on Salt minions
   Scenario: Add a package installation to an action chain on Salt minion
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
@@ -214,8 +215,7 @@ Feature: Action chains on Salt minions
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for Salt minions
-    Given I am logged in API as user "admin" and password "admin"
-    And I want to operate on this "sle_minion"
+    Given I want to operate on this "sle_minion"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
@@ -226,10 +226,8 @@ Feature: Action chains on Salt minions
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "sle_minion"
     When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
@@ -242,7 +240,6 @@ Feature: Action chains on Salt minions
     And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove Salt minion from configuration channel
     When I follow the left menu "Configuration > Channels"

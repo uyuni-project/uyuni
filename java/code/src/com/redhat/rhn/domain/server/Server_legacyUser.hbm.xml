@@ -184,6 +184,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
+            <!--
+            We typically look at the packages installed on a system to identify whether a reboot is necessary.
+            This property initially only works for transactional systems, but the idea is that gradually the
+            other types of systems also provide this information directly to be stored here so we no longer rely
+            on package related inference to determine whether a reboot is necessary. Even because this
+            information does not always depend only on the packages.
+            -->
+            <property name="rebootNeeded" column="reboot_needed" type="yes_no" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
             <property name="sshPushPort" column="ssh_push_port" access="field"/>
@@ -354,7 +362,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                          AND n.name = 'zypper')
         ]]>
     </query>
-    
+
+    <query name="Server.findZypperEvr">
+        <![CDATA[SELECT p.evr
+                   FROM com.redhat.rhn.domain.server.InstalledPackage as p
+                            JOIN p.name as n
+                            JOIN p.server as s
+                  WHERE s.id = :sid AND n.name = 'zypper'
+        ]]>
+    </query>
+
     <sql-query name="Server.findUnscheduledErrataByServerIds">
         <return-scalar column="serverId" type="long"/>
         <return-scalar column="errataId" type="long"/>
@@ -592,6 +609,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[UPDATE Server s
                     SET s.maintenanceSchedule = :schedule
                   WHERE s.id IN (:systemIds)]]>
+    </query>
+
+
+    <query name="Server.findServersPendingRebootAction">
+        <![CDATA[SELECT distinct(sa.server.id) FROM ServerAction sa
+                      WHERE sa.server.id IN (:systemIds)
+                        AND sa.parentAction.actionType.label = 'reboot.reboot'
+                        AND status in ( 0, 1 )]]>
     </query>
 
 </hibernate-mapping>

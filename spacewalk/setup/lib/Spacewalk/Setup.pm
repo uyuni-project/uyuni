@@ -358,12 +358,6 @@ sub upgrade_stop_services {
     if (-e "/usr/sbin/spacewalk-service") {
       system_or_exit(['/usr/sbin/spacewalk-service', 'stop'], 16,
                       'Could not stop the rhn-satellite service.');
-    } elsif (-e "/usr/sbin/rhn-satellite") {
-      system_or_exit(['/usr/sbin/rhn-satellite', 'stop'], 16,
-                      'Could not stop the rhn-satellite service.');
-    } elsif (-e "/etc/init.d/rhn-satellite") {
-      system_or_exit(['/etc/init.d/rhn-satellite', 'stop'], 16,
-                      'Could not stop the rhn-satellite service.')
     } else {
       # shutdown pre 3.6 services proerly
       system_or_exit(['/sbin/service', 'apache2', 'stop'], 25,

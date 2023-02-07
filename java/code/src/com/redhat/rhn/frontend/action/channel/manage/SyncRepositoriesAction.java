@@ -264,6 +264,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
          *
          * {@inheritDoc}
          */
+        @Override
         public List<ContentSource> getResult(RequestContext context) {
             User user =  context.getCurrentUser();
             long cid = context.getRequiredParam("cid");

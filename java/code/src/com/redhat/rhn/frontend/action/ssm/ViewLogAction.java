@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.OperationDetailsDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 
@@ -29,12 +30,14 @@ import java.util.List;
 public class ViewLogAction extends BaseViewLogAction {
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<OperationDetailsDto> getResult(RequestContext context) {
                 User user = context.getCurrentUser();
         return SsmOperationManager.inProgressOperations(user);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected String getSummaryKey() {
         return "ssm.operations.inprogress.summary";
     }

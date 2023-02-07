@@ -31,7 +31,7 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -90,7 +90,6 @@ Run configure-proxy.sh after installation to configure proxy.
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
-mkdir -p $RPM_BUILD_ROOT/%{_usr}/share/rhn/installer/jabberd
 mkdir -p $RPM_BUILD_ROOT%{pythondir}
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 
@@ -105,7 +104,6 @@ install -m 755 spacewalk-setup-httpd $RPM_BUILD_ROOT/%{_bindir}
 install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
-install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/installer/jabberd
 install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
 
 # Fixing shebang for Python 3
@@ -150,8 +148,6 @@ fi
 %{defaultdir}/insights-proxy.conf
 %{_usr}/sbin/configure-proxy.sh
 %{_mandir}/man8/*
-%dir %{_usr}/share/rhn/installer
-%{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
 %{_usr}/sbin/rhn-proxy-activate
 %dir %{pythondir}
@@ -161,7 +157,6 @@ fi
 %license LICENSE
 %dir %{_usr}/share/rhn/proxy-template
 %dir %{_usr}/share/rhn
-%dir %{_usr}/share/rhn/installer/jabberd
 %{_prefix}/lib/firewalld/services/suse-manager-proxy.xml
 
 %changelog

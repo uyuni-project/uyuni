@@ -42,7 +42,7 @@ public class DeleteGroupAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         ManagedServerGroup serverGroup = context.lookupAndBindServerGroup();
         if (context.isSubmitted()) {

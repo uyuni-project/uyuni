@@ -26,6 +26,7 @@ public class CryptoKeyDeleteAction extends BaseCryptoKeyEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseCryptoKeyCommand getCommand(RequestContext ctx) {
         return new DeleteCryptoKeyCommand(ctx.getCurrentUser(),
                 ctx.getRequiredParam(RequestContext.KEY_ID));
@@ -34,6 +35,7 @@ public class CryptoKeyDeleteAction extends BaseCryptoKeyEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "cryptokey.delete.success";
     }

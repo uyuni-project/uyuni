@@ -46,7 +46,6 @@ import java.util.UUID;
  */
 public class ResetPasswordFactory extends HibernateFactory {
     public static final String EXPIRE_TIME = "password_token_expiration_hours";
-    private static ResetPasswordFactory singleton = new ResetPasswordFactory();
     private static Logger log = LogManager.getLogger(ResetPasswordFactory.class);
 
     private ResetPasswordFactory() {
@@ -82,7 +81,7 @@ public class ResetPasswordFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         DataResult<ResetPassword> dr = sm.execute(params);
-        if (dr == null || dr.size() == 0) {
+        if (dr == null || dr.isEmpty()) {
             return null;
         }
         else {

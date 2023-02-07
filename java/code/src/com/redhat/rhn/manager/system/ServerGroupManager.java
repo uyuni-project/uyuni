@@ -134,7 +134,7 @@ public class ServerGroupManager {
         params.put("user_id", user.getId());
         params.put("sgid", group.getId());
         List result = m.execute(params);
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     /**
@@ -243,7 +243,7 @@ public class ServerGroupManager {
                                 User loggedInUser) {
         validateAccessCredentials(loggedInUser, group, group.getName());
         validateAdminCredentials(loggedInUser);
-        List admins = new LinkedList();
+        List admins = new LinkedList<>();
         for (Object adminLoginIn : adminLogins) {
             String login = (String) adminLoginIn;
             User admin = UserFactory.lookupByLogin(login);
@@ -398,7 +398,7 @@ public class ServerGroupManager {
      * @param loggedInUser the loggedInUser needed for credentials
      * @return list of User objects that can administer the server group
      */
-    public List listAdministrators(ManagedServerGroup sg, User loggedInUser) {
+    public List<User> listAdministrators(ManagedServerGroup sg, User loggedInUser) {
         validateAccessCredentials(loggedInUser, sg, sg.getName());
         validateAdminCredentials(loggedInUser);
         return ServerGroupFactory.listAdministrators(sg);
@@ -413,7 +413,7 @@ public class ServerGroupManager {
      * @param user ORG_ADMIN user.
      * @return a list of server groups
      */
-    public List listNoAdminGroups(User user) {
+    public List<ServerGroup> listNoAdminGroups(User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             String msg = "The desired operation cannot be performed since the user" +
                             "[" + user + "] does not have the org  admin role";

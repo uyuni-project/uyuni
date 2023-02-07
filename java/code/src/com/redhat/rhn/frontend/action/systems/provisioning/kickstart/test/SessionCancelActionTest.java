@@ -30,7 +30,7 @@ import servletunit.HttpServletRequestSimulator;
 public class SessionCancelActionTest extends BaseSessionTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));

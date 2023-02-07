@@ -23,6 +23,7 @@ public class SslCryptoKey extends CryptoKey {
     *
     * @return true if this is a SSL key
     */
+   @Override
    public boolean isSSL() {
        return true;
    }

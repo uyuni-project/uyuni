@@ -54,6 +54,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
     public static final String KERNEL_OPTS = "kernelopts";
     public static final String POST_KERNEL_OPTS = "postkernelopts";
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx, PersistOperation opr) {
         BaseTreeEditOperation bte = (BaseTreeEditOperation) opr;
         Iterator i = bte.getKickstartableTreeChannels().iterator();
@@ -82,9 +83,10 @@ public abstract class BaseTreeAction extends BaseEditAction {
 
     }
 
+    @Override
     protected ValidatorError processCommandSetters(PersistOperation operation,
-                                                            DynaActionForm form,
-                                                            HttpServletRequest request) {
+                                                   DynaActionForm form,
+                                                   HttpServletRequest request) {
         BaseTreeEditOperation bte = (BaseTreeEditOperation) operation;
 
         String label = form.getString(LABEL);

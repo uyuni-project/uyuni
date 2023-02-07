@@ -30,6 +30,7 @@ public class KickstartableTreeDto extends BaseDto {
      * Returns id
      * @return id
      */
+    @Override
     public Long getId() {
         return this.id;
     }

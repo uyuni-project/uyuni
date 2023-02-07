@@ -49,10 +49,11 @@ public class InstalledSystemsListAction extends RhnAction {
     private final String LIST_NAME = "systemList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
         long pid = requestContext.getRequiredParam("pid");

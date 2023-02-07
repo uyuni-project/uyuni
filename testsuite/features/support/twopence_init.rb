@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 SUSE LLC.
+# Copyright (c) 2016-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'require_all'
@@ -16,7 +16,6 @@ warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLI
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
 
 # Preserve FQDN before initialization
 $named_nodes = {}
@@ -32,9 +31,8 @@ $localhost = twopence_init("ssh:#{ENV['HOSTNAME']}") unless $debug_mode
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
-$xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
-$nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
+$nodes = [$localhost, $server, $proxy, $kvm_server]
 
 if $build_validation
   # Define twopence objects for Build Validation environment
@@ -42,8 +40,6 @@ if $build_validation
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
   $sle12sp5_minion = twopence_init("ssh:#{ENV['SLE12SP5_MINION']}") if ENV['SLE12SP5_MINION']
   $sle12sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP5_SSHMINION']}") if ENV['SLE12SP5_SSHMINION']
-  $sle15_minion = twopence_init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
-  $sle15_ssh_minion = twopence_init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
   $sle15sp1_minion = twopence_init("ssh:#{ENV['SLE15SP1_MINION']}") if ENV['SLE15SP1_MINION']
   $sle15sp1_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP1_SSHMINION']}") if ENV['SLE15SP1_SSHMINION']
   $sle15sp2_minion = twopence_init("ssh:#{ENV['SLE15SP2_MINION']}") if ENV['SLE15SP2_MINION']
@@ -56,6 +52,14 @@ if $build_validation
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
   $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
+  $rocky9_minion = twopence_init("ssh:#{ENV['ROCKY9_MINION']}") if ENV['ROCKY9_MINION']
+  $rocky9_ssh_minion = twopence_init("ssh:#{ENV['ROCKY9_SSHMINION']}") if ENV['ROCKY9_SSHMINION']
+  $alma9_minion = twopence_init("ssh:#{ENV['ALMA9_MINION']}") if ENV['ALMA9_MINION']
+  $alma9_ssh_minion = twopence_init("ssh:#{ENV['ALMA9_SSHMINION']}") if ENV['ALMA9_SSHMINION']
+  $oracle9_minion = twopence_init("ssh:#{ENV['ORACLE9_MINION']}") if ENV['ORACLE9_MINION']
+  $oracle9_ssh_minion = twopence_init("ssh:#{ENV['ORACLE9_SSHMINION']}") if ENV['ORACLE9_SSHMINION']
+  $rhel9_minion = twopence_init("ssh:#{ENV['RHEL9_MINION']}") if ENV['RHEL9_MINION']
+  $rhel9_ssh_minion = twopence_init("ssh:#{ENV['RHEL9_SSHMINION']}") if ENV['RHEL9_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -68,27 +72,33 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
+  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
+  $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSHMINION']}") if ENV['OPENSUSE154ARM_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
-  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
+  $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
   $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_minion, $sle12sp5_ssh_minion,
-             $sle15_minion, $sle15_ssh_minion,
              $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_minion, $sle15sp4_ssh_minion,
              $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
+             $rocky9_minion, $rocky9_ssh_minion,
+             $alma9_minion, $alma9_ssh_minion,
+             $oracle9_minion, $oracle9_ssh_minion,
+             $rhel9_minion, $rhel9_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $ubuntu2204_minion, $ubuntu2204_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
+             $opensuse154arm_minion, $opensuse154arm_ssh_minion,
              $sle12sp5_buildhost,
              $sle15sp4_buildhost,
-             $opensuse154arm_minion]
+             $monitoring_server]
 else
   # Define twopence objects for QA environment
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
@@ -111,13 +121,13 @@ end
 $nodes.each do |node|
   next if node.nil?
 
-  hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
   node.init_hostname(hostname)
 
-  fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
 
@@ -125,7 +135,6 @@ $nodes.each do |node|
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)
-  STDOUT.puts "'#{$named_nodes[node.hash]}' is running OS #{node.os_family} #{node.os_version}"
 end
 
 # This function is used to get one of the nodes based on its type
@@ -141,9 +150,6 @@ end
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 # rubocop:disable Metrics/MethodLength
 def get_system_name(host)
-  # If the system is not known, just return the parameter
-  system_name = host
-
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
   # therefore they are not represented by a twopence node
@@ -165,12 +171,15 @@ def get_system_name(host)
       word =~ /example.sle15sp4terminal-/
     end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+  when 'containerized_proxy'
+    system_name = $proxy.full_hostname.sub('pxy', 'pod-pxy')
   else
     begin
       node = get_target(host)
       system_name = node.full_hostname
-    rescue RuntimeError => e
-      STDOUT.puts e.message
+    rescue RuntimeError
+      # If the node for that host is not defined, just return the host parameter as system_name
+      system_name = host
     end
   end
   system_name
@@ -252,19 +261,17 @@ end
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
+                  'containerized_proxy'       => $proxy,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
                   'rhlike_minion'             => $rhlike_minion,
                   'deblike_minion'            => $deblike_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
-                  'xen_server'                => $xen_server,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
                   'sle12sp5_minion'           => $sle12sp5_minion,
                   'sle12sp5_ssh_minion'       => $sle12sp5_ssh_minion,
-                  'sle15_minion'              => $sle15_minion,
-                  'sle15_ssh_minion'          => $sle15_ssh_minion,
                   'sle15sp1_minion'           => $sle15sp1_minion,
                   'sle15sp1_ssh_minion'       => $sle15sp1_ssh_minion,
                   'sle15sp2_minion'           => $sle15sp2_minion,
@@ -275,8 +282,16 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
-                  'rocky8_minion'            => $rocky8_minion,
-                  'rocky8_ssh_minion'        => $rocky8_ssh_minion,
+                  'rocky8_minion'             => $rocky8_minion,
+                  'rocky8_ssh_minion'         => $rocky8_ssh_minion,
+                  'rocky9_minion'             => $rocky9_minion,
+                  'rocky9_ssh_minion'         => $rocky9_ssh_minion,
+                  'alma9_minion'              => $alma9_minion,
+                  'alma9_ssh_minion'          => $alma9_ssh_minion,
+                  'oracle9_minion'            => $oracle9_minion,
+                  'oracle9_ssh_minion'        => $oracle9_ssh_minion,
+                  'rhel9_minion'              => $rhel9_minion,
+                  'rhel9_ssh_minion'          => $rhel9_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
@@ -289,9 +304,11 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
+                  'opensuse154arm_minion'     => $opensuse154arm_minion,
+                  'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp4_buildhost'        => $sle15sp4_buildhost,
-                  'opensuse154arm_minion'     => $opensuse154arm_minion }
+                  'monitoring_server'         => $monitoring_server }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}
@@ -308,14 +325,6 @@ end
 def client_public_ip(host)
   node = $node_by_host[host]
   raise "Cannot resolve node for host '#{host}'" if node.nil?
-
-  # For each node that we support we must know which network interface uses (see the case below).
-  # Having the IP as an attribute is something useful for the clients.
-  # Let's not implement it for nodes where we are likely not need this feature (e.g. ctl).
-  not_implemented = [$localhost]
-  not_implemented.each do |it|
-    return 'NOT_IMPLEMENTED' if node == it
-  end
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
     output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)

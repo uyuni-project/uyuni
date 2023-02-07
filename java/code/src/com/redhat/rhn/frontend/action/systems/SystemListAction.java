@@ -28,9 +28,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SystemListAction extends BaseSystemListAction {
 
+    @Override
     protected DataResult<SystemOverview> getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+                                                       ActionForm formIn,
+                                                       HttpServletRequest request) {
         return SystemManager.systemList(user, null);
     }
 }

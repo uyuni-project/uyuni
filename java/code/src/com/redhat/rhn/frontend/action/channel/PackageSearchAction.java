@@ -45,8 +45,9 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class PackageSearchAction extends BaseSearchAction {
 
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
         throws MalformedURLException, XmlRpcFault, SearchServerIndexException {
 
         RequestContext ctx = new RequestContext(request);
@@ -173,7 +174,8 @@ public class PackageSearchAction extends BaseSearchAction {
      * can find them
      * @param form where we expect values to end up
      */
-    protected void insureFormDefaults(HttpServletRequest request,  DynaActionForm form) {
+    @Override
+    protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
         String searchCriteria = form.getString(WHERE_CRITERIA);
         // Default to relevant channels if no search criteria was specified
         if (searchCriteria == null || searchCriteria.equals("")) {

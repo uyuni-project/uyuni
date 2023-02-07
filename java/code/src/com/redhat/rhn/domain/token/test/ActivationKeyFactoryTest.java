@@ -44,7 +44,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         data.getDefaultRegTokens().add(key.getToken());
 
         list = ActivationKeyFactory.listAssociatedKickstarts(key);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
 
     }
 

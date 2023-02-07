@@ -41,6 +41,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -54,7 +55,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");
         actionPerform();

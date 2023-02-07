@@ -30,18 +30,18 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host | Ruby target |  Bash environment variable | Step host name | sumaform module |
-| --------- | ----------- | -------------------------- | -------------- | --------------- |
-| Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
-| Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
-| SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| Red Hat-like Salt minion | ```$rhlike_minion``` | ```$RHLIKE_MINION``` | ```"rhlike_minion"``` | ```"minion"``` |
-| Debian-like Salt minion | ```$deblike_minion``` | ```$DEBLIKE_MINION``` | ```"deblike_minion"``` | ```"minion"``` |
-| PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
-| KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
-| Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
+| Test host                       | Ruby target              | Bash environment variable                                | Step host name           | sumaform module            |
+|---------------------------------|--------------------------|----------------------------------------------------------|--------------------------|----------------------------|
+| Uyuni server                    | ```$server```            | ```$SERVER```                                            |                          | ```"suse_manager"```       |
+| Uyuni proxy                     | ```$proxy```             | ```$PROXY```                                             | ```"proxy"```            | ```"suse_manager_proxy"``` |
+| SLES Salt minion                | ```$minion```            | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
+| SLES Docker and Kiwi build host | ```$build_host```        | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
+| Monitoring Server               | ```$monitoring_server``` | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
+| SLES Salt SSH minion            | ```$ssh_minion```        | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
+| Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
+| Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
+| PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
+| KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -128,7 +128,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on Autoinstallation Overview page
 ```
 
-* Go to Systems => Autoinstallation => Profiles => Upload Kickstart/Autoyast File
+* Go to Systems => Autoinstallation => Profiles => Upload Kickstart/AutoYaST File
 
 ```gherkin
   When I am on the Create Autoinstallation Profile page
@@ -592,13 +592,6 @@ Note that the text area variant handles the new lines characters while the other
 ```
 
 ### XML-RPC or HTTP API
-
-* Log into and out from the API on the server
-
-```gherkin
-  Given I am logged in API as user "admin" and password "admin"
-  When I logout from API
-```
 
 * Calling various API methods
 

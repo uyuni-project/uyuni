@@ -126,6 +126,7 @@ public abstract class Label {
      * @return <code>true</code> if <code>object</code> is a label and its
      * label text and name are the same as this label.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != getClass()) {
             return false;
@@ -141,6 +142,7 @@ public abstract class Label {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).append(getLabel()).toHashCode();
     }

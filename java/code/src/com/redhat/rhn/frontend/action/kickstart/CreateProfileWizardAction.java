@@ -105,10 +105,9 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     }
 
     @Override
-    protected void generateWizardSteps(Map steps) {
-        List methods = findMethods("run");
-        for (Object methodIn : methods) {
-            Method m = (Method) methodIn;
+    protected void generateWizardSteps(Map<String, WizardStep> steps) {
+        List<Method> methods = findMethods("run");
+        for (Method m : methods) {
             if (m.getName().startsWith("run")) {
                 String stepName = m.getName().substring(3).toLowerCase();
                 WizardStep wizStep = new WizardStep();
@@ -134,12 +133,13 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     }
 
 
+    @SuppressWarnings("java:S1144")
     private ActionForward runFirst(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
-            WizardStep step) throws Exception {
+            WizardStep step) {
         KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
-        List channels = cmd.getAvailableChannels();
-        if (channels == null || channels.size() == 0) {
+        List<Channel> channels = cmd.getAvailableChannels();
+        if (channels == null || channels.isEmpty()) {
             ctx.getRequest().setAttribute(NOCHANNELS_PARAM, "true");
         }
         form.set(CHANNELS, channels);
@@ -154,6 +154,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         return retval;
     }
 
+    @SuppressWarnings("java:S1144")
     private ActionForward runSecond(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
             WizardStep step) throws Exception {
@@ -227,6 +228,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
 
     }
 
+    @SuppressWarnings("java:S1144")
     private ActionForward runThird(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
             WizardStep step) throws Exception {
@@ -239,7 +241,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
                 (Boolean) form.get(DEFAULT_DOWNLOAD_PARAM);
         if (usingDefaultLocation != null && usingDefaultLocation.equals(Boolean.FALSE)) {
             fields.clear();
-            fields = new LinkedList();
+            fields = new LinkedList<>();
             fields.add(USER_DOWNLOAD_PARAM);
             if (!validateInput(form, fields, ctx)) {
                 form.set(DEFAULT_DOWNLOAD_PARAM, Boolean.FALSE);
@@ -261,6 +263,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         return mapping.findForward("third");
     }
 
+    @SuppressWarnings("java:S1144")
     private ActionForward runComplete(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
             WizardStep step) throws Exception {
@@ -312,7 +315,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
                     break;
                 }
             }
-            if (trees == null || trees.size() == 0) {
+            if (trees == null || trees.isEmpty()) {
                 request.setAttribute(NOTREES_PARAM, "true");
             }
             else {
@@ -345,7 +348,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         }
         else if (currentChanId == null || prevChanId == null) {
             List channels = (List) form.get(CHANNELS);
-            if (channels != null && channels.size() > 0) {
+            if (channels != null && !channels.isEmpty()) {
                 Channel channel = (Channel) channels.get(0);
                 form.set(CURR_CHAN_ID, channel.getId());
                 form.set(PREV_CHAN_ID, channel.getId());
@@ -357,7 +360,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
             RequestContext ctx) {
         ActionErrors errs =
                 RhnValidationHelper.validateDynaActionForm(this, form, fieldNames);
-        boolean retval = errs.size() == 0;
+        boolean retval = errs.isEmpty();
 
         if (!retval) {
             saveMessages(ctx.getRequest(), errs);

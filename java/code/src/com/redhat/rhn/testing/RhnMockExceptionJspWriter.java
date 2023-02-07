@@ -37,6 +37,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void newLine() throws IOException {
         throw new IOException("");
 
@@ -46,6 +47,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 boolean to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(boolean arg0) throws IOException {
         throw new IOException("");
 
@@ -55,6 +57,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 char to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(char arg0) throws IOException {
         throw new IOException("");
 
@@ -64,6 +67,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 int to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(int arg0) throws IOException {
         throw new IOException("");
 
@@ -73,6 +77,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 long to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(long arg0) throws IOException {
         throw new IOException("");
 
@@ -82,6 +87,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 float to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(float arg0) throws IOException {
         throw new IOException("");
 
@@ -91,6 +97,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 double to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(double arg0) throws IOException {
         throw new IOException("");
 
@@ -100,6 +107,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 character array to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(char[] arg0) throws IOException {
         throw new IOException("");
 
@@ -109,6 +117,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 String to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(String arg0) throws IOException {
         throw new IOException("");
 
@@ -118,6 +127,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 Object to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void print(Object arg0) throws IOException {
         throw new IOException("");
 
@@ -126,6 +136,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println() throws IOException {
         throw new IOException("");
 
@@ -135,6 +146,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 boolean to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(boolean arg0) throws IOException {
         throw new IOException("");
 
@@ -144,6 +156,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 char to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(char arg0) throws IOException {
         throw new IOException("");
 
@@ -153,6 +166,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 int to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(int arg0) throws IOException {
         throw new IOException("");
 
@@ -162,6 +176,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 long to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(long arg0) throws IOException {
         throw new IOException("");
 
@@ -171,6 +186,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 float to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(float arg0) throws IOException {
         throw new IOException("");
 
@@ -180,6 +196,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 double to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(double arg0) throws IOException {
         throw new IOException("");
 
@@ -189,6 +206,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 character array to print
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(char[] arg0) throws IOException {
         throw new IOException("");
 
@@ -198,6 +216,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 String to print.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(String arg0) throws IOException {
         throw new IOException("");
 
@@ -207,6 +226,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param arg0 Object to print.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void println(Object arg0) throws IOException {
         throw new IOException("");
 
@@ -215,6 +235,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void clear() throws IOException {
         throw new IOException("");
 
@@ -223,6 +244,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void clearBuffer() throws IOException {
         throw new IOException("");
 
@@ -231,6 +253,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void flush() throws IOException {
         throw new IOException("");
 
@@ -239,6 +262,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void close() throws IOException {
         throw new IOException("");
 
@@ -247,6 +271,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * Always throws an exception.
      * @return int Returns 0
      */
+    @Override
     public int getRemaining() {
         return 0;
     }
@@ -257,6 +282,7 @@ public class RhnMockExceptionJspWriter extends JspWriter {
      * @param len length of buffer to write.
      * @throws java.io.IOException Always throws an exception.
      */
+    @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         throw new IOException("");
 

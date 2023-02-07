@@ -50,6 +50,7 @@ public class ExtAuthSgMappingAction extends RhnAction implements Listable<OrgUse
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<OrgUserExtGroup> getResult(RequestContext contextIn) {
         User user = contextIn.getCurrentUser();
         return UserGroupFactory.listExtAuthOrgGroups(user);

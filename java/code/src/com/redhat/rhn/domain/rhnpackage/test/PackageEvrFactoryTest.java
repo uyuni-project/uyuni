@@ -32,10 +32,9 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
     /**
      * Simple test to make sure we can create
      * PackageEvrs and write them to the db.
-     * @throws Exception Exception
      */
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
 
        PackageEvr evr = createTestPackageEvr();
        assertNotNull(evr.getId());

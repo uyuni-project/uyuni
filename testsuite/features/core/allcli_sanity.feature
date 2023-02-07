@@ -13,10 +13,6 @@ Feature: Sanity checks
     And service "apache2" is active on "server"
     And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "jabberd" is enabled on "server"
-    And service "jabberd" is active on "server"
-    And service "osa-dispatcher" is enabled on "server"
-    And service "osa-dispatcher" is active on "server"
     And service "rhn-search" is enabled on "server"
     And service "rhn-search" is active on "server"
     And service "salt-api" is enabled on "server"
@@ -78,13 +74,6 @@ Feature: Sanity checks
     And reverse resolution should work for "kvm_server"
     And "kvm_server" should communicate with the server using public interface
     And the clock from "kvm_server" should be exact
-
-@virthost_xen
-  Scenario: The Xen host is healthy
-    Then "xen_server" should have a FQDN
-    And reverse resolution should work for "xen_server"
-    And "xen_server" should communicate with the server using public interface
-    And the clock from "xen_server" should be exact
 
 @skip_if_cloud
   Scenario: The external resources can be reached

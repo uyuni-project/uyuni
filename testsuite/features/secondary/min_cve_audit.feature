@@ -59,7 +59,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should see a "The specified CVE number was not found" text
 
   Scenario: Select a system for the System Set Manager
-    When I click on "Clear"
+    And I click on the clear SSM button
     And I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
@@ -69,7 +69,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should see a "system selected" text
     When I follow the left menu "Systems > System List > All"
     Then I should see "sle_minion" as link
-    And I click on "Clear"
+    And I click on the clear SSM button
 
   Scenario: List systems by patch status via API before patch
     When I follow the left menu "Admin > Task Schedules"
@@ -78,19 +78,18 @@ Feature: CVE Audit on SLE Salt Minions
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-    And I am logged in API as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for "sle_minion"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
     And I should get the test channel
     And I should get the "milkyway-dummy-2345" patch
-    Then I logout from API
 
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I wait until I see "milkyway-dummy-2345" text, refreshing the page
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
@@ -98,14 +97,12 @@ Feature: CVE Audit on SLE Salt Minions
     And I wait until event "Patch Update: milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
-    When I am logged in API as user "admin" and password "admin"
     And I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for "sle_minion"
-    When I logout from API
 
   Scenario: Cleanup: remove installed packages
     When I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
-    When I click on "Clear"
+    When I click on the clear SSM button

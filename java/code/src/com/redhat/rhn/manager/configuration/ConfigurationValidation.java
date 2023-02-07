@@ -57,7 +57,7 @@ public class ConfigurationValidation {
 
 
         // If no-file or macros aren't in the file, we're ok
-        if (content == null || content.length() == 0) {
+        if (content == null || content.isEmpty()) {
             return result;
         }
 
@@ -89,7 +89,7 @@ public class ConfigurationValidation {
         Matcher matchMacro = findMacro.matcher(content);
         while (matchMacro.find()) {
             String seq = matchMacro.group(1).trim();
-            if (seq.length() == 0) {
+            if (seq.isEmpty()) {
                 // Empty macro - skip
                 continue;
             }
@@ -101,7 +101,7 @@ public class ConfigurationValidation {
                 // String deflt = parts.group(5);
 
                 // Can't find a function-name
-                if (name == null || name.trim().length() == 0) {
+                if (name == null || name.trim().isEmpty()) {
                     result.addError(new ValidatorError(
                                 "configmanager.filedetails.content.no-macro-name", seq));
                 }
@@ -146,7 +146,7 @@ public class ConfigurationValidation {
     public static ValidatorResult validatePath(String path) {
         ValidatorResult result = new ValidatorResult();
 
-        if (path == null || path.length() == 0) {
+        if (path == null || path.isEmpty()) {
             result.addError(new ValidatorError(
                                 "configmanager.filedetails.path.empty", path));
             return result;

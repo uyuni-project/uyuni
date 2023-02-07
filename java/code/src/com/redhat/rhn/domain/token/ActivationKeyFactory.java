@@ -273,7 +273,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static int removeKeysForServer(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "remove_activation_keys");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         return m.executeUpdate(params);
     }
@@ -286,7 +286,7 @@ public class ActivationKeyFactory extends HibernateFactory {
         if (key != null) {
             WriteMode m = ModeFactory.getWriteMode("System_queries",
                     "remove_activation_key");
-            Map params = new HashMap();
+            Map<String, Object> params = new HashMap<>();
             params.put("token", key.getKey());
             m.executeUpdate(params);
         }
@@ -298,10 +298,8 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return list of kickstartData objects
      */
     public static List<KickstartData> listAssociatedKickstarts(ActivationKey key) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("token", key.getToken());
         return singleton.listObjectsByNamedQuery("ActivationKey.listAssociatedKickstarts",
-                                                                                    params);
+                Map.of("token", key.getToken()));
     }
 
     /**

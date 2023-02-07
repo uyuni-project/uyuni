@@ -45,7 +45,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         DeleteUserAction action = new DeleteUserAction();
         ActionForward forward;
 

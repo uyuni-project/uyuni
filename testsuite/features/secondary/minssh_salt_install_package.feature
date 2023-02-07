@@ -21,6 +21,8 @@ Feature: Install a package on the SSH minion via Salt through the UI
     When I am on the Systems overview page of this "ssh_minion"
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "hoag-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     And I check row with "hoag-dummy-1.1-1.1" and arch of "ssh_minion"
     And I click on "Install Selected Packages"
     And I click on "Confirm"

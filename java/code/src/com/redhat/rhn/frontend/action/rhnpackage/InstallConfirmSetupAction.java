@@ -39,6 +39,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getDecl(Long sid) {
         return DECL_ACTION.getDecl(sid);
     }
@@ -46,6 +47,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     /**
      * {@inheritDoc}
      **/
+    @Override
     protected  String getMessageKeyForOne() {
         return "message.packageinstall";
     }
@@ -53,6 +55,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     /**
      * {@inheritDoc}
      **/
+    @Override
     protected String getMessageKeyForMany() {
         return "message.packageinstalls";
     }
@@ -61,6 +64,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     /**
      * {@inheritDoc}
      **/
+    @Override
     protected String getActionKey() {
         return "installconfirm.jsp.confirm";
     }

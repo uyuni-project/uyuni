@@ -1,5 +1,8 @@
-# Copyright 2011-2020 SUSE LLC.
+# Copyright 2011-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions of all steps concerning the configuration of
+### and access to the database.
 
 Given(/^a postgresql database is running$/) do
   $output, _code = $server.run('file /var/lib/pgsql/data/postgresql.conf', check_errors: false)
@@ -162,7 +165,9 @@ end
 
 When(/^I restore database from the backup$/) do
   log "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
-  $server.run('smdba backup-restore')
+  output, code = $server.run('smdba backup-restore')
+  log "#{output}\n\n"
+  raise 'Restore Failed' unless code.zero?
 end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|

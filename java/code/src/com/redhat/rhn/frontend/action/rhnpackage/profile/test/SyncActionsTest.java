@@ -109,6 +109,7 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
                 startsWith("/systems/details/packages/profiles/MissingPackages.do"));
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();

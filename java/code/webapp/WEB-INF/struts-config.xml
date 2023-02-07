@@ -362,7 +362,7 @@
         <form-bean name="generalConfigForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="traceback_mail"  type="java.lang.String"/>
-            <form-property name="server|jabber_server"  type="java.lang.String"/>
+            <form-property name="java|hostname"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_username"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_password"  type="java.lang.String"/>

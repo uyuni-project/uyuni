@@ -187,20 +187,25 @@ function process_single_checkbox(cboxes, checkall) {
 }
 
 function update_server_set(variable, set_label, checked, values) {
-    DWRItemSelector.select(set_label, values, checked, makeAjaxHandler(pageResponse));
+  const data = {
+    label: set_label,
+    values,
+    checked
+  }
+  ajax("item-selector", data, pageResponse, "application/json")
 }
 
 function pageResponse(data) {
-    var resp = eval(data);
-    if (typeof(resp['header']) != 'undefined') {
-            dwr.util.setValue("header_selcount", resp.header, {escapeHtml: false});
+  const resp = JSON.parse(data)
+  if (typeof(resp['header']) != 'undefined') {
+    jQuery("#header_selcount").html(resp.header);
+  }
+  if (document.getElementById('pagination_selcount_top')) {
+    jQuery("#pagination_selcount_top").html(resp.pagination);
+    if (jQuery('#pagination_selcount_bottom').length > 0) {
+      jQuery('#pagination_selcount_bottom').html(resp.pagination);
     }
-    if (document.getElementById('pagination_selcount_top')) {
-      dwr.util.setValue("pagination_selcount_top", resp.pagination);
-      if (jQuery('#pagination_selcount_bottom').lenght > 0) {
-        dwr.util.setValue("pagination_selcount_bottom", resp.pagination);
-      }
-    }
+  }
 }
 
 // the function we call to read the number of systems selected and hide/show the toolbar

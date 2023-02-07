@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat;
  */
 public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

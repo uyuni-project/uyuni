@@ -45,6 +45,7 @@ public class TaskFactory extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }

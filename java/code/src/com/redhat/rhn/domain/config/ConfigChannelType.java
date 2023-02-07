@@ -37,8 +37,7 @@ public class ConfigChannelType extends BaseDomainHelper {
     public static final String SANDBOX = "server_import";
     public static final String STATE = "state";
 
-    private static final Map POSSIBLE_TYPES = new TreeMap(String.
-                                                    CASE_INSENSITIVE_ORDER);
+    private static final Map<String, ConfigChannelType> POSSIBLE_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     /**
      *
      * @return the sandbox channel type object
@@ -107,7 +106,7 @@ public class ConfigChannelType extends BaseDomainHelper {
                 "in your expression " + POSSIBLE_TYPES.keySet();
             throw new IllegalArgumentException(msg);
         }
-        return (ConfigChannelType) POSSIBLE_TYPES.get(type);
+        return POSSIBLE_TYPES.get(type);
     }
 
     /**
@@ -186,7 +185,11 @@ public class ConfigChannelType extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object arg) {
+        if (!(arg instanceof ConfigChannelType)) {
+             return false;
+        }
         ConfigChannelType that = (ConfigChannelType) arg;
         return new EqualsBuilder().
                 append(this.getLabel(), that.getLabel()).
@@ -198,6 +201,7 @@ public class ConfigChannelType extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().
                     append(this.getLabel()).

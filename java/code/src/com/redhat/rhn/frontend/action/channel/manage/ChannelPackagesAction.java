@@ -54,10 +54,11 @@ public class ChannelPackagesAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -106,7 +107,7 @@ public class ChannelPackagesAction extends RhnAction {
 
 
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(

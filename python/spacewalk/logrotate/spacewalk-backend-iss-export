@@ -2,11 +2,11 @@
 #
 
 /var/log/rhn/rhn_sat_export_internal.log {
-    weekly
     rotate 5
     copytruncate
     compress
     notifempty
     missingok
+    size 10M
     su wwwrun www
 }

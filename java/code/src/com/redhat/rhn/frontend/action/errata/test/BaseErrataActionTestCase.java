@@ -73,5 +73,5 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
 
     protected abstract RhnSetAction getAction();
 
-    protected abstract Errata createErrata(User user) throws Exception;
+    protected abstract Errata createErrata(User user);
 }

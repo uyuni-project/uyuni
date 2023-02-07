@@ -41,10 +41,11 @@ public class ManagedSystemsList extends RhnListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -55,12 +56,12 @@ public class ManagedSystemsList extends RhnListAction {
 
         clampListBounds(pc, request, user);
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<ConfigSystemDto> dr = getDataResult(user, pc);
         String checkboxName = "filter";
 
         // set default for checkbox
-        Boolean managedSystemsOnly = true;
-        Integer total = dr.getTotalSize();
+        boolean managedSystemsOnly = true;
+        int total = dr.getTotalSize();
 
         // if submitted get checkbox status
         if (requestContext.isSubmitted()) {
@@ -85,7 +86,6 @@ public class ManagedSystemsList extends RhnListAction {
         request.setAttribute(checkboxName, managedSystemsOnly);
         dr.setTotalSize(total);
 
-        //request.setAttribute(RequestContext.PAGE_LIST, getDataResult(user, pc));
         request.setAttribute(RequestContext.PAGE_LIST, dr);
         return getStrutsDelegate().forwardParams(mapping.findForward(
                 RhnHelper.DEFAULT_FORWARD), request.getParameterMap());
@@ -98,7 +98,7 @@ public class ManagedSystemsList extends RhnListAction {
      * @param pc A page control for this user
      * @return A list of Config Channels as a DTO
      */
-    private DataResult getDataResult(User user, PageControl pc) {
+    private DataResult<ConfigSystemDto> getDataResult(User user, PageControl pc) {
         return ConfigurationManager.getInstance().listManagedSystemsAndFiles(user, pc);
     }
 

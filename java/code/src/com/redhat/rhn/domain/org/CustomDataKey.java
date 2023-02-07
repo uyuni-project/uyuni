@@ -134,6 +134,7 @@ public class CustomDataKey {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof CustomDataKey)) {
             return false;
@@ -148,6 +149,7 @@ public class CustomDataKey {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(org)

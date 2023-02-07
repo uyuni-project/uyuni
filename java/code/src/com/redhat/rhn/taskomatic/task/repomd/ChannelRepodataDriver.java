@@ -25,8 +25,8 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,18 +34,19 @@ import java.util.Map;
  *
  *
  */
-public class ChannelRepodataDriver implements QueueDriver {
+public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
 
     private Logger logger = null;
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize() {
         WriteMode resetChannelRepodata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMOD_CLEAR_IN_PROGRESS);
         try {
-            int eqReset = resetChannelRepodata.executeUpdate(new HashMap());
+            int eqReset = resetChannelRepodata.executeUpdate(Map.of());
             if (eqReset > 0) {
                 logger.info("Resetting {} unfinished channel repodata tasks", eqReset);
             }
@@ -63,6 +64,7 @@ public class ChannelRepodataDriver implements QueueDriver {
     /**
      * @return Returns boolean canContinue
      */
+    @Override
     public boolean canContinue() {
         return true;
     }
@@ -70,24 +72,23 @@ public class ChannelRepodataDriver implements QueueDriver {
     /**
      * @return Returns candidates
      */
-    public List getCandidates() {
+    @Override
+    public List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
 
         Map<String, Object> params = new HashMap<>();
-        List<Object> retval = new LinkedList<>();
-        List results = select.execute(params);
+        List<Map<String, Object>> results = select.execute(params);
         if (results != null) {
-            for (Object resultIn : results) {
-                retval.add(resultIn);
-            }
+            return results;
         }
-        return retval;
+        return Collections.emptyList();
     }
 
     /**
      * @return Returns Logger
      */
+    @Override
     public Logger getLogger() {
         return logger;
     }
@@ -96,6 +97,7 @@ public class ChannelRepodataDriver implements QueueDriver {
      * {@inheritDoc}
      */
 
+    @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
@@ -103,6 +105,7 @@ public class ChannelRepodataDriver implements QueueDriver {
     /**
      * @return Returns max workers
      */
+    @Override
     public int getMaxWorkers() {
         return ConfigDefaults.get().getTaskoChannelRepodataWorkers();
     }
@@ -111,8 +114,9 @@ public class ChannelRepodataDriver implements QueueDriver {
      * @param workItem work item
      * @return Returns channel repodata worker object
      */
-    public QueueWorker makeWorker(Object workItem) {
-        return new ChannelRepodataWorker((Map) workItem, getLogger());
+    @Override
+    public QueueWorker makeWorker(Map<String, Object> workItem) {
+        return new ChannelRepodataWorker(workItem, getLogger());
     }
 
     /**

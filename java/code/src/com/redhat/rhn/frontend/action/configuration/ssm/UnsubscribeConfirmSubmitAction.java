@@ -14,21 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
-import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -51,6 +49,7 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("unsubscribeconfirm.jsp.confirm", "confirm");
     }
@@ -58,8 +57,9 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
-            HttpServletRequest requestIn, Map<String, Object> paramsIn) {
+                                   HttpServletRequest requestIn, Map<String, Object> paramsIn) {
         //no-op
     }
 
@@ -76,37 +76,30 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
         User user = new RequestContext(request).getCurrentUser();
         RhnSet channelSet = RhnSetDecl.CONFIG_CHANNELS.get(user);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        DataResult systemSet = cm.ssmSystemListForChannels(user, null);
 
-        //go through each system in the set
-        for (Object oIn : systemSet) {
-            Long sid = ((ConfigSystemDto) oIn).getId();
-            Server server;
+        List<ConfigChannel> configChannelList = new ArrayList<>();
+        for (RhnSetElement ch : channelSet.getElements()) {
             try {
-                server = SystemManager.lookupByIdAndUser(sid, user);
+                configChannelList.add(cm.lookupConfigChannel(user, ch.getElement()));
             }
-            catch (LookupException e) {
-                continue; //skip this element
+            catch (LookupException ignored) {
+                // Ignore non-existing channels to remove: shouldn't happen
             }
-
-            List<ConfigChannel> configChannelList = new ArrayList<>();
-            for (RhnSetElement ch : channelSet.getElements()) {
-                try {
-                    configChannelList.add(cm.lookupConfigChannel(user, ch.getElement()));
-                }
-                catch (LookupException ignored) {
-                }
-            }
-
-            server.unsubscribeConfigChannels(configChannelList, user);
         }
+
+        List<Server> systems = ServerFactory.getSsmSystemsForSubscribe(user);
+
+        systems.forEach(server -> {
+            server.unsubscribeConfigChannels(configChannelList, user);
+            server.storeConfigChannels();
+        });
 
         RhnSetManager.remove(channelSet); //clear the set
         //now that we have unsubscribed from channels, these other sets may
         //no longer be valid, so delete them too.
         ConfigActionHelper.clearRhnSets(user);
 
-        createMessage(request, systemSet.size() == 1);
+        createMessage(request, systems.size() == 1);
         return mapping.findForward("success");
     }
 

@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -56,11 +57,6 @@ public class AddRedHatErrataAction extends RhnListAction {
     private static final String SELECTED_CHANNEL = "selected_channel";
     private static final String SELECTED_CHANNEL_OLD = "selected_channel_old";
 
-    private static final String SELECTED_VERSION = "selected_version";
-    private static final String SELECTED_VERSION_OLD = "selected_version_old";
-    private static final String SELECTED_VERSION_NAME = "selected_version_name";
-
-    private static final String VERSION_LIST = "version_list";
     private static final String CHANNEL_LIST = "channel_list";
 
     private static final String VERSION_SUBMIT = "frontend.actions.channels.manager." +
@@ -77,10 +73,11 @@ public class AddRedHatErrataAction extends RhnListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -97,93 +94,35 @@ public class AddRedHatErrataAction extends RhnListAction {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?" + request.getQueryString());
         request.setAttribute("emptyKey", EMPTY_KEY);
 
-        /*
-        List<SelectableChannelVersion> versionList = SelectableChannelVersion.
-                        getCurrentChannelVersionList();
-        List<SelectableChannel> channelList = null;
-        request.setAttribute(VERSION_LIST, versionList);
-
-        String selectedVersionStr = null;
-        */
-        List<SelectableChannel> channelList = null;
-        String selectedChannelStr = null;
-        Boolean checked = true;
+        List<SelectableChannel> channelList;
+        String selectedChannelStr;
+        boolean checked = true;
 
 
         //Set initail strings
         selectedChannelStr = request.getParameter(SELECTED_CHANNEL_OLD);
-        /*
-        selectedVersionStr = request.getParameter(SELECTED_VERSION_OLD);
-        if (selectedVersionStr == null) {
-            selectedVersionStr = versionList.get(0).getVersion();
-        }
-        */
 
         //If the channel submit button was clicked
         if (requestContext.wasDispatched(CHANNEL_SUBMIT)) {
           selectedChannelStr = request.getParameter(SELECTED_CHANNEL);
           // selectedChannelStr might be null
         }
-        //if the version submit button was clicked
-        /*
-        else if (requestContext.wasDispatched(VERSION_SUBMIT)) {
-            selectedVersionStr = request.getParameter(SELECTED_VERSION);
-         // selectedChannelStr might be null
-            selectedChannelStr = null;
-        }
-        */
-
-
 
         //If this is a clone, go ahead and pre-select the original Channel
         Channel original = ChannelFactory.lookupOriginalChannel(currentChan);
         if (!requestContext.isSubmitted() && original != null) {
             selectedChannel = original;
             selectedChannelStr = selectedChannel.getId().toString();
-            /*
-            String tmp = findVersionFromChannel(selectedChannel);
-            if (tmp == null) {
-                // if we haven't found channel version, let's try to check its parent
-                if (!selectedChannel.isBaseChannel()) {
-                    tmp = findVersionFromChannel(selectedChannel.getParentChannel());
-                }
-                if (tmp != null) {
-                    selectedVersionStr = tmp;
-                    break;
-                }
-                original = ChannelFactory.lookupOriginalChannel(original);
-            }
-            */
         }
-
-        /*
-        if (selectedVersionStr != null) {
-            //set selected version based off version selected
-            for (SelectableChannelVersion chanVer : versionList) {
-                if (chanVer.getVersion().equals(selectedVersionStr)) {
-                    chanVer.setSelected(true);
-                    request.setAttribute(SELECTED_VERSION_NAME, chanVer.getName());
-                    break;
-                }
-            }
-
-            List<Channel> channelSet = findChannelsByVersion(user, selectedVersionStr);
-            channelList = new ArrayList();
-            if (channelSet != null) {
-                sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
-                request.setAttribute(CHANNEL_LIST, channelList);
-            }
-        }
-        */
 
         // show all channels in the list
         List<Channel> channelSet = ChannelFactory.listRedHatBaseChannels();
-        channelList = new ArrayList();
+        channelList = new ArrayList<>();
         if (channelSet != null) {
             sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
             request.setAttribute(CHANNEL_LIST, channelList);
         }
-        if (channelList.size() > 0 && selectedChannelStr == null) {
+        if (!channelList.isEmpty() && selectedChannelStr == null) {
             selectedChannelStr = channelList.get(0).getId().toString();
         }
 
@@ -191,20 +130,16 @@ public class AddRedHatErrataAction extends RhnListAction {
             checked = false;
         }
 
-
         request.setAttribute(CHECKED, checked);
         request.setAttribute(SELECTED_CHANNEL, selectedChannelStr);
-        //request.setAttribute(SELECTED_VERSION, selectedVersionStr);
 
         if (requestContext.wasDispatched(SUBMITTED)) {
             Map<String, Object> params = new HashMap<>();
             params.put(CID, request.getParameter(CID));
             params.put(SELECTED_CHANNEL, selectedChannelStr);
             params.put(CHECKED, request.getParameter(CHECKED));
-            return getStrutsDelegate().forwardParams(mapping.findForward("submit"),
-                    params);
+            return getStrutsDelegate().forwardParams(mapping.findForward("submit"), params);
         }
-
 
         //If we clicked on the channel selection, clear the set
         if (requestContext.wasDispatched(CHANNEL_SUBMIT) ||
@@ -215,26 +150,19 @@ public class AddRedHatErrataAction extends RhnListAction {
             RhnSetManager.store(eset);
         }
 
-
         if (selectedChannelStr !=  null) {
-            selectedChannel = ChannelFactory.
-                        lookupByIdAndUser(Long.parseLong(selectedChannelStr), user);
+            selectedChannel = ChannelFactory.lookupByIdAndUser(Long.parseLong(selectedChannelStr), user);
         }
-
 
         RhnListSetHelper helper = new RhnListSetHelper(request);
         RhnSet set =  getSetDecl(currentChan).get(user);
 
-
-        DataResult dr = getData(request, selectedChannel, currentChan, channelList,
-                checked, user);
-
-
+        DataResult<ErrataOverview> dr = getData(request, selectedChannel, currentChan, channelList, checked, user);
 
         request.setAttribute(RequestContext.PAGE_LIST, dr);
 
         if (ListTagHelper.getListAction("errata", request) != null) {
-        helper.execute(set, "errata", dr);
+            helper.execute(set, "errata", dr);
         }
         if (!set.isEmpty()) {
             helper.syncSelections(set, dr);
@@ -243,8 +171,6 @@ public class AddRedHatErrataAction extends RhnListAction {
 
         TagHelper.bindElaboratorTo("errata", dr.getElaborator(), request);
         ListTagHelper.bindSetDeclTo("errata", getSetDecl(currentChan), request);
-
-
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -294,7 +220,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             return null;
         }
         List<Channel> channels = ChannelFactory.listRedHatBaseChannels(user);
-        List toReturn = new ArrayList();
+        List toReturn = new ArrayList<>();
         for (Channel chan : channels) {
             for (DistChannelMap map : chan.getDistChannelMaps()) {
                 if (ChannelVersion.getChannelVersionForDistChannelMap(map).
@@ -313,12 +239,12 @@ public class AddRedHatErrataAction extends RhnListAction {
     }
 
 
-    private DataResult getData(HttpServletRequest request,
-            Channel selectedChan,
-            Channel currentChan,
-            List<SelectableChannel> selChannelList,
-            boolean packageAssoc,
-            User user) {
+    private DataResult<ErrataOverview> getData(HttpServletRequest request,
+                                               Channel selectedChan,
+                                               Channel currentChan,
+                                               List<SelectableChannel> selChannelList,
+                                               boolean packageAssoc,
+                                               User user) {
 
         if (selectedChan != null) {
             RhnSet set = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);

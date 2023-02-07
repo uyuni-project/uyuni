@@ -52,10 +52,11 @@ public class TargetSystemsListAction extends RhnAction {
     private final String LIST_NAME = "systemList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
         long pid = requestContext.getRequiredParam("pid");
@@ -67,6 +68,7 @@ public class TargetSystemsListAction extends RhnAction {
         }
         request.setAttribute("pid", pid);
         request.setAttribute("package_name", pkg.getFilename());
+        request.setAttribute("isPtfPackage", pkg.isPartOfPtf());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?pid=" +
                 pid);
         RhnListSetHelper helper = new RhnListSetHelper(request);

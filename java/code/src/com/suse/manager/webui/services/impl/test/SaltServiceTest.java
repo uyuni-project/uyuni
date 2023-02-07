@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services.impl.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -23,6 +24,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -30,6 +32,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.Client;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.AuthMethod;
+import com.suse.salt.netapi.errors.JsonParsingError;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -137,6 +140,60 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         assertTrue(res.isPresent());
         assertEquals(0, res.orElseThrow().getReturnCode());
         systemQuery.close();
+    }
+
+    @Test
+    public void testLogEntryWithSensitiveData() {
+
+        var saltClient = mock(SaltClient.class);
+        var saltService = new SaltService(saltClient);
+        var listAppender = SaltTestUtils.enableTestLogging(SaltService.class);
+
+        context().checking(new Expectations() {{
+            oneOf(saltClient).call(
+                    with(SaltTestUtils.functionEquals("mgrutil", "check_ssl_cert")),
+                    with(any(Client.class)),
+                    with(any(Optional.class)),
+                    with(any(Map.class)),
+                    with(any(TypeToken.class)),
+                    with(any(AuthMethod.class))
+            );
+            will(returnValue(SaltTestUtils.getCompletionStage(
+                    "/com/suse/manager/webui/services/impl/test/service/ssh_cert_check.json",
+                    new TypeToken<JsonParsingError>() {
+                    }.getType())));
+        }});
+
+        var dummyRootCA = "dummyRootCA";
+        var dummyServerCA = "dummyServerCA";
+        var dummyServerRSAKey = "dummyServerRSAKey";
+
+        var call = MgrUtilRunner.checkSSLCert(
+                "Certificate:\ncert\n-----BEGIN CERTIFICATE-----\n" +
+                        dummyRootCA +
+                        "\n-----END CERTIFICATE-----",
+                new SSLCertPair(
+                        "-----BEGIN CERTIFICATE-----\n" +
+                                dummyServerCA +
+                                "\n-----END CERTIFICATE-----",
+                        "-----BEGIN RSA PRIVATE KEY-----\n" +
+                                dummyServerRSAKey +
+                                "\n-----END RSA PRIVATE KEY-----"
+                ),
+                null
+        );
+        var result = saltService.callSync(call);
+
+        assertEquals(result, Optional.empty());
+        assertFalse(listAppender.getLog().isEmpty());
+
+        assertTrue(listAppender.matchInLogs("root_ca=HIDDEN"));
+        assertTrue(listAppender.matchInLogs("server_crt=HIDDEN"));
+        assertTrue(listAppender.matchInLogs("server_key=HIDDEN"));
+
+        assertFalse(listAppender.matchInLogs(dummyRootCA));
+        assertFalse(listAppender.matchInLogs(dummyServerCA));
+        assertFalse(listAppender.matchInLogs(dummyServerRSAKey));
     }
 
     @Override

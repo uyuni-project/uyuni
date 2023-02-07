@@ -86,14 +86,14 @@ public class OrgFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupById() throws Exception {
+    public void testLookupById() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertNotNull(org1);
         assertTrue(org1.getId() > 0);
     }
 
     @Test
-    public void testCommitOrg() throws Exception {
+    public void testCommitOrg() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String changedName = "OrgFactoryTest testCommitOrg " + TestUtils.randomString();
         org1.setName(changedName);
@@ -200,10 +200,9 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
     /**
      * Test to see if the Org returns list of UserGroup IDs
-     * @throws Exception something bad happened
      */
     @Test
-    public void testGetRoles() throws Exception {
+    public void testGetRoles() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertNotNull(org1.getRoles());
         assertTrue(org1.hasRole(RoleFactory.ORG_ADMIN));
@@ -266,7 +265,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
     public void testLookupAllOrgs() throws Exception {
         ServerTestUtils.createTestSystem();
         List<Org> totalOrgs = OrgFactory.lookupAllOrgs();
-        assertTrue(totalOrgs.size() > 0);
+        assertFalse(totalOrgs.isEmpty());
     }
 
     @Test

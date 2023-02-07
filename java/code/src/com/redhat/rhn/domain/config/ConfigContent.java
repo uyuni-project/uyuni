@@ -168,6 +168,7 @@ public class ConfigContent extends BaseDomainHelper {
     *
     * {@inheritDoc}
     */
+   @Override
    public int hashCode() {
        return new HashCodeBuilder()
            .append(this.getChecksum())
@@ -182,6 +183,7 @@ public class ConfigContent extends BaseDomainHelper {
    *
    * {@inheritDoc}
    */
+   @Override
    public boolean equals(Object object) {
        if (object == null || !(object instanceof ConfigContent)) {
            return false;

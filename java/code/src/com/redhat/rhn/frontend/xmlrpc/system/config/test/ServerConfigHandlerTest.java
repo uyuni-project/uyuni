@@ -78,6 +78,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * SystemConfigHandlerTest
@@ -182,9 +184,79 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
+    public void testConfigAddChannelToTop() {
+        // Create  global config channels
+        ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+        ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+
+        List<Number> serverIds = List.of(srv1.getId());
+
+        List<ConfigChannel> channels = List.of(gcc1, gcc2);
+
+        srv1.setConfigChannels(List.of(gcc2), regular);
+
+        //test add channels
+        handler.addChannels(admin, serverIds,
+                Stream.of(gcc1).map(cc -> cc.getLabel()).collect(Collectors.toList()), true);
+
+        TestUtils.saveAndFlush(srv1);
+        HibernateFactory.getSession().detach(srv1);
+
+        assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));
+    }
 
     @Test
-    public void testConfigChannels() throws Exception {
+    public void testConfigSetChannels() {
+        // Create  global config channels
+        ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+        ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+
+        List<Number> serverIds = List.of(srv1.getId());
+
+        List<ConfigChannel> channels = List.of(gcc1, gcc2);
+
+        List<String> channelLabels = channels.stream().map(cc -> cc.getLabel()).collect(Collectors.toList());
+
+        //test set channels
+        handler.setChannels(admin, serverIds, channelLabels);
+
+        TestUtils.saveAndFlush(srv1);
+        HibernateFactory.getSession().detach(srv1);
+
+        assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));
+    }
+
+    @Test
+    public void testConfigAddChannelsToBottom() {
+        // Create  global config channels
+        ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+        ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(), ConfigChannelType.normal());
+
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+
+        List<Number> serverIds = List.of(srv1.getId());
+
+        List<ConfigChannel> channels = List.of(gcc1, gcc2);
+
+        srv1.setConfigChannels(List.of(gcc1), regular);
+
+        //test add channels
+        handler.addChannels(admin, serverIds,
+                Stream.of(gcc2).map(cc -> cc.getLabel()).collect(Collectors.toList()), false);
+
+        TestUtils.saveAndFlush(srv1);
+        HibernateFactory.getSession().detach(srv1);
+
+        assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));
+    }
+
+    @Test
+    public void testConfigChannelRemove() {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.normal());
@@ -193,50 +265,44 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
-        List<Number> serverIds = new LinkedList<>();
-        serverIds.add(srv1.getId());
+        List<Number> serverIds = List.of(srv1.getId());
 
-        List<ConfigChannel> channels = new LinkedList<>();
-        channels.add(gcc1);
-        channels.add(gcc2);
+        List<ConfigChannel> channels = List.of(gcc1, gcc2);
+        List<String> channelLabels = channels.stream()
+                .map(cc -> cc.getLabel())
+                .collect(Collectors.toList());
 
-        List<String> channelLabels = new LinkedList<>();
-        for (ConfigChannel cc : channels) {
-            channelLabels.add(cc.getLabel());
-        }
-        handler.setChannels(admin, serverIds, channelLabels);
-        List<ConfigChannel> actual = handler.listChannels(regular,
-                                    srv1.getId().intValue());
-        assertEquals(channels, actual);
+        srv1.setConfigChannels(channels, regular);
 
-        handler.removeChannels(admin, serverIds,
-                                                channelLabels.subList(0, 1));
-        actual = handler.listChannels(regular,
-                                            srv1.getId().intValue());
-        assertEquals(channels.subList(1, channels.size()), actual);
+        assertEquals(1, handler.removeChannels(admin, serverIds, channelLabels));
 
-        //test add channels
-        handler.addChannels(admin, serverIds, channelLabels.subList(0, 1), true);
-        actual = handler.listChannels(regular,
-                srv1.getId().intValue());
-        assertEquals(channels, actual);
+        TestUtils.reload(srv1);
 
-        assertEquals(1,  handler.removeChannels(admin, serverIds,
-                                    channelLabels.subList(1, channelLabels.size())));
-        assertEquals(1,
-                handler.addChannels(admin, serverIds, channelLabels.subList(1,
-                                                        channelLabels.size()), false));
-        actual = handler.listChannels(regular, srv1.getId().intValue());
-        assertEquals(channels, actual);
+        assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());
+    }
+
+    @Test
+    public void testConfigChannelsRemoveNonExistingConfigChannels() {
+        // Create  global config channels
+        ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
+                ConfigChannelType.normal());
+        ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
+                ConfigChannelType.normal());
+
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+
+        List<Number> serverIds = List.of(srv1.getId());
+
+        srv1.setConfigChannels(List.of(gcc2), regular);
 
         // Test removing nonexisting channels
-        handler.removeChannels(admin, serverIds, channelLabels.subList(0, 1));
-        assertEquals(0, handler.removeChannels(admin, serverIds, channelLabels));
+        assertEquals(0, handler.removeChannels(admin, serverIds, List.of(gcc1.getLabel(), gcc2.getLabel())));
+
+        TestUtils.reload(srv1);
 
         // The other channel is removed even though the result is 0
         assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());
     }
-
 
     private ConfigRevision createRevision(String path, String contents,
             String group, String owner,
@@ -331,7 +397,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testLookupFileInfoNoData() throws Exception {
+    public void testLookupFileInfoNoData() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         List<String> paths = new LinkedList<>();
         paths.add("/no/such/file.txt");
@@ -348,7 +414,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPath() throws Exception {
+    public void testAddPath() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -395,7 +461,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListFiles() throws Exception {
+    public void testListFiles() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int j = 0; j < 2; j++) {
@@ -442,7 +508,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePaths() throws Exception {
+    public void testRemovePaths() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int i = 0; i < 2; i++) {

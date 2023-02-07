@@ -22,7 +22,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.PinnedSubscriptionSerializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -35,10 +34,9 @@ public class PinnedSubscriptionSerializerTest  {
 
     /**
      * Simple PinnedSubscription serialization test
-     * @throws IOException - if anything goes wrong
      */
     @Test
-    public void testSerialize() throws IOException {
+    public void testSerialize() {
         PinnedSubscriptionSerializer serializer = new PinnedSubscriptionSerializer();
         Writer output = new StringWriter();
         PinnedSubscription pinnedSubscription = new PinnedSubscription();

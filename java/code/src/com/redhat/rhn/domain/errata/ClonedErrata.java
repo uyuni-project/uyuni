@@ -38,6 +38,7 @@ public class ClonedErrata extends Errata {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCloned() {
         return true;
     }

@@ -26,6 +26,7 @@ public class ActionMessage {
     private String synopsis;
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "[type=" + type + ",status=" + status + ",count=" + count +
                ",advisory=" + advisory + ",synopsis=" + synopsis + "]";

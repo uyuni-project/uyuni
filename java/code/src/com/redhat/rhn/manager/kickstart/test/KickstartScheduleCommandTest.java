@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,6 +50,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartChannelDto;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -141,10 +143,10 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         Channel bc = server.getBaseChannel();
         bc.setChannelArch(ChannelFactory.lookupArchByName("IA-32"));
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(server.getId(), user);
-        List dr = cmd.getKickstartProfiles();
+        List<KickstartDto> dr = cmd.getKickstartProfiles();
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
-        Iterator i = dr.iterator();
+        assertFalse(dr.isEmpty());
+        Iterator<KickstartDto> i = dr.iterator();
         boolean found = false;
         while (i.hasNext()) {
             Object dto = i.next();
@@ -219,11 +221,11 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testScheduleKs() throws Exception {
+    public void testScheduleKs() {
 
         FileList list1 = KickstartDataTest.createFileList1(user.getOrg());
         CommonFactory.saveFileList(list1);
-        list1 = (FileList) reload(list1);
+        list1 = reload(list1);
         ksdata.addPreserveFileList(list1);
         KickstartFactory.saveKickstartData(ksdata);
 
@@ -235,12 +237,12 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(kickstartAction.getId());
         assertNotNull(kickstartAction.getKickstartActionDetails().
                 getFileLists());
-        assertTrue(kickstartAction.getKickstartActionDetails().
-                getFileLists().size() == 1);
+        assertEquals(1, kickstartAction.getKickstartActionDetails().
+                getFileLists().size());
     }
 
     @Test
-    public void testKickstartProfiles() throws Exception {
+    public void testKickstartProfiles() {
         KickstartScheduleCommand cmd = new
                 KickstartScheduleCommand(this.server.getId(), this.user);
         assertNotNull(cmd.getKickstartProfiles());
@@ -249,14 +251,9 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
     @Test
     public void testKickstartPackageName() {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
 
         assertContains(ksdata.getKickstartPackageNames(), "spacewalk-koan");
-        ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
-
-        assertContains(ksdata.getKickstartPackageNames(), "spacewalk-koan");
-
     }
 
     @Test
@@ -268,55 +265,9 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         }
 
         profileType = KickstartScheduleCommand.TARGET_PROFILE_TYPE_EXISTING;
-        KickstartScheduleCommand cmd = testCommandExecution(
-                server, ksdata, profileType, otherServerId, profileId);
-        ActivationKey key = ActivationKeyFactory.
-                lookupByKickstartSession(cmd.getKickstartSession());
-        assertEquals(1, 1);
-    }
-
-    public void xDifferentBaseChannel() throws Exception {
-        Channel oldBaseChannel = ChannelFactoryTest.createBaseChannel(server.getCreator());
-        oldBaseChannel.setLabel("oldBaseChannel" + TestUtils.randomString());
-        server.getChannels().clear();
-        server.addChannel(oldBaseChannel);
-        // TestUtils.saveAndFlush(oldBaseChannel);
-        // TestUtils.saveAndFlush(server);
-        // server = (Server) reload(server);
-        // oldBaseChannel = (Server) reload(oldBaseChannel);
-        Channel newBaseChannel = ChannelFactoryTest.createBaseChannel(server.getCreator());
-        newBaseChannel.setLabel("newBaseChannel" + TestUtils.randomString());
-        ksdata.getTree().setChannel(newBaseChannel);
-        TestUtils.saveAndFlush(newBaseChannel);
-        TestUtils.saveAndFlush(ksdata.getTree());
-        TestUtils.saveAndFlush(ksdata);
-        // ksdata = (KickstartData) reload(ksdata);
-
-        setupChannelForKickstarting(newBaseChannel, user);
-
-        for (int i = 0; i < 5; i++) {
-            Channel c = ChannelFactoryTest.createTestChannel(server.getCreator());
-            c.setParentChannel(server.getBaseChannel());
-            server.addChannel(c);
-        }
-
-        profileType = KickstartScheduleCommand.TARGET_PROFILE_TYPE_EXISTING;
-
-        KickstartScheduleCommand cmd = testCommandExecution(
-                server, ksdata, profileType, otherServerId, profileId);
-        ActivationKey key = ActivationKeyFactory.
-                lookupByKickstartSession(cmd.getKickstartSession());
-        assertTrue(key.getChannels().size() == 2);
-        Iterator i = key.getChannels().iterator();
-        boolean found = false;
-        while (i.hasNext()) {
-            Channel c = (Channel) i.next();
-            if (c.getLabel().startsWith("newBaseChannel")) {
-                found = true;
-            }
-        }
-        assertTrue(found);
-
+        KickstartScheduleCommand cmd = testCommandExecution(server, ksdata, profileType, otherServerId, profileId);
+        ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(cmd.getKickstartSession());
+        assertNotNull(key);
     }
 
     /**
@@ -332,7 +283,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         return testCommandExecution(server, ksdata, null, null, null);
     }
 
-    public static void setupChannelForKickstarting(Channel c, User user) throws Exception {
+    public static void setupChannelForKickstarting(Channel c) throws Exception {
 
         PackageManagerTest.addPackageToChannel("auto-kickstart-TestBootImage", c);
         Package p = PackageManagerTest.
@@ -360,7 +311,6 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
         PackageManagerTest.addPackageToSystemAndChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);
-        // ksdata.getKsdefault().getKstree().setChannel(c);
         cmd.setProfileType(profileType);
         cmd.setServerProfileId(otherServerId);
         cmd.setProfileId(profileId);

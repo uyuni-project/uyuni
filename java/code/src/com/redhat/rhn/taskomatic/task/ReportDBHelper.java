@@ -34,7 +34,15 @@ import java.util.stream.Stream;
 
 public class ReportDBHelper {
 
-    private ReportDBHelper() {
+    /** The mgm_id used in the reporting database to indicate the data local which belong to the local server. */
+    public static final long LOCAL_MGM_ID = 1;
+
+    public static final ReportDBHelper INSTANCE = new ReportDBHelper();
+
+    /**
+     * Default constructor to allow unit test sub-classes
+     */
+    protected ReportDBHelper() {
     }
 
     /**
@@ -46,14 +54,14 @@ public class ReportDBHelper {
      * @return stream of batched results
      */
     @SuppressWarnings("unchecked")
-    public static <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
+    public <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
         return Stream.iterate(initialOffset, i -> i + batchSize)
                 .map(offset -> (DataResult<T>) query.execute(Map.of("offset", offset, "limit", batchSize)))
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
-    private static String getOrderColumns(Session session, String table, Logger log) {
-        String orderqstr =
+    private String getOrderColumns(Session session, String table, Logger log) {
+        String orderSQL =
                 "SELECT string_agg(a.attname, ', ') AS order " +
                 "  FROM pg_constraint AS c " +
                 "    CROSS JOIN LATERAL UNNEST(c.conkey) AS cols(colnum) " +
@@ -70,14 +78,13 @@ public class ReportDBHelper {
                 "   AND t.relname = '" + table.toLowerCase() + "' " +
                 "   AND i.relname = '" + table.toLowerCase() + "_order_idx'";
 
-        GeneratedSelectMode orderquery = new GeneratedSelectMode("orderquery." + table, session,
-                orderqstr , List.of());
+        GeneratedSelectMode orderQuery = new GeneratedSelectMode("orderquery." + table, session, orderSQL , List.of());
 
-        DataResult<Map<String, String>> order = orderquery.execute();
-        String ordercolumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
+        DataResult<Map<String, String>> order = orderQuery.execute();
+        String orderColumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
 
-        log.debug("Order Columns of {} by: {}", table, ordercolumns);
-        return ordercolumns;
+        log.debug("Order Columns of {} by: {}", table, orderColumns);
+        return orderColumns;
     }
 
     /**
@@ -86,7 +93,7 @@ public class ReportDBHelper {
      * @param tables tables list name
      * @return select mode query
      */
-    public static SelectMode generateExistingTables(Session session, List<String> tables) {
+    public SelectMode generateExistingTables(Session session, List<String> tables) {
         List<String> selectContent =
                 tables.stream().map(t -> "to_regclass('" + t + "') AS " + t).collect(Collectors.toList());
         final String sqlStatement = "SELECT " + String.join(",", selectContent);
@@ -100,11 +107,11 @@ public class ReportDBHelper {
      * @param log the logger
      * @return select mode query
      */
-    public static SelectMode generateQuery(Session session, String table, Logger log) {
+    public SelectMode generateQuery(Session session, String table, Logger log) {
         String orderColumns = getOrderColumns(session, table, log);
 
         final String sqlStatement = "SELECT * FROM " + table +
-                " WHERE mgm_id = 1 ORDER BY " + orderColumns + " OFFSET :offset LIMIT :limit";
+                " WHERE mgm_id = " + LOCAL_MGM_ID +  " ORDER BY " + orderColumns + " OFFSET :offset LIMIT :limit";
         return new GeneratedSelectMode("select." + table, session, sqlStatement, List.of("offset", "limit"));
     }
 
@@ -114,7 +121,7 @@ public class ReportDBHelper {
      * @param table table name
      * @return write mode query
      */
-    public static WriteMode generateDelete(Session session, String table) {
+    public WriteMode generateDelete(Session session, String table) {
         final String sqlStatement = "DELETE FROM " + table + " WHERE mgm_id = :mgm_id";
         final List<String> params = List.of("mgm_id");
 
@@ -129,9 +136,11 @@ public class ReportDBHelper {
      * @param params table column names (excluding mgm_id)
      * @return write mode query
      */
-    public static WriteMode generateInsert(Session session, String table, long mgmId, Set<String> params) {
+    public WriteMode generateInsert(Session session, String table, long mgmId, Set<String> params) {
         final String sqlStatement = String.format(
-                "INSERT INTO %s (mgm_id, %s) VALUES (%s, %s)",
+                "INSERT INTO %s (mgm_id, %s) " +
+                "     VALUES (%s, %s) " +
+                "ON CONFLICT DO NOTHING",
                 table,
                 String.join(",", params),
                 mgmId,
@@ -149,9 +158,11 @@ public class ReportDBHelper {
      * @param params table column names (excluding mgm_id)
      * @return write mode query
      */
-    public static WriteMode generateInsertWithDate(Session session, String table, long mgmId, Set<String> params) {
+    public WriteMode generateInsertWithDate(Session session, String table, long mgmId, Set<String> params) {
         final String sqlStatement = String.format(
-                "INSERT INTO %s (mgm_id, synced_date, %s) VALUES (%s, current_timestamp, %s)",
+                "INSERT INTO %s (mgm_id, synced_date, %s) " +
+                "     VALUES (%s, current_timestamp, %s) " +
+                "ON CONFLICT DO NOTHING",
                 table,
                 String.join(",", params),
                 mgmId,
@@ -165,7 +176,7 @@ public class ReportDBHelper {
      * Analyzes the report database tables after massive inserts
      * @param session session the query should use
      */
-    public static void analyzeReportDb(Session session) {
+    public void analyzeReportDb(Session session) {
         var m = ModeFactory.getCallableMode(session, "GeneralReport_queries", "analyze_reportdb");
         m.execute(new HashMap<>(), new HashMap<>());
     }

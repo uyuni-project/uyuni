@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -34,6 +33,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
@@ -98,12 +98,12 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testRHEL3Execute() throws Exception {
+    public void testExecute() {
         ksdata.getKickstartDefaults().getKstree().
             setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_3));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
 
         setRequestPathInfo("/kickstart/SystemDetailsEdit");
         addRequestParameter("registrationType", "reactivation");
@@ -111,33 +111,11 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         addRequestParameter(SystemDetailsEditAction.SE_LINUX_PARAM,
                 SELinuxMode.ENFORCING.getValue());
         actionPerform();
-        // Make sure we DONT update if its rhel3
-        assertEquals("--permissive", ksdata.getCommand("selinux").getArguments());
-        verifyNoActionErrors();
-    }
-
-    @Test
-    public void testRHEL4Execute() throws Exception {
-        ksdata.getKickstartDefaults().getKstree().
-        setInstallType(KickstartFactory.
-            lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
-        KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
-
-        assertNotNull(ksdata.getCommand("selinux"));
-        setRequestPathInfo("/kickstart/SystemDetailsEdit");
-        addRequestParameter("registrationType", "reactivation");
-        addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        addRequestParameter(SystemDetailsEditAction.SE_LINUX_PARAM,
-                SELinuxMode.ENFORCING.getValue());
-        actionPerform();
-        // Make sure we update if its rhel4
         assertEquals("--enforcing", ksdata.getCommand("selinux").getArguments());
         verifyNoActionErrors();
-
     }
 
-    private void setupForDisplay(KickstartData k) throws Exception {
+    private void setupForDisplay(KickstartData k) {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/SystemDetailsEdit");
         addRequestParameter("ksid", k.getId().toString());

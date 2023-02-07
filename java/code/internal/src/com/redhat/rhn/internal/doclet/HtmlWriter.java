@@ -42,6 +42,7 @@ public class HtmlWriter extends DocWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public void write(List<Handler> handlers, Map<String, String> serializers) throws IOException {
         //First macro-tize the serializer's docs
         renderSerializers(templates, serializers);

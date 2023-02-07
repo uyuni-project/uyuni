@@ -120,7 +120,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         }
 
         success = handler.deleteExternalGroupToRoleMap(satAdmin, name);
-        assertTrue(success == 1);
+        assertEquals(1, success);
     }
 
     @Test
@@ -204,7 +204,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         }
 
         success = handler.deleteExternalGroupToSystemGroupMap(admin, name);
-        assertTrue(success == 1);
+        assertEquals(1, success);
 
         sghandler.delete(admin, systemGroupName);
     }
@@ -213,10 +213,10 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
     public void testDefaultOrg() {
         int currentDefault = handler.getDefaultOrg(satAdmin);
         handler.setDefaultOrg(satAdmin, 0);
-        assertTrue(0 == handler.getDefaultOrg(satAdmin));
+        assertEquals(0, handler.getDefaultOrg(satAdmin));
 
         handler.setDefaultOrg(satAdmin, 1);
-        assertTrue(1 == handler.getDefaultOrg(satAdmin));
+        assertEquals(1, handler.getDefaultOrg(satAdmin));
 
         handler.setDefaultOrg(satAdmin, currentDefault);
     }
@@ -225,7 +225,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
     public void testKeepRoles() {
         boolean currentKeepRoles = handler.getKeepTemporaryRoles(satAdmin);
         handler.setKeepTemporaryRoles(satAdmin, !currentKeepRoles);
-        assertTrue(!currentKeepRoles == handler.getKeepTemporaryRoles(satAdmin));
+        assertEquals(!currentKeepRoles, handler.getKeepTemporaryRoles(satAdmin));
         handler.setKeepTemporaryRoles(satAdmin, currentKeepRoles);
     }
 
@@ -233,7 +233,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
     public void testUseOrgUnit() {
         boolean currentUseOrgUnit = handler.getUseOrgUnit(satAdmin);
         handler.setUseOrgUnit(satAdmin, !currentUseOrgUnit);
-        assertTrue(!currentUseOrgUnit == handler.getUseOrgUnit(satAdmin));
+        assertEquals(!currentUseOrgUnit, handler.getUseOrgUnit(satAdmin));
         handler.setUseOrgUnit(satAdmin, currentUseOrgUnit);
     }
 }

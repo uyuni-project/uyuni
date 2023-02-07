@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 04:14+0000\n"
-"PO-Revision-Date: 2022-06-28 05:13+0000\n"
+"POT-Creation-Date: 2022-11-25 14:49+0000\n"
+"PO-Revision-Date: 2022-11-08 19:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
 "plugin/mk/>\n"
@@ -30,7 +30,7 @@ msgstr "Имаше проблем при комуницирањето со {PROD
 #: ../rhnplugin.py:64
 #, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "Поддршката за {PRODUCT_NAME} или RHN Classic ќе биде исклучена."
+msgstr "Поддршката за {PRODUCT_NAME} or RHN Classic канали ќе биде исклучена."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
@@ -38,9 +38,8 @@ msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
 msgstr ""
-"*Обелешка* Spacewalk репозитории не се наведени подоле. Мора да ја "
-"егзекутирате оваа команда како root за да ги пристапите Spacewalk "
-"репозиториите."
+"*Белешка* Spacewalk складишта не се наведени подолу. Мора да ја извршите "
+"оваа команда како root за да пристапите кон Spacewalk складишта."
 
 #: ../rhnplugin.py:87
 #, python-brace-format
@@ -49,7 +48,7 @@ msgstr "Имаше грешка при анализирањето на {PRODUCT_
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
-msgstr "Или --version, --help или нема воведена команд(а/и)"
+msgstr "Или --version, --help, или никои команди беа наведени"
 
 #: ../rhnplugin.py:104
 msgid "Cleaning"
@@ -58,7 +57,7 @@ msgstr "Чистење"
 #: ../rhnplugin.py:113
 #, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr "Се користи листа од {PRODUCT_NAME} репозитории од кеш"
+msgstr "Користење листа на {PRODUCT_NAME} складишта од кеш"
 
 #: ../rhnplugin.py:129
 #, python-brace-format
@@ -67,7 +66,7 @@ msgstr "Овој систем не е регистриран со RHN Classic и
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr "Можете да користите rhn_register да се регистрирате."
+msgstr "Можете да користите rhn_register за регистрација."
 
 #: ../rhnplugin.py:136
 #, python-brace-format
@@ -84,8 +83,8 @@ msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
-"Овој систем не може да се регистрира со RHN Classic или {PRODUCT_NAME}. "
-"SystemId неможе да се најде."
+"Овој систем можеби не е регистриран на RHN Classic или {PRODUCT_NAME}. "
+"SystemId неможеше да се стекне."
 
 #: ../rhnplugin.py:158
 #, python-brace-format
@@ -102,7 +101,7 @@ msgstr "Грешка:"
 
 #: ../rhnplugin.py:277
 msgid "Please run rhn_register as root on this client"
-msgstr "Ве молиме, егзекутирајте го rhn_register како root на овој клиент"
+msgstr "Молиме извршете го rhn_register како root на овој клиент"
 
 #: ../rhnplugin.py:356
 #, python-format, python-brace-format

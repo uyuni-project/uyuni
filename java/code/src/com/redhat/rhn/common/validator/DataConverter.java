@@ -31,10 +31,10 @@ public class DataConverter {
     private static DataConverter instance = null;
 
     /** Mappings from Java to XML Schema */
-    private Map schemaMappings;
+    private final Map<String, String> schemaMappings;
 
     /** Mappings from XML Schema to Java */
-    private Map javaMappings;
+    private final Map<String, String> javaMappings;
 
     /**
      * <p>
@@ -45,9 +45,9 @@ public class DataConverter {
      */
     private DataConverter() {
         schemaMappings = getSchemaMappings();
-        javaMappings = new HashMap();
-        for (Object key : schemaMappings.keySet()) {
-            javaMappings.put(schemaMappings.get(key), key);
+        javaMappings = new HashMap<>();
+        for (Map.Entry<String, String> entry : schemaMappings.entrySet()) {
+            javaMappings.put(entry.getValue(), entry.getKey());
         }
     }
 
@@ -77,7 +77,7 @@ public class DataConverter {
      * @return <code>String</code> - Java data type that is comparable.
      */
     public String getJavaType(String schemaType) {
-        return (String)javaMappings.get(schemaType);
+        return javaMappings.get(schemaType);
     }
 
     /**
@@ -89,7 +89,7 @@ public class DataConverter {
      * @return <code>String</code> - XML Schema data type that is comparable.
      */
     public String getSchemaType(String javaType) {
-        return (String)schemaMappings.get(javaType);
+        return schemaMappings.get(javaType);
     }
 
     /**
@@ -99,8 +99,8 @@ public class DataConverter {
      *
      * @return <code>Map</code> - data type mappings.
      */
-    private Map getSchemaMappings() {
-        Map map = new HashMap();
+    private Map<String, String> getSchemaMappings() {
+        Map<String, String> map = new HashMap<>();
 
         // Key is Java type, value is XML Schema type
         map.put("String", "string");
@@ -108,48 +108,13 @@ public class DataConverter {
         map.put("float", "float");
         map.put("double", "double");
 
-        // XXX: Need to map these extra data types
-        // map.put("", "decimal");
-        // map.put("", "timeDuration");
-        // map.put("", "recurringDuration");
-        // map.put("", "binary");
-        // map.put("", "uriReference");
-        // map.put("", "ID");
-        // map.put("", "IDREF");
-        // map.put("", "ENTITY");
-        // map.put("", "NOTATION");
-        // map.put("", "QName");
-        // map.put("", "language");
-        // map.put("", "IDREFS");
-        // map.put("", "ENTITIES");
-        // map.put("", "NMTOKEN");
-        // map.put("", "Name");
-        // map.put("", "NCName");
-        // map.put("", "integer");
-        // map.put("", "nonPositiveInteger");
-        // map.put("", "negativeInteger");
         map.put("Long", "long");
         map.put("long", "long");
         map.put("int", "int");
         map.put("short", "short");
         map.put("byte", "byte");
         map.put("requiredIf", "requiredIf");
-        // map.put("", "nonNegativeInteger");
-        // map.put("", "negativeInteger");
-        // map.put("", "unsignedLong");
-        // map.put("", "unsignedInt");
-        // map.put("", "unsignedShort");
-        // map.put("", "unsignedByte");
-        // map.put("", "positiveInteger");
-        // map.put("", "timeInstant");
-        // map.put("", "time");
-        // map.put("", "timePeriod");
         map.put("Date", "date");
-        // map.put("", "month");
-        // map.put("", "year");
-        // map.put("", "century");
-        // map.put("", "recurringDate");
-        // map.put("", "recurringDay");
 
         return map;
     }

@@ -31,6 +31,7 @@ public abstract class BaseDto extends SelectableAdapter implements Identifiable 
      * Returns id to be stored in RhnSet.
      * @return id to be stored in RhnSet.
      */
+    @Override
     public abstract Long getId();
 
     /**
@@ -46,6 +47,7 @@ public abstract class BaseDto extends SelectableAdapter implements Identifiable 
      *
      * {@inheritDoc}
      */
+    @Override
     public String getSelectionKey() {
         return String.valueOf(getId());
     }

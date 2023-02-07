@@ -16,16 +16,17 @@ package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +45,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,9 +58,8 @@ public class AdminUserEditAction extends UserEditActionHelper {
     private static Logger log = LogManager.getLogger(AdminUserEditAction.class);
     private static final String ROLE_SETTING_PREFIX = "role_";
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
-
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -148,10 +149,9 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
         // Build a set of the users current role labels to help determine what we need
         // to add and remove:
-        Set<String> existingRoles = new HashSet<>();
-        for (Role r : targetUser.getPermanentRoles()) {
-            existingRoles.add(r.getLabel());
-        }
+        Set<String> existingRoles = targetUser.getPermanentRoles().stream()
+                .map(r -> r.getLabel())
+                .collect(Collectors.toSet());
 
         // Look for an add/remove setting for each org role in the form:
         List<String> rolesToAdd = new LinkedList<>();
@@ -163,9 +163,10 @@ public class AdminUserEditAction extends UserEditActionHelper {
                 continue;
             }
 
-            String roleSetting = request.getParameter(ROLE_SETTING_PREFIX +
-                    role.getLabel());
-            log.debug("   {} / {}", role.getName(), roleSetting);
+            String roleSetting = request.getParameter(ROLE_SETTING_PREFIX + role.getLabel());
+            if (log.isDebugEnabled()) {
+                log.debug("   {} / {}", role.getName(), StringUtil.sanitizeLogInput(roleSetting));
+            }
 
             if (roleSetting != null && !existingRoles.contains(role.getLabel())) {
                 // Must have been newly checked:
@@ -188,13 +189,11 @@ public class AdminUserEditAction extends UserEditActionHelper {
             // will be empty..
             if (targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
                     !targetUser.getAssociatedServerGroups().isEmpty()) {
-                Set admins = new HashSet();
+                Set<User> admins = new HashSet<>();
                 admins.add(targetUser);
-                for (Iterator itr = targetUser.getAssociatedServerGroups().iterator();
-                        itr.hasNext();) {
-
+                for (Iterator<ServerGroup> itr = targetUser.getAssociatedServerGroups().iterator(); itr.hasNext();) {
                     ManagedServerGroup sg = (ManagedServerGroup) itr.next();
-                    serverGroupManager.dissociateAdmins(sg, admins, loggedInUser);
+                    GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
                     itr.remove();
                 }
             }

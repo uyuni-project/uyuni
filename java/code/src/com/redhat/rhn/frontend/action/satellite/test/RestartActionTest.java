@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -35,6 +35,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -48,7 +49,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteNoSubmit() throws Exception {
+    public void testExecuteNoSubmit() {
 
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
@@ -56,29 +57,27 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteSubmitTrue() throws Exception {
+    public void testExecuteSubmitTrue() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.TRUE.toString());
         actionPerform();
         verifyActionMessages(new String[]{"restart.config.success"});
-        assertTrue((request.getParameter(RestartAction.RESTART).
-                    equals(Boolean.TRUE.toString())));
+        assertEquals(request.getParameter(RestartAction.RESTART), Boolean.TRUE.toString());
     }
 
     @Test
-    public void testExecuteSubmitFalse() throws Exception {
+    public void testExecuteSubmitFalse() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());
         actionPerform();
         verifyActionMessages(new String[]{"restart.config.norestart"});
-        assertTrue((request.getParameter(RestartAction.RESTART).
-                    equals(Boolean.FALSE.toString())));
+        assertEquals(request.getParameter(RestartAction.RESTART), Boolean.FALSE.toString());
     }
 
     @Test
-    public void testExecuteRefresh() throws Exception {
+    public void testExecuteRefresh() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());

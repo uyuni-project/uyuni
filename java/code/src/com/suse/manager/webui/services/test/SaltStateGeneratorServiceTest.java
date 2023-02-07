@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.test;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -147,7 +148,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         // State file for minion 1 should be regenerated
         assertFalse(Arrays.equals(min1InitialContent, min1FinalContent));
         // State file for minion 1 should NOT be regenerated
-        assertTrue(Arrays.equals(min2InitialContent, min2FinalContent));
+        assertArrayEquals(min2InitialContent, min2FinalContent);
 
         // Assert file contents
         Map<String, Object> map;
@@ -164,7 +165,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testImageSyncedPillar() throws Exception {
+    public void testImageSyncedPillar() {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
         img1.setRevisionNumber(1);
@@ -186,7 +187,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         assertFalse(group.getPillarByCategory(category).isPresent());
     }
     @Test
-    public void testLegacyImageSyncedPillar() throws Exception {
+    public void testLegacyImageSyncedPillar() {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
 
         SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageName", "1.0.0");

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -45,8 +45,8 @@ public class ServerUuidTest extends RhnBaseTestCase {
         ServerUuid su1 = createTestServerUuid();
         ServerUuid su2 = new ServerUuid();
 
-        assertFalse(su1.equals(su2));
-        assertFalse(su1.equals(new Date()));
+        assertNotEquals(su1, su2);
+        assertNotEquals(su1, new Date());
     }
 
     /**

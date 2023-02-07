@@ -184,7 +184,7 @@ class TreeInfoParser(object):
         fp = open(filename)
         try:
             try:
-                self.parser.readfp(fp)
+                self.parser.read_file(fp)
             except configparser.ParsingError:
                 raise TreeInfoError("Could not parse treeinfo file!")
         finally:
@@ -243,6 +243,22 @@ class TreeInfoParser(object):
 
         return addons_dirs
 
+    def remove_broken_variants(self):
+        try:
+            variants = self.parser.get("tree", "variants").split(",")
+            for variant in variants:
+                section_name = "variant-" + variant
+                if self.parser.get(section_name, "repository").startswith(".."):
+                    variants.remove(variant)
+                    self.parser.remove_section(section_name)
+            self.parser.set("tree", "variants", ",".join(variants))
+        except (configparser.NoOptionError, configparser.NoSectionError):
+            # This section and value may not exist in older version of the treeinfo
+            pass
+
+    def save(self, file_name):
+        with open(file_name, "w") as fd:
+            self.parser.write(fd)
 
 def set_filter_opt(option, opt_str, value, parser):
     # pylint: disable=W0613
@@ -1700,7 +1716,7 @@ class RepoSync(object):
             family = treeinfo_parser.get_family()
             if family == 'Fedora':
                 self.ks_install_type = 'fedora18'
-            elif family == 'CentOS':
+            elif family in ['CentOS', 'Rocky Linux', 'AlmaLinux']:
                 self.ks_install_type = 'rhel_' + treeinfo_parser.get_major_version()
             else:
                 self.ks_install_type = 'generic_rpm'
@@ -1801,7 +1817,13 @@ class RepoSync(object):
             downloader.run()
             log2background(0, "Download finished.")
             for item in to_download:
-                st = os.stat(os.path.join(mount_point, ks_path, item))
+                file_path = os.path.join(mount_point, ks_path, item)
+                if item in ["treeinfo", ".treeinfo"]:
+                    # Remove the appstream variant if possible as it will point to nowhere
+                    parser = TreeInfoParser(file_path)
+                    parser.remove_broken_variants()
+                    parser.save(file_path)
+                st = os.stat(file_path)
                 # update entity about current file in a database
                 delete_h.execute(id=ks_id, path=item)
                 insert_h.execute(id=ks_id, path=item,

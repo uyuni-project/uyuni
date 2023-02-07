@@ -83,8 +83,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: dom4j
     repository: Leap
-  - artifact: dwr
-    repository: Uyuni_Other
   - artifact: ehcache-core
     package: ehcache
     repository: Uyuni_Other
@@ -234,6 +232,9 @@ artifacts:
     jar: simpleclient-[0-9.]+
     repository: Uyuni_Other
   - artifact: simpleclient_common
+    package: prometheus-client-java
+    repository: Uyuni_Other
+  - artifact: simpleclient_hibernate
     package: prometheus-client-java
     repository: Uyuni_Other
   - artifact: simpleclient_httpserver

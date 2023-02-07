@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.impl.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
@@ -50,9 +51,9 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertFalse(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
 
-        assertEquals(null, res.get().getMessages().get("tomcat"));
+        assertNull(res.get().getMessages().get("tomcat"));
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
-        assertEquals(null, res.get().getMessages().get("self_monitoring"));
+        assertNull(res.get().getMessages().get("self_monitoring"));
     }
 
     @Test
@@ -74,7 +75,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("tomcat"));
         assertFalse(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
-        assertEquals(null, res.get().getMessages().get("tomcat"));
+        assertNull(res.get().getMessages().get("tomcat"));
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
         assertEquals("restart", res.get().getMessages().get("self_monitoring"));
     }
@@ -98,7 +99,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("tomcat"));
         assertTrue(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
-        assertEquals(null, res.get().getMessages().get("tomcat"));
+        assertNull(res.get().getMessages().get("tomcat"));
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
     }
 
@@ -121,9 +122,9 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("tomcat"));
         assertTrue(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
-        assertEquals(null, res.get().getMessages().get("tomcat"));
-        assertEquals(null, res.get().getMessages().get("taskomatic"));
-        assertEquals(null, res.get().getMessages().get("self_monitoring"));
+        assertNull(res.get().getMessages().get("tomcat"));
+        assertNull(res.get().getMessages().get("taskomatic"));
+        assertNull(res.get().getMessages().get("self_monitoring"));
     }
 
     @Test
@@ -145,7 +146,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertTrue(res.get().getExporters().get("taskomatic"));
         assertTrue(res.get().getExporters().get("self_monitoring"));
         assertEquals("restart", res.get().getMessages().get("tomcat"));
-        assertEquals(null, res.get().getMessages().get("taskomatic"));
+        assertNull(res.get().getMessages().get("taskomatic"));
     }
 
     @Test
@@ -166,7 +167,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertFalse(res.get().getExporters().get("tomcat"));
         assertFalse(res.get().getExporters().get("taskomatic"));
         assertFalse(res.get().getExporters().get("self_monitoring"));
-        assertEquals(null, res.get().getMessages().get("tomcat"));
+        assertNull(res.get().getMessages().get("tomcat"));
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
         assertEquals("restart", res.get().getMessages().get("self_monitoring"));
     }

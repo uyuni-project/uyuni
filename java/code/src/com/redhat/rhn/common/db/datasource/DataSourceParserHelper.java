@@ -14,17 +14,19 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -54,12 +56,13 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
      * Get the modes Map
      * @return the modes map.
      */
-    public HashMap<String, ParsedMode> getModes() {
+    public Map<String, ParsedMode> getModes() {
         return modes;
     }
 
     /** {@inheritDoc} */
-    public void characters(char[] text, int start, int length) throws SAXException {
+    @Override
+    public void characters(char[] text, int start, int length) {
 
         if (sqlBuilder != null) {
             sqlBuilder.append(text, start, length);
@@ -67,15 +70,15 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startElement(String namespaceURI, String localName, String qualifiedName,
-            Attributes atts) {
+                             Attributes atts) {
 
         logger.debug("startElement({})", localName);
 
-        //sqlStatement = new StringBuffer();
         if (localName.equals("datasource_modes")) {
             if (m != null || q != null) {
-                throw new RuntimeException(
+                throw new RhnRuntimeException(
                         "'datasource_modes' element only valid at start of mode file.");
             }
             modes = new HashMap<>();
@@ -83,21 +86,21 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         }
         else if (localName.equals("mode")) {
             if (q != null) {
-                throw new RuntimeException(
+                throw new RhnRuntimeException(
                         "'mode' element not valid within mode or elaborator element.");
             }
             m = new ParsedModeImpl(atts, ParsedMode.ModeType.SELECT);
         }
         else if (localName.equals("callable-mode")) {
             if (q != null) {
-                throw new RuntimeException("'callable-mode' element not valid within " +
+                throw new RhnRuntimeException("'callable-mode' element not valid within " +
                         "mode or elaborator element.");
             }
             m = new ParsedModeImpl(atts, ParsedMode.ModeType.CALLABLE);
         }
         else if (localName.equals("write-mode")) {
             if (q != null) {
-                throw new RuntimeException("'write-mode' element not valid within mode " +
+                throw new RhnRuntimeException("'write-mode' element not valid within mode " +
                         "or elaborator element.");
             }
             m = new ParsedModeImpl(atts, ParsedMode.ModeType.WRITE);
@@ -108,18 +111,19 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         }
         else if (localName.equals("elaborator")) {
             if (m == null) {
-                throw new RuntimeException(
+                throw new RhnRuntimeException(
                         "Elaborator can only be defined within a mode definition.");
             }
             q = new ParsedQueryImpl(atts);
             sqlBuilder = new StringBuilder();
         }
         else {
-            throw new RuntimeException("Invalid element '" + localName + "'");
+            throw new RhnRuntimeException("Invalid element '" + localName + "'");
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endElement(String namespaceURI, String localName, String qualifiedName) {
 
         logger.debug("endElement({})", localName);
@@ -171,12 +175,12 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
             case "datasource_modes":
                 if (q != null || m != null) {
-                    throw new RuntimeException("Invalid xml");
+                    throw new RhnRuntimeException("Invalid xml");
                 }
                 break;
 
             default:
-                throw new RuntimeException("Invalid end element '" + localName + "'");
+                throw new RhnRuntimeException("Invalid end element '" + localName + "'");
         }
     }
 
@@ -190,6 +194,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endDocument() {
         // Implement sanity check? Look for queries with names but no sql
         // statement.
@@ -200,7 +205,9 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
             ParsedMode pm = modes.get(modeKey);
             if (pm == null) {
                 errors.add("ParsedMode is null for key '" + modeKey + "'");
+                continue;
             }
+
             logger.debug("Checking query");
             errmsg = sanityCheckParsedQuery(pm.getParsedQuery(), modeKey);
             if (errmsg != null) {
@@ -219,7 +226,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
             for (String e : errors) {
                 sb.append(e).append("/n");
             }
-            throw new RuntimeException(sb.toString());
+            throw new RhnRuntimeException(sb.toString());
         }
     }
 
@@ -240,32 +247,45 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     // do-nothing methods
     /** {@inheritDoc} */
+    @Override
     public void setDocumentLocator(Locator locator) {
+        // Not needed
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startDocument() {
+        // Not needed
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startPrefixMapping(String prefix, String uri) {
+        // Not needed
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endPrefixMapping(String prefix) {
+        // Not needed
     }
 
     /** {@inheritDoc} */
-    public void ignorableWhitespace(char[] text, int start, int length)
-        throws SAXException {
+    @Override
+    public void ignorableWhitespace(char[] text, int start, int length) {
+        // Not needed
     }
 
     /** {@inheritDoc} */
+    @Override
     public void processingInstruction(String target, String data) {
+        // Not needed
     }
 
     /** {@inheritDoc} */
+    @Override
     public void skippedEntity(String name) {
+        // Not needed
     }
 
     /**

@@ -30,10 +30,11 @@ import javax.servlet.http.HttpServletResponse;
 public class DisableSelfAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

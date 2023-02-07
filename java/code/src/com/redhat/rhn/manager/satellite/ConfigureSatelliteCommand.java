@@ -132,6 +132,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * Store the Configuration to the filesystem
      * @return ValidatorError
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         if (logger.isDebugEnabled()) {
             logger.debug("storeConfiguration() - start");
@@ -140,13 +141,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         Executor e = getExecutor();
         if (keysToBeUpdated.isEmpty()) {
             return null;
-        }
-
-        if (keysToBeUpdated.contains(ConfigDefaults.JABBER_SERVER)) {
-            // if hostname changes, we must update
-            // osa-dispatcher.server_jabber as well
-            this.updateString("osa-dispatcher.jabber_server",
-                    ConfigDefaults.get().getHostname());
         }
 
         if (keysToBeUpdated.contains(ConfigDefaults.MOUNT_POINT)) {
@@ -159,7 +153,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             //if there isn't already a value set for the satellite parent (We don't want to
             // overwrite a custom value.)
             if (Config.get().getString(ConfigDefaults.SATELLITE_PARENT) == null ||
-                    Config.get().getString(ConfigDefaults.SATELLITE_PARENT).length() == 0) {
+                    Config.get().getString(ConfigDefaults.SATELLITE_PARENT).isEmpty()) {
                 this.updateString(ConfigDefaults.SATELLITE_PARENT,
                         ConfigDefaults.DEFAULT_SAT_PARENT);
             }

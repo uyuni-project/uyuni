@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.groups;
 
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -36,9 +37,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * List Errata for server group
  */
-public class ErrataListAction extends RhnAction implements Listable {
+public class ErrataListAction extends RhnAction implements Listable<ErrataOverview> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -50,7 +52,7 @@ public class ErrataListAction extends RhnAction implements Listable {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.SERVER_GROUP_ID, serverGroup.getId());
 
         return StrutsDelegate.getInstance().forwardParams(
@@ -58,7 +60,8 @@ public class ErrataListAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ErrataOverview> getResult(RequestContext context) {
         ManagedServerGroup currentGroup = context.lookupAndBindServerGroup();
         return ErrataManager.relevantErrata(currentGroup);
     }

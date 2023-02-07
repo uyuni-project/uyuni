@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -820,8 +821,8 @@ public class HardwareMapper {
             ServerFactory.saveNetworkInterface(iface);
             // flush & refresh iface because generated="insert"
             // on interfaceId does not seem to work
-            ServerFactory.getSession().flush();
-            ServerFactory.getSession().refresh(iface);
+            HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().refresh(iface);
 
             List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
             List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());

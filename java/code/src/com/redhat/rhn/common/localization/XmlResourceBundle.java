@@ -20,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -29,6 +28,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Class that extends the java.util.ResourceBundle class that stores
@@ -84,26 +87,27 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
             // access to it over the web when starting up the service.
             String xsdLocation =
                 this.getClass().getResource("/xliff-core-1.1.xsd").toString();
-            XMLReader parser = XMLReaderFactory.
-                createXMLReader("org.apache.xerces.parsers.SAXParser");
-            parser.setFeature(validationFeature, false);
-            parser.setFeature(schemaFeature, false);
-            parser.setProperty("http://apache.org/xml/properties/schema/" +
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setFeature(validationFeature, false);
+            factory.setFeature(schemaFeature, false);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            SAXParser parser = factory.newSAXParser();
+            XMLReader reader = parser.getXMLReader();
+            reader.setProperty("http://apache.org/xml/properties/schema/" +
                     "external-noNamespaceSchemaLocation", xsdLocation);
             XmlResourceBundleParser handler = new XmlResourceBundleParser();
-            parser.setContentHandler(handler);
-            parser.parse(new InputSource(this.getClass().
+            reader.setContentHandler(handler);
+            reader.parse(new InputSource(this.getClass().
                                          getResourceAsStream(filelocation)));
             strings = handler.getMessages();
         }
-        catch (SAXException e) {
+        catch (SAXException | ParserConfigurationException e) {
             // This really should never happen, because without this file,
             // the whole UI stops working.
             log.error("Could not setup parser");
             throw new IOException("Could not load XML bundle: " + filelocation);
         }
-        // TODO: put the xml strings in the Map
-
     }
 
     /**
@@ -112,6 +116,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @return The value found. This will be a java.lang.String and can be cased
      * accordingly.
      */
+    @Override
     public Object handleGetObject(String key) {
         return strings.get(key);
     }
@@ -121,6 +126,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @return Enumeration of the keys contained in this bundle.
      *         Useful for searching for a partial match.
      */
+    @Override
     public Enumeration<String> getKeys() {
         List<String> keys = new LinkedList<>();
 

@@ -17,11 +17,14 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
@@ -30,12 +33,13 @@ import org.quartz.JobExecutionException;
 /**
  * Custom Quartz Job implementation which only allows one thread to
  * run at a time. All other threads return without performing any work.
- * This policy was chosen instead of blocking so as to reduce threading
+ * This policy was chosen instead of blocking to reduce threading
  * problems inside Quartz itself.
  *
+ * @param <T> The {@link QueueDriver} class
  *
  */
-public abstract class RhnQueueJob implements RhnJob {
+public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
 
     private TaskoRun jobRun = null;
     protected abstract Logger getLogger();
@@ -43,32 +47,42 @@ public abstract class RhnQueueJob implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void appendExceptionToLogError(Exception e) {
         getLogger().error(e.getMessage(), e);
     }
 
     private void logToNewFile() {
 
+        var loggerName = this.getClass().getName();
+        final var config = ((LoggerContext) LogManager.getContext(false)).getConfiguration();
+        for (var appender : config.getLoggerConfig(loggerName).getAppenders().values()) {
+            appender.stop();
+            config.getLoggerConfig(loggerName).removeAppender(appender.getName());
+        }
+        Configurator.reconfigure(config);
+
         var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
 
         var layoutBuilder = builder
                 .newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = this.getClass().getName() + "fileAppender";
+        var appenderName = loggerName + "fileAppender";
         var appenderBuilder = builder
                 .newAppender(appenderName, "File")
                 .addAttribute("fileName", jobRun.buildStdOutputLogPath())
                 .add(layoutBuilder);
         builder.add(appenderBuilder);
 
-        var logger = builder.newLogger(this.getClass().getName(), Level.INFO);
+        var logger = builder.newLogger(loggerName, Level.INFO);
         builder.add(logger.add(builder.newAppenderRef(appenderName)));
-        Configurator.initialize(builder.build());
+        Configurator.reconfigure(builder.build());
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx, TaskoRun runIn)
             throws JobExecutionException {
         setJobRun(runIn);
@@ -80,8 +94,8 @@ public abstract class RhnQueueJob implements RhnJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext ctx)
-            throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext ctx) {
         TaskQueueFactory factory = TaskQueueFactory.get();
         String queueName = getQueueName();
         TaskQueue queue = factory.getQueue(queueName);
@@ -103,9 +117,8 @@ public abstract class RhnQueueJob implements RhnJob {
         }
         else {
             // close current run
-            TaskoRun run = (TaskoRun) HibernateFactory.reload(jobRun);
-            run.appendToOutputLog("Run with id " + queue.getQueueRun().getId() +
-                    " handles the whole task queue.");
+            TaskoRun run = HibernateFactory.reload(jobRun);
+            run.appendToOutputLog("Run with id " + queue.getQueueRun().getId() + " handles the whole task queue.");
             run.skipped();
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
@@ -114,8 +127,7 @@ public abstract class RhnQueueJob implements RhnJob {
         if (queueName.equals("channel_repodata")) {
             defaultItems = 1;
         }
-        int maxWorkItems = Config.get().getInt("taskomatic." + queueName +
-                "_max_work_items", defaultItems);
+        int maxWorkItems = Config.get().getInt("taskomatic." + queueName + "_max_work_items", defaultItems);
         int queueSize = queue.getQueueSize();
         if (getLogger().isDebugEnabled()) {
             getLogger().debug("Queue size (before run): {}", queueSize);
@@ -142,7 +154,7 @@ public abstract class RhnQueueJob implements RhnJob {
         jobRun = runIn;
     }
 
-    protected abstract Class getDriverClass();
+    protected abstract Class<T> getDriverClass();
 
     protected abstract String getQueueName();
 }

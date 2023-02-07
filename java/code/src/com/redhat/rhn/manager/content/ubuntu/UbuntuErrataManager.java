@@ -78,7 +78,7 @@ public class UbuntuErrataManager {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .registerTypeAdapter(Instant.class, new TypeAdapter<Instant>() {
                 @Override
-                public void write(JsonWriter jsonWriter, Instant instant) throws IOException {
+                public void write(JsonWriter jsonWriter, Instant instant) {
                     throw new UnsupportedOperationException();
                 }
 

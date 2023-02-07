@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchKickstartException;
@@ -44,6 +45,7 @@ public class RenderKickstartFileAction extends Action {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         String url = request.getParameter("ksurl");
@@ -52,7 +54,8 @@ public class RenderKickstartFileAction extends Action {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("ksurl = {} param: {}", url, request.getAttribute("ksurl"));
+            log.debug("ksurl = {} param: {}", StringUtil.sanitizeLogInput(url),
+                    StringUtil.sanitizeLogInput((String) request.getAttribute("ksurl")));
         }
         String fileContents = null;
         if (url != null) {
@@ -81,9 +84,11 @@ public class RenderKickstartFileAction extends Action {
                     }
                 }
                 else {
-                    log.error("No kickstart filecontents found for: {} params: {} ksdata: {}", url, params, ksdata);
+                    if (log.isDebugEnabled()) {
+                        log.error("No kickstart filecontents found for: {} params: {} ksdata: {}",
+                                StringUtil.sanitizeLogInput(url), params, ksdata);
+                    }
                     // send 404 to the user since we don't have a kickstart profile match
-                    //response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     throw new NoSuchKickstartException();
                 }
                 if (log.isDebugEnabled()) {

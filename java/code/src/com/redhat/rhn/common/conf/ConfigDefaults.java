@@ -72,7 +72,7 @@ public class ConfigDefaults {
 
     public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
-    public static final String JABBER_SERVER = "server.jabber_server";
+    public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
 
@@ -132,6 +132,8 @@ public class ConfigDefaults {
     private static final String DEFAULT_COBBLER_SNIPPET_DIR = "/var/lib/cobbler/snippets";
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
     public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
+
+    private static final String CLONED_CHANNEL_AUTO_SELECTION = "java.cloned_channel_auto_selection";
 
     private static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
     private static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
@@ -210,9 +212,9 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    private static final String HTTP_PROXY = "server.satellite.http_proxy";
-    private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+    public static final String HTTP_PROXY = "server.satellite.http_proxy";
+    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -581,11 +583,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Get the configured hostname for this RHN Server.
+     * Get the configured hostname for this Uyuni Server.
      * @return String hostname
      */
     public String getHostname() {
-        return Config.get().getString(JABBER_SERVER);
+        return Config.get().getString(SERVER_HOSTNAME, "localhost");
     }
 
     /**
@@ -720,6 +722,14 @@ public class ConfigDefaults {
     }
 
     /**
+     * @return return if cloned vendor channels should use automatic dependency
+     * selection
+     */
+    public boolean getClonedChannelAutoSelection() {
+        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION);
+    }
+
+    /**
      * Returns the bootstrap breed
      * @return the breed
      */
@@ -821,9 +831,9 @@ public class ConfigDefaults {
         }
 
         final StringBuilder connectionUrl = new StringBuilder(proto).append(':');
-        if (host != null && host.length() > 0) {
+        if (host != null && !host.isEmpty()) {
             connectionUrl.append("//").append(host);
-            if (port != null && port.length() > 0) {
+            if (port != null && !port.isEmpty()) {
                 connectionUrl.append(':').append(port);
             }
             connectionUrl.append('/');

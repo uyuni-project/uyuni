@@ -1,4 +1,18 @@
-- Update the squid.pid path to /run/squid.squid.pid (bsc#1204948)
+-------------------------------------------------------------------
+Mon Jan 23 07:34:04 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:53:42 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.12
+
+-------------------------------------------------------------------
+Fri Nov 18 14:17:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.11:
+  * Update the squid.pid path to /run/squid.squid.pid (bsc#1204948)
 
 -------------------------------------------------------------------
 Wed Sep 28 07:44:33 UTC 2022 - Julio González Gil <jgonzalez@suse.com>

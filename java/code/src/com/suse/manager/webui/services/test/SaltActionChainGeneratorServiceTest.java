@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -206,6 +207,153 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 "    mgrcompat.module_run:\n" +
                 "    -   name: state.apply\n").replaceAll("131", actionChain.getId() + ""), fileContent);
     }
+
+    @Test
+    public void testCreateActionChainSLSFilesOneChunksTransactionalUpdate() throws Exception {
+        String label = TestUtils.randomString();
+
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        minion1.setOs(ServerConstants.SLEMICRO);
+        MinionSummary minionSummary1 = new MinionSummary(minion1);
+
+        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        List<SaltState> states = new ArrayList<>();
+        states.add(new SaltModuleRun(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
+                "state.apply",
+                1,
+                singletonMap("mods", "remotecommands"),
+                singletonMap("pillar",
+                        // Use a TreeMap to keep the keys order or they may break the assert
+                        new TreeMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
+                )
+        ));
+        states.add(new SaltSystemReboot(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
+                2,
+                1
+        ));
+
+        Path stateFilesRoot = Files.createTempDirectory("actionchaingentest");
+
+        SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
+        service.setSuseManagerStatesFilesRoot(stateFilesRoot);
+        service.setSkipSetOwner(true);
+        service.createActionChainSLSFiles(actionChain, minionSummary1, states, Optional.empty());
+
+        String fileContent = FileUtils
+                .readFileToString(stateFilesRoot
+                        .resolve(ACTIONCHAIN_SLS_FOLDER)
+                        .resolve(service
+                                .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 1))
+                        .toFile());
+        assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
+                        "    mgrcompat.module_run:\n" +
+                        "    -   name: state.apply\n" +
+                        "    -   mods: remotecommands\n" +
+                        "    -   kwargs:\n" +
+                        "            pillar:\n" +
+                        "                mgr_remote_cmd_runas: foobar\n" +
+                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
+                        "schedule_next_chunk:\n" +
+                        "    mgrcompat.module_run:\n" +
+                        "    -   name: mgractionchains.clean\n" +
+                        "    -   actionchain_id: 131\n" +
+                        "    -   current_action_id: 2\n" +
+                        "    -   reboot_required: true\n")
+                        .replaceAll("131", actionChain.getId() + ""),
+                fileContent);
+    }
+
+    @Test
+    public void testCreateActionChainSLSFilesTwoChunksTransactionalUpdate() throws Exception {
+        String label = TestUtils.randomString();
+
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        minion1.setOs(ServerConstants.SLEMICRO);
+        MinionSummary minionSummary1 = new MinionSummary(minion1);
+
+        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        List<SaltState> states = new ArrayList<>();
+        states.add(new SaltModuleRun(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 1,
+                "state.apply",
+                1,
+                singletonMap("mods", "remotecommands"),
+                singletonMap("pillar",
+                        // Use a TreeMap to keep the keys order or they may break the assert
+                        new TreeMap<String, String>() {{
+                                put("mgr_remote_cmd_script", "salt://scripts/script_1.sh");
+                                put("mgr_remote_cmd_runas", "foobar");
+                        }}
+                )
+        ));
+        states.add(new SaltSystemReboot(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 2,
+                2,
+                1
+        ));
+        states.add(new SaltModuleRun(
+                ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + 3,
+                "state.apply",
+                3,
+                null,
+                null
+        ));
+
+        Path stateFilesRoot = Files.createTempDirectory("actionchaingentest");
+
+        SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
+        service.setSuseManagerStatesFilesRoot(stateFilesRoot);
+        service.setSkipSetOwner(true);
+        service.createActionChainSLSFiles(actionChain, minionSummary1, states, Optional.empty());
+
+        String fileContent = FileUtils
+                .readFileToString(stateFilesRoot
+                        .resolve(ACTIONCHAIN_SLS_FOLDER)
+                        .resolve(service
+                                .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 1))
+                        .toFile());
+        assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
+                        "    mgrcompat.module_run:\n" +
+                        "    -   name: state.apply\n" +
+                        "    -   mods: remotecommands\n" +
+                        "    -   kwargs:\n" +
+                        "            pillar:\n" +
+                        "                mgr_remote_cmd_runas: foobar\n" +
+                        "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
+                        "schedule_next_chunk:\n" +
+                        "    mgrcompat.module_run:\n" +
+                        "    -   name: mgractionchains.next\n" +
+                        "    -   actionchain_id: 131\n" +
+                        "    -   chunk: 2\n" +
+                        "    -   next_action_id: 3\n" +
+                        "    -   current_action_id: 2\n" +
+                        "    -   reboot_required: true\n" +
+                        "    -   require:\n" +
+                        "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n")
+                        .replaceAll("131", actionChain.getId() + ""),
+                fileContent);
+        fileContent = FileUtils
+                .readFileToString(stateFilesRoot
+                        .resolve(ACTIONCHAIN_SLS_FOLDER)
+                        .resolve(service
+                                .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2))
+                        .toFile());
+        assertEquals(("mgr_actionchain_131_action_3_chunk_2:\n" +
+                "    mgrcompat.module_run:\n" +
+                "    -   name: state.apply\n").replaceAll("131", actionChain.getId() + ""), fileContent);
+    }
+
 
     @Test
     public void testCreateActionChainSLSFilesSaltUpgrade() throws Exception {
@@ -438,7 +586,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testParseActionChainStateId() throws Exception {
+    public void testParseActionChainStateId() {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         Optional<SaltActionChainGeneratorService.ActionChainStateId> result = service.parseActionChainStateId(
                 "mgrcompat_|-mgr_actionchain_144_action_854_chunk_1_|-state.apply_|-module_run");

@@ -66,7 +66,7 @@ with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
 
     # log_level is the value for rhn.conf and should be a positive integer
-    log_level = logging.WARNING if config.get("log_level") is None else logging.DEBUG
+    log_level = logging.WARNING if config.get("log_level") == 1 else logging.DEBUG
     logging.getLogger().setLevel(log_level)
 
 with open(config_path + "httpd.yaml") as httpdSource:

@@ -35,7 +35,7 @@
                             <rhn:required-field key="general.jsp.hostname"/>
                         </label>
                         <div class="col-lg-6">
-                            <html:text property="server|jabber_server"
+                            <html:text property="java|hostname"
                                        styleClass="form-control"
                                        size="32" styleId="hostname" />
                         </div>

@@ -1,3 +1,21 @@
+- Default log_level to 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:33:12 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2023.01
+  * Allow using container images from different registry paths
+
+-------------------------------------------------------------------
+Wed Dec 14 13:50:56 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2022.12
+
+-------------------------------------------------------------------
+Fri Nov 18 14:15:41 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2022.11
+
 -------------------------------------------------------------------
 Wed Sep 28 07:43:59 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 

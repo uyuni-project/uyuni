@@ -1,5 +1,8 @@
-# Copyright 2021-2022 SUSE LLC
+# Copyright 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the different
+### kinds of minions as well as PXE boot and Retail.
 
 # This function returns the net prefix, caching it
 def net_prefix
@@ -49,7 +52,6 @@ def compute_kiwi_profile_filename(host)
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
-    # 'Kiwi/POS_Image-JeOS6_41' for 4.1 branch
     # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
     'Kiwi/POS_Image-JeOS6_head'
   else
@@ -68,7 +70,6 @@ def compute_kiwi_profile_name(host)
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
-    # 'POS_Image_JeOS6_41' for 4.1 branch
     # 'POS_Image_JeOS6_42' for 4.2 branch
     'POS_Image_JeOS6_head'
   else

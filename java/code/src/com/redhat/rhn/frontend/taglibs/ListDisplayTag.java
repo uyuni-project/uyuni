@@ -426,7 +426,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
     }
     private void doSort(String sortedColumn) {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        getPageList().sort(new DynamicComparator(sortedColumn,
+        getPageList().sort(new DynamicComparator<>(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
         resetIterator();
     }
@@ -537,7 +537,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         }
 
         Object [] args = new Object[4];
-        if (getPageList().size() == 0) {
+        if (getPageList().isEmpty()) {
             args[0] = 0;
             args[1] = args[0];
             args[2] = args[0];
@@ -611,7 +611,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
     }
 
     private void renderActionButtons(JspWriter out) throws IOException {
-        if (getPageList().size() == 0 || getButton() == null) {
+        if (getPageList().isEmpty() || getButton() == null) {
             return;
         }
 
@@ -832,7 +832,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             StringWriter paginationContent = new StringWriter();
 
             pageContext.pushBody(alphaBarContent);
-            if (getPageList().getIndex().size() > 0 &&
+            if (!getPageList().getIndex().isEmpty() &&
                     getPageList().size() < getPageList().getTotalSize()) {
 
                 //renderViewAllLink(alphaBarContent);

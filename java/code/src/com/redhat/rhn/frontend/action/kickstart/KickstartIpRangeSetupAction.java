@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartIpRangeDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -43,10 +44,11 @@ import javax.servlet.http.HttpServletResponse;
 public class KickstartIpRangeSetupAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -79,7 +81,7 @@ public class KickstartIpRangeSetupAction extends RhnAction {
      *
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    protected DataResult<KickstartIpRangeDto> getDataResult(RequestContext rctx, PageControl pc) {
         Org org = rctx.getCurrentUser().getOrg();
         return KickstartLister.getInstance().kickstartIpRangesInOrg(org, pc);
     }

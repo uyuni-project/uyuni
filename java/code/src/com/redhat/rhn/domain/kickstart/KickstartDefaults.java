@@ -87,7 +87,7 @@ public class KickstartDefaults {
      * Getter for cfgManagementFlag
      * @return Boolean to get
     */
-    public Boolean getCfgManagementFlag() {
+    public boolean getCfgManagementFlag() {
         return this.cfgManagementFlag;
     }
 
@@ -103,7 +103,7 @@ public class KickstartDefaults {
      * Getter for remoteCommandFlag
      * @return Boolean to get
     */
-    public Boolean getRemoteCommandFlag() {
+    public boolean getRemoteCommandFlag() {
         return this.remoteCommandFlag;
     }
 

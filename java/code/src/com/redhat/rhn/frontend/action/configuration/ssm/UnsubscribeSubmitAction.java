@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -39,15 +40,17 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    @Override
+    protected DataResult<ConfigChannelDto> getDataResult(User userIn,
+                                                         ActionForm formIn,
+                                                         HttpServletRequest requestIn) {
         return ConfigurationManager.getInstance().ssmChannelList(userIn, null);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }
@@ -55,6 +58,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("unsubscribe.jsp.unsubscribe", "unsubscribe");
     }
@@ -62,6 +66,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

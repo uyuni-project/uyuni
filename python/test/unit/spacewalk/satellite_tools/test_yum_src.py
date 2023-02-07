@@ -206,20 +206,58 @@ class YumSrcTest(unittest.TestCase):
         self.repo.root = self.tmpdir
         cs.channel_arch = "arch1"
         grabber_mock = Mock()
+        mirror_request_mock = Mock()
+        mirror_request_mock.return_value.headers = {"Content-Type":"text/plain"}
+        nonmirror_request_mock = Mock()
+        nonmirror_request_mock.return_value.headers = {"Content-Type":"text/html"}
 
-        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
-            with open(fake_mirrorlist_file, "w") as fake_list:
-                fake_list.writelines([
-                    "http://host1/base/$basearch/os/\n",
-                    "http://host2/base/$BASEARCH/os/\n",
-                    "http://host3/base/$ARCH/os/\n",
-                ])
-            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
-            self.assertEqual(mirrors, [
-                "http://host1/base/arch1/os/",
-                "http://host2/base/arch1/os/",
-                "http://host3/base/arch1/os/",
-            ])
+        # If webpage is plaintext format, check list of mirrors is returned
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.requests.get", mirror_request_mock):
+            with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+                with open(fake_mirrorlist_file, "w") as fake_list:
+                    fake_list.writelines([
+                        "http://host1/base/$basearch/os/\n",
+                        "http://host2/base/$BASEARCH/os/\n",
+                        "http://host3/base/$ARCH/os/\n",
+                        ])
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                self.assertEqual(mirrors, [
+                    "http://host1/base/arch1/os/",
+                    "http://host2/base/arch1/os/",
+                    "http://host3/base/arch1/os/",
+                    ])
+
+        # If webpage is html format, and so not mirrorlist, check list of 'mirrors' is blank
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.requests.get", nonmirror_request_mock):
+            with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+                with open(fake_mirrorlist_file, "w") as fake_list:
+                    fake_list.writelines([
+                        "http://host1/base/$basearch/os/\n",
+                        "http://host2/base/$BASEARCH/os/\n",
+                        "http://host3/base/$ARCH/os/\n",
+                        ])
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                self.assertEqual(mirrors, [])
+
+        # If mirrorlist contains invalid repos, check they are discarded
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.requests.get", mirror_request_mock):
+            with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+                with open(fake_mirrorlist_file, "w") as fake_list:
+                    fake_list.writelines([
+                        "http://host1/base/$basearch/os/\n",
+                        "http://NOPE/<fdsfsk>\n"
+                        "http://host2/base/$BASEARCH/os/\n",
+                        "http://[{fdsfkjnn`fds/\n",
+                        "http://host3/base/$ARCH/os/\n",
+                        ])
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                self.assertEqual(mirrors, [
+                    "http://host1/base/arch1/os/",
+                    "http://host2/base/arch1/os/",
+                    "http://host3/base/arch1/os/",
+                    ])
+
+
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
@@ -256,18 +294,22 @@ class YumSrcTest(unittest.TestCase):
                                                                                      proxy_pass
                                                                                      ))
         grabber_mock = Mock()
+        mirror_request_mock = Mock()
+        mirror_request_mock.return_value.headers = {"Content-Type":"text/plain"}
 
-        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
-            with open(fake_mirrorlist_file, "w") as fake_list:
-                fake_list.writelines([
-                    "http://example/base/arch1/os/\n",
-                    "http://example/\n",
-                    "http://example.com/\n",
-                    "https://example.org/repo/path/?token\n",
-                ])
-            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.requests.get", mirror_request_mock):
+            with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+                with open(fake_mirrorlist_file, "w") as fake_list:
+                    fake_list.writelines([
+                        "http://example/base/arch1/os/\n",
+                        "http://example/\n",
+                        "http://example.com/\n",
+                        "https://example.org/repo/path/?token\n",
+                    ])
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
 
-            self.assertEqual(mirrors, expected_url_list)
+                self.assertEqual(mirrors, expected_url_list)
+
 
     def test_prep_zypp_repo_url_with_proxy(self):
         cs = self._make_dummy_cs()

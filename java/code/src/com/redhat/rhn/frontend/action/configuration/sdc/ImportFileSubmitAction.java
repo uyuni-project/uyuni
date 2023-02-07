@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -51,8 +52,9 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, ActionForm form,
-            HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigFileNameDto> getDataResult(User user, ActionForm form,
+                                                          HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         return ConfigurationManager.getInstance().listFileNamesForSystem(user,
                 rctx.lookupServer(), null);
@@ -61,6 +63,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }
@@ -68,6 +71,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("sdcimportfile.jsp.button", "importFile");
     }
@@ -75,8 +79,9 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn, HttpServletRequest requestIn,
-            Map<String, Object> paramsIn) {
+                                   Map<String, Object> paramsIn) {
         //keep sid around
         paramsIn.put("sid", requestIn.getParameter("sid"));
     }

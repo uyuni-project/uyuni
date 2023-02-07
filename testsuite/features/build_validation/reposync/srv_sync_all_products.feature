@@ -1,4 +1,4 @@
-# Copyright 2017-2022 SUSE LLC
+# Copyright 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -31,20 +31,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
-
-@sle15_minion
-  Scenario: Add SUSE Linux Enterprise Server 15
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
-    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
-    When I select "SUSE Linux Enterprise Server LTSS 15 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 15 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
 
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1
@@ -146,6 +132,46 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
 
+@rocky9_minion
+  Scenario: Add Rocky Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Rocky Linux 9" as the filtered product description
+    And I select "Rocky Linux 9" as a product
+    Then I should see the "Rocky Linux 9" selected
+    When I click the Add Product button
+    And I wait until I see "Rocky Linux 9" product has been added
+
+@alma9_minion
+  Scenario: Add Alma Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 9 x86_64" as the filtered product description
+    And I select "AlmaLinux 9 x86_64" as a product
+    Then I should see the "AlmaLinux 9 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 9 x86_64" product has been added
+
+@oracle9_minion
+  Scenario: Add Oracle Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Oracle Linux 9" as the filtered product description
+    And I select "Oracle Linux 9" as a product
+    Then I should see the "Oracle Linux 9" selected
+    When I click the Add Product button
+    And I wait until I see "Oracle Linux 9" product has been added
+
+@rhel9_minion
+Scenario: Add RHEL and Liberty 9
+  When I follow the left menu "Admin > Setup Wizard > Products"
+  And I wait until I do not see "Loading" text
+  And I enter "RHEL and Liberty 9 Base" as the filtered product description
+  And I select "RHEL and Liberty 9 Base" as a product
+  Then I should see the "RHEL and Liberty 9 Base" selected
+  When I click the Add Product button
+  And I wait until I see "RHEL and Liberty 9 Base" product has been added
+
 @ubuntu1804_minion
   Scenario: Add Ubuntu 18.04
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -227,3 +253,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
+
+  Scenario: Detect product loading issues from the UI in Build Validation
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    Then I should not see a "Operation not successful" text
+    And I should not see a warning sign

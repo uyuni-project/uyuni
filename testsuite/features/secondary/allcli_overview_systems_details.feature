@@ -6,7 +6,6 @@ Feature: The system details of each minion and client provides an overview of th
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
 @sle_minion
   Scenario: SLE minion hardware refresh
     Given I am on the Systems overview page of this "sle_minion"

@@ -33,10 +33,9 @@ public class FormatDateTagTest extends RhnBaseTestCase {
 
     /**
      * Test tag output
-     * @throws java.lang.Exception something bad happened
      */
     @Test
-    public void testTagOutput() throws Exception {
+    public void testTagOutput() {
 
         FormatDateTag ht = new FormatDateTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(ht, null);
@@ -59,7 +58,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testTagOutputNullValue() throws Exception {
+    public void testTagOutputNullValue() {
 
         FormatDateTag ht = new FormatDateTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(ht, null);

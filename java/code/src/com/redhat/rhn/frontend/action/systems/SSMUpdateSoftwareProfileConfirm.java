@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -52,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SSMUpdateSoftwareProfileConfirm
  */
-public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listable {
+public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listable<SystemOverview> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SSMUpdateSoftwareProfileConfirm.class);
@@ -60,10 +61,11 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         User user = context.getCurrentUser();
@@ -114,9 +116,8 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
-        return SystemManager.inSet(contextIn.getCurrentUser(),
-                                        RhnSetDecl.SYSTEMS.getLabel());
+    @Override
+    public List<SystemOverview> getResult(RequestContext contextIn) {
+        return SystemManager.inSet(contextIn.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel());
     }
-
 }

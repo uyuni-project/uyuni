@@ -43,10 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 public class EnableUserAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin)",
                 request, null)) {

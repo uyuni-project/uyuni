@@ -26,6 +26,7 @@ public class CloneErrataAction implements MessageAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msgIn) {
         CloneErrataEvent msg = (CloneErrataEvent) msgIn;
         ErrataManager.cloneErrata(msg.getChannelId(), msg.getErrata(), msg.isRequestRepodataRegen(), msg.getUser());

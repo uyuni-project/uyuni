@@ -1,0 +1,99 @@
+{
+    "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+      "__run_num__": 1,
+      "changes": {},
+      "comment": "onlyif execution failed",
+      "duration": 118.726,
+      "name": "cat /etc/centos-release",
+      "result": true,
+      "skip_watch": true,
+      "start_time": "06:54:14.670755"
+    },
+    "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run": {
+      "comment": "Command \"cat /etc/oracle-release\" run",
+      "name": "cat /etc/oracle-release",
+      "start_time": "14:04:57.667941",
+      "skip_watch": true,
+      "result": true,
+      "duration": 233.474,
+      "__run_num__": 3,
+      "changes": {}
+    },
+    "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
+      "comment": "Command \"cat /etc/alinux-release\" run",
+      "name": "cat /etc/alinux-release",
+      "start_time": "14:04:57.667941",
+      "skip_watch": true,
+      "result": true,
+      "duration": 233.474,
+      "__run_num__": 3,
+      "changes": {}
+    },
+    "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+      "__run_num__": 2,
+      "changes": {},
+      "comment": "Command \"rpm -q --whatprovides 'sles_es-release-server'\" run",
+      "duration": 281.741,
+      "name": "rpm -q --whatprovides 'sles_es-release-server'",
+      "result": true,
+      "start_time": "06:54:14.789762"
+    },
+    "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+      "__run_num__": 2,
+      "changes": {
+        "pid": 477,
+        "retcode": 0,
+        "stderr": "",
+        "stdout": "sll-release-9.0-2.17.el9.x86_64"
+      },
+      "comment": "Command \"rpm -q --whatprovides 'sll-release'\" run",
+      "duration": 281.741,
+      "name": "rpm -q --whatprovides 'sll-release'",
+      "result": true,
+      "start_time": "06:54:14.789762"
+    },
+    "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
+      "__run_num__": 0,
+      "changes": {
+        "pid": 474,
+        "retcode": 0,
+        "stderr": "",
+        "stdout": "Red Hat Enterprise Linux release 9.0 (Plow)\n# This is a \"SUSE Liberty Linux 9.0\"\n# The above \"Red Hat Enterprise Linux Server\" string is only used to\n# keep software compatibility."
+      },
+      "comment": "Command \"cat /etc/redhat-release\" run",
+      "duration": 241.09,
+      "name": "cat /etc/redhat-release",
+      "result": true,
+      "start_time": "06:54:14.429386"
+    },
+  "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run": {
+    "comment": "Command \"cat /etc/almalinux-release\" run",
+    "name": "cat /etc/almalinux-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
+  },
+  "cmd_|-amazonrelease_|-cat /etc/system-release_|-run": {
+    "comment": "Command \"cat /etc/system-release\" run",
+    "name": "cat /etc/system-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
+  },
+  "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run": {
+    "comment": "Command \"cat /etc/rocky-release\" run",
+    "name": "cat /etc/rocky-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
+  }
+}

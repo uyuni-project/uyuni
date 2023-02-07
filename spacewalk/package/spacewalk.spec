@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -82,12 +82,21 @@ Recommends:     virtual-host-gatherer-VMware
 Requires:       subscription-matcher
 Requires:       susemanager-sls
 
-# Requires:       mgr-osa-dispatcher
-# Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
 Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
+
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:	weakremover(jabberd)
+Provides:	weakremover(jabberd-sqlite)
+Provides:	weakremover(jabberd-db)
+Provides:	weakremover(spacewalk-setup-jabberd)
+Provides:	weakremover(python3-jabberpy)
+Provides:	weakremover(mgr-osa-dispatcher)
+Provides:	weakremover(python3-mgr-osa-dispatcher)
+Provides:	weakremover(python3-mgr-osa-common)
 
 %description common
 Spacewalk is a systems management application that will

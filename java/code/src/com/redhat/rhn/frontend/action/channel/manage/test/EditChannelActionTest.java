@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public class EditChannelActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
     /*
         setRequestPathInfo("/channel/manage/EditChannel");
         actionPerform();

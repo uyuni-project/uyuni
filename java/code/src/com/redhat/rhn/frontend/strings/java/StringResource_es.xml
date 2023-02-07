@@ -2815,11 +2815,11 @@ and try again.
         <target>Crear  filtro de notificación</target>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>Subir archivo kickstart</target>
+        <target state="needs-adaptation">Subir archivo kickstart</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -7212,13 +7212,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         </context-group>
         <target>Dirección de correo-e</target>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>Nombre de anfitrión</target>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -8054,47 +8047,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>z/VM</target>
-      </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>en el día anterior</target>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>en la semana pasada</target>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>en los últimos 30 días</target>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>en los últimos 180 días</target>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>Todos los sistemas</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -10916,6 +10868,72 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

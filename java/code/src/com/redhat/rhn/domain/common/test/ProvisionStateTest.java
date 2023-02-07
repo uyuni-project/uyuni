@@ -31,7 +31,7 @@ import java.util.Date;
 public class ProvisionStateTest extends RhnBaseTestCase {
 
     @Test
-    public void testProvisionState() throws Exception {
+    public void testProvisionState() {
 
         ProvisionState p = new ProvisionState();
         p.setCreated(new Date());

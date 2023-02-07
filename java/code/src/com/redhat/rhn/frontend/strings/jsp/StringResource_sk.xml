@@ -802,49 +802,49 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.userlist" xml:space="preserve">
           <source>Cannot display user list.</source>
-        <target/>
+        <target>Nie je možné zobraziť zoznam používateľov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.lookupuser" xml:space="preserve">
           <source>Cannot view user information.</source>
-        <target/>
+        <target>Nie je možné pozrieť informácie o používateľovi.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.acl" xml:space="preserve">
           <source>Permission Error.</source>
-        <target/>
+        <target>Chyba oprávnení.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.channel" xml:space="preserve">
           <source>You must be a channel administrator in order to edit a channel.</source>
-        <target/>
+        <target>Musíte byť administrátorom kanála, aby ste ho mohli upravovať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.package" xml:space="preserve">
           <source>You cannot view package information for this package.</source>
-        <target/>
+        <target>Informácie o balíku pre tento balík nie je možné zobraziť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.subscribechannel" xml:space="preserve">
           <source>You cannot subscribe or unsubscribe systems to this channel.</source>
-        <target/>
+        <target>K tomuto kanálu nie je možné prihlásiť ani odhlásiť systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.removerole" xml:space="preserve">
           <source>You cannot remove the {0} role from the last {0}.</source>
-        <target/>
+        <target>Rolu {0} nie je možné odstrániť z posledného {0}.</target>
         <context-group name="ctx">
             <context context-type="paramnotes">You cannot remove the Organization Administrator role from the last Organization Administrator.</context>
           </context-group>
@@ -854,49 +854,49 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.deleteuser" xml:space="preserve">
           <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
-        <target/>
+        <target>Ak chcete odstrániť používateľa, musíte byť administrátorom organizácie pre @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.disableuser" xml:space="preserve">
           <source>You must be an organization administrator to deactivate a user.</source>
-        <target/>
+        <target>Ak chcete deaktivovať používateľa, musíte byť administrátorom organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.enableuser" xml:space="preserve">
           <source>You must be an organization administrator to reactivate a user.</source>
-        <target/>
+        <target>Ak chcete opätovne aktivovať používateľa, musíte byť administrátorom organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.userlist" xml:space="preserve">
           <source>You must be an organization administrator to view this page. Contact your organization administrator to get information on the users in this system.</source>
-        <target/>
+        <target>Musíte byť administrátorom organizácie, aby ste mohli prezerať túto stránku. Kontaktujte svojho administrátora organizácie, aby ste získali informácie o používateľoch v tomto systéme.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.lookupuser" xml:space="preserve">
           <source>You must be an organization administrator to view information on users in this organization.</source>
-        <target/>
+        <target>Musíte byť administrátor organizácie, aby ste mohli prezerať informácie o používateľoch v tejto organizácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.header" xml:space="preserve">
           <source>You do not have the appropriate permission set to access the requested page. You may have reached this error page in one of several ways:</source>
-        <target/>
+        <target>Nemáte nastavené príslušné oprávnenie na prístup k požadovanej stránke. Na túto chybovú stránku ste sa mohli dostať jedným z niekoľkých spôsobov:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.reason2" xml:space="preserve">
           <source>Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after {0} minutes of inactivity. To sign in again, click &lt;a href="{1}"&gt;here&lt;/a&gt;.</source>
-        <target/>
+        <target>Vaša prihlasovacie sedenie vypršalo. Z bezpečnostných dôvodov @@PRODUCT_NAME@@ ukončí vaše prihlasovacie sedenie po {0} minútach nečinnosti. Ak sa chcete znova prihlásiť, kliknite na &lt;a href="{1}"&gt;tu&lt;/a&gt;.</target>
         <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
@@ -906,7 +906,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.reason3" xml:space="preserve">
           <source>You've found an error in our site. Please contact your Support representative with details of how you received this message.</source>
-        <target/>
+        <target>Na našej stránke ste našli chybu. Prosím, kontaktujte svojho zástupcu podpory s podrobnosťami o tom, ako ste dostali túto správu.</target>
         <context-group name="ctx">
             <context context-type="paramnotes">You've found an error in our site. Please help us by filling out _this form_ with details of how you received this message.</context>
           </context-group>
@@ -916,91 +916,91 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.reason4" xml:space="preserve">
           <source>Your browser does not have cookies enabled. The @@PRODUCT_NAME@@ requires cookies in order to function; if you have disabled them, please re-enable them to use the site.</source>
-        <target/>
+        <target>Váš prehliadač nemá povolené súbory cookie. Na fungovanie @@PRODUCT_NAME@@ sú potrebné súbory cookie; ak ste ich zakázali, znovu ich povoľte, aby ste mohli stránku používať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.reason5" xml:space="preserve">
           <source>You've done something naughty. Stop it.</source>
-        <target/>
+        <target>Urobili ste niečo neposlušné. Prestaňte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.orglist" xml:space="preserve">
           <source>Can not display Organization List</source>
-        <target/>
+        <target>Nie je možné zobraziť zoznam organizácií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.orgdetail" xml:space="preserve">
           <source>Can not display Organization Details</source>
-        <target/>
+        <target>Nie je možné zobraziť podrobnosti o organizácii</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.general" xml:space="preserve">
           <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
-        <target/>
+        <target>Na prezeranie tejto stránky musíte byť administrátorom @@PRODUCT_NAME@@. Kontaktujte svojho administrátora @@PRODUCT_NAME@@, aby ste získali informácie o organizáciách v tomto systéme.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.title" xml:space="preserve">
         <source>Page Request Error</source>
-        <target/>
+        <target>Chyba požiadavky na stránku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.summary" xml:space="preserve">
         <source>We could not display the requested page because of a missing parameter.  This error could have occurred several ways:</source>
-        <target/>
+        <target>Požadovanú stránku sa nepodarilo zobraziť z dôvodu chýbajúceho parametra.  K tejto chybe mohlo dôjsť niekoľkými spôsobmi:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason1" xml:space="preserve">
         <source>An incorrect or out-of-date bookmark.</source>
-        <target/>
+        <target>Nesprávna alebo neaktuálna záložka.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason2" xml:space="preserve">
         <source>An incorrect or out-of-date hyperlink.</source>
-        <target/>
+        <target>Nesprávny alebo neaktuálny hypertextový odkaz.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason3" xml:space="preserve">
         <source>Your browser encountered an error handling request parameters.  Continued use of this browser may yield unexpected results.</source>
-        <target/>
+        <target>Váš prehliadač narazil na chybu pri spracovaní parametrov požiadavky.  Pokračujúce používanie tohto prehliadača môže priniesť neočakávané výsledky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason4" xml:space="preserve">
         <source>You've found an error in our site.</source>
-        <target/>
+        <target>Na našej stránke ste našli chybu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.title" xml:space="preserve">
         <source>Page Not Found</source>
-        <target/>
+        <target>Stránka sa nenašla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
-        <target/>
+        <target>Vami požadovaná stránka {0} sa nenašla.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1010,14 +1010,14 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason1" xml:space="preserve">
         <source>If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated.</source>
-        <target/>
+        <target>Ak ste túto adresu zadali do prehliadača, prekontrolujte si pravopis a písanie veľkých písmen. Adresa, ktorú kopírujete, môže byť tiež neaktuálna.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Ak ste prešli na odkaz, môže byť nesprávny alebo neaktuálny.  Kliknite na tlačidlo späť v prehliadači a vyskúšajte iné prepojenie alebo použite hornú navigačnú ikonu na prechod na domovskú stránku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1028,7 +1028,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Ak ste použili záložku, stránka sa mohla od jej vytvorenia presunúť na iné umiestnenie. Pomocou hornej navigačnej ikony prejdite na domovskú stránku a ak nájdete dokument, nezabudnite aktualizovať svoju záložku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1039,98 +1039,98 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
-        <target/>
+        <target>Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali túto správu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="500.jsp.imgAlt" xml:space="preserve">
         <source>error</source>
-        <target/>
+        <target>chyba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="500.jsp.title" xml:space="preserve">
         <source>Internal Server Error</source>
-        <target/>
+        <target>Interná chyba servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="500.jsp.summary" xml:space="preserve">
         <source>The server experienced a problem which prevented your request from being filled out.  It may not be possible to execute this action at this time.</source>
-        <target/>
+        <target>Na serveri sa vyskytol problém, ktorý zabránil vyplneniu vašej požiadavky.  V tomto čase možno nebude možné túto akciu vykonať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="500.jsp.message" xml:space="preserve">
         <source>Please help us correct this problem by contacting us with details of how you received this message.</source>
-        <target/>
+        <target>Prosím, pomôžte nám odstrániť tento problém tým, že nás kontaktujete a uvediete podrobnosti o tom, ako ste túto správu dostali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
-        <target/>
+        <target>Niektoré funkcie vyžadujú na správne fungovanie JavaScript. Uistite sa, že máte v prehliadači povolený JavaScript.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgadmin.displayname" xml:space="preserve">
         <source>Org Admin?*</source>
-        <target/>
+        <target>Admin org?*</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satadmin.displayname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Admin?</source>
-        <target/>
+        <target>Admin @@PRODUCT_NAME@@?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="username.nopunc.displayname" xml:space="preserve">
         <source>Username</source>
-        <target/>
+        <target>Používateľské meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="username.displayname" xml:space="preserve">
         <source>Username:</source>
-        <target/>
+        <target>Používateľské meno:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="realname.displayname" xml:space="preserve">
         <source>Real Name</source>
-        <target/>
+        <target>Skutočné meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="password.displayname" xml:space="preserve">
         <source>Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target>Heslo &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirmpass.displayname" xml:space="preserve">
         <source>Confirm Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target>Potvrdiť heslo &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.Update" xml:space="preserve">
         <source>Update</source>
-        <target/>
+        <target>Aktualizovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChangeEmail</context>
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
@@ -1142,84 +1142,84 @@
       </trans-unit>
       <trans-unit id="message.Create" xml:space="preserve">
         <source>Create</source>
-        <target/>
+        <target>Vytvoriť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedModeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.displayname" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="change.displayname" xml:space="preserve">
         <source>Change</source>
-        <target/>
+        <target>Zmeniť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="firstNames.displayname" xml:space="preserve">
         <source>First Name &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target>Krstné meno &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lastName.displayname" xml:space="preserve">
         <source>Last Name &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target>Priezvisko &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.displayname" xml:space="preserve">
         <source>Email:</source>
-        <target/>
+        <target>Email:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="prefix.displayname" xml:space="preserve">
         <source>Prefix:</source>
-        <target/>
+        <target>Predpona:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="position.displayname" xml:space="preserve">
         <source>Position:</source>
-        <target/>
+        <target>Pozícia:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="created.displayname" xml:space="preserve">
         <source>Created:</source>
-        <target/>
+        <target>Vytvorený:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="last_sign_in.displayname" xml:space="preserve">
         <source>Last Sign In:</source>
-        <target/>
+        <target>Naposledy prihlásený:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address_record.displayname" xml:space="preserve">
         <source>Address Record:</source>
-        <target/>
+        <target>Záznam adresy:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.actionArchived" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; action archived.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcia archivovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -1231,7 +1231,7 @@
       </trans-unit>
       <trans-unit id="message.actionsArchived" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions archived.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcie archivované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -1243,7 +1243,7 @@
       </trans-unit>
       <trans-unit id="message.actionCancelled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; action cancelled.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcia zrušená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="paramnotes">
@@ -1253,7 +1253,7 @@
       </trans-unit>
       <trans-unit id="message.actionsCancelled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions cancelled.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcie zrušené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="paramnotes">
@@ -1263,7 +1263,7 @@
       </trans-unit>
       <trans-unit id="message.actionDeleted" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; action deleted.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcia vymazaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
           <context context-type="paramnotes">
@@ -1273,7 +1273,7 @@
       </trans-unit>
       <trans-unit id="message.actionsDeleted" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions deleted.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; akcie vymazané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
           <context context-type="paramnotes">
@@ -1284,56 +1284,56 @@
       <!-- preferences.jsp -->
       <trans-unit id="preferences.jsp.alt" xml:space="preserve">
         <source>Preferences Icon</source>
-        <target/>
+        <target>Ikona predvolieb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.header" xml:space="preserve">
         <source>Email Notifications</source>
-        <target/>
+        <target>Emailové upozornenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.leadin" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ offers email notifications for when patches relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ ponúka emailové upozornenia na vydanie opráv relevantných pre vaše systémy, ako aj denné emaily so súhrnom udalostí pre vaše systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote" xml:space="preserve">
         <source> Receive email notifications</source>
-        <target/>
+        <target> Prijímanie emailových upozornení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote" xml:space="preserve">
         <source> Receive taskomatic notifications</source>
-        <target/>
+        <target> Prijímanie upozornení taskomatic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.listsize" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ List Page Size</source>
-        <target/>
+        <target>Veľkosť stránky zoznamu @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.controlentry" xml:space="preserve">
         <source>This controls how many entries, like systems, would be displayed per page in a list context.</source>
-        <target/>
+        <target>Týmto sa určuje, koľko položiek, ako napríklad systémov, sa zobrazí na jednej stránke v rámci zoznamu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.show" xml:space="preserve">
         <source>Show</source>
-        <target/>
+        <target>Zobraziť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1341,98 +1341,98 @@
       <!--Start of  the Pane entries Section-->
       <trans-unit id="preferences.tasks.name" xml:space="preserve">
         <source>Tasks</source>
-        <target/>
+        <target>Úlohy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.tasks.description" xml:space="preserve">
         <source> A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
-        <target/>
+        <target> Na úlohy zamerané menu rýchlych odkazov na rôzne oblasti používateľského rozhrania @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name" xml:space="preserve">
         <source>Most Critical Systems</source>
-        <target/>
+        <target>Najkritickejšie systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.description" xml:space="preserve">
         <source> A listing of the systems with the most critical update and health status.</source>
-        <target/>
+        <target> Zoznam systémov s najkritickejšou aktualizáciou a zdravotným stavom.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.name" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target>Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.description" xml:space="preserve">
         <source> Preview the overall status of your system groups.</source>
-        <target/>
+        <target> Náhľad na celkový stav vašich systémových skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.name" xml:space="preserve">
         <source>Relevant Security Errata</source>
-        <target/>
+        <target>Príslušné bezpečnostné opravy chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.description" xml:space="preserve">
         <source> View the most recent security errata applicable to your systems.</source>
-        <target/>
+        <target> Zobrazte najnovšie bezpečnostné opravy chýb, ktoré sa vzťahujú na vaše systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.name" xml:space="preserve">
         <source>Inactive Systems</source>
-        <target/>
+        <target>Neaktívne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.description" xml:space="preserve">
         <source> Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
-        <target/>
+        <target> Vypíše zoznam registrovaných systémov @@PRODUCT_NAME@@, ktoré nedávno zastavili prihlasovanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.name" xml:space="preserve">
         <source>Recently Scheduled Actions</source>
-        <target/>
+        <target>Nedávno naplánované akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.description" xml:space="preserve">
         <source> Lists the scheduled actions of the user.</source>
-        <target/>
+        <target> Vypíše zoznam naplánovaných akcií používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.name" xml:space="preserve">
         <source>Recently Registered Systems</source>
-        <target/>
+        <target>Nedávno registrované systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.description" xml:space="preserve">
         <source> A listing of the most recently registered systems within the past 30 days.</source>
-        <target/>
+        <target> Zoznam naposledy zaregistrovaných systémov za posledných 30 dní.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1440,28 +1440,28 @@
       <!--END of  the Pane entries Section-->
       <trans-unit id="preferences.jsp.entriesperpage" xml:space="preserve">
         <source> entries per list page</source>
-        <target/>
+        <target> položiek na stránku zoznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.tz" xml:space="preserve">
         <source>Time Zone</source>
-        <target/>
+        <target>Časové pásmo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.datestimes" xml:space="preserve">
         <source>Dates and times, like system checkin times, will be shown according to the selected timezone.</source>
-        <target/>
+        <target>Dátumy a časy, ako napríklad časy prihlásenia do systému, sa budú zobrazovať podľa vybraného časového pásma.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.displaytimesas" xml:space="preserve">
         <source>Display all times as</source>
-        <target/>
+        <target>Zobraziť všetky časy ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -10810,15 +10810,15 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
-        <target/>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
-        <target/>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
@@ -13132,8 +13132,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
-        <target/>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -28956,8 +28956,8 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target/>
+        <source>Monitored Host</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29315,8 +29315,8 @@ given channel.</source>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="new"/>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29463,13 +29463,128 @@ given channel.</source>
             </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+            <source>Extra Packages</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+            <source>Config Diffs</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+            <source>Proxy</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+            <source>Manager Server</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+            <source>Virtual Host</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+            <source>Virtual Guest</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+            <source>Requires Reboot</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+            <source>Status Type</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

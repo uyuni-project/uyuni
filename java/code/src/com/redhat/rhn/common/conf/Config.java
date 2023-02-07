@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.conf;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +25,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -84,25 +86,19 @@ public class Config {
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
     /** set of configuration file names */
-    private final TreeSet<File> fileList = new TreeSet<>(new Comparator<>() {
+    private final TreeSet<File> fileList = new TreeSet<>((f1, f2) -> {
+        // Need to make sure we read the child namespace before the base
+        // namespace.  To do that, we sort the list in reverse order based
+        // on the length of the file name.  If two filenames have the same
+        // length, then we need to do a lexigraphical comparison to make
+        // sure that the filenames themselves are different.
 
-        /**
-         * {inheritDoc}
-         */
-        public int compare(File f1, File f2) {
-            // Need to make sure we read the child namespace before the base
-            // namespace.  To do that, we sort the list in reverse order based
-            // on the length of the file name.  If two filenames have the same
-            // length, then we need to do a lexigraphical comparison to make
-            // sure that the filenames themselves are different.
+        int lenDif = f2.getAbsolutePath().length() - f1.getAbsolutePath().length();
 
-            int lenDif = f2.getAbsolutePath().length() - f1.getAbsolutePath().length();
-
-            if (lenDif != 0) {
-                return lenDif;
-            }
-            return f2.compareTo(f1);
+        if (lenDif != 0) {
+            return lenDif;
         }
+        return f2.compareTo(f1);
     });
 
     /**
@@ -204,7 +200,7 @@ public class Config {
      */
     public String getString(String value) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() called with: {}", value);
+            logger.debug("getString() -     getString() called with: {}", StringUtil.sanitizeLogInput(value));
         }
         if (value == null) {
             return null;
@@ -218,7 +214,8 @@ public class Config {
             ns = value.substring(0, lastDot);
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> Getting property: {}", property);
+            logger.debug("getString() -     getString() -> Getting property: {}",
+                    StringUtil.sanitizeLogInput(property));
         }
         String result = configValues.getProperty(property);
         if (logger.isDebugEnabled()) {
@@ -496,7 +493,7 @@ public class Config {
         if (lastDotindex != -1) {
             ns = ns.substring(0, ns.lastIndexOf('.'));
         }
-        ns = ns.replaceAll("_", ".");
+        ns = ns.replace("_", ".");
         return ns;
     }
 
@@ -508,7 +505,7 @@ public class Config {
 
             Properties props = new Properties();
             try {
-                String configString = FileUtils.readFileToString(curr, "UTF-8");
+                String configString = FileUtils.readFileToString(curr, StandardCharsets.UTF_8);
                 props.load(new StringReader(configString.replace("\\", "\\\\")));
             }
             catch (IOException e) {

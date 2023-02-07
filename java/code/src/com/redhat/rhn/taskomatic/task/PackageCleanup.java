@@ -43,6 +43,7 @@ public class PackageCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
             String pkgDir = Config.get().getString("web.mount_point");
@@ -51,7 +52,7 @@ public class PackageCleanup extends RhnJavaJob {
             List candidates = findCandidates();
 
             // Bail if no work to do
-            if (candidates == null || candidates.size() == 0) {
+            if (candidates == null || candidates.isEmpty()) {
                 if (log.isDebugEnabled()) {
                     log.debug("No orphaned packages found");
                 }
@@ -85,7 +86,7 @@ public class PackageCleanup extends RhnJavaJob {
     private void resetQueue() {
         WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PKGCLEANUP_RESET_QUEUE);
-        update.executeUpdate(Collections.EMPTY_MAP);
+        update.executeUpdate(Collections.emptyMap());
     }
 
     private void deletePackage(String pkgDir, String path) {
@@ -118,7 +119,7 @@ public class PackageCleanup extends RhnJavaJob {
     private List findCandidates() {
         SelectMode query = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PKGCLEANUP_FIND_CANDIDATES);
-        DataResult dr = query.execute(Collections.EMPTY_MAP);
+        DataResult dr = query.execute(Collections.emptyMap());
         return dr;
     }
 

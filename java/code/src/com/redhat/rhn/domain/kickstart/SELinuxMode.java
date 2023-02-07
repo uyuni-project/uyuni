@@ -72,13 +72,14 @@ public enum SELinuxMode {
     /**
      * @return the mode keys available.
      */
-    public static Collection keys() {
+    public static Collection<String> keys() {
         return MODE_MAP.keySet();
     }
 
     /**
      * @return appropriate to string.
      */
+    @Override
     public String toString() {
         return getValue();
     }

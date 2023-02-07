@@ -31,6 +31,7 @@ import bz2
 import lzma
 import os
 import re
+import requests
 import solv
 import subprocess
 import sys
@@ -522,9 +523,36 @@ class ContentSource:
                         self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
     def _get_mirror_list(self, repo, url):
-        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         returnlist = []
         content = []
+        if url.startswith('file:/'):
+            return returnlist
+
+        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
+        # If page not plaintext or xml, is not a valid mirrorlist or metalink,
+        # so continue without it.
+        proxies = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
+        cert = (self.sslclientcert, self.sslclientkey)
+        verify = self.sslcacert
+        try:
+            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify)
+            # We want to check the page content-type usually, but
+            # we have to wrap the next bit in a try-block for if the resource is
+            # cached and returns a 304; cached page returns no content type
+            # (if page is cached, for now we will assume it is the right type)
+            try:
+                content_type = webpage.headers["Content-Type"]
+                # amazonlinux core channels content-type = binary/octet-stream
+                if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
+                    # Not a valid mirrorlist or metalink; continue without it
+                    return returnlist
+            except KeyError:
+                # This will then go straight to the next try block.
+                log(1, "No content-type header. Treating as valid.")
+        except requests.exceptions.RequestException as exc:
+            self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))
+            return returnlist
+
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, mirrorlist_path)
@@ -548,15 +576,21 @@ class ContentSource:
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
-            # no mirror list found continue without
+            # no mirror list or metalink found continue without
             return returnlist
 
         def _replace_and_check_url(url_list):
             goodurls = []
             skipped = None
             for url in url_list:
-                # obvious bogons get ignored b/c, we could get more interesting checks but <shrug>
+                # obvious bogons get ignored
                 if url in ['', None]:
+                    continue
+                # Discard any urls containing some invalid characters
+                forbidden_characters = "<>^`{|}"
+                url_is_invalid = [x for x in forbidden_characters if(x in url)]
+                if url_is_invalid:
+                    self.error_msg("Discarding invalid url: {}".format(url))
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
@@ -1239,7 +1273,7 @@ type=rpm-md
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['http_headers'] = self.http_headers
+        params['http_headers'] = tuple(self.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)

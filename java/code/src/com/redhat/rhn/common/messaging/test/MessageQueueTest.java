@@ -34,8 +34,9 @@ public class MessageQueueTest extends RhnBaseTestCase {
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
     protected User user;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         logger.debug("setUp - start");
         Config.get().setString("web.mailer_class",
                 MockMail.class.getName());
@@ -45,6 +46,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -163,7 +165,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testDeRegisterMultiple() throws Exception {
+    public void testDeRegisterMultiple() {
         logger.debug("testDeRegisterMultiple - start");
         TestAction.deRegisterAction();
         TestAction.deRegisterAction();
@@ -228,6 +230,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {
@@ -253,6 +256,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {
@@ -278,6 +282,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {

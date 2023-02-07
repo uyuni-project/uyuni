@@ -127,7 +127,7 @@ public class TaskomaticApi {
      */
     public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion, boolean forcePackageListRefresh)
             throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("action_id", Long.toString(actionIn.getId()));
         scheduleParams.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
         scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
@@ -148,7 +148,7 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRepoSync(Channel chan, User user)
                                     throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map<String, Object> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         invoke("tasko.scheduleSingleBunchRun", user.getOrg().getId(),
                 "repo-sync-bunch", scheduleParams);
@@ -207,11 +207,11 @@ public class TaskomaticApi {
                                         throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
-        Map task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
+        Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
-        Map scheduleParams = new HashMap();
+        Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         return (Date) invoke("tasko.scheduleBunch", user.getOrg().getId(),
                 "repo-sync-bunch", jobLabel, cron, scheduleParams);
@@ -337,11 +337,11 @@ public class TaskomaticApi {
     //helper method for scheduling bunch without permission checking
     private Date doScheduleSatBunch(User user, String jobLabel, String bunchName, String cron)
             throws TaskomaticApiException {
-        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
+        Map<String, Object> task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
         if (task != null) {
             doUnscheduleSatTask(jobLabel);
         }
-        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap());
+        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap<>());
     }
 
     /**
@@ -363,7 +363,7 @@ public class TaskomaticApi {
     //helper method for unscheduling bunch without permission checking
     private void doUnscheduleSatBunch(User user, String jobLabel, String bunchName)
             throws TaskomaticApiException {
-        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
+        Map<String, Object> task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
         if (task != null) {
             doUnscheduleSatTask(jobLabel);
         }
@@ -411,9 +411,9 @@ public class TaskomaticApi {
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List findActiveSchedules(User user) throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
-        return schedules;
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findActiveSchedules(User user) throws TaskomaticApiException {
+        return (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
     }
 
     /**
@@ -423,16 +423,17 @@ public class TaskomaticApi {
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List findRunsByBunch(User user, String bunchName) throws TaskomaticApiException {
-        List<Map> runs = (List<Map>) invoke("tasko.listBunchSatRuns", bunchName);
-        return runs;
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findRunsByBunch(User user, String bunchName) throws TaskomaticApiException {
+        return (List<Map<String, Object>>) invoke("tasko.listBunchSatRuns", bunchName);
     }
 
-    private Map findScheduleByBunchAndLabel(String bunchName, String jobLabel, User user)
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> findScheduleByBunchAndLabel(String bunchName, String jobLabel, User user)
         throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSchedulesByBunch",
+        List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSchedulesByBunch",
                 user.getOrg().getId(), bunchName);
-        for (Map schedule : schedules) {
+        for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return schedule;
             }
@@ -440,11 +441,11 @@ public class TaskomaticApi {
         return null;
     }
 
-    private Map findSatScheduleByBunchAndLabel(String bunchName, String jobLabel,
+    private Map<String, Object> findSatScheduleByBunchAndLabel(String bunchName, String jobLabel,
             User user) throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedulesByBunch",
+        List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedulesByBunch",
                 bunchName);
-        for (Map schedule : schedules) {
+        for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return schedule;
             }
@@ -493,8 +494,8 @@ public class TaskomaticApi {
      * @return list of bunches
      * @throws TaskomaticApiException if there was an error
      */
-    public List listSatBunchSchedules(User user) throws TaskomaticApiException {
-        List<Map> bunches = (List<Map>) invoke("tasko.listSatBunches");
+    public List<Map<String, Object>> listSatBunchSchedules(User user) throws TaskomaticApiException {
+        List<Map<String, Object>> bunches = (List<Map<String, Object>>) invoke("tasko.listSatBunches");
         return bunches;
     }
 
@@ -505,9 +506,9 @@ public class TaskomaticApi {
      * @return schedule
      * @throws TaskomaticApiException if there was an error
      */
-    public Map lookupScheduleById(User user, Long scheduleId)
+    public Map<String, Object> lookupScheduleById(User user, Long scheduleId)
         throws TaskomaticApiException {
-        return (Map) invoke("tasko.lookupScheduleById", scheduleId);
+        return (Map<String, Object>) invoke("tasko.lookupScheduleById", scheduleId);
     }
 
     /**
@@ -518,7 +519,7 @@ public class TaskomaticApi {
      * @return schedule
      * @throws TaskomaticApiException if there was an error
      */
-    public Map lookupScheduleByBunchAndLabel(User user, String bunchName,
+    public Map<String, Object> lookupScheduleByBunchAndLabel(User user, String bunchName,
             String scheduleLabel) throws TaskomaticApiException {
         return findSatScheduleByBunchAndLabel(bunchName, scheduleLabel, user);
     }
@@ -530,9 +531,9 @@ public class TaskomaticApi {
      * @return bunch
      * @throws TaskomaticApiException if there was an error
      */
-    public Map lookupBunchByName(User user, String bunchName)
+    public Map<String, Object> lookupBunchByName(User user, String bunchName)
         throws TaskomaticApiException {
-        return (Map) invoke("tasko.lookupBunchByName", bunchName);
+        return (Map<String, Object>) invoke("tasko.lookupBunchByName", bunchName);
     }
 
     /**
@@ -557,7 +558,6 @@ public class TaskomaticApi {
      * @return number of removed schedules
      * @throws TaskomaticApiException if there was an error
      */
-    @SuppressWarnings("unchecked")
     public int unscheduleInvalidRepoSyncSchedules(Org orgIn) throws TaskomaticApiException {
         Set<String> unscheduledLabels = new HashSet<>();
         for (TaskoSchedule schedule : listActiveRepoSyncSchedules(orgIn)) {
@@ -758,10 +758,9 @@ public class TaskomaticApi {
      */
     public void scheduleSinglePaygUpdate(PaygSshData sshdata)
             throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("sshData_id", sshdata.getId().toString());
-        invoke("tasko.scheduleSingleSatBunchRun",
-                "update-payg-data-bunch", scheduleParams);
+        invoke("tasko.scheduleSingleSatBunchRun", "update-payg-data-bunch", scheduleParams);
     }
 
     /**

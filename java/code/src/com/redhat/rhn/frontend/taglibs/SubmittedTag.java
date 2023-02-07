@@ -40,6 +40,7 @@ public class SubmittedTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         HtmlTag input = new HtmlTag("input");
         input.setAttribute("type", HIDDEN);

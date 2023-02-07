@@ -14,10 +14,13 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.Globals;
@@ -43,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 public class SystemDetailsMessageFilter implements Filter {
 
     private static final String REBOOT_MESSAGE_KEY = "overview.jsp.transactionalupdate.reboot";
-    private static final String TRADITIONAL_STACK_MESSAGE_KEY = "overview.jsp.traditionalstack.deprecated";
+    public static final String TRADITIONAL_STACK_MESSAGE_KEY = "overview.jsp.traditionalstack.deprecated";
 
     @Override
     public void doFilter(
@@ -56,10 +59,35 @@ public class SystemDetailsMessageFilter implements Filter {
         RequestContext rctx = new RequestContext(req);
         Long sid = rctx.getRequiredParam("sid");
         User user = rctx.getCurrentUser();
-        Server s  = SystemManager.lookupByIdAndUser(sid, user);
-        s.asMinionServer().ifPresentOrElse(
-            minion -> addMessageIfNecessary(req, minion.doesOsSupportsTransactionalUpdate(), REBOOT_MESSAGE_KEY),
-            () -> addMessageIfNecessary(req, true, TRADITIONAL_STACK_MESSAGE_KEY)
+        try {
+            Server s = SystemManager.lookupByIdAndUser(sid, user);
+            this.processSystemMessages(req, s);
+        }
+        catch (LookupException e) {
+            // Expected to happen when transferring systems between orgs, nothing to do.
+        }
+    }
+
+    /**
+     * Process a system and add the necessary warning messages for it if necessary
+     * @param req - the servlet request
+     * @param server - the system to be processed
+     */
+    public void processSystemMessages(HttpServletRequest req, Server server) {
+        server.asMinionServer().ifPresentOrElse(
+            minion -> processMinionMessages(req, minion),
+            () -> addMessageIfNecessary(req,
+                    server.getEntitlements().stream()
+                            .anyMatch(e -> e.getLabel().equals(EntitlementManager.ENTERPRISE_ENTITLED)),
+                    TRADITIONAL_STACK_MESSAGE_KEY)
+        );
+    }
+
+    private void processMinionMessages(HttpServletRequest req, MinionServer minion) {
+        addMessageIfNecessary(
+            req,
+            minion.doesOsSupportsTransactionalUpdate() && Boolean.TRUE.equals(minion.isRebootNeeded()),
+            REBOOT_MESSAGE_KEY
         );
     }
 

@@ -1,4 +1,22 @@
-- Remove chmod and chown of /srv/www/htdocs/pub as this folder does not exist
+- Adapt to log_level default value being 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:33:34 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:51:13 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.12:
+  * Add missing proxy release notes package
+
+-------------------------------------------------------------------
+Fri Nov 18 14:16:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.11:
+  * Remove chmod and chown of /srv/www/htdocs/pub as this folder
+    does not exist
 
 -------------------------------------------------------------------
 Wed Sep 28 07:44:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>

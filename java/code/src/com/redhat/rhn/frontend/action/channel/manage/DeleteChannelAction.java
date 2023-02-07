@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -74,7 +75,7 @@ public class DeleteChannelAction extends RhnAction {
 
         if (context.isSubmitted()) {
             if ((request.getParameter("unsubscribeSystems") != null) || subscribedSystemsCount == 0) {
-                DataResult dr;
+                DataResult<PackageOverview> dr;
                 try {
                     dr = PackageManager.listCustomPackageForChannel(channelId, user.getOrg().getId(), false);
                     List<MinionServer> minions = ServerFactory.listMinionsByChannel(channel.getId());
@@ -95,7 +96,7 @@ public class DeleteChannelAction extends RhnAction {
                 }
 
                 createSuccessMessage(request, "message.channeldeleted", channel.getName());
-                if (dr.size() > 0) {
+                if (!dr.isEmpty()) {
                     prefillRhnSetWithElements(RhnSetDecl.DELETABLE_PACKAGE_LIST.get(user), dr.iterator());
                     Map<String, Object> params = new HashMap<>();
                     params.put("selected_channel", "all_managed_packages");
@@ -114,10 +115,10 @@ public class DeleteChannelAction extends RhnAction {
         return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    private void prefillRhnSetWithElements(RhnSet set, Iterator identifiables) {
+    private void prefillRhnSetWithElements(RhnSet set, Iterator<? extends Identifiable> identifiables) {
         set.clear();
         while (identifiables.hasNext()) {
-            Identifiable tkn = (Identifiable) identifiables.next();
+            Identifiable tkn = identifiables.next();
             set.addElement(tkn.getId());
         }
         RhnSetFactory.save(set);

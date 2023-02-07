@@ -43,6 +43,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean before(XmlRpcInvocation invocation) {
 
         // we start the timing and return true so processing
@@ -56,7 +57,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         // HACK ALERT!  We need the caller, would be better in
         // the postProcess, but that works for ALL methods except
         // logout.  So we do it here.
-        if ((arguments != null) && (arguments.size() > 0)) {
+        if ((arguments != null) && (!arguments.isEmpty())) {
             if (arguments.get(0) instanceof User) {
                 setCaller((User)arguments.get(0));
             }
@@ -78,8 +79,9 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
-        StringBuffer arguments = processArguments(
+        StringBuilder arguments = processArguments(
             invocation.getHandlerName(),
             invocation.getMethodName(),
             invocation.getArguments()
@@ -97,8 +99,9 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void onException(XmlRpcInvocation invocation, Throwable exception) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         try {
             buf.append("REQUESTED FROM: ");
             buf.append(RhnXmlRpcServer.getCallerIp());
@@ -128,9 +131,9 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         }
     }
 
-    private StringBuffer processArguments(String handler, String method,
+    private StringBuilder processArguments(String handler, String method,
                                   List arguments) {
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         if (arguments != null) {
             int size = arguments.size();
             for (int i = 0; i < size; i++) {

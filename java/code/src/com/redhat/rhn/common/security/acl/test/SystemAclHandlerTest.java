@@ -56,7 +56,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     public void testClientCapable() {
         SystemAclHandler sah = new SystemAclHandler();
 
-        Map ctx = new HashMap();
+        Map<String, Object> ctx = new HashMap<>();
         ctx.put("sid", srvr.getId());
 
         String[] params = { SystemManager.CAP_CONFIGFILES_BASE64_ENC };
@@ -75,7 +75,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     public void testSystemHasKickstartSession() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         SystemAclHandler sah = new SystemAclHandler();
-        Map ctx = new HashMap();
+        Map<String, Object> ctx = new HashMap<>();
         ctx.put("sid", srvr.getId());
         assertFalse(sah.aclSystemKickstartSessionExists(ctx, null));
 
@@ -83,7 +83,6 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
         KickstartSession sess = KickstartSessionTest.createKickstartSession(k, user);
         ctx.put("sid", sess.getOldServer().getId());
-        // TestUtils.saveAndFlush(sess);
         KickstartFactory.saveKickstartSession(sess);
         flushAndEvict(sess);
         assertTrue(sah.aclSystemKickstartSessionExists(ctx, null));

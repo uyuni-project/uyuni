@@ -24,8 +24,10 @@ import static java.util.stream.Stream.concat;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -78,8 +80,10 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.manager.BaseManager;
@@ -99,7 +103,6 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.utils.Opt;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -120,6 +123,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -182,15 +186,16 @@ public class ActionManager extends BaseManager {
      * @param message Message from user, reason of this fail
      * @return int 1 if succeed
      */
-    public static int failSystemAction(User loggedInUser, Long serverId, Long actionId,
-                                       String message) {
+    public static int failSystemAction(User loggedInUser, Long serverId, Long actionId, String message) {
         Action action = ActionFactory.lookupByUserAndId(loggedInUser, actionId);
         Server server = SystemManager.lookupByIdAndUser(serverId, loggedInUser);
+        if (action == null) {
+            throw new LookupException("Could not find action " + actionId + " on system " + serverId);
+        }
         ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server,
                 action);
-        if (action == null || serverAction == null) {
-            throw new LookupException("Could not find action " + actionId + " on system " +
-                    serverId);
+        if (serverAction == null) {
+            throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
         Date now = Calendar.getInstance().getTime();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
@@ -290,7 +295,7 @@ public class ActionManager extends BaseManager {
     public static void deleteActionsByIdAndType(Long id, Integer type) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "delete_actions_by_id_and_type");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("action_type", type);
         m.executeUpdate(params);
@@ -325,7 +330,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static void cancelActions(User user, Collection<Action> actions) throws TaskomaticApiException {
-        cancelActions(user, actions, Optional.empty());
+        cancelActions(user, actions, Collections.emptySet());
     }
 
     /**
@@ -342,18 +347,21 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static void cancelActions(User user, Collection<Action> actions, Optional<Collection<Long>> serverIds)
+    public static void cancelActions(User user, Collection<Action> actions, Collection<Long> serverIds)
         throws TaskomaticApiException {
         if (log.isDebugEnabled()) {
-            String actionIds = actions.stream()
-                    .map(Action::getId)
-                    .collect(toList())
-                    .toString();
+            String actionIds = actions.stream().map(Action::getId).collect(toList()).toString();
             log.debug("Cancelling actions: {} for user: {}", actionIds, user.getLogin());
         }
 
-        // Can only cancel top level actions:
-        if (actions.stream().anyMatch(a -> a.getPrerequisite() != null)) {
+        // Can only cancel top level actions or actions that have failed prerequisite:
+        boolean hasValidPrerequisite = actions.stream()
+                                              .map(Action::getPrerequisite)
+                                              .filter(Objects::nonNull)
+                                              .flatMap(p -> p.getServerActions().stream())
+                                              .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                                              .anyMatch(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+        if (hasValidPrerequisite) {
             throw new ActionIsChildException();
         }
 
@@ -362,21 +370,20 @@ public class ActionManager extends BaseManager {
             actions.stream().flatMap(ActionFactory::lookupDependentActions)
         ).collect(toSet());
 
-        Set<ServerAction> serverActions = actionsToDelete.stream()
-                .flatMap(a -> a.getServerActions().stream())
-                .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
-                        ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
-                .filter(Opt.fold(serverIds,
-                        // if serverIds is not specified, do not filter at all
-                        () -> (a -> true),
-                        // if it is, only ServerActions that have server ids in the specified set can pass
-                        s -> (a -> s.contains(a.getServerId()))
-                ))
-                .collect(toSet());
+        Set<Server> servers = new HashSet<>();
+        Set<ServerAction> serverActions = new HashSet<>();
 
-        Set<Server> servers = serverActions.stream()
-                .map(ServerAction::getServer)
-                .collect(toSet());
+        actionsToDelete.stream()
+                       .flatMap(a -> a.getServerActions().stream())
+                       .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
+                           ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
+                       // if serverIds is not specified, do not filter at all
+                       // if it is, only ServerActions that have server ids in the specified set can pass
+                       .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                       .forEach(sa -> {
+                           serverActions.add(sa);
+                           servers.add(sa.getServer());
+                       });
 
         // fail any Kickstart sessions for these actions and servers
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
@@ -385,13 +392,13 @@ public class ActionManager extends BaseManager {
         Map<Action, Set<Server>> actionMap = actionsToDelete.stream()
                 .map(a -> new ImmutablePair<>(
                         a,
-                        a.getServerActions().stream()
-                            .filter(sa -> isMinionServer(sa.getServer()))
-                            .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
-                            .filter(sa -> servers.contains(sa.getServer()))
-                            .map(ServerAction::getServer)
-                            .collect(toSet())
-                        )
+                        a.getServerActions()
+                         .stream()
+                         .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                         .map(ServerAction::getServer)
+                         .filter(server -> isMinionServer(server) && servers.contains(server))
+                         .collect(toSet())
+                    )
                 )
                 .filter(p -> !p.getRight().isEmpty())
                 .collect(toMap(
@@ -403,24 +410,22 @@ public class ActionManager extends BaseManager {
             taskomaticApi.deleteScheduledActions(actionMap);
         }
 
-        serverActions.stream()
-                .forEach(sa -> {
-                    // Delete ServerActions from the database only if QUEUED
-                    if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
-                        sa.getParentAction().getServerActions().remove(sa);
-                        ActionFactory.delete(sa);
-                    }
-                    // Set to FAILED if the state is PICKED_UP
-                    else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
-                        failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(),
-                                "Canceled by " + user.getLogin());
-                    }
-                    SystemManager.updateSystemOverview(sa.getServerId());
-                });
+        String cancellationMessage = "Canceled by " + user.getLogin();
+        serverActions.forEach(sa -> {
+            // Delete ServerActions from the database only if QUEUED
+            if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
+                sa.getParentAction().getServerActions().remove(sa);
+                ActionFactory.delete(sa);
+            }
+            // Set to FAILED if the state is PICKED_UP
+            else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+                failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(), cancellationMessage);
+            }
+            SystemManager.updateSystemOverview(sa.getServerId());
+        });
 
         // run post-actions
-        actionsToDelete.stream()
-                .forEach(Action::onCancelAction);
+        actionsToDelete.forEach(Action::onCancelAction);
     }
 
     /**
@@ -802,7 +807,7 @@ public class ActionManager extends BaseManager {
      * scheduled action
      * @return A list containing the pending actions for the user
      */
-    public static DataResult recentlyScheduledActions(User user, PageControl pc,
+    public static DataResult<ScheduledAction> recentlyScheduledActions(User user, PageControl pc,
             long age) {
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "recently_scheduled_action_list");
@@ -815,7 +820,7 @@ public class ActionManager extends BaseManager {
             return makeDataResult(params, params, pc, m);
         }
 
-        DataResult dr = m.execute(params);
+        DataResult<ScheduledAction> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -827,7 +832,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the all actions for the user
      */
-    public static DataResult allActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> allActions(User user, PageControl pc) {
         return getActions(user, pc, "all_action_list");
     }
 
@@ -837,7 +842,6 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<ScheduledAction> pendingActions(User user, PageControl pc) {
         return getActions(user, pc, "pending_action_list");
     }
@@ -850,7 +854,7 @@ public class ActionManager extends BaseManager {
      * @param setLabel Label of an RhnSet of actions IDs to limit the results to.
      * @return A list containing the pending actions for the user.
      */
-    public static DataResult pendingActionsInSet(User user, PageControl pc,
+    public static DataResult<ScheduledAction> pendingActionsInSet(User user, PageControl pc,
             String setLabel) {
 
         return getActions(user, pc, "pending_actions_in_set", setLabel);
@@ -865,7 +869,7 @@ public class ActionManager extends BaseManager {
      * @param sid Server id
      * @return A list containing the pending actions for the user.
      */
-    public static DataResult pendingActionsToDeleteInSet(User user, PageControl pc,
+    public static DataResult<SystemPendingEventDto> pendingActionsToDeleteInSet(User user, PageControl pc,
             String setLabel, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "pending_actions_to_delete_in_set");
@@ -876,7 +880,7 @@ public class ActionManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<SystemPendingEventDto> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         dr.setElaborationParams(params);
         return dr;
@@ -888,7 +892,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult failedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> failedActions(User user, PageControl pc) {
         return getActions(user, pc, "failed_action_list");
     }
 
@@ -898,7 +902,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult completedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> completedActions(User user, PageControl pc) {
         return getActions(user, pc, "completed_action_list");
     }
 
@@ -908,7 +912,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult allCompletedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> allCompletedActions(User user, PageControl pc) {
         return getActions(user, pc, "completed_action_list", null, true);
     }
 
@@ -918,7 +922,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult archivedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> archivedActions(User user, PageControl pc) {
         return getActions(user, pc, "archived_action_list");
     }
 
@@ -928,7 +932,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult allArchivedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> allArchivedActions(User user, PageControl pc) {
         return getActions(user, pc, "archived_action_list", null, true);
     }
 
@@ -941,7 +945,7 @@ public class ActionManager extends BaseManager {
      * @param noLimit Return all actions without limiting the results
      * @return Returns a list containing the actions for the user
      */
-    private static DataResult getActions(User user, PageControl pc, String mode,
+    private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode,
             String setLabel, boolean noLimit) {
         SelectMode m = ModeFactory.getMode("Action_queries", mode);
         Map<String, Object> params = new HashMap<>();
@@ -960,7 +964,7 @@ public class ActionManager extends BaseManager {
                 m.setMaxRows(limit);
             }
         }
-        DataResult dr = m.execute(params);
+        DataResult<ScheduledAction> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         dr.setElaborationParams(params);
         return dr;
@@ -974,7 +978,7 @@ public class ActionManager extends BaseManager {
      * @param mode The mode
      * @return Returns a list containing the actions for the user
      */
-    private static DataResult getActions(User user, PageControl pc, String mode,
+    private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode,
             String setLabel) {
         return getActions(user, pc, mode, setLabel, false);
     }
@@ -987,7 +991,7 @@ public class ActionManager extends BaseManager {
      * @param mode The mode
      * @return Returns a list containing the actions for the user
      */
-    private static DataResult getActions(User user, PageControl pc, String mode) {
+    private static DataResult<ScheduledAction> getActions(User user, PageControl pc, String mode) {
         return getActions(user, pc, mode, null);
     }
 
@@ -997,7 +1001,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return Return a list containing the packages for the action.
      */
-    public static DataResult getPackageList(Long aid, PageControl pc) {
+    public static DataResult<Row> getPackageList(Long aid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_associated_with_action");
         Map<String, Object> params = new HashMap<>();
@@ -1005,7 +1009,7 @@ public class ActionManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -1083,10 +1087,10 @@ public class ActionManager extends BaseManager {
      * @param mode The DataSource mode to run
      * @return Returns list containing the completed systems.
      */
-    private static DataResult getActionSystems(User user,
-            Action action,
-            PageControl pc,
-            String mode) {
+    private static DataResult<ActionedSystem> getActionSystems(User user,
+                                                               Action action,
+                                                               PageControl pc,
+                                                               String mode) {
 
         SelectMode m = ModeFactory.getMode("System_queries", mode);
         Map<String, Object> params = new HashMap<>();
@@ -1096,7 +1100,7 @@ public class ActionManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<ActionedSystem> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -1108,8 +1112,7 @@ public class ActionManager extends BaseManager {
      * @param pc The PageControl.
      * @return Returns list containing the completed systems.
      */
-    public static DataResult completedSystems(User user,
-            Action action,
+    public static DataResult<ActionedSystem> completedSystems(User user, Action action,
             PageControl pc) {
 
         return getActionSystems(user, action, pc, "systems_completed_action");
@@ -1123,9 +1126,7 @@ public class ActionManager extends BaseManager {
      * @param pc The PageControl.
      * @return Returns list containing the completed systems.
      */
-    public static DataResult inProgressSystems(User user,
-            Action action,
-            PageControl pc) {
+    public static DataResult<ActionedSystem> inProgressSystems(User user, Action action, PageControl pc) {
 
         return getActionSystems(user, action, pc, "systems_in_progress_action");
     }
@@ -1138,10 +1139,7 @@ public class ActionManager extends BaseManager {
      * @param pc The PageControl.
      * @return Returns list containing the completed systems.
      */
-    public static DataResult failedSystems(User user,
-            Action action,
-            PageControl pc) {
-
+    public static DataResult<ActionedSystem> failedSystems(User user, Action action, PageControl pc) {
         return getActionSystems(user, action, pc, "systems_failed_action");
     }
 
@@ -1405,7 +1403,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageInstall(User scheduler,
-            Server srvr, List pkgs, Date earliestAction) throws TaskomaticApiException {
+            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
     }
@@ -1572,7 +1570,7 @@ public class ActionManager extends BaseManager {
         ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
         Action action = createScheduledAction(user, lookedUpType, name, earliestAction);
         ActionFactory.save(action);
-        ActionFactory.getSession().flush();
+        HibernateFactory.getSession().flush();
         return action;
     }
 
@@ -1844,8 +1842,8 @@ public class ActionManager extends BaseManager {
      */
     public static Action schedulePackageInstall(User scheduler, Server srvr,
             Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
-        List packages = new LinkedList();
-        Map row = new HashMap();
+        List<Map<String, Long>> packages = new LinkedList<>();
+        Map<String, Long> row = new HashMap<>();
         row.put("name_id", nameId);
         row.put("evr_id", evrId);
         row.put("arch_id", archId);
@@ -1869,9 +1867,9 @@ public class ActionManager extends BaseManager {
         if (pkgs.isEmpty()) {
             return null;
         }
-        List packages = new LinkedList();
+        List<Map<String, Long>> packages = new LinkedList<>();
         for (Package pkg : pkgs) {
-            Map row = new HashMap();
+            Map<String, Long> row = new HashMap<>();
             row.put("name_id", pkg.getPackageName().getId());
             row.put("evr_id", pkg.getPackageEvr().getId());
             row.put("arch_id", pkg.getPackageArch().getId());
@@ -1899,7 +1897,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static Action schedulePackageAction(User scheduler,
-            List pkgs,
+            List<Map<String, Long>> pkgs,
             ActionType type,
             Date earliestAction,
             Server...servers) throws TaskomaticApiException {
@@ -1925,7 +1923,7 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler, List pkgs, ActionType type,
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
             Date earliestAction, Set<Long> serverIds)
         throws TaskomaticApiException {
 
@@ -1934,7 +1932,7 @@ public class ActionManager extends BaseManager {
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
         ActionFactory.save(action);
 
-        addPackageActionDetails(Arrays.asList(action), pkgs);
+        addPackageActionDetails(List.of(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
             MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler.getOrg());
@@ -2028,9 +2026,9 @@ public class ActionManager extends BaseManager {
             ActionType type, Date earliestAction)
         throws TaskomaticApiException {
 
-        List packages = new LinkedList();
+        List<Map<String, Long>> packages = new LinkedList<>();
         for (RhnSetElement rse : pkgs.getElements()) {
-            Map row = new HashMap();
+            Map<String, Long> row = new HashMap<>();
             row.put("name_id", rse.getElement());
             row.put("evr_id", rse.getElementTwo());
             row.put("arch_id", rse.getElementThree());

@@ -28,6 +28,8 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -61,8 +63,9 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
@@ -90,7 +93,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
 
         RequestContext ctx = new RequestContext(req);
         RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(ctx.getCurrentUser());
-        Set systemIds = buildIds(systems);
+        Set<Long> systemIds = buildIds(systems);
         populateMaintenanceWindows(req, systemIds);
         ActionChainHelper.prepopulateActionChains(req);
 
@@ -102,21 +105,20 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
     private ConfigChannel setupLists(HttpServletRequest request, User user) {
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
 
-        DataResult files = ConfigurationManager.getInstance().
+        DataResult<ConfigFileDto> files = ConfigurationManager.getInstance().
             listCurrentFiles(user, cc, null,
                     RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.getLabel(), false);
-        DataList list = new DataList(files);
+        DataList<ConfigFileDto> list = new DataList<>(files);
         list.setMode(files.getMode());
         list.setElaboratorParams(files.getElaborationParams());
         request.setAttribute("selectedFiles", list);
 
-        DataResult systems = ConfigurationManager.getInstance().
+        DataResult<ConfigSystemDto> systems = ConfigurationManager.getInstance().
             listSystemInfoForChannel(user, cc, null, true);
-        //systems.elaborate(systems.getElaborationParams());
-        list = new DataList(systems);
-        list.setMode(systems.getMode());
-        list.setElaboratorParams(systems.getElaborationParams());
-        request.setAttribute("selectedSystems", list);
+        DataList<ConfigSystemDto> configSystemsList = new DataList<>(systems);
+        configSystemsList.setMode(systems.getMode());
+        configSystemsList.setElaboratorParams(systems.getElaborationParams());
+        request.setAttribute("selectedSystems", configSystemsList);
 
         ActionErrors errs = new ActionErrors();
         if (files.getTotalSize() == 0) {
@@ -135,6 +137,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         return cc;
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
         Map m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
@@ -146,24 +149,24 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         User usr = new RequestContext(req).getCurrentUser();
 
         RhnSet files = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.get(usr);
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             // Error - you have to have files selcted
             createErrorMessage(req, "deployconfirm.jsp.zeroFiles", null);
             return false;
         }
-        Set fileIds = buildIds(files);
+        Set<Long> fileIds = buildIds(files);
 
         RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(usr);
-        if (systems.size() == 0) {
+        if (systems.isEmpty()) {
             // Error - you have to have systems selcted
             createErrorMessage(req, "deployconfirm.jsp.zeroSystems", null);
             return false;
         }
-        Set systemIds = buildIds(systems);
+        Set<Long> systemIds = buildIds(systems);
         Date datePicked = getStrutsDelegate().readScheduleDate(form, "date", YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(form, usr);
 
-        Map m = ConfigurationManager.getInstance().
+        Map<String, Long> m = ConfigurationManager.getInstance().
             deployFiles(usr, fileIds, systemIds, datePicked, actionChain);
 
         Long successes = m.get("success") == null ? 0L : (Long)m.get("success");
@@ -207,8 +210,8 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         return true;
     }
 
-    private Set buildIds(RhnSet revisions) {
-        Set s = new HashSet();
+    private Set<Long> buildIds(RhnSet revisions) {
+        Set<Long> s = new HashSet<>();
         for (RhnSetElement elt : revisions.getElements()) {
             Long id = elt.getElement();
             s.add(id);

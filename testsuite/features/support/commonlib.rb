@@ -1,8 +1,10 @@
-# Copyright (c) 2013-2022 SUSE LLC.
+# Copyright (c) 2013-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
 require 'yaml'
+require 'nokogiri'
+require 'timeout'
 
 # return current URL
 def current_url
@@ -34,7 +36,8 @@ def compute_channels_to_leave_running
     os_version = node.os_version
     os_family = node.os_family
     next unless ['sles', 'rocky'].include?(os_family)
-    raise "Can't build list of reposyncs to leave running" unless %w[12-SP4 12-SP5 15-SP3 15-SP4 8.6].include? os_version
+    os_version = os_version.split('.')[0] if os_family == 'rocky'
+    raise "Can't build list of reposyncs to leave running" unless %w[12-SP4 12-SP5 15-SP3 15-SP4 8].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
@@ -182,17 +185,17 @@ def deb_host?(name)
 end
 
 def repository_exist?(repo)
-  $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
-  $api_test.auth.logout
   repo_list.include? repo
 end
 
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/'
+  repo_name.sub!(%r{http:\/\/download.suse.de\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/Maintenance:\/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
@@ -200,11 +203,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $build_validation
-    node.run('zypper --non-interactive install tar')
-    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
-  end
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
   node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
@@ -233,11 +232,9 @@ def get_uptime_from_host(host)
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
 end
 
-# Copyright (c) 2010-2022 SUSE LLC.
-# Licensed under the terms of the MIT license.
-
-require 'nokogiri'
-require 'timeout'
+def escape_regex(text)
+  text.gsub(%r{([$.*\[/^])}) { |match| "\\#{match}" }
+end
 
 def get_system_id(node)
   $api_test.system.search_by_name(node.full_hostname).first['id']

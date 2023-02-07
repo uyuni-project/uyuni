@@ -43,6 +43,15 @@
       "result": true,
       "start_time": "06:54:14.789762"
     },
+    "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+      "__run_num__": 2,
+      "changes": {},
+      "comment": "Command \"rpm -q --whatprovides 'sll-release'\" run",
+      "duration": 281.741,
+      "name": "rpm -q --whatprovides 'sll-release'",
+      "result": true,
+      "start_time": "06:54:14.789762"
+    },
     "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
       "__run_num__": 0,
       "changes": {

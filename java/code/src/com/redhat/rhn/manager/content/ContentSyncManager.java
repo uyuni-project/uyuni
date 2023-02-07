@@ -98,6 +98,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -249,7 +250,7 @@ public class ContentSyncManager {
         Iterator<Credentials> i = credentials.iterator();
 
         // stop as soon as a credential pair works
-        while (i.hasNext() && productList.size() == 0) {
+        while (i.hasNext() && productList.isEmpty()) {
             Credentials c = i.next();
             try {
                 SCCClient scc = getSCCClient(c);
@@ -470,9 +471,7 @@ public class ContentSyncManager {
 
 
                 Set<MgrSyncChannelDto> extChildChannels = e.getValue().stream().map(c -> new MgrSyncChannelDto(
-                        c.getA().getRepository().getName() +
-                        (c.getA().getRootProduct().getArch() != null ?
-                                " for " + c.getA().getRootProduct().getArch().getLabel() : ""),
+                        c.getA().getChannelName(),
                         c.getA().getChannelLabel(),
                         c.getA().getProduct().getFriendlyName(),
                         c.getA().getRepository().getDescription(),
@@ -730,8 +729,17 @@ public class ContentSyncManager {
     public void refreshRepositoriesAuthentication(
             Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl, boolean withFix) {
         List<Long> repoIdsFromCredential = new LinkedList<>();
+        List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
+                .map(r -> r.getSccId())
+                .collect(Collectors.toList());
+        List<SCCRepositoryJson> ptfRepos = repositories.stream()
+            .filter(r -> !availableRepoIds.contains(r.getSCCId()))
+            .filter(r -> r.isPtfRepository())
+            .collect(Collectors.toList());
+        generatePtfChannels(ptfRepos);
         Map<Long, SCCRepository> availableRepos = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(SCCRepository::getSccId, r -> r));
+
         List<SCCRepositoryAuth> allRepoAuths = SCCCachingFactory.lookupRepositoryAuth();
         if (c == null) {
             // cleanup if we come from scc
@@ -912,6 +920,124 @@ public class ContentSyncManager {
                 SCCCachingFactory.saveRepository(repository7);
             }));
         }
+    }
+
+    private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
+        List<SCCRepository> reposToSave = new ArrayList<>();
+        List<SUSEProductSCCRepository> productReposToSave = new ArrayList<>();
+        for (SCCRepositoryJson jRepo : repositories) {
+            PtfProductRepositoryInfo ptfInfo = parsePtfInfoFromUrl(jRepo);
+            if (ptfInfo == null) {
+                continue;
+            }
+
+            List<SUSEProduct> rootProducts = SUSEProductFactory.findAllRootProductsOf(ptfInfo.getProduct());
+            if (rootProducts.isEmpty()) {
+                // when no root product was found, we are the root product
+                rootProducts.add(ptfInfo.getProduct());
+            }
+
+            rootProducts.stream()
+                    .map(root -> convertToProductSCCRepository(root, ptfInfo))
+                    .filter(Objects::nonNull)
+                    .forEach(productReposToSave::add);
+
+            reposToSave.add(ptfInfo.getRepository());
+        }
+
+        reposToSave.forEach(SUSEProductFactory::save);
+        productReposToSave.forEach(SUSEProductFactory::save);
+    }
+
+    private static PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
+        URI uri;
+
+        try {
+            uri = new URI(jrepo.getUrl());
+        }
+        catch (URISyntaxException e) {
+            log.warn("Unable to parse URL '{}'. Skipping", jrepo.getUrl(), e);
+            return null;
+        }
+
+        // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test]
+        String[] parts = uri.getPath().split("/");
+        if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
+            return null;
+        }
+        String prdArch = parts[6];
+        String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
+
+        SCCRepository repo = new SCCRepository();
+        repo.setSigned(true);
+        repo.update(jrepo);
+
+        SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
+        if (product == null) {
+            log.warn("Skipping PTF repo for unknown product: {}", uri);
+            return null;
+        }
+
+        List<String> channelParts = new ArrayList<>(Arrays.asList(parts[3], product.getName(), product.getVersion()));
+        switch (parts[7]) {
+            case "ptf":
+                channelParts.add("PTFs");
+                break;
+            case "test":
+                channelParts.add("TEST");
+                break;
+            default:
+                log.warn("Unknown repo type: {}. Skipping", parts[7]);
+                return null;
+        }
+        channelParts.add(prdArch);
+
+        return new PtfProductRepositoryInfo(product, repo, channelParts, prdArch);
+    }
+
+    private static SUSEProductSCCRepository convertToProductSCCRepository(SUSEProduct root,
+                                                                          PtfProductRepositoryInfo ptfInfo) {
+        SUSEProductSCCRepository prodRepoLink = new SUSEProductSCCRepository();
+
+        prodRepoLink.setProduct(ptfInfo.getProduct());
+        prodRepoLink.setRepository(ptfInfo.getRepository());
+        prodRepoLink.setRootProduct(root);
+
+        prodRepoLink.setUpdateTag(null);
+        prodRepoLink.setMandatory(false);
+
+        // Current PTF key for SLE 12/15 and SLE-Micro
+        prodRepoLink.setGpgKeyUrl("file:///usr/lib/rpm/gnupg/keys/suse_ptf_key.asc");
+
+        ptfInfo.getProduct()
+               .getRepositories()
+               .stream()
+               .filter(r -> r.getRootProduct().equals(root) && r.getParentChannelLabel() != null)
+               .findFirst()
+               .ifPresent(r -> {
+                   List<String> suffix = new ArrayList<>();
+
+                   prodRepoLink.setParentChannelLabel(r.getParentChannelLabel());
+                   int archIdx = r.getChannelName().lastIndexOf(ptfInfo.getArchitecture());
+                   if (archIdx > -1) {
+                       suffix = Arrays.asList(
+                           r.getChannelName().substring(archIdx + ptfInfo.getArchitecture().length())
+                            .strip().split("[\\s-]"));
+                   }
+
+                   List<String> cList = Stream.concat(ptfInfo.getChannelParts().stream(), suffix.stream())
+                                              .filter(e -> !e.isBlank())
+                                              .collect(Collectors.toList());
+
+                   prodRepoLink.setChannelLabel(String.join("-", cList).toLowerCase().replaceAll("( for | )", "-"));
+                   prodRepoLink.setChannelName(String.join(" ", cList));
+               });
+        if (StringUtils.isBlank(prodRepoLink.getChannelLabel())) {
+            // mandatory field is missing. This happens when a product does not have suseProductSCCRepositories
+            log.info("Product '{}' does not have repositories. Skipping.", root);
+            return null;
+        }
+        return prodRepoLink;
     }
 
     /**
@@ -1806,6 +1932,7 @@ public class ContentSyncManager {
         SUSEProductFactory.removeAllExcept(processed.values());
 
         updateUpgradePaths(products, upgradePathJsons);
+        HibernateFactory.getSession().flush();
         log.info("ContentSyncManager.updateSUSEProducts finished");
     }
 

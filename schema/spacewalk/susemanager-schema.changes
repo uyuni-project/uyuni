@@ -1,10 +1,35 @@
-- Add system overview table and a procedure to update it
-- Move web.system_checkin_threshold to rhnConfiguration table
-- Fix previous 'Amazon EC2' schema upgrade script
-  to prevent possible issues on schema upgrade.
-- Keep older module metadata files in database (bsc#1201893)
-- Fix setting of last modified date in channel clone procedure
-- Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
+-------------------------------------------------------------------
+Mon Jan 23 08:25:41 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Rename monitoring entitlement
+  * Added view to handle ptf packages and updated the procedures
+    to refresh the updatable/installable packages
+  * migration to fix invalid Oracle Linux 9 URLs
+
+-------------------------------------------------------------------
+Wed Dec 14 14:09:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Add reboot needed indicator to systems list
+  * add subscription warning info pane
+  * Remove data related to RHEL below 6 
+  * Increase cron_expr varchar length to 120 in suseRecurringAction
+    table (bsc#1205040)
+
+-------------------------------------------------------------------
+Fri Nov 18 15:03:27 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * added kickstart distribution data for RHEL 9
+  * Add system overview table and a procedure to update it
+  * Move web.system_checkin_threshold to rhnConfiguration table
+  * Fix previous 'Amazon EC2' schema upgrade script
+    to prevent possible issues on schema upgrade.
+  * Keep older module metadata files in database (bsc#1201893)
+  * Fix setting of last modified date in channel clone procedure
+  * Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
 
 -------------------------------------------------------------------
 Wed Sep 28 10:46:55 CEST 2022 - jgonzalez@suse.com

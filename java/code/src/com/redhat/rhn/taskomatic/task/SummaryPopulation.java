@@ -43,12 +43,13 @@ public class SummaryPopulation extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
 
         try {
             // don't want duplicates otherwise we risk violating the
             // RHN_DSQUEUE_OID_UQ unique constraint on org_id
-            Set orgSet = new LinkedHashSet();
+            Set orgSet = new LinkedHashSet<>();
 
             log.debug("Finding orgs with awol servers");
             List orgs = awolServerOrgs();

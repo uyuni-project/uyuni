@@ -87,6 +87,7 @@ public class SnapshotTagDto extends BaseDto {
     /**
      * @return SnapshotTag ID
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -102,6 +103,7 @@ public class SnapshotTagDto extends BaseDto {
     *
     * {@inheritDoc}
     */
+   @Override
    public String getSelectionKey() {
        return String.valueOf(getId());
    }

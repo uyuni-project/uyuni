@@ -113,7 +113,7 @@ public class SetCleanup {
 
     protected int cleanup(RhnSet set) {
         WriteMode m = ModeFactory.getWriteMode(catalogName, modeName);
-        Map p = new HashMap();
+        Map<String, Object> p = new HashMap<>();
         p.put("user_id", set.getUserId());
         p.put("label", set.getLabel());
         return m.executeUpdate(p);
@@ -124,6 +124,7 @@ public class SetCleanup {
             super("noop", "noop");
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Noop cleanup for set {} and user {}", set.getLabel(), set.getUserId(), new Throwable());
@@ -148,9 +149,10 @@ public class SetCleanup {
             super(mode);
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             WriteMode m = ModeFactory.getWriteMode("Set_queries", getMode());
-            Map p = new HashMap();
+            Map<String, Object> p = new HashMap<>();
             p.put("org_id", UserFactory.lookupById(set.getUserId()).getOrg().getId());
             p.put("user_id", set.getUserId());
             p.put("label", set.getLabel());

@@ -43,7 +43,7 @@ public class MgrSyncProductDtoTest  {
      * {@inheritDoc}
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
 
 
         baseChannel = new MgrSyncChannelDto("BaseChannel", "basechannel", "This is the base Channel",
@@ -62,10 +62,9 @@ public class MgrSyncProductDtoTest  {
     /**
      * Tests getStatus().
      *
-     * @throws Exception if anything goes bad
      */
     @Test
-    public void testGetStatus() throws Exception {
+    public void testGetStatus() {
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
 
         product = new MgrSyncProductDto("friendlyName", 0L, 0L, "version", false,

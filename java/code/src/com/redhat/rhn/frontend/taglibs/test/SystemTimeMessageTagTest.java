@@ -75,6 +75,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
             super();
         }
 
+        @Override
         public void print(String in) {
             printed.append(in);
         }
@@ -95,6 +96,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         /**
          * @return A custom fake writer
          */
+        @Override
         public JspWriter getOut() {
             return writer;
         }

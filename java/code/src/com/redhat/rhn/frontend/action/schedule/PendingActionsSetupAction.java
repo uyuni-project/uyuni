@@ -37,6 +37,7 @@ public class PendingActionsSetupAction extends BaseScheduledListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_PENDING;
     }
@@ -45,6 +46,7 @@ public class PendingActionsSetupAction extends BaseScheduledListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public List<ScheduledAction> getResult(RequestContext context) {
         return ActionManager.pendingActions(context.getCurrentUser(), null);
     }
@@ -53,9 +55,10 @@ public class PendingActionsSetupAction extends BaseScheduledListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward handleSubmit(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                         ActionForm formIn, HttpServletRequest request,
+                                         HttpServletResponse response) {
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
 

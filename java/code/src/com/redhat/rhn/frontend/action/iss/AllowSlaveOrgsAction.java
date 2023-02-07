@@ -53,8 +53,9 @@ public class AllowSlaveOrgsAction extends RhnAction {
     private static final String LIST_NAME = "localOrgsList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
@@ -71,7 +72,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
         request.setAttribute(IssSlave.SID, sid);
         IssSlave theSlave = IssFactory.lookupSlaveById(sid);
 
-        Set sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
+        Set<String> sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
                 .getLabel());
 
         if (!requestContext.isSubmitted()) {
@@ -81,10 +82,6 @@ public class AllowSlaveOrgsAction extends RhnAction {
         SessionSetHelper helper = new SessionSetHelper(request);
 
         if (request.getParameter("dispatch") != null) {
-            // Before creating entries for whatever selection we have,
-            // DELETE THE OLD ONES - less error-prone than trying to do
-            // set-theoretic operations based on set-diffs
-            //IssFactory.clearMapsForSlave(sid);
             theSlave.setAllowedOrgs(new HashSet<>());
             helper.updateSet(sessionSet, LIST_NAME);
             return handleDispatchAction(mapping, requestContext, sid, sessionSet);
@@ -107,7 +104,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
 
         ListTagHelper.bindSetDeclTo(LIST_NAME, getSetDecl(), request);
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         if (sid != null) {
             params.put(IssSlave.SID, sid);
         }

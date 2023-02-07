@@ -14,20 +14,21 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * SnapshotUnservablePackagesAction
  */
-public class SnapshotUnservablePackagesAction extends SnapshotBaseAction {
+public class SnapshotUnservablePackagesAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
-    public List<Map<String, Object>> getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         User user = context.getCurrentUser();

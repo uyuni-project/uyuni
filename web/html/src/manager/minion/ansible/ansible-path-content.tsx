@@ -67,7 +67,7 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       <div>
         {errors}
         {this.state.loading ? (
-          <Loading text={t("Loading..")} />
+          <Loading text={t("Loading...")} />
         ) : this.state.pathList?.length > 0 ? (
           this.state.pathList.map((p) => (
             <AccordionPathContent

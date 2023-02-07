@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -34,7 +34,7 @@ import java.util.LinkedHashSet;
 public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testClone() throws Exception {
+    public void testClone() {
         KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
                 "someNewLabel [" + TestUtils.randomString() + "]");
 
@@ -56,7 +56,7 @@ public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(cmd.getClonedKickstart());
         assertNotNull(cmd.getClonedKickstart().getId());
         assertNotNull(cmd.getClonedKickstart().getCommand("custom").getCustomPosition());
-        assertFalse(cmd.getClonedKickstart().getId().equals(ksdata.getId()));
+        assertNotEquals(cmd.getClonedKickstart().getId(), ksdata.getId());
     }
 
 }

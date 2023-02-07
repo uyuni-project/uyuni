@@ -510,9 +510,21 @@ postgresql_service() {
     esac
 }
 
+test_postgres_user() {
+    set +e
+    su - postgres -c /bin/true
+    if [ $? != "0" ] ; then
+        echo "Cannot use postgres user. Terminating" >&2 
+        exit 1
+    fi
+    set -e
+}
+
 OPTS=$(getopt --longoptions=db:,user:,password:,autogenpw,standalone,local,help,address:,remote:,host:,externaldb-admin-user:,externaldb-admin-password:,externaldb-root-cert:,externaldb-provider: -n ${0##*/} -- d:u:p:gsha:r:l: "$@")
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+test_postgres_user
 
 eval set -- "$OPTS"
 
@@ -552,7 +564,7 @@ while true ; do
                 echo "Invalid options: do not use --password together with --autgenpw!" >&2
                 exit 1
             fi
-            PGPASSWORD=$(head -10 /dev/urandom | tr -dc '[:alnum:]' | fold -w 25 | head -n 1)
+            PGPASSWORD=$(dd status=none bs=18 count=1 < /dev/random | base64)
             ;;
         -s|--standalone)
             STANDALONE=true

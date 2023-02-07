@@ -31,7 +31,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -155,6 +155,17 @@ if [ -L /etc/pki/tls/private/spacewalk.key ]; then
 fi
 
 %post
+if [ $1 -eq 2 ] ; then
+  # update case
+  if [ -f /etc/rhn/rhn.conf ] && ! grep "java.hostname" /etc/rhn/rhn.conf  >/dev/null; then
+    HN=$(grep server.jabber_server /etc/rhn/rhn.conf | sed 's/.*=[[:space:]]*\([^ ]\+\)[[:space:]]*$/\1/')
+    if [ -z "$HN" ]; then
+      HN=$(cat /etc/hostname || echo)
+    fi
+    [ -n "$HN" ] && echo "java.hostname = $HN" >> /etc/rhn/rhn.conf
+  fi
+fi
+
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy

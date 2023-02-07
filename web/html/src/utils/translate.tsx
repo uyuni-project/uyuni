@@ -54,7 +54,14 @@ function translate(msg: string | JSX.Element) {
 
   // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
   for (var i = 1; i < arguments.length; i++) {
-    result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), arguments[i]);
+    let replacement: string;
+    if (typeof arguments[i] !== "string") {
+      isResultJsx = true;
+      replacement = ReactDOMServer.renderToStaticMarkup(arguments[i]);
+    } else {
+      replacement = arguments[i];
+    }
+    result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), replacement);
   }
 
   if (isResultJsx) {

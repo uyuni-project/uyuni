@@ -1024,12 +1024,6 @@ GROUP BY C.id, C.name
     </query>
 </mode>
 
-<mode name="dist_channel_map_for_org" class="com.redhat.rhn.domain.channel.DistChannelMap">
-  <query params="org_id">
-  SELECT * FROM rhnOrgDistChannelMap WHERE org_id = :org_id
-  </query>
-</mode>
-
 <mode name="snapshot_channel_diff">
   <query params="ss_id, sid">
 select server_channel.id as current_channel_id,
@@ -1075,16 +1069,6 @@ select c.id,
    and sn.id = snc.snapshot_id
    and snc.channel_id = c.id
  order by c.parent_channel nulls first, upper(c.name)
-  </query>
-</mode>
-
-<mode name="is_suse_repomd">
-  <query params="cid">
-    SELECT 1
-    FROM suseProductChannel spc
-    JOIN suseProducts sp ON spc.product_id = sp.id
-    WHERE spc.channel_id = :cid
-    AND NOT (sp.name = 'res' AND sp.version IN ('3','4'))
   </query>
 </mode>
 

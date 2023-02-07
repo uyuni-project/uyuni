@@ -55,5 +55,6 @@
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature
 - features/secondary/srv_rename_hostname.feature
-
+- features/secondary/proxy_as_pod_basic_tests.feature
+- features/secondary/srv_logfile.feature
 ## Secondary features END ##

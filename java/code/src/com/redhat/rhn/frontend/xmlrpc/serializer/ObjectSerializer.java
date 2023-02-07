@@ -31,6 +31,7 @@ public class ObjectSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class getSupportedClass() {
         return Object.class;
     }
@@ -38,6 +39,7 @@ public class ObjectSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
         throws XmlRpcException, IOException {
         SerializerHelper s = new SerializerHelper(serializer);

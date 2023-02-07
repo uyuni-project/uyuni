@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.packages;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -23,10 +24,10 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * PackageHelper
@@ -46,17 +47,13 @@ public class PackageHelper {
      * providing_channels attribute)
      * @return Returns a map representation of a package
      */
-    public static Map packageToMap(Package pkg, User user) {
+    public static Map<String, Object> packageToMap(Package pkg, User user) {
 
-        Map pkgMap = new HashMap();
+        Map<String, Object> pkgMap = new HashMap<>();
 
         // deal with the providing channels first
-        DataResult dr = PackageManager.providingChannels(user, pkg.getId());
-        List channelLabels = new ArrayList();
-        for (Object oIn : dr) {
-            Map map = (Map) oIn;
-            channelLabels.add(map.get("label"));
-        }
+        DataResult<Row> dr = PackageManager.providingChannels(user, pkg.getId());
+        List<String> channelLabels = dr.stream().map(r -> (String)r.get("label")).collect(Collectors.toList());
         pkgMap.put("providing_channels", channelLabels);
 
         // now deal with the actual package object.

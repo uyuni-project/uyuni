@@ -44,6 +44,7 @@ public class AffectedSystemsSetupAction extends RhnListAction {
     public static final String LIST_NAME = "systemAffectedList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

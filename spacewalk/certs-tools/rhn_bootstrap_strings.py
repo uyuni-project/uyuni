@@ -123,10 +123,6 @@ REGISTER_THIS_BOX=1
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
 
-# After registration, before updating the system (or at least the installer)
-# disable all repos not provided by SUSE Manager.
-DISABLE_LOCAL_REPOS=1
-
 # SUSE Manager Specific settings:
 #
 # - Alternate location of the client tool repos providing 
@@ -137,6 +133,11 @@ DISABLE_LOCAL_REPOS=1
 # are used.
 CLIENT_REPOS_ROOT=
 {venv_section}
+
+# Automatically schedule reboot of the machine in case of running transactional
+# system (for example SLE Micro)
+SCHEDULE_REBOOT_AFTER_TRANSACTION=1
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -202,6 +203,29 @@ elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
+fi
+
+
+SNAPSHOT_ID=""
+
+function call_tukit() {{
+    tukit -q call $SNAPSHOT_ID /bin/bash <<< $@
+}}
+
+function new_transaction() {{
+    if [ -n "$SNAPSHOT_ID" ]; then
+        tukit -q close $SNAPSHOT_ID
+    fi
+    SNAPSHOT_ID=$(/usr/sbin/tukit -q open | sed 's/ID: \([0-9]*\)/\\1/')
+    if [ -z "$SNAPSHOT_ID" ]; then
+        echo "Transactional system detected, but could not open new transaction. Aborting!"
+        exit 1
+    fi
+}}
+
+if [ -x /usr/sbin/tukit ]; then
+    new_transaction
+    echo "Transactional system detected. Reboot will be required to finish bootstrapping"
 fi
 
 if [ ! -w . ]; then
@@ -501,6 +525,7 @@ elif [ "$INSTALLER" == zypper ]; then
             if [ "$BASE" != "sle" ]; then
                 grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
             fi
+            grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
             PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
         fi
@@ -548,22 +573,39 @@ elif [ "$INSTALLER" == zypper ]; then
         
         setup_bootstrap_repo
 
-        zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
-        # install missing packages
-        zypper --non-interactive in $Z_MISSING
-        for P in $Z_MISSING; do
-            rpm -q --whatprovides "$P" || {{
-                echo "ERROR: Failed to install all missing packages."
-                exit 1
-            }}
-        done
+        if [ -z "$SNAPSHOT_ID" ]; then
+            zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
+            # install missing packages
+            zypper --non-interactive in $Z_MISSING
+            for P in $Z_MISSING; do
+                rpm -q --whatprovides "$P" || {{
+                    echo "ERROR: Failed to install all missing packages."
+                    exit 1
+                }}
+            done
+        else
+            call_tukit "zypper --non-interactive --gpg-auto-import-keys refresh '$CLIENT_REPO_NAME'"
+            if ! call_tukit "zypper --non-interactive install $Z_MISSING"; then
+                 echo "ERROR: Failed to install all required packages."
+                 tukit abort "$SNAPSHOT_ID"
+                 exit 1
+            fi
+        fi
     fi
 
     # try update main packages for registration from any repo which is available
     if [ $VENV_ENABLED -eq 1 ]; then
-        zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
+        if [ -z "$SNAPSHOT_ID" ]; then
+            zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
+        else
+            call_tukit "zypper --non-interactive update {PKG_NAME_VENV_UPDATE} ||:"
+        fi
     else
-        zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+        if [ -z "$SNAPSHOT_ID"]; then
+            zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+        else
+            call_tukit "zypper --non-interactive update {PKG_NAME_UPDATE} $RHNLIB_PKG ||:"
+        fi
     fi
 
 elif [ "$INSTALLER" == apt ]; then
@@ -595,6 +637,12 @@ elif [ "$INSTALLER" == apt ]; then
         local NEEDED="salt-common salt-minion"
         if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="venv-salt-minion"
+        elif [[ $A_CLIENT_CODE_BASE == "ubuntu" && $A_CLIENT_CODE_MAJOR_VERSION == 18 ]]; then
+            # Ubuntu 18.04 needs these extra dependencies. They are not specified in
+            # python3-salt because we don't maintain multiple .deb build instructions
+            # and we can't add logic that adds the deps depending on which OS the .deb
+            # is built for.
+            NEEDED="$NEEDED python3-contextvars python3-immutables"
         fi
         A_MISSING=""
         for P in $NEEDED; do
@@ -777,10 +825,18 @@ echo
             return
         fi
         if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
-            if [ -f $CERT_DIR/$CERT_FILE ]; then
-                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-            else
-                rm -f $TRUST_DIR/$CERT_FILE
+           if [ -z "$SNAPSHOT_ID" ]; then
+                if [ -f $CERT_DIR/$CERT_FILE ]; then
+                    ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+                else
+                    rm -f $TRUST_DIR/$CERT_FILE
+                fi
+           else
+               if call_tukit "test -f '$CERT_DIR/$CERT_FILE'"; then
+                   call_tukit "ln -sf '$CERT_DIR/$CERT_FILE' '$TRUST_DIR'"
+               else
+                   call_tukit "rm -f '$TRUST_DIR/$CERT_FILE'"
+               fi
             fi
         fi
         $UPDATE_TRUST_CMD
@@ -797,17 +853,20 @@ echo
         fi
     fi
 
-    test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
     rm -f ${ORG_CA_CERT}
     $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
-    mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
-
-    # symlink & update certificates is already done in rpm post-install script
-    # no need to be done again if we have installed rpm
+    if [ -n "$SNAPSHOT_ID" ]; then
+        # we need to copy certificate to the trustroot outside of transaction for zypper
+        cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
+        call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
+        call_tukit "cp '/etc/pki/trust/anchors/$ORG_CA_CERT' '${CERT_DIR}/${ORG_CERT_FILE}'"
+    else
+        test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
+        mv "$ORG_CA_CERT" "${CERT_DIR}/${ORG_CERT_FILE}"
+    fi
     echo "* update certificates"
     updateCertificates
-
 """
 
 def getRegistrationSaltSh(productName):
@@ -827,13 +886,20 @@ if [[ $ACTIVATION_KEYS =~ , ]]; then
     exit 1
 fi
 
-MINION_ID_FILE="/etc/salt/minion_id"
-SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
+SNAPSHOT_PREFIX=""
+if [ -n "$SNAPSHOT_ID" ]; then
+    SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
+fi
+
+MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
+MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/salt/minion.d"
+SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
-    MINION_ID_FILE="/etc/venv-salt-minion/minion_id"
-    SUSEMANAGER_MASTER_FILE="/etc/venv-salt-minion/minion.d/susemanager.conf"
+    MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion_id"
+    MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
+    SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
 fi
 
@@ -849,12 +915,6 @@ enable_fqdns_grains: False
 start_event_grains: [machine_id, saltboot_initrd, susemanager]
 mine_enabled: False
 EOF
-    if [ "$DISABLE_LOCAL_REPOS" -eq 0 ]; then
-        echo "Do not disable local repos"
-        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
-disable_local_repos: False
-EOF
-    fi
     cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
 
 grains:
@@ -886,7 +946,16 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
-fi
+
+if [ -n "$SNAPSHOT_ID" ]; then
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
+# Enable the transactional_update executor
+module_executors:
+  - transactional_update
+  - direct_call
+EOF
+fi # -n SNAPSHOT_ID
+fi # REGISTER_THIS_BOX eq 1
 
 echo "* removing TLS certificate used for bootstrap"
 echo "  (will be re-added via salt state)"
@@ -895,7 +964,15 @@ removeTLSCertificate
 
 echo "* starting salt daemon and enabling it during boot"
 
-if [ -f /usr/lib/systemd/system/$MINION_SERVICE.service ] || [ -f /lib/systemd/system/$MINION_SERVICE.service ]; then
+if [ -n "$SNAPSHOT_ID" ]; then
+    call_tukit "systemctl enable '$MINION_SERVICE'"
+    tukit -q close $SNAPSHOT_ID
+    if [ "$SCHEDULE_REBOOT_AFTER_TRANSACTION" -eq 1 ]; then
+        transactional-update reboot
+    else
+       echo "** Reboot system to apply changes"
+    fi
+elif [ -f /usr/lib/systemd/system/$MINION_SERVICE.service ] || [ -f /lib/systemd/system/$MINION_SERVICE.service ]; then
     systemctl enable $MINION_SERVICE
     systemctl restart $MINION_SERVICE
 else

@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -41,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * KickstartPackageProfilesEditAction - setup for listing the profiles available
  * for selection.
  */
-public class KickstartPackageProfileSetupAction extends RhnAction implements Listable {
+public class KickstartPackageProfileSetupAction extends RhnAction implements Listable<ProfileDto> {
 
 
     public static final String UPDATE_METHOD = "kickstart.packageprofile.jsp.submit";
@@ -51,10 +52,11 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
 
@@ -104,7 +106,8 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
      *
      * {@inheritDoc}
      */
-    public List getResult(RequestContext rctx) {
+    @Override
+    public List<ProfileDto> getResult(RequestContext rctx) {
         KickstartData ksdata = KickstartFactory
         .lookupKickstartDataByIdAndOrg(rctx.getCurrentUser().getOrg(),
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID));
@@ -113,5 +116,4 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
             ksdata.getKickstartDefaults().getKstree().getChannel(),
             rctx.getCurrentUser().getOrg(), null);
     }
-
 }

@@ -31,7 +31,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     private static final String HUNK_LABEL = "@@";
 
     //diff the entire result
-    private final StringBuffer diff;
+    private final StringBuilder diff;
     private final int contextLines;
 
     //stores the current edit, which can consist of multiple hunks with context lines.
@@ -48,7 +48,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
      * @param toDate The to(new, second) file's last modified date.
      */
     public RhnPatchDiffWriter(String fromPath, String toPath, Date fromDate, Date toDate) {
-        diff = new StringBuffer();
+        diff = new StringBuilder();
 
 
         String dateString = fromDate.toString(); //TODO: format the date
@@ -74,6 +74,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeHunk(Hunk hunkIn) {
         hunkIn.visit(this);
     }
@@ -81,6 +82,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(ChangeHunk hunk) {
         processEditHunk(hunk);
     }
@@ -88,6 +90,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(DeleteHunk hunk) {
         processEditHunk(hunk);
     }
@@ -95,6 +98,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(InsertHunk hunk) {
         processEditHunk(hunk);
     }
@@ -127,6 +131,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(MatchHunk hunk) {
         int startLine = hunk.getOldLines().getFromLine();
         int endLine = hunk.getOldLines().getToLine();
@@ -189,7 +194,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
         private final int fromStart;
         private final int toStart;
         private boolean writable;
-        private final StringBuffer lines;
+        private final StringBuilder lines;
 
         /**
          * @param fromLine Starting line for from file
@@ -198,15 +203,15 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
         EditPoint(int fromLine, int toLine) {
             fromStart = fromLine;
             toStart = toLine;
-            lines = new StringBuffer();
+            lines = new StringBuilder();
             writable = false;
         }
 
         public String write(int fromEnd, int toEnd, String edit, char from, char to) {
             if (!writable) { //don't write something that is purely matching lines.
-                return new String();
+                return "";
             }
-            StringBuffer retval = new StringBuffer();
+            StringBuilder retval = new StringBuilder();
             retval.append(edit);
             retval.append(" ");
             retval.append(from);
@@ -221,7 +226,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
             return retval.toString();
         }
 
-        private void writeLines(int from, int to, StringBuffer buffy) {
+        private void writeLines(int from, int to, StringBuilder buffy) {
             buffy.append(from);
             if (from + 1 != to) { //more than one line shown.
                 buffy.append(",");

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 public class LoginTest extends RhnBaseTestCase {
 
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() {
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         assertNotNull(cmd.login("testUserHUbHd7j8HEVjg", "password"));
     }

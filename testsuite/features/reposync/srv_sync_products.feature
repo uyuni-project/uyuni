@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -61,6 +61,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
+    When I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Desktop Applications Module 15 SP4 x86_64" as a product
+    And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
+    And I select "Development Tools Module 15 SP4 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
+    And I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
@@ -70,3 +78,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
+
+@scc_credentials
+  Scenario: Detect product loading issues from the UI
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    Then I should not see a "Operation not successful" text
+    And I should not see a warning sign

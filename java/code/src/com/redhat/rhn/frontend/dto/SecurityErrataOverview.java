@@ -31,6 +31,7 @@ public class SecurityErrataOverview extends ErrataOverview
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getCallBackColumns() {
         List<String> list = new ArrayList<>();
         list.add("cve");
@@ -40,7 +41,8 @@ public class SecurityErrataOverview extends ErrataOverview
     /**
      * {@inheritDoc}
      */
-    public void callback(ResultSet rs) throws SQLException {
+    @Override
+    public void callback(ResultSet rs) {
         if (rs != null) {
             // need to use try-catch, because of use of two
             // elaborators (only one of them elaborates "CVE")

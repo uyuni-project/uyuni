@@ -40,11 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ProfilesListAction extends RhnListAction implements Listable<ProfileOverviewDto> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -53,6 +53,7 @@ public class ProfilesListAction extends RhnListAction implements Listable<Profil
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ProfileOverviewDto> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return ProfileManager.listProfileOverviews(user.getOrg().getId());

@@ -19,13 +19,15 @@ import static com.suse.utils.Opt.flatMap;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -36,6 +38,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,20 +66,16 @@ public class MinionActionUtils {
 
     private static final Logger LOG = LogManager.getLogger(MinionActionUtils.class);
 
-    private final SaltServerActionService saltServerActionService;
     private final SaltApi saltApi;
     private final SaltUtils saltUtils;
 
     /**
      * Utilities for minion actions
      *
-     * @param saltServerActionServiceIn
      * @param saltApiIn
      * @param saltUtilsIn
      */
-    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SaltApi saltApiIn,
-                             SaltUtils saltUtilsIn) {
-        this.saltServerActionService = saltServerActionServiceIn;
+    public MinionActionUtils(SaltApi saltApiIn, SaltUtils saltUtilsIn) {
         this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
     }
@@ -204,8 +203,18 @@ public class MinionActionUtils {
      */
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        return Date.from(earliest
-                .orElseGet(LocalDateTime::now)
-                .atZone(zoneId).toInstant());
+        return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
+    }
+
+    /**
+     * Compute the action chain
+     * @param actionChain the action chain, may be <code>null</code>
+     * @param user the current user
+     * @return the {@link ActionChain} object or null if no action chain is defined
+     */
+    public static ActionChain getActionChain(Optional<String> actionChain, User user) {
+        return actionChain.filter(StringUtils::isNotEmpty)
+                          .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
+                          .orElse(null);
     }
 }

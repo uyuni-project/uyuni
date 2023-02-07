@@ -218,7 +218,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testListImages() throws Exception {
+    public final void testListImages() {
         ImageStore store = createImageStore("registry.reg", admin);
         createImageInfo("myimage", "1.0.0", store, admin);
         createImageInfo("myimage", "2.0.0", store, admin);
@@ -228,7 +228,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testGetImageDetails() throws Exception {
+    public final void testGetImageDetails() {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
 
@@ -279,7 +279,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testGetCustomValues() throws Exception {
+    public final void testGetCustomValues() {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
 
@@ -299,7 +299,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
     }
 
-    public final void testImportOSImage() throws Exception {
+    public final void testImportOSImage() {
         Integer id1 = handler.importOSImage(admin, "testimg", "1.0.0", "x86_64-redhat-linux").intValue();
         handler.setPillar(admin, id1, Map.of("name1", "val1", "name2", "val2"));
         handler.addImageFile(admin, id1, "testimg.tgz", "bundle", false);

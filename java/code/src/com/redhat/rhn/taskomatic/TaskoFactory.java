@@ -51,6 +51,7 @@ public class TaskoFactory extends HibernateFactory {
         super();
     }
 
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -61,10 +62,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupOrgBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", bunchName);
-        return (TaskoBunch) singleton.lookupObjectByNamedQuery(
-                                       "TaskoBunch.lookupOrgBunchByName", params);
+        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupOrgBunchByName", Map.of("name", bunchName));
     }
 
     /**
@@ -73,10 +71,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupSatBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", bunchName);
-        return (TaskoBunch) singleton.lookupObjectByNamedQuery(
-                                       "TaskoBunch.lookupSatBunchByName", params);
+        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupSatBunchByName", Map.of("name", bunchName));
     }
 
     /**
@@ -84,8 +79,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of bunches
      */
     public static List<TaskoBunch> listOrgBunches() {
-        return singleton.listObjectsByNamedQuery(
-                                       "TaskoBunch.listOrgBunches", null);
+        return singleton.listObjectsByNamedQuery("TaskoBunch.listOrgBunches", Map.of());
     }
 
     /**
@@ -93,8 +87,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of bunches
      */
     public static List<TaskoBunch> listSatBunches() {
-        return singleton.listObjectsByNamedQuery(
-                                       "TaskoBunch.listSatBunches", null);
+        return singleton.listObjectsByNamedQuery("TaskoBunch.listSatBunches", Map.of());
     }
 
     /**
@@ -182,8 +175,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of tasks
      */
     public static List<TaskoTask> listTasks() {
-        return singleton.listObjectsByNamedQuery(
-                                       "TaskoTask.listTasks", new HashMap());
+        return singleton.listObjectsByNamedQuery("TaskoTask.listTasks", Map.of());
     }
 
     /**
@@ -192,10 +184,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsOlderThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("limit_time", limitTime);
-        return singleton.listObjectsByNamedQuery(
-                "TaskoRun.listOlderThan", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listOlderThan", Map.of("limit_time", limitTime));
     }
 
     /**
@@ -204,10 +193,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsNewerThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("limit_time", limitTime);
-        return singleton.listObjectsByNamedQuery(
-                "TaskoRun.listNewerThan", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listNewerThan", Map.of("limit_time", limitTime));
     }
 
     /**
@@ -280,12 +266,10 @@ public class TaskoFactory extends HibernateFactory {
         params.put("job_label", jobLabel);
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery(
-                    "TaskoSchedule.listActiveInSatByLabel", params);
+            return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveInSatByLabel", params);
         }
         params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery(
-                   "TaskoSchedule.listActiveByOrgAndLabel", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrgAndLabel", params);
     }
 
     /**
@@ -295,19 +279,17 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules
      * @throws NoSuchBunchTaskException in case of unknown bunch name
      */
-    public static List<TaskoSchedule> listActiveSchedulesByOrgAndBunch(Integer orgId,
-            String bunchName) throws NoSuchBunchTaskException {
+    public static List<TaskoSchedule> listActiveSchedulesByOrgAndBunch(Integer orgId, String bunchName)
+            throws NoSuchBunchTaskException {
         TaskoBunch bunch = lookupBunchByOrgAndName(orgId, bunchName);
         Map<String, Object> params = new HashMap<>();
         params.put("timestamp", new Date());    // use server time, not DB time
         params.put("bunch_id", bunch.getId());
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery(
-                    "TaskoSchedule.listActiveInSatByBunch", params);
+            return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveInSatByBunch", params);
         }
         params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery(
-                   "TaskoSchedule.listActiveByOrgAndBunch", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrgAndBunch", params);
     }
 
 
@@ -316,10 +298,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules to be run at least once
      */
     public static List<TaskoSchedule> listFuture() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("timestamp", new Date());
-        return singleton.listObjectsByNamedQuery(
-                "TaskoSchedule.listFuture", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listFuture", Map.of("timestamp", new Date()));
     }
 
     /**
@@ -329,16 +308,13 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listNewerRunsBySchedule(Long scheduleId, Date limitTime) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("schedule_id", scheduleId);
-        params.put("limit_time", limitTime);
-        return singleton.listObjectsByNamedQuery(
-                "TaskoRun.listByScheduleNewerThan", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listByScheduleNewerThan",
+                Map.of("schedule_id", scheduleId, "limit_time", limitTime));
     }
 
     private static TaskoBunch lookupBunchByOrgAndName(Integer orgId, String bunchName)
         throws NoSuchBunchTaskException {
-        TaskoBunch bunch = null;
+        TaskoBunch bunch;
         if (orgId == null) {
             bunch = lookupSatBunchByName(bunchName);
         }
@@ -357,10 +333,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return schedule
      */
     public static TaskoSchedule lookupScheduleById(Long scheduleId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("schedule_id", scheduleId);
-        return (TaskoSchedule) singleton.lookupObjectByNamedQuery(
-                                       "TaskoSchedule.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("TaskoSchedule.lookupById", Map.of("schedule_id", scheduleId));
     }
 
     /**
@@ -369,10 +342,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return schedule
      */
     public static TaskoSchedule lookupScheduleByLabel(String jobLabel) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("job_label", jobLabel);
-        return (TaskoSchedule) singleton.lookupObjectByNamedQuery(
-                                       "TaskoSchedule.lookupByLabel", params);
+        return singleton.lookupObjectByNamedQuery("TaskoSchedule.lookupByLabel", Map.of("job_label", jobLabel));
     }
 
     /**
@@ -381,10 +351,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupBunchByName(String bunchName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", bunchName);
-        return (TaskoBunch) singleton.lookupObjectByNamedQuery(
-                                       "TaskoBunch.lookupByName", params);
+        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupByName", Map.of("name", bunchName));
     }
 
     /**
@@ -393,14 +360,10 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of all schedules
      */
     public static List<TaskoSchedule> listSchedulesByOrg(Integer orgId) {
-        Map<String, Object> params = new HashMap<>();
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery(
-                                       "TaskoSchedule.listInSat", params);
+            return singleton.listObjectsByNamedQuery("TaskoSchedule.listInSat", Map.of());
         }
-        params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery(
-                                   "TaskoSchedule.listByOrg", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listByOrg", Map.of("org_id", orgId));
     }
 
     /**
@@ -409,10 +372,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsBySchedule(Long scheduleId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("schedule_id", scheduleId);
-        return singleton.listObjectsByNamedQuery(
-                                       "TaskoRun.listBySchedule", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listBySchedule", Map.of("schedule_id", scheduleId));
     }
 
     /**
@@ -421,10 +381,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules
      */
     public static List<TaskoSchedule> listSchedulesOlderThan(Date limitTime) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("limit_time", limitTime);
-        return singleton.listObjectsByNamedQuery(
-                                       "TaskoSchedule.listOlderThan", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listOlderThan", Map.of("limit_time", limitTime));
     }
 
     /**
@@ -438,12 +395,10 @@ public class TaskoFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("job_label", jobLabel);
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery(
-                                       "TaskoSchedule.listInSatByLabel", params);
+            return singleton.listObjectsByNamedQuery("TaskoSchedule.listInSatByLabel", params);
         }
         params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery(
-                                   "TaskoSchedule.listByOrgAndLabel", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listByOrgAndLabel", params);
     }
 
     /**
@@ -452,10 +407,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return run
      */
     public static TaskoRun lookupRunById(Long runId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("run_id", runId);
-        return (TaskoRun) singleton.lookupObjectByNamedQuery(
-                                       "TaskoRun.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("TaskoRun.lookupById", Map.of("run_id", runId));
     }
 
     /**
@@ -494,10 +446,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsByBunch(String bunchName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("bunch_name", bunchName);
-        return singleton.listObjectsByNamedQuery(
-                "TaskoRun.listByBunch", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listByBunch", Map.of("bunch_name", bunchName));
     }
 
     /**
@@ -568,9 +517,7 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of unfinished runs
      */
     public static List<TaskoRun> listUnfinishedRuns() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "TaskoRun.listUnfinished", params);
+        return singleton.listObjectsByNamedQuery("TaskoRun.listUnfinished", Map.of());
     }
 
     /**
@@ -579,16 +526,12 @@ public class TaskoFactory extends HibernateFactory {
      * @param date time of interest
      * @return list of repo sync schedules
      */
-    @SuppressWarnings("unchecked")
     public static List<TaskoSchedule> listRepoSyncSchedulesNewerThan(Date date) {
         TaskoBunch bunch = lookupBunchByName("repo-sync-bunch");
         if (date == null) {
             date = new Date(0);
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("bunch_id", bunch.getId());
-        params.put("date", date);
-        return singleton.listObjectsByNamedQuery(
-                "TaskoSchedule.listNewerThanByBunch", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.listNewerThanByBunch",
+                Map.of("bunch_id", bunch.getId(), "date", date));
     }
 }

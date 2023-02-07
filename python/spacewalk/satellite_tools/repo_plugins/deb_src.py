@@ -506,7 +506,7 @@ class ContentSource:
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['http_headers'] = self.repo.http_headers
+        params['http_headers'] = tuple(self.repo.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,

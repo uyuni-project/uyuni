@@ -42,11 +42,13 @@ class FileFinder implements Finder {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<String> find(String endStr) {
         return findExcluding(null, endStr);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<String> findExcluding(String[] excludes, String endStr) {
         List<String> results = new LinkedList<>();
 

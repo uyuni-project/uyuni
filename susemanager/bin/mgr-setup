@@ -569,7 +569,6 @@ copy_remote_files() {
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/etc/cobbler/settings /etc/cobbler/settings.old >> $RSYNC_LOG
 
     echo "`date +"%H:%M:%S"`   Copy certificates ..."
-    scp -i $KEYFILE -p root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
     scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt
     scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
     ln -sf ../../../apache2/ssl.crt/server.crt /etc/pki/tls/certs/spacewalk.crt
@@ -578,8 +577,6 @@ copy_remote_files() {
 
     # assert correct ownership and permissions
     chown -R tomcat:tomcat /var/lib/rhn/kickstarts
-    chmod 600 /etc/pki/spacewalk/jabberd/server.pem
-    chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
     chown wwwrun:tftp /srv/tftpboot
     chmod 750 /srv/tftpboot
     chown -R wwwrun.www /var/spacewalk
@@ -773,16 +770,6 @@ do_migration() {
 
     copy_remote_files
     wait_step
-
-    ssh -i $KEYFILE root@$SATELLITE_IP "systemctl is-enabled osa-dispatcher > /dev/null 2>&1"
-    if [ $? -eq 0 ]; then
-        echo "Enable osa-dispatcher..."
-        systemctl --quiet enable osa-dispatcher 2>&1
-    else
-        echo "Disable osa-dispatcher..."
-        systemctl --quiet disable osa-dispatcher 2>&1
-        systemctl --quiet disable jabberd 2>&1
-    fi
 
     cleanup_hostname
     remove_ssh_key
@@ -1001,11 +988,6 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     fi
     if [ "$DO_SETUP" = "1" ]; then
         /usr/sbin/spacewalk-service stop
-
-        # explicitly enable OSA dispatcher as it's no longer part of spacewalk.target
-        echo "Enable osa-dispatcher..."
-        systemctl --quiet enable jabberd 2>&1
-        systemctl --quiet enable osa-dispatcher 2>&1
 
         if [ "$EXTERNALDB" = "0" ]; then
             systemctl restart postgresql
