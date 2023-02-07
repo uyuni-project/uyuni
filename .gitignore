@@ -19,7 +19,6 @@ java/buildconf/tempjars/*
 java/.checkstyle
 java/.classpath
 java/.externalToolBuilders
-java/.obs-to-maven-cache
 java/.pmd
 java/.project
 java/.settings/*
@@ -46,6 +45,7 @@ search-server/spacewalk-search/rhn_search_daemon.log
 search-server/spacewalk-search/buildconf/repository/
 *~
 *#*#*
+.obs-to-maven-cache
 .project
 .pydevproject
 .zanata-cache
