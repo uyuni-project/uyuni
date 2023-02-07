@@ -23,6 +23,10 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 touch /etc/rhn/rhn.conf
 
+ls -la /usr/bin/rhn-config-satellite.pl
+ls -la /etc/rhn
+find /var/lib/rhn
+
 spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive || {
   cat /var/log/rhn/populate_db.log
   exit 1
