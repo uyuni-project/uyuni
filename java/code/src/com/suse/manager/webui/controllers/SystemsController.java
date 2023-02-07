@@ -30,7 +30,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -43,7 +42,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -62,6 +60,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
@@ -72,7 +71,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +79,6 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
@@ -563,15 +560,8 @@ public class SystemsController {
                     ResultJson.error("child_not_found_or_not_authorized", e.getMessage()));
         }
 
-        ActionChain actionChain = json.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
-                .orElse(null);
-
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        Date earliest = Date.from(
-                json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
-        );
+        ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
+        Date earliest = MinionActionUtils.getScheduleDate(json.getEarliest());
 
         try {
             Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,

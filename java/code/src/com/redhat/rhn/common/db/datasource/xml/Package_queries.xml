@@ -2369,4 +2369,95 @@ ORDER BY PN.name, evr_t_as_vre_simple(PE2.evr) || '-' || PA.label
   </query>
 </mode>
 
+<mode name="system_ptfs_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
+    <query params="sid">
+WITH ptfInstalled AS (
+    SELECT sp.*
+      FROM rhnserverpackage sp
+                INNER JOIN rhnpackage pk ON sp.name_id = pk.name_id AND sp.evr_id = pk.evr_id AND sp.package_arch_id = pk.package_arch_id
+                INNER JOIN rhnpackageprovides pp ON pk.id = pp.package_id
+                INNER JOIN rhnpackagecapability pc ON pp.capability_id = pc.id
+     WHERE sp.server_id = :sid AND pc.name = 'ptf()'
+), highest_id_packages AS (
+    SELECT p.name_id, p.evr_id, p.package_arch_id, max(p.id) AS id
+      FROM ptfInstalled pi
+                INNER JOIN rhnServer s ON pi.server_id = s.id
+                INNER JOIN rhnServerChannel sc on sc.server_id = s.id
+                INNER JOIN rhnChannelPackage cp on cp.channel_id = sc.channel_id
+                INNER JOIN rhnpackage p ON pi.evr_id = p.evr_id AND pi.name_id = p.name_id AND pi.package_arch_id = p.package_arch_id AND p.id = cp.package_id
+     WHERE pi.server_id = :sid AND (p.org_id = s.org_id or p.org_id is null)
+    GROUP BY p.name_id, p.evr_id, p.package_arch_id
+) SELECT p.id AS package_id,
+                pn.id || '|' || pe.id || '|' || pa.id as id_combo,
+                pn.name || '-' || evr_t_as_vre_simple(pe.evr) as nvre,
+                pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label as nvrea,
+                pn.name as name,
+                p.summary AS summary,
+                pe.version as version,
+                pe.release as release,
+                pe.epoch as epoch,
+                pn.id as name_id,
+                pe.id as evr_id,
+                pa.label as arch,
+                pi.installtime
+    FROM rhnPackageName pn
+                INNER JOIN ptfInstalled pi ON pi.name_id = pn.id
+                INNER JOIN rhnServer s ON pi.server_id = s.id
+                INNER JOIN rhnPackageEvr pe ON pi.evr_id = pe.id
+                LEFT JOIN rhnPackageArch pa ON pi.package_arch_id = pa.id
+                LEFT JOIN highest_id_packages hp ON hp.name_id = pi.name_id AND hp.evr_id = pi.evr_id AND hp.package_arch_id = pi.package_arch_id
+                LEFT JOIN rhnpackage p ON hp.id = p.id
+   WHERE pi.server_id = :sid
+ORDER BY nvre
+    </query>
+</mode>
+
+<mode name="system_available_ptfs"  class="com.redhat.rhn.frontend.dto.PackageListItem">
+  <query params="sid">
+WITH ptf_packages AS (
+    SELECT DISTINCT pk.*
+      FROM rhnpackage pk
+                INNER JOIN rhnpackageprovides pp ON pk.id = pp.package_id
+                INNER JOIN rhnpackagecapability pc ON pp.capability_id = pc.id
+     WHERE pc.name = 'ptf()'
+)
+SELECT rp.id AS package_id,
+       pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
+       rp.summary AS summary,
+       latest.arch_label as arch,
+       pn.id || '|' || rp.evr_id || '|' || latest.arch_id AS ID_COMBO
+  FROM (
+         SELECT p.name_id AS name_id,
+                max(pe.evr) AS evr,
+                pa.label AS arch_label,
+                pa.id AS arch_id
+           FROM
+                rhnPackageEVR PE
+           JOIN ptf_packages p ON p.evr_id = pe.id
+           JOIN rhnChannelNewestPackage cp ON cp.package_id = p.id
+           JOIN rhnServerChannel sc ON sc.channel_id = cp.channel_id
+           JOIN rhnPackageArch pa ON pa.id = p.package_arch_id
+          WHERE
+                sc.server_id = :sid
+            AND NOT EXISTS (
+                 SELECT 1
+                   FROM rhnServerPackage SP
+                  WHERE SP.server_id = :sid
+                    AND SP.name_id = p.name_id
+                    AND (SP.package_arch_id = pa.id OR SP.package_arch_id IS NULL)
+            )
+            AND NOT EXISTS (SELECT 1 FROM suseServerChannelsRetractedPackagesView WHERE sid = :sid AND pid = p.id)
+       GROUP BY p.name_id, pa.label, pa.id) latest
+           JOIN rhnPackageName pn ON pn.id = latest.name_id
+           JOIN rhnPackage rp ON rp.name_id = latest.name_id
+                             AND rp.evr_id =  lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)
+                             AND rp.package_arch_id = latest.arch_id
+          WHERE EXISTS (
+                         SELECT 1 FROM rhnChannelPackage rcp
+                           JOIN rhnServerChannel rsc ON rsc.channel_id = rcp.channel_id
+                          WHERE rcp.package_id = rp.id
+                            AND rsc.server_id = :sid)
+    ORDER BY UPPER(pn.name)
+  </query>
+</mode>
 </datasource_modes>

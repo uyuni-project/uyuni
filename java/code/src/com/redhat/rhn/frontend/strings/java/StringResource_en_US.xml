@@ -730,6 +730,12 @@
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Product Temporary Fixes Navigation Tabs</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Package Search" xml:space="preserve">
         <source>Package Search</source>
         <context-group name="ctx">
