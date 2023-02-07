@@ -37,8 +37,8 @@ jobs:
     - name: Setup Environment
       run: |
         ls -la .
-        export WORKDIR=$(pwd)
-        cd $WORKDIR/susemanager-utils/testing/docker/scripts/
+        ln -s $(pwd) /manager
+        cd /manager/susemanager-utils/testing/docker/scripts/
         ./reset_pgsql_database.sh
         cp /root/rhn.conf /etc/rhn/rhn.conf
 
