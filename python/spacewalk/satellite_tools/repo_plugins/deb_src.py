@@ -511,6 +511,8 @@ class ContentSource:
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
+        with cfg_component('server.satellite') as CFG:
+            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod
     def get_file(path, local_base=None):
