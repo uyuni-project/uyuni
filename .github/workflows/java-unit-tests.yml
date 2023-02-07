@@ -46,9 +46,13 @@ jobs:
         cd java
         cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
         ant -f manager-build.xml refresh-branding-jar test-pr 2>&1
-        cat test-results/*.txt
+
+    - name: log out
+      if: always() # always run even if the previous step fails
+      run: |
+        cat java/test-results/*.txt
         cat /var/log/rhn/rhn_web_ui.log
-        #su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+        su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v3
