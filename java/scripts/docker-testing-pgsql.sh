@@ -15,7 +15,7 @@ cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
 export WORKDIR=$WORKDIR
 
-find $WORKDIR -maxdepth 1
+find $WORKDIR/spacewalk
 
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ ! -z $PG_TMPFS_DIR ]; then
