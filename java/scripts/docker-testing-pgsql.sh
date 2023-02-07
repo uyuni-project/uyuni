@@ -14,6 +14,9 @@ fi
 cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
 export WORKDIR=$WORKDIR
+
+find $WORKDIR -maxdepth 1
+
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ ! -z $PG_TMPFS_DIR ]; then
     trap "umount $PG_TMPFS_DIR" EXIT INT TERM
