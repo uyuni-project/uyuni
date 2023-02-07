@@ -339,7 +339,7 @@
                 <jvmarg value="${jacocoagent}"/>
             </fork>
             <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
-            <listener type="legacy-brief" sendSysOut="true"/>
+            <listener type="legacy-brief" sendSysErr="true" sendSysOut="true"/>
             <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
         </testclasses>
     </junitlauncher>
