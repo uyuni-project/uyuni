@@ -311,6 +311,7 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
+    <echo message="config file: ${tests.configuration.path}" />
     <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
     <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
 
