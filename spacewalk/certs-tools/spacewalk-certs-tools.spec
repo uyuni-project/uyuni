@@ -49,6 +49,7 @@ Requires:       spacewalk-base-minimal-config
 Requires:       sudo
 Requires:       tar
 BuildRequires:  docbook-utils
+BuildRequires:  make
 %if 0%{?suse_version}
 BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web
