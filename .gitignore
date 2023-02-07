@@ -45,6 +45,7 @@ search-server/spacewalk-search/rhn_search_daemon.log
 search-server/spacewalk-search/buildconf/repository/
 *~
 *#*#*
+.obs-to-maven-cache
 .project
 .pydevproject
 .zanata-cache
