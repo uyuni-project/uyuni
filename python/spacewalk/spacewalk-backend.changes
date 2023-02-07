@@ -1,3 +1,5 @@
+- add logspec param in rhn.conf to set urlgrabber loglevel
+
 -------------------------------------------------------------------
 Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
 
