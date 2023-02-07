@@ -1277,8 +1277,6 @@ type=rpm-md
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
-        with cfg_component('server.satellite') as CFG:
-            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     def get_file(self, path, local_base=None):
         try:

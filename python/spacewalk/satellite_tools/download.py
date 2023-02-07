@@ -215,7 +215,6 @@ class DownloadThread(Thread):
             http_headers=params["http_headers"],
             timeout=params["timeout"],
             minrate=params["minrate"],
-            logspec=params["urlgrabber_logspec"],
             keepalive=True,
             retry=3,
             retrycodes=retrycodes,
