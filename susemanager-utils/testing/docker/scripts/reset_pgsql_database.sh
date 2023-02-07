@@ -2,8 +2,10 @@
 
 set -ex
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
-export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
+[ -z $WORKDIR ] && WORKDIR=/manager
+
+export PERLLIB=$WORKDIR/spacewalk/setup/lib/:$WORKDIR/web/modules/rhn/:$WORKDIR/web/modules/pxt/:$WORKDIR/schema/spacewalk/lib
+export PATH=$WORKDIR/schema/spacewalk/:$WORKDIR/spacewalk/setup/bin/:$PATH
 
 echo Going to reset PGSQL database
 
@@ -14,7 +16,7 @@ echo $PERLLIB
 ./build-reportdb-schema.sh
 
 export SYSTEMD_NO_WRAP=1
-sysctl -w kernel.shmmax=18446744073709551615
+sysctl -w kernel.shmmax=18446744073709551615 ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
@@ -27,8 +29,8 @@ spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --
 }
 
 # Create symlinks because uyuni-setup-reportdb uses absolute paths
-ln -s /manager/schema/spacewalk/spacewalk-sql /usr/bin/spacewalk-sql
-ln -s /manager/schema/spacewalk/spacewalk-schema-upgrade /usr/bin/spacewalk-schema-upgrade
+ln -s $WORKDIR/schema/spacewalk/spacewalk-sql /usr/bin/spacewalk-sql
+ln -s $WORKDIR/schema/spacewalk/spacewalk-schema-upgrade /usr/bin/spacewalk-schema-upgrade
 
 /usr/bin/uyuni-setup-reportdb remove --db reportdb --user pythia ||:
 /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password oracle --local

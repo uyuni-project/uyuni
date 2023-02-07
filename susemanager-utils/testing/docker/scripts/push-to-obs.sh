@@ -1,7 +1,9 @@
 #!/bin/sh -e
 set -x
 
-REL_ENG_FOLDER="/manager/rel-eng"
+[ -z $WORKDIR ] && WORKDIR=/manager
+
+REL_ENG_FOLDER="$WORKDIR/rel-eng"
 
 help() {
   echo ""
@@ -72,7 +74,7 @@ if [ "${SSHKEY}" != "" ]; then
 fi
 
 # declare /manager as "safe"
-git config --global --add safe.directory /manager
+git config --global --add safe.directory $WORKDIR
 
 cd ${REL_ENG_FOLDER}
 

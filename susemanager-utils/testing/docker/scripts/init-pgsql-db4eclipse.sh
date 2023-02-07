@@ -2,7 +2,9 @@
 
 set -e
 
-cd /manager/susemanager-utils/testing/docker/scripts/
+[ -z $WORKDIR ] && WORKDIR=/manager
+
+cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ ! -z $PG_TMPFS_DIR ]; then
@@ -10,8 +12,8 @@ if [ ! -z $PG_TMPFS_DIR ]; then
     ./docker-testing-pgsql-move-data-to-tmpfs.sh $PG_TMPFS_DIR
 fi
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
-export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
+export PERLLIB=$WORKDIR/spacewalk/setup/lib/:$WORKDIR/web/modules/rhn/:$WORKDIR/web/modules/pxt/:$WORKDIR/schema/spacewalk/lib
+export PATH=$WORKDIR/schema/spacewalk/:$WORKDIR/spacewalk/setup/bin/:$PATH
 
 echo Going to reset pgsql database
 
@@ -28,7 +30,7 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 
 if [ -z "$NEXTVERSION" ]; then
 
-    RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/spacewalk/susemanager-schema.spec | head -n 1`
+    RPMVERSION=`rpm -q --qf "%{version}\n" --specfile $WORKDIR/schema/spacewalk/susemanager-schema.spec | head -n 1`
     NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
     if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
@@ -42,7 +44,7 @@ else
 fi
 
 # run the schema upgrade from git repo
-if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
+if ! $WORKDIR/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
     su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
     exit 1
@@ -57,7 +59,7 @@ echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (
 ./build-reportdb-schema.sh
 if [ -z "$REPORTNEXTVERSION" ]; then
 
-    RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/reportdb/uyuni-reportdb-schema.spec | head -n 1`
+    RPMVERSION=`rpm -q --qf "%{version}\n" --specfile $WORKDIR/schema/reportdb/uyuni-reportdb-schema.spec | head -n 1`
     NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
     if [ -d /etc/sysconfig/rhn/reportdb-schema-upgrade/uyuni-reportdb-schema-$RPMVERSION-to-uyuni-reportdb-schema-$NEXTVERSION ]; then
@@ -71,7 +73,7 @@ else
 fi
 
 # run the schema upgrade from git repo
-if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y --reportdb; then
+if ! $WORKDIR/schema/spacewalk/spacewalk-schema-upgrade -y --reportdb; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
     su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
     exit 1

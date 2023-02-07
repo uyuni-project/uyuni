@@ -24,13 +24,15 @@ fi
 
 BRAND_NAME="$1"
 
+[ -z $WORKDIR ] && WORKDIR=/manager
+
 if [ "$BRAND_NAME" == "unittest" ];then
     echo "Running just unit test"
 fi
 
 echo "Using branding $BRAND_NAME"
 
-cd /manager/susemanager-utils/testing/docker/scripts/
+cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ -n "$PG_TMPFS_DIR" ]; then
@@ -40,8 +42,8 @@ fi
 
 echo "Going to reset pgsql database"
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
-export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
+export PERLLIB=$WORKDIR/spacewalk/setup/lib/:$WORKDIR/web/modules/rhn/:$WORKDIR/web/modules/pxt/:$WORKDIR/schema/spacewalk/lib
+export PATH=$WORKDIR/schema/spacewalk/:$WORKDIR/spacewalk/setup/bin/:$PATH
 
 export SYSTEMD_NO_WRAP=1
 
@@ -49,7 +51,7 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 
 # this copy the latest schema from the git into the system
-cp -r /manager/schema /tmp
+cp -r $WORKDIR/schema /tmp
 pushd /tmp/schema/reportdb
 
 RPM_VERSION=$(rpm -q --qf "%{version}\n" --specfile uyuni-reportdb-schema.spec | head -n 1)
@@ -85,7 +87,7 @@ if [ "$BRAND_NAME" == "unittest" ];then
 fi
 
 # Create the schema
-cd /manager/schema
+cd $WORKDIR/schema
 
 cp /root/rhn.conf /etc/rhn/rhn.conf
 

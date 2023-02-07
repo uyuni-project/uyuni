@@ -17,6 +17,8 @@ if [ ${#} -ne 1 ];then
     usage_and_exit ${SCRIPT}
 fi
 
+[ -z $WORKDIR ] && WORKDIR=/manager
+
 schema_rpm=${1}
 
 if [ ! -f /root/${schema_rpm} ];then
@@ -24,7 +26,7 @@ if [ ! -f /root/${schema_rpm} ];then
     usage_and_exit ${SCRIPT}
 fi
 
-cd /manager/susemanager-utils/testing/docker/scripts/
+cd $WORKDIR/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ ! -z $PG_TMPFS_DIR ]; then
@@ -38,8 +40,8 @@ pushd /root/
 rpm -ivh ${schema_rpm}
 popd
 
-export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
-export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
+export PERLLIB=$WORKDIR/spacewalk/setup/lib/:$WORKDIR/web/modules/rhn/:$WORKDIR/web/modules/pxt/:$WORKDIR/schema/spacewalk/lib
+export PATH=$WORKDIR/schema/spacewalk/:$WORKDIR/spacewalk/setup/bin/:$PATH
 
 echo Going to reset pgsql database
 
@@ -47,7 +49,7 @@ echo $PATH
 echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
-sysctl -w kernel.shmmax=18446744073709551615
+sysctl -w kernel.shmmax=18446744073709551615 ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
@@ -63,7 +65,7 @@ spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
 
-RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/spacewalk/susemanager-schema.spec | head -n 1`
+RPMVERSION=`rpm -q --qf "%{version}\n" --specfile $WORKDIR/schema/spacewalk/susemanager-schema.spec | head -n 1`
 NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
 if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
@@ -77,7 +79,7 @@ fi
 #export SUMA_TEST_SCHEMA_VERSION="4.3.0"
 
 # run the schema upgrade from git repo
-if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
+if ! $WORKDIR/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
     su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop"
     exit 1

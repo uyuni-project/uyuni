@@ -7,7 +7,13 @@ if [ -n "$1" ]; then
     TARGET=$1
 fi
 
-cd /manager/susemanager-utils/testing/docker/scripts/
+WORKDIR=$(pwd)
+if [ -d /manager ]; then
+	WORKDIR=/manager
+fi
+cd $WORKDIR/susemanager-utils/testing/docker/scripts/
+
+export WORKDIR=$WORKDIR
 # Move Postgres database to tmpfs to speed initialization and testing up
 if [ ! -z $PG_TMPFS_DIR ]; then
     trap "umount $PG_TMPFS_DIR" EXIT INT TERM
