@@ -1,6 +1,52 @@
 - add logspec param in rhn.conf to set urlgrabber loglevel
 
 -------------------------------------------------------------------
+Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Fix reposync error about missing "content-type" key when syncing certain channels
+
+-------------------------------------------------------------------
+Mon Jan 23 08:29:58 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:14:34 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * remove jabberd and osa-dispatcher
+  * Add rhel_9 as Salt-enabled kickstart installation
+  * Remove AppStream variant from EL8 and derivatives treeinfos
+
+-------------------------------------------------------------------
+Fri Dec 02 14:53:12 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add 'octet-stream' to accepted content-types for reposync mirrorlists
+
+-------------------------------------------------------------------
+Fri Nov 25 09:45:11 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Correct insert statement to reprocess system overview list
+
+-------------------------------------------------------------------
+Fri Nov 18 15:11:50 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * do not fetch mirrorlist when a file url is given
+  * Exclude invalid mirror urls for reposync (bsc#1203826)
+  * require python3-debian version which support new compression
+    methods to sync ubuntu22-04 repositories (bsc#1205212)
+  * Update system overview table in reposync
+  * Keep older module metadata files in database (bsc#1201893)
+  * Used the legacy reporting system in spacewalk-debug to obtain
+    up-to-date information
+   
+-------------------------------------------------------------------
 Wed Sep 28 11:14:14 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1
