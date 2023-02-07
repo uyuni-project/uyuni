@@ -34,5 +34,21 @@ jobs:
       run: |
         ant -f java/manager-build.xml ivy refresh-branding-jar
 
+    - name: Setup Environment
+      run: |
+        ls -la .
+        export WORKDIR=$(pwd)
+        cd $WORKDIR/susemanager-utils/testing/docker/scripts/
+        ./reset_pgsql_database.sh
+        cp /root/rhn.conf /etc/rhn/rhn.conf
+
     - name: Run unit tests
-      run: java/scripts/docker-testing-pgsql.sh test-coverage-report
+      run: |
+        ls -la .
+        cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+        ant -f manager-build.xml refresh-branding-jar test-coverage-report
+
+    - name: Shutdown DB
+      run: |
+        su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+
