@@ -16,31 +16,16 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushDriver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
  */
 public class SSHPush extends RhnQueueJob<SSHPushDriver> {
 
     public static final String QUEUE_NAME = "ssh_push";
-    private static Logger log = null;
 
     @Override
     public String getConfigNamespace() {
         return "sshpush";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(SSHPush.class);
-        }
-        return log;
     }
 
     /**
