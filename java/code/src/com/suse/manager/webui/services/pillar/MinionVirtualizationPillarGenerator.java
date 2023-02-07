@@ -20,18 +20,12 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PRE
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Optional;
 
 /**
  * Class for generating pillar data for the virtual hosts
  */
 public class MinionVirtualizationPillarGenerator implements MinionPillarGenerator {
-
-    /** Logger */
-    private static final Logger LOG = LogManager.getLogger(MinionVirtualizationPillarGenerator.class);
 
     public static final MinionVirtualizationPillarGenerator INSTANCE = new MinionVirtualizationPillarGenerator();
 

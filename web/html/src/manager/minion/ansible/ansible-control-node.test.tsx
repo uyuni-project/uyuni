@@ -29,7 +29,7 @@ describe("Ansible control node path configuration", () => {
 
     render(<AnsibleControlNode minionServerId={1000} />); // load the component at initial state
 
-    screen.getByText("Loading..");
+    screen.getByText("Loading...");
 
     // wait until the render loads and changes, then check for content
     await waitFor(() => {

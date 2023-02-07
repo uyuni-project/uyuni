@@ -235,6 +235,7 @@ public class ProductTreeEntry {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("root", getRootProductId())

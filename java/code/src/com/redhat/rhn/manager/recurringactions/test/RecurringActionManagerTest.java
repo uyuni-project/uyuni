@@ -76,6 +76,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

@@ -40,7 +40,6 @@ public class VirtualStorageVolumeInfoJson {
      * @param nameIn the name of the volume
      * @param values the JSON values returned by salt
      */
-    @SuppressWarnings("serial")
     public VirtualStorageVolumeInfoJson(String nameIn, JsonObject values) {
         name = nameIn;
         type = values.get("type").getAsString();

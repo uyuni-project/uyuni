@@ -40,7 +40,7 @@ import java.util.List;
 public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
 
     @Test
-    public void testListAllKeys() throws Exception {
+    public void testListAllKeys() {
         // Setup
         User otherOrg = UserTestUtils.findNewUser("testUser", "cryptoOrg", true);
         CryptoKey key = CryptoTest.createTestKey(otherOrg.getOrg());
@@ -50,7 +50,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();
 
-        List allKeys = handler.listAllKeys(otherOrg);
+        List<CryptoKeyDto> allKeys = handler.listAllKeys(otherOrg);
 
         // Verify
         assertNotNull(allKeys);
@@ -62,7 +62,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         // Setup
         String description = "CryptoKeysHandler.testCreate-Description";
         String content = MD5Crypt.md5Hex(RandomStringUtils.random(28));
@@ -82,7 +82,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         // Setup
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());
         KickstartFactory.saveCryptoKey(key);
@@ -100,7 +100,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetails() throws Exception {
+    public void testGetDetails() {
         // Setup
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());
         KickstartFactory.saveCryptoKey(key);

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
@@ -45,8 +45,8 @@ public class PushClientTest extends RhnBaseTestCase {
         PushClient pc1 = createTestPushClient();
         PushClient pc2 = new PushClient();
 
-        assertFalse(pc1.equals(pc2));
-        assertFalse(pc1.equals(new Date()));
+        assertNotEquals(pc1, pc2);
+        assertNotEquals(pc1, new Date());
     }
 
     /**

@@ -1,8 +1,10 @@
-# Copyright (c) 2013-2022 SUSE LLC.
+# Copyright (c) 2013-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
 require 'yaml'
+require 'nokogiri'
+require 'timeout'
 
 # return current URL
 def current_url
@@ -29,11 +31,13 @@ end
 def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
   do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
-  [$minion, $build_host, $sshminion].each do |node|
+  [$minion, $build_host, $ssh_minion, $rhlike_minion].each do |node|
     next unless node
-    os_version, os_family = get_os_version(node)
-    next unless os_family == 'sles'
-    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP3', '15-SP4'].include? os_version
+    os_version = node.os_version
+    os_family = node.os_family
+    next unless ['sles', 'rocky'].include?(os_family)
+    os_version = os_version.split('.')[0] if os_family == 'rocky'
+    raise "Can't build list of reposyncs to leave running" unless %w[12-SP4 12-SP5 15-SP3 15-SP4 8].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
@@ -68,7 +72,7 @@ end
 
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
-  $product == 'Uyuni' || ['head', '4.3'].include?($product_version)
+  $product == 'Uyuni' || %w[head 4.3].include?($product_version)
 end
 
 # create salt pillar file in the default pillar_roots location
@@ -76,7 +80,7 @@ def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  # make file readeable by salt
+  # make file readable by salt
   $server.run("chgrp salt #{dest}")
   return_code
 end
@@ -168,14 +172,6 @@ def find_and_wait_click(*args, **options, &optional_filter_block)
   element.extend(CapybaraNodeElementExtension)
 end
 
-def get_client_type(name)
-  if name.include? '_client'
-    'traditional'
-  else
-    'salt'
-  end
-end
-
 def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
@@ -189,29 +185,25 @@ def deb_host?(name)
 end
 
 def repository_exist?(repo)
-  $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
-  $api_test.auth.logout
   repo_list.include? repo
 end
 
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/'
+  repo_name.sub!(%r{http:\/\/download.suse.de\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/Maintenance:\/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
 end
 
 def extract_logs_from_node(node)
-  _os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $build_validation
-    node.run('zypper --non-interactive install tar')
-    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
-  end
+  os_family = node.os_family
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
   node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
@@ -239,3 +231,89 @@ def get_uptime_from_host(host)
   days = (hours / 24.0) # 24 hours
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
 end
+
+def escape_regex(text)
+  text.gsub(%r{([$.*\[/^])}) { |match| "\\#{match}" }
+end
+
+def get_system_id(node)
+  $api_test.system.search_by_name(node.full_hostname).first['id']
+end
+
+def check_shutdown(host, time_out)
+  cmd = "ping -c1 #{host}"
+  repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.nonzero?
+      STDOUT.puts "machine: #{host} went down"
+      break
+    else
+      sleep 1
+    end
+  end
+end
+
+# rubocop:disable Metrics/MethodLength
+def check_restart(host, node, time_out)
+  cmd = "ping -c1 #{host}"
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out = `#{cmd}`
+    if $CHILD_STATUS.exitstatus.zero?
+      STDOUT.puts "machine: #{host} network is up"
+      break
+    else
+      sleep 1
+    end
+  end
+  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+    _out, code = node.run('ls', check_errors: false, timeout: 10)
+    if code.zero?
+      STDOUT.puts "machine: #{host} ssh is up"
+      break
+    else
+      sleep 1
+    end
+  end
+end
+# rubocop:enable Metrics/MethodLength
+
+# Extract the OS version and OS family
+# We get these data decoding the values in '/etc/os-release'
+# rubocop:disable Metrics/AbcSize
+def get_os_version(node)
+  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
+  return nil, nil unless code.zero?
+
+  os_family = os_family_raw.strip.split('=')[1]
+  return nil, nil if os_family.nil?
+
+  os_family.delete! '"'
+  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
+  return nil, nil unless code.zero?
+
+  os_version = os_version_raw.strip.split('=')[1]
+  return nil, nil if os_version.nil?
+
+  os_version.delete! '"'
+  # on SLES, we need to replace the dot with '-SP'
+  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
+  STDOUT.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  [os_version, os_family]
+end
+
+def get_gpg_keys(node, target = $server)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/
+    # HACK: SLE 15 uses SLE 12 GPG key
+    os_version = 12 if os_version =~ /^15/
+    # SLE12 GPG keys don't contain service pack strings
+    os_version = os_version.split('-')[0] if os_version =~ /^12/
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
+  elsif os_family =~ /^centos/
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
+  else
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", check_errors: false)
+  end
+  gpg_keys.lines.map(&:strip)
+end
+# rubocop:enable Metrics/AbcSize

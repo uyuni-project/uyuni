@@ -319,6 +319,7 @@ class TestSCMisc:
         shell.conf_dir = "/tmp"
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
+        client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
         with patch("spacecmd.misc.print", mprint) as prt, \
             patch("spacecmd.misc.prompt_user", prompter) as pmt, \
@@ -382,6 +383,7 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
+        client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
         with patch("spacecmd.misc.print", mprint) as prt, \
             patch("spacecmd.misc.prompt_user", prompter) as pmt, \
@@ -449,6 +451,7 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
+        client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
         with patch("spacecmd.misc.print", mprint) as prt, \
             patch("spacecmd.misc.prompt_user", prompter) as pmt, \
@@ -516,6 +519,7 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
+        client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
         with patch("spacecmd.misc.print", mprint) as prt, \
             patch("spacecmd.misc.prompt_user", prompter) as pmt, \
@@ -645,6 +649,7 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
+        client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
         with patch("spacecmd.misc.print", mprint) as prt, \
             patch("spacecmd.misc.prompt_user", prompter) as pmt, \

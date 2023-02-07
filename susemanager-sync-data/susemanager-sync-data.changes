@@ -1,4 +1,26 @@
-- add Ubuntu 22.04 amd64
+-------------------------------------------------------------------
+Wed Dec 14 14:06:57 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * change OES 2023 URL to https and make the tools channels mandatory
+    (bsc#1205644)
+  * remove version from product names as they are held separate
+  * change "EL 9 Base" to "RHEL and Liberty 9 Base"
+
+-------------------------------------------------------------------
+Fri Nov 18 15:01:19 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * add SLES15 SP3 LTSS
+  * release oes2023 products
+  * add sll 9, oraclelinux 9, almalinux 9 and rockylinux 9
+
+-------------------------------------------------------------------
+Wed Sep 28 10:25:03 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * add oes2023 (bsc#1202602)
+  * add Ubuntu 22.04 amd64
 
 -------------------------------------------------------------------
 Fri May 20 00:15:03 CEST 2022 - jgonzalez@suse.com

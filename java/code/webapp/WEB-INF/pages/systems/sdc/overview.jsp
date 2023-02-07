@@ -54,8 +54,16 @@
               <c:if test="${rebootRequired}">
                 <div class="systeminfo">
                   <div class="systeminfo-full">
-                    <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
-                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                    <c:choose>
+                      <c:when test="${rebootScheduled}">
+                        <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.rebootscheduled"/>
+                        <bean:message key="sdc.details.overview.rebootaction" arg0="/rhn/systems/details/history/Event.do?sid=${system.id}&aid=${rebootActionId}"/>
+                      </c:when>
+                      <c:otherwise>
+                        <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
+                        <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
                 </div>
               </c:if>
@@ -277,7 +285,7 @@
             <td><rhn:formatDate humanStyle="from" value="${system.lastBootAsDate}" type="both" dateStyle="short" timeStyle="long"/><br/>
                   <rhn:require acl="system_feature(ftr_reboot)"
                        mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
                   </rhn:require>
             </td>
           </tr>

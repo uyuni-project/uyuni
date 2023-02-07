@@ -30,8 +30,8 @@
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
-Version:        4.4.0
-Release:        0
+Version:        4.4.1
+Release:        1
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0-only
 Group:          Productivity/Other

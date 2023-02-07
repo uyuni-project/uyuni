@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
@@ -71,11 +72,12 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -92,8 +94,8 @@ import java.util.stream.Stream;
  */
 public class ContentManager {
 
-    private static final String DELIMITER = "-";
     private static final Logger LOG = LogManager.getLogger(ContentManager.class);
+    private static final String DELIMITER = "-";
     private ModulemdApi modulemdApi;
 
     /**
@@ -110,8 +112,6 @@ public class ContentManager {
     public ContentManager(ModulemdApi modulemdApiIn) {
         this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
     }
-
-    private static Logger log = LogManager.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -769,9 +769,8 @@ public class ContentManager {
     }
 
     private static void stripModuleMetadata(Channel channel) {
-        if (channel != null && channel.getModules() != null) {
-            HibernateFactory.getSession().delete(channel.getModules());
-            channel.setModules(null);
+        if (channel != null && channel.isModular()) {
+            channel.getModules().clear();
         }
     }
 
@@ -807,6 +806,10 @@ public class ContentManager {
                 nonLeaderTargets)
                 .collect(toList());
 
+        // Refresh pillar data for the assigned clients
+        ServerFactory.listMinionsByChannel(leaderTarget.getChannel().getId()).forEach(ms ->
+                MinionPillarManager.INSTANCE.generatePillar(ms, false, MinionPillarManager.PillarSubset.GENERAL));
+
         return srcTgtPairs;
     }
 
@@ -834,7 +837,7 @@ public class ContentManager {
         tgt.asCloned().ifPresentOrElse(
                 t -> t.setOriginal(newSource),
                 () -> {
-                    log.info("Channel is not a clone: {}. Adding clone info.", tgt);
+                    LOG.info("Channel is not a clone: {}. Adding clone info.", tgt);
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
 
@@ -1031,8 +1034,7 @@ public class ContentManager {
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         tgtChannel.getPackages().clear();
-        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
-                srcChannel.getPackages().size(), filters.size()));
+        LOG.debug("Filtering {} entities through {} filter(s)", srcChannel.getPackages().size(), filters.size());
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
         ChannelFactory.save(tgtChannel);
@@ -1054,8 +1056,7 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
-                src.getErratas().size(), errataFilters.size()));
+        LOG.debug("Filtering {} entities through {} filter(s)", src.getErratas().size(), errataFilters.size());
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();
@@ -1063,7 +1064,7 @@ public class ContentManager {
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
         // Remove packages from excluded errata
-        ErrataManager.removeErratumAndPackagesFromChannel(excludedErrata, tgt, user);
+        ErrataManager.removeErratumAndPackagesFromChannel(excludedErrata, includedErrata, tgt, user);
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }
@@ -1094,10 +1095,10 @@ public class ContentManager {
 
         // First add the denied packages by testing all DENY filters against a package, and then filter out any package
         // that is explicitly allowed by testing all ALLOW filters against the same package and negating the result.
-        Set<T> denied = entities.stream()
-                .filter(e -> denyFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
-                .filter(e -> !allowFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
-                .collect(Collectors.toUnmodifiableSet());
+        Set<T> denied = entities.stream().filter(
+                e -> denyFilters.stream().anyMatch(f -> f.test(e)) &&
+                allowFilters.stream().noneMatch(f -> f.test(e))
+        ).collect(Collectors.toUnmodifiableSet());
 
         Set<T> allowed = new HashSet<>(entities);
         allowed.removeAll(denied);

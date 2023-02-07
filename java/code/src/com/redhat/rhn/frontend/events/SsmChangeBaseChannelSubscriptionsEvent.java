@@ -41,6 +41,7 @@ public class SsmChangeBaseChannelSubscriptionsEvent extends
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmBaseChannelSubscriptionsEvent[User: " + getUser().getLogin() +
                 ", Change Count: " + getChanges().size() + "]";

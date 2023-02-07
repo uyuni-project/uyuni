@@ -1,4 +1,9 @@
-- fix problems with parallel running processes
+-------------------------------------------------------------------
+Wed Sep 28 10:44:53 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Add missing IPv6 default configuration (bsc#1201589)
+  * fix problems with parallel running processes
 
 -------------------------------------------------------------------
 Tue Apr 19 12:14:26 CEST 2022 - jgonzalez@suse.com

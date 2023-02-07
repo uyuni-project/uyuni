@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -197,7 +198,7 @@ public class RecurringActionHandler extends BaseHandler {
         }
         RecurringAction action = lookupById(user, ((Integer) actionProps.get("id")));
         // detach the object and prevent hibernate from auto flushing when fields become dirty
-        RecurringActionFactory.getSession().evict(action);
+        HibernateFactory.getSession().evict(action);
 
         if (actionProps.containsKey("name")) {
             action.setName((String) actionProps.get("name"));

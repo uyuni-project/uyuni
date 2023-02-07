@@ -21,9 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -50,10 +49,8 @@ public class SaltEventFactory extends HibernateFactory {
      * @return the list of events count per queue starting with a queue corresponding to events
      *  without any minion ID. This queue is referred to as queue 0.
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> countSaltEvents(int queuesCount) {
-        List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents",
-                    Collections.EMPTY_MAP);
+        List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
 
         return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
                 .filter(c -> c[0].equals(i))
@@ -68,12 +65,9 @@ public class SaltEventFactory extends HibernateFactory {
      * @param queue the thread to pop events for, 0 for those associated with no particular queue.
      * @return events
      */
-    @SuppressWarnings("unchecked")
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
-        List<Object[]> eventObjects = singleton.listObjectsByNamedQuery(
-                "SaltEvent.popSaltEvents",
-                new HashMap<String, Object>() { { put("limit", limit); put("queue", queue); } }
-        );
+        List<Object[]> eventObjects = singleton.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
+                Map.of("limit", limit, "queue", queue));
 
         return eventObjects.stream()
                 .map(o -> new SaltEvent((long)o[0], (String)o[1], (String)o[2], (int)o[3]));
@@ -84,11 +78,20 @@ public class SaltEventFactory extends HibernateFactory {
      * @param ids event ids
      * @return event ids actually deleted
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
-        return singleton.listObjectsByNamedQuery(
-                "SaltEvent.deleteSaltEvents",
-                new HashMap<String, Object>() { { put("ids", ids); } }
-        );
+        return singleton.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
     }
+
+    /**
+     * Update event queue numbers after config change.
+     * @param queues number of queues
+     * @return the number of updated events
+     */
+    public static int fixQueueNumbers(int queues) {
+        return getSession()
+                .getNamedQuery("SaltEvent.fixQueueNumbers")
+                .setParameter("queues", queues)
+                .executeUpdate();
+    }
+
 }

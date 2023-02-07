@@ -113,10 +113,8 @@ public class KickstartBuilder {
             KickstartableTree tree) {
         StringBuilder partitionBuf = new StringBuilder();
         // Grab a list of all the available command names:
-        List<KickstartCommandName> availableOptions = KickstartFactory
-                .lookupAllKickstartCommandNames(ksData);
-        Map<String, KickstartCommandName> commandNames =
-                new HashMap<>();
+        List<KickstartCommandName> availableOptions = KickstartFactory.lookupAllKickstartCommandNames();
+        Map<String, KickstartCommandName> commandNames = new HashMap<>();
         for (KickstartCommandName cmdName : availableOptions) {
             commandNames.put(cmdName.getName(), cmdName);
         }
@@ -166,7 +164,6 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                // TODO
                 log.warn("Unable to parse kickstart command: {}", firstWord);
                 continue;
             }
@@ -234,7 +231,7 @@ public class KickstartBuilder {
      * @param lines %package section of the kickstart file.
      */
     public void buildPackages(KickstartData ksData, List<String> lines) {
-        if (lines.size() == 0) {
+        if (lines.isEmpty()) {
             // Could conceivably be no packages?
             return;
         }
@@ -282,7 +279,7 @@ public class KickstartBuilder {
 
     private void parseScript(KickstartData ksData, List<String> lines, String prefix) {
 
-        if (lines.size() == 0) {
+        if (lines.isEmpty()) {
             return;
         }
 
@@ -291,16 +288,16 @@ public class KickstartBuilder {
                     "%pre tag.");
         }
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String interpreter = "";
         String chroot = "Y";
         boolean errorOnFail = false;
         for (String currentLine : lines) {
             if (currentLine.startsWith(prefix)) {
-                if (buf.toString().length() > 0) {
+                if (!buf.toString().isEmpty()) {
                     storeScript(prefix, ksData, buf, interpreter, chroot, errorOnFail);
                 }
-                buf = new StringBuffer();
+                buf = new StringBuilder();
 
                 interpreter = getInterpreter(currentLine);
                 chroot = getChroot(prefix, currentLine);
@@ -355,7 +352,7 @@ public class KickstartBuilder {
         return false;
     }
 
-    private void storeScript(String prefix, KickstartData ksData, StringBuffer buf,
+    private void storeScript(String prefix, KickstartData ksData, StringBuilder buf,
             String interpreter, String chroot, boolean errorOnFail) {
         KickstartScriptCreateCommand scriptCommand =
                 new KickstartScriptCreateCommand(ksData.getId(), user);
@@ -417,7 +414,7 @@ public class KickstartBuilder {
         if (ksLabel.length() < MIN_KS_LABEL_LENGTH) {
             return false;
         }
-        Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[a-z0-9_-]+", Pattern.CASE_INSENSITIVE);
         Matcher match = pattern.matcher(ksLabel);
         return match.matches();
     }
@@ -570,16 +567,16 @@ public class KickstartBuilder {
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         setNetwork(cmd, ksdata);
 
-        setRootPassword(cmd, ksdata, rootPassword);
+        cmd.createCommand("rootpw", ksdata.encryptPassword(rootPassword), ksdata);
 
         // Set defaults
-        setLanguage(cmd, ksdata);
-        setKeyboardMouse(cmd, ksdata);
+        cmd.createCommand("lang", "en_US", ksdata);
+        cmd.createCommand("keyboard", "us", ksdata);
         setBootloader(cmd, ksdata);
         setTimezone(cmd, ksdata);
         setAuth(cmd, ksdata);
         setMiscDefaults(cmd, ksdata);
-        setPartitionScheme(cmd, ksdata);
+        setPartitionScheme(ksdata);
         cmd.processSkipKey(ksdata);
         cmd.processRepos(ksdata);
         if (ksdata.getKsPackages() == null) {
@@ -588,27 +585,6 @@ public class KickstartBuilder {
         cmd.store(ksdata);
         return ksdata;
 
-    }
-
-    private void setRootPassword(KickstartWizardHelper cmd,
-            KickstartData ksdata, String rootPassword) {
-        cmd.createCommand("rootpw", ksdata.encryptPassword(rootPassword), ksdata);
-    }
-
-    private void setLanguage(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
-        cmd.createCommand("lang", "en_US", ksdata);
-        if (!ksdata.isRhel5OrGreater()) {
-            cmd.createCommand("langsupport", "--default en_US en_US", ksdata);
-        }
-    }
-
-    private void setKeyboardMouse(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
-        cmd.createCommand("keyboard", "us", ksdata);
-        if (!ksdata.isRhel5OrGreater()) {
-            cmd.createCommand("mouse", "none", ksdata);
-        }
     }
 
     private void setTimezone(KickstartWizardHelper cmd, KickstartData ksdata) {
@@ -626,7 +602,7 @@ public class KickstartBuilder {
     }
 
     private void setAuth(KickstartWizardHelper cmd, KickstartData ksdata) {
-        cmd.createCommand("auth", ksdata.defaultAuthArgs(), ksdata);
+        cmd.createCommand("auth", "--enableshadow --passalgo=sha256", ksdata);
     }
 
     private void setNetwork(KickstartWizardHelper cmd, KickstartData ksdata) {
@@ -634,21 +610,17 @@ public class KickstartBuilder {
     }
 
     private void setMiscDefaults(KickstartWizardHelper cmd, KickstartData ksdata) {
-        if (!ksdata.isRhel5OrGreater()) {
-            cmd.createCommand("zerombr", "yes", ksdata);
-        }
-        else {
-            cmd.createCommand("zerombr", null, ksdata);
-        }
+        cmd.createCommand("zerombr", null, ksdata);
         cmd.createCommand("reboot", null, ksdata);
         cmd.createCommand("skipx", null, ksdata);
         cmd.createCommand("firewall", "--disabled", ksdata);
         cmd.createCommand("clearpart", "--all", ksdata);
-        if (!ksdata.isLegacyKickstart()) {
-            cmd.createCommand("selinux", "--permissive", ksdata);
-        }
+        cmd.createCommand("selinux", "--permissive", ksdata);
         cmd.createCommand("text", null, ksdata);
-        cmd.createCommand("install", null, ksdata);
+
+        if (!ksdata.isRhel9OrGreater()) {
+            cmd.createCommand("install", null, ksdata);
+        }
     }
 
     /**
@@ -670,10 +642,9 @@ public class KickstartBuilder {
     /**
      * Setup the default partition scheme for this kickstart profile's current settings.
      *
-     * @param cmd Helper
      * @param ksdata Kickstart data.
      */
-    public static void setPartitionScheme(KickstartWizardHelper cmd, KickstartData ksdata) {
+    public static void setPartitionScheme(KickstartData ksdata) {
 
         String configData = Config.get().getString(ConfigDefaults.KS_PARTITION_DEFAULT);
         if (!StringUtils.isBlank(configData)) {
@@ -683,10 +654,10 @@ public class KickstartBuilder {
             ksdata.setPartitionData("autopart --type=lvm");
         }
         else if (ksdata.getChannel().getChannelArch().getName().equals(IA64)) {
-            setItaniumParitionScheme(cmd, ksdata);
+            setItaniumParitionScheme(ksdata);
         }
         else if (ksdata.getChannel().getChannelArch().getName().equals(PPC)) {
-            setPpcPartitionScheme(cmd, ksdata);
+            setPpcPartitionScheme(ksdata);
         }
         else {
             String virtType = ksdata.getKickstartDefaults().
@@ -702,7 +673,7 @@ public class KickstartBuilder {
                 ksdata.setPartitionData(data);
 
             }
-            else if (!ksdata.isLegacyKickstart()) {
+            else {
                 String data = "part /boot --fstype=ext3 --size=200 \n" +
                         "part pv.01 --size=1000 --grow \n" +
                         "part swap --size=1000   --maxsize=2000 \n" +
@@ -710,53 +681,27 @@ public class KickstartBuilder {
                         "logvol / --vgname=myvg --name=rootvol --size=1000 --grow";
                 ksdata.setPartitionData(data);
             }
-            else {
-                String data = "part /boot --fstype=ext3 --size=200 \n" +
-                        "part pv.01 --size=1000 --grow \n" +
-                        "part swap --size=1000   --maxsize=2000";
-                ksdata.setPartitionData(data);
-            }
         }
     }
 
-    private static void setItaniumParitionScheme(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
-        if (!ksdata.isLegacyKickstart()) {
-            String data = "part /boot/efi --fstype=vfat --size=100 \n" +
-                    "part swap --size=1000 --grow --maxsize=2000\n" +
-                    "part pv.01 --fstype=ext3 --size=700 --grow\n" +
-                    "volgroup myvg pv.01\n" +
-                    "logvol --vgname=myvg --name=rootvol --size=1000 --grow";
-            ksdata.setPartitionData(data);
-        }
-        else {
-            String data = "part /boot/efi --fstype=vfat --size=100 \n" +
-                    "part swap --size=1000 --grow --maxsize=2000\n" +
-                    "part pv.01 --fstype=ext3 --size=700 --grow";
-            ksdata.setPartitionData(data);
-        }
+    private static void setItaniumParitionScheme(KickstartData ksdata) {
+        String data = "part /boot/efi --fstype=vfat --size=100 \n" +
+                "part swap --size=1000 --grow --maxsize=2000\n" +
+                "part pv.01 --fstype=ext3 --size=700 --grow\n" +
+                "volgroup myvg pv.01\n" +
+                "logvol --vgname=myvg --name=rootvol --size=1000 --grow";
+        ksdata.setPartitionData(data);
     }
 
-    private static void setPpcPartitionScheme(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
+    private static void setPpcPartitionScheme(KickstartData ksdata) {
         log.debug("Adding PPC specific partition info:");
-        if (!ksdata.isLegacyKickstart()) {
-            String data = "part /boot --fstype=ext3 --size=200\n" +
-                    "part prepboot --fstype \"PPC PReP Boot\" --size=4\n" +
-                    "part swap --size=1000   --maxsize=2000 \n" +
-                    "part pv.01 --size=1000 --grow \n" +
-                    "volgroup myvg pv.01 \n" +
-                    "logvol / --vgname=myvg --name=rootvol --size=1000 --grow";
-            ksdata.setPartitionData(data);
-        }
-        else {
-            String data = "part /boot --fstype=ext3 --size=200\n" +
-                    "part prepboot --fstype \"PPC PReP Boot\" --size=4\n" +
-                    "part swap --size=1000   --maxsize=2000 \n" +
-                    "part / --fstype=ext3 --size=700 --grow";
-            ksdata.setPartitionData(data);
-        }
-
+        String data = "part /boot --fstype=ext3 --size=200\n" +
+                "part prepboot --fstype \"PPC PReP Boot\" --size=4\n" +
+                "part swap --size=1000   --maxsize=2000 \n" +
+                "part pv.01 --size=1000 --grow \n" +
+                "volgroup myvg pv.01 \n" +
+                "logvol / --vgname=myvg --name=rootvol --size=1000 --grow";
+        ksdata.setPartitionData(data);
     }
 
     /**

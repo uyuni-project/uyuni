@@ -72,6 +72,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
     private static final String HEADER_KEY = "header";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

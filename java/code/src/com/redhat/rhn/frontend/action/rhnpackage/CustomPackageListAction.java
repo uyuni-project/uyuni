@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -84,7 +85,7 @@ public class CustomPackageListAction extends RhnAction {
                 "source".equals(request.getParameter("package_type"));
 
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             // Forward type of the list
             params.put("source_checked", sourcePackagesChecked);
@@ -94,7 +95,7 @@ public class CustomPackageListAction extends RhnAction {
 
 
         String selectedChan = request.getParameter(SELECTED_CHANNEL);
-        DataResult result = null;
+        DataResult<PackageOverview> result;
 
 
         //selected channel id

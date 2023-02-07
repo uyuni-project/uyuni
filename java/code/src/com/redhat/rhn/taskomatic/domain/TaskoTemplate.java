@@ -30,7 +30,7 @@ public class TaskoTemplate {
     private String startIf;
     private Date created;
     private Date modified;
-    private Set<TaskoRun> runHistory = new HashSet();
+    private Set<TaskoRun> runHistory = new HashSet<>();
 
     /**
      * @return Returns the id.

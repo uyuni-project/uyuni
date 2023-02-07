@@ -30,6 +30,7 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SaltbootUtils {
@@ -51,11 +52,15 @@ public class SaltbootUtils {
         String name = imageInfo.getOrg().getId() + "-" + imageInfo.getName() + "-" + imageInfo.getVersion() + "-" +
                 imageInfo.getRevisionNumber();
         // Generic breed is required for cobbler not appending any autoyast or kickstart keywords
-        Distro cd = new Distro.Builder().setName(name)
-                .setInitrd(initrd).setKernel(kernel)
-                .setKernelOptions("panic=60 splash=silent")
-                .setArch(imageInfo.getImageArch().getName()).setBreed("generic").build(con);
+        Distro cd = new Distro.Builder<String>()
+                .setName(name)
+                .setInitrd(initrd)
+                .setKernel(kernel)
+                .setKernelOptions(Optional.of("panic=60 splash=silent"))
+                .setArch(imageInfo.getImageArch().getName()).setBreed("generic")
+                .build(con);
         cd.setComment("Distro for image " + name + "belonging to organization " + imageInfo.getOrg().getName());
+        cd.save();
 
         // Each distro have its own private profile for individual system records
         // SystemRecords need to be decoupled from saltboot group default profiles
@@ -132,7 +137,7 @@ public class SaltbootUtils {
         else {
             gp.setDistro(d);
         }
-        gp.setKernelOptions(kernelOptions);
+        gp.<String>setKernelOptions(Optional.of(kernelOptions));
         gp.setComment("Saltboot group " + saltbootGroup + " of organization " + org.getName() + " default profile");
         gp.save();
     }
@@ -192,7 +197,7 @@ public class SaltbootUtils {
         if (system == null) {
             system = SystemRecord.create(con, name, profile);
         }
-        system.setKernelOptions(kernelParams);
+        system.<String>setKernelOptions(Optional.of(kernelParams));
         List<Network> networks = hwAddresses.stream().map(hw -> {
             Network k = new Network(con, hw);
             k.setMacAddress(hw);

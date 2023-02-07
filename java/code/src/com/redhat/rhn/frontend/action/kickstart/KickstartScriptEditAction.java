@@ -28,6 +28,7 @@ public class KickstartScriptEditAction extends BaseKickstartScriptAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartScriptEditCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),
@@ -38,8 +39,9 @@ public class KickstartScriptEditAction extends BaseKickstartScriptAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                   BaseKickstartCommand cmd) {
         super.setupFormValues(ctx, form, cmd);
         ctx.getRequest().setAttribute(RequestContext.KICKSTART_SCRIPT_ID,
                 ctx.getRequiredParam(RequestContext.KICKSTART_SCRIPT_ID));

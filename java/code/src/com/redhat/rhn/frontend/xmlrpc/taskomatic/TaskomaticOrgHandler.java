@@ -27,10 +27,12 @@ import java.util.List;
  * @apidoc.doc provides methods to access orgaznizational taskomatic tasks
  */
 public class TaskomaticOrgHandler extends TaskomaticHandler {
+    @Override
     protected void checkUserRole(User user) {
         ensureUserRole(user, RoleFactory.ORG_ADMIN);
     }
 
+    @Override
     protected void addParameters(User user, List params) {
         params.add(0, user.getOrg().getId());
     }

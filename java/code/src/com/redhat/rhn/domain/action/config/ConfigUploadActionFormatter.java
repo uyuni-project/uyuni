@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,8 +45,9 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
      * Shows the destination channels followed by the filenames.
      * @return The html notes string
      */
+    @Override
     protected String getNotesBody() {
-        StringBuffer buffy = new StringBuffer();
+        StringBuilder buffy = new StringBuilder();
         ConfigUploadAction action = (ConfigUploadAction)getAction();
 
         /* display the list of destination config channels and then
@@ -63,7 +65,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
     private String renderChannel(ConfigChannel channel) {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "/rhn/configuration/ChannelOverview.do?ccid=" +
-                channel.getId().toString());
+                channel.getId());
         a.addBody(StringEscapeUtils.escapeHtml4(channel.getDisplayName()));
         return a.render();
     }
@@ -82,7 +84,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         return (StringEscapeUtils.escapeHtml4(name.getPath()) + "<br />");
     }
 
-    private void displayChannels(StringBuffer buffy, Set channelSet) {
+    private void displayChannels(StringBuilder buffy, Set<ConfigChannelAssociation> channelSet) {
         /* most of the time, there is only going to be one channel because it
          * will usually be one server's sandbox channel.
          * Therefore, deal with one channel as a special case
@@ -90,8 +92,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
          * to schedule a config upload action for multiple servers.
          */
         if (channelSet.size() == 1) {
-            ConfigChannel channel = ((ConfigChannelAssociation)
-                    channelSet.toArray()[0]).getConfigChannel();
+            ConfigChannel channel = new ArrayList<>(channelSet).get(0).getConfigChannel();
 
             //Display will be:
             //Destination Configuration Channel: blah
@@ -107,26 +108,23 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
 
             //since you can only upload files into local channels (only sandbox right now),
             //there shouldn't be multiple entries of the same channel.
-            for (Object oIn : channelSet) {
-                ConfigChannel channel = ((ConfigChannelAssociation)
-                        oIn).getConfigChannel();
-                buffy.append(renderChannel(channel));
+            for (ConfigChannelAssociation association : channelSet) {
+                buffy.append(renderChannel(association.getConfigChannel()));
                 buffy.append("<br />");
             }
         }
         //else don't display desination info (invalid config upload action!)
     }
 
-    private void displayFileNames(StringBuffer buffy, Set fileNameSet) {
+    private void displayFileNames(StringBuilder buffy, Set<ConfigFileNameAssociation> fileNameSet) {
         buffy.append(renderHeading("config.upload.filenames"));
 
         //There could be multiple config file name actions per file name
         //(one per system).  Therefore, we will keep track of ones we have
         // already displayed.
-        Set dealtWith = new HashSet();
-        for (Object oIn : fileNameSet) {
-            ConfigFileName path =
-                    ((ConfigFileNameAssociation) oIn).getConfigFileName();
+        Set<Long> dealtWith = new HashSet<>();
+        for (ConfigFileNameAssociation association: fileNameSet) {
+            ConfigFileName path = association.getConfigFileName();
             if (!dealtWith.contains(path.getId())) {
                 buffy.append(renderFileName(path));
                 dealtWith.add(path.getId());

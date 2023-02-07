@@ -44,6 +44,7 @@ public class AuthHandler extends BaseHandler {
 
     private static Logger log = LogManager.getLogger(AuthHandler.class);
 
+    @Override
     protected boolean providesAuthentication() {
         return true;
     }
@@ -93,8 +94,6 @@ public class AuthHandler extends BaseHandler {
      * @param password Password to check
      * @param duration The session duration
      * @return Returns the key for the session
-     * @throws LoginException Throws a LoginException if the user can't be logged in.
-     *
      * @apidoc.doc Login using a username and password. Returns the session key
      * used by other methods.
      * @apidoc.param #param("string", "username")
@@ -104,8 +103,7 @@ public class AuthHandler extends BaseHandler {
      *     #session_key()
      */
     @ApiIgnore(ApiType.HTTP)
-    public String login(String username, String password, Integer duration)
-                      throws LoginException {
+    public String login(String username, String password, Integer duration) {
         //Log in the user (handles authentication and active/disabled logic)
         User user = null;
         try {

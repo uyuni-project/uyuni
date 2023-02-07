@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart.tree.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,7 +53,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
             createTestKickstartableTree(baseChan);
         List ksTrees = handler.list(admin,
                 baseChan.getLabel());
-        assertTrue(ksTrees.size() > 0);
+        assertFalse(ksTrees.isEmpty());
 
         boolean found = false;
         for (Object ksTreeIn : ksTrees) {
@@ -77,8 +78,8 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         handler.create(admin, label,
                 KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath(),
-                baseChan.getLabel(), KickstartInstallType.RHEL_5);
-        assertTrue(origCount + 1 == KickstartFactory.
+                baseChan.getLabel(), KickstartInstallType.RHEL_6);
+        assertEquals(origCount + 1, KickstartFactory.
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
     }
 
@@ -148,10 +149,10 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListTreeTypes() throws Exception {
+    public void testListTreeTypes() {
         List types = handler.listInstallTypes(admin);
         assertNotNull(types);
-        assertTrue(types.size() > 0);
+        assertFalse(types.isEmpty());
         System.out.println("type: " + types.get(0).getClass().getName());
         assertTrue(types.get(0) instanceof KickstartInstallType);
     }

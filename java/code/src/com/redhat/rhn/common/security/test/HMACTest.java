@@ -28,15 +28,13 @@ import org.junit.jupiter.api.Test;
  */
 public class HMACTest extends RhnBaseTestCase {
 
-    public void doTestSHA1(String data, String key, String expect)
-        throws Exception {
+    public void doTestSHA1(String data, String key, String expect) {
 
         String value = HMAC.sha1(data, key);
         assertEquals(expect, value);
     }
 
-    public void doTestMD5(String data, String key, String expect)
-        throws Exception {
+    public void doTestMD5(String data, String key, String expect) {
 
         String value = HMAC.md5(data, key);
         assertEquals(expect, value);

@@ -2,6 +2,7 @@
 
 import logging
 import os
+import shutil
 import subprocess
 import re
 import yaml
@@ -39,12 +40,34 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
     logging.debug("Detected ips '%s', '%s' for fqdn %s", ipv4, ipv6, fqdn)
     return (ipv4, ipv6)
 
+
+def insert_under_line(file_path, line_to_match, line_to_insert):
+
+    # add 4 leading spaces and a new line in the end
+    line_to_insert = line_to_insert.rjust(len(line_to_insert)+4) + "\n"
+
+    with open(file_path, "r") as f:
+        contents = f.readlines()
+
+    index = -1
+    for ind, line in enumerate(contents):
+        if line_to_match in line:
+            index = ind + 1
+
+    contents.insert(index, line_to_insert)
+
+    with open(file_path, "w") as f:
+        contents = "".join(contents)
+        f.write(contents)
+
+
 # read from files
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
 
-    if config.get('log_level') is not None:
-        logging.getLogger().setLevel(logging.getLevelName(config.get('log_level')))
+    # log_level is the value for rhn.conf and should be a positive integer
+    log_level = logging.WARNING if config.get("log_level") == 1 else logging.DEBUG
+    logging.getLogger().setLevel(log_level)
 
 with open(config_path + "httpd.yaml") as httpdSource:
     httpdConfig = yaml.safe_load(httpdSource).get("httpd")
@@ -93,6 +116,13 @@ with open(config_path + "httpd.yaml") as httpdSource:
     with open("/etc/rhn/rhn.conf", "w") as file:
         file.write(f'''# Automatically generated Uyuni Proxy Server configuration file.
         # -------------------------------------------------------------------------
+        
+        # Debug log level
+        debug = {config.get("log_level", 1)}
+        
+        # Logs redirect
+        proxy.broker.log_file = stdout
+        proxy.redirect.log_file = stdout
 
         # SSL CA certificate location
         proxy.ca_chain = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
@@ -198,12 +228,28 @@ RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
 </IfDefine>
 ''')
 
+    # Adjust logs format in apache httpd:
+    # Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
+    insert_under_line(
+        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
+        "<Directory /usr/share/rhn>",
+        'SetEnv HANDLER_TYPE "proxy-broker"'
+    )
+    insert_under_line(
+        "/etc/apache2/conf.d/spacewalk-proxy.conf",
+        '<Directory "/srv/www/htdocs/pub/*">',
+        'SetEnv HANDLER_TYPE "proxy-html"'
+    )
+    insert_under_line(
+        "/etc/apache2/conf.d/spacewalk-proxy.conf",
+        '<Directory "/srv/www/htdocs/docs/*">',
+        'SetEnv HANDLER_TYPE "proxy-docs"'
+    )
+
     os.system('chown root:www /etc/rhn/rhn.conf')
     os.system('chmod 640 /etc/rhn/rhn.conf')
 
 # Make sure permissions are set as desired
-os.system('chown -R root:root /srv/www/htdocs/pub')
-os.system('chmod -R 755 /srv/www/htdocs/pub')
 os.system('chown -R wwwrun:www /var/spool/rhn-proxy')
 os.system('chmod -R 750 /var/spool/rhn-proxy')
 if not os.path.exists('/var/cache/rhn/proxy-auth'):

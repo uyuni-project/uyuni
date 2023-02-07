@@ -26,7 +26,7 @@ parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_direc
                     help='The directory where the Apache config file "cobbler.conf" is in.')
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
-COBBLER_CONFIG_FILES = ["modules.conf", "settings"]
+COBBLER_CONFIG_FILES = ["modules.conf", "settings.yaml"]
 HTTPD_CONFIG_DIRECTORY = "/etc/apache2/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
 
@@ -53,8 +53,24 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
     backup_file(full_path)
     with open(full_path) as settings_file:
         filecontent = yaml.safe_load(settings_file.read())
+
     filecontent["server"] = socket.getfqdn()
-    filecontent["next_server"] = socket.getfqdn()
+
+    # In case of failing DNS resolution, we get a OSError (socket.gaierror)
+    try:
+        filecontent["next_server_v4"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET)[1][4][0]
+    except OSError:
+        filecontent["next_server_v4"] = ""
+
+    try:
+        filecontent["next_server_v6"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET6)[1][4][0]
+    except OSError:
+        filecontent["next_server_v6"] = ""
+
+    if not filecontent["next_server_v4"] and not filecontent["next_server_v6"]:
+        print("ERROR: Neither IPv4 nor IPv6 addresses can be resolved for configured FQDN: {}. Please check your DNS and hostname configuration.".format(filecontent["server"]))
+        exit(1)
+
     filecontent["pxe_just_once"] = True
     filecontent["redhat_management_server"] = socket.getfqdn()
     yaml_dump = yaml.safe_dump(filecontent)

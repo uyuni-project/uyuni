@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -10,9 +10,7 @@ Feature: Content lifecycle
 
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
-    Then I should see a "Content Lifecycle Projects" text
-    And I should see a "There are no entries to show." text
-    When I follow "Create Project"
+    And I follow "Create Project"
     Then I should see a "Create a new Content Lifecycle Project" text
     And I should see a "Project Properties" text
     When I enter "clp_label" as "label"
@@ -131,9 +129,9 @@ Feature: Content lifecycle
     And I follow "clp_name"
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
-    And I add the "Test Base Channel" channel to sources
+    And I add the "Fake Base Channel" channel to sources
     And I click on "Save"
-    Then I wait until I see "Test Base Channel" text
+    Then I wait until I see "Fake Base Channel" text
     And I wait until I see "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
@@ -153,9 +151,47 @@ Feature: Content lifecycle
     And I wait for "1" second
     Then I wait at most 600 seconds until I see "Built" text in the environment "prod_name"
 
-  Scenario: Clean up the Content Lifecycle Management feature
+  Scenario: Cleanup: remove the Content Lifecycle Management project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
-    Then I should see a "There are no entries to show." text
+    Then I should not see a "clp_name" text
+
+@uyuni
+  Scenario: Cleanup: remove the created channels for Uyni
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+    And I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-sles12-sp5-pool-x86_64|
+      |clp_label-qa_label-sles12-sp5-pool-x86_64|
+      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+    When I list channels with spacewalk-remove-channel
+    Then I shouldn't get "clp_label"
+
+@susemanager
+  Scenario: Cleanup: remove the created channels for SUSE Manager
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-prod_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-prod_label-sle-manager-tools12-updates-x86_64-sp5|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-qa_label-sle-manager-tools12-updates-x86_64-sp5|
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-dev_label-sle-manager-tools12-updates-x86_64-sp5|
+    And I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-sles12-sp5-pool-x86_64|
+      |clp_label-qa_label-sles12-sp5-pool-x86_64|
+      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+    When I list channels with spacewalk-remove-channel
+    Then I shouldn't get "clp_label"

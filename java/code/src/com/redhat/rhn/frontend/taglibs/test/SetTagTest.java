@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.taglibs.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
@@ -67,12 +66,12 @@ public class SetTagTest extends RhnBaseTestCase {
         ct1.setWidth("10%");
         ct1.setValue("42");
 
-        assertTrue(ct.equals(ct1));
-        assertTrue(ct1.equals(ct));
+        assertEquals(ct, ct1);
+        assertEquals(ct1, ct);
 
         ct1.setUrl(null);
-        assertTrue(ct.equals(ct1));
-        assertTrue(ct1.equals(ct));
+        assertEquals(ct, ct1);
+        assertEquals(ct1, ct);
     }
 
     @Test

@@ -18,24 +18,45 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.SetLabels;
+import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
+import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.PackageActionJson;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
@@ -54,6 +75,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +105,8 @@ public class MinionsAPI {
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(BootstrapHostsJson.AuthMethod.class, new AuthMethodAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
 
@@ -112,6 +138,14 @@ public class MinionsAPI {
         post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
         post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
         post("/manager/api/systems/proxy", asJson(withOrgAdmin(this::setProxy)));
+        get("/manager/api/systems/:sid/details/ptf/allowedActions",
+            asJson(withUserAndServer(this::allowedPtfActions)));
+        get("/manager/api/systems/:sid/details/ptf/installed",
+            asJson(withUserAndServer(this::installedPtfsForSystem)));
+        get("/manager/api/systems/:sid/details/ptf/available",
+            asJson(withUserAndServer(this::availablePtfsForSystem)));
+        post("/manager/api/systems/:sid/details/ptf/scheduleAction",
+            asJson(withUserAndServer(this::schedulePtfAction)));
     }
 
     /**
@@ -254,7 +288,7 @@ public class MinionsAPI {
         }
 
         @Override
-        public void write(JsonWriter jsonWriter, BootstrapHostsJson.AuthMethod authMethod) throws IOException {
+        public void write(JsonWriter jsonWriter, BootstrapHostsJson.AuthMethod authMethod) {
             throw new UnsupportedOperationException();
         }
     }
@@ -285,6 +319,151 @@ public class MinionsAPI {
             res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
+    }
+
+    /**
+     * API to list the allowed actions for this user that can perfomed on PTF
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return json list of allowed actions
+     */
+    private String allowedPtfActions(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportPtf()) {
+            return json(response, ResultJson.success(Collections.emptyList()));
+        }
+
+        List<String> allowedActions = new ArrayList<>();
+        if (SystemManager.serverHasFeature(server.getId(), "ftr_package_remove") &&
+            ServerFactory.isPtfUninstallationSupported(server)) {
+            allowedActions.add(ActionFactory.TYPE_PACKAGES_REMOVE.getLabel());
+        }
+
+        if (SystemManager.serverHasFeature(server.getId(), "ftr_package_updates")) {
+            allowedActions.add(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel());
+        }
+
+        return json(response, ResultJson.success(allowedActions));
+    }
+
+    /**
+     * API to list the installed ptf on the given system
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return json paged list of ptf installed on the given system
+     */
+    public String installedPtfsForSystem(Request request, Response response, User user, Server server) {
+        PageControl pc = getPageControl(request);
+        DataResult<PackageListItem> resultList = PackageManager.systemPtfList(server.getId(), pc);
+
+        // Check if the request is for all the selction keys
+        if ("id".equals(request.queryParams("f"))) {
+            return json(response, listAllSelectionKey(resultList));
+        }
+
+        Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_LIST_REMOVE);
+        return json(response, new PagedDataResultJson<>(resultList, selectedItems));
+    }
+
+    /**
+     * API to list the ptf available for installation for the given system
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return json paged list of ptf that can be installed on the given system
+     */
+    public String availablePtfsForSystem(Request request, Response response, User user, Server server) {
+        PageControl pc = getPageControl(request);
+        DataResult<PackageListItem> resultList;
+        try {
+            resultList = PackageManager.systemAvailablePtf(server.getId(), pc);
+        }
+        catch (RuntimeException ex) {
+            LOG.error("Unable to execute query", ex);
+            throw ex;
+        }
+
+        // Check if the request is for all the selction keys
+        if ("id".equals(request.queryParams("f"))) {
+            return json(response, listAllSelectionKey(resultList));
+        }
+
+        Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_INSTALL);
+        return json(response, new PagedDataResultJson<>(resultList, selectedItems));
+    }
+
+    /**
+     * API to remove the currently selected PTFs from the current system
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return id of the schedule action or of the updated action chain
+     */
+    public String schedulePtfAction(Request request, Response response, User user, Server server) {
+        PackageActionJson scheduleRequest = GSON.fromJson(request.body(), PackageActionJson.class);
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
+        List<Map<String, Long>> pkgMap = scheduleRequest.getSelectedPackageMap();
+
+        Long result;
+
+        try {
+            PackageAction action;
+
+            if (ActionFactory.TYPE_PACKAGES_REMOVE.getLabel().equals(scheduleRequest.getActionType())) {
+                action = ActionChainManager.schedulePackageRemoval(user, server, pkgMap, earliestDate, chain);
+            }
+            else if (ActionFactory.TYPE_PACKAGES_UPDATE.getLabel().equals(scheduleRequest.getActionType())) {
+                action = ActionChainManager.schedulePackageInstall(user, server, pkgMap, earliestDate, chain);
+            }
+            else {
+                LOG.warn("Unable to schedule unknown action {}", scheduleRequest.getActionType());
+                return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Unable to schedule unknown action " + scheduleRequest.getActionType()));
+            }
+
+            result = chain != null ? chain.getId() : action.getId();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule package remove action", e);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                ResultJson.error("Unable to schedule action"));
+        }
+
+        return json(GSON, response, result);
+    }
+
+    private static PageControl getPageControl(Request request) {
+        PageControlHelper pageHelper = new PageControlHelper(request, "nvre");
+        PageControl pc = pageHelper.getPageControl();
+        pc.setFilterColumn("nvre");
+
+        // When getting ids for the select all we just get all systems ID matching the filter, no paging
+        if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+        }
+
+        return pc;
+    }
+
+    private static List<String> listAllSelectionKey(DataResult<PackageListItem> resultList) {
+        return resultList.stream()
+                         .map(PackageListItem::getSelectionKey)
+                         .collect(Collectors.toList());
+    }
+
+    private static Set<String> getSessionSet(Request request, Server server, String setLabel) {
+        return SessionSetHelper.lookupAndBind(request.raw(), setLabel + server.getId());
     }
 
 }

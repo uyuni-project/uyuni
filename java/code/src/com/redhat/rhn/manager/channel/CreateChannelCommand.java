@@ -407,7 +407,7 @@ public class CreateChannelCommand {
             throw new IllegalArgumentException("Required param [user] is null");
         }
 
-        if (cname == null || cname.trim().length() == 0) {
+        if (cname == null || cname.trim().isEmpty()) {
             throw new InvalidChannelNameException(cname,
                 InvalidChannelNameException.Reason.IS_MISSING,
                 "edit.channel.invalidchannelname.missing", "");
@@ -443,7 +443,7 @@ public class CreateChannelCommand {
             throw new IllegalArgumentException("Required param is null");
         }
 
-        if (clabel == null || clabel.trim().length() == 0) {
+        if (clabel == null || clabel.trim().isEmpty()) {
             throw new InvalidChannelLabelException(clabel,
                 InvalidChannelLabelException.Reason.IS_MISSING,
                 "edit.channel.invalidchannellabel.missing", "");

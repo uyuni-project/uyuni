@@ -1,7 +1,8 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: SMBDA database helper tool
+@scope_smdba
+Feature: SMDBA database helper tool
   In order to protect the data in Uyuni
   As a database administrator
   I want to easily take backups and snapshots
@@ -82,10 +83,12 @@ Feature: SMBDA database helper tool
     When I set a checkpoint
     And I issue command "smdba backup-hot"
     And in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    And I stop the database with the command "smdba db-stop"
     And I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
     And I destroy "/var/lib/pgsql/data/pg_wal" directory on server
     And I restore database from the backup
     And I issue command "smdba db-status"
+    Then the database should be "online"
 
   Scenario: Cleanup: remove backup directory
     Given a postgresql database is running

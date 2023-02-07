@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -47,7 +46,7 @@ public class RhnTimeZoneTest extends RhnBaseTestCase {
 
        tz.setOlsonName(foo);
        assertEquals(foo, tz.getOlsonName());
-       assertTrue(tz.getTimeZone().equals(defaultTZ));
+        assertEquals(tz.getTimeZone(), defaultTZ);
                //default is GMT specified by java.util.TimeZone
 
        tz2.setOlsonName(null);

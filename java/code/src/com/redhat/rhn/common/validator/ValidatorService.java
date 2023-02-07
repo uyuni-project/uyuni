@@ -122,7 +122,7 @@ public class ValidatorService {
      * @return ValidatorError the error result.
      */
     public ValidatorResult validateObject(Object validateIn) {
-        log.debug("ValidatorService.validateObject called on object: {}", validateIn.toString());
+        log.debug("ValidatorService.validateObject called on object: {}", validateIn);
 
         Validator validator;
         try {

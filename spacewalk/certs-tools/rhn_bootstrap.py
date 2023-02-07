@@ -41,11 +41,10 @@ from uyuni.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG, initCFG
 from .client_config_update import readConfigFile
 from .rhn_bootstrap_strings import \
-    getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
-    getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
-    getAllowConfigManagement, getAllowRemoteCommands, \
-    getRegistrationStackSh, getRegistrationSaltSh, removeTLSCertificate
-from .sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
+    getHeader, getGPGKeyImportSh, \
+    getCorpCACertSh, getRegistrationStackSh, \
+    getRegistrationSaltSh, removeTLSCertificate
+from .sslToolConfig import CA_CRT_NAME
 from uyuni.common.fileutils import rotateFile, cleanupAbsPath
 from uyuni.common.checksum  import getFileChecksum
 
@@ -138,29 +137,16 @@ def parseHttpProxyString(httpProxy):
 
 
 def processCACertPath(options):
-    isRpmYN = 0
-
     if options.ssl_cert:
         if options.ssl_cert[-4:] == '.rpm':
-            isRpmYN = 1
-
-    if not options.ssl_cert:
-        # look for the RPM
-        isRpmYN = 1
-        _cert = os.path.join(options.pub_tree, CA_CRT_RPM_NAME)
-        filenames = glob.glob("%s-*.noarch.rpm" % _cert)
-        filenames = rhn_rpm.sortRPMs(filenames)
-        if filenames:
-            options.ssl_cert = filenames[-1]
+            sys.stderr.write("ERROR: SSL Certificate as rpm package not supported anymore")
+            sys.exit(errnoCANotFound)
 
     if not options.ssl_cert:
         # look for the raw cert
-        isRpmYN = 0
         options.ssl_cert = os.path.join(options.pub_tree, CA_CRT_NAME)
         if not os.path.isfile(options.ssl_cert):
             options.ssl_cert = ''
-
-    return isRpmYN
 
 
 def getDefaultOptions():
@@ -169,7 +155,6 @@ def getDefaultOptions():
             'overrides': DEFAULT_OVERRIDES,
             'script': DEFAULT_SCRIPT,
             'hostname': socket.getfqdn(),
-            'salt': 1,
             'ssl-cert': '', # will trigger a search
             'gpg-key': "",
             'http-proxy': "",
@@ -180,8 +165,6 @@ def getDefaultOptions():
             'no-bundle': 0,
             'force-bundle': 0,
             'no-gpg': 0,
-            'no-up2date': 0,
-            'up2date': 0,
             'force': 0,
             'pub-tree': DEFAULT_APACHE_PUB_DIRECTORY,
             'verbose': 0,
@@ -204,7 +187,7 @@ def getOptionsTable():
         Option('--activation-keys',
                action='store',
                type='string', default=defopts['activation-keys'],
-               help='activation key(s) as defined in the RHN web UI - format is XKEY,YKEY,... (currently: %s)' % repr(defopts['activation-keys'])),
+               help='activation key as defined in the web UI - only 1 key is allowed now (currently: %s)' % repr(defopts['activation-keys'])),
         Option('--overrides',
                action='store',
                type='string', default=defopts['overrides'],
@@ -217,11 +200,6 @@ def getOptionsTable():
                action='store',
                type='string', default=defopts['hostname'],
                help='hostname (FQDN) to which clients connect (currently: %s)' % defopts['hostname']),
-        Option('--salt', action='store_true', default=1, help=SUPPRESS_HELP),  # Hide deprecated option. This will be removed in 3.2
-        Option('--traditional',
-               action='store_true',
-               default=int(not bool(defopts['salt'])),
-               help='boolean; enables traditional client bootstrap and registration in place of Salt minion (currently: %s)' % getSetString(int(not bool(defopts['salt'])))),
         Option('--ssl-cert',
                action='store',
                type='string', default=defopts['ssl-cert'],
@@ -242,12 +220,6 @@ def getOptionsTable():
                action='store',
                type='string', default=defopts['http-proxy-password'],
                help='if using an authenticating HTTP proxy, specify a password. (currently: %s)' % repr(defopts['http-proxy-password'])),
-        Option('--allow-config-actions',
-               action='store_true',
-               help='boolean; allow all configuration actions - requires installing certain rhncfg-* RPMs probably via an activation key. (currently: %s)' % getSetString(defopts['allow-config-actions'])),
-        Option('--allow-remote-commands',
-               action='store_true',
-               help='boolean; allow arbitrary remote commands - requires installing certain rhncfg-* RPMs probably via an activation key. (currently: %s)' % getSetString(defopts['allow-remote-commands'])),
         Option('--no-bundle',
                action='store_true',
                help='boolean; avoid installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)' % getSetString(defopts['no-bundle'])),
@@ -257,12 +229,6 @@ def getOptionsTable():
         Option('--no-gpg',
                action='store_true',
                help='(not recommended) boolean; turn off GPG checking by the clients (currently %s)' % getSetString(defopts['no-gpg'])),
-        Option('--no-up2date',
-               action='store_true',
-               help='boolean; will not run the up2date section (full update usually) once bootstrapped (currently %s)' % getSetString(defopts['no-up2date'])),
-        Option('--up2date',
-               action='store_true',
-               help='boolean; will run the up2date section (full update usually) once bootstrapped (currently %s)' % getSetString(defopts['up2date'])),
         Option('--pub-tree',
                action='store',
                type='string', default=defopts['pub-tree'],
@@ -288,8 +254,7 @@ def parseCommandline():
 Note: for mgr-bootstrap to work, certain files are expected to be
       in %s/ (the default Apache public directory):
         - the CA SSL public certificate (probably RHN-ORG-TRUSTED-SSL-CERT)
-        - the CA SSL public certificate RPM
-          (probably rhn-org-trusted-ssl-cert-VER.noarch.rpm)""" % (_progName, DEFAULT_APACHE_PUB_DIRECTORY)
+    """ % (_progName, DEFAULT_APACHE_PUB_DIRECTORY)
 
     # preliminary parse (-h/--help is acted upon during final parse)
     optionList = getOptionsTable()
@@ -313,20 +278,14 @@ Note: for mgr-bootstrap to work, certain files are expected to be
             'overrides': options.overrides or DEFAULT_OVERRIDES,
             'script': options.script or DEFAULT_SCRIPT,
             'hostname': options.hostname,
-            'salt': int(not bool(options.traditional)),
             'ssl-cert': options.ssl_cert,
             'gpg-key': options.gpg_key,
             'http-proxy': options.http_proxy,
             'http-proxy-username': options.http_proxy_username,
             'http-proxy-password': options.http_proxy,
-            # "not not" forces the integer value
-            'allow-config-actions': not not options.allow_config_actions,
-            'allow-remote-commands': not not options.allow_remote_commands,
             'no-bundle': not not options.no_bundle,
             'force-bundle': not not options.force_bundle,
             'no-gpg': not not options.no_gpg,
-            'no-up2date': not not options.no_up2date,
-            'up2date': not not options.up2date,
             'pub-tree': options.pub_tree,
             'force': options.force,
             'verbose': options.verbose or 0,
@@ -381,7 +340,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     processCACertPath(options)
     if options.ssl_cert and not os.path.exists(options.ssl_cert):
-        sys.stderr.write("ERROR: CA SSL certificate file or RPM not found\n")
+        sys.stderr.write("ERROR: CA SSL certificate file not found\n")
         sys.exit(errnoCANotFound)
 
     if not options.no_gpg and options.gpg_key:
@@ -400,16 +359,12 @@ ERROR: the value of --overrides and --script cannot be the same!
         options.http_proxy_password = ''
 
     # forcing numeric values
-    for opt in ['allow_config_actions', 'allow_remote_commands', 'force_bundle',
-        'no_bundle', 'no_gpg', 'no_up2date', 'traditional', 'up2date', 'verbose']:
+    for opt in ['force_bundle', 'no_bundle', 'no_gpg', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
         # will return an int
         val = int(operator.truth(getattr(options, opt)))
-        if opt == 'traditional':
-            setattr(options, 'salt', int(not bool(val)))
-        else:
-            setattr(options, opt, val)
+        setattr(options, opt, val)
 
     return options
 
@@ -512,20 +467,12 @@ def writeClientConfigOverrides(options):
         d[up2dateConfMap['http_proxy_username']] = ""
         d[up2dateConfMap['http_proxy_password']] = ""
 
-    # CA SSL certificate is a bit complicated. options.ssl_cert may be a file
-    # or it may be an RPM or it may be "", which means "try to figure it out
-    # by searching through the --pub-tree on your own.
-    _isRpmYN = processCACertPath(options)
+    processCACertPath(options)
     if not options.ssl_cert:
-        sys.stderr.write("WARNING: no SSL CA certificate or RPM found in %s\n" % options.pub_tree)
+        sys.stderr.write("WARNING: no SSL CA certificate found in %s\n" % options.pub_tree)
     _certname = os.path.basename(options.ssl_cert) or CA_CRT_NAME
     _certdir = os.path.dirname(DEFAULT_CA_CERT_PATH)
-    if _isRpmYN:
-        hdr = rhn_rpm.get_package_header(options.ssl_cert)
-        # Grab the first file out of the rpm
-        d[up2dateConfMap['ssl_cert']] = hdr[rhn_rpm.rpm.RPMTAG_FILENAMES][0] # UGLY!
-    else:
-        d[up2dateConfMap['ssl_cert']] = os.path.join(_certdir, _certname)
+    d[up2dateConfMap['ssl_cert']] = os.path.join(_certdir, _certname)
     d[up2dateConfMap['no_gpg']] = int(operator.truth(not options.no_gpg))
 
     writeYN = 1
@@ -585,7 +532,7 @@ def generateBootstrapScript(options):
     # write to <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/<options.overrides>
     writeClientConfigOverrides(options)
 
-    isRpmYN = processCACertPath(options)
+    processCACertPath(options)
     pubname = os.path.basename(options.pub_tree)
 
     newScript = []
@@ -600,7 +547,6 @@ def generateBootstrapScript(options):
                             MY_PRODUCT_NAME,
                             options,
                             orgCACert,
-                            isRpmYN,
                             pubname,
                             DEFAULT_APACHE_PUB_DIRECTORY
                             )
@@ -608,34 +554,14 @@ def generateBootstrapScript(options):
 
     writeYN = 1
 
-    # concat all those script-bits
-    newScript.append(getConfigFilesSh())
-
-    # don't call this twice
-    # getUp2dateScriptsSh()
-
     newScript.append(getGPGKeyImportSh())
     newScript.append(getCorpCACertSh())
 
     # SLES: install packages required for registration on systems that do not have them installed
-    newScript.append(getRegistrationStackSh(options.salt))
+    newScript.append(getRegistrationStackSh())
 
-    if not options.salt:
-        newScript.append(getUp2dateScriptsSh())
-
-    if (options.salt):
-        newScript.append(removeTLSCertificate())
-        newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
-    else:
-        newScript.append(getRegistrationSh(MY_PRODUCT_NAME))
-
-    #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
-    if not options.salt:
-        newScript.append(getAllowConfigManagement())
-        newScript.append(getAllowRemoteCommands())
-
-        #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-        newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
+    newScript.append(removeTLSCertificate())
+    newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))

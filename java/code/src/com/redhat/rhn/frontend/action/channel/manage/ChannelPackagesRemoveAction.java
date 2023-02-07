@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -57,10 +58,11 @@ public class ChannelPackagesRemoveAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -76,7 +78,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
         }
 
         RhnSet set =  RhnSetDecl.PACKAGES_TO_REMOVE.get(user);
-        DataResult result = PackageManager.packageIdsInSet(user, set.getLabel(), null);
+        DataResult<PackageOverview> result = PackageManager.packageIdsInSet(user, set.getLabel(), null);
 
 
         TagHelper.bindElaboratorTo(LIST_ACTION, result.getElaborator(), request);
@@ -88,7 +90,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.confirmbutton");
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             removePackages(user, chan, set);
             ActionMessages msg = new ActionMessages();
             String[] actionParams = {set.size() + "", chan.getName()};

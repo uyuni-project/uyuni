@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
@@ -44,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * RollbackToTagAction
  */
-public class RollbackToTagAction extends RhnAction implements Listable {
+public class RollbackToTagAction extends RhnAction implements Listable<Row> {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(RollbackToTagAction.class);
 
@@ -53,8 +54,9 @@ public class RollbackToTagAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long tagId = context.getRequiredParam(TAG_ID);
         if (context.wasDispatched("ssm.provisioning.rollbacktotag.rollback-button")) {
@@ -87,7 +89,8 @@ public class RollbackToTagAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long uid = context.getCurrentUser().getId();
         Long tagid = context.getRequiredParam(TAG_ID);
         return SystemManager.systemsInSetWithTag(uid, tagid);
@@ -96,8 +99,7 @@ public class RollbackToTagAction extends RhnAction implements Listable {
     private void rollback(RequestContext context, Long tagId)
         throws TaskomaticApiException {
         User user = context.getCurrentUser();
-        DataResult<Map<String, Object>> systems =
-                    SystemManager.systemsInSetWithTag(user.getId(), tagId);
+        DataResult<Row> systems = SystemManager.systemsInSetWithTag(user.getId(), tagId);
         for (Map<String, Object> system : systems) {
             ServerSnapshot snapshot = ServerFactory.lookupSnapshotById(
                                          ((Long) system.get("snapshot_id")).intValue());

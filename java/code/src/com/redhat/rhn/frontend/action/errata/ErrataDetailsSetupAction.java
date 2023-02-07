@@ -17,10 +17,14 @@ package com.redhat.rhn.frontend.action.errata;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.Bug;
+import com.redhat.rhn.frontend.dto.CVE;
+import com.redhat.rhn.frontend.dto.ErrataKeyword;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -50,9 +54,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataDetailsSetupAction extends RhnAction {
 
-    private static final Logger LOGGER = LogManager.getLogger(ErrataManager.class);
+    private static final Logger LOG = LogManager.getLogger(ErrataDetailsSetupAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -65,10 +70,10 @@ public class ErrataDetailsSetupAction extends RhnAction {
         User user = requestContext.getCurrentUser();
         Errata errata = ErrataManager.lookupErrata(eid, user);
         String ovalFile = findOvalFile(errata.getId());
-        DataResult channels = ErrataManager.affectedChannels(user, eid);
-        DataResult fixed = ErrataManager.bugsFixed(eid);
-        DataResult cve = ErrataManager.errataCVEs(eid);
-        DataResult keywords = ErrataManager.keywords(eid);
+        DataResult<Channel> channels = ErrataManager.affectedChannels(user, eid);
+        DataResult<Bug> fixed = ErrataManager.bugsFixed(eid);
+        DataResult<CVE> cve = ErrataManager.errataCVEs(eid);
+        DataResult<ErrataKeyword> keywords = ErrataManager.keywords(eid);
         final String vendorAdvisoryLink = buildVendorAdvisoryLink(errata);
 
         //create the display for keywords
@@ -111,7 +116,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         String retval = null;
         List files =
             ErrataFactory.lookupErrataFilesByErrataAndFileType(errataId, "oval");
-        if (files == null || files.size() == 0) {
+        if (files == null || files.isEmpty()) {
             return null;
         }
         ErrataFile ef = (ErrataFile) files.get(0);
@@ -137,7 +142,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
             id = parser.getAnnouncementId(errata);
         }
         catch (ErrataParsingException ex) {
-            LOGGER.info("Unable to parse errata metadata", ex);
+            LOG.info("Unable to parse errata metadata", ex);
             return null;
         }
 

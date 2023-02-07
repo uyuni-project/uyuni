@@ -39,9 +39,9 @@ public class RhnMockDynaActionForm extends DynaActionForm
     private String formName;
 
     /** Map of actual properties which have been set */
-    private Map actual;
+    private Map<String, Object> actual;
     /** Map of expected properties to be set */
-    private Map expected;
+    private Map<String, Object> expected;
 
     /**
      * True if we are not to expect anything but simply be a Form;
@@ -49,7 +49,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     private boolean expectNothing;
 
-    private Map formPropertyConfigs;
+    private Map<String, FormPropertyConfig> formPropertyConfigs;
 
     /**
      * Create class with a Form Name
@@ -63,7 +63,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
-    public Map getMap() {
+    @Override
+    public Map<String, Object> getMap() {
         return actual;
     }
 
@@ -72,10 +73,10 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     public RhnMockDynaActionForm() {
         super();
-        actual = new HashMap();
-        expected = new HashMap();
+        actual = new HashMap<>();
+        expected = new HashMap<>();
         expectNothing = false;
-        formPropertyConfigs = new HashMap();
+        formPropertyConfigs = new HashMap<>();
 
         // Setup the empty config.
         FormBeanConfig beanConfig = new FormBeanConfig();
@@ -99,6 +100,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      * @param name Name to be associated.
      * @param value Value to associate with name.
      */
+    @Override
     public void set(String name, Object value) {
         // Nothin to do here if we are inserting a
         // null value.
@@ -123,8 +125,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
 
             // Get existing properties as well as new one
             // and add it to the config.
-            for (Object oIn : formPropertyConfigs.values()) {
-                beanConfig.addFormPropertyConfig((FormPropertyConfig) oIn);
+            for (FormPropertyConfig config : formPropertyConfigs.values()) {
+                beanConfig.addFormPropertyConfig(config);
             }
 
             // Construct a corresponding DynaActionFormClass
@@ -152,6 +154,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      * @param name Property whose value you seek.
      * @return Object value found for given name.
      */
+    @Override
     public Object get(String name) {
         return actual.get(name);
     }
@@ -159,12 +162,13 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * Verifies the object received the expected values.
      */
+    @Override
     public void verify() {
         // need to compare the values in the expected list with
         // those of the actual list.
 
-        Set keys = expected.keySet();
-        for (Object key : keys) {
+        Set<String> keys = expected.keySet();
+        for (String key : keys) {
             Object expValue = expected.get(key);
             Object actValue = actual.get(key);
 
@@ -180,7 +184,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
                         "] actual value [" +
                         actValue +
                         "]";
-                fail(msg.toString());
+                fail(msg);
             }
         }
     }
@@ -188,6 +192,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasExpectations() {
         return !expected.isEmpty();
     }
@@ -195,6 +200,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setExpectNothing() {
         expectNothing = true;
     }
@@ -202,6 +208,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFailOnVerify() {
         // do nothing
     }

@@ -33,6 +33,10 @@ export const filterEntity: FilterEntityEnumType = {
     key: "module",
     text: t("Module"),
   },
+  PTF: {
+    key: "ptf",
+    text: t("Product Temporary Fix"),
+  },
 };
 
 const filterMatchers: FilterMatcherEnumType = {
@@ -115,6 +119,16 @@ const filterMatchers: FilterMatcherEnumType = {
     key: "provides_name",
     text: t("provides name"),
     longDescription: t("provides name equal"),
+  },
+  MODULE_NONE: {
+    key: "module_none",
+    text: t("none (disable modularity)"),
+    longDescription: t("none (disable modularity)"),
+  },
+  PTF_ALL: {
+    key: "ptf_all",
+    text: t("all"),
+    longDescription: t("all product temporary fixes"),
   },
 };
 
@@ -201,7 +215,31 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     key: "module_stream",
     text: t("Stream"),
     entityType: filterEntity.MODULE,
-    matchers: [filterMatchers.EQUALS],
+    matchers: [filterMatchers.EQUALS, filterMatchers.MODULE_NONE],
+  },
+  PTF_ALL: {
+    key: "ptf_all",
+    text: t("All"),
+    entityType: filterEntity.PTF,
+    matchers: [filterMatchers.PTF_ALL],
+  },
+  PTF_NUMBER: {
+    key: "ptf_number",
+    text: t("Number"),
+    entityType: filterEntity.PTF,
+    matchers: [
+      filterMatchers.LOWER,
+      filterMatchers.LOWEREQ,
+      filterMatchers.EQUALS,
+      filterMatchers.GREATER,
+      filterMatchers.GREATEREQ,
+    ],
+  },
+  PTF_PACKAGE_NAME: {
+    key: "ptf_package_name",
+    text: t("Fixes Package Name"),
+    entityType: filterEntity.PTF,
+    matchers: [filterMatchers.EQUALS, filterMatchers.MATCHES, filterMatchers.CONTAINS],
   },
 };
 
@@ -220,7 +258,8 @@ function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Pa
 export function getClmFilterDescription(filter: any): string {
   const filterMatcher = findFilterMatcherByKey(filter.matcher);
   if (filter.entityType === "module") {
-    return `${filter.name}: ${t("enable module")} ${filter.criteriaValue}`;
+    if (filter.matcher === "equals") return `${filter.name}: ${t("enable module")} ${filter.criteriaValue}`;
+    else return `${filter.name}: ${t("disable all modules")}`;
   }
   return `${filter.name}: ${filter.rule} ${filter.entityType} ${filterMatcher.longDescription || ""} ${
     filter.criteriaValue

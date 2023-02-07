@@ -31,8 +31,8 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.0
-Release:        0
+Version:        4.4.4
+Release:        1
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
@@ -125,7 +125,7 @@ install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
 install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-install -p -m 644 src/config/log4j.xml $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.xml
+install -p -m 644 src/config/log4j2.xml $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j2.xml
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 
 # add rc link
@@ -170,7 +170,7 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
 %attr(644, root, root) %{_unitdir}/rhn-search.service
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-%{_prefix}/share/rhn/search/classes/log4j.xml
+%{_prefix}/share/rhn/search/classes/log4j2.xml
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes

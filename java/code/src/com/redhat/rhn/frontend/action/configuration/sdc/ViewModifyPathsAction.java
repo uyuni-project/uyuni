@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -50,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ViewModifyCentralPathsAction
  */
-public class ViewModifyPathsAction extends RhnAction implements Listable {
+public class ViewModifyPathsAction extends RhnAction implements Listable<ConfigFileNameDto> {
     public static final String COPY_TO_LOCAL = "copy_to_local";
     public static final String COPY_TO_SANDBOX = "copy_to_sandbox";
     public static final String COPY_TO_GLOBAL = "copy_to_global";
@@ -81,8 +82,9 @@ public class ViewModifyPathsAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, context.getRequiredParam(RequestContext.SID));
@@ -293,7 +295,8 @@ public class ViewModifyPathsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ConfigFileNameDto> getResult(RequestContext context) {
         Server server  = context.lookupAndBindServer();
         User user = context.getCurrentUser();
         ConfigChannelType type = (ConfigChannelType)

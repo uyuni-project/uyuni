@@ -59,8 +59,8 @@ import javax.persistence.criteria.Root;
  */
 public class ImageInfoFactory extends HibernateFactory {
 
+    private static final Logger LOG = LogManager.getLogger(ImageInfoFactory.class);
     private static ImageInfoFactory instance = new ImageInfoFactory();
-    private static Logger log = LogManager.getLogger(ImageInfoFactory.class);
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
@@ -84,10 +84,7 @@ public class ImageInfoFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ImageInfoFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**

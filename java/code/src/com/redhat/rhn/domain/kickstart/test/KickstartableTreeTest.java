@@ -48,10 +48,10 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * KickstartableTreeTest
@@ -71,13 +71,13 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartableTree tree = new KickstartableTree();
         tree.setChannel(ChannelTestUtils.createBaseChannel(u));
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
         tree.setBasePath(basePath.getAbsolutePath());
         tree.setOrg(u.getOrg());
         createKickstartTreeItems(tree);
     }
 
-    public static void createKickstartTreeItems(KickstartableTree tree) throws Exception {
+    public static void createKickstartTreeItems(KickstartableTree tree) {
         createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
         createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
 
@@ -107,11 +107,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             lookupKickstartTreeByLabel(k2.getLabel(), o);
         assertEquals(k3.getLabel(), k2.getLabel());
 
-        List trees = KickstartFactory.
+        List<KickstartableTree> trees = KickstartFactory.
             lookupKickstartTreesByChannelAndOrg(k2.getChannel().getId(), o);
 
         assertNotNull(trees);
-        assertTrue(trees.size() > 0);
+        assertFalse(trees.isEmpty());
 
         KickstartableTree kwithnullorg = createTestKickstartableTree();
         String label = "treewithnullorg: " + TestUtils.randomString();
@@ -150,9 +150,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartFactory.saveKickstartData(ksdata);
         flushAndEvict(ksdata);
 
-        List profiles = KickstartFactory.lookupKickstartDatasByTree(k);
+        List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(k);
         assertNotNull(profiles);
-        assertTrue(profiles.size() > 0);
+        assertFalse(profiles.isEmpty());
     }
 
 
@@ -160,12 +160,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Helper method to lookup KickstartableTree by id
      * @param id Id to lookup
      * @return Returns the KickstartableTree
-     * @throws Exception something bad happened
      */
-    private KickstartableTree lookupById(Long id) throws Exception {
+    private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
-                          .setLong("id", id)
+                          .setParameter("id", id)
                           .uniqueResult();
     }
 
@@ -185,10 +184,8 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Creates KickstartableTree for testing purposes.
      * @param treeChannel Channel this Tree uses.
      * @return Returns a committed KickstartableTree
-     * @throws Exception something bad happened
      */
-    public static KickstartableTree
-        createTestKickstartableTree(Channel treeChannel) throws Exception {
+    public static KickstartableTree createTestKickstartableTree(Channel treeChannel) {
         Date created = new Date();
         Date modified = new Date();
         Date lastmodified = new Date();
@@ -219,20 +216,20 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
         createKickstartTreeItems(k);
 
-        Distro.Builder builder = new Distro.Builder();
+        Distro.Builder<String> builder = new Distro.Builder<>();
 
         Distro d = builder.setName(k.getLabel())
                 .setKernel(k.getDefaultKernelPaths()[0])
                 .setInitrd(k.getDefaultInitrdPaths()[0])
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .setBreed(k.getInstallType().getCobblerBreed())
                 .setOsVersion(k.getInstallType().getCobblerOsVersion())
                 .setArch(k.getChannel().getChannelArch().cobblerArch())
-                .setKernelOptions(k.getKernelOptions())
-                .setKernelOptionsPost(k.getKernelOptionsPost())
+                .setKernelOptions(Optional.of(k.getKernelOptions()))
+                .setKernelOptionsPost(Optional.of(k.getKernelOptionsPost()))
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
-        Distro xend = builder.setKsmeta(new HashMap<>())
+        Distro xend = builder.setKsmeta(Optional.empty())
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
         k.setCobblerId(d.getUid());

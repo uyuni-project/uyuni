@@ -5,7 +5,6 @@
 Feature: API "activationkey" namespace
 
   Scenario: List all activation keys
-    When I am logged in API as user "admin" and password "admin"
     Then I should get some activation keys
 
   Scenario: Create activation key
@@ -18,4 +17,3 @@ Feature: API "activationkey" namespace
 
   Scenario: Cleanup: delete activation key
     When I delete the activation key
-    And I logout from API

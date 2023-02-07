@@ -107,11 +107,11 @@ public class SsmManager {
         CallableMode m = ModeFactory.getCallableMode("Channel_queries",
                 "subscribe_server_to_channel");
 
-        Map in = new HashMap();
+        Map<String, Object> in = new HashMap<>();
         in.put("server_id", sid);
         in.put("user_id", uid);
         in.put("channel_id", cid);
-        m.execute(in, new HashMap());
+        m.execute(in, new HashMap<>());
     }
 
     /**
@@ -312,8 +312,9 @@ public class SsmManager {
         }
 
         if (!newBaseIsCompatible) {
+            String baseChannelId = Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none");
             LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(),
-                    Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none"), srv.getId());
+                    baseChannelId, srv.getId());
             return new ChannelSelectionResult(srv, "incompatible_base");
         }
         else {

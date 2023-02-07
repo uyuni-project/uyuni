@@ -28,16 +28,11 @@ import com.redhat.rhn.domain.kickstart.RegistrationType;
 import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.download.DownloadManager;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -70,7 +65,6 @@ public class KickstartFormatter {
     private static final String RAW_END = "#end raw";
     private static final String NEWLINE = "\n";
     private static final String SPACE = " ";
-    private static final String DEPS = "--resolvedeps";
     private static final String NO_BASE = "--nobase";
     private static final String IGNORE_MISSING = "--ignoremissing";
     private static final String PACKAGES = "%packages";
@@ -107,18 +101,6 @@ public class KickstartFormatter {
     public static final String[] FRESH_PKG_NAMES_RHEL8 =
     {"rhn-client-tools", "rhnsd", "dnf-plugin-spacewalk", "rhnlib", "spacewalk-koan"};
     public static final String[] FRESH_PKG_NAMES_RHEL8_FOR_SALT = {"salt-minion"};
-    private static final String UPDATE_OPT_PATH = "/tmp/rhn_rpms/optional/";
-    private static final String UPDATE_CMD = "rpm -Uvh --replacepkgs --replacefiles ";
-    private static final String FRESH_CMD = "rpm -Fvh /tmp/rhn_rpms/*rpm";
-    private static final String IMPORT_RHN_KEY34 =
-        "rpm --import /usr/share/rhn/RPM-GPG-KEY";
-    private static final String IMPORT_RHN_KEY2 =
-        "gpg $(up2date --gpg-flags) --batch --import /usr/share/rhn/RPM-GPG-KEY" +
-        NEWLINE +
-        "gpg $(up2date --gpg-flags) --batch --import /usr/share/rhn/RPM-GPG-KEY";
-    private static final String MKDIR_OPTIONAL = "mkdir -p /tmp/rhn_rpms/optional";
-    private static final String WGET_OPT_RPMS = "wget -P /tmp/rhn_rpms/optional ";
-    private static final String WGET_RPMS = "wget -P /tmp/rhn_rpms ";
     private static final String REMOTE_CMD =
         "mkdir -p /etc/sysconfig/rhn/allowed-actions/script" + NEWLINE +
         "touch /etc/sysconfig/rhn/allowed-actions/script/run";
@@ -144,9 +126,6 @@ public class KickstartFormatter {
 
     private static final String ISCRYPTED = "--iscrypted ";
 
-    //wregglej, 9/22/06 Temporary workarounds for a broken wget.
-    private static final String CHDIR_OPT_RPMS = "cd /tmp/rhn_rpms/optional ";
-    private static final String CHDIR_RPMS = "cd /tmp/rhn_rpms";
     private static final String REDHAT_MGMT_SERVER = "$redhat_management_server";
     public static final String STATIC_NETWORK_VAR = "static_network";
     public static final String USE_IPV6_GATEWAY = "use_ipv6_gateway";
@@ -218,19 +197,6 @@ public class KickstartFormatter {
     }
 
     /**
-     * Everythign RHEL 5 and older should not use %end at the end of
-     *  each section, but anything fedora (version 8 and above) and RHEL 6
-     *   can handle it (it's optional).  Fedora 14 requires it!
-     * @param buff the String buffer to append to
-     */
-    private void addEnd(StringBuilder buff) {
-        if (!ksdata.isRHEL5OrLess()) {
-            buff.append(END + NEWLINE);
-        }
-    }
-
-
-    /**
      *
      * @return String containing kickstart file
      */
@@ -256,27 +222,15 @@ public class KickstartFormatter {
         buf.append(getHeader());
         buf.append(getCommands());
 
-        /*if (this.ksdata.isRhel5OrGreater()) {
-            buf.append(getRepoCommands());
-            buf.append(getKeyCommands());
-        }*/
-
         buf.append(NEWLINE);
         buf.append(getPackageOptions());
         buf.append(getPackages());
-        addEnd(buf);
+        buf.append(END + NEWLINE);
         buf.append(NEWLINE);
         buf.append("%" + KickstartScript.TYPE_PRE);
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_start");
-        }
-        else {
-            buf.append("$kickstart_start");
-            buf.append(NEWLINE);
-        }
-
+        addCobblerSnippet(buf, "autoinstall_start");
         buf.append(NEWLINE);
         addCobblerSnippet(buf, "pre_install_network_config");
         buf.append(NEWLINE);
@@ -284,11 +238,8 @@ public class KickstartFormatter {
 
         if (!RegistrationType.NONE.equals(regType)) {
             addCobblerSnippet(buf, KEEP_SYSTEM_ID_SNIPPET);
-            addEnd(buf);
         }
-        else {
-            addEnd(buf);
-        }
+        buf.append(END + NEWLINE);
 
         buf.append(renderScripts(preScripts));
         buf.append(NEWLINE);
@@ -299,18 +250,18 @@ public class KickstartFormatter {
         if (this.ksdata.getKsCfg()) {
             buf.append(SAVE_KS_CFG + NEWLINE);
         }
-        addEnd(buf);
+        buf.append(END + NEWLINE);
 
         buf.append(renderScripts(postBeforeRedHatScripts));
         buf.append(NEWLINE);
 
         if (RegistrationType.REACTIVATION.equals(regType)) {
             addCobblerSnippet(buf, POST_REACTIVATION_SNIPPET);
-            addEnd(buf);
+            buf.append(END + NEWLINE);
         }
         else if (RegistrationType.DELETION.equals(regType)) {
             addCobblerSnippet(buf, POST_DELETION_SNIPPET);
-            addEnd(buf);
+            buf.append(END + NEWLINE);
         }
 
         buf.append(NEWLINE);
@@ -323,15 +274,10 @@ public class KickstartFormatter {
         addCobblerSnippet(buf, "koan_environment");
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_done");
-        }
-        else {
-            buf.append("$kickstart_done");
-        }
+        addCobblerSnippet(buf, "autoinstall_done");
 
         buf.append(NEWLINE);
-        addEnd(buf);
+        buf.append(END + NEWLINE);
         String retval = buf.toString();
         log.debug("fileData.retval:");
         log.debug(retval);
@@ -367,10 +313,9 @@ public class KickstartFormatter {
      */
     private String getCommands() {
         StringBuilder commands = new StringBuilder();
-        LinkedList l = new LinkedList(this.ksdata.getCommands());
+        LinkedList<KickstartCommand> l = new LinkedList<>(this.ksdata.getCommands());
         Collections.sort(l);
-        for (Object oIn : l) {
-            KickstartCommand command = (KickstartCommand) oIn;
+        for (KickstartCommand command : l) {
             String cname = command.getCommandName().getName();
             log.debug("getCommands name: {}", cname);
 
@@ -409,8 +354,7 @@ public class KickstartFormatter {
             }
         }
 
-        if (ksdata.isRhel5OrGreater() &&
-                   !Config.get().getBoolean("ks_restrict_child_channels")) {
+        if (!Config.get().getBoolean("ks_restrict_child_channels")) {
             for (Channel child : ksdata.getChildChannels()) {
                 KickstartUrlHelper helper = new KickstartUrlHelper(ksdata);
                 commands.append(String.format("repo --name=%s --baseurl=%s",
@@ -465,7 +409,7 @@ public class KickstartFormatter {
             String ksDistro) {
 
         String gateway;
-        if (preferIpv6Gateway && gw6 != null && gw6.length() != 0) {
+        if (preferIpv6Gateway && gw6 != null && !gw6.isEmpty()) {
             gateway = gw6;
         }
         else {
@@ -475,17 +419,17 @@ public class KickstartFormatter {
         String command = String.format(STATIC_NETWORK_COMMAND, device, gateway,
             nameServer, hostName);
 
-        if (ip4 != null && ip4.length() > 0 && nm4 != null && nm4.length() > 0) {
+        if (ip4 != null && !ip4.isEmpty() && nm4 != null && !nm4.isEmpty()) {
             command += String.format(STATIC_NETWORK_COMMAND1, ip4, nm4);
         }
         else {
             command += " --noipv4";
         }
 
-        if (ip6 != null && ip6.length() > 0 && ksDistro != null &&
+        if (ip6 != null && !ip6.isEmpty() && ksDistro != null &&
             (ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX) ||
              ksDistro.equals(KickstartInstallType.RHEL_6))) {
-            if (nm6 == null || nm6.length() == 0 ||
+            if (nm6 == null || nm6.isEmpty() ||
                 !ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }
@@ -554,8 +498,7 @@ public class KickstartFormatter {
      * @return string containing package options
      */
     private String getPackageOptions() {
-        // if kstree is > 2.1 then add the resolve deps, ignore other deps
-        String opts = this.ksdata.isRhel2() || this.ksdata.isRhel5OrGreater() ? "" : DEPS;
+        String opts = "";
 
         if (this.ksdata.getIgnoreMissing()) {
             opts = opts + SPACE + IGNORE_MISSING;
@@ -582,15 +525,9 @@ public class KickstartFormatter {
         }
 
         // packages necessary for rhel2.1
-        if (this.ksdata.isRhel2()) {
-          buf.append("@ Network Support" + NEWLINE);
-          buf.append("openssh-server" + NEWLINE);
-        }
         if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
          // packages necessary for RHEL 6+ and Fedora (salt)
-            buf.append("perl" + NEWLINE);
-            buf.append("wget" + NEWLINE);
-            buf.append("salt-minion" + NEWLINE);
+            buf.append("venv-salt-minion" + NEWLINE);
         }
         else if (this.ksdata.isRhel7OrGreater() || this.ksdata.isFedora()) {
             // packages necessary for RHEL 7 and Fedora (traditional)
@@ -667,7 +604,7 @@ public class KickstartFormatter {
             if (kss.getRaw()) {
                 retval.append(RAW_END + NEWLINE);
             }
-            addEnd(retval);
+            retval.append(END + NEWLINE);
         } // end loop
         return retval.toString();
     }
@@ -681,63 +618,9 @@ public class KickstartFormatter {
 
         retval.append(renderKeys() + NEWLINE);
 
-        List<ActivationKey> tokens = generateActKeyTokens(this.ksdata,
-                this.session);
-
-        HashSet updatePackages = getUpdatePackages(tokens);
-        HashSet freshPackages = getFreshPackages(tokens);
-        boolean isFresh = freshPackages.size() > 0;
-        boolean isUpdate = updatePackages.size() > 0;
-
-        // update the required/optional packages needed for the kickstart
-        if (isUpdate || isFresh) {
-            log.debug("need latest up2date");
-            //order matters, therfore multiple logic branches
-            retval.append(MKDIR_OPTIONAL + NEWLINE);
-            if (isUpdate) {
-                //wregglej - wget is broken, so workaround it.
-                retval.append(CHDIR_OPT_RPMS + NEWLINE);
-
-                retval.append(WGET_OPT_RPMS);
-                for (Object updatePackageIn : updatePackages) {
-                    retval.append(updatePackageIn.toString() + SPACE);
-                }
-                retval.append(NEWLINE);
-            }
-            if (isFresh) {
-                //wregglej - work around wget again.
-                retval.append(CHDIR_RPMS + NEWLINE);
-
-                retval.append(WGET_RPMS);
-                for (Object freshPackageIn : freshPackages) {
-                    retval.append(freshPackageIn.toString() + SPACE);
-                }
-                retval.append(NEWLINE);
-            }
-            if (isUpdate) {
-                retval.append(UPDATE_CMD);
-                for (String updatePkgNameIn : UPDATE_PKG_NAMES) {
-                    retval.append(UPDATE_OPT_PATH + updatePkgNameIn + "* ");
-                }
-                retval.append(NEWLINE);
-            }
-            if (isFresh) {
-                retval.append(FRESH_CMD + NEWLINE);
-            }
-        }
-
         if (this.ksdata.getKickstartDefaults().getVirtualizationType()
                 .getLabel().equals("para_host")) {
             retval.append(VIRT_HOST_GRUB_FIX);
-        }
-
-        // For rhel2,3,4 we import a different key.  otherwise we just
-        // rely on the cobbler snippet below to import the key.
-        if (this.ksdata.isRhel2()) {
-            retval.append(IMPORT_RHN_KEY2 + NEWLINE);
-        }
-        else if (this.ksdata.isRhel3() || this.ksdata.isRhel4()) {
-            retval.append(IMPORT_RHN_KEY34 + NEWLINE);
         }
 
         if (log.isDebugEnabled()) {
@@ -754,26 +637,25 @@ public class KickstartFormatter {
             up2datehost = this.session.getSystemRhnHost();
         }
 
-        log.debug("adding perl -npe for /etc/sysconfig/rhn/up2date");
-        if (this.ksdata.isRhel2()) {
+        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
+            log.debug("adding perl -npe for /etc/sysconfig/rhn/up2date");
+            // both rhel 2 and rhel3/4 need the following
             retval.append("perl -npe " +
-                    "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|${1}" +
-                     up2datehost +
-                     "/|' -i /etc/sysconfig/rhn/rhn_register" + NEWLINE);
+                    "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|\\${1}" +
+                    up2datehost +
+                    "/|' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
+
+            if (this.ksdata.getVerboseUp2date()) {
+                retval.append("[ -r /etc/sysconfig/rhn/up2date ] && " +
+                        "sed 's/debug=0/debug=1/' -i /etc/sysconfig/rhn/up2date" +
+                        NEWLINE);
+            }
         }
-        // both rhel 2 and rhel3/4 need the following
-        retval.append("perl -npe " +
-                "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|\\${1}" +
-                up2datehost +
-                "/|' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
 
         if (this.ksdata.getVerboseUp2date()) {
             retval.append("[ -r /etc/yum.conf ] && " +
-                    "perl -npe 's/debuglevel=2/debuglevel=5/' -i /etc/yum.conf" +
-                     NEWLINE);
-            retval.append("[ -r /etc/sysconfig/rhn/up2date ] && " +
-                    "perl -npe 's/debug=0/debug=1/' -i /etc/sysconfig/rhn/up2date" +
-                     NEWLINE);
+                    "sed 's/debuglevel=2/debuglevel=5/' -i /etc/yum.conf" +
+                    NEWLINE);
         }
 
         if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag()) {
@@ -788,11 +670,6 @@ public class KickstartFormatter {
         retval.append(KSTREE);
         retval.append(NEWLINE);
 
-        //RHEL 5u4 hack for bz 495680
-        if (ksdata.isRhel5()) {
-            retval.append("/etc/init.d/messagebus restart" + NEWLINE);
-            retval.append("/etc/init.d/haldaemon restart" + NEWLINE);
-        }
         retval.append("# begin cobbler snippet" + NEWLINE);
         retval.append(NEWLINE);
         // Work around for bug #522251
@@ -816,7 +693,7 @@ public class KickstartFormatter {
 
         addLogEnd(retval, RHN_LOG_FILE, "");
 
-        addEnd(retval);
+        retval.append(END + NEWLINE);
         return retval.toString();
     }
 
@@ -832,8 +709,8 @@ public class KickstartFormatter {
             KickstartSession ksession) {
         StringBuilder retval = new StringBuilder();
         List<ActivationKey> tokens = generateActKeyTokens(ksdata, ksession);
-        for (Iterator itr = tokens.iterator(); itr.hasNext();) {
-            ActivationKey act = (ActivationKey) itr.next();
+        for (Iterator<ActivationKey> itr = tokens.iterator(); itr.hasNext();) {
+            ActivationKey act = itr.next();
             log.debug("rhnreg: key name: {}", act.getKey());
             retval.append(act.getKey());
             if (itr.hasNext()) {
@@ -844,10 +721,6 @@ public class KickstartFormatter {
         return retval.toString();
     }
 
-
-    /**
-     * @return
-     */
     private static List<ActivationKey> generateActKeyTokens(KickstartData ksdata,
             KickstartSession ksession) {
         List<ActivationKey> tokens = new ArrayList<>();
@@ -867,8 +740,6 @@ public class KickstartFormatter {
         //if we need a reactivation key, add one
         if (defaultKey != null) {
             log.debug("Session isn't null.  Lets use the profile's activation key.");
-            //ActivationKey oneTimeKey = ActivationKeyFactory.
-            //    lookupByKickstartSession(this.session);
                 tokens.add(defaultKey);
                 if (log.isDebugEnabled()) {
                     log.debug("Found one time activation key: {}", defaultKey.getKey());
@@ -876,13 +747,11 @@ public class KickstartFormatter {
         }
         log.debug("tokens size: {}", tokens.size());
         //add the activation keys associated with the kickstart profile
-        if (ksdata.getDefaultRegTokens() != null) {
-            if (ksdata.getDefaultRegTokens().size() > 0) {
-                for (Token tk : ksdata.getDefaultRegTokens()) {
-                    ActivationKey act =
-                            ActivationKeyFactory.lookupByToken(tk);
-                    tokens.add(act);
-                }
+        if (ksdata.getDefaultRegTokens() != null && !ksdata.getDefaultRegTokens().isEmpty()) {
+            for (Token tk : ksdata.getDefaultRegTokens()) {
+                ActivationKey act =
+                        ActivationKeyFactory.lookupByToken(tk);
+                tokens.add(act);
             }
         }
         return tokens;
@@ -891,8 +760,8 @@ public class KickstartFormatter {
     private String renderKeys() {
         StringBuilder retval = new StringBuilder();
 
-        HashSet sslKeys = new HashSet();
-        HashSet gpgKeys = new HashSet();
+        HashSet<CryptoKey> sslKeys = new HashSet<>();
+        HashSet<CryptoKey> gpgKeys = new HashSet<>();
 
         // setup keys for rendering
         if (this.ksdata.getCryptoKeys() != null) {
@@ -906,97 +775,15 @@ public class KickstartFormatter {
             }
         }
 
-        if (gpgKeys.size() > 0) {
+        if (!gpgKeys.isEmpty()) {
             retval.append(renderGpgKeys(gpgKeys));
         }
 
-        if (sslKeys.size() > 0) {
+        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels()
+                .contains(ksdata.getInstallType().getLabel()) && !sslKeys.isEmpty()) {
             retval.append(renderSslKeys(sslKeys));
         }
         return retval.toString();
-    }
-
-    /**
-     *
-     * @return list of packages we need to up2date
-     */
-    private HashSet<String> getUpdatePackages(List<ActivationKey> keys) {
-        log.debug("getUpdatePackages() ..");
-        HashSet<String> retval = new HashSet<>();
-        Channel c = ksdata.getKickstartDefaults().getKstree().getChannel();
-        for (ActivationKey key : keys) {
-            if (key.getChannels() != null) {
-                for (Channel chan : key.getChannels()) {
-                    if (chan.isBaseChannel()) {
-                        c = chan;
-                        break;
-                    }
-                }
-            }
-        }
-        if (ksdata.isRhel4()) {
-            for (String updatePkgNameIn : UPDATE_PKG_NAMES) {
-                Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(),
-                        updatePkgNameIn);
-                if (packageId == null) {
-                    log.debug("package:{}not found in kickstart's channel", packageId);
-                    continue;
-                }
-
-                log.debug("package  : {}", updatePkgNameIn);
-                log.debug("packageId: {}", packageId);
-                Package p =
-                        PackageFactory.lookupByIdAndUser(packageId, user);
-                if (p != null) {
-                    retval.add(getSHA1PackagePath(p));
-                }
-            }
-        }
-        return retval;
-    }
-
-    private String getSHA1PackagePath(Package p) {
-        String retval = null;
-        if (p != null) {
-            retval = "http://" + REDHAT_MGMT_SERVER +
-                DownloadManager.getPackageDownloadPathNoExpiration(p, user);
-        }
-        return retval;
-    }
-
-    /**
-     *
-     * @return list of optional packages we need to up2date to the latest nvr
-     */
-    private HashSet<String> getFreshPackages(List<ActivationKey> keys) {
-        Channel c = ksdata.getKickstartDefaults().getKstree().getChannel();
-        for (ActivationKey key : keys) {
-            for (Channel chan : key.getChannels()) {
-                if (chan.isBaseChannel()) {
-                    c = chan;
-                    break;
-                }
-            }
-        }
-
-        String[] pkglist = {};
-        if (ksdata.isRhel2()) {
-            pkglist = FRESH_PKG_NAMES_RHEL2;
-        }
-        else if (ksdata.isRhel3() || ksdata.isRhel4()) {
-            pkglist = FRESH_PKG_NAMES_RHEL34;
-        }
-        HashSet<String> retval = new HashSet<>();
-        for (String pkg : pkglist) {
-            Long packageId = ChannelManager.getLatestPackageEqualInTree(c.getId(), pkg);
-            if (packageId != null) {
-                Package p = PackageFactory.lookupByIdAndUser(packageId, user);
-                if (p != null) {
-                    retval.add(getSHA1PackagePath(p));
-                }
-            }
-        }
-        return retval;
     }
 
     /**
@@ -1011,15 +798,7 @@ public class KickstartFormatter {
             retval.append("cat > /tmp/gpg-key-" + peg + " <<'EOF'" + NEWLINE);
             retval.append(myKey.getKeyString() + NEWLINE);
             retval.append("EOF\n# gpg-key" + peg + NEWLINE);
-            if (this.ksdata.isRhel2()) {
-                retval.append(
-                        "gpg $(up2date --gpg-flags) --batch --import /tmp/gpg-key-" +
-                        peg + "\ngpg $(up2date --gpg-flags) --batch --import " +
-                        "/tmp/gpg-key-" + peg + NEWLINE);
-            }
-            else {
-                retval.append("rpm --import /tmp/gpg-key-" + peg + NEWLINE);
-            }
+            retval.append("rpm --import /tmp/gpg-key-" + peg + NEWLINE);
             peg++;
         }
         return retval.toString();
@@ -1030,22 +809,19 @@ public class KickstartFormatter {
      * @param setIn of sll keys for this kickstart
      * @return rendered sll key string for kickstart
      */
-    private String renderSslKeys(HashSet setIn) {
+    private String renderSslKeys(HashSet<CryptoKey> setIn) {
         StringBuilder retval = new StringBuilder();
         int peg = 1;
-        for (Object oIn : setIn) {
+        for (CryptoKey myKey : setIn) {
             retval.append("cat > /tmp/ssl-key-" + peg + " <<'EOF'" + NEWLINE);
-            CryptoKey myKey = (CryptoKey) oIn;
             retval.append(myKey.getKeyString() + NEWLINE);
             retval.append(NEWLINE);
             retval.append("EOF\n# ssl-key" + peg + NEWLINE);
             peg++;
         }
 
-        retval.append("cat /tmp/ssl-key-* > /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT" +
-                NEWLINE);
-        retval.append("perl -pe 's/RHNS-CA-CERT/RHN-ORG-TRUSTED-SSL-CERT/g' " +
-                "-i /etc/sysconfig/rhn/up2date" + NEWLINE);
+        retval.append("cat /tmp/ssl-key-* > /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT" + NEWLINE);
+        retval.append("sed 's/RHNS-CA-CERT/RHN-ORG-TRUSTED-SSL-CERT/g' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
 
         return retval.toString();
     }

@@ -21,6 +21,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -135,7 +136,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSearchByPackagesIds() throws Exception {
+    public void testSearchByPackagesIds() {
         searchByPackagesIdsHelper(
                 Optional.empty(),
                 ErrataManager::searchByPackageIds);
@@ -150,13 +151,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private void searchByPackagesIdsHelper(Optional<Channel> channel,
-                                           Function<List, List<ErrataOverview>> errataSearchFn) throws Exception {
+                                           Function<List<Long>, List<ErrataOverview>> errataSearchFn) {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
         Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
-        assertTrue(b1 instanceof Bug);
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
@@ -188,7 +188,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         mode.executeUpdate(params);
 
         // now test for errata
-        List pids = new ArrayList();
+        List<Long> pids = new ArrayList<>();
         pids.add(p.getId());
         List<ErrataOverview> eos = errataSearchFn.apply(pids);
         assertNotNull(eos);
@@ -226,9 +226,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Errata> publishedList = ErrataFactory.addToChannel(errataList,
                 baseChannel, user, false);
         Errata publish = publishedList.get(0);
-        assertTrue(publish instanceof Errata);
+        assertNotNull(publish);
 
-        List eids = new ArrayList();
+        List<Long> eids = new ArrayList<>();
         eids.add(publish.getId());
         List<ErrataOverview> eos = ErrataManager.search(eids, user.getOrg());
         assertNotNull(eos);
@@ -239,26 +239,24 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testRelevantErrataList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededCache(user,
-                ErrataFactory.ERRATA_TYPE_BUG);
-        DataResult errata = ErrataManager.relevantErrata(user);
+        ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+        DataResult<ErrataOverview> errata = ErrataManager.relevantErrata(user);
         assertNotNull(errata);
-        assertTrue(errata.size() >= 1);
+        assertFalse(errata.isEmpty());
     }
 
     @Test
     public void testRelevantErrataByTypeList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededCache(user,
-                ErrataFactory.ERRATA_TYPE_BUG);
+        ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(20);
-        DataResult errata =
+        DataResult<ErrataOverview> errata =
             ErrataManager.relevantErrataByType(user, pc, ErrataFactory.ERRATA_TYPE_BUG);
         assertNotNull(errata);
-        assertTrue(errata.size() >= 1);
+        assertFalse(errata.isEmpty());
     }
 
     @Test
@@ -269,8 +267,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         // Check for the case where the errata belongs to the users org
         Errata check = ErrataManager.lookupErrata(errata.getId(), user);
-        assertTrue(check.getAdvisory().equals(errata.getAdvisory()));
-        assertTrue(check.getId().equals(errata.getId()));
+        assertEquals(check.getAdvisory(), errata.getAdvisory());
+        assertEquals(check.getId(), errata.getId());
 
         /*
          * Bugzilla: 168292
@@ -322,7 +320,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
         assertTrue(systems.isEmpty());
-        assertFalse(systems.size() > 0);
+        assertTrue(systems.isEmpty());
 
         DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
@@ -336,7 +334,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e2 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
                     this.getClass().getSimpleName()));
 
-        assertFalse(e1.getId().equals(e2.getId())); //make sure adv names are different
+        assertNotEquals(e1.getId(), e2.getId()); //make sure adv names are different
         //assertTrue(ErrataManager.advisoryNameIsUnique(e2.getId(), e2.getAdvisoryName()));
         //assertFalse(ErrataManager.advisoryNameIsUnique(e2.getId(), e1.getAdvisoryName()));
     }
@@ -353,14 +351,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List erratas = ErrataManager.lookupErrataByType(bugfix);
         outputErrataList(erratas);
         System.out.println("Got bugfixes: "  + erratas.size() + " time: " + st);
-        assertTrue(erratas.size() > 0);
+        assertFalse(erratas.isEmpty());
         erratas = ErrataManager.lookupErrataByType(pea);
         outputErrataList(erratas);
         System.out.println("Got pea enhancments: "  + erratas.size() + " time: " + st);
-        assertTrue(erratas.size() > 0);
+        assertFalse(erratas.isEmpty());
         erratas = ErrataManager.lookupErrataByType(security);
         outputErrataList(erratas);
-        assertTrue(erratas.size() > 0);
+        assertFalse(erratas.isEmpty());
         System.out.println("Got security advisories: "  + erratas.size() + " time: " + st);
         st.stop();
         System.out.println("TIME: " + st.getTime());
@@ -370,7 +368,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         StringBuilder output = new StringBuilder();
         for (Object errataIn : erratas) {
             Errata e = (Errata) errataIn;
-            output.append(e.toString());
+            output.append(e);
         }
         FileWriter fr = new FileWriter(new File("errataout" + erratas.size() +  ".txt"));
         fr.write(output.toString());
@@ -417,8 +415,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<ErrataOverview> toClone = ErrataFactory
                 .relevantToOneChannelButNotAnother(original.getId(), cloned.getId());
         Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), user);
-        assertTrue(eids.size() > 0);
-        assertTrue(new HashSet<>(eids).size() == eids.size());
+        assertFalse(eids.isEmpty());
+        assertEquals(new HashSet<>(eids).size(), eids.size());
     }
 
     /**
@@ -547,7 +545,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception the exception
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataOnManagementStack() throws Exception {
 
@@ -741,7 +738,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception the exception
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
@@ -999,7 +995,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1300,7 +1295,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataActionChain() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1424,7 +1418,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());

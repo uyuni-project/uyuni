@@ -61,6 +61,7 @@ public class ConfigFileName extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ConfigFileName)) {
             return false;
@@ -74,6 +75,7 @@ public class ConfigFileName extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(path)

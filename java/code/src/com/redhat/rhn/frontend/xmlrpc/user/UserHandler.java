@@ -140,7 +140,7 @@ public class UserHandler extends BaseHandler {
     public Object[] listRoles(User loggedInUser, String login) throws FaultException {
         // Get the logged in user
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        List roles = new ArrayList(); //List of role labels to return
+        List roles = new ArrayList<>(); //List of role labels to return
 
         //Loop through the target users roles and stick the labels into the ArrayList
         Set roleObjects = target.getPermanentRoles();
@@ -200,11 +200,11 @@ public class UserHandler extends BaseHandler {
      *   #struct_end()
      */
     @ReadOnly
-    public Map getDetails(User loggedInUser, String login) throws FaultException {
+    public Map<String, Object> getDetails(User loggedInUser, String login) throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
         LocalizationService ls = LocalizationService.getInstance();
 
-        Map ret = new HashMap();
+        Map<String, Object> ret = new HashMap<>();
         ret.put("first_names", StringUtils.defaultString(target.getFirstNames()));
         ret.put("first_name", StringUtils.defaultString(target.getFirstNames()));
         ret.put("last_name",   StringUtils.defaultString(target.getLastName()));
@@ -262,7 +262,7 @@ public class UserHandler extends BaseHandler {
      *   #struct_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, String login, Map details)
+    public int setDetails(User loggedInUser, String login, Map<String, String> details)
         throws FaultException {
 
         validateMap(USER_EDITABLE_DETAILS.keySet(), details);
@@ -275,13 +275,13 @@ public class UserHandler extends BaseHandler {
         UpdateUserCommand uuc = new UpdateUserCommand(target);
 
         // Process each entry passed in by the user
-        for (Object userKey : details.keySet()) {
+        for (Map.Entry<String, String> entry : details.entrySet()) {
 
             // Check to make sure we have an internal key mapping to prevent issues
             // if the user passes in cruft
-            String internalKey = USER_EDITABLE_DETAILS.get(userKey);
+            String internalKey = USER_EDITABLE_DETAILS.get(entry.getKey());
             if (internalKey != null) {
-                String newValue = StringUtils.defaultString((String) details.get(userKey));
+                String newValue = StringUtils.defaultString(entry.getValue());
                 prepareAttributeUpdate(internalKey, uuc, newValue);
             }
         }
@@ -709,37 +709,26 @@ public class UserHandler extends BaseHandler {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
 
-        if (sgNames == null || sgNames.size() < 1) {
+        if (sgNames == null || sgNames.isEmpty()) {
             throw new IllegalArgumentException("no servergroup names supplied");
         }
 
-        List groups = ServerGroupFactory.listManagedGroups(target.getOrg());
-
-        Map groupMap = new HashMap();
-
-        // sigh.  After looking through all of the apache collections package
-        // I couldn't find anything that would create a map from a list using
-        // a property from the object in the list as the key. This is where
-        // python would be useful.
-        for (Object groupIn : groups) {
-            ServerGroup sg = (ServerGroup) groupIn;
-            groupMap.put(sg.getName(), sg);
-        }
+        List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
+        Map<String, ServerGroup> groupMap = groups.stream().collect(Collectors.toMap(sg -> sg.getName(), sg -> sg));
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Object nameIn : sgNames) {
-            String name = (String) nameIn;
-            ServerGroup sg = (ServerGroup) groupMap.get(name);
+        for (String name : sgNames) {
+            ServerGroup sg = groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
             }
         }
 
         // now for the real reason we're in this method.
-        Set defaults = target.getDefaultSystemGroupIds();
-        for (Object sgNameIn : sgNames) {
-            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
+        Set<Long> defaults = target.getDefaultSystemGroupIds();
+        for (String sgName : sgNames) {
+            ServerGroup sg = groupMap.get(sgName);
             if (sg != null) {
                 // not a simple add to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -798,36 +787,26 @@ public class UserHandler extends BaseHandler {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
 
-        if (sgNames == null || sgNames.size() < 1) {
+        if (sgNames == null || sgNames.isEmpty()) {
             throw new IllegalArgumentException("no servergroup names supplied");
         }
 
-        List groups = ServerGroupFactory.listManagedGroups(target.getOrg());
-        Map groupMap = new HashMap();
-
-        // sigh.  After looking through all of the apache collections package
-        // I couldn't find anything that would create a map from a list using
-        // a property from the object in the list as the key. This is where
-        // python would be useful.
-        for (Object groupIn : groups) {
-            ServerGroup sg = (ServerGroup) groupIn;
-            groupMap.put(sg.getName(), sg);
-        }
+        List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(target.getOrg());
+        Map<String, ServerGroup> groupMap = groups.stream().collect(Collectors.toMap(sg -> sg.getName(), sg -> sg));
 
         // Doing full check of all supplied names, if one is bad
         // throw an exception, prior to altering the DefaultSystemGroup Set.
-        for (Object nameIn : sgNames) {
-            String name = (String) nameIn;
-            ServerGroup sg = (ServerGroup) groupMap.get(name);
+        for (String name : sgNames) {
+            ServerGroup sg = groupMap.get(name);
             if (sg == null) {
                 throw new LookupServerGroupException(name);
             }
         }
 
         // now for the real reason we're in this method.
-        Set defaults = target.getDefaultSystemGroupIds();
-        for (Object sgNameIn : sgNames) {
-            ServerGroup sg = (ServerGroup) groupMap.get(sgNameIn);
+        Set<Long> defaults = target.getDefaultSystemGroupIds();
+        for (String sgNameIn : sgNames) {
+            ServerGroup sg = groupMap.get(sgNameIn);
             if (sg != null) {
                 // not a simple remove to the groups.  Needs to call
                 // UserManager as DataSource is being used.
@@ -870,7 +849,7 @@ public class UserHandler extends BaseHandler {
         Set<Long> ids =  target.getDefaultSystemGroupIds();
 
 
-        List<ServerGroup> sgs = new ArrayList(ids.size());
+        List<ServerGroup> sgs = new ArrayList<>(ids.size());
         for (Long id : ids) {
             sgs.add(ServerGroupFactory.lookupByIdAndOrg(id, target.getOrg()));
         }
@@ -906,7 +885,7 @@ public class UserHandler extends BaseHandler {
         throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                     loggedInUser, login);
-        List groups = ServerGroupFactory.listAdministeredServerGroups(target);
+        List<ServerGroup> groups = ServerGroupFactory.listAdministeredServerGroups(target);
         return groups.toArray();
     }
 
@@ -975,11 +954,8 @@ public class UserHandler extends BaseHandler {
      * be removed from the user's list of default system groups.")
      * @apidoc.returntype #return_int_success()
      */
-    public int removeAssignedSystemGroup(User loggedInUser,
-            String login, String sgName, Boolean setDefault) {
-            List groups = new ArrayList();
-            groups.add(sgName);
-            return removeAssignedSystemGroups(loggedInUser, login, groups, setDefault);
+    public int removeAssignedSystemGroup(User loggedInUser, String login, String sgName, Boolean setDefault) {
+            return removeAssignedSystemGroups(loggedInUser, login, List.of(sgName), setDefault);
     }
 
 

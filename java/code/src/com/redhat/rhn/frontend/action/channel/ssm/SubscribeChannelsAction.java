@@ -38,7 +38,7 @@ public class SubscribeChannelsAction extends RhnAction {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
         request.setAttribute("actionChainsJson", ActionChainHelper.actionChainsJson(user));

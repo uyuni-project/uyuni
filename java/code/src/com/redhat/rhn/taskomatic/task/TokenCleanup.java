@@ -25,7 +25,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,8 +48,7 @@ public class TokenCleanup extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext arg0In)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext arg0In) {
         if (log.isDebugEnabled()) {
             log.debug("start token cleanup");
         }
@@ -77,8 +75,10 @@ public class TokenCleanup extends RhnJavaJob {
                 saltApi.deployChannels(changedMinionIds);
             }
             else {
-                log.warn("The following minions got channel tokens changed and need them deployed before the " +
-                        "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
+                if (log.isWarnEnabled()) {
+                    log.warn("The following minions got channel tokens changed and need them deployed before the " +
+                            "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
+                }
             }
             AccessTokenFactory.cleanupUnusedExpired();
         }

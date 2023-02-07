@@ -55,13 +55,14 @@ import java.util.Set;
 public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     private ActivationKeyManager manager;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = ActivationKeyManager.getInstance();
     }
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp = manager.lookupByKey(key.getKey(), user);
@@ -153,7 +154,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreatePermissions() throws Exception {
+    public void testCreatePermissions() {
         ActivationKey key;
         //test permissions
         try {
@@ -219,7 +220,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertTrue(temp.getKey().endsWith(keyName));
         assertEquals(note, temp.getNote());
         assertEquals(usageLimit, temp.getUsageLimit());
-        Set channels = new HashSet();
+        Set channels = new HashSet<>();
         channels.add(baseChannel);
         assertEquals(channels, temp.getChannels());
 
@@ -230,7 +231,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(usageLimit, token.getUsageLimit());
     }
 
-    public ActivationKey createActivationKey() throws Exception {
+    public ActivationKey createActivationKey() {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         return  manager.createNewActivationKey(user, TestUtils.randomString());
     }
@@ -255,14 +256,14 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertTrue(key.getChannels().contains(tools));
         // SUSE Manager does not automatically subscribe to the tools channel (bnc#768856)
         // assertTrue(key.getChannels().contains(virt));
-        assertTrue(!key.getPackages().isEmpty());
+        assertFalse(key.getPackages().isEmpty());
         TokenPackage pkg = key.getPackages().iterator().next();
         assertEquals(ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME,
                                                     pkg.getPackageName().getName());
     }
 
     @Test
-    public void testFindAll() throws Exception {
+    public void testFindAll() {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
@@ -272,7 +273,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testFindAllBootstrap() throws Exception {
+    public void testFindAllBootstrap() {
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);
         activationKey.setBootstrap("Y");
@@ -283,7 +284,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testFindBootstrap() throws Exception {
+    public void testFindBootstrap() {
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);
         activationKey.setBootstrap("Y");

@@ -31,4 +31,8 @@ respkgquery:
   cmd.run:
     - name: rpm -q --whatprovides 'sles_es-release-server'
     - onlyif: rpm -q --whatprovides 'sles_es-release-server'
+sllpkgquery:
+  cmd.run:
+    - name: rpm -q --whatprovides 'sll-release'
+    - onlyif: rpm -q --whatprovides 'sll-release'
 {% endif %}

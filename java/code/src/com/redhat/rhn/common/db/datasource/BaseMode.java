@@ -22,6 +22,7 @@ import org.hibernate.Session;
  */
 public abstract class BaseMode implements Mode {
 
+    private ParsedMode parsed;
     private String name;
     private CachedStatement query;
 
@@ -36,31 +37,37 @@ public abstract class BaseMode implements Mode {
      * @param parsedMode the mode
      */
     /*package*/ BaseMode(Session session, ParsedMode parsedMode) {
+        this.parsed = parsedMode;
         this.name = parsedMode.getName();
         this.query = new CachedStatement(session, parsedMode.getParsedQuery());
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setName(String n) {
         name = n;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setQuery(CachedStatement q) {
         query = q;
     }
 
     /** {@inheritDoc} */
+    @Override
     public CachedStatement getQuery() {
         return query;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "[ Name = " + getName() + "  query = " + (query == null ? "null" : query.toString());
     }
@@ -71,6 +78,14 @@ public abstract class BaseMode implements Mode {
      */
     public int getArity() {
         return query.getArity();
+    }
+
+
+    /**
+     * @return the parsed mode to be used to replicate the mode
+     */
+    public ParsedMode getParsedMode() {
+        return parsed;
     }
 }
 

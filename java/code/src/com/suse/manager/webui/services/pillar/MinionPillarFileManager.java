@@ -32,7 +32,7 @@ import java.nio.file.Paths;
  */
 public class MinionPillarFileManager {
 
-    private static final Logger LOG = LogManager.getLogger(MinionPillarManager.class);
+    private static final Logger LOG = LogManager.getLogger(MinionPillarFileManager.class);
 
     private Path pillarDataPath = Paths.get(SUMA_PILLAR_DATA_PATH);
 

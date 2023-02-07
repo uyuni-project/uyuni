@@ -22,12 +22,10 @@ Feature: Register a salt-ssh system via API
     Given I block connections from "server" on "ssh_minion"
 
   Scenario: Bootstrap a SLES SSH minion via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
-    And I logout from API
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
 
@@ -55,8 +53,11 @@ Feature: Register a salt-ssh system via API
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I do not see "Loading..." text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

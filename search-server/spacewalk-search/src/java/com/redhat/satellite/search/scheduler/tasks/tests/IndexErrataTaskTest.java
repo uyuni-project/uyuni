@@ -153,7 +153,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
             assertNotNull(doc);
             assertNotNull(doc.getField("advisory"));
             assertNotNull(doc.getField("advisory").stringValue());
-            log.info("idx[" + indexName + "] doc [" + doc.toString() + "]");
+            log.info("idx[" + indexName + "] doc [" + doc + "]");
         }
 
         /**

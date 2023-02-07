@@ -21,19 +21,29 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.results.Change;
+import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
+
 public class SaltUtilsTest  {
 
     @Test
-    public void testPackageToKey() throws Exception {
+    public void testPackageToKey() {
         // atom package, openSUSE style, from database
         var atomName = new PackageName();
         atomName.setName("atom");
@@ -86,5 +96,33 @@ public class SaltUtilsTest  {
         Pkg.Info initramfsToolsInfo = Json.GSON.fromJson(initramfsToolsJson, new TypeToken<Pkg.Info>() { }.getType());
         assertEquals("initramfs-tools-0.130ubuntu3.8.all",
                 SaltUtils.packageToKey("initramfs-tools", initramfsToolsInfo));
+    }
+
+    /**
+     * Test if the package change outcome is reported as "needs refreshing"
+     * after installation of a new live patch package
+     */
+    @Test
+    public void testPackageChangeOutcomeWithLivePatchPackages() throws Exception {
+        User user = UserTestUtils.createSatAdminInOrgOne();
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> installLivePatch =
+                Json.GSON.fromJson(new InputStreamReader(getClass().getResourceAsStream(
+                                "/com/suse/manager/reactor/messaging/test/pkg_install.live_patch.json")),
+                        new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> installOther =
+                Json.GSON.fromJson(new InputStreamReader(getClass().getResourceAsStream(
+                                "/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
+                        new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+
+        // Other packages mustn't trigger refresh
+        SaltUtils.PackageChangeOutcome outcome = SaltUtils.applyChangesFromStateModule(installOther, minion);
+        assertEquals(SaltUtils.PackageChangeOutcome.DONE, outcome);
+
+        // Live patch packages must trigger refresh
+        outcome = SaltUtils.applyChangesFromStateModule(installLivePatch, minion);
+        assertEquals(SaltUtils.PackageChangeOutcome.NEEDS_REFRESHING, outcome);
     }
 }

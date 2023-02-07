@@ -80,7 +80,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class MaintenanceScheduleController {
 
-    private static IcalUtils icalUtils = new IcalUtils();
     private static final MaintenanceManager MM = new MaintenanceManager();
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
@@ -311,7 +310,7 @@ public class MaintenanceScheduleController {
         }
 
         systems = pageHelper.processPageControl(systems, new HashMap<>());
-        return json(response, new PagedDataResultJson<>(systems));
+        return json(response, new PagedDataResultJson<>(systems, null));
     }
 
     private class SystemAssignmentRequest {

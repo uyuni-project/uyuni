@@ -81,6 +81,7 @@ public class DuplicateSystemGrouping implements Expandable, Identifiable {
      * Expand the systems
      * @return the expansion
      */
+    @Override
     public List<NetworkDto> expand() {
        return   getSystems();
     }
@@ -97,6 +98,7 @@ public class DuplicateSystemGrouping implements Expandable, Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return (long) key.hashCode();
     }

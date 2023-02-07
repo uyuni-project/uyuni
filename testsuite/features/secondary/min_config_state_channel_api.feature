@@ -4,7 +4,6 @@
 Feature: Configuration state channels via API
 
   Scenario: Create a state channel via API
-    Given I am logged in API as user "admin" and password "admin"
     When I create state channel "statechannel1" via API
     And I call configchannel.get_file_revision() with file "/init.sls", revision "1" and channel "statechannel1" via API
     Then I should get file contents ""
@@ -17,4 +16,3 @@ Feature: Configuration state channels via API
   Scenario: Cleanup: remove state channels via API
     Then I delete channel "statechannel1" via API without error control
     And I delete channel "statechannel2" via API without error control
-    And I logout from API

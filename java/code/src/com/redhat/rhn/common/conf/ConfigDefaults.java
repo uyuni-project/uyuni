@@ -37,7 +37,6 @@ public class ConfigDefaults {
     // Names of the configuration parameters
     //
 
-    public static final String SYSTEM_CHECKIN_THRESHOLD = "web.system_checkin_threshold";
     public static final String WEB_DEFAULT_MAIL_FROM = "web.default_mail_from";
     public static final String WEB_ENCRYPTED_PASSWORDS = "web.encrypted_passwords";
     public static final String WEB_L10N_RESOURCEBUNDLES = "web.l10n_resourcebundles";
@@ -56,6 +55,13 @@ public class ConfigDefaults {
     public static final String WEB_SESSION_SWAP_SECRET_4 = "web.session_swap_secret_4";
 
     public static final String WEB_SMTP_SERVER = "java.smtp_server";
+    public static final String WEB_SMTP_PORT = "java.smtp_port";
+    public static final String WEB_SMTP_AUTH = "java.smtp_auth";
+    public static final String WEB_SMTP_SSL = "java.smtp_ssl";
+    public static final String WEB_SMTP_STARTTLS = "java.smtp_starttls";
+    public static final String WEB_SMTP_USER = "java.smtp_user";
+    public static final String WEB_SMTP_PASS = "java.smtp_pass";
+
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
 
@@ -66,7 +72,7 @@ public class ConfigDefaults {
 
     public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
-    public static final String JABBER_SERVER = "server.jabber_server";
+    public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
 
@@ -126,6 +132,8 @@ public class ConfigDefaults {
     private static final String DEFAULT_COBBLER_SNIPPET_DIR = "/var/lib/cobbler/snippets";
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
     public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
+
+    private static final String CLONED_CHANNEL_AUTO_SELECTION = "java.cloned_channel_auto_selection";
 
     private static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
     private static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
@@ -204,9 +212,9 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    private static final String HTTP_PROXY = "server.satellite.http_proxy";
-    private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+    public static final String HTTP_PROXY = "server.satellite.http_proxy";
+    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -540,8 +548,8 @@ public class ConfigDefaults {
      * Returns the default virt disk size in GBs
      * @return the virt disk size
      */
-    public int getDefaultVirtDiskSize() {
-        return Config.get().getInt(VIRT_DISK, 3);
+    public double getDefaultVirtDiskSize() {
+        return Config.get().getDouble(VIRT_DISK, 3.0);
     }
 
     /**
@@ -575,11 +583,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Get the configured hostname for this RHN Server.
+     * Get the configured hostname for this Uyuni Server.
      * @return String hostname
      */
     public String getHostname() {
-        return Config.get().getString(JABBER_SERVER);
+        return Config.get().getString(SERVER_HOSTNAME, "localhost");
     }
 
     /**
@@ -714,6 +722,14 @@ public class ConfigDefaults {
     }
 
     /**
+     * @return return if cloned vendor channels should use automatic dependency
+     * selection
+     */
+    public boolean getClonedChannelAutoSelection() {
+        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION);
+    }
+
+    /**
      * Returns the bootstrap breed
      * @return the breed
      */
@@ -815,9 +831,9 @@ public class ConfigDefaults {
         }
 
         final StringBuilder connectionUrl = new StringBuilder(proto).append(':');
-        if (host != null && host.length() > 0) {
+        if (host != null && !host.isEmpty()) {
             connectionUrl.append("//").append(host);
-            if (port != null && port.length() > 0) {
+            if (port != null && !port.isEmpty()) {
                 connectionUrl.append(':').append(port);
             }
             connectionUrl.append('/');

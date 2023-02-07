@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
+import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 
 import com.google.gson.Gson;
 
@@ -131,7 +132,28 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), PaygAuthenticationUpdateFailed.class);
             case EndOfLifePeriod:
                 return new Gson().fromJson(getData(), EndOfLifePeriod.class);
+            case SubscriptionWarning:
+                return new Gson().fromJson(getData(), SubscriptionWarning.class);
             default: throw new RuntimeException("should not happen!");
+        }
+    }
+
+    /**
+     * Return the Notification Type as human readable string
+     * @return the notification type as string
+     */
+    @Transient
+    public String getTypeAsString() {
+        switch (getType()) {
+            case OnboardingFailed: return "Onboarding failed";
+            case ChannelSyncFailed: return "Channel sync failed";
+            case ChannelSyncFinished: return "Channel sync finished";
+            case CreateBootstrapRepoFailed: return "Creating Bootstrap Repository failed";
+            case StateApplyFailed: return "State apply failed";
+            case PaygAuthenticationUpdateFailed: return "Pay-as-you-go refresh authentication data failed";
+            case EndOfLifePeriod: return "End of Life Period";
+            case SubscriptionWarning: return "Subscription Warning";
+            default: return getType().name();
         }
     }
 

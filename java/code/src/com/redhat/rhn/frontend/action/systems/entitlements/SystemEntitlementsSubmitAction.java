@@ -185,7 +185,7 @@ public class SystemEntitlementsSubmitAction extends
                         log.debug("we can entitle.  Lets entitle to : {}", ent);
                             ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, ent);
                         log.debug("entitleServer.VE: {}", vr.getMessage());
-                            if (vr.getErrors().size() > 0) {
+                            if (!vr.getErrors().isEmpty()) {
                                 failureCount++;
                             }
                             else {

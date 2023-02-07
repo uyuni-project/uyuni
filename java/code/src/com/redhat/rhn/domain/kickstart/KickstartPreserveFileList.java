@@ -100,6 +100,7 @@ public class KickstartPreserveFileList implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KickstartPreserveFileList)) {
             return false;
@@ -113,6 +114,7 @@ public class KickstartPreserveFileList implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(ksdata)
                                     .append(fileList)

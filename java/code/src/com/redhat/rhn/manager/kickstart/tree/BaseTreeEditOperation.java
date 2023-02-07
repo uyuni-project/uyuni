@@ -33,6 +33,7 @@ import org.cobbler.Distro;
 import org.cobbler.XmlRpcException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,6 +70,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         if (!this.validateLabel()) {
             HibernateFactory.getSession().evict(this.tree);
@@ -100,12 +102,12 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
             if (distro == null) {
                 return new ValidatorError("tree.edit.missingcobblerentry");
             }
-            distro.setKernelOptions(getKernelOptions());
-            distro.setKernelOptionsPost(getKernelOptionsPost());
+            distro.setKernelOptions(Optional.of(getKernelOptions()));
+            distro.setKernelOptionsPost(Optional.of(getKernelOptionsPost()));
             distro.save();
             if (xenDistro != null) {
-                xenDistro.setKernelOptions(getKernelOptions());
-                xenDistro.setKernelOptionsPost(getKernelOptionsPost());
+                xenDistro.setKernelOptions(Optional.of(getKernelOptions()));
+                xenDistro.setKernelOptionsPost(Optional.of(getKernelOptionsPost()));
                 xenDistro.save();
             }
         }

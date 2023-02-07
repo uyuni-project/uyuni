@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -32,7 +33,8 @@ public class ChannelSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Long ccid = rctxIn.getRequiredParam("ccid");
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -44,6 +46,7 @@ public class ChannelSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         HttpServletRequest request = rctxIn.getRequest();
         User user = rctxIn.getCurrentUser();
@@ -54,6 +57,7 @@ public class ChannelSystemsAction extends BaseListAction {
         request.setAttribute("channel", channel);
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

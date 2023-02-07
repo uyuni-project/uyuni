@@ -75,7 +75,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         form.set(UserActionHelper.DESIRED_PASS_CONFIRM, "foobar-foobar");
 
         ActionForward result = action.execute(mapping, form, request, response);
-        assertTrue(result.getName().equals("failure"));
+        assertEquals("failure", result.getName());
 
         //Try validation errors
         request.setupAddParameter("uid", user.getId().toString());
@@ -83,14 +83,14 @@ public class UserEditActionTest extends RhnBaseTestCase {
         form.set("firstNames", "");
 
         result = action.execute(mapping, form, request, response);
-        assertTrue(result.getName().equals("failure"));
+        assertEquals("failure", result.getName());
 
         //Try Valid edit
         request.setupAddParameter("uid", user.getId().toString());
         form.set("firstNames", "Larry");
 
         result = action.execute(mapping, form, request, response);
-        assertTrue(result.getName().equals("success"));
+        assertEquals("success", result.getName());
         //make sure our user was updated
         assertEquals("Larry", user.getFirstNames());
     }
@@ -180,7 +180,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         UserTestUtils.assertOrgAdmin(user);
         ActionForward result = action.execute(mapping, form, request, response);
         //should get noaccess
-        assertTrue(result.getName().equals("noaccess"));
+        assertEquals("noaccess", result.getName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         User user2 = UserTestUtils.createUser("foo", user.getOrg().getId());
@@ -189,7 +189,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
 
         result = action.execute(mapping, form, request, response);
 
-        assertTrue(result.getName().equals("success"));
+        assertEquals("success", result.getName());
         UserTestUtils.assertNotOrgAdmin(user2);
     }
 

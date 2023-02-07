@@ -1,10 +1,15 @@
+# Copyright 2017-2023 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
+### This file contains the definitions of all steps concerning
+### URI and SSL integrity.
+
 require 'open-uri'
 require 'uri'
 require 'openssl'
 
 When(/^I retrieve any static resource$/) do
-  resource = ['/img/action-add.gif', '/css/susemanager-light.css', '/fonts/DroidSans.ttf',
-              '/javascript/actionchain.js'].sample
+  resource = %w[/img/action-add.gif /css/susemanager-light.css /fonts/DroidSans.ttf /javascript/actionchain.js].sample
   @url = Capybara.app_host + resource
   open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|
     @headers = f.meta

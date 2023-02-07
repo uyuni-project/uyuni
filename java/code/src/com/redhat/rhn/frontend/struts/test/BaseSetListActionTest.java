@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RhnListActionTest - test RhnListAction code.
@@ -44,6 +45,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
@@ -84,19 +86,21 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
 
     public class TestSetupListAction extends BaseSetListAction {
 
-        protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+        @Override
+        protected DataResult<Map<String, String>> getDataResult(RequestContext rctx, PageControl pc) {
 
-            List values = new LinkedList();
+            List<Map<String, String>> values = new LinkedList<>();
             for (int i = 0; i < 20; i++) {
                 values.addAll(CSVWriterTest.getTestListOfMaps());
             }
-            DataResult dr = new DataResult(values);
+            DataResult<Map<String, String>> dr = new DataResult<>(values);
             if (pc != null) {
                 dr = dr.subList(pc.getStart(), pc.getEnd());
             }
             return dr;
         }
 
+        @Override
         public RhnSetDecl getSetDecl() {
             return RhnSetDecl.TEST;
         }

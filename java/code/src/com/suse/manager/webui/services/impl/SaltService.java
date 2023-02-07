@@ -43,6 +43,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.AbstractCall;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -80,6 +81,7 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
@@ -122,6 +124,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -173,6 +176,12 @@ public class SaltService implements SystemQuery, SaltApi {
     public enum KeyStatus {
         ACCEPTED, DENIED, UNACCEPTED, REJECTED
     }
+
+    private static final String CA_CERT_REGEX =
+            "(?m)^-{3,}BEGIN CERTIFICATE-{3,}$(?s).*?^-{3,}END CERTIFICATE-{3,}$";
+    private static final String RSA_KEY_REGEX =
+            "(?m)^-{3,}BEGIN RSA PRIVATE KEY-{3,}$(?s).*?^-{3,}END RSA PRIVATE KEY-{3,}$";
+    private static final Pattern SENSITIVE_DATA_PATTERN = Pattern.compile(CA_CERT_REGEX + "|" + RSA_KEY_REGEX);
 
     /**
      * Default constructor
@@ -320,8 +329,24 @@ public class SaltService implements SystemQuery, SaltApi {
         return String.format("[%s.%s]", call.getModuleName(), call.getFunctionName());
     }
 
+    private static Map<String, Object> filterPayload(Map<String, Object> payload) {
+        var kwarg = payload.get("kwarg");
+        if (kwarg == null) {
+            return payload;
+        }
+        Function<Entry<?, ?>, Object> filterValue = e -> SENSITIVE_DATA_PATTERN
+                .matcher(e.getValue().toString()).find() ? "HIDDEN" : e.getValue();
+        var kwargFiltered = kwarg instanceof Map ?
+                ((Map<?, ?>) kwarg).entrySet().stream()
+                        .filter(e -> e.getValue() != null)
+                        .collect(Collectors.toMap(Entry::getKey, filterValue)) :
+                kwarg;
+        payload.put("kwarg", kwargFiltered);
+        return payload;
+    }
+
     private String runnerCallToString(RunnerCall<?> call) {
-        return String.format(PAYLOAD_CALL_TEMPLATE, call, call.getPayload());
+        return String.format(PAYLOAD_CALL_TEMPLATE, call.getModuleName(), filterPayload(call.getPayload()));
     }
 
     /**
@@ -336,7 +361,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(RunnerCall<R> call,
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Runner callSync: {}", runnerCallToString(call));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Runner callSync: {}", runnerCallToString(call));
+            }
             Result<R> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.fold(errorHandler, Optional::of);
         }
@@ -405,7 +432,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(WheelCall<R> call,
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Wheel callSync: {}", wheelCallToString(call));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Wheel callSync: {}", wheelCallToString(call));
+            }
             WheelResult<Result<R>> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.getData().getResult().fold(errorHandler, Optional::of);
         }
@@ -568,7 +597,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     LOG.error("Error sending email: {}", javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
-                    LOG.error("Interrupted during sleep: {}", e1);
+                    LOG.error("Interrupted during sleep", e1);
                 }
             }
         }
@@ -867,7 +896,9 @@ public class SaltService implements SystemQuery, SaltApi {
 
         if (!regularMinionIds.isEmpty()) {
             ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-            LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+            }
             List<Map<String, Result<T>>> callResult =
                     adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
@@ -885,7 +916,9 @@ public class SaltService implements SystemQuery, SaltApi {
             throws SaltException {
 
         ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-        LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+        }
         List<Map<String, Result<T>>> callResult =
                 adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                         target, PW_AUTH, defaultBatch));
@@ -957,7 +990,9 @@ public class SaltService implements SystemQuery, SaltApi {
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
                 Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
-        LOG.debug("Local callAsync: {}", SaltService.localCallToString(callIn));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Local callAsync: {}", SaltService.localCallToString(callIn));
+        }
         return adaptException(callIn.withMetadata(metadata).callAsync(saltClient, target, PW_AUTH, defaultBatch));
     }
 
@@ -975,7 +1010,7 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
-    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) {
         try {
             LocalCall<String> call = Test.echo("checkIn");
             return callAsync(call, targetIn);
@@ -1052,6 +1087,17 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
+    public Optional<SystemInfo> getSystemInfoFull(String minionId) {
+        return rawJsonCall(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO_FULL),
+               Optional.empty()), minionId)
+               .flatMap(result -> result.result())
+               .map(result -> Json.GSON.fromJson(result, SystemInfo.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
     }
@@ -1098,10 +1144,14 @@ public class SaltService implements SystemQuery, SaltApi {
                     Optional<String> whatProvidesRes = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
+                    Optional<String> whatProvidesSLL = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLL_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
 
                     return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent,
                             oracleReleaseContent, alibabaReleaseContent, almaReleaseContent,
-                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes);
+                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes,
+                            whatProvidesSLL);
                 });
     }
 

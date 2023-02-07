@@ -32,7 +32,7 @@ describe("paged data endpoint", () => {
   });
 
   test("Page query filter parameters", () => {
-    const pageControl = new PageControl(1, 10, "mystring", "mycolumn");
+    const pageControl = new PageControl(1, 10, "mystring", null, "mycolumn");
     const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
     endpoint.setPage(pageControl);
 
@@ -43,7 +43,7 @@ describe("paged data endpoint", () => {
   });
 
   test("Page query sort parameters", () => {
-    const pageControl = new PageControl(1, 10, "mystring", "mycolumn", -1);
+    const pageControl = new PageControl(1, 10, "mystring", null, "mycolumn", -1);
     const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
     endpoint.setPage(pageControl);
 

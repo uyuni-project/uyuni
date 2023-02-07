@@ -54,6 +54,7 @@ public class LocalizedEnvironmentFilter implements Filter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void destroy() {
         // TODO Auto-generated method stub
 
@@ -62,8 +63,9 @@ public class LocalizedEnvironmentFilter implements Filter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+                         FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         initializeContext(httpRequest);
         chain.doFilter(request, response);
@@ -72,7 +74,8 @@ public class LocalizedEnvironmentFilter implements Filter {
     /**
      * {@inheritDoc}
      */
-    public void init(FilterConfig config) throws ServletException {
+    @Override
+    public void init(FilterConfig config) {
     }
 
     private void initializeContext(HttpServletRequest request) {

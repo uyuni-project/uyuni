@@ -1,20 +1,16 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the API.
 
 require 'json'
 require 'socket'
 
-$api_test = $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
-
-## auth namespace
-
-When(/^I am logged in API as user "([^"]*)" and password "([^"]*)"$/) do |user, password|
-  $api_test.auth.login(user, password)
-end
-
-When(/^I logout from API$/) do
-  $api_test.auth.logout
-end
+$api_test = if $debug_mode
+              ApiTestXmlrpc.new($server.full_hostname)
+            else
+              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+            end
 
 ## system namespace
 
@@ -22,12 +18,6 @@ Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $client_id = $api_test.system.search_by_name(system_name).first['id']
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
-end
-
-When(/^I call system\.list_systems\(\), I should get a list of them$/) do
-  # This also assumes the test is called *after* the regular test.
-  servers = $api_test.system.list_systems
-  assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
 end
 
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
@@ -72,13 +62,6 @@ When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1
   $api_test.system.config.remove_channels([ node_id1 ], [ channel ])
 end
 
-When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
-  steps %(
-      When I unsubscribe "#{host1}" from configuration channel "#{channel}"
-      And I unsubscribe "#{host2}" from configuration channel "#{channel}"
-  )
-end
-
 When(/^I create a system record$/) do
   dev = { 'name' => 'eth0', 'ip' => '1.1.1.1', 'mac' => '00:22:22:77:EE:CC', 'dnsname' => 'testserver.example.com' }
   $api_test.system.create_system_record('testserver', 'fedora_kickstart_profile_upload', '', 'my test server', [dev])
@@ -92,44 +75,6 @@ When(/^I wait for the OpenSCAP audit to finish$/) do
       # in the openscap test, we schedule 2 scans
       break if scans.length > 1
     end
-  end
-end
-
-When(/^I refresh the packages on traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-
-  id_refresh = $api_test.system.schedule_package_refresh(node_id, date_schedule_now)
-  node.run('rhn_check -vvv')
-  wait_action_complete(id_refresh, timeout: 600)
-end
-
-When(/^I run a script on traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-  script = "#! /usr/bin/bash \n uptime && ls"
-
-  id_script = $api_test.system.schedule_script_run(node_id, 'root', 'root', 500, script, date_schedule_now)
-  node.run('rhn_check -vvv')
-  wait_action_complete(id_script)
-end
-
-When(/^I reboot traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-
-  $api_test.system.schedule_reboot(node_id, date_schedule_now)
-  node.run('rhn_check -vvv')
-  reboot_timeout = 400
-  check_shutdown(node.full_hostname, reboot_timeout)
-  check_restart(node.full_hostname, node, reboot_timeout)
-
-  $api_test.schedule.list_failed_actions.each do |action|
-    systems = $api_test.schedule.list_failed_systems(action['id'])
-    raise if systems.all? { |system| system['server_id'] == node_id }
   end
 end
 
@@ -292,21 +237,31 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel)
 
-  # Select all the child channels for this client
-  client.sub! 'ssh_minion', 'minion'
-  if client.include? 'buildhost'
-    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
-  elsif client.include? 'terminal'
-    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
-  else
-    custom_channel = "custom_channel_#{client}"
-    selected_child_channels = [custom_channel]
-  end
-  child_channels.each do |child_channel|
-    selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
-  end
+  # Filter out the custom channels
+  # This is needed because we might have both a traditional custom channel and a Salt custom channel
+  child_channels.reject! { |channel| channel.include? 'custom_channel' }
 
-  $api_test.activationkey.add_child_channels(key, selected_child_channels)
+  # Re-add the desired custom channel
+  # This too can go away when we get rid of traditional clients for good
+  client.sub! 'ssh_minion', 'minion'
+  client.sub! 'buildhost', 'minion'
+  client.sub! 'terminal', 'minion'
+  client.sub! 'monitoring_server', 'sle15sp4_minion'
+  custom_channel = if client.include? 'rocky8'
+                     'no-appstream-8-result-custom_channel_rocky8_minion'
+                   elsif client.include? 'rocky9'
+                     'no-appstream-9-result-custom_channel_rocky9_minion'
+                   elsif client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+                   else
+                     "custom_channel_#{client}"
+                   end
+  child_channels.push(custom_channel)
+
+  # Add child channels to the key
+  $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 ## actionchain namespace
@@ -342,10 +297,6 @@ Then(/^I call actionchain\.rename_chain\(\) to rename it from "(.*?)" to "(.*?)"
 end
 
 Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|
-  assert_includes($api_test.actionchain.list_chains, label)
-end
-
-Then(/^there should be an action chain with the label "(.*?)"$/) do |label|
   assert_includes($api_test.actionchain.list_chains, label)
 end
 
@@ -467,10 +418,6 @@ Then(/^I cancel all scheduled actions$/) do
   end
 end
 
-Then(/^there should be no more any scheduled actions$/) do
-  assert_empty($api_test.schedule.list_in_progress_actions)
-end
-
 Then(/^I wait until there are no more scheduled actions$/) do
   repeat_until_timeout(message: 'Scheduled actions still present') do
     break if $api_test.schedule.list_in_progress_actions.empty?
@@ -527,17 +474,18 @@ Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, syste
   assert_equal(status, @result['patch_status'])
 end
 
-Then(/^I should get status "([^\"]+)" for this client$/) do |status|
-  step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
+Then(/^I should get status "([^\"]+)" for "([^\"]+)"$/) do |status, host|
+  node = get_target(host)
+  step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
 Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'
-              'test-channel-i586'
+              'fake-i586-channel'
             else
-              'test-channel-x86_64'
+              'fake-rpm-sles-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))

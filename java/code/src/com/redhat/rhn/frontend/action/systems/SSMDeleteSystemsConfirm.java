@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -40,15 +41,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SSMDeleteSystemsConfirm
  */
-public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
+public class SSMDeleteSystemsConfirm extends RhnAction implements Listable<SystemOverview> {
     /**
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         if (context.wasDispatched("ssm.delete.systems.confirmbutton")) {
             return handleConfirm(context, mapping);
@@ -94,9 +96,8 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
-        return SystemManager.inSet(contextIn.getCurrentUser(),
-                                        RhnSetDecl.SYSTEMS.getLabel());
+    @Override
+    public List<SystemOverview> getResult(RequestContext contextIn) {
+        return SystemManager.inSet(contextIn.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel());
     }
-
 }

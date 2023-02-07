@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.action.systems.groups;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
@@ -44,11 +45,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * ListRemoveGroupsAction
  */
-public class ListRemoveGroupsAction extends BaseListAction implements Listable {
+public class ListRemoveGroupsAction extends BaseListAction implements Listable<ManagedServerGroup> {
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -97,8 +99,8 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
-        Server server = context.lookupAndBindServer();
-        return server.getManagedGroups();
+    @Override
+    public List<ManagedServerGroup> getResult(RequestContext context) {
+        return context.lookupAndBindServer().getManagedGroups();
     }
 }

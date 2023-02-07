@@ -48,12 +48,9 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testNonSubmitExecute() throws Exception {
-        String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);
-        if (expectedHostname == null) {
-            expectedHostname = "localhost";
-            Config.get().setString(ConfigDefaults.JABBER_SERVER, expectedHostname);
-        }
+    public void testNonSubmitExecute() {
+        String expectedHostname = ConfigDefaults.get().getHostname();
+
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         setRequestPathInfo("/admin/config/BootstrapConfig");
         actionPerform();
@@ -73,18 +70,12 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_USERNAME));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_PASSWORD));
-
-
     }
 
     @Test
-    public void testSubmitExecute() throws Exception {
+    public void testSubmitExecute() {
 
-        String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);
-        if (expectedHostname == null) {
-            expectedHostname = "localhost";
-            Config.get().setString(ConfigDefaults.JABBER_SERVER, expectedHostname);
-        }
+        String expectedHostname = ConfigDefaults.get().getHostname();
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BootstrapConfigAction.HOSTNAME, "localhost");

@@ -12,12 +12,12 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
-    Then create distro "testdistro" as user "testing" with password "testing"
+    When I create distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
-    Then create profile "testprofile" as user "testing" with password "testing"
+    When I create profile "testprofile" for distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -61,7 +61,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Upload a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
     And I attach the file "/example.ks" to "fileUpload"
     And I click on "Create"
@@ -140,12 +140,10 @@ Feature: Cobbler and distribution autoinstallation
     And I wait until file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: Trigger the creation of a cobbler system record
-    When I trigger cobbler system record
+    When I trigger cobbler system record on the "sle_minion"
 
   Scenario: Create a cobbler system record via API
-    When I am logged in API as user "admin" and password "admin"
-    And I create a system record
-    And I logout from API
+    When I create a system record
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
     Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"

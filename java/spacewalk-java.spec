@@ -59,8 +59,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.0
-Release:        0
+Version:        4.4.11
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -68,17 +68,20 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    ia64
 
+BuildRequires:  %{apache_commons_compress}
+BuildRequires:  %{apache_commons_discovery}
+BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  %{apache_commons_validator}
+BuildRequires:  %{ehcache}
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
-%if 0%{?suse_version}
-BuildRequires:  ant-nodeps
-%endif
 BuildRequires:  antlr >= 2.7.6
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
+BuildRequires:  apache-commons-el
 BuildRequires:  apache-commons-io
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
@@ -87,34 +90,20 @@ BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-%if 0%{?suse_version}
-BuildRequires:  classmate
-%endif
-BuildRequires:  %{apache_commons_compress}
-BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
-BuildRequires:  %{apache_commons_validator}
-BuildRequires:  %{ehcache}
-BuildRequires:  apache-commons-el
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
+BuildRequires:  glassfish-jaxb-runtime
+BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  google-gson >= 2.2.4
-BuildRequires:  hibernate-types
 BuildRequires:  hibernate-commons-annotations
-BuildRequires:  mvn(org.hibernate:hibernate-core)
-BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
-BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
-BuildRequires:  jade4j
-BuildRequires:  glassfish-jaxb-runtime
-BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
+BuildRequires:  jade4j
 BuildRequires:  java-11-openjdk-devel
-BuildRequires:  (glassfish-jaxb-api or jaxb-api)
-BuildRequires:  (glassfish-activation-api or jakarta-activation)
 BuildRequires:  java-saml
 BuildRequires:  javamail
 BuildRequires:  javapackages-tools
@@ -128,12 +117,6 @@ BuildRequires:  jpa-api
 BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
-%if 0%{?rhel}
-BuildRequires:  glassfish-jaxb-core
-BuildRequires:  libxml2-devel
-%else
-BuildRequires:  libxml2-tools
-%endif
 BuildRequires:  log4j
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty
@@ -160,12 +143,32 @@ BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
+BuildRequires:  (glassfish-activation-api or jakarta-activation)
+BuildRequires:  (glassfish-jaxb-api or jaxb-api)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
+BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
+BuildRequires:  mvn(org.hibernate:hibernate-core)
+BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+%if 0%{?suse_version}
+BuildRequires:  ant-nodeps
+BuildRequires:  classmate
+BuildRequires:  libxml2-tools
+%endif
+%if 0%{?rhel}
+BuildRequires:  glassfish-jaxb-core
+BuildRequires:  libxml2-devel
+%endif
 
+Requires:       %{apache_commons_compress}
+Requires:       %{apache_commons_digester}
+Requires:       %{apache_commons_discovery}
+Requires:       %{apache_commons_fileupload}
+Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
+Requires:       apache-commons-el
 Requires:       apache-commons-io
 Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
@@ -174,35 +177,17 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
-%if 0%{?suse_version}
-Requires:       classmate
-Requires:       glassfish-jaxb-api
-Requires:       glassfish-activation-api
-%endif
-Requires:       %{ehcache}
-Requires:       cobbler = 3.1.2
+Requires:       cobbler >= 3.3.3
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       istack-commons-runtime
-%if 0%{?rhel}
-Requires:       glassfish-jaxb-core
-Requires:       jaxb-api
-Requires:       jakarta-activation
-Recommends:     rng-tools
-%endif
-Requires:       %{apache_commons_compress}
-Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
-Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       hibernate-types
 Requires:       httpcomponents-client
 Requires:       ical4j
+Requires:       istack-commons-runtime
 Requires:       jade4j
 Requires:       java-11-openjdk
 Requires:       java-saml
@@ -210,51 +195,67 @@ Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
+Requires:       jcommon
+Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jpa-api
+Requires:       jta
 Requires:       libsolv-tools
+Requires:       log4j
+Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
-Requires:       salt-netapi-client >= 0.20
-Requires:       snakeyaml
-Requires:       spark-core
-Requires:       spark-template-jade
-Requires:       statistics
-Requires:       sudo
-Requires:       susemanager-docs_en
-Requires:       system-lock-formula
-Requires:       tomcat-taglibs-standard
-Requires(pre):  uyuni-base-server
-Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
-Requires:       apache-commons-el
-Requires:       jcommon
-Requires:       jdom
-Requires:       jta
-Requires:       log4j
-Requires:       log4j-slf4j
 Requires:       redstone-xmlrpc
+Requires:       salt-netapi-client >= 0.20
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
+Requires:       snakeyaml
 Requires:       spacewalk-branding
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
+Requires:       spark-core
+Requires:       spark-template-jade
+Requires:       statistics
 Requires:       stringtree-json
 Requires:       struts >= 1.2.9
+Requires:       sudo
+Requires:       susemanager-docs_en
+Requires:       system-lock-formula
+Requires:       tomcat-lib >= 7
+Requires:       tomcat-taglibs-standard
 Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
-Requires(pre):  tomcat >= 7
-Requires:       tomcat-lib >= 7
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
+# libtcnative-1-0 is only recommended in tomcat.
+# We want it always to prevent warnings about openssl cannot be used
+Requires:       libtcnative-1-0
 Requires(pre):  salt
+Requires(pre):  tomcat >= 7
+Requires(pre):  uyuni-base-server
+
+%if 0%{?suse_version}
+Requires:       classmate
+Requires:       glassfish-activation-api
+Requires:       glassfish-jaxb-api
+%endif
+%if 0%{?rhel}
+Requires:       glassfish-jaxb-core
+Requires:       jakarta-activation
+Requires:       jaxb-api
+Recommends:     rng-tools
+%endif
 
 %if 0%{?run_checkstyle}
 BuildRequires:  checkstyle
@@ -262,10 +263,6 @@ BuildRequires:  checkstyle
 %if ! 0%{?omit_tests} > 0
 BuildRequires:  translate-toolkit
 %endif
-Obsoletes:      rhn-java < 5.3.0
-Obsoletes:      rhn-java-sat < 5.3.0
-Provides:       rhn-java = %{version}-%{release}
-Provides:       rhn-java-sat = %{version}-%{release}
 
 %description
 This package contains the code for the Java version of the Spacewalk Web Site.
@@ -275,10 +272,6 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): tomcat
-Obsoletes:      rhn-java-config < 5.3.0
-Obsoletes:      rhn-java-config-sat < 5.3.0
-Provides:       rhn-java-config = %{version}-%{release}
-Provides:       rhn-java-config-sat = %{version}-%{release}
 
 %description config
 This package contains the configuration files for the Spacewalk Java web
@@ -287,10 +280,6 @@ application and taskomatic process.
 %package lib
 Summary:        Jar files for Spacewalk Java
 Group:          Applications/Internet
-Obsoletes:      rhn-java-lib < 5.3.0
-Obsoletes:      rhn-java-lib-sat < 5.3.0
-Provides:       rhn-java-lib = %{version}-%{release}
-Provides:       rhn-java-lib-sat = %{version}-%{release}
 Requires:       /usr/bin/sudo
 
 %description lib
@@ -350,6 +339,14 @@ This package contains apidoc sources of spacewalk-java.
 Summary:        Java version of taskomatic
 Group:          Applications/Internet
 
+BuildRequires:  systemd
+%if 0%{?rhel}
+BuildRequires:  systemd-rpm-macros
+%else
+%{?systemd_requires}
+%endif
+
+Requires:       %{ehcache}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
@@ -358,17 +355,9 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
-%if 0%{?suse_version}
-Requires:       classmate
-%endif
-Requires:       %{ehcache}
-Requires:       cobbler >= 3.0.0
+Requires:       cobbler >= 3.3.3
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 Requires:       java-11-openjdk
@@ -388,17 +377,15 @@ Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
-Conflicts:      quartz < 2.0
-Obsoletes:      taskomatic < 5.3.0
-Obsoletes:      taskomatic-sat < 5.3.0
-Provides:       taskomatic = %{version}-%{release}
-Provides:       taskomatic-sat = %{version}-%{release}
-BuildRequires:  systemd
-%if 0%{?rhel}
-BuildRequires:  systemd-rpm-macros
-%else
-%{?systemd_requires}
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
+%if 0%{?suse_version}
+Requires:       classmate
 %endif
+
+Conflicts:      quartz < 2.0
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -726,7 +713,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, root, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{serverdir}/susemanager
 %dir %{serverdir}/susemanager/salt

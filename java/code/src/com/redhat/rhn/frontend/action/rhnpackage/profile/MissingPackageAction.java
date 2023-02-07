@@ -64,8 +64,8 @@ public class MissingPackageAction extends BaseProfilesAction {
         return "profile".equals(s);
     }
 
-    private PackageAction syncToVictim(RequestContext requestContext, Long sid,
-            Set pkgIdCombos, String option) throws TaskomaticApiException {
+    private void syncToVictim(RequestContext requestContext, Long sid,
+            Set<String> pkgIdCombos, String option) throws TaskomaticApiException {
 
         PackageAction pa = null;
         Date time = new Date(requestContext.getParamAsLong("time"));
@@ -78,10 +78,10 @@ public class MissingPackageAction extends BaseProfilesAction {
 
             if (pa == null) {
                 createMessage(requestContext.getRequest(), "message.nopackagestosync");
-                return null;
+                return;
             }
 
-            List args = new ArrayList();
+            List<String> args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(
@@ -98,10 +98,10 @@ public class MissingPackageAction extends BaseProfilesAction {
 
             if (pa == null) {
                 createMessage(requestContext.getRequest(), "message.nopackagestosync");
-                return null;
+                return;
             }
 
-            List args = new ArrayList();
+            List<String> args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(
@@ -113,8 +113,6 @@ public class MissingPackageAction extends BaseProfilesAction {
         }
 
         addHardwareMessage(pa, requestContext);
-
-        return pa;
     }
 
     /**
@@ -237,8 +235,9 @@ public class MissingPackageAction extends BaseProfilesAction {
     /**
      * {@inheritDoc}
      */
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    @Override
+    protected Map<String, String> getKeyMethodMap() {
+        Map<String, String> map = new HashMap<>();
         map.put("missingpkgs.jsp.selectnewpackageprofile", "selectNewPackageProfile");
         map.put("missingpkgs.jsp.removelistedpackagesfromsync", "removePackagesFromSync");
         map.put("missingpkgs.jsp.subscribetochannels", "subscribeToChannels");

@@ -41,6 +41,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSession getPxtSession(HttpServletRequest request) {
         loadPxtSession(request);
         return (WebSession)request.getAttribute("session");
@@ -49,6 +50,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSession getPxtSessionIfExists(HttpServletRequest request) {
         Object sessionAttribute = request.getAttribute("session");
         if (!(sessionAttribute instanceof WebSession)) {
@@ -66,6 +68,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getWebUserId(HttpServletRequest request) {
         WebSession session = getPxtSessionIfExists(request);
         return ((session == null) ? null : session.getWebUserId());
@@ -74,8 +77,9 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateWebUserId(HttpServletRequest request, HttpServletResponse response,
-            Long id) {
+                                Long id) {
         // generate new session to prevent session fixation (BZ 672159)
         Object sessionAttribute = createPxtSession(id);
         request.setAttribute("session", sessionAttribute);
@@ -85,6 +89,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPxtSessionExpired(HttpServletRequest request) {
         return getPxtSession(request).isExpired();
     }
@@ -92,6 +97,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPxtSessionKeyValid(HttpServletRequest request) {
         Cookie pxtCookie = pxtCookieManager.getPxtCookie(request);
 
@@ -186,8 +192,9 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void refreshPxtSession(HttpServletRequest request,
-            HttpServletResponse response) {
+                                  HttpServletResponse response) {
 
         refreshPxtSession(request, response, (int)SessionManager.lifetimeValue());
     }
@@ -219,8 +226,9 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void invalidatePxtSession(HttpServletRequest request,
-            HttpServletResponse response) {
+                                     HttpServletResponse response) {
 
         //updateWebUserId(request, response, null);
         WebSession pxtSession = getPxtSession(request);

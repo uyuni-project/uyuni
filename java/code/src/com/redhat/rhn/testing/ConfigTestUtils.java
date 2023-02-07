@@ -349,10 +349,8 @@ public class ConfigTestUtils  {
      * @param user The user to be given access.
      * @param channel The channel for which to give access.
      * @return The server created and subscribed to the config channel.
-     * @throws Exception yep.
      */
-    public static Server giveUserChanAccess(User user, ConfigChannel channel)
-                throws Exception {
+    public static Server giveUserChanAccess(User user, ConfigChannel channel) {
         if (!user.getOrg().getId().equals(channel.getOrgId())) {
             throw new IllegalArgumentException("User and channel " +
                     "must be from the same org!");

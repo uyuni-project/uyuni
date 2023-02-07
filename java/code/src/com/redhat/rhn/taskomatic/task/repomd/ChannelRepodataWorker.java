@@ -20,6 +20,7 @@ import static com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status.GENERAT
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -47,31 +48,31 @@ import java.util.Optional;
  */
 public class ChannelRepodataWorker implements QueueWorker {
 
-    private RepositoryWriter repoWriter;
+    private final RepositoryWriter repoWriter;
     private TaskQueue parentQueue;
-    private Logger logger;
-    private String channelLabelToProcess;
+    private final Logger logger;
+    private final String channelLabelToProcess;
 
-    private List queueEntries;
+    private List<Map<String, String>> queueEntries;
 
     /**
      *
      * @param workItem work item map
      * @param parentLogger repomd logger
      */
-    public ChannelRepodataWorker(Map workItem, Logger parentLogger) {
+    public ChannelRepodataWorker(Map<String, Object> workItem, Logger parentLogger) {
         logger = parentLogger;
-        String prefixPath = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
-                "rhn/repodata");
-        String mountPoint =
-            Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+
+        String prefixPath = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+
         channelLabelToProcess = (String) workItem.get("channel_label");
 
         // We need to find out whether to use Rpm or Debian repository
         Channel channelToProcess = ChannelFactory.lookupByLabel(channelLabelToProcess);
         // if the channelExists in the db still
-        if (channelToProcess != null && channelToProcess.getChannelArch()
-                .getArchType().getLabel().equalsIgnoreCase("deb")) {
+        if (channelToProcess != null &&
+            channelToProcess.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
             repoWriter = new DebRepositoryWriter(prefixPath, mountPoint);
         }
         else {
@@ -85,6 +86,7 @@ public class ChannelRepodataWorker implements QueueWorker {
      * Sets the parent queue
      * @param queue task queue
      */
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }
@@ -92,6 +94,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * runner method to process the parentQueue
      */
+    @Override
     public void run() {
         // if a channel has a EnvironmentTarget associated, we update it too
         Optional<SoftwareEnvironmentTarget> envTarget = ContentProjectFactory
@@ -134,7 +137,6 @@ public class ChannelRepodataWorker implements QueueWorker {
         }
         catch (Exception e) {
             logger.error(e);
-            e.printStackTrace();
             parentQueue.getQueueRun().failed();
             // unmark channel to be worked on
             markInProgress(false);
@@ -164,9 +166,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     private void populateQueueEntryDetails() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<>();
-        params.put("channel_label", channelLabelToProcess);
-        queueEntries = selector.execute(params);
+        queueEntries = selector.execute(Map.of("channel_label", channelLabelToProcess));
     }
 
     /**
@@ -176,21 +176,20 @@ public class ChannelRepodataWorker implements QueueWorker {
     private boolean isChannelLabelAlreadyInProcess() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
-        Map<String, Object> params = new HashMap<>();
-        params.put("channel_label", channelLabelToProcess);
-        return (selector.execute(params).size() > 0);
+        DataResult<?> resultSet = selector.execute(Map.of("channel_label", channelLabelToProcess));
+        return !resultSet.isEmpty();
     }
 
     /**
      *
-     * @param entryToCheck
+     * @param entryToCheck the name of the entry to verify
      * @return Returns a boolean to force or not
      */
     private boolean queueContainsBypass(String entryToCheck) {
         boolean shouldForce = false;
 
-        for (Object currentEntry : queueEntries) {
-            String forceFlag = (String) ((Map) currentEntry).get(entryToCheck);
+        for (Map<String, String> currentEntry : queueEntries) {
+            String forceFlag = currentEntry.get(entryToCheck);
             if ("Y".equalsIgnoreCase(forceFlag)) {
                 shouldForce = true;
             }
@@ -239,7 +238,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * dequeue the queued channel for repomd generation
      */
-    private void dequeueChannel() throws Exception {
+    private void dequeueChannel() {
         WriteMode deqChannel = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DEQUEUE);
         Map<String, String> dqeParams = new HashMap<>();

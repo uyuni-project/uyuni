@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -65,7 +65,7 @@ msgstr "URI “%s” Tidak Sah"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -170,7 +170,7 @@ msgstr "Red Hat Pernyataan Privasi Satelit"
 msgid "Expected a dictionary as a product argument"
 msgstr "Mengharapkan kamus sebagai argumen produk"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, fuzzy, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"

@@ -30,7 +30,7 @@ public class AppStreamFilter extends BaseListFilter {
      * {@inheritDoc}
      */
     @Override
-    public void processMap(Map map, Locale userLocale) {
+    public void processMap(Map<String, String> map, Locale userLocale) {
         LocalizationService ls = LocalizationService.getInstance();
         String pkgname = ls.getMessage("appstream.jsp.modulename", userLocale);
         map.put(pkgname, "key");

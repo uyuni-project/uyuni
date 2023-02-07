@@ -22,10 +22,9 @@ Feature: Work with Union and Intersection buttons in the group list
     When I follow the left menu "Systems > System Groups"
     When I follow "sles"
     And I follow "Target Systems"
-    And I check the "sle_client" client
     And I check the "sle_minion" client
     And I click on "Add Systems"
-    Then I should see a "2 systems were added to sles server group." text
+    Then I should see a "added to sles server group." text
 
 @rhlike_minion
   Scenario: Create a rhlike group
@@ -63,28 +62,10 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Add Systems"
     Then I should see a "1 systems were added to deblike server group." text
 
-  Scenario: Create a traditional group
-    When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
-    And I enter "traditional" as "name"
-    And I enter "Traditional systems" as "description"
-    And I click on "Create Group"
-    Then I should see a "System group traditional created." text
-
-  Scenario: Add systems to the traditional group
-    When I follow the left menu "Systems > System Groups"
-    When I follow "traditional"
-    And I follow "Target Systems"
-    And I check the "sle_client" client
-    And I click on "Add Systems"
-    Then I should see a "1 systems were added to traditional server group." text
-
   Scenario: Add the sles group to SSM
     When I follow the left menu "Systems > System Groups"
     When I click on "Use in SSM" in row "sles"
-    And I should see a "systems selected" text
     And I should see a "Selected Systems List" text
-    Then I should see "sle_client" as link
     And I should see "sle_minion" as link
 
 @rhlike_minion
@@ -93,7 +74,6 @@ Feature: Work with Union and Intersection buttons in the group list
     When I check "sles" in the list
     And I check "rhlike" in the list
     And I click on "Work With Union"
-    Then I should see "sle_client" as link
     And I should see "sle_minion" as link
     And I should see "rhlike_minion" as link
 
@@ -101,9 +81,8 @@ Feature: Work with Union and Intersection buttons in the group list
   Scenario: Add an intersection of 2 groups to SSM - Red Hat-like
     When I follow the left menu "Systems > System Groups"
     When I check "sles" in the list
-    And I check "traditional" in the list
+    And I check "rhlike" in the list
     And I click on "Work With Intersection"
-    Then I should see "sle_client" as link
     And I should not see a "sle_minion" link
     And I should not see a "rhlike_minion" link
 
@@ -113,7 +92,6 @@ Feature: Work with Union and Intersection buttons in the group list
     When I check "sles" in the list
     And I check "deblike" in the list
     And I click on "Work With Union"
-    Then I should see "sle_client" as link
     And I should see "sle_minion" as link
     And I should see "deblike_minion" as link
 
@@ -121,9 +99,8 @@ Feature: Work with Union and Intersection buttons in the group list
   Scenario: Add an intersection of 2 groups to SSM - Debian-like
     When I follow the left menu "Systems > System Groups"
     When I check "sles" in the list
-    And I check "traditional" in the list
+    And I check "deblike" in the list
     And I click on "Work With Intersection"
-    Then I should see "sle_client" as link
     And I should not see a "sle_minion" link
     And I should not see a "deblike_minion" link
 
@@ -150,12 +127,5 @@ Feature: Work with Union and Intersection buttons in the group list
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
-  Scenario: Cleanup: remove the traditional group
-    When I follow the left menu "Systems > System Groups"
-    When I follow "traditional" in the content area
-    And I follow "Delete Group" in the content area
-    And I click on "Confirm Deletion"
-    Then I should see a "deleted" text
-
   Scenario: Cleanup: remove remaining systems from SSM after group union and intersection tests
-    When I follow "Clear"
+    When I click on the clear SSM button

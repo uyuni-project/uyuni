@@ -18,10 +18,14 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     spacewalk-proxy-broker \
     spacewalk-proxy-redirect \
     spacewalk-proxy-html \
-    susemanager-tftpsync-recv\
+    susemanager-tftpsync-recv \
+    release-notes-susemanager-proxy \
     python3-rhnlib \
     python3-PyYAML && \
     sh remove_unused.sh
+
+# Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE
+COPY mod_log_config.conf /etc/apache2/mod_log_config.conf
 
 # Additional material
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py

@@ -182,8 +182,7 @@ public class MgrSyncUtils {
      * @return product name
      */
     public static ProductName findOrCreateProductName(String name) {
-        ProductName productName = ChannelFactory.lookupProductNameByLabel(
-                name);
+        ProductName productName = ChannelFactory.lookupProductNameByLabel(name);
         if (productName == null) {
             productName = new ProductName();
             productName.setLabel(name);
@@ -257,6 +256,13 @@ public class MgrSyncUtils {
                 File oldMirrorPath = Paths.get(dataPath.getAbsolutePath(), "repo", "RPMMD", parts[0]).toFile();
                 if (oldMirrorPath.exists()) {
                     mirrorPath = oldMirrorPath;
+                }
+                else {
+                    // mirror in a common folder (bsc#1201753)
+                    File commonMirrorPath = Paths.get(dataPath.getAbsolutePath(), path).toFile();
+                    if (commonMirrorPath.exists()) {
+                        mirrorPath = commonMirrorPath;
+                    }
                 }
             }
         }

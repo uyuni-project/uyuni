@@ -123,84 +123,84 @@
       </trans-unit>
       <trans-unit id="3.4.0" xml:space="preserve">
         <source>3.4.0</source>
-        <target/>
+        <target>3.4.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.5.0" xml:space="preserve">
         <source>3.5.0</source>
-        <target/>
+        <target>3.5.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.0" xml:space="preserve">
         <source>3.6.0</source>
-        <target/>
+        <target>3.6.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.5" xml:space="preserve">
         <source>3.6.5</source>
-        <target/>
+        <target>3.6.5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.7.0" xml:space="preserve">
         <source>3.7.0</source>
-        <target/>
+        <target>3.7.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4" xml:space="preserve">
         <source>4</source>
-        <target/>
+        <target>4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4.0.0" xml:space="preserve">
         <source>4.0.0</source>
-        <target/>
+        <target>4.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5" xml:space="preserve">
         <source>5</source>
-        <target/>
+        <target>5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6" xml:space="preserve">
         <source>6</source>
-        <target/>
+        <target>6</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7" xml:space="preserve">
         <source>7</source>
-        <target/>
+        <target>7</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8" xml:space="preserve">
         <source>8</source>
-        <target/>
+        <target>8</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9" xml:space="preserve">
         <source>9</source>
-        <target/>
+        <target>9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -249,14 +249,14 @@
       </trans-unit>
       <trans-unit id="Warning" xml:space="preserve">
         <source>Warning</source>
-        <target/>
+        <target>Предупредување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom" xml:space="preserve">
         <source>Custom</source>
-        <target/>
+        <target>Персонализација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -270,7 +270,7 @@
       </trans-unit>
       <trans-unit id="none specified" xml:space="preserve">
         <source>none specified</source>
-        <target/>
+        <target>не е избрано</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -284,95 +284,95 @@
       </trans-unit>
       <trans-unit id="Account" xml:space="preserve">
         <source>Account</source>
-        <target/>
+        <target>Акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account Deactivation" xml:space="preserve">
         <source>Account Deactivation</source>
-        <target/>
+        <target>Деактивација на акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation Keys" xml:space="preserve">
         <source>Activation Keys</source>
-        <target/>
+        <target>Клучеви за активирање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Addresses" xml:space="preserve">
         <source>Addresses</source>
-        <target/>
+        <target>Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type B" xml:space="preserve">
         <source>Billing Address</source>
-        <target/>
+        <target>Платежни Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
-        <target/>
+        <target>Поштени Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type S" xml:space="preserve">
         <source>Shipping Address</source>
-        <target/>
+        <target>Шипинг Адреса</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
-        <target/>
+        <target>Адресата не е воведена</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Fill in this address" xml:space="preserve">
         <source>Fill in this address</source>
-        <target/>
+        <target>Наведете ја оваа адреса</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target>Напредно Пребарување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Affected Systems" xml:space="preserve">
         <source>Affected Systems</source>
-        <target/>
+        <target>Засегнатите системи</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
-        <target/>
+        <target>Сите</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
-        <target/>
+        <target>УРЛ</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
-        <target/>
+        <target>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -382,56 +382,56 @@
       </trans-unit>
       <trans-unit id="API" xml:space="preserve">
         <source>API</source>
-        <target/>
+        <target>АПИ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FAQs" xml:space="preserve">
         <source>FAQs</source>
-        <target/>
+        <target>Чести прашања</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sample Scripts" xml:space="preserve">
         <source>Sample Scripts</source>
-        <target/>
+        <target>Примери</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Archived Actions" xml:space="preserve">
         <source>Archived Actions</source>
-        <target/>
+        <target>Архивирани Акции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Action Chains" xml:space="preserve">
         <source>Action Chains</source>
-        <target/>
+        <target>Акциски Ланци</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cant have spaces" xml:space="preserve">
         <source>do spaces work?</source>
-        <target/>
+        <target>дали работат празните места?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list delimiter" xml:space="preserve">
         <source>, </source>
-        <target/>
+        <target>, </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Change Email" xml:space="preserve">
         <source>Change Email</source>
-        <target/>
+        <target>Промени е-маил</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1242,7 +1242,7 @@
       </trans-unit>
       <trans-unit id="user prefix  " xml:space="preserve">
         <source> </source>
-        <target/>
+        <target state="translated"> </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -2837,8 +2837,8 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
-        <target/>
+        <source>Upload Kickstart/AutoYaST File</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -3875,42 +3875,42 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
       <trans-unit id="timetag.hours" xml:space="preserve">
         <source>hours</source>
-        <target/>
+        <target>саати</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minute" xml:space="preserve">
         <source>minute</source>
-        <target/>
+        <target>минути</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minutes" xml:space="preserve">
         <source>minutes</source>
-        <target/>
+        <target>минути</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.second" xml:space="preserve">
         <source>second</source>
-        <target/>
+        <target>секунда</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.seconds" xml:space="preserve">
         <source>seconds</source>
-        <target/>
+        <target>секунди</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.oneunit" xml:space="preserve">
         <source>{0} {1}</source>
-        <target/>
+        <target>{0} {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
           <context context-type="paramnotes">14 days</context>
@@ -7261,13 +7261,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -8217,48 +8210,6 @@ Follow this url to see the full list of inactive systems:
         <target/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
@@ -10635,10 +10586,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
-        <source>IPMI</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
         <target/>
@@ -11162,12 +11109,82 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ {0} се приближува на крајот на животот</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target/>
+      </trans-unit>
+      <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+        <source>IPMI lanplus</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>

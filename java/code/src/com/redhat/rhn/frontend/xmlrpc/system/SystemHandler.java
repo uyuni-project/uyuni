@@ -24,6 +24,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -136,6 +137,8 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PtfMasterFault;
+import com.redhat.rhn.frontend.xmlrpc.PtfPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RetractedPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
@@ -403,7 +406,7 @@ public class SystemHandler extends BaseHandler {
         // Determine if user passed in a list of channel ids or labels... note: the list
         // must contain all ids or labels (i.e. not a combination of both)
         boolean receivedLabels = false;
-        if (channelIdsOrLabels.size() > 0) {
+        if (!channelIdsOrLabels.isEmpty()) {
             if (channelIdsOrLabels.get(0) instanceof String) {
                 receivedLabels = true;
             }
@@ -529,10 +532,9 @@ public class SystemHandler extends BaseHandler {
             List<String> channelLabels = new ArrayList<>();
             channelLabels.add(channelLabel);
 
-            List<Long> channelIds = new ArrayList<>();
-            channelIds = ChannelFactory.getChannelIds(channelLabels);
+            List<Long> channelIds = ChannelFactory.getChannelIds(channelLabels);
 
-            if (channelIds.size() > 0) {
+            if (!channelIds.isEmpty()) {
                 cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
                 cmd.setScheduleApplyChannelsState(true);
             }
@@ -1006,7 +1008,7 @@ public class SystemHandler extends BaseHandler {
 
         List toCheck = packagesToCheck(server, name);
 
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is older, add it to returnList.
@@ -1082,7 +1084,7 @@ public class SystemHandler extends BaseHandler {
         );
 
         List toCheck = packagesToCheck(server, name);
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is newer, add it to returnList.
@@ -1391,12 +1393,12 @@ public class SystemHandler extends BaseHandler {
             Map<String, Object> systemMap = new HashMap<>();
 
             // get the package name ID
-            Map pkgEvr = PackageManager.lookupEvrIdByPackageName(sid.longValue(), packageName);
+            Map<String, Long> pkgEvr = PackageManager.lookupEvrIdByPackageName(sid.longValue(), packageName);
 
             if (pkgEvr != null) {
                 // find the latest package available to each system
                 Package pkg = PackageManager.guestimatePackageBySystem(sid.longValue(),
-                        (Long) pkgEvr.get("name_id"), (Long) pkgEvr.get("evr_id"),
+                        pkgEvr.get("name_id"), pkgEvr.get("evr_id"),
                         null, loggedInUser.getOrg());
 
                 // build the hash to return
@@ -1734,7 +1736,7 @@ public class SystemHandler extends BaseHandler {
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
-        if (skippedSids.size() > 0) {
+        if (!skippedSids.isEmpty()) {
             StringBuilder msg = new StringBuilder(
                     "The following systems were NOT deleted: ");
             for (Integer sid :  skippedSids) {
@@ -2105,7 +2107,7 @@ public class SystemHandler extends BaseHandler {
             MinionPillarManager.PillarSubset.CUSTOM_INFO));
 
         // If we skipped any keys, we need to throw an exception and let the user know.
-        if (skippedKeys.size() > 0) {
+        if (!skippedKeys.isEmpty()) {
             // We need to throw an exception. Append each undefined key to the
             // exception message.
             StringBuilder msg = new StringBuilder("One or more of the following " +
@@ -2209,7 +2211,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // If we skipped any keys, we need to throw an exception and let the user know.
-        if (skippedKeys.size() > 0) {
+        if (!skippedKeys.isEmpty()) {
             // We need to throw an exception. Append each undefined key to the
             // exception message.
             StringBuilder msg = new StringBuilder("One or more of the following " +
@@ -2464,7 +2466,7 @@ public class SystemHandler extends BaseHandler {
                 result.put("scheduler_user", action.getSchedulerUser().getLogin());
             }
             if (action.getPrerequisite() != null) {
-                result.put("prerequisite", action.getPrerequisite());
+                result.put("prerequisite", action.getPrerequisite().getId());
             }
             if (action.getName() != null) {
                 result.put("name", action.getName());
@@ -2501,7 +2503,7 @@ public class SystemHandler extends BaseHandler {
             }
 
             final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
-            if (additionalInfo.size() > 0) {
+            if (!additionalInfo.isEmpty()) {
                 result.put("additional_info", additionalInfo);
             }
 
@@ -2521,9 +2523,8 @@ public class SystemHandler extends BaseHandler {
                 type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
 
             // retrieve the list of package names associated with the action...
-            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Object pkgIn : pkgs) {
-                Map pkg = (Map) pkgIn;
+            DataResult<Row> pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Row pkg : pkgs) {
                 String detail = (String) pkg.get("nvre");
 
                 Map<String, String> info = new HashMap<>();
@@ -3664,7 +3665,7 @@ public class SystemHandler extends BaseHandler {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         throw new ModulesNotAllowedException();
                     }
                 }
@@ -3973,7 +3974,7 @@ public class SystemHandler extends BaseHandler {
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         hasModules = true;
                         break;
                     }
@@ -3984,22 +3985,16 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
+            Org org = loggedInUser.getOrg();
+            Long nameId = packageMap.get("name_id");
+            Long evrId = packageMap.get("evr_id");
+            Long archId = packageMap.get("arch_id");
+
+            return PackageFactory.lookupByNevraIds(org, nameId, evrId, archId).stream();
+        }).collect(toList());
+
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
-            List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
-                PackageName packageName = PackageFactory.lookupPackageName(packageMap.get("name_id"));
-                PackageEvr evr = PackageEvrFactory.lookupPackageEvrById(packageMap.get("evr_id"));
-                PackageArch arch = PackageFactory.lookupPackageArchById(packageMap.get("arch_id"));
-
-                return PackageFactory.lookupByNevra(
-                        loggedInUser.getOrg(),
-                        packageName.getName(),
-                        evr.getVersion(),
-                        evr.getRelease(),
-                        evr.getEpoch(),
-                        arch
-                ).stream();
-            }).collect(toList());
-
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
                     packages.stream().map(Package::getId).collect(toList()),
                     sids.stream().map(Integer::longValue).collect(toList())
@@ -4009,10 +4004,25 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        // Check if the package is part of a PTF. If true it cannot be manually installed/updated/ removed
+        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).collect(toList());
+        if (!ptfPackages.isEmpty()) {
+            throw new PtfPackageFault(ptfPackages);
+        }
+
+        // PTF master packages cannot be removed
+        if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(acT)) {
+            List<Long> ptfMasterPackages = packages.stream()
+                                                   .filter(Package::isMasterPtfPackage)
+                                                   .map(Package::getId)
+                                                   .collect(toList());
+            if (!ptfMasterPackages.isEmpty()) {
+                throw new PtfMasterFault(ptfMasterPackages);
+            }
+        }
 
         for (Integer sid : sids) {
-            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
-                    loggedInUser);
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
 
             // Would be nice to do this check at the Manager layer but upset many tests,
             // some of which were not cooperative when being fixed. Placing here for now.
@@ -4040,7 +4050,7 @@ public class SystemHandler extends BaseHandler {
 
             actionIds.add(action.getId());
         }
-        return actionIds.toArray(new Long[actionIds.size()]);
+        return actionIds.toArray(new Long[0]);
     }
 
 
@@ -4146,7 +4156,7 @@ public class SystemHandler extends BaseHandler {
                     packageNevra.get("package_name"), packageNevra.get("package_version"),
                     packageNevra.get("package_release"), epoch, arch);
 
-            if (pl == null || pl.size() == 0) {
+            if (pl == null || pl.isEmpty()) {
                 PackageName pkgName =  PackageFactory.lookupPackageName(packageNevra.get("package_name"));
                 if (pkgName == null || !lookupNevra) {
                     throw new InvalidPackageException(packageNevra.get("package_name"));
@@ -5513,7 +5523,7 @@ public class SystemHandler extends BaseHandler {
             if (this.systemEntitlementManager.canEntitleServer(server, ent)) {
                 ValidatorResult vr = this.systemEntitlementManager.addEntitlementToServer(server, ent);
                 needsSnapshot = true;
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     throw new InvalidEntitlementException();
                 }
             }
@@ -5855,8 +5865,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listOutOfDateSystems(User loggedInUser) {
-        DataResult<SystemOverview> list = SystemManager.outOfDateList(
-                loggedInUser, null);
+        DataResult<SystemOverview> list = SystemManager.outOfDateList(loggedInUser);
         list.elaborate();
         return list.toArray();
     }
@@ -5949,10 +5958,9 @@ public class SystemHandler extends BaseHandler {
      * @return True is systems are compatible, false otherwise.
      */
     private boolean isCompatible(User user, Server target, Server source) {
-        List<Map<String, Object>> compatibleServers =
-                SystemManager.compatibleWithServer(user, target);
+        List<Row> compatibleServers = SystemManager.compatibleWithServer(user, target);
         boolean found = false;
-        for (Map<String, Object> m : compatibleServers) {
+        for (Row m : compatibleServers) {
             Long currentId = (Long) m.get("id");
             if (currentId.longValue() == source.getId().longValue()) {
                 found = true;
@@ -5977,7 +5985,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
-        return SystemManager.ungroupedList(loggedInUser, null);
+        return SystemManager.ungroupedList(loggedInUser);
     }
 
 
@@ -6138,6 +6146,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Returns whether there are traditional systems registered
+     *
+     * @param loggedInUser The current user
+     * @return true if there is at least one traditional system registered or else false
+     *
+     * @apidoc.ignore this endpoint is used only internally to determine if a warning
+     * about traditional stack deprecation should be displayed
+     */
+    @ReadOnly
+    public boolean hasTraditionalSystems(User loggedInUser) {
+        return SystemManager.hasTraditionalSystems(loggedInUser);
+    }
+
+    /**
      * Gets a list of all Physical systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all systems visible to user
@@ -6154,7 +6176,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listPhysicalSystems(User loggedInUser) throws FaultException {
-        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser, null);
+        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser);
         dr.elaborate();
         return dr.toArray();
     }
@@ -6463,10 +6485,10 @@ public class SystemHandler extends BaseHandler {
                 nameservers.get(0), netmask, hostName);
         rec.setHostName(hostName);
         rec.setGateway(gateway);
-        rec.setNameServers(nameservers);
-        Map<String, Object> meta = rec.getKsMeta();
+        rec.setNameServers(Optional.of(nameservers));
+        Map<String, Object> meta = rec.getKsMeta().get();
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
-        rec.setKsMeta(meta);
+        rec.setKsMeta(Optional.of(meta));
         rec.save();
         return 1;
     }
@@ -6509,7 +6531,7 @@ public class SystemHandler extends BaseHandler {
         String nm6 = (String) data6.get("netmask");
         String gw6 = (String) data6.get("gateway");
 
-        Map<String, Object> meta = rec.getKsMeta();
+        Map<String, Object> meta = rec.getKsMeta().get();
         String ipv6GatewayMeta = (String) meta.get(KickstartFormatter.USE_IPV6_GATEWAY);
         boolean preferIpv6Gateway = false;
         if (ipv6GatewayMeta != null && ipv6GatewayMeta.equals("true")) {
@@ -6523,9 +6545,9 @@ public class SystemHandler extends BaseHandler {
 
         rec.setHostName(hostName);
         rec.setGateway((preferIpv6Gateway) ? gw6 : gw4);
-        rec.setNameServers(nameservers);
+        rec.setNameServers(Optional.of(nameservers));
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
-        rec.setKsMeta(meta);
+        rec.setKsMeta(Optional.of(meta));
         rec.save();
         return 1;
     }
@@ -6632,7 +6654,7 @@ public class SystemHandler extends BaseHandler {
             }
         }
         // One device is needed at least
-        if (server.getNetworkInterfaces().size() == 0) {
+        if (server.getNetworkInterfaces().isEmpty()) {
             throw new FaultException(-2, "networkDeviceError",
                     "At least one valid network device is needed");
         }
@@ -6793,7 +6815,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         rec.enableNetboot(netboot);
-        rec.setKsMeta(variables);
+        rec.setKsMeta(Optional.of(variables));
         rec.save();
 
         return 1;
@@ -7046,7 +7068,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listSystemsWithExtraPackages(User loggedInUser) {
-        return SystemManager.getExtraPackagesSystems(loggedInUser, null).toArray();
+        return SystemManager.getExtraPackagesSystems(loggedInUser).toArray();
     }
 
     /**
@@ -7104,8 +7126,6 @@ public class SystemHandler extends BaseHandler {
      * @param sid Server ID
      * @param interfaceName Interface name
      * @return 1 if success, exception thrown otherwise
-     * @throws Exception If interface does not exist Exception is thrown
-     *
      * @apidoc.doc Sets new primary network interface
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
@@ -7113,7 +7133,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPrimaryInterface(User loggedInUser, Integer sid,
-            String interfaceName) throws Exception {
+            String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
         if (!server.existsActiveInterfaceWithName(interfaceName)) {
@@ -7760,7 +7780,7 @@ public class SystemHandler extends BaseHandler {
         if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
             targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
         }
-        if (targets.size() > 0) {
+        if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
                 log.info("Target migration id is empty. " +
@@ -7769,10 +7789,10 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug("{} is completely synced.", ps.toString());
+                                    log.debug("{} is completely synced.", ps);
                                 }
                                 else {
-                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
+                                    log.debug("Discarding {}. Is not completely synced.", ps);
                                 }
                             }
                             return ps.getIsEveryChannelSynced();
@@ -8518,7 +8538,7 @@ public class SystemHandler extends BaseHandler {
     public Set<PackageState> listPackageState(User loggedInUser, Integer sid) {
         MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
-        return StateFactory.latestPackageStates(minion).orElse(Collections.EMPTY_SET);
+        return StateFactory.latestPackageStates(minion).orElse(Collections.emptySet());
     }
 
     /**

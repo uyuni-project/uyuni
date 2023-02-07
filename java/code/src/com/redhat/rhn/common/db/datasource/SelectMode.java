@@ -90,26 +90,29 @@ public class SelectMode extends BaseMode implements Serializable {
     /**
      * Executes the query using the given parameters.
      * @param parameters Query parameters.
+     * @param <T> the type of the returned items
      * @return DataResult containing results from query.
      */
-    public DataResult execute(Map<String, ?> parameters) {
+    public <T> DataResult<T> execute(Map<String, ?> parameters) {
         return getQuery().execute(parameters, this);
     }
 
     /**
      * Executes the query with an IN clause.
      * @param inClause values to be included in the IN clause.
+     * @param <T> the type of the returned items
      * @return DataResult containing results from query.
      */
-    public DataResult execute(List<?> inClause) {
+    public <T> DataResult<T> execute(List<?> inClause) {
         return getQuery().execute(inClause, this);
     }
 
     /**
      * Executes the query with no parameters.
+     * @param <T> the type of the returned items
      * @return DataResult containing results from query.
      */
-    public DataResult execute() {
+    public <T> DataResult<T> execute() {
         return getQuery().execute((Map<String, ?>) null, this);
     }
 
@@ -117,9 +120,10 @@ public class SelectMode extends BaseMode implements Serializable {
      * Executes the query with the given parameters an an IN clause.
      * @param parameters named parameters for the Query.
      * @param inClause values to be included in the IN clause.
+     * @param <T> the type of the returned items
      * @return DataResult containing results from query.
      */
-    public DataResult execute(Map<String, ?> parameters, List<?> inClause) {
+    public <T> DataResult<T> execute(Map<String, ?> parameters, List<?> inClause) {
         return getQuery().execute(parameters, inClause, this);
     }
 
@@ -133,7 +137,6 @@ public class SelectMode extends BaseMode implements Serializable {
     public void elaborate(List resultList, Map<String, ?> parameters) {
         // find the requested elaborator.
         for (CachedStatement cs : elaborators) {
-            cs.restoreSessionIfClosed();
             Collection elaborated = cs.executeElaborator(resultList, this, parameters);
             resultList.clear();
             resultList.addAll(elaborated);

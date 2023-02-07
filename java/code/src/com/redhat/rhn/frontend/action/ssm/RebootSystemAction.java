@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -85,9 +86,16 @@ public class RebootSystemAction
      * @param context Request context.
      * @return List of SystemOverview objects.
      */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
         List<SystemOverview> systems = SystemManager.inSet(context.getCurrentUser(),
                 RhnSetDecl.SYSTEMS.getLabel());
+
+        List<Long> sids = ServerFactory.findSystemsPendingRebootActions(systems);
+        if (!sids.isEmpty()) {
+            getStrutsDelegate().saveMessage("ssm.misc.reboot.message.scheduled", context.getRequest());
+        }
+
         for (SystemOverview systemOverview : systems) {
             systemOverview.setSelectable(1);
         }

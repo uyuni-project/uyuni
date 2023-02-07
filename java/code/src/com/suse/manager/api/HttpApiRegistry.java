@@ -115,8 +115,7 @@ public class HttpApiRegistry {
         });
 
         registerAuthEndpoints();
-        LOG.info(MessageFormat.format("Registered {0} methods in {1} namespaces.",
-                methodCount[0], handlerFactory.getKeys().size()));
+        LOG.info("Registered {} methods in {} namespaces.", methodCount[0], handlerFactory.getKeys().size());
     }
 
     /**

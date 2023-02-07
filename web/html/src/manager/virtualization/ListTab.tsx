@@ -53,7 +53,7 @@ type Props = {
 };
 
 export function ListTab(props: Props) {
-  const [selectedItems, setSelectedItems] = React.useState([]);
+  const [selectedItems, setSelectedItems] = React.useState<Array<any>>([]);
   const [selected, setSelected] = React.useState<any>(undefined);
   const [errors, setErrors] = React.useState<Array<string>>([]);
   const [lastRefresh, setLastRefresh] = React.useState(Date.now());
@@ -233,7 +233,7 @@ export function ListTab(props: Props) {
                     initialItemsPerPage={props.pageSize}
                     selectable
                     selectedItems={selectedItems.map((item) => item[props.idName])}
-                    onSelect={(items) => setSelectedItems(data.filter((d) => items.includes(d[props.idName])))}
+                    onSelect={(items) => setSelectedItems(data?.filter((d) => items.includes(d[props.idName])) || [])}
                     searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
                   >
                     {columns}

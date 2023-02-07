@@ -5762,9 +5762,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5798,9 +5798,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8338,7 +8338,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="pkg.lock.menu" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="pkg.lock.menu" xml:space="preserve">
         <source>Lock / Unlock</source>
         <target state="final">ロック/ロック解除</target>
         <context-group name="ctx">
@@ -10832,19 +10832,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">変数 '{0}' の指定が正しくありません。変数は '=' で区切られた名前と値の対でなければならず、各対は別々の行に記述しなければなりません。例: 'ip=192.168.0.1'</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>キックスタートテンプレートにエラーが存在します。'{0}' タブをチェックしてテンプレートの問題を確認してください。</target>
+        <target state="final">キックスタート/AutoYastテンプレートにエラーがあります。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>キックスタートテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
+        <target state="final">キックスタート/AutoYaSTテンプレートにエラーがあります。以下のエラーメッセージを確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
@@ -13172,11 +13172,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>休止中のシステムをすべて表示 ({0})</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;休止中のシステムはありません。&lt;/strong&gt; &lt;p&gt;現時点では、すべてのシステムが正しく @@PRODUCT_NAME@@ にチェックインしています。全システムの一覧は、&lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;システム &gt; すべて&lt;/a&gt;&lt;/strong&gt;で確認できます。&lt;/p&gt;</target>
+        <target state="needs-adaptation">&lt;strong&gt;休止中のシステムはありません。&lt;/strong&gt; &lt;p&gt;現時点では、すべてのシステムが正しく @@PRODUCT_NAME@@ にチェックインしています。全システムの一覧は、&lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;システム &gt; すべて&lt;/a&gt;&lt;/strong&gt;で確認できます。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata" xml:space="preserve">
         <source>Relevant Security Patches</source>
@@ -24626,7 +24626,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.header" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.activation.header" xml:space="preserve">
         <source>System Reactivation Key</source>
         <target state="final">システムの再アクティベーションキー</target>
         <context-group name="ctx">
@@ -28943,7 +28943,7 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="translated">インストールされている &lt;strong&gt;Salt&lt;/strong&gt; パッケージのバージョンが古くなっています。製品移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
         <target state="final">インストール済み拡張の一部では、後継が見つかりませんでした。移行中に、選択したターゲットに応じて、これらの製品の一部またはすべてが削除されるため、注意して続行してください。</target>
       </trans-unit>
@@ -29154,8 +29154,8 @@ given channel.</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>モニタリング</target>
+        <source>Monitored Host</source>
+        <target state="needs-adaptation">モニタリング</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29601,8 +29601,8 @@ given channel.</source>
         <target state="final">登録の転送</target>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="final">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="final">このシステムには待機中のトランザクションがあります。システムを再起動して変更を有効にしてください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29651,64 +29651,64 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.proxy" xml:space="preserve">
           <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
         <target state="final">ミニオンを別の&lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;に接続します</target>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.misc.index.tabs.proxy" xml:space="preserve">
           <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
         <target state="final">プロキシ</target>
       </trans-unit>
-      <trans-unit id="sdc.details.connection.change" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.connection.change" xml:space="preserve">
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
         <target state="final">変更</target>
       </trans-unit>
-      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="details.jsp.vendoradvisory" xml:space="preserve">
         <source>Vendor Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
         <target state="final">ベンダアドバイザリー</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">従量課金制のクラウドインスタンスの構成から認証データを収集します</target>
       </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Pay-as-you-go" xml:space="preserve">
         <source>Pay-as-you-go</source>
         <target state="final">従量課金制</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">レポーティングデータベースの更新</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-update-reporting" xml:space="preserve">
         <source>Update Reporting Database</source>
         <target state="final">レポーティングデータベースの更新</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
         <target state="final">SSHポート:</target>
       </trans-unit>
-      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="systemlist.jsp.ismgrserver" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
@@ -29720,34 +29720,156 @@ given channel.</source>
         </context-group>
         <target state="final">周辺機器サーバ</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">ハブレポーティングデータベースの更新</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <target state="final">ハブレポーティングデータベースの更新</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="final">次のインストール済み製品は、移行中にシステムから削除されます。</target>
       </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
-        <target state="final">{0} ハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">{0} ハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
-        <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+        <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+        <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
+      </trans-unit>
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+            <source>Extra Packages</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+            <source>Config Diffs</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+            <source>Proxy</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+            <source>Manager Server</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+            <source>Virtual Host</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+            <source>Virtual Guest</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+            <source>Requires Reboot</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+            <source>Status Type</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+        <target state="final">これらのスケジュールに割り当てられたシステムには、{0} のメンテナンス ウィンドウがありません</target>
       </trans-unit>
     </body>
   </file>

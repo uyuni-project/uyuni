@@ -35,8 +35,8 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.4.0
-Release:        0
+Version:        4.4.6
+Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -89,7 +89,7 @@ BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
 %endif
-Requires:       cobbler >= 3.0.0
+Requires(post): cobbler >= 3.3.3
 Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
@@ -109,7 +109,6 @@ Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
-Requires:       spacewalk-setup-jabberd
 Requires:       uyuni-setup-reportdb
 %if 0%{?rhel}
 Requires(post): libxslt-devel
@@ -119,9 +118,6 @@ Requires(post): libxslt-tools
 
 Provides:       salt-formulas-configuration
 Conflicts:      otherproviders(salt-formulas-configuration)
-
-# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1"
-Requires(post): cobbler
 
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
@@ -247,11 +243,46 @@ if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
 
-# Workaround for different Cobbler versions. Remove below section once "Requires: cobbler >= 3.2.1" and update
-# https://github.com/uyuni-project/uyuni/blob/ea02d4cdf5a91daefa468884548a8b1e60370d3c/spacewalk/setup/bin/spacewalk-setup-cobbler#L29
-COBBLER_VERSION=$(grep "version " /etc/cobbler/version)
-if [[ $(echo -e "version = 3.2.0\n${COBBLER_VERSION}" | sort -rV | head -n 1) != "version = 3.2.0" ]]; then
-  sed -i 's/COBBLER_CONFIG_FILES = \["modules.conf", "settings"\]/COBBLER_CONFIG_FILES = \["modules.conf", "settings.yaml"\]/' /usr/bin/spacewalk-setup-cobbler
+# When upgrading to Cobbler 3.3.3, the old /etc/cobbler/settings config file from previous Cobbler version
+# is removed as it not existing anymore in the new version, but a copy is kept with the local changes done
+# at /etc/cobbler/settings.rpmsave. If this file exists, it means we need to perform the migration of these
+# settings and also trigger the migration of stored Cobbler collections.
+if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
+    cp /etc/cobbler/settings.rpmsave /etc/cobbler/settings
+    echo "* Creating a backup from old Cobbler settings to /etc/cobbler/settings.before-migration-backup before migrating settings"
+    cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
+    echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
+    touch /var/lib/cobbler/v2_migration_done
+    cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml || exit 1
+    echo "* Disabling Cobbler settings automigration"
+    cobbler-settings automigrate -d || exit 1
+    echo "* Change group to Apache for /etc/cobbler/settings.yaml file"
+    chgrp %{apache_group} /etc/cobbler/settings.yaml
+    echo "* Readjust settings needed for spacewalk"
+    spacewalk-setup-cobbler || exit 1
+    echo "* Done"
+    # At this point, the migration finished successfully, so we can remove
+    # the old /etc/cobbler/settings.rpmsave to prevent migration to run again.
+    rm /etc/cobbler/settings.rpmsave
+fi
+
+# Migration to Cobbler 3.3.3 already performed but not the migration of Cobbler v2 collections to v3
+if [ ! -f /etc/cobbler/settings.rpmsave -a -f /etc/cobbler/settings.before-migration-backup -a ! -f /var/lib/cobbler/v2_migration_done ]; then
+    echo "* Migrating old stored Cobbler version 2 collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
+    cobbler-settings -c /etc/cobbler/settings.before-migration-backup migrate || exit 1
+    touch /var/lib/cobbler/v2_migration_done
+fi
+
+# Wrong execution of v2 script happened, so we fix autoinstall attribute of collections.
+if test -f /var/lib/cobbler/v2_migration_done && ! grep -q autoinstall_fixed /var/lib/cobbler/v2_migration_done; then
+    echo "* Check and fix autoinstall attributes from Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --only-fix-autoinstall || exit 1
+    echo "autoinstall_fixed" >> /var/lib/cobbler/v2_migration_done
 fi
 
 exit 0

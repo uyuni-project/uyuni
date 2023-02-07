@@ -1,10 +1,13 @@
-# Copyright (c) 2014-2022 SUSE LLC.
+# Copyright (c) 2014-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the execution of commands on a system.
 
 require 'timeout'
 require 'nokogiri'
 require 'pg'
 require 'set'
+require 'date'
 
 # Sanity checks
 
@@ -41,7 +44,12 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}", check_errors: false)
+  unless return_code.zero?
+    sleep 2
+    puts "re-try ping"
+    node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  end
   $server.run("ping -c 1 #{node.public_ip}")
 end
 
@@ -71,6 +79,11 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
+Then(/^it should be possible to use the custom download endpoint$/) do
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
+  $server.run("curl --ipv4 --location #{url} --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -90,14 +103,14 @@ Then(/^it should be possible to reach the Docker profiles$/) do
 end
 
 Then(/^it should be possible to reach the authenticated registry$/) do
-  if not ($auth_registry.nil? || $auth_registry.empty?)
+  unless $auth_registry.nil? || $auth_registry.empty?
     url = "https://#{$auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
 Then(/^it should be possible to reach the not authenticated registry$/) do
-  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+  unless $no_auth_registry.nil? || $no_auth_registry.empty?
     url = "https://#{$no_auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
@@ -118,32 +131,6 @@ end
 
 When(/^I add "([^"]*)" channel$/) do |channel|
   $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
-end
-
-When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
-  $command_output, _code = $client.run(command)
-end
-
-Then(/^spacewalk\-channel should fail adding "([^"]*)"$/) do |invalid_channel|
-  command = "spacewalk-channel --add -c #{invalid_channel} -u admin -p admin"
-  $command_output, code = $client.run(command, check_errors: false)
-  raise "#{command} should fail, but hasn't" if code.zero?
-end
-
-When(/^I use spacewalk\-channel to remove "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-channel --remove -c #{child_channel} -u admin -p admin"
-  $command_output, _code = $client.run(command)
-end
-
-When(/^I use spacewalk\-channel to list channels$/) do
-  command = "spacewalk-channel --list"
-  $command_output, _code = $client.run(command)
-end
-
-When(/^I use spacewalk\-channel to list available channels$/) do
-  command = "spacewalk-channel --available-channels -u admin -p admin"
-  $command_output, _code = $client.run(command)
 end
 
 When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
@@ -182,7 +169,6 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
   end
   node = get_target(host)
   if deb_host?(host)
-    node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
     pkg_version_regexp = pkg_version.gsub('.', '\\.')
@@ -191,6 +177,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     else
       node.run_until_fail("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
     end
+    node.wait_while_process_running('apt-get')
   else
     node.wait_while_process_running('zypper')
     if status == 'installed'
@@ -217,9 +204,7 @@ end
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
-    if $is_cloud_provider
-      "salt-common"
-    elsif $use_salt_bundle
+    if $use_salt_bundle
       "venv-salt-minion"
     else
       "salt"
@@ -232,13 +217,19 @@ When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   end
 end
 
-When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
+When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
-  log = '/var/log/zypper.log'
-  rotated_log = "#{log}-#{Time.now.strftime('%Y%m%d')}.xz"
-  _, return_code = node.run("grep -- #{pattern} #{log} || xzdec #{rotated_log} | grep -- #{pattern}")
-
+  current_log = '/var/log/zypper.log'
+  current_time = Time.now.localtime
+  rotated_log = "#{current_log}-#{current_time.strftime('%Y%m%d')}.xz"
+  day_after = (current_time.to_date + 1).strftime('%Y%m%d')
+  next_day_rotated_log = "#{current_log}-#{day_after}.xz"
+  begin
+    _, return_code = node.run("xzdec #{next_day_rotated_log} | grep -- #{pattern}")
+  rescue RuntimeError
+    _, return_code = node.run("grep -- #{pattern} #{current_log} || xzdec #{rotated_log} | grep -- #{pattern}")
+  end
   raise 'Vendor change option not found in logs' unless return_code.zero?
 end
 
@@ -252,10 +243,14 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
-When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" service is (active|inactive) on "([^"]*)"$/) do |service, status, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
-  node.run_until_ok(cmd)
+  repeat_until_timeout do
+    out, _err, _code = node.run(cmd, check_errors: false, separated_results: true)
+    break if out.strip == status
+    sleep 2
+  end
 end
 
 When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
@@ -383,8 +378,19 @@ end
 # rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
   raise "Errors during reposync:\n#{result}" if code.zero?
+end
+
+Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
+  logfiles = list.split(",")
+  logfiles.each do |logs|
+    _result, code = $server.run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
+    if code.zero?
+      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: true)
+      raise "Errors during #{logs} reposync:\n#{result}" if code.zero?
+    end
+  end
 end
 
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
@@ -447,18 +453,25 @@ Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
   "\n-----\n#{output}\n-----\n"
 end
 
-Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
-  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", check_errors: false)
-  raise "'#{content}' found in file #{file}" if output != "notfound\n"
-  "\n-----\n#{output}\n-----\n"
-end
-
 Then(/^the tomcat logs should not contain errors$/) do
   output, _code = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
     raise "-#{msg}-  msg found on tomcat logs" if output.include? msg
   end
+end
+
+Then(/^the taskomatic logs should not contain errors$/) do
+  output, _code = $server.run('cat /var/log/rhn/rhn_taskomatic_daemon.log')
+  msgs = %w[NullPointer]
+  msgs.each do |msg|
+    raise "-#{msg}-  msg found on taskomatic logs" if output.include? msg
+  end
+end
+
+Then(/^the log messages should not contain out of memory errors$/) do
+  output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
+  raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
 When(/^I restart cobbler on the server$/) do
@@ -491,22 +504,30 @@ Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
 
-Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
+Then(/^the repo file should contain the (custom|normal) download endpoint on the "([^"]*)"$/) do |type, target|
   node = get_target(target)
-  hostname = hostname == "proxy" ? $proxy.full_hostname : hostname
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
-  uri = URI.parse(base_url)
-  log 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
-  parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
-  if !parameters_matches
-    raise 'Some parameters are not as expected'
-  end
+  real_uri = URI.parse(base_url)
+  log 'Real protocol: ' + real_uri.scheme + '  host: ' + real_uri.host + '  port: ' + real_uri.port.to_s
+  normal_download_endpoint = "https://#{$proxy.full_hostname}:443"
+  expected_uri = URI.parse(type == 'custom' ? $custom_download_endpoint : normal_download_endpoint)
+  log 'Expected protocol: ' + expected_uri.scheme + '  host: ' + expected_uri.host + '  port: ' + expected_uri.port.to_s
+  raise 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
   return_code = file_inject(node, file, File.basename(file))
+  raise 'File injection failed' unless return_code.zero?
+end
+
+When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_host, to_host|
+  from_node = get_target(from_host)
+  to_node = get_target(to_host)
+  return_code = file_extract(from_node, file_path, file_path)
+  raise 'File extraction failed' unless return_code.zero?
+  return_code = file_inject(to_node, file_path, file_path)
   raise 'File injection failed' unless return_code.zero?
 end
 
@@ -519,7 +540,7 @@ Then(/^the PXE default profile should be disabled$/) do
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
+  %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = '/etc/ipmi/' + file
     return_code = file_inject($server, source, dest)
@@ -536,7 +557,7 @@ end
 
 When(/^the server starts mocking a Redfish host$/) do
   $server.run('mkdir -p /root/Redfish-Mockup-Server/')
-  ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
+  %w[redfishMockupServer.py rfSsdpServer.py].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
     dest = '/root/Redfish-Mockup-Server/' + file
     return_code = file_inject($server, source, dest)
@@ -597,7 +618,7 @@ Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"
 end
 
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   case host
   when 'server'
@@ -607,6 +628,8 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 --server-fqdn=#{ENV['SERVER']} \
 --proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
+  else
+    log "Host #{host} not supported"
   end
 end
 
@@ -616,7 +639,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
 end
 
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   node = get_target(host)
   target = '/srv/tftpboot/pxelinux.cfg/default'
@@ -625,6 +648,8 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
   when 'target profile'
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/'"
+  else
+    log "Entry #{entry} not supported"
   end
   node.run("sed -i #{script} #{target}")
 end
@@ -638,7 +663,6 @@ end
 
 When(/^I wait until rhn-search is responding$/) do
   step %(I wait until "rhn-search" service is active on "server")
-  $api_test.auth.login('admin', 'admin')
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     begin
       log "Search by hostname: #{$minion.hostname}"
@@ -650,7 +674,6 @@ When(/^I wait until rhn-search is responding$/) do
       sleep 3
     end
   end
-  $api_test.auth.logout
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
@@ -667,6 +690,11 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
 end
 
+When(/^I (start|stop) "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
+  node = get_target(host)
+  node.run("systemctl #{action} #{service}")
+end
+
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
@@ -679,24 +707,6 @@ Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not active" if output != 'active'
-end
-
-Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'enabled' and output_socket != 'enabled'
-end
-
-Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-active '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'active' and output_socket != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -716,13 +726,6 @@ end
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd)
-end
-
-When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
-  if get_client_type(host) == 'traditional'
-    node = get_target(host)
-    node.run('rhn_check -vvv')
-  end
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
@@ -770,42 +773,12 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
   @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", check_errors: false)
 end
 
+When(/^I call spacewalk\-repo\-sync to sync the channel "(.*?)"$/) do |channel|
+  @command_output, _code = $server.run("spacewalk-repo-sync -c #{channel}", check_errors: false)
+end
+
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
   @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
-end
-
-When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
-end
-
-When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
-end
-
-When(/^I register this client for SSH push via tunnel$/) do
-  # create backups of /etc/hosts and up2date config
-  $server.run('cp /etc/hosts /etc/hosts.BACKUP')
-  $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
-  # generate expect file
-  bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
-           "while {1} {\n" \
-           "  expect {\n" \
-           "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
-           "    \"Password:\"                                              {send \"linux\r\"}\n" \
-           "  }\n" \
-           "}\n"
-  path = generate_temp_file('push-registration.exp', script)
-  step 'I copy "' + path + '" to "server"'
-  `rm #{path}`
-  # perform the registration
-  filename = File.basename(path)
-  bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
-  # restore files from backups
-  $server.run('mv /etc/hosts.BACKUP /etc/hosts')
-  $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
 
 # Repositories and packages management
@@ -823,26 +796,22 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node = get_target(host)
   raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
-  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
+  source_repo = "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) #{repo}"
+  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
 # rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
-    opt_repos = ''
     repos.split(' ').map do |repo|
-      if repo =~ /_ltss_/
-        opt_repos = "#{opt_repos} #{repo}"
-      else
-        mand_repos = "#{mand_repos} #{repo}"
-      end
+      mand_repos = "#{mand_repos} #{repo}"
     end
-    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
-  elsif os_family =~ /^centos/
+    cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
       cmd = if action == 'enable'
@@ -861,7 +830,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
             end
     end
   end
-  node.run(cmd, check_errors: error_control.empty?)
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
 
@@ -895,17 +864,12 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, successcodes: [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
-  pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
-  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
-end
-
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
@@ -916,7 +880,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
-When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y install #{package}"
@@ -935,7 +899,7 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
-When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old packages? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y downgrade #{package}"
@@ -954,7 +918,7 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
-When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y remove #{package}"
@@ -985,7 +949,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1035,7 +999,7 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
+  %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
     raise 'File extraction failed' unless return_code.zero?
     $proxy.run('mkdir -p /root/ssl-build')
@@ -1087,18 +1051,6 @@ When(/^I restart squid service on the proxy$/) do
   $proxy.run("systemctl restart squid.service")
 end
 
-Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
-  # for testing buildtime of generated metadata - See bsc#1078056
-  node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
-  metadata_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
-  rpm_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
-end
-
 When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|
   command = "spacecmd -u admin -p admin -- configchannel_create -n #{name} -t  #{type}"
   $server.run(command)
@@ -1132,13 +1084,13 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
-  raise '/var/testsuite-data/disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
-  node.run("cp /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+  raise '/var/testsuite-data/leap-disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/leap-disk-image-template.qcow2')
+  node.run("cp /var/testsuite-data/leap-disk-image-template.qcow2 #{disk_path}")
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   # Use 'ide' bus for Xen and 'virtio' bus for KVM
-  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  bus_type = 'virtio'
   node.run(
     "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
     "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
@@ -1299,7 +1251,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
     disks = tree.xpath("//disk").select do |x|
       (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
     end
-    break if !disks.empty?
+    break unless disks.empty?
     sleep 3
   end
 end
@@ -1313,7 +1265,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
       (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
         (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
-    break if !disks.empty?
+    break unless disks.empty?
     sleep 3
   end
 end
@@ -1522,18 +1474,12 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
-  node = get_target(client)
-  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
-  raise if code.zero?
-end
-
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version.gsub('-SP', '.')
+  os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    repositories.concat(' os_pool_repo os_update_repo')
     if $product != 'Uyuni'
       repositories.concat(' tools_additional_repo')
       # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
@@ -1579,7 +1525,7 @@ When(/^I copy unset package file on server$/) do
   raise 'File injection failed' unless return_code.zero?
 end
 
-And(/^I copy vCenter configuration file on server$/) do
+When(/^I copy vCenter configuration file on server$/) do
   base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
   return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
@@ -1601,12 +1547,14 @@ Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
-Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
-  raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
+  node = get_target(host)
+  raise "Folder exists" if folder_exists?(node, folder)
 end
 
-When(/^I ensure folder "(.*?)" doesn't exist$/) do |folder|
-  folder_delete($server, folder) if folder_exists?($server, folder)
+When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
+  node = get_target(host)
+  folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
 ## ReportDB ##
@@ -1734,4 +1682,40 @@ end
 Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node = get_target(target)
   node.run("iptables -F INPUT")
+end
+
+When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
+  # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
+  command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+            " -- -o #{file_path} -p 8022 #{$proxy.full_hostname.sub('pxy', 'pod-pxy')} #{$server.full_hostname}" \
+            " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
+            " && rm cert_pass"
+  $server.run(command)
+end
+
+When(/^I add avahi hosts in Containerized Proxy configuration$/) do
+  if $server.full_hostname.include? 'tf.local'
+    hosts_list = ""
+    $host_by_node.each do |node, _host|
+      hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
+    end
+    hosts_list = escape_regex(hosts_list)
+    regex = "s/^#?EXTRA_POD_ARGS=.*$/EXTRA_POD_ARGS=#{hosts_list}/g;"
+    $proxy.run("sed -i.bak -Ee '#{regex}' /etc/sysconfig/uyuni-proxy-systemd-services")
+    log "Avahi hosts added: #{hosts_list}"
+    log 'The Development team has not been working to support avahi in Containerized Proxy, yet. This is best effort.'
+  else
+    log 'Record not added - avahi domain was not detected'
+  end
+end
+
+When(/^I remove offending SSH key of "([^"]*)" at port "([^"]*)" for "([^"]*)" on "([^"]*)"$/) do |key_host, key_port, known_hosts_path, host|
+  system_name = get_system_name(key_host)
+  node = get_target(host)
+  node.run("ssh-keygen -R [#{system_name}]:#{key_port} -f #{known_hosts_path}")
+end
+
+When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
+  node = get_target(host)
+  node.run_until_ok("lsof  -i:#{port}")
 end

@@ -283,7 +283,7 @@ public class SaltUtils {
         List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(List::of);
 
         if (functions.isEmpty()) {
-            LOG.error("NULL function for: " + server.getName() + callResult.toString());
+            LOG.error("NULL function for: {}{}", server.getName(), callResult);
             throw new BadParameterException("function must not be NULL");
         }
 
@@ -340,10 +340,12 @@ public class SaltUtils {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
                 e.getKey().endsWith("-release") ||
+                // Live patching requires refresh to fetch the updated LP version
+                e.getKey().startsWith("kernel-livepatch-") ||
                 (e.getValue().getNewValue().isLeft() &&
                  e.getValue().getOldValue().isLeft())
-
         );
+
         if (fullRefreshNeeded) {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
@@ -404,6 +406,7 @@ public class SaltUtils {
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
         });
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -915,6 +918,7 @@ public class SaltUtils {
                     cresult.setCreated(new Date());
                     cresult.setModified(new Date());
                     cra.setConfigRevisionActionResult(cresult);
+                    SystemManager.updateSystemOverview(cra.getServer());
                 }
             }
         });
@@ -960,11 +964,11 @@ public class SaltUtils {
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {
-                                        LOG.error("Error processing SCAP results file {}", resultsFile.toString(), e);
+                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
                                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
-                                                        resultsFile.toString() + ": " +
+                                                        resultsFile + ": " +
                                                         e.getMessage());
                                     }
                                 }
@@ -1280,12 +1284,17 @@ public class SaltUtils {
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
                                 .map(CmdResult::getStdout);
+                Optional<String> sllReleasePkg =
+                        Optional.ofNullable(ret.getWhatProvidesSLLReleasePkg())
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
                         almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                         rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
-                            imageInfo, resReleasePkg,
+                            imageInfo, resReleasePkg, sllReleasePkg,
                             rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
                             almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
                     imageInfo.setInstalledProducts(products);
@@ -1383,6 +1392,11 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
+        Optional<String> sllReleasePkg =
+                Optional.ofNullable(result.getWhatProvidesSLLReleasePkg())
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
 
         ValueMap grains = new ValueMap(result.getGrains());
 
@@ -1391,7 +1405,7 @@ public class SaltUtils {
                 almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                 rockyReleaseFile.isPresent() || resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
-                    server, resReleasePkg,
+                    server, resReleasePkg, sllReleasePkg,
                     rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
                     almaReleaseFile, amazonReleaseFile, rockyReleaseFile);
             server.setInstalledProducts(products);
@@ -1499,6 +1513,7 @@ public class SaltUtils {
         ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
@@ -1507,8 +1522,8 @@ public class SaltUtils {
         Info second = secondEntry.getValue();
 
         if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
-            LOG.warn(String.format("Got duplicate packages NEVRA and the install timestamp is missing." +
-                    " Taking the first one. First:  %s, second: %s", first, second));
+            LOG.warn("Got duplicate packages NEVRA and the install timestamp is missing." +
+                    " Taking the first one. First:  {}, second: {}", first, second);
             return firstEntry;
         }
 
@@ -1672,8 +1687,11 @@ public class SaltUtils {
         hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
                 result.getNetworkModules(),
                 Stream.concat(
+                    Stream.concat(
                         result.getFqdns().stream(),
-                        result.getCustomFqdns().stream()
+                        result.getDnsFqdns().stream()
+                    ),
+                    result.getCustomFqdns().stream()
                 ).distinct().collect(Collectors.toList())
         );
         hwMapper.mapPaygInfo();
@@ -1768,6 +1786,7 @@ public class SaltUtils {
     private static Set<InstalledProduct> getInstalledProductsForRhel(
            MinionServer server,
            Optional<String> resPackage,
+           Optional<String> sllPackage,
            Optional<String> rhelReleaseFile,
            Optional<String> centosRelaseFile,
            Optional<String> oracleReleaseFile,
@@ -1777,7 +1796,7 @@ public class SaltUtils {
            Optional<String> rockyReleaseFile) {
 
         Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                RhelUtils.detectRhelProduct(server, resPackage,
+                RhelUtils.detectRhelProduct(server, resPackage, sllPackage,
                         rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                         rockyReleaseFile);
@@ -1787,11 +1806,10 @@ public class SaltUtils {
             return Collections.emptySet();
         }
 
-        LOG.debug(String.format(
-                "Detected minion %s as a RedHat compatible system: %s %s %s %s",
+        LOG.debug("Detected minion {} as a RedHat compatible system: {} {} {} {}",
                 server.getMinionId(),
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), server.getServerArch().getName()));
+                rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
         return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
@@ -1810,6 +1828,7 @@ public class SaltUtils {
     private static Set<InstalledProduct> getInstalledProductsForRhel(
             ImageInfo image,
             Optional<String> resPackage,
+            Optional<String> sllPackage,
             Optional<String> rhelReleaseFile,
             Optional<String> centosReleaseFile,
             Optional<String> oracleReleaseFile,
@@ -1819,7 +1838,7 @@ public class SaltUtils {
             Optional<String> rockyReleaseFile) {
 
          Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                 RhelUtils.detectRhelProduct(image, resPackage,
+                 RhelUtils.detectRhelProduct(image, resPackage, sllPackage,
                          rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
                          alibabaReleaseFile, almaReleaseFile, amazonReleaseFile,
                          rockyReleaseFile);
@@ -1829,11 +1848,10 @@ public class SaltUtils {
              return Collections.emptySet();
          }
 
-         LOG.debug(String.format(
-                 "Detected image %s:%s as a RedHat compatible system: %s %s %s %s",
+         LOG.debug("Detected image {}:{} as a RedHat compatible system: {} {} {} {}",
                  image.getName(), image.getVersion(),
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                 rhelProductInfo.get().getRelease(), image.getImageArch().getName()));
+                 rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
          return rhelProductInfo.get().getSuseProduct().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
@@ -1923,14 +1941,13 @@ public class SaltUtils {
      * @param minion the minion
      * @param uptimeSeconds uptime time in seconds
      */
-    public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+    public static void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
         LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        @SuppressWarnings("unchecked")
         List<ServerAction> serverActions = ActionFactory
                 .listServerActionsForServer(minion);
         int actionsChanged = 0;
@@ -1949,7 +1966,7 @@ public class SaltUtils {
         }
     }
 
-    private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+    private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {

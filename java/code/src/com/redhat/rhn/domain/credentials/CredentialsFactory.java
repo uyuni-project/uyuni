@@ -26,7 +26,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,10 +75,7 @@ public class CredentialsFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (CredentialsType) singleton.lookupObjectByNamedQuery(
-                "CredentialsType.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("CredentialsType.findByLabel", Map.of("label", label));
     }
 
     /**

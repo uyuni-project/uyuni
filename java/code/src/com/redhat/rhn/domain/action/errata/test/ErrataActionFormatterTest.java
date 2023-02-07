@@ -44,7 +44,7 @@ public class ErrataActionFormatterTest extends BaseTestCaseWithUser {
 
         Errata errata = action.getErrata().iterator().next();
         String expected = "<a href=\"/rhn/errata/details/Details.do?eid=" +
-            errata.getId().toString() + "\">" +
+                errata.getId() + "\">" +
             StringEscapeUtils.escapeHtml4(errata.getAdvisory()) + "</a>";
         String result = formatter.getRelatedObjectDescription();
 

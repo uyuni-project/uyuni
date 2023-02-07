@@ -1,13 +1,52 @@
 - Replace apache users to root for RHEL.
-- create bootstrap repository data for Ubuntu 22.04 Vendor Channels
-- remove obsoleted sysv init script (bsc#1191857)
-- Add Rocky Linux 9 bootstrap repositories for Uyuni
-- mgr-create-bootstrap-repo: flush directory also when called
-  for a specific label (bsc#1200573)
-- pg-migrate-x-to-y.sh: improve output (bsc#1201260)
-- remove python-tornado from bootstrap repo, since no longer
-  required for salt version >= 3000
-- add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
+- Create repostories with sha256 instead of sha1.
+
+-------------------------------------------------------------------
+Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
+  * show RHEL target for bootstrap repo creation only if it is
+    really connected to the CDN (bsc#1206861)
+  * fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
+    (bsc#1207136)
+  * fix tools channel detection on Uyuni
+  * add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
+
+-------------------------------------------------------------------
+Wed Dec 14 14:15:50 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+
+-------------------------------------------------------------------
+Fri Nov 18 15:14:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * add bootstrap repo definitions for oracle, alma and rocky linux 9
+  * add bootstrap repo data for SUSE Liberty Linux 9
+  * remove traditional stack packages and dependencies from
+    bootstrap repo definition
+
+-------------------------------------------------------------------
+Wed Sep 28 11:15:26 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * mark new dependencies for python-py optional in bootstrap repo
+    to fix generation for older service packs (bsc#1203449)
+  * add bootstrap repository definition for OES2023 (bsc#1202602)
+  * add missing packages on SLES 15
+  * remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
+  * Add options for connecting to a remote postgres instance
+  * create bootstrap repository data for Ubuntu 22.04 Vendor Channels
+  * remove obsoleted sysv init script (bsc#1191857)
+  * Add Rocky Linux 9 bootstrap repositories for Uyuni
+  * mgr-create-bootstrap-repo: flush directory also when called
+    for a specific label (bsc#1200573)
+  * pg-migrate-x-to-y.sh: improve output (bsc#1201260)
+  * remove python-tornado from bootstrap repo, since no longer
+    required for salt version >= 3000
+  * add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com

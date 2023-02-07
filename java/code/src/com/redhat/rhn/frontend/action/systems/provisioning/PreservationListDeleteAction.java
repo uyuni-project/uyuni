@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
@@ -39,6 +40,7 @@ public class PreservationListDeleteAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean operateOnElement(ActionForm form,
                                     HttpServletRequest request,
                                     RhnSetElement elementIn,
@@ -54,6 +56,7 @@ public class PreservationListDeleteAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("preservation_list.jsp.deletelist", "operateOnSelectedSet");
     }
@@ -61,6 +64,7 @@ public class PreservationListDeleteAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }
@@ -68,13 +72,15 @@ public class PreservationListDeleteAction extends
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<FilePreservationDto> getDataResult(User user,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                                                         user.getOrg(), null);
     }
 
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {

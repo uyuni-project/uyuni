@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -54,7 +55,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
-        if (set.size() == 0) {
+        if (set.isEmpty()) {
             strutsDelegate.saveMessage("filelists.jsp.selectafilelist", request);
             forwardName = RhnHelper.DEFAULT_FORWARD;
         }
@@ -66,9 +67,10 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<FilePreservationDto> getDataResult(User user,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                                                          user.getOrg(), null);
     }
@@ -76,6 +78,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("preservation_list.jsp.deletelist", "forwardToConfirm");
     }
@@ -83,6 +86,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -92,6 +96,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }

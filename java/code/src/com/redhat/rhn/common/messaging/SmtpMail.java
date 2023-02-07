@@ -30,9 +30,11 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -49,8 +51,8 @@ public class SmtpMail implements Mail {
     private MimeMessage message;
     private static Logger log = LogManager.getLogger(SmtpMail.class);
 
-    private static String[] disallowedDomains;
-    private static String[] restrictedDomains;
+    private static String[] disallowedDomains = Config.get().getStringArray("web.disallowed_mail_domains");
+    private static String[] restrictedDomains = Config.get().getStringArray("web.restrict_mail_domains");
 
     /**
      * Create a mailer.
@@ -58,13 +60,14 @@ public class SmtpMail implements Mail {
     public SmtpMail() {
         log.debug("Constructed new SmtpMail.");
 
-        disallowedDomains =
-            Config.get().getStringArray("web.disallowed_mail_domains");
-        restrictedDomains =
-            Config.get().getStringArray("web.restrict_mail_domains");
-
         Config c = Config.get();
         smtpHost = c.getString(ConfigDefaults.WEB_SMTP_SERVER, "localhost");
+        int smtpPort = c.getInt(ConfigDefaults.WEB_SMTP_PORT, 25);
+        boolean smtpAuth = c.getBoolean(ConfigDefaults.WEB_SMTP_AUTH);
+        boolean smtpSSL = c.getBoolean(ConfigDefaults.WEB_SMTP_SSL);
+        boolean smtpStartTLS = c.getBoolean(ConfigDefaults.WEB_SMTP_STARTTLS);
+        String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
+        String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
         String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
 
         // Get system properties
@@ -72,27 +75,31 @@ public class SmtpMail implements Mail {
 
         // Setup mail server
         props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.auth", smtpAuth);
+        props.put("mail.smtp.ssl.enable", smtpSSL);
+        props.put("mail.smtp.starttls.enable", smtpStartTLS);
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        // Setup Authentication
+        Authenticator auth = null;
+        if (smtpAuth) {
+            auth = new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(smtpUser, smtpPass);
+                }
+            };
+        }
 
         // Get session
-        Session session = Session.getDefaultInstance(props, null);
-        try {
-            message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-        }
-        catch (AddressException me) {
-            String msg = "Malformed address in traceback configuration: " +
-                                from;
-            log.warn(msg);
-            throw new JavaMailException(msg, me);
-        }
-        catch (MessagingException me) {
-            String msg = "MessagingException while trying to send email: " + me;
-            log.warn(msg);
-            throw new JavaMailException(msg, me);
-        }
+        Session session = Session.getDefaultInstance(props, auth);
+        message = new MimeMessage(session);
+        setFrom(from);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setHeader(String name, String value) {
         try {
             message.setHeader(name, value);
@@ -105,6 +112,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setFrom(String from) {
         try {
             message.setFrom(new InternetAddress(from));
@@ -124,6 +132,7 @@ public class SmtpMail implements Mail {
 
 
     /** {@inheritDoc} */
+    @Override
     public void send() {
 
         try {
@@ -142,21 +151,25 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRecipient(String recipIn) {
         setRecipients(new String[]{recipIn});
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.TO, emailAddrs);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCCRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.CC, emailAddrs);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setBCCRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.BCC, emailAddrs);
     }
@@ -171,7 +184,7 @@ public class SmtpMail implements Mail {
         log.debug("setRecipients called.");
         Address[] recAddr = null;
         try {
-            List tmp = new LinkedList();
+            List<InternetAddress> tmp = new LinkedList<>();
             for (String sIn : recipIn) {
                 InternetAddress addr = new InternetAddress(sIn);
                 log.debug("checking: {}", addr.getAddress());
@@ -192,6 +205,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSubject(String subIn) {
         try {
             message.setSubject(subIn);
@@ -204,6 +218,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setBody(String textIn) {
         try {
             message.setText(textIn);
@@ -218,8 +233,9 @@ public class SmtpMail implements Mail {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         try {
             buf.append("Using SMTP host: ").append(this.smtpHost);
             buf.append("\nFrom: ");
@@ -232,12 +248,12 @@ public class SmtpMail implements Mail {
             buf.append(this.message.getContent());
         }
         catch (IOException | MessagingException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return buf.toString();
     }
 
-    private void appendHeaders(StringBuffer buf, Enumeration headers) {
+    private void appendHeaders(StringBuilder buf, Enumeration<String> headers) {
         while (headers.hasMoreElements()) {
             buf.append(headers.nextElement());
             buf.append("\n");
@@ -245,7 +261,7 @@ public class SmtpMail implements Mail {
         buf.append("\n");
     }
 
-    private void appendAddresses(StringBuffer buf, Address[] addrs) {
+    private void appendAddresses(StringBuilder buf, Address[] addrs) {
         if (addrs != null) {
             for (int x = 0; x < addrs.length; x++) {
                 buf.append(addrs[x].toString());
@@ -269,18 +285,16 @@ public class SmtpMail implements Mail {
             log.debug("Restricted domains: {}", StringUtils.join(restrictedDomains, " | "));
             log.debug("disallowedDomains domains: {}", StringUtils.join(disallowedDomains, " | "));
         }
-        if (restrictedDomains != null && restrictedDomains.length > 0) {
-            if (ArrayUtils.lastIndexOf(restrictedDomains, domain) == -1) {
-                log.warn("Address {} not in restricted domains list", addr.getAddress());
-                retval = false;
-            }
+        if (restrictedDomains != null && restrictedDomains.length > 0 &&
+                ArrayUtils.lastIndexOf(restrictedDomains, domain) == -1) {
+            log.warn("Address {} not in restricted domains list", addr.getAddress());
+            retval = false;
         }
 
-        if (retval &&  disallowedDomains != null && disallowedDomains.length > 0) {
-            if (ArrayUtils.lastIndexOf(disallowedDomains, domain) > -1) {
-                log.warn("Address {} in disallowed domains list", addr.getAddress());
-                retval = false;
-            }
+        if (retval &&  disallowedDomains != null && disallowedDomains.length > 0 &&
+                ArrayUtils.lastIndexOf(disallowedDomains, domain) > -1) {
+            log.warn("Address {} in disallowed domains list", addr.getAddress());
+            retval = false;
         }
         log.debug("verifyAddress returning: {}", retval);
         return retval;

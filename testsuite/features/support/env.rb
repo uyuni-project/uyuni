@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 SUSE LLC
+# Copyright (c) 2010-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -30,6 +30,9 @@ STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
+$is_cloud_provider = ENV["PROVIDER"].include? 'aws'
+$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
@@ -141,10 +144,6 @@ Before('@proxy') do
   skip_this_scenario unless $proxy
 end
 
-Before('@sle_client') do
-  skip_this_scenario unless $client
-end
-
 Before('@sle_minion') do
   skip_this_scenario unless $minion
 end
@@ -173,10 +172,6 @@ Before('@virthost_kvm') do
   skip_this_scenario unless $kvm_server
 end
 
-Before('@virthost_xen') do
-  skip_this_scenario unless $xen_server
-end
-
 Before('@centos7_minion') do
   skip_this_scenario unless $centos7_minion
 end
@@ -185,16 +180,44 @@ Before('@centos7_ssh_minion') do
   skip_this_scenario unless $centos7_ssh_minion
 end
 
-Before('@centos7_client') do
-  skip_this_scenario unless $centos7_client
-end
-
 Before('@rocky8_minion') do
   skip_this_scenario unless $rocky8_minion
 end
 
 Before('@rocky8_ssh_minion') do
   skip_this_scenario unless $rocky8_ssh_minion
+end
+
+Before('@rocky9_minion') do
+  skip_this_scenario unless $rocky9_minion
+end
+
+Before('@rhel9_minion') do
+  skip_this_scenario unless $rhel9_minion
+end
+
+Before('@rhel9_ssh_minion') do
+  skip_this_scenario unless $rhel9_ssh_minion
+end
+
+Before('@rocky9_ssh_minion') do
+  skip_this_scenario unless $rocky9_ssh_minion
+end
+
+Before('@alma9_minion') do
+  skip_this_scenario unless $alma9_minion
+end
+
+Before('@alma9_ssh_minion') do
+  skip_this_scenario unless $alma9_ssh_minion
+end
+
+Before('@oracle9_minion') do
+  skip_this_scenario unless $oracle9_minion
+end
+
+Before('@oracle9_ssh_minion') do
+  skip_this_scenario unless $oracle9_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -253,32 +276,12 @@ Before('@sle12sp4_minion') do
   skip_this_scenario unless $sle12sp4_minion
 end
 
-Before('@sle12sp4_client') do
-  skip_this_scenario unless $sle12sp4_client
-end
-
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless $sle12sp5_ssh_minion
 end
 
 Before('@sle12sp5_minion') do
   skip_this_scenario unless $sle12sp5_minion
-end
-
-Before('@sle12sp5_client') do
-  skip_this_scenario unless $sle12sp5_client
-end
-
-Before('@sle15_ssh_minion') do
-  skip_this_scenario unless $sle15_ssh_minion
-end
-
-Before('@sle15_minion') do
-  skip_this_scenario unless $sle15_minion
-end
-
-Before('@sle15_client') do
-  skip_this_scenario unless $sle15_client
 end
 
 Before('@sle15sp1_ssh_minion') do
@@ -289,20 +292,12 @@ Before('@sle15sp1_minion') do
   skip_this_scenario unless $sle15sp1_minion
 end
 
-Before('@sle15sp1_client') do
-  skip_this_scenario unless $sle15sp1_client
-end
-
 Before('@sle15sp2_ssh_minion') do
   skip_this_scenario unless $sle15sp2_ssh_minion
 end
 
 Before('@sle15sp2_minion') do
   skip_this_scenario unless $sle15sp2_minion
-end
-
-Before('@sle15sp2_client') do
-  skip_this_scenario unless $sle15sp2_client
 end
 
 Before('@sle15sp3_ssh_minion') do
@@ -313,10 +308,6 @@ Before('@sle15sp3_minion') do
   skip_this_scenario unless $sle15sp3_minion
 end
 
-Before('@sle15sp3_client') do
-  skip_this_scenario unless $sle15sp3_client
-end
-
 Before('@sle15sp4_ssh_minion') do
   skip_this_scenario unless $sle15sp4_ssh_minion
 end
@@ -325,8 +316,12 @@ Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
 end
 
-Before('@sle15sp4_client') do
-  skip_this_scenario unless $sle15sp4_client
+Before('@opensuse154arm_minion') do
+  skip_this_scenario unless $opensuse154arm_minion
+end
+
+Before('@opensuse154arm_ssh_minion') do
+  skip_this_scenario unless $opensuse154arm_ssh_minion
 end
 
 Before('@sle12sp5_buildhost') do
@@ -341,12 +336,12 @@ Before('@sle15sp4_buildhost') do
   skip_this_scenario unless $sle15sp4_buildhost
 end
 
-Before('@sle15sp4_terminal') do
-  skip_this_scenario unless $sle15sp4_terminal_mac
+Before('@monitoring_server') do
+  skip_this_scenario unless $monitoring_server
 end
 
-Before('@opensuse153arm_minion') do
-  skip_this_scenario unless $opensuse153arm_minion
+Before('@sle15sp4_terminal') do
+  skip_this_scenario unless $sle15sp4_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|
@@ -364,8 +359,13 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
 end
 
-Before('@skip_for_traditional') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'client'
+# TODO: remove these 2 "skip" tags when Rocky and Alma have patches available.
+Before('@skip_for_alma9') do
+  skip_this_scenario if $alma9_minion || $alma9_ssh_minion
+end
+
+Before('@skip_for_rocky9') do
+  skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
 # do some tests only if we have SCC credentials
@@ -408,6 +408,11 @@ Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
 end
 
+# do test only if custom downlad endpoint for packages is defined
+Before('@custom_download_endpoint') do
+  skip_this_scenario unless $custom_download_endpoint
+end
+
 # do test only if the registry is available
 Before('@no_auth_registry') do
   skip_this_scenario unless $no_auth_registry
@@ -416,6 +421,11 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
+end
+
+# skip tests if executed in cloud environment
+Before('@skip_if_cloud') do
+  skip_this_scenario if $is_cloud_provider
 end
 
 # have more infos about the errors

@@ -19,6 +19,7 @@ import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -38,9 +40,18 @@ import java.util.List;
 
 public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
+    private MockMail mailer;
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+        mailer = new MockMail();
+    }
 
     @Test
     public final void testVisibilityForNoRoles() {
+        mailer.setExpectedSendCount(1);
+        UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
@@ -48,10 +59,29 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        mailer.verify();
+    }
+
+    @Test
+    public final void testUserOptOutForMail() {
+        mailer.setExpectedSendCount(0);
+        UserNotificationFactory.setMailer(mailer);
+        user.setEmailNotify(0);
+
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        mailer.verify();
     }
 
     @Test
     public final void testVisibilityForWrongRoles() {
+        mailer.setExpectedSendCount(0);
+        UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(
@@ -60,10 +90,12 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(0, UserNotificationFactory.listAllByUser(user).size());
+        mailer.verify();
     }
 
     @Test
     public final void testUpdateReadFlag() {
+        UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
@@ -89,8 +121,9 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testDeleteNotificationMessagesBefore() {
+        UserNotificationFactory.setMailer(mailer);
         // Clean up all notifications that might be present
-        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+        if (!UserNotificationFactory.listAllNotificationMessages().isEmpty()) {
             UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         }
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
@@ -117,8 +150,9 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testDeleteNotificationMessages() {
+        UserNotificationFactory.setMailer(mailer);
         // Clean up all notifications that might be present
-        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+        if (!UserNotificationFactory.listAllNotificationMessages().isEmpty()) {
             UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         }
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());

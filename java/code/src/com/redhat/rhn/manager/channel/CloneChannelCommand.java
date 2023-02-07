@@ -76,6 +76,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
      * @throws InvalidParentChannelException thrown if parent label is not a
      * valid base channel.
      */
+    @Override
     public Channel create()
         throws InvalidChannelLabelException, InvalidChannelNameException,
         InvalidParentChannelException {
@@ -115,16 +116,11 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
         // need to save before calling stored procs below
         ChannelFactory.save(c);
-        c = ChannelFactory.reload(c);
+        c = HibernateFactory.reload(c);
 
-        if (stripModularMetadata) {
-            if (c.getModules() != null) {
-                HibernateFactory.getSession().delete(c.getModules());
-            }
-            c.setModules(null);
-        }
-        else {
-            c.cloneModulesFrom(original);
+        // Comps files are cloned by the DB trigger 'rhn_channel_cloned_comps_trig'
+        if (stripModularMetadata && c.isModular()) {
+            c.getModules().clear();
         }
 
         // This ends up being a mode query call so need to save first to get channel id

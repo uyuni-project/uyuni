@@ -34,9 +34,11 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 import org.junit.jupiter.api.Test;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -46,18 +48,17 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
 
     /**
      * Tests the execution of this Cobbler command.
-     * @throws Exception if unforeseen problems arise
      */
     @Test
-    public void testStore() throws Exception {
+    public void testStore() {
         // create a pre-existing system, profile and distro to test they have
         // been replaced
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
-        Distro distro = new Distro.Builder()
+        Distro distro = new Distro.Builder<String>()
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel("test-kernel")
                 .setInitrd("test-initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .build(connection);
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
         SystemRecord system = SystemRecord.create(connection, SystemRecord.BOOTSTRAP_NAME,
@@ -125,12 +126,13 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         Map<String, Object> newProfile = CobblerDisableBootstrapCommandTest.invoke(
             connection, "find_profile", criteria).get(0);
         assertEquals(Distro.BOOTSTRAP_NAME, newProfile.get("distro"));
-        Map<String, Object> expectedOptions = new HashMap<>();
         String activationKeyToken = user.getOrg().getId() + "-" +
             ActivationKey.BOOTSTRAP_TOKEN;
-        expectedOptions.put("spacewalk_hostname", config.getHostname());
-        expectedOptions.put("spacewalk_activationkey", activationKeyToken);
-        expectedOptions.put("ROOTFS_FSCK", "0");
+        Map<String, Object> expectedOptions = Map.ofEntries(
+                new AbstractMap.SimpleEntry<>("spacewalk_activationkey", activationKeyToken),
+                new AbstractMap.SimpleEntry<>("spacewalk_hostname", config.getHostname()),
+                new AbstractMap.SimpleEntry<>("ROOTFS_FSCK", "0")
+        );
         assertEquals(expectedOptions, newProfile.get("kernel_options"));
 
         criteria.put("name", SystemRecord.BOOTSTRAP_NAME);

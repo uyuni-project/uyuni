@@ -11,8 +11,9 @@ config_path = "/etc/uyuni/"
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
    
-    if config.get('log_level') is not None:
-        logging.getLogger().setLevel(logging.getLevelName(config.get('log_level')))
+    # log_level is the value for rhn.conf and should be a positive integer
+    log_level = logging.WARNING if config.get("log_level") == 1 else logging.DEBUG
+    logging.getLogger().setLevel(log_level)
 
     # store SSL CA certificate
     os.mkdir("/usr/share/uyuni/")

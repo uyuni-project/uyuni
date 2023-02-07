@@ -27,6 +27,9 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
@@ -44,8 +47,11 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -74,7 +80,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertNull(ChannelFactory.lookupById(id));
     }
 
-    public static ProductName lookupOrCreateProductName(String label) throws Exception {
+    public static ProductName lookupOrCreateProductName(String label) {
         ProductName attempt = ChannelFactory.lookupProductNameByLabel(label);
         if (attempt == null) {
             attempt = new ProductName();
@@ -121,6 +127,28 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
+        ChannelFactory.save(c);
+        return c;
+    }
+
+    public static Channel createTestChannel(User user, List<String> contentSourceUrls) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
+        // assume we want the user to have access to this channel once created
+        UserManager.addChannelPerm(user, c.getId(), "subscribe");
+        UserManager.addChannelPerm(user, c.getId(), "manage");
+
+        ContentSourceType type = ChannelManager.findCompatibleContentSourceType(c.getChannelArch());
+        contentSourceUrls.stream()
+                         .map(url -> {
+                             ContentSource cs = new ContentSource();
+                             cs.setLabel(c.getLabel() + "-CS-" + RandomStringUtils.randomAlphabetic(8));
+                             cs.setOrg(user.getOrg());
+                             cs.setType(type);
+                             cs.setSourceUrl(url);
+                             return TestUtils.saveAndReload(cs);
+                         })
+                         .forEach(c.getSources()::add);
+
         ChannelFactory.save(c);
         return c;
     }
@@ -173,8 +201,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return createTestChannel(name, label, org, arch, cfam);
     }
 
-    public static Channel createTestChannel(String name, String label, Org org, ChannelArch arch, ChannelFamily cfam)
-        throws Exception {
+    public static Channel createTestChannel(String name, String label, Org org, ChannelArch arch, ChannelFamily cfam) {
 
         String basedir = "TestChannel basedir";
         String summary = "TestChannel summary";
@@ -229,7 +256,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
                 ChannelFactory.getChannelsWithClonableErrata(
                 user.getOrg());
 
-        assertTrue(channels.size() > 0);
+        assertFalse(channels.isEmpty());
     }
 
     @Test
@@ -555,5 +582,29 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("b_parent1", channels.get(1).getLabel());
         assertEquals("a_child1", channels.get(2).getLabel());
         assertEquals("b_parent3", channels.get(3).getLabel());
+    }
+
+    @Test
+    public void testCloneModulesMetadata() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        Instant nowDate = Instant.now();
+        Channel orig = ChannelTestUtils.createTestChannel(user);
+        Modules modules = new Modules("modules1.yaml", Date.from(nowDate.minus(Duration.ofHours(1))));
+        modules.setChannel(orig);
+        orig.addModules(modules);
+        assertTrue(orig.isModular());
+
+        Channel clone = ChannelTestUtils.createTestChannel(user);
+        modules = new Modules("modules2.yaml", Date.from(nowDate));
+        modules.setChannel(clone);
+        clone.addModules(modules);
+        assertTrue(clone.isModular());
+
+        ChannelFactory.cloneModulesMetadata(orig, clone);
+
+        assertTrue(clone.isModular());
+        assertEquals(1, clone.getModules().size());
+        assertEquals("modules1.yaml", clone.getLatestModules().getRelativeFilename());
+        assertEquals(orig.getLatestModules().getLastModified(), clone.getLatestModules().getLastModified());
     }
 }

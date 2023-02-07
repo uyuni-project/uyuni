@@ -24,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,16 +32,13 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * A basic servlet class that registers handlers for xmlrpc calls
- *
- * todo pull in namespace + classes for handlers from, say, a properties file
- * todo perhaps override doGet ??
  */
 public class XmlRpcServlet extends HttpServlet {
 
     /** Comment for <code>serialVersionUID</code> */
     private static final long serialVersionUID = -9173485623604749521L;
 
-    private static Logger log = LogManager.getLogger(XmlRpcServlet.class);
+    private static final Logger LOG = LogManager.getLogger(XmlRpcServlet.class);
 
     private RhnXmlRpcServer server;
     private final HandlerFactory handlerFactory;
@@ -68,15 +64,19 @@ public class XmlRpcServlet extends HttpServlet {
         this(HandlerFactory.getDefaultHandlerFactory(), new SerializerFactory());
     }
 
-    private void passControl(HttpServletRequest request,
-                            HttpServletResponse response)
-        throws IOException {
-        response.sendRedirect("/rhn/apidoc/index.jsp");
+    private void passControl(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/rhn/apidoc/index.jsp");
+        }
+        catch (IOException e) {
+            LOG.error("Error redirecting to apidoc index", e);
+        }
     }
 
     /**
      * initialize the servlet
      */
+    @Override
     public void init() {
         server = new RhnXmlRpcServer();
 
@@ -101,9 +101,9 @@ public class XmlRpcServlet extends HttpServlet {
     private void registerInvocationHandlers(RhnXmlRpcServer srvr) {
         // find the configured handlers...
         for (String namespace : handlerFactory.getKeys()) {
-            handlerFactory.getHandler(namespace).ifPresent((handler) -> {
-                if (log.isDebugEnabled()) {
-                    log.debug("registerInvocationHandler: namespace [{}] handler [{}]", namespace, handler);
+            handlerFactory.getHandler(namespace).ifPresent(handler -> {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("registerInvocationHandler: namespace [{}] handler [{}]", namespace, handler);
                 }
                 srvr.addInvocationHandler(namespace, handler);
             });
@@ -115,14 +115,11 @@ public class XmlRpcServlet extends HttpServlet {
      *
      * @param request the request object
      * @param response the response object
-     * @throws ServletException if an error occurs
-     * @throws IOException if an error occurs
      */
+    @Override
     public void doGet(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws ServletException, IOException {
-
-        passControl(request, response);
+                       HttpServletResponse response) {
+        passControl(response);
     }
 
     /**
@@ -130,26 +127,22 @@ public class XmlRpcServlet extends HttpServlet {
      *
      * @param request the request object
      * @param response the response object
-     * @throws ServletException if a read error occurs
-     * @throws IOException if a read error occurs
      */
-    public void doPost(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws ServletException, IOException {
-
-        if (log.isDebugEnabled()) {
-            log.debug("Entered doPost");
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Entered doPost");
         }
 
         if (request.getHeader("SOAPAction") != null) {
-            passControl(request, response);
+            passControl(response);
             return;
         }
 
         response.setContentType("text/xml");
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Passing control to XmlRpcServer.execute");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Passing control to XmlRpcServer.execute");
             }
 
             server.execute(request.getInputStream(),
@@ -175,14 +168,8 @@ public class XmlRpcServlet extends HttpServlet {
         // As bad as this is, we have no choice, Marquee-xmlrpc throws
         // Throwable, so we have to catch it.
         catch (Throwable t) {
-            // By the time we get here, it can't be a FaultException, so just
-            // wrap it in a ServletException and toss.
-            ServletException e = new ServletException("Throwable from XmlRpc", t);
-            t.printStackTrace();
-            if (e.getCause() != t) {
-                e.initCause(t);
-            }
-            throw e;
+            // By the time we get here, it can't be a FaultException, so just log it
+            LOG.error("Unexpected XMLRPC error", t);
         }
     }
 }

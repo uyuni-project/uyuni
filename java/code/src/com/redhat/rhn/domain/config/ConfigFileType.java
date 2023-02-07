@@ -51,8 +51,7 @@ public class ConfigFileType implements Serializable {
     public static final String DIR = "directory";
     public static final String SYMLINK = "symlink";
     public static final String SLS = "sls";
-    private static final Map POSSIBLE_TYPES = new TreeMap(String.
-                                                    CASE_INSENSITIVE_ORDER);
+    private static final Map<String, ConfigFileType> POSSIBLE_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     /**
      * @return symlink config file type
@@ -118,7 +117,7 @@ public class ConfigFileType implements Serializable {
                             "in your expression " + POSSIBLE_TYPES.keySet();
             throw new IllegalArgumentException(msg);
         }
-        return (ConfigFileType)POSSIBLE_TYPES.get(type);
+        return POSSIBLE_TYPES.get(type);
     }
 
     /**

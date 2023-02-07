@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -54,8 +55,9 @@ public class ShowProfileAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -139,10 +141,9 @@ public class ShowProfileAction extends RhnAction {
             profiles.add(new LabelValueBean(p.getName(), p.getId().toString()));
         }
 
-        List<Map<String, Object>> dbservers =
-                SystemManager.compatibleWithServer(user, server);
+        List<Row> dbservers = SystemManager.compatibleWithServer(user, server);
         List<LabelValueBean> servers = new ArrayList<>(dbservers.size());
-        for (Map<String, Object> m : dbservers) {
+        for (Row m : dbservers) {
             servers.add(new LabelValueBean((String) m.get("name"), m.get("id").toString()));
         }
 

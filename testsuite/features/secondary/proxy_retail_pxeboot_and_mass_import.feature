@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -22,13 +22,6 @@ Feature: PXE boot a Retail terminal
   As the system administrator
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
-
-  Scenario: Install or update PXE formulas on the server
-    When I manually install the "tftpd" formula on the server
-    And I manually install the "vsftpd" formula on the server
-    And I manually install the "saltboot" formula on the server
-    And I manually install the "pxe" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -128,6 +121,10 @@ Feature: PXE boot a Retail terminal
     And I enter "Terminal branch: example.org" as "description"
     And I click on "Create Group"
     Then I should see a "System group example created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to example server group." text
 
   Scenario: Create all terminals group
     When I follow the left menu "Systems > System Groups"
@@ -148,6 +145,12 @@ Feature: PXE boot a Retail terminal
     And I check the "proxy" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to SERVERS server group." text
+
+  Scenario: Move the image to the branch server
+    When I enable repositories before installing branch server
+    And I apply state "image-sync" to "proxy"
+    And I disable repositories after installing branch server
+    Then the image for "pxeboot_minion" should exist on the branch server
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
@@ -187,28 +190,30 @@ Feature: PXE boot a Retail terminal
     When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I wait until radio button "Test-Channel-x86_64" is checked, refreshing the page
+    And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
     And I wait until event "Package List Refresh scheduled by (none)" is completed
     Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -216,7 +221,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
@@ -228,7 +233,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Cleanup: delete the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
@@ -317,7 +322,7 @@ Feature: PXE boot a Retail terminal
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
-    Then I follow the left menu "Systems > Overview"
+    Then I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
   Scenario: Check connection from bootstrapped terminal to proxy
@@ -332,6 +337,8 @@ Feature: PXE boot a Retail terminal
     When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy-2.0-1.1" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"

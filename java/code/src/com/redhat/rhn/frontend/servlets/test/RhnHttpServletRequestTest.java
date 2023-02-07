@@ -34,7 +34,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     private RhnHttpServletRequest request;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new MockHttpSession());
         request = new RhnHttpServletRequest(mockRequest);
@@ -42,10 +42,9 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testNoHeaders() throws Exception {
+    public void testNoHeaders() {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
         assertEquals("localhost", request.getServerName());
@@ -54,10 +53,9 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverrideServerName() throws Exception {
+    public void testOverrideServerName() {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
         mockRequest.setupGetHeader("X-Server-Hostname", "testServer.redhat.com");
@@ -67,20 +65,18 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testNoOverrideSecure() throws Exception {
+    public void testNoOverrideSecure() {
         mockRequest.setupIsSecure(false);
         assertFalse(request.isSecure());
     }
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverrideSecureHosted() throws Exception {
+    public void testOverrideSecureHosted() {
 
         mockRequest.setupIsSecure(false);
         mockRequest.setupGetHeader("X-ENV-HTTPS", "on");
@@ -91,9 +87,8 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverrideSecureSat() throws Exception {
+    public void testOverrideSecureSat() {
     }
 }

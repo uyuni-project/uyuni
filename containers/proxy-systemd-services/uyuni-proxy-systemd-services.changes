@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Jan 23 08:26:05 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Fix script for allowing using container images from different registry paths
+  * Allow using container images from different registry paths
+
+-------------------------------------------------------------------
+Wed Sep 28 10:48:48 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Expose /etc/sysconfig/proxy variables to container services (bsc#1202945)
+
+-------------------------------------------------------------------
 Wed Jul 27 14:13:35 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.6-1

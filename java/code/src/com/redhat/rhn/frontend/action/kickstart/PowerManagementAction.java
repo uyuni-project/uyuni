@@ -212,7 +212,7 @@ public class PowerManagementAction extends RhnAction {
 
         SortedMap<String, String> types = setUpPowerTypes(request, strutsDelegate, errors);
 
-        if (types.size() > 0) {
+        if (!types.isEmpty()) {
             SystemRecord record = getSystemRecord(user, server);
 
             if (record == null) {
@@ -249,7 +249,7 @@ public class PowerManagementAction extends RhnAction {
         }
         request.setAttribute(TYPES, types);
 
-        if (types.size() == 0) {
+        if (types.isEmpty()) {
             strutsDelegate.addError(errors, "kickstart.powermanagement.jsp.no_types",
                 ConfigDefaults.POWER_MANAGEMENT_TYPES);
             strutsDelegate.saveMessages(request, errors);

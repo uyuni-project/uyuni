@@ -362,7 +362,7 @@
         <form-bean name="generalConfigForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="traceback_mail"  type="java.lang.String"/>
-            <form-property name="server|jabber_server"  type="java.lang.String"/>
+            <form-property name="java|hostname"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_username"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_password"  type="java.lang.String"/>
@@ -455,7 +455,7 @@
              <form-property name="virt_disk_path" type="java.lang.String"/>
              <form-property name="virt_mem_mb"  type="java.lang.Integer"/>
              <form-property name="virt_cpus"  type="java.lang.Integer"/>
-             <form-property name="virt_disk_size"  type="java.lang.Integer"/>
+             <form-property name="virt_disk_size"  type="java.lang.Double"/>
              <form-property name="virt_bridge" type="java.lang.String"/>
 
         </form-bean>
@@ -599,7 +599,7 @@
             <form-property name="virt_disk_path" type="java.lang.String"/>
             <form-property name="virt_mem_mb"  type="java.lang.Integer"/>
             <form-property name="virt_cpus"  type="java.lang.Integer"/>
-            <form-property name="virt_disk_size"  type="java.lang.Integer"/>
+            <form-property name="virt_disk_size"  type="java.lang.Double"/>
             <form-property name="virt_bridge" type="java.lang.String"/>
             <form-property name="no_scrub" type="java.lang.String" initial="contents"/>
         </form-bean>
@@ -1237,7 +1237,7 @@
     <forward name="user" path="/users/ActiveList.do" redirect="true" />
     <forward name="audit" path="/audit/Overview.do" redirect="true" />
     <forward name="errata" path="/errata/RelevantErrata.do" redirect="true" />
-    <forward name="systems" path="/systems/Overview.do" redirect="true" />
+    <forward name="systems" path="/manager/systems/list/all" redirect="true" />
     <forward name="schedule" path="/schedule/PendingActions.do" redirect="true" />
   </global-forwards>
 
@@ -2497,41 +2497,6 @@
     </action>
 
     <!-- ===== SYSTEMS ===== -->
-    <action path="/systems/Overview"
-        scope="request"
-        input="/WEB-INF/pages/systems/overview.jsp"
-        type="com.redhat.rhn.frontend.action.systems.OverviewAction"
-        parameter="dispatch"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/overview.jsp"/>
-        <forward name="ssm-list-systems"
-                 path="/systems/ssm/ListSystems.do"/>
-        <forward name="YourRhn"
-                 path="/YourRhn.do"
-                 redirect="true" />
-    </action>
-
-    <action path="/systems/SystemList"
-        scope="request"
-        input="/WEB-INF/pages/systems/systemlist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.SystemListSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/systemlist.jsp"/>
-    </action>
-
-    <action path="/systems/PhysicalList"
-        scope="request"
-        input="/WEB-INF/pages/systems/physicallist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.PhysicalSystemSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/physicallist.jsp"/>
-    </action>
 
     <action path="/systems/DuplicateIPList"
         scope="request"
@@ -2627,69 +2592,6 @@
                   redirect="true"/>
     </action>
 
-    <action path="/systems/OutOfDate"
-        scope="request"
-        input="/WEB-INF/pages/systems/outofdatelist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.OutOfDateSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/outofdatelist.jsp"/>
-    </action>
-
-    <action path="/systems/Unentitled"
-        scope="request"
-        input="/WEB-INF/pages/systems/unentitledlist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.UnentitledSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/unentitledlist.jsp"/>
-    </action>
-
-    <action path="/systems/Ungrouped"
-        scope="request"
-        input="/WEB-INF/pages/systems/ungroupedlist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.UngroupedSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-          <set-property property="acls"
-               value="user_role(org_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/ungroupedlist.jsp"/>
-    </action>
-
-    <action path="/systems/Inactive"
-        scope="request"
-        input="/WEB-INF/pages/systems/inactivelist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.InactiveSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/inactivelist.jsp"/>
-    </action>
-
-    <action path="/systems/RequiringReboot"
-        scope="request"
-        input="/WEB-INF/pages/systems/requiringreboot.jsp"
-        type="com.redhat.rhn.frontend.action.systems.RequiringRebootSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/requiringrebootlist.jsp"/>
-    </action>
-
-    <action path="/systems/Registered"
-        scope="request"
-        name="recentlyRegisteredSystemsForm"
-        input="/WEB-INF/pages/systems/registeredlist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.RegisteredSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/registeredlist.jsp"/>
-    </action>
-
     <action path="/systems/details/SystemHardware"
         scope="request"
         name="systemHardwareForm"
@@ -2744,18 +2646,6 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/systemcurrency.jsp"/>
-    </action>
-
-    <action path="/systems/ProxyList"
-        scope="request"
-        input="/WEB-INF/pages/systems/proxylist.jsp"
-        type="com.redhat.rhn.frontend.action.systems.ProxyListSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls"
-                      value="org_channel_family(SMP) or not is_suma(); user_role(org_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/proxylist.jsp"/>
     </action>
 
     <action path="/systems/BootstrapSystemList" scope="request"
@@ -3143,7 +3033,7 @@
         <forward name="default"
                  path="/WEB-INF/pages/systems/sdc/delete_confirm.jsp"/>
         <forward name="success"
-                 path="/systems/Overview.do" redirect="true"/>
+                 path="/manager/systems/list/all" redirect="true"/>
     </action>
     <action path="/systems/details/history/FailEventConfirmation"
               scope="request"
@@ -3420,7 +3310,7 @@
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/migrate.jsp"/>
                <forward name="confirm"
-                 path="/systems/Overview.do" redirect="true"/>
+                 path="/manager/systems/list/all" redirect="true"/>
      </action>
 
     <action path="/systems/ssm/provisioning/Rollback"
@@ -3549,7 +3439,7 @@
              <forward name="default"
                       path="/WEB-INF/pages/systems/sdc/migrate.jsp" />
              <forward name="success"
-                      path="/systems/SystemList.do" redirect="true" />
+                      path="/manager/systems/list/all" redirect="true" />
              <forward name="error"
                       path="/WEB-INF/pages/systems/sdc/migrate.jsp" />
      </action>
@@ -8040,15 +7930,6 @@
       <forward name="submitted"
                redirect="true"
                path="/systems/details/virtualization/Deployment.do" />
-    </action>
-
-    <action path="/systems/ExtraPackagesSystems"
-        scope="request"
-        input="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"
-        type="com.redhat.rhn.frontend.action.systems.ExtraPackagesSystemsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"/>
     </action>
 
     <!-- Product Migration -->

@@ -74,6 +74,7 @@ public class HelpDocumentOverview {
     /**
      * @return string representation
      */
+    @Override
     public String toString() {
         return "Title = " + getTitle() + ", Url = " + getUrl() + ", Summary = " +
             getSummary();

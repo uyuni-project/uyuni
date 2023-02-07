@@ -110,7 +110,7 @@ public class MigrationManager extends BaseManager {
             event.setDetails(details);
             server.getHistory().add(event);
 
-            SystemMigration migration = SystemMigrationFactory.createSystemMigration();
+            SystemMigration migration = new SystemMigration();
             migration.setToOrg(toOrg);
             migration.setFromOrg(fromOrg);
             migration.setServer(server);
@@ -142,7 +142,7 @@ public class MigrationManager extends BaseManager {
 
         // Unsubscribe from all channels to change channel entitlements
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
-                new ArrayList());
+                new ArrayList<>());
         cmd.store();
         SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
 

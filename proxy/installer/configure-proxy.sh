@@ -320,7 +320,6 @@ HTTPDCONF_DIR=/etc/apache2
 HTTPDCONFD_DIR=/etc/apache2/conf.d
 #HTMLPUB_DIR=/var/www/html/pub
 HTMLPUB_DIR=/srv/www/htdocs/pub
-JABBERD_DIR=/etc/jabberd
 SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
@@ -528,8 +527,6 @@ fi
 
 if [ -x /usr/sbin/rhn-proxy ]; then
     /usr/sbin/rhn-proxy stop
-        # the jabberd db might be an old version. Cleanup
-        rm -f /var/lib/jabberd/db/*
 fi
 
 $YUM spacewalk-proxy-management
@@ -539,8 +536,6 @@ if [ $? -ne 0 ]; then
     config_error 2 "Installation of package spacewalk-proxy-management failed."
 fi
 $UPGRADE
-
-/usr/bin/spacewalk-setup-jabberd --macros "hostname:$HOSTNAME"
 
 # size of squid disk cache will be 60% of free space on /var/cache/squid
 # df -P give free space in kB
@@ -626,9 +621,7 @@ if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
                     $RHNCONF_DIR/rhn.conf
                     $SQUID_DIR/squid.conf
                     $HTTPDCONFD_DIR/cobbler-proxy.conf
-                    $HTTPDCONF_DIR/httpd.conf
-                    $JABBERD_DIR/c2s.xml
-                    $JABBERD_DIR/sm.xml )
+                    $HTTPDCONF_DIR/httpd.conf )
     for conf_file in ${arr_conf_list[*]}; do
         [ -e ${conf_file} ] && arr_conf=(${arr_conf[*]} ${conf_file})
     done
@@ -653,26 +646,13 @@ if [ $ACTIVATE_SLP -ne 0 ]; then
     else
       echo "firewalld not installed" >&2
     fi
-    if [ -x /usr/bin/systemctl ] ; then
-        /usr/bin/systemctl enable slpd
-        /usr/bin/systemctl start slpd
-    else
-        insserv slpd
-        rcslpd start
-    fi
+    /usr/bin/systemctl enable slpd
+    /usr/bin/systemctl start slpd
 fi
 
 echo "Enabling Spacewalk Proxy."
-for service in squid apache2 jabberd; do
-    if [ -x /usr/bin/systemctl ] ; then
-        /usr/bin/systemctl enable $service
-    else
-        #/sbin/chkconfig --add $service
-        #/sbin/chkconfig --level 345 $service on
-
-        # use insserv do switch to current default runlevel
-        /sbin/insserv -d $service
-    fi
+for service in squid apache2 salt-broker; do
+    /usr/bin/systemctl enable $service
 done
 
 # default is 1

@@ -17,7 +17,9 @@ package com.redhat.rhn.manager.satellite;
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -80,6 +82,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "virthost_pillar_refresh";
     public static final String PILLARS_FROM_FILES =
             UPGRADE_TASK_NAME + "pillars_from_files";
+    public static final String SYSTEM_THRESHOLD_FROM_CONFIG =
+            UPGRADE_TASK_NAME + "system_threshold_conf";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -151,6 +155,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case PILLARS_FROM_FILES:
                         migratePillarsFromFiles();
+                        break;
+                    case SYSTEM_THRESHOLD_FROM_CONFIG:
+                        convertSystemThresholdFromConfig();
                         break;
                     default:
                 }
@@ -257,7 +264,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 ConfigContent content = ConfigurationFactory.createNewContentFromStream(stream,
                         (long) bytes.length, false, "{|", "|}");
                 revision.setConfigContent(content);
-                ConfigurationFactory.getSession().save(revision);
+                HibernateFactory.getSession().save(revision);
             }
             catch (IOException e) {
                 log.error("Error when importing state '{}' from file '{}'. Skipping this state.", channelLabel, statePath, e);
@@ -376,5 +383,11 @@ public class UpgradeCommand extends BaseTransactionCommand {
         OrgFactory.lookupAllOrgs().forEach(org -> ServerGroupFactory.listManagedGroups(org)
                 .forEach(FormulaFactory::convertGroupFormulasFromFiles));
         log.warn("Migrated pillars and formula pillars to database");
+    }
+
+    private void convertSystemThresholdFromConfig() {
+        log.warn("Converting web.system_checkin_threshold to DB config");
+        SatConfigFactory.setSatConfigValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD,
+                Config.get().getString("web.system_checkin_threshold", "1"));
     }
 }

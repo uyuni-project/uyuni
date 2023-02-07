@@ -167,6 +167,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         /**
          * {@inheritDoc}
          */
+        @Override
         public List<KickstartDto> getResult(RequestContext ctx) {
             Long sid = ctx.getParamAsLong(RequestContext.SID);
             User user = ctx.getCurrentUser();
@@ -174,7 +175,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             KickstartScheduleCommand cmd = getKickstartScheduleCommand(sid,
                     user);
             DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();
-            if (profiles.size() == 0) {
+            if (profiles.isEmpty()) {
                 addMessage(ctx.getRequest(), "kickstart.schedule.noprofiles");
                 ctx.getRequest().setAttribute(HAS_PROFILES,
                         Boolean.FALSE.toString());
@@ -198,7 +199,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static void setupProxyInfo(RequestContext ctx) {
         List<OrgProxyServer> proxies = SystemManager.
                 listProxies(ctx.getCurrentUser().getOrg());
-        if (proxies != null && proxies.size() > 0) {
+        if (proxies != null && !proxies.isEmpty()) {
             List<LabelValueBean> formatted = new LinkedList<>();
 
             formatted.add(lvl10n("kickstart.schedule.default.proxy.jsp", ""));
@@ -409,10 +410,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 ctx.getRequest(), form, "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         SdcHelper.ssmCheck(ctx.getRequest(), system.getId(), user);
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, sid);
-        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(),
-                params);
+        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(), params);
         helper.execute();
         if (!StringUtils.isBlank(form.getString(RequestContext.COBBLER_ID))) {
             ListTagHelper.selectRadioValue(ListHelper.LIST,
@@ -494,11 +494,11 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             // Disable the package/system sync radio buttons if no profiles are
             // available:
             String syncPackageDisabled = "false";
-            if (packageProfiles.size() == 0) {
+            if (packageProfiles.isEmpty()) {
                 syncPackageDisabled = "true";
             }
             String syncSystemDisabled = "false";
-            if (systemProfiles.size() == 0) {
+            if (systemProfiles.isEmpty()) {
                 syncSystemDisabled = "true";
             }
             ctx.getRequest()
@@ -540,17 +540,51 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             Distro distro = Distro.lookupById(con,
                     cmd.getKsdata().getTree().getCobblerId());
 
-            ctx.getRequest().setAttribute("distro_kernel_params",
-                    distro.getKernelOptionsString());
-            ctx.getRequest().setAttribute("distro_post_kernel_params",
-                    distro.getKernelOptionsPostString());
+            if (distro.getKernelOptions().isEmpty()) {
+                ctx.getRequest().setAttribute("distro_kernel_params",
+                        CobblerObject.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("distro_kernel_params",
+                        (distro.getKernelOptions().get() instanceof Map) ?
+                            distro.convertOptionsMap(distro.getKernelOptions().get()) :
+                            distro.getKernelOptions().get());
+            }
+            if (distro.getKernelOptionsPost().isEmpty()) {
+                ctx.getRequest().setAttribute("distro_post_kernel_params",
+                        CobblerObject.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("distro_post_kernel_params",
+                        (distro.getKernelOptionsPost().get() instanceof Map) ?
+                            distro.convertOptionsMap(distro.getKernelOptionsPost().get()) :
+                            distro.getKernelOptionsPost().get());
+            }
 
             org.cobbler.Profile profile = org.cobbler.Profile.
-                    lookupById(con, cmd.getKsdata().getCobblerId());
-            ctx.getRequest().setAttribute("profile_kernel_params",
-                    profile.getKernelOptionsString());
-            ctx.getRequest().setAttribute("profile_post_kernel_params",
-                    profile.getKernelOptionsPostString());
+                        lookupById(con, cmd.getKsdata().getCobblerId());
+
+            if (profile.getKernelOptions().isEmpty()) {
+                ctx.getRequest().setAttribute("profile_kernel_params",
+                        CobblerObject.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("profile_kernel_params",
+                        (profile.getKernelOptions().get() instanceof Map) ?
+                             profile.convertOptionsMap(profile.getKernelOptions().get()) :
+                             profile.getKernelOptions().get());
+            }
+            if (profile.getKernelOptionsPost().isEmpty()) {
+                ctx.getRequest().setAttribute("profile_post_kernel_params",
+                        CobblerObject.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("profile_post_kernel_params",
+                        (profile.getKernelOptionsPost().get() instanceof Map) ?
+                             profile.convertOptionsMap(profile.getKernelOptionsPost().get()) :
+                             profile.getKernelOptionsPost().get());
+            }
+
             if (cmd.getServer().getCobblerId() != null) {
                 SystemRecord rec = SystemRecord.
                         lookupById(con, cmd.getServer().getCobblerId());
@@ -558,11 +592,24 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     profile.getName().equals(rec.getProfile().getName())) {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(KERNEL_PARAMS, rec.getKernelOptionsString());
+                        if (rec.getKernelOptions().isEmpty()) {
+                            form.set(KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
+                        }
+                        else {
+                            form.set(KERNEL_PARAMS,
+                                    profile.convertOptionsMap(rec.getKernelOptions().get()));
+                        }
                     }
+
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
                         form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(POST_KERNEL_PARAMS, rec.getKernelOptionsPostString());
+                        if (rec.getKernelOptionsPost().isEmpty()) {
+                            form.set(POST_KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
+                        }
+                        else {
+                            form.set(POST_KERNEL_PARAMS,
+                                    profile.convertOptionsMap(rec.getKernelOptionsPost().get()));
+                        }
                     }
                 }
             }
@@ -867,7 +914,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
         }
 
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             addErrors(ctx.getRequest(), errors);
             return false;
         }
@@ -990,9 +1037,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             ret = profile.getDistro();
         }
         if (!isPost) {
-            return ret.getKernelOptionsString();
+            return ret.convertOptionsMap(ret.getKernelOptions().get());
         }
-        return ret.getKernelOptionsPostString();
+        return ret.convertOptionsMap(ret.getKernelOptionsPost().get());
 
     }
 }

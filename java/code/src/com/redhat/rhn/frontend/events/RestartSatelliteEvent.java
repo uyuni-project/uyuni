@@ -37,6 +37,7 @@ public class RestartSatelliteEvent extends BaseEvent implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toText() {
         // really a noop
         return "";

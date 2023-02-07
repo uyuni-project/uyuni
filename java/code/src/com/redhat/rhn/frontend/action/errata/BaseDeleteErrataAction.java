@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseDeleteErrataAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

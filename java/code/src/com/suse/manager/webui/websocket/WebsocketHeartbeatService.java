@@ -48,7 +48,7 @@ import javax.websocket.Session;
  * @see <a href="https://www.rfc-editor.org/rfc/rfc6455#section-5.5.2">RFC-6455 (sections 5.5.2, 5.5.3)</a>
  */
 public class WebsocketHeartbeatService {
-    private final Logger LOG = LogManager.getLogger(WebsocketHeartbeatService.class);
+    private static final Logger LOG = LogManager.getLogger(WebsocketHeartbeatService.class);
     private final Set<Session> wsSessions = ConcurrentHashMap.newKeySet();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
 
@@ -65,7 +65,7 @@ public class WebsocketHeartbeatService {
      */
     public void register(Session session) {
         wsSessions.add(session);
-        LOG.debug("The websocket session (" + session.getId() + ") is registered for pings");
+        LOG.debug("The websocket session ({}) is registered for pings", session.getId());
     }
 
     /**
@@ -76,7 +76,7 @@ public class WebsocketHeartbeatService {
      */
     public void unregister(Session session) {
         wsSessions.remove(session);
-        LOG.debug("The websocket session (" + session.getId() + ") is unregistered and won't be pinged anymore");
+        LOG.debug("The websocket session ({}) is unregistered and won't be pinged anymore", session.getId());
     }
 
     private void clearStaleSessions() {
@@ -88,7 +88,7 @@ public class WebsocketHeartbeatService {
         });
 
         if (!staleSessions.isEmpty()) {
-            LOG.debug(staleSessions.size() + " sessions are marked as 'stale'");
+            LOG.debug("{} sessions are marked as 'stale'", staleSessions.size());
             staleSessions.forEach(this::unregister);
         }
     }
@@ -105,13 +105,13 @@ public class WebsocketHeartbeatService {
                     openSessions.incrementAndGet();
                 }
                 catch (IOException eIn) {
-                    LOG.error("Failed to ping session (" + session.getId() + ")", eIn);
+                    LOG.error("Failed to ping session ({})", session.getId(), eIn);
                 }
             }
         });
 
         if (openSessions.get() > 0) {
-            LOG.debug(openSessions.get() + " open sessions pinged");
+            LOG.debug("{} open sessions pinged", openSessions.get());
         }
     }
 

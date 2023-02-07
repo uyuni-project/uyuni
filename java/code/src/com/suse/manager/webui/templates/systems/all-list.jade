@@ -1,0 +1,21 @@
+include ../common.jade
+#systems-all-list
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('systems/list/all')
+        .then(function(module) {
+            module.renderer(
+                'systems-all-list', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin},
+                    queryColumn: #{queryColumn},
+                    query: !{query}
+                }
+            )
+        });

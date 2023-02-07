@@ -69,7 +69,7 @@ import spark.Spark;
 public class MaintenanceController {
 
     private static final MaintenanceManager MM = new MaintenanceManager();
-    private static Logger log = LogManager.getLogger(MaintenanceScheduleController.class);
+    private static Logger log = LogManager.getLogger(MaintenanceController.class);
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())

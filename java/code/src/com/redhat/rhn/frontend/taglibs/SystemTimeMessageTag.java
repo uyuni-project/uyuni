@@ -14,10 +14,9 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import java.util.Date;
@@ -49,6 +48,7 @@ public class SystemTimeMessageTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
@@ -75,7 +75,7 @@ public class SystemTimeMessageTag extends TagSupport {
         long checkInAgo = now.getTime() - lastCheckIn.getTime();
         Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
         boolean awol = days.intValue() >
-                       Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
+                SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
 
         retval.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"6\">");
 
@@ -107,6 +107,7 @@ public class SystemTimeMessageTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         server = null;
         super.release();

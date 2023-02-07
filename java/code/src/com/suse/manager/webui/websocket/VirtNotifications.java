@@ -129,7 +129,6 @@ public class VirtNotifications {
      * @param messageBody the message as string
      */
     @OnMessage
-    @SuppressWarnings("unchecked")
     public void onMessage(Session session, String messageBody) {
         // Each session sends messages to tell us what action ID they need to monitor
         Set<VirtNotificationMessage> serverIds = wsSessions.get(session);
@@ -184,7 +183,7 @@ public class VirtNotifications {
             }
         }
         else {
-            LOG.debug(String.format("Session not registered or broken: [id:%s]", session.getId()));
+            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
         }
     }
 
@@ -202,8 +201,7 @@ public class VirtNotifications {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is closed.",
-                            session.getId()));
+                    LOG.debug("Could not send websocket message. Session [id:{}] is closed.", session.getId());
                     handbreakSession(session);
                 }
             }

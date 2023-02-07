@@ -25,6 +25,11 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 /**
  * TaskFactory
  */
@@ -32,7 +37,6 @@ public class TaskFactory extends HibernateFactory {
 
     private static TaskFactory singleton = new TaskFactory();
     private static Logger log = LogManager.getLogger(TaskFactory.class);
-    public static final int NO_MAXIMUM = -1;
 
     private TaskFactory() {
         super();
@@ -41,6 +45,7 @@ public class TaskFactory extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -90,11 +95,38 @@ public class TaskFactory extends HibernateFactory {
      */
     public static Task lookup(Org org, String name, Long data) {
         Session session = HibernateFactory.getSession();
-        return (Task) session.getNamedQuery("Task.lookup")
-                                 .setString("name", name)
-                                   .setLong("data", data)
-                                 .setParameter("org", org)
-                                 .uniqueResult();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Task> criteriaQuery = builder.createQuery(Task.class);
+        Root<Task> root = criteriaQuery.from(Task.class);
+        criteriaQuery.select(root).where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("data"), data),
+                builder.equal(root.get("org"), org)
+        ));
+
+        return session.createQuery(criteriaQuery).getResultList().stream().findFirst().orElse(null);
+    }
+
+    /**
+     * Delete tasks matching an organization, a name, a data and a priority.
+     *
+     * @param org The organization
+     * @param name the tasks name
+     * @param data the tasks data
+     * @param priority the tasks priority
+     */
+    public static void deleteByOrgNameDataPriority(Org org, String name, Long data, int priority) {
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<Task> criteriaDelete = builder.createCriteriaDelete(Task.class);
+        Root<Task> root = criteriaDelete.from(Task.class);
+        criteriaDelete.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("data"), data),
+                builder.equal(root.get("org"), org),
+                builder.equal(root.get("priority"), priority)
+        ));
+        session.createQuery(criteriaDelete).executeUpdate();
     }
 
     /**
@@ -102,12 +134,17 @@ public class TaskFactory extends HibernateFactory {
      * @param org The org containing the tasks
      * @return Returns a list of task objects
      */
-    public static List getTaskListByChannel(Org org) {
+    public static List<Task> getTaskListByChannel(Org org) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("Task.lookupByOrgAndName")
-                      .setParameter("org", org)
-                      .setString("name", ErrataCacheWorker.BY_CHANNEL)
-                      .list();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Task> criteriaQuery = builder.createQuery(Task.class);
+        Root<Task> root = criteriaQuery.from(Task.class);
+        criteriaQuery.select(root).where(builder.and(
+                builder.equal(root.get("name"), ErrataCacheWorker.BY_CHANNEL),
+                builder.equal(root.get("org"), org)
+        ));
+
+        return session.createQuery(criteriaQuery).list();
     }
 
 
@@ -118,8 +155,12 @@ public class TaskFactory extends HibernateFactory {
      * @return List of Tasks or null if not found.
      */
     public static List<Task> getTaskListByNameLike(String nameIn) {
-        return HibernateFactory.getSession().getNamedQuery("Task.lookupByNameLike")
-          .setString("namelike", nameIn + "%")
-          .list();
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Task> criteriaQuery = builder.createQuery(Task.class);
+        Root<Task> root = criteriaQuery.from(Task.class);
+        criteriaQuery.select(root).where(builder.like(root.get("name"), nameIn + "%"));
+
+        return session.createQuery(criteriaQuery).list();
     }
 }

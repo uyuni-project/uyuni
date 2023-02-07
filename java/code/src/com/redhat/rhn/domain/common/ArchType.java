@@ -92,6 +92,7 @@ public class ArchType extends BaseDomainHelper {
 
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -106,11 +107,13 @@ public class ArchType extends BaseDomainHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
 

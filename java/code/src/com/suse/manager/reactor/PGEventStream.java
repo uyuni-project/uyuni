@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
@@ -92,6 +93,11 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         dataSource.setProtocolIoMode("nio");
 
         try {
+            int pending = SaltEventFactory.fixQueueNumbers(THREAD_POOL_SIZE);
+            if (pending > 0) {
+                LOG.info("Found {} queued salt events", pending);
+            }
+
             connection = (PGConnection) dataSource.getConnection();
             connection.addNotificationListener(this);
 
@@ -123,17 +129,13 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                     try (Statement s = connection.createStatement()) {
                         s.execute("SELECT 'salt-event-connection-watchdog';");
 
-                        // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
+                        // if we have any rows in suseSaltEvent that do not yet have a process task active
                         // then schedule tasks for them
                         // this can only happen in case we lost notifications somehow
                         List<Long> allJobs = SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE + 1);
 
-                        List<Long> queuedJobs = executorServices.stream()
-                                .map(executor -> executor.getTaskCount() - executor.getCompletedTaskCount())
-                                .collect(Collectors.toList());
-
                         List<Long> missingJobs = IntStream.range(0, allJobs.size())
-                            .mapToObj(i -> allJobs.get(i) - queuedJobs.get(i))
+                            .mapToObj(i -> executorServices.get(i).getActiveCount() > 0 ? 0 : allJobs.get(i))
                             .collect(Collectors.toList());
 
                         if (missingJobs.stream().mapToLong(l -> l).sum() > 0) {
@@ -143,8 +145,18 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                     }
                 }
                 catch (SQLException e) {
+                    // DB connection is probably broken
+                    // make sure that the callback does not use the old session
+                    HibernateFactory.closeSession();
                     cancel();
                     clearListeners(0, "Postgres notification connection was lost");
+                }
+                catch (Exception e) {
+                    LOG.error("Unexpected exception:", e);
+                }
+                finally {
+                    // create new session for each run
+                    HibernateFactory.closeSession();
                 }
             }
         }, 0, 5_000);
@@ -211,7 +223,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         if (!uncommittedEvents.isEmpty()) {
             List<Long> ids = uncommittedEvents.stream().map(SaltEvent::getId).collect(toList());
             List<Long> deletedIds = SaltEventFactory.deleteSaltEvents(ids);
-            LOG.error("Events {} were lost", deletedIds.toString());
+            LOG.error("Events {} were lost", deletedIds);
         }
 
         if (exception instanceof PGEventListenerException) {

@@ -21,12 +21,14 @@ import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -38,6 +40,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
+import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,6 +59,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcInvocationHandler;
@@ -100,7 +104,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         WebSession session = null;
         User user = null;
 
-        if (params.size() > 0 && params.get(0) instanceof String &&
+        if (!params.isEmpty() && params.get(0) instanceof String &&
                 isSessionKey((String)params.get(0))) {
             if (!myClass.getName().endsWith("AuthHandler") &&
                 !myClass.getName().endsWith("SearchHandler")) {
@@ -115,25 +119,12 @@ public class BaseHandler implements XmlRpcInvocationHandler {
 
         //Attempt to find a perfect match
         Method foundMethod = findPerfectMethod(params, matchedMethods);
-
         Object[] converted = params.toArray();
 
-
-        //If we were not able to find the exact method match, let's just use the first one
-        //      This isn't the best method, but if you can figure out a better way
-        //      that is easy feel free to change.
-        //Since it is not an exact match, we have to translate the params.
         if (foundMethod == null) {
-            foundMethod = matchedMethods.get(0);
-            Class[] types = foundMethod.getParameterTypes();
-
-            Iterator iter = params.iterator();
-            for (int i = 0; i < types.length; i++) {
-                Object curr = iter.next();
-                if (!types[i].equals(curr.getClass())) {
-                    converted[i] = Translator.convert(curr, types[i]);
-                }
-            }
+            Tuple2<Method, Object[]> fallbackMethod = findFallbackMethod(params, matchedMethods);
+            foundMethod = fallbackMethod.getA();
+            converted = fallbackMethod.getB();
         }
 
         if (user != null && user.isReadOnly()) {
@@ -187,6 +178,48 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
     }
 
+    private Tuple2<Method, Object[]> findFallbackMethod(
+            List<Object> params, List<Method> matchedMethods) {
+
+        Map<Boolean, List<Xor<TranslationException, Tuple2<Method, Object[]>>>> collect = matchedMethods
+                .stream()
+                .map(method -> {
+                    Class<?>[] types = method.getParameterTypes();
+                    Object[] converted = params.toArray();
+
+                    Iterator<Object> iter = params.iterator();
+                    for (int i = 0; i < types.length; i++) {
+                        Object curr = iter.next();
+                        if (!types[i].equals(curr.getClass())) {
+                            try {
+                                converted[i] = Translator.convert(curr, types[i]);
+                            }
+                            catch (TranslationException e) {
+                                return Xor.<TranslationException, Tuple2<Method, Object[]>>left(e);
+                            }
+                        }
+                    }
+                    return Xor.<TranslationException, Tuple2<Method, Object[]>>right(new Tuple2<>(method, converted));
+
+                }).collect(Collectors.partitioningBy(x -> x.isRight()));
+
+        List<Tuple2<Method, Object[]>> candidates = collect.get(true).stream()
+                .flatMap(x -> x.right().stream()).collect(Collectors.toList());
+
+        List<TranslationException> exceptions = collect.get(false).stream()
+                .flatMap(x -> x.left().stream()).collect(Collectors.toList());
+
+        if (candidates.isEmpty()) {
+           throw exceptions.get(0);
+        }
+        else if (candidates.size() == 1) {
+            return candidates.get(0);
+        }
+        else  {
+            throw new TranslationException("more then one method candidate found during conversion fallback");
+        }
+    }
+
     /**
      * Finds the perfect match for a method based upon type
      * @param params The parameters to find the match for.
@@ -196,7 +229,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private Method findPerfectMethod(List params, List<Method> matchedMethods) {
         //now lets try to find one that matches parameters exactly
         for (Method currMethod : matchedMethods) {
-            log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
+            if (log.isDebugEnabled()) {
+                log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
+            }
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
                 if (log.isDebugEnabled()) {

@@ -245,9 +245,8 @@ public class TestUtils {
      * be formulated to ensure a single object is returned or
      * an error will occur.
      * @return Object found or null if not
-     * @throws Exception if there was a Hibernate related exception
      */
-    public static Object lookupTestObject(String query) throws Exception {
+    public static Object lookupTestObject(String query) {
         Session session = HibernateFactory.getSession();
         Query q = session.createQuery(query);
         return q.uniqueResult();
@@ -257,9 +256,8 @@ public class TestUtils {
      * Finds a list of persistent objects.
      * @param query The query to find the persistent objects.
      * @return Object found or null if not
-     * @throws Exception if there was a Hibernate related exception
      */
-    public static List lookupTestObjects(String query) throws Exception {
+    public static List lookupTestObjects(String query) {
         Session session = HibernateFactory.getSession();
         Query q = session.createQuery(query);
         return q.list();
@@ -288,10 +286,9 @@ public class TestUtils {
      * @param queryname Queryname for the query you want to run.
      *        queryname *MUST* have a :label attribute in it.
      * @return Returns the object corresponding to label
-     * @throws Exception exception
      */
     public static Object lookupFromCacheByLabel(String label,
-                                                String queryname) throws Exception {
+                                                String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
                       .setString("label", label)
@@ -493,6 +490,15 @@ public class TestUtils {
      */
     public static String randomString(int length) {
         return RandomStringUtils.randomAlphanumeric(length);
+    }
+
+    /**
+     * Return a random numeric string
+     * @param length of the string
+     * @return A random numeric string of the specified length
+     */
+    public static String randomNumeric(int length) {
+        return RandomStringUtils.randomNumeric(length);
     }
 
     /**

@@ -131,6 +131,19 @@ mainframe-sysinfo:
 {% endif %}
 
 {%- if grains['saltversioninfo'][0] >= 2018 %}
+{% if 'mgrnet.dns_fqdns' in salt %}
+dns_fqdns:
+  mgrcompat.module_run:
+    - name: mgrnet.dns_fqdns
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_states
+{%- else %}
+      - mgrcompat: sync_states
+{%- endif %}
+    - onlyif:
+        which host || which nslookup
+{% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:
   mgrcompat.module_run:

@@ -2,9 +2,17 @@ import salt.exceptions
 import logging
 import os
 import re
-import pickle
+import json
 
 log = logging.getLogger(__name__)
+
+# Kiwi version is always in format "MAJOR.MINOR.RELEASE" with numeric values
+# Source https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
+KIWI_VERSION_REGEX=r'\d+\.\d+\.\d+'
+# Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L81
+KIWI_ARCH_REGEX=r'(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6hl|armv6l|armv7hl|armv7l|ppc|ppc64|ppc64le|s390|s390x|riscv64)'
+# Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L26
+KIWI_NAME_REGEX=r'[a-zA-Z0-9_\-\.]+'
 
 def parse_profile(chroot):
     ret = {}
@@ -69,25 +77,37 @@ def guess_buildinfo(dest):
     return ret
 
 # Kiwi NG
+_kiwi_result_script = """
+import sys
+import pickle
+import json
+ret = {}
+with open(sys.argv[1], 'rb') as f:
+    result = pickle.load(f)
+    ret['arch'] = result.xml_state.host_architecture
+    ret['basename'] = result.xml_state.xml_data.name
+    ret['type'] = result.xml_state.build_type.image
+    ret['filesystem'] = result.xml_state.build_type.filesystem
+    ret['initrd_system'] = result.xml_state.build_type.initrd_system
+    print(json.dumps(ret))
+"""
+
 def parse_kiwi_result(dest):
     path = os.path.join(dest, 'kiwi.result')
     ret = {}
     if __salt__['file.file_exists'](path):
-        try:
-            # pickle depends on availability of python kiwi modules
-            # which are not under our control so there is certain risk of failure
-            # return empty dict in such case
-            # the caller should handle all values as optional
-            with open(path, 'rb') as f:
-                result = pickle.load(f)
-                ret['arch'] = result.xml_state.host_architecture
-                ret['basename'] = result.xml_state.xml_data.name
-                ret['type'] = result.xml_state.build_type.image
-                ret['filesystem'] = result.xml_state.build_type.filesystem
-                ret['initrd_system'] = result.xml_state.build_type.initrd_system
-        except:
-            log.exception("Loading kiwi.result")
-            # continue with empty dict
+        # pickle depends on availability of python kiwi modules
+        # which are not under our control so there is certain risk of failure
+        # also, the kiwi libraries may not be available in salt bundle
+        # -> parse the file via wrapper script using system python3
+        #
+        # return empty dict on failure
+        # the caller should handle all values as optional
+        result = __salt__['cmd.exec_code_all']('/usr/bin/python3', _kiwi_result_script, args=[path])
+        if result['retcode'] == 0:
+            ret = json.loads(result['stdout'])
+        # else return empty dict
+
     return ret
 
 def parse_packages(path):
@@ -160,7 +180,7 @@ def image_details(dest, bundle_dest = None):
     image_type = kiwiresult.get('type') or buildinfo.get('main', {}).get('image.type', 'unknown')
     fstype = kiwiresult.get('filesystem')
 
-    pattern = re.compile(r"^(?P<name>.*)\.(?P<arch>.*)-(?P<version>.*)$")
+    pattern = re.compile(r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})$".format(KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX))
     match = pattern.match(basename)
     if match:
         name = match.group('name')
@@ -231,8 +251,8 @@ def inspect_boot_image(dest):
     res = None
     files = __salt__['file.readdir'](dest)
 
-    pattern = re.compile(r"^(?P<name>.*)\.(?P<arch>.*)-(?P<version>.*)\.kernel\.(?P<kernelversion>.*)\.md5$")
-    pattern_kiwi_ng = re.compile(r"^(?P<name>[^-]*)\.(?P<arch>[^-]*)-(?P<version>[^-]*)-(?P<kernelversion>.*)\.kernel$")
+    pattern = re.compile(r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})\.kernel\.(?P<kernelversion>.*)\.md5$".format(KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX))
+    pattern_kiwi_ng = re.compile(r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})-(?P<kernelversion>.*)\.kernel$".format(KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX))
     for f in files:
         match = pattern.match(f)
         if match:
@@ -339,7 +359,7 @@ def build_info(dest, build_id, bundle_dest = None):
     basename = buildinfo.get('main', {}).get('image.basename', '')
     image_type = kiwiresult.get('type') or buildinfo.get('main', {}).get('image.type', 'unknown')
 
-    pattern = re.compile(r"^(?P<name>.*)\.(?P<arch>.*)-(?P<version>.*)$")
+    pattern = re.compile(r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})$".format(KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX))
     match = pattern.match(basename)
     if not match:
         return None

@@ -30,7 +30,7 @@ public class SerializerFactoryTest  {
     private SerializerFactory factory = null;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
 
         factory = new SerializerFactory();
     }

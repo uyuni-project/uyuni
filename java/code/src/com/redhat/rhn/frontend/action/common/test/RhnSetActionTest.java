@@ -56,8 +56,9 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(RhnSetActionTest.class);
     private TestAction action = null;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         action = new TestAction();
     }
 
@@ -127,10 +128,11 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     public void testSelectAll() throws Exception {
         ActionHelper sah = new ActionHelper();
         TestActionWithData a = new TestActionWithData() {
+            @Override
             protected DataResult getDataResult(User user,
                                                ActionForm formIn,
                                                HttpServletRequest request) {
-                List retval = new LinkedList();
+                List retval = new LinkedList<>();
                 for (int i = 0; i < 10; i++) {
                     retval.add(new TestIdObject((long) i));
                 }
@@ -189,13 +191,13 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     }
 
     public static void verifyRhnSetData(Long uid, String setname, int size)
-        throws HibernateException, SQLException {
+        throws HibernateException {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             ResultSet rs = null;
             try {
                 statement = connection.createStatement();
-                String query = "SELECT * FROM rhnSet WHERE user_id = " + uid.toString();
+                String query = "SELECT * FROM rhnSet WHERE user_id = " + uid;
                 rs = statement.executeQuery(query);
 
                 assertNotNull(rs);
@@ -221,6 +223,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     public static class TestAction extends RhnSetAction {
 
+        @Override
         protected RhnSetDecl getSetDecl() {
             return RhnSetDecl.TEST;
         }
@@ -228,6 +231,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected DataResult getDataResult(User user,
                                            ActionForm formIn,
                                            HttpServletRequest request) {
@@ -237,6 +241,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected void processMethodKeys(Map<String, String> map) {
             assertNotNull(map.get("updatelist"));
             assertNotNull(map.get("selectall"));
@@ -246,6 +251,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected void processParamMap(ActionForm formIn,
                                        HttpServletRequest request,
                                        Map<String, Object> params) {
@@ -256,6 +262,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     public static class TestActionWithData extends RhnSetAction {
 
+        @Override
         protected RhnSetDecl getSetDecl() {
             return RhnSetDecl.TEST;
         }
@@ -263,6 +270,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected DataResult getDataResult(User user,
                                            ActionForm formIn,
                                            HttpServletRequest request) {
@@ -273,6 +281,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected void processMethodKeys(Map<String, String> map) {
             assertNotNull(map.get("updatelist"));
             assertNotNull(map.get("selectall"));
@@ -282,6 +291,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         protected void processParamMap(ActionForm formIn,
                                        HttpServletRequest request,
                                        Map<String, Object> params) {
@@ -297,6 +307,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
             this.id = idIn;
         }
 
+        @Override
         public Long getId() {
             return this.id;
         }

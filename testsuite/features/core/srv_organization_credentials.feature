@@ -10,4 +10,4 @@ Feature: Organization credentials in the Setup Wizard
     And I ask to add new credentials
     And I enter the SCC credentials
     And I click on "Save"
-    Then the SCC credentials should be valid
+    And I wait until the SCC credentials are valid

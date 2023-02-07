@@ -51,8 +51,8 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.4.0
-Release:        0
+Version:        4.4.7
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -71,7 +71,7 @@ Requires(pre):  %{apache_pkg}
 Requires:       %{apache_pkg}
 Requires:       python3-pycurl
 # for Debian support
-Requires:       python3-debian
+Requires:       python3-debian >= 0.1.44
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif
@@ -80,6 +80,7 @@ BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
@@ -252,7 +253,7 @@ Requires:       mod_ssl
 %endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 3.0.0
+Requires:       cobbler >= 3.3.3
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 

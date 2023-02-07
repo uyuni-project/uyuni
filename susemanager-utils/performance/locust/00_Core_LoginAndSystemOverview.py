@@ -30,7 +30,7 @@ class UserBehavior(TaskSet):
 
     @task(2)
     def overview(self):
-        self.client.get("rhn/systems/Overview.do")
+        self.client.get("rhn/manager/systems/list/all")
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior

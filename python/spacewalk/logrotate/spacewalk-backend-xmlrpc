@@ -2,12 +2,11 @@
 #
 
 /var/log/rhn/rhn_server_xmlrpc.log {
-    weekly
     rotate 5
     copytruncate
     compress
     notifempty
     missingok
-    size=10M
+    size 10M
     su @HTTPD_USER@ @HTTPD_GROUP@
 }

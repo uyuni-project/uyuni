@@ -13,6 +13,11 @@ help() {
     echo "    --password <password>        Password for the database user"
     echo "    --autogenpw                  Auto generate a password for the database user"
     echo "    --standalone                 Configure the database server independent of Uyuni or SUSE Manager Server Database"
+    echo "    --host                       The database host"
+    echo "    --externaldb-admin-user      The db admin user when configuring the report database using an external database server"
+    echo "    --externaldb-admin-password  The db admin password when configuring the report database using an external database server"
+    echo "    --externaldb-root-cert       The root certificate to use when connecting to the external database server"
+    echo "    --externaldb-provider        The Cloud provider that is hosting the external report database"
     echo "    --address <local-addresses>  Comma-separated list of local addresses to listen on"
     echo "                                 Use '*' for all addresses"
     echo "    --remote <remote-addresses>  Comma-separated list of remote addresses to allow connections from"
@@ -117,39 +122,43 @@ fi
 
 
 create() {
-    if $LOCAL ; then
-        ADDRESS="127.0.0.1"
-        REMOTE="127.0.0.1/32,::1/128"
-        FQDN="localhost"
-    else
-        [ ! -s "$SSL_CERT" ] && {
-            echo "SSL Certificate ($SSL_CERT) is required to setup the reporting database" >&2
-            exit 1
-        }
-        [ ! -s "$CA_CERT" ] && {
-            echo "The SSL CA Certificate ($CA_CERT) is required to setup the reporting database" >&2
-            exit 1
-        }
-        [ ! -s "$SSL_KEY" ] && {
-            if [ -s /etc/pki/tls/private/spacewalk.key ]; then
-                # SUMA 4.2 and earlier did not create the postgresql private key file
-                cp /etc/pki/tls/private/spacewalk.key $SSL_KEY
-            chown postgres:postgres $SSL_KEY
-            chmod 0600 $SSL_KEY
-            else
-                echo "SSL Private Key ($SSL_KEY) not found" >&2
+    if [ $EXTERNALDB = "0" ] ; then 
+        if $LOCAL ; then
+            ADDRESS="127.0.0.1"
+            REMOTE="127.0.0.1/32,::1/128"
+            FQDN="localhost"
+        else
+            [ ! -s "$SSL_CERT" ] && {
+                echo "SSL Certificate ($SSL_CERT) is required to setup the reporting database" >&2
                 exit 1
-            fi
-        }
+            }
+            [ ! -s "$CA_CERT" ] && {
+                echo "The SSL CA Certificate ($CA_CERT) is required to setup the reporting database" >&2
+                exit 1
+            }
+            [ ! -s "$SSL_KEY" ] && {
+                if [ -s /etc/pki/tls/private/spacewalk.key ]; then
+                    # SUMA 4.2 and earlier did not create the postgresql private key file
+                    cp /etc/pki/tls/private/spacewalk.key $SSL_KEY
+                chown postgres:postgres $SSL_KEY
+                chmod 0600 $SSL_KEY
+                else
+                    echo "SSL Private Key ($SSL_KEY) not found" >&2
+                    exit 1
+                fi
+            }
+        fi
     fi
 
     [ -z "$PGNAME" ] && ask true "Database name: " PGNAME
     [ -z "$PGUSER" ] && ask true "Database user: " PGUSER
     [ -z "$PGPASSWORD" ] && ask false "Database password: " PGPASSWORD
 
-    [ -z "$ADDRESS" ] && ask_check true "Local addresses to listen on (comma-separated, RETURN for all): " ADDRESS "^$Local_RE\$"
-    [ -z "$ADDRESS" ] && ADDRESS="*"
-    [ -z "$REMOTE" ] && ask_check true "Remote addresses to allow connection from (address/netmask format, comma-separated): " REMOTE "^$Remote_RE\$"
+    if [ $EXTERNALDB = "0" ] ; then 
+        [ -z "$ADDRESS" ] && ask_check true "Local addresses to listen on (comma-separated, RETURN for all): " ADDRESS "^$Local_RE\$"
+        [ -z "$ADDRESS" ] && ADDRESS="*"
+        [ -z "$REMOTE" ] && ask_check true "Remote addresses to allow connection from (address/netmask format, comma-separated): " REMOTE "^$Remote_RE\$"
+    fi
 
     if exists_db ; then
         echo "Database '$PGNAME' already exists"
@@ -160,35 +169,36 @@ create() {
         exit 1
     fi
 
-    postgresql_service enable
+    if [ $EXTERNALDB = "0" ] ; then 
+        postgresql_service enable
 
-    if [ ! -d "$PG_DATA/base" ]; then
-        PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
-        if test -x /usr/sbin/selinuxenabled && /usr/sbin/selinuxenabled; then
-            SEMODE=$(/usr/sbin/getenforce)
-            if [ "$SEMODE" = 'Permissive' -o "$SEMODE" = 'Enforcing' ]; then
-                RCONOUT=$(/sbin/restorecon -Rnv $PGHOME)
-                if [ -n "$RCONOUT" ]; then
-                    echo
-                    echo "The directory \"$PGHOME\" does not seem to have correct SELinux context."
-                    echo
-                    echo "Please fix the SELinux context by running:"
-                    echo
-                    echo "    restorecon -Rv $PGHOME"
-                    echo
-                    exit 1
+        if [ ! -d "$PG_DATA/base" ]; then
+            PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
+            if test -x /usr/sbin/selinuxenabled && /usr/sbin/selinuxenabled; then
+                SEMODE=$(/usr/sbin/getenforce)
+                if [ "$SEMODE" = 'Permissive' -o "$SEMODE" = 'Enforcing' ]; then
+                    RCONOUT=$(/sbin/restorecon -Rnv $PGHOME)
+                    if [ -n "$RCONOUT" ]; then
+                        echo
+                        echo "The directory \"$PGHOME\" does not seem to have correct SELinux context."
+                        echo
+                        echo "Please fix the SELinux context by running:"
+                        echo
+                        echo "    restorecon -Rv $PGHOME"
+                        echo
+                        exit 1
+                    fi
                 fi
             fi
+            echo -e 'LC_CTYPE=en_US.UTF-8\nexport LC_CTYPE' >$PGHOME/.i18n
+            postgresql_service initdb
         fi
-        echo -e 'LC_CTYPE=en_US.UTF-8\nexport LC_CTYPE' >$PGHOME/.i18n
-        postgresql_service initdb
-    fi
 
-    if $STANDALONE; then
-        sed -i 's/^\(\s*listen_addresses.*\)$/### next line has been commented out by uyuni-setup-reportdb ###\n##\1/' $POSTGRESQL
-        sed -i 's/^\(\s*max_connections.*\|\s*shared_buffers.*\)$/### next line has been commented out by uyuni-setup-reportdb ###\n##\1/' $POSTGRESQL
+        if $STANDALONE; then
+            sed -i 's/^\(\s*listen_addresses.*\)$/### next line has been commented out by uyuni-setup-reportdb ###\n##\1/' $POSTGRESQL
+            sed -i 's/^\(\s*max_connections.*\|\s*shared_buffers.*\)$/### next line has been commented out by uyuni-setup-reportdb ###\n##\1/' $POSTGRESQL
 
-        cat >> $POSTGRESQL <<EOF
+            cat >> $POSTGRESQL <<EOF
 ### uyuni-setup-reportdb modified values
 checkpoint_completion_target = 0.7
 effective_cache_size = 1152MB
@@ -199,34 +209,36 @@ shared_buffers = 384MB
 wal_buffers = 4MB
 work_mem = 2560kB
 EOF
+        fi
+
+        if ! $LOCAL ; then
+            # SSL setup is required when opening DB to the world
+            postgres_reconfig "ssl" "on"
+            postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
+            postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
+        fi
+
+        echo "$ADDRESS"|grep -q '127.0.0.1\|*' || ADDRESS="$ADDRESS, 127.0.0.1"
+        postgres_reconfig "listen_addresses" "'$ADDRESS'"
+
+        sysctl kernel.shmmax | ( read v v v ; LIMIT=5000000000 ; if (("$v"0 < $LIMIT )) ; then sysctl "kernel.shmmax=$LIMIT" >> /etc/sysctl.conf ; fi )
+
+        if $STANDALONE; then
+            sed -i 's/^\([^#].*\)$/### next line has been commented out by uyuni-setup-reportdb: ###\n##\1/ ' $PG_HBA
+        pg_hba_set "local" "all" "all" "" "peer"
+        fi
+        pg_hba_set "local" "$PGNAME" "postgres" "peer"
+        pg_hba_set "local" "$PGNAME" "all" "scram-sha-256"
+        pg_hba_set "host"  "$PGNAME" "all" "127.0.0.1/32" "scram-sha-256"
+        pg_hba_set "host"  "$PGNAME" "all" "::1/128" "scram-sha-256"
+
+        for ADDR in $(echo $REMOTE|sed 's/,/ /g'); do
+            pg_hba_set "host" "$PGNAME" "all" "$ADDR" "scram-sha-256"
+        done
+
+        /usr/bin/uyuni-sort-pg_hba
     fi
 
-    if ! $LOCAL ; then
-        # SSL setup is required when opening DB to the world
-        postgres_reconfig "ssl" "on"
-        postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
-        postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
-    fi
-
-    echo "$ADDRESS"|grep -q '127.0.0.1\|*' || ADDRESS="$ADDRESS, 127.0.0.1"
-    postgres_reconfig "listen_addresses" "'$ADDRESS'"
-
-    sysctl kernel.shmmax | ( read v v v ; LIMIT=5000000000 ; if (("$v"0 < $LIMIT )) ; then sysctl "kernel.shmmax=$LIMIT" >> /etc/sysctl.conf ; fi )
-
-    if $STANDALONE; then
-        sed -i 's/^\([^#].*\)$/### next line has been commented out by uyuni-setup-reportdb: ###\n##\1/ ' $PG_HBA
-	pg_hba_set "local" "all" "all" "" "peer"
-    fi
-    pg_hba_set "local" "$PGNAME" "postgres" "peer"
-    pg_hba_set "local" "$PGNAME" "all" "scram-sha-256"
-    pg_hba_set "host"  "$PGNAME" "all" "127.0.0.1/32" "scram-sha-256"
-    pg_hba_set "host"  "$PGNAME" "all" "::1/128" "scram-sha-256"
-
-    for ADDR in $(echo $REMOTE|sed 's/,/ /g'); do
-        pg_hba_set "host" "$PGNAME" "all" "$ADDR" "scram-sha-256"
-    done
-
-    /usr/bin/uyuni-sort-pg_hba
 
     # Create & configure /etc/rhn/rhn.conf
     RHN_CONF_DIR=$(dirname $RHN_CONF)
@@ -252,46 +264,75 @@ EOF
         rhn_reconfig "report_db_user" "$PGUSER"
         rhn_reconfig "report_db_password" "$PGPASSWORD"
         rhn_reconfig "report_db_name" "$PGNAME"
-        rhn_reconfig "report_db_host" "$FQDN"
+        if [ $EXTERNALDB = "0" ] ; then 
+            rhn_reconfig "report_db_host" "$FQDN"
+        else
+            rhn_reconfig "report_db_host" "$HOST"
+        fi
         rhn_reconfig "report_db_port" "$PORT"
 	if ! $LOCAL ; then
             rhn_reconfig "report_db_ssl_enabled" "1"
-            rhn_reconfig "report_db_sslrootcert" "$CA_CERT"
+            if [ $EXTERNALDB = "0" ] ; then 
+                rhn_reconfig "report_db_sslrootcert" "$CA_CERT"
+            else
+                rhn_reconfig "report_db_sslrootcert" "$EXTERNALDB_ROOT_CERT"
+            fi
         fi
     fi
 
     chmod 640 $RHN_CONF
 
-    postgresql_service status >& /dev/null && postgresql_service stop
-    postgresql_service start
+    if [ $EXTERNALDB = "0" ] ; then 
+        postgresql_service status >& /dev/null && postgresql_service stop
+        postgresql_service start
 
-    if $LSOF /proc > /dev/null ; then
-        while [ -f "$PG_PIDFILE" ] ; do
-            # wait for postmaster to be ready
-            $LSOF -t -p $(head -1 "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
-                && break
-            sleep 1
-        done
+        if $LSOF /proc > /dev/null ; then
+            while [ -f "$PG_PIDFILE" ] ; do
+                # wait for postmaster to be ready
+                $LSOF -t -p $(head -1 "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
+                    && break
+                sleep 1
+            done
+        fi
     fi
 
     if ! exists_db ; then
+        if [ $EXTERNALDB = "0" ] ; then
             $RUNUSER - postgres -c "createdb -E UTF8 '$PGNAME'"
+        else
+            echo "CREATE DATABASE $PGNAME ENCODING = UTF8 ;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+        fi        
     fi
     if ! exists_plpgsql ; then
+        if [ $EXTERNALDB = "0" ] ; then
             EXTENSION=$($RUNUSER - postgres -c 'psql -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d '$PGNAME'')
+        else
+            echo "CREATE EXTENSION IF NOT EXISTS plpgsql;"  | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER -d $PGNAME)
+        fi
     fi
     if ! exists_user ; then
+        if [ $EXTERNALDB = "0" ] ; then
             $RUNUSER - postgres -c "yes '$PGPASSWORD' | createuser -P -sDR '$PGUSER'" 2>/dev/null
+        else
+            if [[ -n $EXTERNALDB_PROVIDER && "${EXTERNALDB_PROVIDER,,}" == "aws" ]] ; then
+                echo "CREATE ROLE $PGUSER PASSWORD '$PGPASSWORD' NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+                echo "GRANT rds_superuser to $PGUSER;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+                echo "GRANT create on database $PGNAME to $PGUSER;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+            else
+                echo "CREATE ROLE $PGUSER PASSWORD '$PGPASSWORD' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+            fi
+        fi
     fi
 
-    postgresql_service reload
+    if [ $EXTERNALDB = "0" ] ; then
+        postgresql_service reload
+    fi
 
     if ! exists_schema ; then
-            /usr/bin/spacewalk-sql --reportdb /etc/sysconfig/rhn/reportdb/main.sql
+        /usr/bin/spacewalk-sql --reportdb /etc/sysconfig/rhn/reportdb/main.sql
     else
 	    /usr/bin/spacewalk-schema-upgrade --reportdb -y
     fi
-
 }
 
 remove() {
@@ -300,18 +341,28 @@ remove() {
         exit 1
     fi
     if exists_db ; then
+        if [ $EXTERNALDB = "0" ] ; then 
             $RUNUSER - postgres -c "dropdb '$PGNAME'"
+        else
+            echo "DROP DATABASE $PGNAME;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+        fi
     fi
     if exists_user ; then
+        if [ $EXTERNALDB = "0" ] ; then 
             $RUNUSER - postgres -c "dropuser '$PGUSER'"
+        else
+            echo "DROP ROLE $PGUSER;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $HOST -U $EXTERNALDB_ADMIN_USER)
+        fi 
     fi
     rhn_reconfig "report_db_backend" ""
     rhn_reconfig "report_db_user" ""
     rhn_reconfig "report_db_password" ""
     rhn_reconfig "report_db_name" ""
 
-    pg_hba_remove "host" "$PGNAME" "all"
-    pg_hba_remove "local" "$PGNAME" "all"
+    if [ EXTERNALDB = 0 ] ; then 
+        pg_hba_remove "host" "$PGNAME" "all"
+        pg_hba_remove "local" "$PGNAME" "all"
+    fi
 
 }
 
@@ -353,7 +404,11 @@ is_postgres10() {
 }
 
 exists_db() {
-    EXISTS=$($RUNUSER - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+    if [ $EXTERNALDB = "0" ] ; then
+        EXISTS=$($RUNUSER - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+    else
+        EXISTS=$(echo "select datname from pg_database where datname='$PGNAME';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $HOST ))
+    fi
     if [ "x$EXISTS" == "x $PGNAME" ] ; then
         return 0
     else
@@ -362,7 +417,11 @@ exists_db() {
 }
 
 exists_plpgsql() {
-    EXISTS=$($RUNUSER - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'plpgsql'"';"'" $PGNAME")
+    if [ $EXTERNALDB = "0" ] ; then
+        EXISTS=$($RUNUSER - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'plpgsql'"';"'" $PGNAME")
+    else
+        EXISTS=$(echo "select lanname from pg_catalog.pg_language where lanname='plpgsql';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $HOST ))
+    fi
     if [ "x$EXISTS" == "xplpgsql" ] ; then
         return 0
     else
@@ -371,7 +430,11 @@ exists_plpgsql() {
 }
 
 exists_user() {
-    EXISTS=$($RUNUSER - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$PGUSER'"';"')
+    if [ $EXTERNALDB = "0" ] ; then
+        EXISTS=$($RUNUSER - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$PGUSER'"';"')
+    else
+        EXISTS=$(echo "select usename from pg_user where usename='$PGUSER';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $HOST ))
+    fi
     if [ "x$EXISTS" == "x $PGUSER" ] ; then
         return 0
     else
@@ -447,9 +510,21 @@ postgresql_service() {
     esac
 }
 
-OPTS=$(getopt --longoptions=db:,user:,password:,autogenpw,standalone,local,help,address:,remote: -n ${0##*/} -- d:u:p:gsha:r:l "$@")
+test_postgres_user() {
+    set +e
+    su - postgres -c /bin/true
+    if [ $? != "0" ] ; then
+        echo "Cannot use postgres user. Terminating" >&2 
+        exit 1
+    fi
+    set -e
+}
+
+OPTS=$(getopt --longoptions=db:,user:,password:,autogenpw,standalone,local,help,address:,remote:,host:,externaldb-admin-user:,externaldb-admin-password:,externaldb-root-cert:,externaldb-provider: -n ${0##*/} -- d:u:p:gsha:r:l: "$@")
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+test_postgres_user
 
 eval set -- "$OPTS"
 
@@ -460,6 +535,11 @@ STANDALONE=false
 ADDRESS=""
 REMOTE=""
 LOCAL=false
+HOST=""
+EXTERNALDB_ADMIN_USER=""
+EXTERNALDB_ADMIN_PASS=""
+EXTERNALDB_ROOT_CERT=""
+EXTERNALDB_PROVIDER=""
 
 while true ; do
     case "$1" in
@@ -479,12 +559,12 @@ while true ; do
             PGPASSWORD=$2
             shift
             ;;
-	-g|--autogenpw)
+        -g|--autogenpw)
             if [ -n "$PGPASSWORD" ]; then
                 echo "Invalid options: do not use --password together with --autgenpw!" >&2
                 exit 1
             fi
-            PGPASSWORD=$(head -10 /dev/urandom | tr -dc '[:alnum:]' | fold -w 25 | head -n 1)
+            PGPASSWORD=$(dd status=none bs=18 count=1 < /dev/random | base64)
             ;;
         -s|--standalone)
             STANDALONE=true
@@ -501,9 +581,29 @@ while true ; do
             help;
             exit 0;
             ;;
-	-l|--local)
+        -l|--local)
             LOCAL=true
             ;;
+        --host)
+            HOST=$2
+            shift
+            ;;
+        --externaldb-admin-user)
+            EXTERNALDB_ADMIN_USER=$2
+            shift
+            ;;
+        --externaldb-admin-password)
+            EXTERNALDB_ADMIN_PASS=$2
+            shift
+            ;;            
+        --externaldb-provider)
+            EXTERNALDB_PROVIDER=$2
+            shift
+            ;;            
+        --externaldb-root-cert)
+            EXTERNALDB_ROOT_CERT=$2
+            shift
+            ;;            
         --)
             shift
             break
@@ -515,6 +615,13 @@ while true ; do
     esac
     shift
 done
+
+case $HOST in
+    "localhost"|$(hostname -s)|$(hostname -f)|"")
+        EXTERNALDB=0 ;;
+    *)
+        EXTERNALDB=1 ;;
+esac
 
 case $1 in
         create) create

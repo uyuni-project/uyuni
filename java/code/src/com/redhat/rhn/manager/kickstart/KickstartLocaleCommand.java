@@ -26,12 +26,13 @@ import com.redhat.rhn.frontend.dto.TimezoneDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * KickstartLocaleCommand - for editing locale-related options
@@ -93,7 +94,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
             String current = this.getTimezone();
 
             String args = timezoneCommand.getArguments();
-            LinkedList tokens = new LinkedList();
+            LinkedList tokens = new LinkedList<>();
 
             if (args != null) {
                 tokens = (LinkedList) StringUtil.stringToList(args);
@@ -112,25 +113,18 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
     /**
      * Get a list of valid timezones
      *
-     * @return ArrayList of valid timeszones (HashMaps with display/value)
+     * @return ArrayList of valid timezones (HashMaps with display/value)
      */
-    public ArrayList getValidTimezones() {
-        DataResult dr = KickstartLister.getInstance()
+    public List<Map<String, String>> getValidTimezones() {
+        DataResult<TimezoneDto> dr = KickstartLister.getInstance()
             .getValidTimezones(getKickstartData().getId());
 
-        Iterator iter = dr.iterator();
-        ArrayList ret = new ArrayList();
-
-        while (iter.hasNext()) {
-            TimezoneDto old = (TimezoneDto) iter.next();
-            Map row = new HashMap();
-            row.put("display", old.getName());
-            row.put("value", old.getLabel());
-
-            ret.add(row);
-        }
-
-        return ret;
+        return dr.stream().map(dto -> {
+            Map<String, String> row = new HashMap<>();
+            row.put("display", dto.getName());
+            row.put("value", dto.getLabel());
+            return row;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -198,7 +192,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         }
 
         String args = timezoneCommand.getArguments();
-        LinkedList tokens = new LinkedList();
+        LinkedList tokens = new LinkedList<>();
 
         if (args != null) {
             tokens = (LinkedList) StringUtil.stringToList(args);
@@ -227,7 +221,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         }
 
         String args = timezoneCommand.getArguments();
-        LinkedList tokens = new LinkedList();
+        LinkedList tokens = new LinkedList<>();
 
         if (args != null) {
             tokens = (LinkedList) StringUtil.stringToList(args);

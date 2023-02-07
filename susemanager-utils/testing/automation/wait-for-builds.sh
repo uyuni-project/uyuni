@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-  echo "Usage: $0 -a api -c config_file -p project -u"
+  echo "Usage: $0 -a api -c config_file -p project -u -r repo -x arch"
   echo "project is mandatory. The rest are optionals."
   echo "u option is for unlocking the package after the build has finished"
 }
@@ -10,8 +10,9 @@ api=https://api.opensuse.org
 config_file=$HOME/.oscrc
 lock="yes"
 osc_timeout="2h"
+extres=""
 
-while getopts ":a:c:p:u" o;do
+while getopts ":a:c:p:ur:x:" o;do
     case "${o}" in
         a)
             api=${OPTARG}
@@ -25,6 +26,12 @@ while getopts ":a:c:p:u" o;do
         u)
             lock="no"
             ;;    
+        r)
+            extres="${extres} -r ${OPTARG}"
+            ;;
+        x)
+            extres="${extres} -a ${OPTARG}"
+            ;;
         :)
             echo "ERROR: Option -$OPTARG requires an argument"
             ;;
@@ -48,10 +55,10 @@ echo "Waiting for $project to build"
 # Autobuild has been informed but until we have a better solution,
 # we are running it with a timeout command twice. If the second timeout
 # is triggered, we exit with an error
-timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml
+timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml ${extres}
 if [ $? -eq 124 ];then
     echo "Trying again to wait for ${project} to build"
-    timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml
+    timeout --foreground ${osc_timeout} osc -A ${api} -c ${config_file} results ${project} -w --xml ${extres}
     if [ $? -eq 124 ];then
         echo "Waiting for the results of ${project} got stucked twice"
         echo "Please check ${project} build results"

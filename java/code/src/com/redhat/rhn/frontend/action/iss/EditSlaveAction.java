@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.iss;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -95,8 +96,7 @@ public class EditSlaveAction extends RhnAction {
     }
 
     private Long updateSlaveDetails(ActionMapping mapping, DynaActionForm dynaForm,
-                    HttpServletRequest request, HttpServletResponse response)
-                    throws Exception {
+                    HttpServletRequest request, HttpServletResponse response) {
 
         Long sid = null;
         sid = (Long) dynaForm.get(IssSlave.ID);
@@ -125,7 +125,7 @@ public class EditSlaveAction extends RhnAction {
 
         if (isNew) {
             IssFactory.save(slave);
-            slave = (IssSlave) IssFactory.reload(slave);
+            slave = HibernateFactory.reload(slave);
             sid = slave.getId();
         }
 
@@ -149,7 +149,7 @@ public class EditSlaveAction extends RhnAction {
         if (fqdn == null || fqdn.isEmpty()) {
             retval = false;
             ActionErrors errs = new ActionErrors();
-            errs.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                             "errors.required", l.getMessage("iss.slave.name")));
             getStrutsDelegate().saveMessages(request, errs);
         }
@@ -160,7 +160,7 @@ public class EditSlaveAction extends RhnAction {
             if (isNew && tmpSlave != null) {
                 retval = false;
                 ActionErrors errs = new ActionErrors();
-                errs.add(ActionErrors.GLOBAL_MESSAGE,
+                errs.add(ActionMessages.GLOBAL_MESSAGE,
                                 new ActionMessage("iss.error.slave.exists", fqdn));
                 getStrutsDelegate().saveMessages(request, errs);
             }

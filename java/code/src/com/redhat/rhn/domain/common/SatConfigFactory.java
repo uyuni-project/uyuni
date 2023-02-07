@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -35,12 +36,12 @@ import java.util.Objects;
  */
 public class SatConfigFactory extends HibernateFactory {
 
-    private static SatConfigFactory singleton = new SatConfigFactory();
-    private static Logger log = LogManager.getLogger(CommonFactory.class);
+    private static final Logger LOG = LogManager.getLogger(SatConfigFactory.class);
 
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
     public static final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
     public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
+    public static final String SYSTEM_CHECKIN_THRESHOLD = "system_checkin_threshold";
 
     private SatConfigFactory() {
         super();
@@ -48,7 +49,7 @@ public class SatConfigFactory extends HibernateFactory {
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -63,19 +64,20 @@ public class SatConfigFactory extends HibernateFactory {
     /**
      * return satellite configuration long value for a specified key
      * @param key key
+     * @param defaultValue value to use if no property value could be found
      * @return value long value
      */
-    public static Long getSatConfigLongValue(String key) {
+    public static Long getSatConfigLongValue(String key, Long defaultValue) {
         String stringValue = getSatConfigValue(key);
         if (stringValue != null) {
             try {
                 return Long.parseLong(stringValue);
             }
             catch (NumberFormatException nfe) {
-                log.error("Satellite configuration '{}' value ({}) cannot be converted to Long.", key, stringValue);
+                LOG.error("Satellite configuration '{}' value ({}) cannot be converted to Long.", key, stringValue);
             }
         }
-        return null;
+        return defaultValue;
     }
 
     /**
@@ -86,13 +88,12 @@ public class SatConfigFactory extends HibernateFactory {
     public static String getSatConfigValue(String key) {
         Map<String, Object> params = new HashMap<>();
         params.put("key", key);
-        SelectMode m = ModeFactory.getMode("util_queries",
-                "get_satconfig_value");
-        DataResult<Map> dr = m.execute(params);
+        SelectMode m = ModeFactory.getMode("util_queries", "get_satconfig_value");
+        DataResult<Row> dr = m.execute(params);
         if (!dr.isEmpty()) {
             return (String) dr.get(0).get("value");
         }
-        log.error("'{}' not found within the satellite configuration.", key);
+        LOG.error("'{}' not found within the satellite configuration.", key);
         return null;
     }
 

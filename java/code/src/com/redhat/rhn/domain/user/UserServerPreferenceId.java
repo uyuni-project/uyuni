@@ -86,6 +86,7 @@ public class UserServerPreferenceId implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof UserServerPreferenceId)) {
             return false;
@@ -101,6 +102,7 @@ public class UserServerPreferenceId implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(server)
                                     .append(user)

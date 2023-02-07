@@ -86,10 +86,6 @@ public class CVEAuditManager {
     private static Map<Long, List<SUSEProductDto>> sourceProductCache =
             new HashMap<>();
 
-    private static final String KERNEL_DEFAULT_NAME = "kernel-default";
-
-    private static final String KERNEL_XEN_NAME = "kernel-xen";
-
     /** Magic number signalling a patch present in a product migration channel */
     private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
     /** Magic number signalling a patch present in a product predecessor channel */
@@ -234,7 +230,7 @@ public class CVEAuditManager {
         List<Long> relevantChannelProductIDs = convertProductId(suseProductID);
 
         // Find relevant channels
-        if (relevantChannelProductIDs.size() > 0) {
+        if (!relevantChannelProductIDs.isEmpty()) {
             List<Channel> productChannels = findProductChannels(
                     relevantChannelProductIDs, baseChannelId);
             if (productChannels != null) {
@@ -258,10 +254,9 @@ public class CVEAuditManager {
      *
      * @return all servers
      */
-    @SuppressWarnings("unchecked")
     public static List<SystemOverview> listAllServers() {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "find_all_servers");
-        return m.execute(Collections.EMPTY_MAP);
+        return m.execute(Collections.emptyMap());
     }
 
     /**
@@ -270,7 +265,6 @@ public class CVEAuditManager {
      * @param suseProductId the SUSE product ID
      * @return list of channel product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> convertProductId(long suseProductId) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "convert_suse_product_to_channel_products");
@@ -301,7 +295,7 @@ public class CVEAuditManager {
         result = new LinkedList<>();
         List<SUSEProductDto> targets = DistUpgradeManager
                 .findTargetProducts(suseProductID);
-        while (targets.size() > 0) {
+        while (!targets.isEmpty()) {
             // We assume that there is always only one target!
             if (targets.size() > 1) {
                 log.warn("More than one migration target found for {}", suseProductID);
@@ -333,7 +327,7 @@ public class CVEAuditManager {
         result = new LinkedList<>();
         List<SUSEProductDto> sources = DistUpgradeManager
                 .findSourceProducts(suseProductID);
-        while (sources.size() > 0) {
+        while (!sources.isEmpty()) {
             // We assume that there is always only one source!
             if (sources.size() > 1) {
                 SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
@@ -931,10 +925,9 @@ public class CVEAuditManager {
      * @param results raw patchstatus query
      * @param patchStatuses the patch statuses
      * @return list of system records with patch status
-     * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
-            EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
+            EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 
@@ -954,6 +947,7 @@ public class CVEAuditManager {
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
                     systemResults.stream().filter(r -> r.getErrataId().isPresent())
+                            .filter(r -> r.getChannelRank().orElse(0L) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                             .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
 
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
@@ -1051,8 +1045,7 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() &&
-                        r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
+                .filter(r -> r.isPackageInstalled())
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
@@ -1079,10 +1072,16 @@ public class CVEAuditManager {
             return newerPatch;
         }).orElse(
                 // The CVE is not patched against
-                // Compare channel ranks to find the top channel (assigned channels come first)
+                // Compare channel ranks to find the top channel. Assigned channels come first.
+                // Vendor and cloned channels next. Last come successor channels.
                 packageResults.stream().max(Comparator.comparing(CVEPatchStatus::isChannelAssigned)
-                .thenComparing(Comparator.nullsLast(Comparator.comparingLong(r -> r.getChannelRank().orElse(null))))));
-
+                        .thenComparingLong(r -> {
+                            Long rank = r.getChannelRank().orElse(0L);
+                            return rank < SUCCESSOR_PRODUCT_RANK_BOUNDARY ? rank : 0L;
+                        })
+                        .thenComparingLong(r -> r.getChannelRank().orElse(0L))
+                )
+        );
         return result;
     }
 
@@ -1102,7 +1101,6 @@ public class CVEAuditManager {
      * @param cveIdentifier the CVE identifier
      * @return true if it is unknown
      */
-    @SuppressWarnings("unchecked")
     public static boolean isCVEIdentifierUnknown(String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "count_cve_identifiers");
         Map<String, Object> params = new HashMap<>();

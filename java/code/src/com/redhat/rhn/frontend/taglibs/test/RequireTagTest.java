@@ -28,6 +28,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
@@ -39,12 +41,14 @@ public class RequireTagTest extends RhnBaseTestCase {
     private RequireTag rt;
     private TagTestHelper tth;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -180,7 +184,7 @@ public class RequireTagTest extends RhnBaseTestCase {
             super();
         }
 
-        public boolean aclIsFoo(Object ctx, String[] params) {
+        public boolean aclIsFoo(Map<String, Object> ctx, String[] params) {
             return (params[0].equals("foo"));
         }
     }
@@ -191,19 +195,19 @@ public class RequireTagTest extends RhnBaseTestCase {
             super();
         }
 
-        public boolean aclFirstTrueAcl(Object ctx, String[] params) {
+        public boolean aclFirstTrueAcl(Map<String, Object> ctx, String[] params) {
             return true;
         }
 
-        public boolean aclFirstFalseAcl(Object ctx, String[] params) {
+        public boolean aclFirstFalseAcl(Map<String, Object> ctx, String[] params) {
             return false;
         }
 
-        public boolean aclSecondFalseAcl(Object ctx, String[] params) {
+        public boolean aclSecondFalseAcl(Map<String, Object> ctx, String[] params) {
             return false;
         }
 
-        public boolean aclSecondTrueAcl(Object ctx, String[] params) {
+        public boolean aclSecondTrueAcl(Map<String, Object> ctx, String[] params) {
             return true;
         }
     }
@@ -215,7 +219,7 @@ public class RequireTagTest extends RhnBaseTestCase {
          * @param params ignored
          * @return true
          */
-        public boolean aclTrueTest(Object ctx, String[] params) {
+        public boolean aclTrueTest(Map<String, Object> ctx, String[] params) {
             return true;
         }
 
@@ -225,7 +229,7 @@ public class RequireTagTest extends RhnBaseTestCase {
          * @param params ignored
          * @return false
          */
-        public boolean aclFalseTest(Object ctx, String[] params) {
+        public boolean aclFalseTest(Map<String, Object> ctx, String[] params) {
             return false;
         }
     }

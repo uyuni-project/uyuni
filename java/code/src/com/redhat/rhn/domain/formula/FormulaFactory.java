@@ -39,6 +39,7 @@ import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
@@ -101,7 +102,6 @@ public class FormulaFactory {
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
-    private static final Yaml YAML = new Yaml(new SafeConstructor());
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -216,7 +216,7 @@ public class FormulaFactory {
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
                             "correct permissions (755).", formulasFolder.getAbsolutePath());
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 });
     }
 
@@ -316,23 +316,22 @@ public class FormulaFactory {
                 if (data.isEmpty()) {
                     File dataFile = new File(getPillarDir() + server.getMinionId() + "_" + formula + "." +
                             PILLAR_FILE_EXTENSION);
-                    if (dataFile.exists()) {
-                        try {
-                            data = Optional.ofNullable((Map<String, Object>) GSON.fromJson(
-                                    new BufferedReader(new FileReader(dataFile)), Map.class))
-                                .map(FormulaFactory::convertIntegers);
-                            data.ifPresent(d -> {
-                                Pillar pillar = new Pillar(PREFIX + formula, d, server);
-                                server.getPillars().add(pillar);
-                            });
-                        }
-                        catch (FileNotFoundException e) {
-                        }
+                    try {
+                        data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
+                                                new TypeToken<Map<String, Object>>() { }.getType()));
                     }
+                    catch (FileNotFoundException e) {
+                        // This happens if the formula has default value
+                        data = Optional.of(new HashMap<>());
+                    }
+                    data.map(FormulaFactory::convertIntegers).ifPresent(d -> {
+                        Pillar pillar = new Pillar(PREFIX + formula, d, server);
+                        server.getPillars().add(pillar);
+                    });
                 }
                 else {
-                    LOG.warn("Minion \"" + server.getMinionId() + "\" pillar \"" + formula +
-                            "\" already in database, not migrating pillar file");
+                    LOG.warn("Minion \"{}\" pillar \"{}\" already in database, not migrating pillar file",
+                            server.getMinionId(), formula);
                 }
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
@@ -478,15 +477,16 @@ public class FormulaFactory {
         File layoutFileManager = new File(metadataDirManager + layoutFilePath);
         File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (layoutFileStandalone.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileStandalone)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileStandalone)));
             }
             else if (layoutFileManager.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileManager)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileManager)));
             }
             else if (layoutFileCustom.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileCustom)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileCustom)));
             }
             else {
                 return Optional.empty();
@@ -537,18 +537,18 @@ public class FormulaFactory {
         Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
 
         // Load data from the legacy file if not converted yet
-        File dataFile = new File(getGroupPillarDir() +
-                group.getId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
-        if (data.isEmpty() && dataFile.exists()) {
+        if (data.isEmpty()) {
+            File dataFile = new File(getGroupPillarDir() +
+                    group.getId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
             try {
-                data = Optional.ofNullable(
-                        (Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .map(FormulaFactory::convertIntegers);
+                data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
+                                new TypeToken<Map<String, Object>>() { }.getType()));
             }
             catch (FileNotFoundException e) {
+                data = Optional.of(new HashMap<>());
             }
         }
-        return data;
+        return data.map(FormulaFactory::convertIntegers);
     }
 
     /**
@@ -704,7 +704,7 @@ public class FormulaFactory {
         try {
             formulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
         }
         catch (FileNotFoundException e) {
         }
@@ -773,7 +773,7 @@ public class FormulaFactory {
         if (dataFile.exists()) {
             Map<String, List<String>> serverFormulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
 
             if (serverFormulas.containsKey(id)) {
                 serverFormulas.remove(id);
@@ -857,15 +857,17 @@ public class FormulaFactory {
         File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
         File metadataFileManager = new File(metadataDirManager + metadataFilePath);
         File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
+
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (metadataFileStandalone.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileStandalone));
             }
             else if (metadataFileManager.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileManager));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileManager));
             }
             else if (metadataFileCustom.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileCustom));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileCustom));
             }
             else {
                 return Collections.emptyMap();
@@ -900,15 +902,16 @@ public class FormulaFactory {
         File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
         File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
 
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (pillarExampleFileStandalone.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileStandalone));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileStandalone));
             }
             else if (pillarExampleFileManager.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileManager));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileManager));
             }
             else if (pillarExampleFileCustom.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileCustom));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileCustom));
             }
             else {
                 return Collections.emptyMap();

@@ -178,8 +178,7 @@ public class VirtualHostManagerProcessor {
                 VirtualInstanceFactory.getInstance().getVirtualInstanceType(candidate);
         if (type == null) { // fallback
             type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-            log.warn(String.format("Can't find virtual instance type for string '%s'. " +
-                    "Defaulting to '%s'", candidate, type));
+            log.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}'", candidate, type);
         }
         return type;
     }
@@ -277,7 +276,7 @@ public class VirtualHostManagerProcessor {
         }
 
         cpu.setArch(ServerFactory.lookupCPUArchByName(host.getCpuArch()));
-        cpu.setMHz(Long.valueOf(Math.round(host.getCpuMhz())).toString());
+        cpu.setMHz(Long.toString(Math.round(host.getCpuMhz())));
         cpu.setNrCPU(host.getTotalCpuCores().longValue());
         cpu.setNrsocket(host.getTotalCpuSockets().longValue());
         cpu.setVendor(host.getCpuVendor());

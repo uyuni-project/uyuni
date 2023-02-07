@@ -1,6 +1,7 @@
 #! /bin/bash
 
 set -x
+export LC_ALL=C
 
 SAFE_BRANCHNAMES=(master-weblate new-translation-strings)
 SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)

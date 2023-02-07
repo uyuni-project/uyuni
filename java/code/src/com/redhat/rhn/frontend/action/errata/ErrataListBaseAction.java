@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * the {@link #getErrataFilter()} method to indicate what data to return.
  *
  */
-public abstract class ErrataListBaseAction extends RhnAction implements Listable {
+public abstract class ErrataListBaseAction extends RhnAction implements Listable<ErrataOverview> {
 
     /**
      * Indicates the specific erratum returned by a particular subclass.
@@ -47,11 +48,11 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
     protected abstract ErrataFilter getErrataFilter();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
         request.setAttribute("displayCves", isSecurityAction());
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
@@ -60,10 +61,11 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ErrataOverview> getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
-        DataResult result;
+        DataResult<ErrataOverview> result;
 
         switch (getErrataFilter()) {
             case ALL:

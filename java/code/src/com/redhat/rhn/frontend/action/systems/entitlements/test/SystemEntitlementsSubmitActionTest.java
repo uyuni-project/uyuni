@@ -102,11 +102,10 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     }
 
     /**
-     * @throws Exception on server init failure
      */
     private void testWithUnentitledSystem(Entitlement ent,
                                             String dispatchKey,
-                                            String msg) throws Exception {
+                                            String msg) {
 
         Server server = ServerFactoryTest.createTestServer(user, true,
                             ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -153,13 +152,12 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
     /**
      *
-     * @throws Exception on server init failure
      */
     private void testAddOnForManagement(String selectKey,
                                             String msgSubKey,
                                             Entitlement ent,
                                             ServerGroupType groupType
-                                            )  throws Exception {
+                                            ) {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroupTest.createTestServerGroup(user.getOrg(), groupType);
@@ -196,13 +194,12 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
     /**
      *
-     * @throws Exception on server init failure
      */
     private Server testRemoveAddOnForManagement(String selectKey,
                                                 String msgSubKey,
                                                 Entitlement ent,
                                                 ServerGroupType groupType
-                                                ) throws Exception {
+                                                ) {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroupTest.createTestServerGroup(user.getOrg(), groupType);

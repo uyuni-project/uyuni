@@ -93,6 +93,7 @@ public class Bug extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Bug)) {
             return false;
@@ -105,6 +106,7 @@ public class Bug extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .toHashCode();

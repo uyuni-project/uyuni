@@ -50,6 +50,7 @@ public class FilelistsXmlWriter extends RepomdWriter {
     /**
      * end xml metadata generation
      */
+    @Override
     public void end() {
         try {
             handler.endElement("filelists");
@@ -65,6 +66,7 @@ public class FilelistsXmlWriter extends RepomdWriter {
      * Start xml metadata generation
      * @param channel channel info
      */
+    @Override
     public void begin(Channel channel) {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/filelists");

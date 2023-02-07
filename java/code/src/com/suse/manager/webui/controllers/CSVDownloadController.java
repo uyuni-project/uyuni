@@ -21,19 +21,28 @@ import static spark.Spark.get;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.List;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Controller class providing backend code for CSV downloads.
  */
 public class CSVDownloadController {
+
+    private static final Logger LOG = LogManager.getLogger(CSVDownloadController.class);
 
     private CSVDownloadController() {
     }
@@ -43,6 +52,7 @@ public class CSVDownloadController {
      */
     public static void initRoutes() {
         get("/manager/systems/csv/virtualSystems", withUser(CSVDownloadController::virtualSystemsCSV));
+        get("/manager/systems/csv/all", withUser(CSVDownloadController::allSystemsCSV));
     }
 
     /**
@@ -59,18 +69,41 @@ public class CSVDownloadController {
         DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
         virtual.elaborate();
 
-        // write data to csv file using csvWriter
+        List<String> columns = Arrays.asList("name", "id", "securityErrata", "bugErrata", "enhancementErrata",
+                "outdatedPackages", "lastCheckin", "entitlementLevel", "channelLabels");
+        return writeCsv(response, virtual, columns, "virtual-systems.csv");
+    }
+
+    /**
+     * Download all systems list CSV
+     *
+     * @param request  the http request
+     * @param response the http response
+     * @param user     the user
+     * @return the json response
+     */
+    public static String allSystemsCSV(Request request, Response response, User user) {
+        DataResult<SystemOverview> all = SystemManager.systemListNew(user, null, null);
+
+        List<String> columns = Arrays.asList("serverName", "id", "securityErrata", "bugErrata", "enhancementErrata",
+                "outdatedPackages", "extraPkgCount", "configFilesWithDifferences", "lastCheckin", "entitlementLevel",
+                "channelLabels", "proxy", "mgrServer", "virtualHost", "virtualGuest", "requiresReboot",
+                "statusType");
+        return writeCsv(response, all, columns, "systems.csv");
+    }
+
+    private static String writeCsv(Response response, List<?> data, List<String> columns, String filename) {
         CSVWriter csvWriterObj = new CSVWriter(new StringWriter());
-        csvWriterObj.setColumns(Arrays.asList("name", "id", "securityErrata", "bugErrata", "enhancementErrata",
-                "outdatedPackages", "lastCheckin", "entitlementLevel", "channelLabels"));
+        csvWriterObj.setColumns(columns);
         try {
-            csvWriterObj.write(virtual);
+            csvWriterObj.write(data);
         }
         catch (Exception e) {
-            System.out.println("err" + e);
+            LOG.error("Failed to write CSV", e);
+            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
 
-        response.header("Content-Disposition", "attachment; filename=\"virtual-systems.csv\"");
+        response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
         response.header("Content-Length", Integer.toString(csvWriterObj.getContents().length()));
         response.type("text/csv");
         return csvWriterObj.getContents();

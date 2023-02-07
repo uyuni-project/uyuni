@@ -88,3 +88,17 @@ def add_to_erratacache_queue(channel, priority=0):
     """)
     h.execute(label=channel, priority=priority)
     rhnSQL.commit()
+
+def add_to_system_overview_update_queue(sid):
+    h = rhnSQL.prepare("""
+    INSERT INTO rhnTaskQueue (org_id, task_name, task_data, priority, earliest)
+    VALUES (
+        (select org_id from rhnserver where id = :sid),
+        'update_system_overview',
+        :sid,
+        0,
+        current_timestamp
+    )
+    """)
+    h.execute(sid=sid)
+    rhnSQL.commit()

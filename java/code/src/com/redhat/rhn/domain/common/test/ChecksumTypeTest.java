@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class ChecksumTypeTest extends RhnBaseTestCase {
 
     @Test
-    public void testChecksumType() throws Exception {
+    public void testChecksumType() {
 
         Long testid = 1L;
         String query = "ChecksumType.findById";

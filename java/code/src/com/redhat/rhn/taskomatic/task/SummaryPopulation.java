@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -45,12 +43,13 @@ public class SummaryPopulation extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
 
         try {
             // don't want duplicates otherwise we risk violating the
             // RHN_DSQUEUE_OID_UQ unique constraint on org_id
-            Set orgSet = new LinkedHashSet();
+            Set orgSet = new LinkedHashSet<>();
 
             log.debug("Finding orgs with awol servers");
             List orgs = awolServerOrgs();
@@ -89,11 +88,6 @@ public class SummaryPopulation extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_SUMMARYPOP_AWOL_SERVER_IN_ORGS);
 
         Map<String, Object> params = new HashMap<>();
-        int checkin = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
-        if (log.isDebugEnabled()) {
-            log.debug("Server checkin threshold for AWOL servers: {}", checkin);
-        }
-        params.put("checkin_threshold", checkin);
         return m.execute(params);
     }
 

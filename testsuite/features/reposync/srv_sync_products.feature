@@ -1,4 +1,4 @@
-# Copyright 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -16,10 +16,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "RHEL7" as the filtered product description
-    Then I should see a "RHEL7 Base" text
+    And I enter "RHEL" as the filtered product description
+    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
     When I select "x86_64" in the dropdown list of the architecture filter
-    Then I should see a "RHEL7 Base x86_64" text
+    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
 
 @scc_credentials
   Scenario: View the channels list in the products page
@@ -45,8 +45,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see a "Legacy Module 12 x86_64" text
     When I select the addon "Legacy Module 12 x86_64"
     Then I should see the "Legacy Module 12 x86_64" selected
-    # Comment following 1 line if you wish to re-enable testing with beta client tools for SLE12
-    And I deselect "SUSE Manager Client Tools Beta for SLE 12 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     Then the SLE12 SP5 product should be added
@@ -63,10 +61,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
-    # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
-#    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
-#    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
-#    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
+    When I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Desktop Applications Module 15 SP4 x86_64" as a product
+    And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
+    And I select "Development Tools Module 15 SP4 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
+    And I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
@@ -76,3 +78,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
+
+@scc_credentials
+  Scenario: Detect product loading issues from the UI
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    Then I should not see a "Operation not successful" text
+    And I should not see a warning sign

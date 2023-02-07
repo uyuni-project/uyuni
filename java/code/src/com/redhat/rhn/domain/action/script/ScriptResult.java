@@ -129,6 +129,7 @@ public class ScriptResult implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof ScriptResult)) {
             return false;
@@ -147,6 +148,7 @@ public class ScriptResult implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getActionScriptId())
                                     .append(getServerId())

@@ -118,7 +118,7 @@ public class UserTestUtils  {
         String prefix = (String) LocalizationService.getInstance().
         availablePrefixes().toArray()[0];
         usr.setPrefix(prefix);
-        usr.setEmail("redhatJavaTest@redhat.com");
+        usr.setEmail("javaTest@example.com");
 
         return usr;
     }
@@ -141,9 +141,8 @@ public class UserTestUtils  {
     /**
      * Useful for legacy tests that arent multi-org aware.
      * @return User from org_id = 1
-     * @throws Exception if error
      */
-    public static User createUserInOrgOne() throws Exception {
+    public static User createUserInOrgOne() {
         User retval = createUser("testUser", 1L);
         retval.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(retval);
@@ -154,9 +153,8 @@ public class UserTestUtils  {
     /**
      * Useful for legacy tests that arent multi-org aware.
      * @return New Sat Admin User from org_id = 1
-     * @throws Exception if error
      */
-    public static User createSatAdminInOrgOne() throws Exception {
+    public static User createSatAdminInOrgOne() {
         User retval = createUser("testUser", 1L);
         retval.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(retval);
@@ -263,9 +261,8 @@ public class UserTestUtils  {
     /**
      * Add provisioning to an org
      * @param orgIn to add to
-     * @throws Exception foo
      */
-    public static void addManagement(Org orgIn) throws Exception {
+    public static void addManagement(Org orgIn) {
         EntitlementServerGroup sg =
             ServerGroupTestUtils.createEntitled(orgIn,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -274,9 +271,8 @@ public class UserTestUtils  {
     /**
      * Add virtualization to an org
      * @param orgIn to add to
-     * @throws Exception foo
      */
-    public static void addVirtualization(Org orgIn) throws Exception {
+    public static void addVirtualization(Org orgIn) {
         EntitlementServerGroup sg =
             ServerGroupTestUtils.createEntitled(orgIn,
                     ServerConstants.getServerGroupTypeVirtualizationEntitled());

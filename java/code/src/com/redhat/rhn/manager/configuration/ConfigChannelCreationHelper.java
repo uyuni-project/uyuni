@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.configuration;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -27,9 +26,6 @@ import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 
 import org.apache.struts.action.DynaActionForm;
-
-import java.io.IOException;
-
 
 
 /**
@@ -90,7 +86,7 @@ public class ConfigChannelCreationHelper {
         ValidatorResult result = new ValidatorResult();
 
         // Check label
-        if (label == null || label.trim().length() == 0) {
+        if (label == null || label.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                             ls.getMessage(LABEL)));
         }
@@ -107,7 +103,7 @@ public class ConfigChannelCreationHelper {
             form.set(LABEL, label);
         }
         // Check name
-        if (name == null || name.trim().length() == 0) {
+        if (name == null || name.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                             ls.getMessage(NAME)));
         }
@@ -120,7 +116,7 @@ public class ConfigChannelCreationHelper {
             form.set(NAME, name);
         }
         // Check description
-        if (description == null || description.trim().length() == 0) {
+        if (description == null || description.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                                 ls.getMessage(DESCRIPTION)));
         }
@@ -219,13 +215,7 @@ public class ConfigChannelCreationHelper {
     public void createInitSlsFile(User user, ConfigChannel channel, String contents) {
         if (channel.isStateChannel()) {
             ConfigFileData data = new SLSFileData(contents);
-            try {
-                ConfigFileBuilder.getInstance().create(data, user, channel);
-            }
-            catch (IOException e) {
-                String msg = "Error creating init.sls file .\n" +  e.getMessage();
-                throw new FaultException(1021, "ConfigChannelCreationException", msg);
-            }
+            ConfigFileBuilder.getInstance().create(data, user, channel);
         }
 
     }

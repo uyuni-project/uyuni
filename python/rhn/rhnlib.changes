@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Nov 18 15:05:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Don't get stuck at the end of SSL transfers (bsc#1204032)
+
+-------------------------------------------------------------------
+Wed Sep 28 11:06:09 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Bump version to 4.4.0
+
+-------------------------------------------------------------------
 Tue Apr 19 11:54:48 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.4-1

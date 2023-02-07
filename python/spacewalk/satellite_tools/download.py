@@ -112,6 +112,8 @@ class PyCurlFileObjectThread(PyCurlFileObject):
     def __init__(self, url, filename, opts, curl_cache, parent):
         self.curl_cache = curl_cache
         self.parent = parent
+        # Next 3 lines will not be required on having urlgrabber with proper fix
+        # https://github.com/rpm-software-management/urlgrabber/pull/35
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
@@ -172,13 +174,13 @@ class DownloadThread(Thread):
             # No codes at all or some specified codes
             # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug
             if (retrycode is None and code is None) or (retrycode in opts.retrycodes or code in [58, 77]):
-                log2(0, 2, "ERROR: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
+                log2(0, 2, "WARNING: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
                      stream=sys.stderr)
                 return True
 
         # 14 - HTTP Error
         if retry < (mirrors - 1) and retrycode == 14:
-            log2(0, 2, "ERROR: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
+            log2(0, 2, "WARNING: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
                  stream=sys.stderr)
             return True
 
@@ -199,19 +201,24 @@ class DownloadThread(Thread):
                                    checksum=params['checksum']):
                 return True
 
+        # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)
+        retrycodes = URLGrabberOptions().retrycodes
+        if 14 not in retrycodes:
+            retrycodes.append(14)
+
         opts = URLGrabberOptions(
             ssl_ca_cert=params["ssl_ca_cert"],
             ssl_cert=params["ssl_client_cert"],
             ssl_key=params["ssl_client_key"],
             range=params["bytes_range"],
-            proxy=params["proxy"],
-            username=params["proxy_username"],
-            password=params["proxy_password"],
             proxies=params["proxies"],
-            http_headers=tuple(params["http_headers"].items()),
+            http_headers=params["http_headers"],
             timeout=params["timeout"],
             minrate=params["minrate"],
+            logspec=params["urlgrabber_logspec"],
             keepalive=True,
+            retry=3,
+            retrycodes=retrycodes,
         )
 
         mirrors = len(params['urls'])

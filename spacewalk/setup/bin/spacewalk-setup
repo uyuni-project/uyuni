@@ -65,7 +65,7 @@ if (not $opts{"skip-fqdn-test"} and
     not (lc($answers{hostname}) eq $answers{hostname})) {
     print Spacewalk::Setup::loc(
     "ERROR: Hostname '$answers{hostname}' of this server contains uppercase letters.
-    It can cause Spacewalk Proxy communications (through jabberd) to fail.\n");
+    It can cause Proxy communications to fail.\n");
     exit 4;
 }
 
@@ -139,9 +139,6 @@ setup_sudoers();
 
 print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
 setup_mod_ssl(\%opts, \%answers);
-
-print Spacewalk::Setup::loc("* Configuring jabberd.\n");
-setup_jabberd(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Creating SSL certificates.\n");
 setup_ssl_certs(\%opts, \%answers);
@@ -268,6 +265,7 @@ sub setup_cobbler {
     close(FILE);
   }
   if ( system("ps -A | grep cobblerd") == 0 ) {
+    system("cobbler mkloaders");
     system("cobbler sync");
   }
 
@@ -494,16 +492,6 @@ sub setup_tomcat {
   Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-tomcat', ''], 43,
                'Could not setup tomcat.');
   return;
-}
-
-sub setup_jabberd {
-  my $opts = shift;
-  my $answers = shift;
-
-  system('rpm -q jabberd >& /dev/null');
-  if ($? >> 8 == 0) {
-    system("/usr/bin/spacewalk-setup-jabberd", "--macros", "hostname:$answers->{'hostname'}");
-  }
 }
 
 sub setup_ssl_certs {
@@ -845,7 +833,7 @@ sub populate_initial_configs {
      serverDOTsatelliteDOThttp_proxy => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy'} : $answers->{'rhn-http-proxy'}) || '',
      serverDOTsatelliteDOThttp_proxy_username => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-username'} : $answers->{'rhn-http-proxy-username'}) || '',
      serverDOTsatelliteDOThttp_proxy_password => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-password'} :$answers->{'rhn-http-proxy-password'}) || '',
-     osadispatcherDOTosa_ssl_cert => $DOC_ROOT."/pub/RHN-ORG-TRUSTED-SSL-CERT",
+     javaDOThostname => $answers->{hostname},
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
@@ -854,11 +842,14 @@ sub populate_initial_configs {
      db_host => $answers->{'db-host'},
      db_port => $answers->{'db-port'},
      db_ssl_enabled => $answers->{'db-ssl-enabled'},
+     externaldb => $answers->{'externaldb'},
+     external_db_admin_user => $answers->{'externaldb-admin-user'},
+     external_db_admin_password => $answers->{'externaldb-admin-password'},
+     db_sslrootcert => $answers->{'db-ca-cert'},
      hibernate_dialect => $answers->{'hibernate.dialect'},
      hibernate_driver => $answers->{'hibernate.connection.driver_class'},
      hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
-     jabberDOThostname => $answers->{hostname},
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},

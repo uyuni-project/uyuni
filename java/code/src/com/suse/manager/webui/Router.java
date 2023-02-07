@@ -18,6 +18,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setupHibernateSessionFilter;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.notFound;
@@ -97,6 +98,7 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
+        setupHibernateSessionFilter();
 
         initNotFoundRoutes(jade);
 

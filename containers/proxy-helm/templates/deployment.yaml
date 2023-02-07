@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: uyuni-proxy
-  namespace: "{{ .Values.namespace }}"
+  namespace: "{{ .Release.Namespace }}"
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"
+          image: {{- include "deployment.container.image" (dict "name" "proxy-httpd" "global" .) | indent 1}}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
@@ -34,7 +34,7 @@ spec:
             - containerPort: 80
             - containerPort: 443
         - name: salt-broker
-          image: "{{ .Values.repository }}/proxy-salt-broker:{{ .Values.version | default .Chart.AppVersion }}"
+          image: {{- include "deployment.container.image" (dict "name" "proxy-salt-broker" "global" .) | indent 1}}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
@@ -45,7 +45,7 @@ spec:
             - containerPort: 4505
             - containerPort: 4506
         - name: squid
-          image: "{{ .Values.repository }}/proxy-squid:{{ .Values.version | default .Chart.AppVersion }}"
+          image: {{- include "deployment.container.image" (dict "name" "proxy-squid" "global" .) | indent 1}}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
@@ -57,7 +57,7 @@ spec:
           ports:
             - containerPort: 8088
         - name: ssh
-          image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
+          image: {{- include "deployment.container.image" (dict "name" "proxy-ssh" "global" .) | indent 1}}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
@@ -71,7 +71,7 @@ spec:
           ports:
             - containerPort: 22
         - name: tftpd
-          image: "{{ .Values.repository }}/proxy-tftpd:{{ .Values.version | default .Chart.AppVersion }}"
+          image: {{- include "deployment.container.image" (dict "name" "proxy-tftpd" "global" .) | indent 1}}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume

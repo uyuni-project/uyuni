@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.systems.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -67,22 +66,22 @@ public class SystemSearchHelperTest  {
     static final long EMPTY_SID = 666L;
 
     protected Map<String, SystemOverview> dtos;
-    protected Map<Long, Map<String, Double>> scores;
+    protected Map<Long, Map<String, Object>> scores;
     protected SystemSearchHelper.SearchResultScoreComparator cmp;
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         dtos = new HashMap<>();
         scores = new HashMap<>();
 
         for (String vals : TEST_DATA) {
             String[] entries = vals.split(";");
-            Map<String, Double> serverScore = new HashMap<>();
+            Map<String, Object> serverScore = new HashMap<>();
             SystemOverview aDto = new SystemOverview();
             aDto.setId(Long.parseLong(entries[SID]));
             aDto.setName(entries[PROFILE_NAME]);
-            Double aScore = Double.parseDouble(entries[SCORE]);
+            double aScore = Double.parseDouble(entries[SCORE]);
             if (aScore > 0.0d) {
                 serverScore.put("score", aScore);
             }
@@ -206,17 +205,17 @@ should sort to
         List<SystemOverview> systems = new ArrayList<>(dtos.values());
         assertEquals(dtos.size(), systems.size());
         systems.sort(cmp);
-        assertTrue(1115L == systems.get(0).getId());
-        assertTrue(1215L == systems.get(1).getId());
-        assertTrue(1110L == systems.get(2).getId());
-        assertTrue(1210L == systems.get(3).getId());
-        assertTrue(1100L == systems.get(4).getId());
-        assertTrue(1200L == systems.get(5).getId());
-        assertTrue(1315L == systems.get(6).getId());
-        assertTrue(1310L == systems.get(7).getId());
-        assertTrue(1300L == systems.get(8).getId());
-        assertTrue(1102L == systems.get(9).getId());
-        assertTrue(1101L == systems.get(10).getId());
-        assertTrue(1201L == systems.get(11).getId());
+        assertEquals(1115L, (long) systems.get(0).getId());
+        assertEquals(1215L, (long) systems.get(1).getId());
+        assertEquals(1110L, (long) systems.get(2).getId());
+        assertEquals(1210L, (long) systems.get(3).getId());
+        assertEquals(1100L, (long) systems.get(4).getId());
+        assertEquals(1200L, (long) systems.get(5).getId());
+        assertEquals(1315L, (long) systems.get(6).getId());
+        assertEquals(1310L, (long) systems.get(7).getId());
+        assertEquals(1300L, (long) systems.get(8).getId());
+        assertEquals(1102L, (long) systems.get(9).getId());
+        assertEquals(1101L, (long) systems.get(10).getId());
+        assertEquals(1201L, (long) systems.get(11).getId());
     }
 }

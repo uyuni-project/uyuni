@@ -16,9 +16,9 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -52,7 +52,6 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -114,12 +113,12 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         proxy.setHostname("proxy");
         ServerFactory.save(proxy);
         TestUtils.flushAndEvict(proxy);
-        assertTrue(SystemManager.listProxies(user.getOrg()).size() == 1);
+        assertEquals(1, SystemManager.listProxies(user.getOrg()).size());
         return proxy;
     }
 
     @Test
-    public void testStepOne() throws Exception {
+    public void testStepOne() {
         actionPerform();
         verifyNoActionErrors();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
@@ -152,7 +151,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         ActivationKeyFactory.save(key);
         key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
-        Set tokens = new HashSet();
+        Set tokens = new HashSet<>();
         tokens.add(t);
         k.setDefaultRegTokens(tokens);
 
@@ -176,7 +175,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_PACKAGES,
                 ProfileDto.class);
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_SYSTEMS,
-                HashMap.class);
+                Row.class);
     }
 
     public void executeStepThree(boolean addProxy) throws Exception {
@@ -190,7 +189,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         List ks = KickstartLister.getInstance()
                                  .kickstartsInOrg(user.getOrg(), null);
 
-        if (ks.size() == 0) {
+        if (ks.isEmpty()) {
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
 

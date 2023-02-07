@@ -364,7 +364,7 @@ public class BaseSetHelper {
         }
         else if (obj instanceof Map) {
             Map next = (Map) obj;
-            set.add(next.get(SessionSetHelper.KEY));
+            set.add(next.get(KEY));
         }
         else if (obj instanceof Identifiable) {
            Identifiable next = (Identifiable) obj;

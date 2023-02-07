@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -138,31 +139,32 @@ public class ColumnTag extends BodyTagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
-        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+        ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                 ListTag.class);
-        int retval = BodyTagSupport.SKIP_BODY;
+        int retval = Tag.SKIP_BODY;
 
         if (command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
             if (isSortable()) {
                 parent.setSortable(true);
             }
         }
         else if (command.equals(ListCommand.COL_HEADER)) {
             renderHeader();
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
         }
         else if (command.equals(ListCommand.RENDER)) {
             if (isBound) {
                 renderBound();
-                retval = BodyTagSupport.SKIP_BODY;
+                retval = Tag.SKIP_BODY;
             }
             else {
                 renderUnbound();
-                retval = BodyTagSupport.EVAL_BODY_INCLUDE;
+                retval = Tag.EVAL_BODY_INCLUDE;
             }
         }
         return retval;
@@ -171,6 +173,7 @@ public class ColumnTag extends BodyTagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         if (sortable && attributeName == null && sortAttribute == null) {
             throw new JspException("Sortable columns must use either attr or sortAttr");
@@ -185,12 +188,13 @@ public class ColumnTag extends BodyTagSupport {
             setupColumnFilter();
         }
 
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void release() {
         width = null;
         styleClass = null;
@@ -283,7 +287,7 @@ public class ColumnTag extends BodyTagSupport {
 
     protected void renderUnbound() throws JspException {
         ListTag parent = (ListTag)
-            BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+            TagSupport.findAncestorWithClass(this, ListTag.class);
         if (attributeName != null) {
             Object bean = parent.getCurrentObject();
             String value = ListTagUtil.getBeanValue(bean, attributeName);
@@ -294,7 +298,7 @@ public class ColumnTag extends BodyTagSupport {
 
     protected void renderBound() throws JspException {
         ListTag parent = (ListTag)
-            BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+            TagSupport.findAncestorWithClass(this, ListTag.class);
         Object bean = parent.getCurrentObject();
         writeStartingTd();
         ListTagUtil.write(pageContext, ListTagUtil.
@@ -316,7 +320,7 @@ public class ColumnTag extends BodyTagSupport {
 
     protected String getListName() {
         ListTag parent = (ListTag)
-            BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+            TagSupport.findAncestorWithClass(this, ListTag.class);
         return parent.getUniqueName();
     }
 
@@ -358,7 +362,7 @@ public class ColumnTag extends BodyTagSupport {
     public void setDefaultsort(String sortDir) {
         String sortName = getSortName();
         if (!StringUtils.isBlank(sortName)) {
-            ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+            ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                     ListTag.class);
 
             if (StringUtils.isBlank(parent.getDefaultSortAttr())) {
@@ -366,12 +370,11 @@ public class ColumnTag extends BodyTagSupport {
                 parent.setDefaultsortdir(sortDir);
             }
             else if (!parent.getDefaultSortAttr().equals(sortName)) {
-                String msg = "Trying to set  column [%s] as the default sort." +
-                "The default sort column has already been set for [%s]." +
-                        " Can't reset it to [%s].";
+                String msg = "Trying to set  column [{}] as the default sort." +
+                "The default sort column has already been set for [{}]." +
+                        " Can't reset it to [{}].";
 
-                LOG.warn(String.format(msg, sortName,
-                                        parent.getDefaultSortAttr(), sortName));
+                LOG.warn(msg, sortName, parent.getDefaultSortAttr(), sortName);
             }
         }
         else {
@@ -388,7 +391,7 @@ public class ColumnTag extends BodyTagSupport {
      * @return Current sort direction for the column
      */
     private String getCurrentSortDir() {
-        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+        ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                 ListTag.class);
 
         String currSortAttr = parent.getCurrentSortAttr();
@@ -431,7 +434,7 @@ public class ColumnTag extends BodyTagSupport {
 
     private void setupColumnFilter() throws JspException {
         ListTag parent = (ListTag)
-                BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+                TagSupport.findAncestorWithClass(this, ListTag.class);
         String key = headerKey;
         if (!StringUtils.isBlank(filterMessage)) {
             key = filterMessage;

@@ -38,8 +38,8 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params The parameters containing a config revision id or nothing.
      * @return whether the found revision is a file.
      */
-    public boolean aclIsFile(Object ctx, String[] params) {
-        ConfigRevision revision = getRevision((Map) ctx, params);
+    public boolean aclIsFile(Map<String, Object> ctx, String[] params) {
+        ConfigRevision revision = getRevision(ctx, params);
         return revision.isFile();
     }
 
@@ -49,8 +49,8 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params The parameters containing a config revision id or nothing.
      * @return whether the found revision is a file.
      */
-    public boolean aclIsSls(Object ctx, String[] params) {
-        ConfigRevision revision = getRevision((Map) ctx, params);
+    public boolean aclIsSls(Map<String, Object> ctx, String[] params) {
+        ConfigRevision revision = getRevision(ctx, params);
         return revision.isSls();
     }
 
@@ -60,8 +60,8 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params The parameters containing a config revision id or nothing.
      * @return whether the found revision belongs to a state channel.
      */
-    public boolean aclIsInStateChannel(Object ctx, String[] params) {
-        ConfigRevision revision = getRevision((Map) ctx, params);
+    public boolean aclIsInStateChannel(Map<String, Object> ctx, String[] params) {
+        ConfigRevision revision = getRevision(ctx, params);
         return revision.getConfigFile().getConfigChannel().isStateChannel();
     }
 
@@ -72,10 +72,9 @@ public class ConfigAclHandler extends BaseHandler {
      * @return whether the config channel and objects inside it are editable
      *         by the current user.
      */
-    public boolean aclConfigChannelEditable(Object ctx, String[] params) {
-        Map map = (Map)ctx;
-        User user = (User) ((Map)ctx).get("user");
-        ConfigChannel cc = getChannel(map, params);
+    public boolean aclConfigChannelEditable(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
+        ConfigChannel cc = getChannel(ctx, params);
 
         //This happens if the channel is there but is not accessible.
         if (cc == null) {
@@ -100,11 +99,11 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params The params, must include desired channel type label.
      * @return Whether the current channel is of the given type.
      */
-    public boolean aclConfigChannelType(Object ctx, String[] params) {
+    public boolean aclConfigChannelType(Map<String, Object> ctx, String[] params) {
         if (params.length < 1 || StringUtils.isEmpty(params[0])) {
             throw new IllegalArgumentException("Parameters must include type.");
         }
-        ConfigChannel cc = getChannel((Map)ctx, params);
+        ConfigChannel cc = getChannel(ctx, params);
         //does the type in params match the channels type.
         return cc.getConfigChannelType().getLabel().equalsIgnoreCase(params[0]);
     }
@@ -116,13 +115,13 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params The parameters unused.
      * @return whether the config channel has files.
      */
-    public boolean aclConfigChannelHasFiles(Object ctx, String[] params) {
+    public boolean aclConfigChannelHasFiles(Map<String, Object> ctx, String[] params) {
         //We are using hibernate mappings to decide if the config channel
         //has files. This makes things much easier, but it also could be
         //somewhat slow because it loads up every file instead of justing
         //finding one and then bailing.
-        ConfigChannel cc = getChannel((Map)ctx, params);
-        return (cc.getConfigFiles().size() > 0);
+        ConfigChannel cc = getChannel(ctx, params);
+        return (!cc.getConfigFiles().isEmpty());
     }
 
     /**
@@ -131,9 +130,9 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params parameters (unused)
      * @return true if there is at least one system subscribed to this channel
      */
-    public boolean aclConfigChannelHasSystems(Object ctx, String[] params) {
-        ConfigChannel cc = getChannel((Map)ctx, params);
-        User user = (User) ((Map)ctx).get("user");
+    public boolean aclConfigChannelHasSystems(Map<String, Object> ctx, String[] params) {
+        ConfigChannel cc = getChannel(ctx, params);
+        User user = (User) ctx.get("user");
 
         return ConfigurationManager.getInstance().getSystemCount(user, cc) > 0;
     }
@@ -166,7 +165,7 @@ public class ConfigAclHandler extends BaseHandler {
      *            </ol>
      * @return The revision found.
      */
-    private ConfigRevision getRevision(Map map, String[] params) {
+    private ConfigRevision getRevision(Map<String, Object> map, String[] params) {
         Long crid;
         User user = (User) map.get("user");
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -194,7 +193,7 @@ public class ConfigAclHandler extends BaseHandler {
         return cm.lookupConfigFile(user, cfid).getLatestConfigRevision();
     }
 
-    private ConfigChannel getChannel(Map map, String[] params) {
+    private ConfigChannel getChannel(Map<String, Object> map, String[] params) {
         User user = (User) map.get("user");
         Long ccid;
         //Look for ccid from parameters
@@ -242,10 +241,9 @@ public class ConfigAclHandler extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if system is config enabled, false otherwise
      */
-    public boolean aclConfigEnabled(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclConfigEnabled(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
+        Long sid = getAsLong(ctx.get("sid"));
         if (user == null || sid == null) {
             throw new IllegalArgumentException("Context must have a user" +
                     " and server id.");

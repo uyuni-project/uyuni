@@ -1,5 +1,7 @@
-# Copyright (c) 2017-2022 SUSE LLC.
+# Copyright (c) 2017-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning Docker and containerization.
 
 require 'time'
 require 'date'
@@ -30,7 +32,7 @@ When(/^I enter URI, username and password for registry$/) do
   )
 end
 
-When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built and inspected successfully via API$/) do |timeout, name, version|
+When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built successfully via API$/) do |timeout, name, version|
   images_list = $api_test.image.list_images
   log "List of images: #{images_list}"
   image_id = 0
@@ -45,8 +47,28 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     image_details = $api_test.image.get_details(image_id)
     log "Image Details: #{image_details}"
-    break if image_details['buildStatus'] == 'completed' && image_details['inspectStatus'] == 'completed'
+    break if image_details['buildStatus'] == 'completed'
     raise 'image build failed.' if image_details['buildStatus'] == 'failed'
+    sleep 5
+  end
+end
+
+When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is inspected successfully via API$/) do |timeout, name, version|
+  images_list = $api_test.image.list_images
+  log "List of images: #{images_list}"
+  image_id = 0
+  images_list.each do |element|
+    if element['name'] == name && element['version'] == version
+      image_id = element['id']
+      break
+    end
+  end
+  raise 'unable to find the image id' if image_id.zero?
+
+  repeat_until_timeout(timeout: timeout.to_i, message: 'image inspection did not complete') do
+    image_details = $api_test.image.get_details(image_id)
+    log "Image Details: #{image_details}"
+    break if image_details['inspectStatus'] == 'completed'
     raise 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
     sleep 5
   end
@@ -62,10 +84,6 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     break if has_xpath?("//tr[td[text()='Container Image']][td//*[contains(@title, 'Built')]]", count: count)
     sleep 5
   end
-end
-
-When(/^I check the first image$/) do
-  step %(I check the first row in the list)
 end
 
 When(/^I schedule the build of image "([^"]*)" via API calls$/) do |image|
@@ -163,7 +181,7 @@ end
 When(/^I create and delete profiles via API$/) do
   $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
   $api_test.image.profile.delete('fakeone')
-  $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-DOCKER-TEST')
+  $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-SUSE-KEY-x86_64')
   $api_test.image.profile.delete('fakeone')
 end
 
@@ -185,7 +203,7 @@ end
 
 When(/^I list image profiles via API$/) do
   ima_profiles = $api_test.image.profile.list_image_profiles
-  log $ima_profiles
+  log ima_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
   raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
 end

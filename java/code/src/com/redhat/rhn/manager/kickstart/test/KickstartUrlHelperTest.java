@@ -88,7 +88,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         else {
-            expected = KickstartUrlHelper.KS_DIST + "/org/" + orgId.toString() + "/" +
+            expected = KickstartUrlHelper.KS_DIST + "/org/" + orgId + "/" +
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
        assertEquals(expected, helper.getKickstartMediaPath());
@@ -103,7 +103,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         else {
-            expected = expected + "/org/" + orgId.toString() + "/" +
+            expected = expected + "/org/" + orgId + "/" +
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         assertEquals(expected, helper.getKickstartMediaUrl());
@@ -112,7 +112,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 
 
     @Test
-    public void testGetCobblerMediaUrl() throws Exception {
+    public void testGetCobblerMediaUrl() {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
@@ -122,7 +122,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testGetCobblerMediaUrlBase() throws Exception {
+    public void testGetCobblerMediaUrlBase() {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE;

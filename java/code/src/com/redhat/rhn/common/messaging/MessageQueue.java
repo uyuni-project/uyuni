@@ -60,7 +60,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,7 +83,7 @@ public class MessageQueue {
      */
     private static Logger logger = LogManager.getLogger(MessageQueue.class);
 
-    private static final Map<Class, List<MessageAction>> ACTIONS =
+    private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS =
             new HashMap<>();
     private static Channel messages = new LinkedQueue();
     private static Thread dispatcherThread = null;
@@ -112,7 +111,7 @@ public class MessageQueue {
         if (msg != null) {
             synchronized (ACTIONS) {
                 List<MessageAction> handlers = ACTIONS.get(msg.getClass());
-                if (handlers != null && handlers.size() > 0) {
+                if (handlers != null && !handlers.isEmpty()) {
                     logger.debug("creating ActionExecutor");
                     ActionExecutor executor = new ActionExecutor(handlers, msg);
                     try {
@@ -199,7 +198,7 @@ public class MessageQueue {
      * @param act MessageAction
      * @param eventType type of event.
      */
-    public static void registerAction(MessageAction act, Class eventType) {
+    public static void registerAction(MessageAction act, Class<? extends EventMessage> eventType) {
         if (logger.isDebugEnabled()) {
             logger.debug("registerAction(MessageAction, Class) - : {} class: {}", act, eventType.getName());
         }
@@ -214,7 +213,7 @@ public class MessageQueue {
      * @param act MessageAction.
      * @param eventType Type of event.
      */
-    public static void deRegisterAction(MessageAction act, Class eventType) {
+    public static void deRegisterAction(MessageAction act, Class<? extends EventMessage> eventType) {
         if (logger.isDebugEnabled()) {
             logger.debug("deRegisterAction(MessageAction, Class) - start");
         }
@@ -238,10 +237,10 @@ public class MessageQueue {
         }
         String[] retval = null;
         synchronized (ACTIONS) {
-            if (ACTIONS.keySet().size() > 0) {
+            if (!ACTIONS.keySet().isEmpty()) {
                 retval = new String[ACTIONS.keySet().size()];
                 int index = 0;
-                for (Class klazz : ACTIONS.keySet()) {
+                for (Class<? extends EventMessage> klazz : ACTIONS.keySet()) {
                     retval[index] = klazz.getName();
                     index++;
                 }
@@ -268,10 +267,9 @@ public class MessageQueue {
      * Configures default messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
      *
-     * @param systemQuery instance for gathering data from a system
      * @param saltApi Salt Api instance to use
      */
-    public static void configureDefaultActions(SystemQuery systemQuery, SaltApi saltApi) {
+    public static void configureDefaultActions(SaltApi saltApi) {
         // Register the Actions for the Events
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
@@ -337,7 +335,7 @@ public class MessageQueue {
                                     SsmConfigFilesEvent.class);
 
         // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery, saltApi),
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(saltApi),
                 ChannelsChangedEventMessage.class);
     }
 }

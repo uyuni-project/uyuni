@@ -43,7 +43,7 @@ import java.util.Set;
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testLookupById() throws Exception {
+    public void testLookupById() {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
 
@@ -57,7 +57,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByIdAndOrg() throws Exception {
+    public void testLookupByIdAndOrg() {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
 
@@ -78,7 +78,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByIdsAndOrg() throws Exception {
+    public void testLookupByIdsAndOrg() {
         ImageStore store = createImageStore("mystore", user);
         ImageProfile p1 = createImageProfile("myprofile1", store, user);
         ImageProfile p2 = createImageProfile("myprofile2", store, user);
@@ -112,7 +112,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByLabelAndOrg() throws Exception {
+    public void testLookupByLabelAndOrg() {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
 
@@ -130,7 +130,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListImageProfiles() throws Exception {
+    public void testListImageProfiles() {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
 
@@ -140,7 +140,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testProfileCustomData() throws Exception {
+    public void testProfileCustomData() {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
 

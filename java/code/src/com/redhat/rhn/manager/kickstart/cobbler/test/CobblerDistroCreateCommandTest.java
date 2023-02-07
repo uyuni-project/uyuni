@@ -41,6 +41,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -51,45 +52,42 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      * Tests whether cobbler Distro can be successfully created using given
      * data. After creating the distro, tests whether this distro (and its
      * metadata) can be retrieved using the tree.
-     *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDistroCreate() throws Exception {
+    public void testDistroCreate() {
         CobblerDistroCreateCommand cmd = new
             CobblerDistroCreateCommand(tree, user);
         assertNull(cmd.store());
         assertNotNull(tree.getCobblerObject(user));
-        assertNotNull(tree.getCobblerObject(user).
-                getKsMeta().get(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE));
+        assertNotNull(
+                tree.getCobblerObject(user)
+                        .getKsMeta()
+                        .get()
+                        .get(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE)
+        );
     }
 
     /**
      * Tests whether the xen distro is created for a tree with paravirtualization.
-     *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDistroCreateXenCreated() throws Exception {
+    public void testDistroCreateXenCreated() {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
         Distro distro = Distro.lookupById(con, tree.getCobblerXenId());
         distro.remove();
         assertNull(Distro.lookupById(con, tree.getCobblerXenId()));
 
-        CobblerDistroCreateCommand cmd = new
-            CobblerDistroCreateCommand(tree, user);
+        CobblerDistroCreateCommand cmd = new CobblerDistroCreateCommand(tree, user);
         cmd.store();
         assertNotNull(Distro.lookupById(con, tree.getCobblerXenId()));
     }
 
     /**
      * Tests that the xen distro is NOT created for a tree without paravirtualization.
-     *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDistroCreateXenNotCreated() throws Exception {
+    public void testDistroCreateXenNotCreated() {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
         Distro.lookupById(con, tree.getCobblerXenId()).remove();

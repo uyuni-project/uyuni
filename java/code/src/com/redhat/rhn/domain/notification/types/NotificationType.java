@@ -25,4 +25,5 @@ public enum NotificationType {
     StateApplyFailed,
     PaygAuthenticationUpdateFailed,
     EndOfLifePeriod,
+    SubscriptionWarning,
 }

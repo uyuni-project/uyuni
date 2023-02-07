@@ -41,11 +41,11 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
     private FilePreservationListHandler handler = new FilePreservationListHandler();
 
     @Test
-    public void testListAll() throws Exception {
+    public void testListAll() {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
         int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
-        FileList fileList = createFileList();
+        createFileList();
 
         // Test
         List<FilePreservationDto> list = handler.listAllFilePreservations(admin);
@@ -72,7 +72,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
         int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
@@ -94,7 +94,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
         int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
@@ -115,7 +115,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetails() throws Exception {
+    public void testGetDetails() {
         // Setup
         FileList fileList = createFileList();
 

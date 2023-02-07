@@ -36,11 +36,6 @@ import java.util.Comparator;
  * Additionally, for all versions of RHEL, we may need to trim pieces of the version
  * off to do the comparison.
  * <p>
- * Sample releases:<br>
- * <pre>
- *   RHEL 4: 7.6, 8, 9
- *   RHEL 5: 5.1.0.1, 5.2.0.2, 5.3.0.3
- * </pre>
  */
 public class EusReleaseComparator implements Comparator<EssentialChannelDto> {
     private final String rhelVersion;
@@ -48,7 +43,7 @@ public class EusReleaseComparator implements Comparator<EssentialChannelDto> {
     /**
      * Constructor
      *
-     * @param rhelVersionIn RHEL version we're comparing release for. (5Server, 4AS, 4ES)
+     * @param rhelVersionIn RHEL version we're comparing release for.
      */
     public EusReleaseComparator(String rhelVersionIn) {
         this.rhelVersion = rhelVersionIn;
@@ -62,6 +57,7 @@ public class EusReleaseComparator implements Comparator<EssentialChannelDto> {
      * @return 1 if {@literal first is > second}, 0 if they are equal,
      * -1 if {@literal first is < second}.
      */
+    @Override
     public int compare(EssentialChannelDto chan1, EssentialChannelDto chan2) {
         return compare(chan1.getRelease(), chan2.getRelease());
     }

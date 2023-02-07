@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -47,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +56,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ErrataSetupAction
  */
-public class ErrataSetupAction extends RhnAction implements Listable {
+public class ErrataSetupAction extends RhnAction implements Listable<ErrataOverview> {
 
     public static final String LIST_NAME = "errataList";
 
@@ -116,12 +117,8 @@ public class ErrataSetupAction extends RhnAction implements Listable {
            showButton = "false";
         }
 
-        Map params =  new HashMap();
-        Set keys = request.getParameterMap().keySet();
-        for (Object keyIn : keys) {
-            String key = (String) keyIn;
-            params.put(key, request.getParameter(key));
-        }
+        Map<String, Object> params =  request.getParameterMap().keySet().stream()
+                .collect(Collectors.toMap(k -> k, k -> request.getParameter(k)));
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         SdcHelper.ssmCheck(request, server.getId(), user);
@@ -207,7 +204,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
             ActionMessages msg = new ActionMessages();
             msg.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("errata.applynone"));
-            params = makeParamMap(formIn, request);
+            params = makeParamMap(request);
             strutsDelegate.saveMessages(request, msg);
             return strutsDelegate.forwardParams(mapping.findForward(
                     RhnHelper.DEFAULT_FORWARD), params);
@@ -231,14 +228,13 @@ public class ErrataSetupAction extends RhnAction implements Listable {
     /**
      * Makes a parameter map containing request params that need to
      * be forwarded on to the success mapping.
-     * @param form the ActionForm
      * @param request HttpServletRequest containing request vars
      * @return Returns Map of parameters
-     * TODO: was private
      */
-    protected Map makeParamMap(ActionForm form, HttpServletRequest request) {
+    @Override
+    protected Map<String, Object> makeParamMap(HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
-        Map params = rctx.makeParamMapWithPagination();
+        Map<String, Object> params = rctx.makeParamMapWithPagination();
         Long sid = new RequestContext(request).getParamAsLong("sid");
         if (sid != null) {
             params.put("sid", sid);
@@ -282,16 +278,16 @@ public class ErrataSetupAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ErrataOverview> getResult(RequestContext context) {
          User user = context.getCurrentUser();
          Long sid = context.getRequiredParam("sid");
          String type = context.getParam(SELECTOR, false);
          String severity = "";
-         Boolean currency = false;
+         boolean currency = false;
 
          LocalizationService ls = LocalizationService.getInstance();
 
-         String eType = new String();
+         String eType = "";
 
          if (ls.getMessage(SECUR_CRIT).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;

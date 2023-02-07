@@ -35,10 +35,9 @@ public class UserGroupFactoryTest extends RhnBaseTestCase {
     * Test to see if the Org can translate a Role to the
     * appropriate UserGroupId.  This is the only public
     * usage of anything related to a UserGroup
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testGetUserGroup() throws Exception {
+    public void testGetUserGroup() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         UserGroup ugid = org1.getUserGroup(RoleFactory.ORG_ADMIN);
         assertNotNull(ugid);

@@ -179,6 +179,7 @@ public class RhnSetElement implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof RhnSetElement)) {
             return false;
@@ -196,6 +197,7 @@ public class RhnSetElement implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(userid).append(label)
                                     .append(element).append(elementTwo)
@@ -205,6 +207,7 @@ public class RhnSetElement implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("userid", userid).append(
                 "label", label).append("element", element).append("elementTwo",

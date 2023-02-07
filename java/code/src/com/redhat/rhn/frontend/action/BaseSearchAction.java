@@ -53,7 +53,7 @@ import redstone.xmlrpc.XmlRpcFault;
  *
  */
 public abstract class BaseSearchAction extends RhnAction {
-    protected static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
+    private static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
 
     /** Channel-arches a default package-search should look in */
     public static final String[] DEFAULT_ARCHES = { "channel-ia32", "channel-ia64",
@@ -119,6 +119,7 @@ public abstract class BaseSearchAction extends RhnAction {
      * The default execute() workflow for search-related actions is to call executeBody(),
      * handle any execptions thrown, and return whatever destination executeBody returned.
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -128,6 +129,7 @@ public abstract class BaseSearchAction extends RhnAction {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         String searchString = form.getString(BaseSearchAction.SEARCH_STR);
         ActionForward destination = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        String escapedSearchString = StringEscapeUtils.escapeHtml4(searchString);
 
         try {
             // handle setup, the submission setups the searchstring below
@@ -145,18 +147,18 @@ public abstract class BaseSearchAction extends RhnAction {
                 LOG.error("Invalid search query", e);
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.could_not_parse_query",
-                                          searchString));
+                                          escapedSearchString));
             }
             else if (e.getErrorCode() == 200) {
                 LOG.error("Index files appear to be missing: ", e);
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.index_files_missing",
-                                          searchString));
+                                          escapedSearchString));
             }
             else {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.could_not_execute_query",
-                                      searchString));
+                                      escapedSearchString));
             }
         }
         catch (MalformedURLException e) {

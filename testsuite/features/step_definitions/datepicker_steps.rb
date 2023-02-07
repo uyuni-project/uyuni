@@ -1,5 +1,8 @@
-# Copyright (c) 2017-2021 SUSE LLC.
+# Copyright (c) 2017-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the selection,
+### handling or finding of dates and times including timestamps.
 
 require 'date'
 
@@ -99,7 +102,7 @@ When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
 
   execute_script("$('#date_timepicker_widget_input')
-    .timepicker('setTime', '#{action_time}').trigger('changeTime');")
+    .timepicker('setTime', '#{action_time}').trigger('change');")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|

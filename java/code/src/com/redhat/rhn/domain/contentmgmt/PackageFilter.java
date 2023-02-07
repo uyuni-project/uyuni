@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.persistence.DiscriminatorValue;
@@ -115,20 +114,5 @@ public class PackageFilter extends ContentFilter<Package> {
     @Transient
     public EntityType getEntityType() {
         return EntityType.PACKAGE;
-    }
-
-    @Override
-    public Optional<PackageFilter> asPackageFilter() {
-        return Optional.of(this);
-    }
-
-    @Override
-    public Optional<ErrataFilter> asErrataFilter() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ModuleFilter> asModuleFilter() {
-        return Optional.empty();
     }
 }

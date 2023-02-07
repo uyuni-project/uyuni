@@ -1,5 +1,45 @@
-- Process date values in spacecmd api calls (bsc#1198903)
-- Improve Proxy FQDN hint message
+-------------------------------------------------------------------
+Mon Jan 23 08:24:16 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Prevent string api parameters to be parsed as dates if not in
+    ISO-8601 format (bsc#1205759)
+  * Add python-dateutil dependency, required to process date values in
+    spacecmd api calls
+  * Remove python3-simplejson dependency
+
+-------------------------------------------------------------------
+Wed Dec 14 14:07:34 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Correctly understand 'ssm' keyword on scap scheduling
+  * Add vendor_advisory information to errata_details call (bsc#1205207)
+  * Change default port of "Containerized Proxy configuration" 8022
+
+-------------------------------------------------------------------
+Fri Nov 18 15:02:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Added two missing options to schedule product migration: allow-vendor-change
+    and remove-products-without-successor (bsc#1204126)
+  * Changed schedule product migration to use the correct API method
+  * Fix dict_keys not supporting indexing in systems_setconfigchannelorger
+  * Added a warning message for traditional stack deprecation
+  * Remove "Undefined return code" from debug messages (bsc#1203283)
+  * Update translation strings
+
+-------------------------------------------------------------------
+Thu Sep 29 15:42:34 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Stop always showing help for valid proxy_container_config calls
+
+-------------------------------------------------------------------
+Wed Sep 28 10:25:47 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Process date values in spacecmd api calls (bsc#1198903)
+  * Improve Proxy FQDN hint message
 
 -------------------------------------------------------------------
 Wed Jul 27 14:05:24 CEST 2022 - jgonzalez@suse.com

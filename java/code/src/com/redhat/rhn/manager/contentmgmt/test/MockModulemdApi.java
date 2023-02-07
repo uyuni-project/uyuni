@@ -44,6 +44,7 @@ import com.redhat.rhn.testing.TestUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,10 +73,7 @@ public class MockModulemdApi extends ModulemdApi {
     }
 
     @Override
-    public List<String> getAllPackages(List<Channel> sources) {
-        // Dummy call to trigger RepositoryNotModular exception:
-        getMetadataPaths(sources);
-
+    public List<String> getAllPackages(Modules modules) {
         // Mock list
         try {
             return doGetAllPackages();
@@ -128,10 +126,8 @@ public class MockModulemdApi extends ModulemdApi {
     public static Channel createModularTestChannel(User user) throws Exception {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, "channel-x86_64"));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
-        Modules modulemd = new Modules();
-        modulemd.setChannel(channel);
-        modulemd.setRelativeFilename("/path/to/modulemd.yaml");
-        channel.setModules(modulemd);
+        Modules modulemd = new Modules("/path/to/modulemd.yaml", new Date());
+        channel.addModules(modulemd);
 
         List<String> nevras = doGetAllPackages();
         // perl 5.26 is a special package which is included in the module definition even though it's not served as a
@@ -240,7 +236,7 @@ public class MockModulemdApi extends ModulemdApi {
         if (!channel.isModular()) {
             throw new RepositoryNotModularException();
         }
-        Modules metadata = channel.getModules();
+        Modules metadata = channel.getLatestModules();
         return new File(MOUNT_POINT_PATH, metadata.getRelativeFilename()).getAbsolutePath();
     }
 

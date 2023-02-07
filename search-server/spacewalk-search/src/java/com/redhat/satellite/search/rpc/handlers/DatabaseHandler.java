@@ -18,19 +18,19 @@ package com.redhat.satellite.search.rpc.handlers;
 import com.redhat.satellite.search.db.DatabaseManager;
 import com.redhat.satellite.search.db.Query;
 import com.redhat.satellite.search.index.IndexManager;
-import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.index.QueryParseException;
+import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import redstone.xmlrpc.XmlRpcFault;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * XML-RPC handler which handles calls for database queries
@@ -157,7 +157,7 @@ public class DatabaseHandler {
         String[] temps = queryIn.substring(index + delim.length() - 1, indexB).split(",");
         Map<String, Object> params = new HashMap<String, Object>();
         for (int i = 0; i < temps.length; i++) {
-            params.put("param" + new Integer(i).toString(), temps[i].trim());
+            params.put(String.format("param%d", i), temps[i].trim());
         }
         return params;
     }

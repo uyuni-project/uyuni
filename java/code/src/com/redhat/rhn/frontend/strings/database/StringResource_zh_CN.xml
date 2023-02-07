@@ -1322,12 +1322,12 @@
         </context-group>
         <target state="translated">Oracle 端口</target>
       </trans-unit>
-      <trans-unit id="Oracle SID" xml:space="preserve">
+      <trans-unit approved="yes" id="Oracle SID" xml:space="preserve">
         <source>Oracle SID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Oracle SID</target>
+        <target state="final">Oracle SID</target>
       </trans-unit>
       <trans-unit id="Oracle Username" xml:space="preserve">
         <source>Oracle Username</source>
@@ -1574,12 +1574,12 @@
         </context-group>
         <target state="translated">URL 路径</target>
       </trans-unit>
-      <trans-unit id="UserAgent" xml:space="preserve">
+      <trans-unit approved="yes" id="UserAgent" xml:space="preserve">
         <source>UserAgent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">UserAgent</target>
+        <target state="final">UserAgent</target>
       </trans-unit>
       <trans-unit id="Username" xml:space="preserve">
         <source>Username</source>
@@ -2898,9 +2898,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEA Weblogic" xml:space="preserve">
+      <trans-unit approved="yes" id="BEA Weblogic" xml:space="preserve">
           <source>BEA Weblogic</source>
-        <target state="translated">BEA Weblogic</target>
+        <target state="final">BEA Weblogic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2940,9 +2940,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Oracle" xml:space="preserve">
+      <trans-unit approved="yes" id="Oracle" xml:space="preserve">
           <source>Oracle</source>
-        <target state="translated">Oracle</target>
+        <target state="final">Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3185,9 +3185,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="LongLegs" xml:space="preserve">
+      <trans-unit approved="yes" id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
-        <target state="translated">LongLegs</target>
+        <target state="final">LongLegs</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3360,9 +3360,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Servlet" xml:space="preserve">
+      <trans-unit approved="yes" id="Servlet" xml:space="preserve">
           <source>Servlet</source>
-        <target state="translated">Servlet</target>
+        <target state="final">Servlet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3395,9 +3395,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="TNS Ping" xml:space="preserve">
+      <trans-unit approved="yes" id="TNS Ping" xml:space="preserve">
           <source>TNS Ping</source>
-        <target state="translated">TNS Ping</target>
+        <target state="final">TNS Ping</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3465,23 +3465,23 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 4" xml:space="preserve">
           <source>Red Hat Enterprise Linux 4</source>
-        <target state="translated">Red Hat Enterprise Linux 4</target>
+        <target state="final">Red Hat Enterprise Linux 4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
-        <target state="translated">Red Hat Enterprise Linux 3</target>
+        <target state="final">Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
           <source>Red Hat Enterprise Linux 2.1</source>
-        <target state="translated">Red Hat Enterprise Linux 2.1</target>
+        <target state="final">Red Hat Enterprise Linux 2.1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3626,7 +3626,7 @@
         </context-group>
         <target state="translated">（GMT+0800）马来西亚</target>
       </trans-unit>
-      <trans-unit id="Asia/Shanghai" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>

@@ -26,10 +26,12 @@ import java.util.Map;
  */
 
 public class PrimitiveBuilder implements ManifestFactoryBuilder {
+    @Override
     public String getManifestFilename() {
         return "factory-manifest.xml";
     }
 
+    @Override
     public Object createObject(Map params) {
         String type = (String)params.get("type");
         if (type == null) {
@@ -47,7 +49,7 @@ public class PrimitiveBuilder implements ManifestFactoryBuilder {
             String containedType = (String)params.get("contained-type");
 
             int len = Integer.valueOf(lenStr);
-            List ret = new ArrayList();
+            List ret = new ArrayList<>();
             for (int i = 0; i < len; i++) {
                 try {
                     ret.add(Class.forName(containedType).newInstance());

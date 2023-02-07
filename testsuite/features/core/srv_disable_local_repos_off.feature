@@ -7,4 +7,4 @@ Feature: Turn "disable_local_repos" feature on highstate off
   I want to add pillar data to disable that feature
 
   Scenario: Create custom pillar to turn off "disable_local_repos"
-    Then I turn off disable_local_repos for all clients
+    When I turn off disable_local_repos for all clients

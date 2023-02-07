@@ -26,19 +26,11 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.apache.http.HttpStatus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -51,13 +43,6 @@ import spark.Response;
  */
 public class ActivationKeysController {
     private ActivationKeysController() { }
-    // Logger for this class
-    private static final Logger LOG = LogManager.getLogger(ActivationKeysController.class);
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
-            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
-            .serializeNulls()
-            .create();
 
     /**
      * Invoked from Router. Init routes for Activation keys views.

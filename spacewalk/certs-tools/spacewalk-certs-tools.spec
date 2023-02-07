@@ -35,8 +35,8 @@ Name:           spacewalk-certs-tools
 Summary:        Spacewalk SSL Key/Cert Tool
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.0
-Release:        0
+Version:        4.4.4
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -49,6 +49,7 @@ Requires:       spacewalk-base-minimal-config
 Requires:       sudo
 Requires:       tar
 BuildRequires:  docbook-utils
+BuildRequires:  make
 %if 0%{?suse_version}
 BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web

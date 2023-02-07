@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -60,7 +61,6 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -115,7 +115,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
     }
 
     @Test
-    public void testStepOne() throws Exception {
+    public void testStepOne() {
         actionPerform();
         verifyNoActionErrors();
     }
@@ -129,7 +129,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         ActivationKeyFactory.save(key);
         key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
-        Set tokens = new HashSet();
+        Set tokens = new HashSet<>();
         tokens.add(t);
         k.setDefaultRegTokens(tokens);
 
@@ -154,7 +154,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_PACKAGES,
                 ProfileDto.class);
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_SYSTEMS,
-                HashMap.class);
+                Row.class);
 
     }
 

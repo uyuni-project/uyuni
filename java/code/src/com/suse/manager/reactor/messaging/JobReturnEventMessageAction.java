@@ -50,6 +50,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -101,6 +103,17 @@ public class JobReturnEventMessageAction implements MessageAction {
 
         // React according to the function the minion ran
         String function = jobReturnEvent.getData().getFun();
+
+        List<Map<String, Object>> functionArgs = new LinkedList<>();
+        if (jobReturnEvent.getData().getFunArgs() instanceof List) {
+            List<Object> funArgs = (List<Object>) jobReturnEvent.getData().getFunArgs();
+            if (!funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
+                functionArgs = funArgs.stream().filter(x -> x instanceof Map)
+                        .map(x -> (Map<String, Object>) x).collect(Collectors.toList());
+            }
+        }
+        boolean isFunctionTestMode = functionArgs.stream()
+                .anyMatch(e -> e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {
             LOG.debug("Function is null in JobReturnEvent -> \n{}", Json.GSON.toJson(jobReturnEvent));
@@ -181,7 +194,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     actionChainResult,
                     stateResult -> false);
 
-            boolean packageRefreshNeeded = actionChainResult.entrySet().stream()
+            boolean packageRefreshNeeded = !isFunctionTestMode && actionChainResult.entrySet().stream()
                     .map(entry -> SaltActionChainGeneratorService.parseActionChainStateId(entry.getKey())
                             .map(stateId -> handlePackageChanges(jobReturnEvent, entry.getValue().getName(),
                                     Optional.ofNullable(entry.getValue().getChanges().getRet())))
@@ -194,8 +207,8 @@ public class JobReturnEventMessageAction implements MessageAction {
             }
         });
 
-        //For all jobs except when action chains are involved
-        if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent,
+        //For all jobs except when action chains are involved or the action was in test mode
+        if (!isActionChainInvolved && !isFunctionTestMode && handlePackageChanges(jobReturnEvent,
                 Optional.ofNullable(function).map(Xor::right), jobResult)) {
             Date earliest = new Date();
             if (actionId.isPresent()) {
@@ -235,13 +248,8 @@ public class JobReturnEventMessageAction implements MessageAction {
              */
 
             MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
-                    .ifPresent(minion -> ActionChainFactory.getAllActionChains().stream()
+                    .ifPresent(minion -> ActionChainFactory.getActionChainsByServer(minion).stream()
                     .filter(ActionChain::isDone)
-                    .filter(ac ->
-                            ac.getEntries().stream()
-                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
-                                    .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
-                    )
                     .forEach(ActionChainFactory::delete));
 
         }

@@ -51,7 +51,7 @@ public class TestHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testHashChecking() {
         TestHandler th = new TestHandler();
-        Map map = th.hashChecking(new HashMap());
+        Map<String, String> map = th.hashChecking(new HashMap<>());
         assertNotNull(map);
         assertEquals("baz", map.get("foobar"));
     }

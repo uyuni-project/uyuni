@@ -34,8 +34,7 @@ public class UnitTestHandler extends BaseHandler {
      * @return login hash
      * @exception Exception if an error occurs
      */
-    public Hashtable login()
-        throws Exception {
+    public Hashtable login() {
 
         Hashtable retHash = new Hashtable();
 
@@ -54,10 +53,8 @@ public class UnitTestHandler extends BaseHandler {
      * @param a a number
      * @param b another number
      * @return the sum of a and b
-     * @throws Exception something bad happened
      */
-    public Integer add(Integer a, Integer b)
-        throws Exception {
+    public Integer add(Integer a, Integer b) {
         return a + b;
     }
 
@@ -68,10 +65,8 @@ public class UnitTestHandler extends BaseHandler {
 
     /**
      * Throw a fault exception
-     * @throws Exception this method always throws InvalidUserNameException
      */
-    public void throwFault()
-        throws Exception {
+    public void throwFault() {
         throw new InvalidUserNameException();
     }
 }

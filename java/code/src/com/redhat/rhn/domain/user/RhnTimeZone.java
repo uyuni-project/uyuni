@@ -65,6 +65,7 @@ public class RhnTimeZone {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         boolean answer = false;
         if (o instanceof RhnTimeZone) {
@@ -78,6 +79,7 @@ public class RhnTimeZone {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = 37 * timeZoneId;

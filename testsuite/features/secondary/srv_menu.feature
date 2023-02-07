@@ -164,8 +164,8 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: Completeness of the side navigation bar and the content frame
     When I am on the Systems page
-    Then I should see a "System Overview" text in the content area
-    And I should see a "Overview" link in the left menu
+    Then I should see a "Systems" text in the content area
+    And I should see a "All" link in the left menu
     And I should see a "Systems" link in the left menu
     And I should see a "System Groups" link in the left menu
     And I should see a "System Set Manager" link in the left menu
@@ -174,78 +174,22 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Stored Profiles" link in the left menu
     And I should see a "Custom System Info" link in the left menu
     And I should see a "Autoinstallation" link in the left menu
-    And I should see a "View System Groups" link
     And I should see a "Download CSV" link
     And I should see a Sign Out link
 
   Scenario: Sidebar link destination for Systems
     When I follow the left menu "Systems > System List"
     Then I should see a "All" link in the left menu
-    And I should see a "Physical Systems" link in the left menu
     And I should see a "Virtual Systems" link in the left menu
-    And I should see a "Out of Date" link in the left menu
-    And I should see a "Requiring Reboot" link in the left menu
-    And I should see a "Non Compliant" link in the left menu
-    And I should see a "Without System Type" link in the left menu
-    And I should see a "Ungrouped" link in the left menu
-    And I should see a "Inactive" link in the left menu
-    And I should see a "Recently Registered" link in the left menu
-    And I should see a "Proxy" link in the left menu
     And I should see a "Duplicate Systems" link in the left menu
     And I should see a "System Currency" link in the left menu
     And I should see a "System Types" link in the left menu
     And I should see a "Systems" text
 
-  Scenario: Sidebar link destination for Systems => Physical Systems
-    When I follow the left menu "Systems > System List > Physical Systems"
-    Then I should see a "Physical Systems" text
-    And the current path is "/rhn/systems/PhysicalList.do"
-
   Scenario: Sidebar link destination for Systems => Virtual Systems
     When I follow the left menu "Systems > System List > Virtual Systems"
     Then I should see a "Virtual Systems" text
     And the current path is "/rhn/manager/systems/list/virtual"
-
-  Scenario: Sidebar link destination for Systems => Out of Date
-    When I follow the left menu "Systems > System List > Out of Date"
-    Then I should see a "Out of Date Systems" text
-    And the current path is "/rhn/systems/OutOfDate.do"
-
-  Scenario: Sidebar link destination for Systems => Requiring Reboot
-    When I follow the left menu "Systems > System List > Requiring Reboot"
-    Then I should see a "Systems Requiring Reboot" text
-    And the current path is "/rhn/systems/RequiringReboot.do"
-
-  Scenario: Sidebar link destination for Systems => Non Compliant
-    When I follow the left menu "Systems > System List > Non Compliant"
-    Then I should see a "Non Compliant Systems" text
-    And the current path is "/rhn/systems/ExtraPackagesSystems.do"
-
-  Scenario: Sidebar link destination for Systems => Without System Type
-    When I follow the left menu "Systems > System List > Without System Type"
-    Then I should see a "Systems without System Type" text
-    And the current path is "/rhn/systems/Unentitled.do"
-
-  Scenario: Sidebar link destination for Systems => Ungrouped
-    When I follow the left menu "Systems > System List > Ungrouped"
-    Then I should see a "Ungrouped Systems" text
-    And the current path is "/rhn/systems/Ungrouped.do"
-
-  Scenario: Sidebar link destination for Systems => Inactive
-    When I follow the left menu "Systems > System List > Inactive"
-    Then I should see a "Inactive Systems" text
-    And the current path is "/rhn/systems/Inactive.do"
-
-  Scenario: Sidebar link destination for Systems => Recently Registered
-    When I follow the left menu "Systems > System List > Recently Registered"
-    Then I should see a "Recently Registered Systems" text
-    And I should see a "View systems registered:" text
-    And the current path is "/rhn/systems/Registered.do"
-
-  Scenario: Sidebar link destination for Systems => Proxy
-    When I follow the left menu "Systems > System List > Proxy"
-    Then I should see a "Proxy Servers" text
-    And the current path is "/rhn/systems/ProxyList.do"
 
   Scenario: Sidebar link destination for Systems => Duplicate Systems
     When I follow the left menu "Systems > System List > Duplicate Systems"
@@ -321,7 +265,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "File Preservation" link in the left menu
     And I should see a "Autoinstallation Snippets" link in the left menu
     And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart/Autoyast File" link
+    And I should see a "Upload Kickstart/AutoYaST File" link
     And I should see a "View a List of Autoinstallation Profiles" link
     And I should see a "Create a New Kickstart Profile" link
     And I should see a "Upload a New Kickstart/AutoYaST File" link
@@ -330,7 +274,7 @@ Feature: Web UI - Main landing page menu, texts and links
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "Autoinstallation Profiles" text
     And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart/Autoyast File" link
+    And I should see a "Upload Kickstart/AutoYaST File" link
 
   Scenario: Sidebar link destination for Systems => Autoinstallation => Unprovisioned
     When I follow the left menu "Systems > Autoinstallation > Unprovisioned"
@@ -370,9 +314,9 @@ Feature: Web UI - Main landing page menu, texts and links
     And I follow "Create Kickstart Profile"
     Then I should see a "Step 1: Create Kickstart Profile" text
 
-  Scenario: "Upload Kickstart/Autoyast File" page Systems => Autoinstallation => Profiles => Upload Kickstart/Autoyast File
+  Scenario: "Upload Kickstart/AutoYaST File" page Systems => Autoinstallation => Profiles => Upload Kickstart/AutoYaST File
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     Then I should see a "Create Autoinstallation Profile" text
     And I should see a "File Contents:" text
     And I should see a "Autoinstallation Details" text

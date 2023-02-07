@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,13 +50,13 @@ import java.util.Set;
 public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
-    public void testEquals() throws Exception {
+    public void testEquals() {
         User user = UserTestUtils.findNewUser("testUser", "testorg");
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup sg2 = new ServerGroup();
 
-        assertFalse(sg1.equals(sg2));
-        assertFalse(sg1.equals("foo"));
+        assertNotEquals(sg1, sg2);
+        assertNotEquals("foo", sg1);
 
         Session session = HibernateFactory.getSession();
         sg2 = (ServerGroup) session.getNamedQuery("ServerGroup.lookupByIdAndOrg")
@@ -98,9 +99,9 @@ public class ServerGroupTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetServerGroupTypeFeatures() throws Exception {
+    public void testGetServerGroupTypeFeatures() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
-        assertTrue(org1.getEntitledServerGroups().size() > 0);
+        assertFalse(org1.getEntitledServerGroups().isEmpty());
 
         // we assume existence of salt entitlement
         EntitlementServerGroup serverGroup = org1.getEntitledServerGroups().stream()
@@ -108,11 +109,11 @@ public class ServerGroupTest extends RhnBaseTestCase {
                 .findFirst()
                 .orElseThrow();
         assertNotNull(serverGroup.getGroupType().getFeatures());
-        assertTrue(serverGroup.getGroupType().getFeatures().size() > 0);
+        assertFalse(serverGroup.getGroupType().getFeatures().isEmpty());
     }
 
     @Test
-    public void testServerGroupPillar() throws Exception {
+    public void testServerGroupPillar() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         ServerGroup group = createTestServerGroup(org1, ServerConstants.getServerGroupTypeSaltEntitled());
         Set<Pillar> pillars = new HashSet<>();

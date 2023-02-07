@@ -108,7 +108,7 @@ public class ExtAuthenticationAction extends RhnAction {
         request.setAttribute("orgs", orgs);
 
         Long actOrgId = SatConfigFactory.getSatConfigLongValue(
-                SatConfigFactory.EXT_AUTH_DEFAULT_ORGID);
+                SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, 1L);
         if (actOrgId != null) {
             form.set("to_org", actOrgId.toString());
         }

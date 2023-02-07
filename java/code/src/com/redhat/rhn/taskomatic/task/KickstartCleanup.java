@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -48,16 +49,17 @@ public class KickstartCleanup extends RhnJavaJob {
      *
      * @throws JobExecutionException Indicates somes sort of fatal error
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
             SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                     TaskConstants.TASK_QUERY_KSCLEANUP_FIND_CANDIDATES);
-            DataResult dr = select.execute(Collections.EMPTY_MAP);
+            DataResult dr = select.execute(Collections.emptyMap());
             if (log.isDebugEnabled()) {
                 log.debug("Found {} entries to process", dr.size());
             }
             // Bail early if no candidates
-            if (dr.size() == 0) {
+            if (dr.isEmpty()) {
                 return;
             }
 
@@ -81,8 +83,8 @@ public class KickstartCleanup extends RhnJavaJob {
         Long retval = null;
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_FAILED_STATE_ID);
-        DataResult dr = select.execute(Collections.EMPTY_MAP);
-        if (dr.size() > 0) {
+        DataResult dr = select.execute(Collections.emptyMap());
+        if (!dr.isEmpty()) {
             retval = (Long) ((Map) dr.get(0)).get("id");
         }
         return retval;
@@ -100,9 +102,11 @@ public class KickstartCleanup extends RhnJavaJob {
             actionId = findTopmostParentAction(actionId);
             if (oldServerId != null) {
                 ActionFactory.removeActionForSystem(actionId, oldServerId);
+                SystemManager.updateSystemOverview(oldServerId);
             }
             if (newServerId != null) {
                 ActionFactory.removeActionForSystem(actionId, newServerId);
+                SystemManager.updateSystemOverview(newServerId);
             }
         }
         markFailed(sessionId, failedStateId);
@@ -133,7 +137,7 @@ public class KickstartCleanup extends RhnJavaJob {
             log.debug("dr: {}", dr);
         }
 
-        while (dr.size() > 0 && preqid != null) {
+        while (!dr.isEmpty() && preqid != null) {
             preqid = (Long)
                 ((Map) dr.get(0)).get("prerequisite");
             if (preqid != null) {

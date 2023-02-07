@@ -35,8 +35,6 @@ APACHE_CRT_FILE = os.path.join(PKI_DIR, "tls", "certs", APACHE_CRT_NAME)
 APACHE_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", SRV_KEY_NAME)
 PG_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", "pg-" + SRV_KEY_NAME)
 
-JABBER_CRT_FILE = os.path.join(PKI_DIR, "spacewalk", "jabberd", "server.pem")
-
 ROOT_CA_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
 PKI_ROOT_CA_NAME = "LOCAL-" + ROOT_CA_NAME
 
@@ -404,14 +402,6 @@ def checkCompleteCAChain(server_cert_content, certData):
         )
 
 
-def generateJabberCert(server_cert_content, server_key_content, certData):
-    certWithChain = generateCertWithChainFile(server_cert_content, certData)
-    key = getRsaKey(server_key_content)
-    if not key:
-        return None
-    return certWithChain + key
-
-
 def generateApacheCert(server_cert_content, certData):
     return generateCertWithChainFile(server_cert_content, certData)
 
@@ -466,17 +456,6 @@ def deployApache(apache_cert_content, server_key_content):
     log(
 """After changing the server certificate please execute:
 $> spacewalk-service stop """)
-
-
-def deployJabberd(jabber_cert_content):
-    j_uid, j_gid = getUidGid("jabber", "jabber")
-    if j_uid and j_gid:
-        if os.path.exists(JABBER_CRT_FILE):
-            os.remove(JABBER_CRT_FILE)
-        with open(JABBER_CRT_FILE, "w") as f:
-            f.write(jabber_cert_content)
-        os.chmod(JABBER_CRT_FILE, int("0600", 8))
-        os.chown(JABBER_CRT_FILE, j_uid, j_gid)
 
 
 def deployPg(server_key_content):
@@ -574,14 +553,9 @@ def _main():
     if not apache_cert_content:
         log_error("Failed to generate certificate for Apache")
         sys.exit(1)
-    jabber_cert_content = generateJabberCert(files_content.server_cert, files_content.server_key, certData)
-    if not jabber_cert_content:
-        log_error("Failed to generate certificate for Jabberd")
-        sys.exit(1)
 
     deployApache(apache_cert_content, files_content.server_key)
     deployPg(files_content.server_key)
-    deployJabberd(jabber_cert_content)
     deployCAUyuni(certData)
 
 

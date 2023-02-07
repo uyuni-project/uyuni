@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -100,7 +101,9 @@ public class KickstartHelper {
         Map<String, Object> retval = new HashMap<>();
         KickstartData ksdata = null;
         Map<String, String> options = new HashMap<>();
-        log.debug("url: {}", url);
+        if (log.isDebugEnabled()) {
+            log.debug("url: {}", StringUtil.sanitizeLogInput(url));
+        }
         List<String> rawopts = Arrays.asList(
                 StringUtils.split(url, '/'));
 
@@ -112,7 +115,12 @@ public class KickstartHelper {
             }
         }
 
-        log.debug("Options: {}", options);
+        if (log.isDebugEnabled()) {
+            log.debug("Options: {}",
+                    options.entrySet().stream().collect(Collectors.toMap(
+                            entry -> StringUtil.sanitizeLogInput(entry.getKey()),
+                            entry -> StringUtil.sanitizeLogInput(entry.getValue()))));
+        }
 
         String remoteAddr = getClientIp();
 
@@ -143,9 +151,10 @@ public class KickstartHelper {
             mode = SESSION;
         }
 
-        log.debug("org_id: {}", retval.get(ORG_ID));
+        if (log.isDebugEnabled()) {
+            log.debug("org_id: {}", StringUtil.sanitizeLogInput((String) retval.get(ORG_ID)));
+        }
 
-        //TODO: reconsider/cleanup this logic flow
         if (retval.get(ORG_ID) != null) {
 
             // Process label
@@ -183,7 +192,8 @@ public class KickstartHelper {
 
 
             if (log.isDebugEnabled()) {
-                log.debug("session                        : {}", retval.get(SESSION));
+                log.debug("session                        : {}",
+                        StringUtil.sanitizeLogInput(retval.get(SESSION).toString()));
                 log.debug("options.containsKey(VIEW_LABEL): {}", options.containsKey(VIEW_LABEL));
                 log.debug("ksdata                         : {}", ksdata);
             }
@@ -194,7 +204,7 @@ public class KickstartHelper {
         retval.put(KSDATA, ksdata);
 
 
-        if (retval.size() == 0) {
+        if (retval.isEmpty()) {
             retval = null;
         }
         return retval;
@@ -365,54 +375,10 @@ public class KickstartHelper {
             // check on  a rawdata this is the place to fix that
             return true;
         }
-        //I tried to make this readable while still maintaining all the boolean
-        //shortcutting. Here is the one liner boolean:
-        return hasUpdates(ksdata) && hasFresh(ksdata) && (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) &&
-                hasAppStream(ksdata, user);
+        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata);
     }
 
-    private boolean hasUpdates(KickstartData ksdata) {
-        if (ksdata.isRhel4() || ksdata.isRhel3() || ksdata.isRhel2()) {
-            return hasPackages(ksdata.getChannel(), KickstartFormatter.UPDATE_PKG_NAMES);
-        }
-        return true;
-    }
-
-    private boolean hasFresh(KickstartData ksdata) {
-        //There are different 'fresh packages' for different RHEL releases.
-        //TODO: right now we do this a pretty ugly way -> we have a static
-        //      list of fresh packages for the different releases and we
-        //      check which one to use based on the install type suffix number.
-        //      If we need to support more than two lists, we should probably
-        //      make this a little more data driven.
-        if (ksdata.isRhel2()) {
-            return hasPackages(ksdata.getChannel(),
-                    KickstartFormatter.FRESH_PKG_NAMES_RHEL2);
-        }
-        if (ksdata.isRhel3() || ksdata.isRhel4()) {
-            return hasPackages(ksdata.getChannel(),
-                    KickstartFormatter.FRESH_PKG_NAMES_RHEL34);
-        }
-        return true;
-    }
-
-    private boolean hasPackages(Channel c, String[] packageNames) {
-        log.debug("HasPackages: {}", c.getId());
-        //Go through every package name.
-        for (String packageNameIn : packageNames) {
-            log.debug("hasPackages : Checking for package: {}", packageNameIn);
-            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNameIn);
-            //No package by this name exists in this package.
-            if (pid == null) {
-                log.debug("hasPackages : not found");
-                return false;
-            }
-        }
-        //We have a pid from every package.
-        return true;
-    }
-
-    private boolean hasAppStream(KickstartData ksdata, User user) {
+    private boolean hasAppStream(KickstartData ksdata) {
         if (!ksdata.isRhel8()) {
             return true;
         }
@@ -467,7 +433,7 @@ public class KickstartHelper {
                             current.getId(),
                             ksdata.getKickstartPackageNames());
             //found it, this channel is good.
-            if (kspackages.size() > 0) {
+            if (!kspackages.isEmpty()) {
                 return true;
             }
             log.debug("package not found");
@@ -515,13 +481,6 @@ public class KickstartHelper {
         }
         else {
             packages.addAll(Arrays.asList(KickstartFormatter.UPDATE_PKG_NAMES));
-        }
-        //different 'fresh' packages for RHEL2
-        if (ksdata.isRhel2()) {
-            packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL2));
-        }
-        if (ksdata.isRhel3() || ksdata.isRhel4()) {
-            packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL34));
         }
         String autoKickStartPackages = ksdata.getKickstartPackageNames().stream().map(String::trim)
                 .collect(Collectors.joining("|"));

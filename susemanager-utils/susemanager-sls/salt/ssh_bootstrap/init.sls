@@ -1,10 +1,11 @@
 ##
 ##  java bootstrapping calls certs.sls before this state
 ##
+{%- set mgr_sudo_user = salt['pillar.get']('mgr_sudo_user') or 'root' %}
 
 mgr_ssh_identity:
   ssh_auth.present:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: salt://salt_ssh/mgr_ssh_id.pub
 {% if salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 mgr_server_localhost_alias_present:
@@ -21,22 +22,18 @@ mgr_server_localhost_alias_absent:
 {%- if salt['pillar.get']('proxy_pub_key') and salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 no_push_key_authorized:
   ssh_auth.absent:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - comment: susemanager-ssh-push
 
 proxy_ssh_identity:
   ssh_auth.present:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: salt://salt_ssh/{{ salt['pillar.get']('proxy_pub_key') }}
     - require:
       - ssh_auth: no_push_key_authorized
 {%- endif %}
 
-{%- if salt['pillar.get']('mgr_sudo_user') and salt['pillar.get']('mgr_sudo_user') != 'root' %}
-{%- set home = '/home/' ~ salt['pillar.get']('mgr_sudo_user') %}
-{%- else %}
-{%- set home = '/root' %}
-{%- endif %}
+{%- set home = salt['user.info'](mgr_sudo_user)['home'] %}
 
 generate_own_ssh_key:
   cmd.run:
@@ -46,20 +43,29 @@ generate_own_ssh_key:
 ownership_own_ssh_key:
   file.managed:
     - name: {{ home }}/.ssh/mgr_own_id
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
+    - replace: False
+    - require:
+      - cmd: generate_own_ssh_key
+
+ownership_own_ssh_pub_key:
+  file.managed:
+    - name: {{ home }}/.ssh/mgr_own_id.pub
+    - user: {{ mgr_sudo_user }}
+    - replace: False
     - require:
       - cmd: generate_own_ssh_key
 
 no_own_key_authorized:
   ssh_auth.absent:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - comment: susemanager-own-ssh-push
     - require:
       - file: ownership_own_ssh_key
 
 authorize_own_key:
   ssh_auth.present:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: {{ home }}/.ssh/mgr_own_id.pub
     - require:
       - file: ownership_own_ssh_key

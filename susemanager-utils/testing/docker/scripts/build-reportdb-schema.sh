@@ -11,12 +11,11 @@ make -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION=4.3 RELEASE=testing
 
 # Install directories
 install -m 0755 -d /etc/sysconfig/rhn
-install -m 0755 -d /etc/sysconfig/rhn/postgres
+install -m 0755 -d /etc/sysconfig/rhn/reportdb
 install -m 0755 -d /etc/sysconfig/rhn/reportdb-schema-upgrade
 
 # Install sql files
-install -m 0644 postgres/main.sql /etc/sysconfig/rhn/postgres
-install -m 0644 postgres/end.sql /etc/sysconfig/rhn/postgres/upgrade-end.sql
+install -m 0644 postgres/main.sql /etc/sysconfig/rhn/reportdb
+install -m 0644 postgres/end.sql /etc/sysconfig/rhn/reportdb/upgrade-end.sql
 
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd /etc/sysconfig/rhn/reportdb-schema-upgrade && tar xf - ) )
-

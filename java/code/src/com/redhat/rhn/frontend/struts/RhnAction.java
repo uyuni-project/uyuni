@@ -74,7 +74,7 @@ public abstract class RhnAction extends Action {
      * @return List of LabelValue beans
      */
     protected List createLabelValueList(Iterator i, String nameMethod, String valueMethod) {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         while (i.hasNext()) {
             Object o = i.next();
             String name = (String) MethodUtil.callMethod(o, nameMethod, new Object[0]);
@@ -143,6 +143,7 @@ public abstract class RhnAction extends Action {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void saveMessages(HttpServletRequest request, ActionMessages messages) {
         getStrutsDelegate().saveMessages(request, messages);
      }
@@ -295,7 +296,7 @@ public abstract class RhnAction extends Action {
      * @param request The request containing the params we want
      * @return Returns a map containing the pagination params.
      */
-    protected Map makeParamMap(HttpServletRequest request) {
+    protected Map<String, Object> makeParamMap(HttpServletRequest request) {
         return new RequestContext(request).makeParamMapWithPagination();
     }
 

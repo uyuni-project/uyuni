@@ -88,7 +88,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSystemStatusNoErrata() throws Exception {
+    public void testSystemStatusNoErrata() {
         actionPerform();
         assertEquals(Boolean.FALSE, request.getAttribute("hasUpdates"));
     }
@@ -113,7 +113,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSystemInactive() throws Exception {
+    public void testSystemInactive() {
         s.getServerInfo().setCheckin(new Date(1));
         TestUtils.saveAndFlush(s);
         actionPerform();
@@ -121,7 +121,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSystemActive() throws Exception {
+    public void testSystemActive() {
         Calendar pcal = Calendar.getInstance();
         pcal.setTime(new Timestamp(System.currentTimeMillis()));
         pcal.roll(Calendar.MINUTE, -5);
@@ -133,20 +133,20 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSystemUnentitled() throws Exception {
+    public void testSystemUnentitled() {
        systemEntitlementManager.removeAllServerEntitlements(s);
        actionPerform();
        assertEquals(request.getAttribute("unentitled"), Boolean.TRUE);
     }
 
     @Test
-    public void testSystemEntitled() throws Exception {
+    public void testSystemEntitled() {
         actionPerform();
         assertEquals(request.getAttribute("unentitled"), Boolean.FALSE);
     }
 
     @Test
-    public void testLockSystem() throws Exception {
+    public void testLockSystem() {
         request.addParameter("lock", "1");
         actionPerform();
         verifyActionMessage("sdc.details.overview.locked.alert");
@@ -154,7 +154,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testUnlockSystem() throws Exception {
+    public void testUnlockSystem() {
         SystemManager.lockServer(user, s, "test reason");
         request.addParameter("lock", "0");
         actionPerform();
@@ -163,7 +163,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testActivateSatelliteApplet() throws Exception {
+    public void testActivateSatelliteApplet() {
 
         request.addParameter("applet", "1");
         actionPerform();

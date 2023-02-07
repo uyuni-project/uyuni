@@ -12,6 +12,12 @@
   <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css?cb=${rhn:getConfig('web.buildtimestamp')}" />
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
 
+  <c:if test="${not empty noMaintenanceWindow}">
+    <div class="alert alert-danger">
+      <bean:message key="spmigration.jsp.error.no-maintenance-window" arg0="${requestScope.date.date}" />
+    </div>
+  </c:if>
+
   <rhn:toolbar base="h2" icon="header-channel">
     <bean:message key="spmigration.jsp.confirm.title" />
   </rhn:toolbar>

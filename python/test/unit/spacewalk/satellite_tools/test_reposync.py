@@ -151,6 +151,16 @@ class RepoSyncTest(unittest.TestCase):
                       self.stderr.getvalue())
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
+    def test_update_servers(self):
+        rs = _init_reposync(self.reposync)
+
+        _mock_rhnsql(self.reposync, [[{"id": 1234}, {"id": 5678}]])
+        rs.update_servers()
+        self.assertEqual(self.reposync.taskomatic.add_to_system_overview_update_queue.call_args_list,
+                [call(1234), call(5678)])
+
+
+    @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_success_no_regen(self):
         rs = _init_reposync(self.reposync)
         CFG = Mock()
@@ -161,7 +171,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.urls = [
           {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
-        _mock_rhnsql(self.reposync, None)
+        _mock_rhnsql(self.reposync, [None, []])
         rs = _mock_sync(self.reposync, rs)
         with patch("uyuni.common.context_managers.CFG", CFG):
             rs.sync()
@@ -1017,6 +1027,8 @@ def _mock_sync(reposync, rs):
     rs.import_modules = Mock()
     reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
     reposync.taskomatic.add_to_erratacache_queue = Mock()
+    reposync.taskomatic.add_to_system_overview_update_queue = Mock()
+    rs.update_servers = Mock()
     reposync.log = Mock()
 
     rs.mocked_plugin = Mock()

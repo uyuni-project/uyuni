@@ -21,14 +21,15 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -41,10 +42,10 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -56,20 +57,20 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
-import com.suse.manager.webui.utils.gson.VirtualSystem;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -78,7 +79,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,6 +88,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -126,7 +129,9 @@ public class SystemsController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
-                withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::virtualListPage)))), jade);
+        get("/manager/systems/list/all",
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::allListPage)))), jade);
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);
@@ -139,13 +144,36 @@ public class SystemsController {
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(this::getAccessibleChannelChildren));
         get("/manager/api/systems/list/virtual", asJson(withUser(this::virtualSystems)));
+        get("/manager/api/systems/list/all", asJson(withUser(this::allSystems)));
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+        PageControlHelper pageHelper = new PageControlHelper(request, "VII.name");
+        PageControl pc = pageHelper.getPageControl();
+        pc.setFilterColumn("VII.name");
 
-        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
+        Map<String, String> columnNamesMapping = Map.of(
+                "hostServerName", "host_server_name",
+                "name", "VII.name",
+                "stateName", "state_name",
+                "statusType", "S.status_type",
+                "channelLabels", "S.channel_labels"
+        );
+        if (columnNamesMapping.containsKey(pc.getFilterColumn())) {
+            pc.setFilterColumn(columnNamesMapping.get(pc.getFilterColumn()));
+        }
+        if (columnNamesMapping.containsKey(pc.getSortColumn())) {
+            pc.setSortColumn(columnNamesMapping.get(pc.getSortColumn()));
+        }
+
         if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListQueryBuilder()
+                    .select("S.id, S.selectable")
+                    .run(Map.of("user_id", user.getId()), pc, PagedSqlQueryBuilder::parseFilterAsText,
+                            VirtualSystemOverview.class);
             return json(response, virtual.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(VirtualSystemOverview::getUuid)
@@ -153,17 +181,97 @@ public class SystemsController {
             );
         }
 
-        virtual = pageHelper.processPageControl(virtual, new HashMap<>());
-        List<VirtualSystem> systems = virtual.stream()
-                .map(system -> {
-                    system.setSystemId(system.getVirtualSystemId());
-                    if (system.getSystemId() != null) {
-                        system.updateStatusType(user);
-                    }
-                    return new VirtualSystem(system);
-                })
-                .collect(Collectors.toList());
-        return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize()));
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, pc);
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()));
+    }
+
+    private Object allSystems(Request request, Response response, User user) {
+        PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
+        PageControl pc = pageHelper.getPageControl();
+
+        Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> mapping = Map.of(
+                "outdated_packages", PagedSqlQueryBuilder::parseFilterAsNumber,
+                "extra_pkg_count", PagedSqlQueryBuilder::parseFilterAsNumber,
+                "config_files_with_differences", PagedSqlQueryBuilder::parseFilterAsNumber,
+                "group_count", PagedSqlQueryBuilder::parseFilterAsNumber,
+                "requires_reboot", PagedSqlQueryBuilder::parseFilterAsBoolean,
+                "total_errata_count",
+                pageControl -> {
+                    pageControl.ifPresent(c -> c.setFilterColumn("security_errata + bug_errata + enhancement_errata"));
+                    return PagedSqlQueryBuilder.parseFilterAsNumber(pageControl);
+                },
+                "system_kind",
+                pageControl -> {
+                    pageControl.ifPresent(
+                        control -> {
+                            List<String> values = List.of("proxy", "mgr_server", "virtual_host",
+                                                          "virtual_guest", "physical");
+                            if (values.contains(control.getFilterData())) {
+                                if ("physical".equals(control.getFilterData())) {
+                                    control.setFilterColumn("virtual_guest");
+                                    control.setFilterData("false");
+                                }
+                                else {
+                                    control.setFilterColumn(control.getFilterData());
+                                    control.setFilterData("true");
+                                }
+                            }
+                            else {
+                                // Don't filter if the value is invalid
+                                control.setFilter(false);
+                            }
+                        });
+                    return PagedSqlQueryBuilder.parseFilterAsBoolean(pageControl);
+                },
+            "created_days",
+                pageControl -> {
+                    pageControl.ifPresent(control -> {
+                        control.setFilterColumn("created");
+                        Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(control.getFilterData());
+                        if (matcher.matches()) {
+                            long value = Long.parseLong(matcher.group(2));
+                            control.setFilterData(matcher.group(1) +
+                                    DateTimeFormatter.ISO_LOCAL_DATE.format(
+                                            LocalDateTime.now().minusDays(value).toLocalDate()));
+                        }
+                        else {
+                            control.setFilter(false);
+                        }
+                    });
+                    return PagedSqlQueryBuilder.parseFilterAsDate(pageControl);
+                }
+        );
+
+        Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser =
+                PagedSqlQueryBuilder::parseFilterAsText;
+
+        if (pc.getFilterColumn() != null && mapping.containsKey(pc.getFilterColumn())) {
+            parser = mapping.get(pc.getFilterColumn());
+        }
+
+        // When getting ids for the select all we just get all systems ID matching the filter, no paging
+        if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<SystemOverview> systems = new PagedSqlQueryBuilder()
+                    .select("O.id, O.selectable")
+                    .from("suseSystemOverview O, rhnUserServerPerms USP")
+                    .where("O.id = USP.server_id AND USP.user_id = :user_id")
+                    .run(Map.of("user_id", user.getId()), pc, parser, SystemOverview.class);
+
+            return json(response, systems.stream()
+                    .filter(SystemOverview::isSelectable)
+                    .map(SystemOverview::getId)
+                    .collect(Collectors.toList()));
+        }
+
+        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()));
     }
 
     /**
@@ -178,6 +286,26 @@ public class SystemsController {
         Map<String, Object> data = new HashMap<>();
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
+    }
+
+    /**
+     * Get the all systems list page
+     *
+     * @param requestIn the request
+     * @param responseIn the response
+     * @param userIn the user
+     * @return the jade rendered template
+     */
+    private ModelAndView allListPage(Request requestIn, Response responseIn, User userIn) {
+        Map<String, Object> data = new HashMap<>();
+
+        String filterColumn = requestIn.queryParams("qc");
+        String filterQuery = requestIn.queryParams("q");
+
+        data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
+        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
+        return new ModelAndView(data, "templates/systems/all-list.jade");
     }
 
     /**
@@ -225,7 +353,7 @@ public class SystemsController {
              sid = Long.parseLong(sidStr);
          }
          catch (NumberFormatException e) {
-             LOG.error(String.format("SystemID (%s) not a long", sidStr));
+             LOG.error(String.format("SystemID (%s) not a long", StringUtil.sanitizeLogInput(sidStr)));
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("invalid_systemid"));
          }
          Server server = null;
@@ -239,13 +367,17 @@ public class SystemsController {
          if (server.isMgrServer()) {
              Optional<MinionServer> minion = server.asMinionServer();
              if (minion.isEmpty()) {
-                 LOG.error(String.format("System (%s) not a minion", sidStr));
+                 if (LOG.isDebugEnabled()) {
+                     LOG.error("System ({}) not a minion", StringUtil.sanitizeLogInput(sidStr));
+                 }
                  return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
              }
              SystemManager.setReportDbUser(minion.get(), true);
          }
          else {
-             LOG.error(String.format("System (%s) not a Mgr Server", sidStr));
+             if (LOG.isErrorEnabled()) {
+                 LOG.error("System ({}) not a Mgr Server", StringUtil.sanitizeLogInput(sidStr));
+             }
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
          }
          return json(response, ResultJson.success());
@@ -260,7 +392,7 @@ public class SystemsController {
      */
     public String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
-        Boolean noclean = Boolean.parseBoolean(GSON.fromJson(request.body(), Map.class).get("nocleanup").toString());
+        boolean noclean = Boolean.parseBoolean(GSON.fromJson(request.body(), Map.class).get("nocleanup").toString());
         long sid;
         try {
             sid = Long.parseLong(sidStr);
@@ -271,13 +403,11 @@ public class SystemsController {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         boolean isEmptyProfile = server.hasEntitlement(EntitlementManager.BOOTSTRAP);
 
-        if (server.asMinionServer().isPresent()) {
-            if (!noclean && !isEmptyProfile) {
-                Optional<List<String>> cleanupErr =
-                        saltApi.cleanupMinion(server.asMinionServer().get(), 300);
-                if (cleanupErr.isPresent()) {
-                    return json(response, ResultJson.error(cleanupErr.get()));
-                }
+        if (server.asMinionServer().isPresent() && !noclean && !isEmptyProfile) {
+            Optional<List<String>> cleanupErr =
+                    saltApi.cleanupMinion(server.asMinionServer().get(), 300);
+            if (cleanupErr.isPresent()) {
+                return json(response, ResultJson.error(cleanupErr.get()));
             }
         }
 
@@ -324,7 +454,7 @@ public class SystemsController {
      * @return the json response
      */
     public String getChannels(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             Channel base = server.getBaseChannel();
             ChannelsJson jsonChannels = new ChannelsJson();
             if (base != null) {
@@ -345,7 +475,7 @@ public class SystemsController {
      * @return the json response
      */
     public String getAvailableBaseChannels(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
                     user, server);
             List<ChannelsJson.ChannelJson> baseChannels =
@@ -373,7 +503,7 @@ public class SystemsController {
                     HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("invalid_server_id"));
         }
-        Server server = ServerFactory.lookupById(serverId);
+        Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
         if (server == null) {
             return json(response,
                     HttpStatus.SC_NOT_FOUND,
@@ -406,7 +536,7 @@ public class SystemsController {
             // we have a base selected and its id is not -1
             base = Optional.ofNullable(ChannelFactory
                     .lookupByIdAndUser(json.getBase().get().getId(), user));
-            if (!base.isPresent()) {
+            if (base.isEmpty()) {
                 return json(response,
                         HttpStatus.SC_FORBIDDEN,
                         ResultJson.error("base_not_found_or_not_authorized"));
@@ -430,15 +560,8 @@ public class SystemsController {
                     ResultJson.error("child_not_found_or_not_authorized", e.getMessage()));
         }
 
-        ActionChain actionChain = json.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
-                .orElse(null);
-
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        Date earliest = Date.from(
-                json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
-        );
+        ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
+        Date earliest = MinionActionUtils.getScheduleDate(json.getEarliest());
 
         try {
             Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
@@ -482,7 +605,7 @@ public class SystemsController {
      * @return the json response
      */
     public Object getAccessibleChannelChildren(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             long channelId;
             try {
                 channelId = Long.parseLong(request.params("channelId"));
@@ -525,10 +648,9 @@ public class SystemsController {
 
                 // invert preservations
                 Map<Channel, Channel> preservationsByNewChild = new HashMap<>();
-                for (Channel previousChannel : preservationsByOldChild.keySet()) {
-                    Channel newChannel = preservationsByOldChild.get(previousChannel);
-                    if (!preservationsByNewChild.containsKey(newChannel)) {
-                        preservationsByNewChild.put(newChannel, previousChannel);
+                for (Map.Entry<Channel, Channel> entry : preservationsByOldChild.entrySet()) {
+                    if (!preservationsByNewChild.containsKey(entry.getValue())) {
+                        preservationsByNewChild.put(entry.getValue(), entry.getKey());
                     }
                 }
 

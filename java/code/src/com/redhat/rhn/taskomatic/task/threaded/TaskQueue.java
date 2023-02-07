@@ -112,7 +112,7 @@ public class TaskQueue {
         if (queueSize > 0) {
             queueDriver.getLogger().info("In the queue: {}", queueSize);
         }
-        while (candidates.size() > 0 && queueDriver.canContinue()) {
+        while (!candidates.isEmpty() && queueDriver.canContinue()) {
             Object candidate = candidates.remove(0);
             QueueWorker worker = queueDriver.makeWorker(candidate);
             worker.setParentQueue(this);

@@ -51,6 +51,7 @@ import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
+import com.redhat.rhn.frontend.dto.LastDeployDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -174,7 +175,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(sandbox);
 
         // Ask for listSystemsForFileCopy(f1, local) - expect 1 sys, 0 rev
-        DataResult dr = ConfigurationManager.getInstance().
+        DataResult<ConfigSystemDto> dr = ConfigurationManager.getInstance().
             listSystemsForFileCopy(user,
                     cfnids[0], ConfigChannelType.local(), null);
         assertNotNull(dr);
@@ -189,8 +190,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         dr.elaborate(elabParams);
 
         assertEquals(1, dr.size());
-        ConfigSystemDto dto = (ConfigSystemDto)dr.get(0);
-        assertNull(dto.getConfigRevisionId());
+        assertNull(dr.get(0).getConfigRevisionId());
 
         // Ask for listSystemsForFileCopy(f2, local) - expect 1 sys, 1 rev
         dr = ConfigurationManager.getInstance().
@@ -198,40 +198,37 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                 cfnids[1], ConfigChannelType.local(), null);
 
         assertNotNull(dr);
-        elabParams = new HashMap();
+        elabParams = new HashMap<>();
         elabParams.put("cfnid", cfnids[1]);
         elabParams.put("label", ConfigChannelType.local().getLabel());
         dr.elaborate(elabParams);
         assertEquals(1, dr.size());
-        dto = (ConfigSystemDto)dr.get(0);
-        assertNotNull(dto.getConfigRevisionId());
+        assertNotNull(dr.get(0).getConfigRevisionId());
 
         // Ask for listSystemsForFileCopy(f3, local) - expect 1 sys, 0 rev
         dr = ConfigurationManager.getInstance().
             listSystemsForFileCopy(user,
                 cfnids[2], ConfigChannelType.local(), null);
         assertNotNull(dr);
-        elabParams = new HashMap();
+        elabParams = new HashMap<>();
         elabParams.put("cfnid", cfnids[2]);
         elabParams.put("label", ConfigChannelType.local().getLabel());
         dr.elaborate(elabParams);
         assertEquals(1, dr.size());
-        dto = (ConfigSystemDto)dr.get(0);
-        assertNull(dto.getConfigRevisionId());
+        assertNull(dr.get(0).getConfigRevisionId());
 
         // Ask for listSystemsForFileCopy(f3, sandbox) - expect 1 sys, 1 rev
         dr = ConfigurationManager.getInstance().
             listSystemsForFileCopy(user,
                 cfnids[2], ConfigChannelType.sandbox(), null);
         assertNotNull(dr);
-        elabParams = new HashMap();
+        elabParams = new HashMap<>();
         elabParams.put("cfnid", cfnids[2]);
         elabParams.put("label",
                 ConfigChannelType.sandbox().getLabel());
         dr.elaborate(elabParams);
         assertEquals(1, dr.size());
-        dto = (ConfigSystemDto)dr.get(0);
-        assertNotNull(dto.getConfigRevisionId());
+        assertNotNull(dr.get(0).getConfigRevisionId());
     }
 
     @Test
@@ -248,7 +245,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                 ConfigFileState.normal(), "/etc/foo2");
         ConfigTestUtils.createConfigRevision(theFile);
         ConfigurationFactory.commit(gcc1);
-        DataResult dr = ConfigurationManager.getInstance().
+        DataResult<ConfigFileDto> dr = ConfigurationManager.getInstance().
             listCurrentFiles(user, gcc1, null);
         assertNotNull(dr);
         assertEquals(2, dr.getTotalSize());
@@ -284,7 +281,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(configChannel);
 
         // init.sls should not be listed
-        DataResult dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null);
+        DataResult<ConfigFileDto> dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null);
         assertEquals(1, dr.getTotalSize());
 
         // init.sls should not be listed
@@ -455,7 +452,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListGlobalChannelsForSDC() throws Exception {
+    public void testListGlobalChannelsForSDC() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         //Create a config channel
@@ -475,7 +472,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListGlobalChannelsForActivationKeys() throws Exception {
+    public void testListGlobalChannelsForActivationKeys() {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
 
         //Create a config channel
@@ -539,14 +536,13 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         s.subscribeConfigChannel(cf.getConfigChannel(), user);
         ConfigTestUtils.giveConfigCapabilities(s);
         //Call the function we are testing
-        DataResult dr = cm.listManagedSystemsAndFiles(user, pc);
+        DataResult<ConfigSystemDto> dr = cm.listManagedSystemsAndFiles(user, pc);
 
         //Make sure we got what we expected.
         assertEquals(1, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigSystemDto);
-        ConfigSystemDto dto = (ConfigSystemDto)dr.get(0);
-        assertEquals(1, dto.getConfigChannelCount().intValue());
-        assertEquals(1, dto.getGlobalFileCount().intValue());
+        assertNotNull(dr.get(0));
+        assertEquals(1, dr.get(0).getConfigChannelCount().intValue());
+        assertEquals(1, dr.get(0).getGlobalFileCount().intValue());
     }
 
     @Test
@@ -559,12 +555,12 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.giveUserChanAccess(user, cf.getConfigChannel());
 
         //Call the function we are testing
-        DataResult dr = cm.listGlobalConfigFiles(user, pc);
+        DataResult<ConfigFileDto> dr = cm.listGlobalConfigFiles(user, pc);
 
         //Make sure we got what we expected.
         assertEquals(1, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigFileDto);
-        assertEquals(1, ((ConfigFileDto)dr.get(0)).getSystemCount().intValue());
+        assertNotNull(dr.get(0));
+        assertEquals(1, dr.get(0).getSystemCount().intValue());
     }
 
     @Test
@@ -590,10 +586,10 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.giveUserChanAccess(user, cc);
 
         //Call the function we are testing
-        DataResult dr = cm.listLocalConfigFiles(user, pc);
+        DataResult<ConfigFileDto> dr = cm.listLocalConfigFiles(user, pc);
         assertEquals(1, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigFileDto);
-        assertNotNull(((ConfigFileDto)dr.get(0)).getServerName());
+        assertNotNull(dr.get(0));
+        assertNotNull(dr.get(0).getServerName());
     }
 
     @Test
@@ -618,9 +614,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         //Call the function we are testing,  list more than we created to make sure
         //we have only that many.
-        DataResult dr = cm.getRecentlyModifiedConfigFiles(user, numFiles + 5);
+        DataResult<ConfigFileDto> dr = cm.getRecentlyModifiedConfigFiles(user, numFiles + 5);
         assertEquals(numFiles, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigFileDto);
+        assertNotNull(dr.get(0));
 
         //Now test that limiting the results works as well.
         int numToShow = 2;
@@ -657,7 +653,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
 
         //Call the function we are testing
-        Map map = cm.getOverviewSummary(user);
+        Map<String, Long> map = cm.getOverviewSummary(user);
 
         //First make sure that the map has the right keys.
         assertTrue(map.containsKey("systems"));
@@ -668,18 +664,17 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertFalse(map.containsKey("quota"));
 
         //Now test the values
-        assertEquals(2, ((Long)map.get("systems")).longValue());
-        assertEquals(1, ((Long)map.get("channels")).longValue());
-        assertEquals(2, ((Long)map.get("global_files")).longValue());
-        assertEquals(1, ((Long)map.get("local_files")).longValue());
+        assertEquals(2, map.get("systems").longValue());
+        assertEquals(1, map.get("channels").longValue());
+        assertEquals(2, map.get("global_files").longValue());
+        assertEquals(1, map.get("local_files").longValue());
     }
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testAvailableChannels() throws Exception {
+    public void testAvailableChannels() {
         // Create a system
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
 
@@ -885,14 +880,14 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile file = ConfigTestUtils.createConfigFile(lcc);
 
         // NOW - look for successful deploys (which should be zero)
-        List deploys = cm.getSuccesfulDeploysTo(user,
+        List<LastDeployDto> deploys = cm.getSuccesfulDeploysTo(user,
                                     file.getConfigFileName(), srv);
         assertNotNull(deploys);
         assertEquals(0, deploys.size());
     }
 
     @Test
-    public void testListSystemInfoForChannel() throws Exception {
+    public void testListSystemInfoForChannel() {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
@@ -918,23 +913,19 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create some config files in the global channel
         ConfigFile file1 = ConfigTestUtils.createConfigFile(gcc1);
-        ConfigFile file2 = ConfigTestUtils.createConfigFile(gcc1);
+        ConfigTestUtils.createConfigFile(gcc1);
 
         // Create a similarly-named file in srv1's local channel
-        ConfigFile file3 =
-            lcc.createConfigFile(ConfigFileState.normal(),
-                file1.getConfigFileName());
+        lcc.createConfigFile(ConfigFileState.normal(), file1.getConfigFileName());
 
         // And a similar file into the higher-priority channel
-        ConfigFile file4 =
-            gcc2.createConfigFile(ConfigFileState.normal(),
-                file1.getConfigFileName());
+        gcc2.createConfigFile(ConfigFileState.normal(), file1.getConfigFileName());
 
 
         //
         // NOW - first, test the "show me all the systems in the channel" API
         //
-        DataResult dr = ConfigurationManager.getInstance().listSystemInfoForChannel(user,
+        DataResult<ConfigSystemDto> dr = ConfigurationManager.getInstance().listSystemInfoForChannel(user,
                 gcc1, null);
         Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("ccid", gcc1.getId());
@@ -944,7 +935,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, dr.getTotalSize());
         boolean foundSysOne = false;
         for (int i = 0; i < dr.getTotalSize(); i++) {
-            ConfigSystemDto dto = (ConfigSystemDto)dr.get(i);
+            ConfigSystemDto dto = dr.get(i);
             if (dto.getName().equals(srv1.getName())) {
                 foundSysOne = true;
                 assertEquals(1, dto.getOverriddenCount().intValue());
@@ -991,7 +982,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.createConfigRevision(file);
 
         // cc2 should have 4 files and 1 dir (the not-files)
-        DataResult dr = ConfigurationManager.getInstance().
+        DataResult<ConfigFileDto> dr = ConfigurationManager.getInstance().
             listFilesNotInChannel(user, cc1, pc);
         assertEquals(5, dr.getTotalSize());
 
@@ -1048,7 +1039,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ServerFactory.save(srv5);
         ServerFactory.save(srv6);
 
-        DataResult dr = ConfigurationManager.getInstance().
+        DataResult<ConfigSystemDto> dr = ConfigurationManager.getInstance().
             listChannelSystems(user, gcc1, null);
         assertEquals(1, dr.getTotalSize());
 
@@ -1199,19 +1190,19 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(gcc2);
 
         // System 1 - both g1f1 and g1f2 should deploy here
-        Set systems = new HashSet();
-        Set revs = new HashSet();
+        Set<Long> systems = new HashSet<>();
+        Set<Long> revs = new HashSet<>();
         systems.add(srv1.getId());
         revs.add(g1f1.getId());
         revs.add(g1f2.getId());
-        Map m = mgr.deployFiles(user, revs, systems, new Date());
+        Map<String, Long> m = mgr.deployFiles(user, revs, systems, new Date());
         assertNotNull(m);
         assertEquals(m.get("success"), 2L);
         assertNull(m.get("override"));
 
         // System 3 - g2f2 should be overridden by g1f2, and g2f3 should deploy
-        systems = new HashSet();
-        revs = new HashSet();
+        systems = new HashSet<>();
+        revs = new HashSet<>();
         systems.add(srv3.getId());
         revs.add(g2f2.getId());
         revs.add(g2f3.getId());
@@ -1222,7 +1213,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListManagedFilePaths() throws Exception {
+    public void testListManagedFilePaths() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         // Create  global config channels
@@ -1265,25 +1256,25 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(gcc2);
 
         ServerFactory.save(srv1);
-        List localViewResults = cm.listManagedPathsFor(srv1,
+        List<ConfigFileNameDto> localViewResults = cm.listManagedPathsFor(srv1,
                                                user,
                                 ConfigChannelType.local());
 
         assertTrue(localViewResults == null || localViewResults.isEmpty());
 
-        List globalViewResults = cm.listManagedPathsFor(srv1,
+        List<ConfigFileNameDto> globalViewResults = cm.listManagedPathsFor(srv1,
                                      user,
                                      ConfigChannelType.normal());
         assertEquals(2, globalViewResults.size());
 
-        Iterator itr =  globalViewResults.iterator();
-        ConfigFileNameDto dto = (ConfigFileNameDto) itr.next();
+        Iterator<ConfigFileNameDto> itr =  globalViewResults.iterator();
+        ConfigFileNameDto dto = itr.next();
         assertEquals(dto.getPath(), paths[0]);
         assertEquals(dto.getConfigRevision(), rev1.getRevision());
         assertNull(dto.getLocalRevision());
         assertNull(dto.getLocalRevisionId());
 
-        dto = (ConfigFileNameDto) itr.next();
+        dto = itr.next();
         assertEquals(dto.getPath(), paths[1]);
         assertEquals(dto.getConfigRevision(), rev3.getRevision());
         assertNull(dto.getLocalRevision());
@@ -1307,7 +1298,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, globalViewResults.size());
 
         itr =  globalViewResults.iterator();
-        dto = (ConfigFileNameDto) itr.next();
+        dto = itr.next();
         assertEquals(dto.getPath(), paths[0]);
         assertEquals(dto.getConfigRevision(), rev1.getRevision());
         assertNull(dto.getLocalRevision());
@@ -1315,7 +1306,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(ConfigChannelType.normal().getLabel(),
                 dto.getConfigChannelType());
 
-        dto = (ConfigFileNameDto) itr.next();
+        dto = itr.next();
         assertEquals(dto.getPath(), paths[1]);
         assertEquals(dto.getConfigRevision(), rev3.getRevision());
         assertEquals(dto.getLocalRevision(), rev4.getRevision());
@@ -1336,14 +1327,14 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                                   user,
                                   ConfigChannelType.local());
         assertEquals(2, localViewResults.size());
-        dto = (ConfigFileNameDto) localViewResults.get(0);
+        dto = localViewResults.get(0);
         assertEquals(dto.getPath(), paths[1]);
         assertEquals(dto.getLocalRevision(),  rev4.getRevision());
         assertEquals(dto.getConfigRevision(), rev3.getRevision());
         assertEquals(ConfigChannelType.local().getLabel(),
                 dto.getConfigChannelType());
 
-        dto = (ConfigFileNameDto) localViewResults.get(1);
+        dto = localViewResults.get(1);
         assertEquals(dto.getPath(), paths[2]);
         assertEquals(dto.getLocalRevision(),  rev5.getRevision());
         assertEquals(dto.getLocalRevisionId().longValue(),
@@ -1353,7 +1344,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSandboxManagedFilePaths() throws Exception {
+    public void testSandboxManagedFilePaths() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         // Create  Sandbox  config channel
@@ -1369,7 +1360,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         final String[] paths = {"/etc/foo1", "/etc/foo2", "/etc/foo3"};
 
 
-        List revisions = new ArrayList();
+        List<Long> revisions = new ArrayList<>();
 
         for (String pathIn : paths) {
             ConfigFile fl = sandbox.createConfigFile(
@@ -1384,13 +1375,11 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             ConfigurationFactory.commit(sandbox);
         }
         ServerFactory.save(srv1);
-        List sandboxViewResults = cm.listManagedPathsFor(srv1,
-                                   user,
-                               ConfigChannelType.sandbox());
+        List<ConfigFileNameDto> sandboxViewResults = cm.listManagedPathsFor(srv1, user, ConfigChannelType.sandbox());
 
         assertEquals(paths.length, sandboxViewResults.size());
         for (int i = 0; i < paths.length; i++) {
-            ConfigFileNameDto dto = (ConfigFileNameDto) sandboxViewResults.get(i);
+            ConfigFileNameDto dto = sandboxViewResults.get(i);
             assertEquals(revisions.get(i), dto.getConfigRevision());
             assertEquals(ConfigChannelType.sandbox().getLabel(),
                                                     dto.getConfigChannelType());
@@ -1470,7 +1459,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         }
     }
     @Test
-    public void testChannelAccess() throws Exception {
+    public void testChannelAccess() {
         // Create a server we DON'T own - we shouldn't have channel access
         Server srv = ServerFactoryTest.createTestServer(user, false);
 

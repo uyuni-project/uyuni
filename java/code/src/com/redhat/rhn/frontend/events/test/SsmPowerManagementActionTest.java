@@ -71,10 +71,9 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
 
     /**
      * Tests action execution.
-     * @throws Exception if things go wrong
      */
     @Test
-    public void testAction() throws Exception {
+    public void testAction() {
         SsmPowerManagementAction action = new SsmPowerManagementAction();
         action.execute(new SsmPowerManagementEvent(user.getId(), systemOverviews,
             Operation.PowerOn));

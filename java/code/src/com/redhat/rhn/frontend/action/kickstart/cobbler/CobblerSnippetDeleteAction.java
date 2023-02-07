@@ -33,10 +33,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CobblerSnippetDeleteAction extends RhnAction {
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         CobblerSnippet snip = CobblerSnippetDetailsAction.loadEditableSnippet(request);
         request.setAttribute(CobblerSnippetDetailsAction.NAME, snip.getName());

@@ -62,7 +62,9 @@ public class SystemEntitlementManager {
      * @return ValidatorResult of errors and warnings
      */
     public ValidatorResult addEntitlementToServer(Server server, Entitlement ent) {
-        return this.systemEntitler.addEntitlementToServer(server, ent);
+        ValidatorResult res = this.systemEntitler.addEntitlementToServer(server, ent);
+        SystemManager.updateSystemOverview(server.getId());
+        return res;
     }
 
     /**
@@ -71,6 +73,7 @@ public class SystemEntitlementManager {
      */
     public void removeAllServerEntitlements(Server server) {
         this.systemUnentitler.removeAllServerEntitlements(server);
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -81,6 +84,7 @@ public class SystemEntitlementManager {
      */
     public void removeServerEntitlement(Server server, Entitlement ent) {
         this.systemUnentitler.removeServerEntitlement(server, ent);
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -102,6 +106,7 @@ public class SystemEntitlementManager {
             this.systemUnentitler.removeServerEntitlement(server, baseEntitlement);
         }
         this.systemEntitler.addEntitlementToServer(server, baseIn);
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**

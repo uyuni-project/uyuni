@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.db.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -36,7 +37,7 @@ import java.util.Iterator;
 public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testToken() throws Exception {
+    public void testToken() {
         String tok = ResetPasswordFactory.generatePasswordToken(user);
         assertNotNull(tok);
         assertEquals(40, tok.length());
@@ -50,7 +51,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertEquals(rp.getUserId(), user.getId());
         assertNotNull(rp.getToken());
         assertTrue(rp.isValid());
-        assertTrue(!rp.isExpired());
+        assertFalse(rp.isExpired());
     }
 
     @Test
@@ -58,14 +59,14 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         ResetPassword rp = new ResetPassword(user.getId(),
                         ResetPasswordFactory.generatePasswordToken(user));
         assertNotNull(rp);
-        assertTrue(!rp.isExpired());
+        assertFalse(rp.isExpired());
 
         int expirationHours = Config.get().getInt(ResetPasswordFactory.EXPIRE_TIME, 48);
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -(expirationHours - 1));
         rp.setCreated(cal.getTime());
-        assertTrue(!rp.isExpired());
+        assertFalse(rp.isExpired());
 
         cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -(expirationHours + 1));
@@ -112,7 +113,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(rp);
         ResetPasswordFactory.invalidateToken(rp.getToken());
         ResetPassword found = ResetPasswordFactory.lookupByToken(rp.getToken());
-        assertTrue(!found.isValid());
+        assertFalse(found.isValid());
     }
 
     @Test

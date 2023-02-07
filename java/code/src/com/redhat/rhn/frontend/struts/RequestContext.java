@@ -266,9 +266,7 @@ public class RequestContext {
      * @throws IllegalArgumentException if no server with the ID given in the
      * request can be found
      */
-    // TODO Write unit tests for lookupServer()
-    public Server lookupAndBindServer()
-    throws IllegalArgumentException {
+    public Server lookupAndBindServer() throws IllegalArgumentException {
         if (request.getAttribute(SYSTEM) == null) {
             request.setAttribute(SYSTEM, lookupServer());
         }
@@ -475,13 +473,8 @@ public class RequestContext {
     public Long getRequiredParam(String paramName) {
         Long result = getParamAsLong(paramName);
         if (result == null) {
-            // TODO: One day, BadParameterException will take a message and we
-            // can do
-            // throw new BadParameterException("The parameter " + param +
-            // " is required and must be a Long, but was '" + p +"'");
-            // That one day has finally arrived! And the coders rejoiced.
             throw new BadParameterException("The parameter " + paramName +
-            " is required, when accessing " + request.getRequestURI());
+                " is required, when accessing " + request.getRequestURI());
         }
         return result;
     }
@@ -496,8 +489,7 @@ public class RequestContext {
     public String getRequiredParamAsString(String paramName) {
         String p = request.getParameter(paramName);
         if (StringUtils.isBlank(p)) {
-            throw new BadParameterException("The parameter " + paramName +
-            " is required.");
+            throw new BadParameterException("The parameter " + paramName + " is required.");
         }
         return p;
     }
@@ -583,7 +575,7 @@ public class RequestContext {
         Map<String, Object> params = new HashMap<>();
         String lower = processPagination();
 
-        if (lower != null && lower.length() > 0 && StringUtils.isNumeric(lower)) {
+        if (lower != null && !lower.isEmpty() && StringUtils.isNumeric(lower)) {
             params.put("lower", lower);
         }
 

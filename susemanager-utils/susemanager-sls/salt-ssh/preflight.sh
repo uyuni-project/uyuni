@@ -138,6 +138,7 @@ function getZ_CLIENT_CODE_BASE() {
         if [ "$BASE" != "sle" ]; then
             grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
         fi
+        grep -q 'Micro' /etc/os-release && BASE="${BASE}micro"
         VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
         PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
     fi
@@ -203,7 +204,7 @@ if [ -f "${VENV_FILE}" ]; then
 else
     if [ "${INSTALLER}" = "apt" ] && dpkg-query -s venv-salt-minion > /dev/null 2>&1 && [ -d "${VENV_INST_DIR}" ]; then
         VENV_SOURCE="dpkg"
-    elif rpm -q --quiet venv-salt-minion && [ -d "${VENV_INST_DIR}" ]; then
+    elif rpm -q --quiet venv-salt-minion 2> /dev/null && [ -d "${VENV_INST_DIR}" ]; then
         VENV_SOURCE="rpm"
     fi
 fi

@@ -33,19 +33,18 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-config-schema.pl \
                rhn-deploy-ca-cert.pl \
                rhn-install-ssl-cert.pl \
-               rhn-generate-pem.pl \
                salt-secrets-config.py
 
 SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config
 
-CONF_FILES = service-list
+CONF_FILES =
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
-		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
-		mgr-websockify.service uyuni-check-database.service uyuni-update-config.service
+		spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
+		mgr-websockify.service uyuni-check-database.service uyuni-update-config.service cobbler-refresh-mkloaders.service
 
 SYSTEMD_OVERRIDE_SERVICES = tomcat.service apache2.service salt-master.service salt-api.service rhn-search.service \
-			    taskomatic.service salt-secrets-config.service
+			    taskomatic.service salt-secrets-config.service cobbler-refresh-mkloaders.service
 
 
 BIN_INSTALL    = install -m 755
@@ -57,12 +56,10 @@ DIR_INSTALL    = install -d -m 755
 # install scripts
 all:
 
-install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(SBIN_SCRIPTS) $(SBIN_DEST)
+install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(SBIN_SCRIPTS) $(SBIN_DEST) $(SYSTEMD_DEST) $(SYSTEMD_FILES)
 	$(BIN_INSTALL) $(SCRIPTS) $(PERL_DEST)
-	$(CONF_INSTALL) $(CONF_FILES) $(CONF_DEST)
+	#$(CONF_INSTALL) $(CONF_FILES) $(CONF_DEST)
 	$(BIN_INSTALL) $(SBIN_SCRIPTS) $(SBIN_DEST)
-
-install_systemd: $(SYSTEMD_DEST) $(SYSTEMD_FILES)
 	$(SYSTEMD_INSTALL) $(SYSTEMD_FILES) $(SYSTEMD_DEST)
 	for service in $(SYSTEMD_OVERRIDE_SERVICES); do \
 	  $(DIR_INSTALL) $(SYSTEMD_DEST)/$$service.d; \

@@ -303,7 +303,9 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 date);
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: {}", turl.computeTinyPath());
+        if (log.isDebugEnabled()) {
+            log.debug("returning: {}", turl.computeTinyPath());
+        }
         return turl.computeTinyPath();
     }
 
@@ -330,7 +332,9 @@ public class KickstartUrlHelper {
         TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
                 new Date());
         CommonFactory.saveTinyUrl(turl);
-        log.debug("returning: {}", turl.computeTinyUrl(this.host));
+        if (log.isDebugEnabled()) {
+            log.debug("returning: {}", turl.computeTinyUrl(this.host));
+        }
         return turl.computeTinyUrl(this.host);
     }
 

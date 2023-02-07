@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.db.datasource.Row;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class PackageOverview extends BaseDto {
     private String description;
     private String packageNvre;
     private String nvrea;
-    private List packageChannels;
+    private List<Row> packageChannels;
     private String packageArch;
     private String provider;
     private String version;
@@ -43,14 +45,14 @@ public class PackageOverview extends BaseDto {
     /**
      * @return Returns the packageChannels.
      */
-    public List getPackageChannels() {
+    public List<Row> getPackageChannels() {
         return packageChannels;
     }
 
     /**
      * @param packageChannelsIn The packageChannels to set.
      */
-    public void setPackageChannels(List packageChannelsIn) {
+    public void setPackageChannels(List<Row> packageChannelsIn) {
         this.packageChannels = packageChannelsIn;
     }
 
@@ -85,6 +87,7 @@ public class PackageOverview extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -131,12 +134,7 @@ public class PackageOverview extends BaseDto {
      */
     public String getUrlEncodedPackageName() {
         if (this.packageName != null) {
-            try {
-                return URLEncoder.encode(packageName, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            return URLEncoder.encode(packageName, StandardCharsets.UTF_8);
         }
         return null;
     }

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.task.TaskManager;
@@ -25,7 +26,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.Date;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,15 +37,15 @@ import javax.servlet.http.HttpServletResponse;
 public class TaskStatusAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        DataResult taskInfo = TaskManager.getTaskStatusInfo();
+        DataResult<Row> taskInfo = TaskManager.getTaskStatusInfo();
         // make some corrections
-        for (Object oIn : taskInfo) {
-            Map info = (Map) oIn;
+        for (Row info : taskInfo) {
             String name = "task.status." + info.get("name");
             info.put("name", name);
             Date startTime = (Date) info.get("start_time");

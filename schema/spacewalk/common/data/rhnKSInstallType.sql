@@ -24,26 +24,6 @@ insert into rhnKSInstallType (id, label, name)
 
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
-                'rhel_5','Red Hat Enterprise Linux 5'
-        );
-
-insert into rhnKSInstallType (id, label, name)
-        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
-                'rhel_4','Red Hat Enterprise Linux 4'
-        );
-
-insert into rhnKSInstallType (id, label, name)
-        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
-                'rhel_3','Red Hat Enterprise Linux 3'
-        );
-
-insert into rhnKSInstallType (id, label, name)
-        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
-                'rhel_2.1','Red Hat Enterprise Linux 2.1'
-        );
-
-insert into rhnKSInstallType (id, label, name)
-        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'fedora18','Fedora'
         );
 
@@ -79,6 +59,11 @@ insert into rhnKSInstallType (id, label, name)
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'rhel_8','Red Hat Enterprise Linux 8'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'rhel_9','Red Hat Enterprise Linux 9'
         );
 
 commit;

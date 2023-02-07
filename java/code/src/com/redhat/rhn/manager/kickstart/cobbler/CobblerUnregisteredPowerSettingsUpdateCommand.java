@@ -50,12 +50,14 @@ public class CobblerUnregisteredPowerSettingsUpdateCommand extends CobblerPowerS
         label = labelIn;
     }
 
+    @Override
     protected String getIdent() {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
         label = label.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
         return label + sep + user.getOrg().getId();
     }
 
+    @Override
     protected SystemRecord getSystemRecordForSystem() {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(user), getIdent());

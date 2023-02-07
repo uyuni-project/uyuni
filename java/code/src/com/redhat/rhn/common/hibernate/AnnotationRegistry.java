@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.PtfFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
@@ -73,6 +74,7 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.task.Task;
 
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -81,8 +83,6 @@ import java.util.List;
 
 
 /**
- * AnnotationRegistry
- *
  * Stores a list of hibernate annotation classes for registration the first time the
  * ConnectionManager.
  */
@@ -127,6 +127,7 @@ public class AnnotationRegistry {
         PackageFilter.class,
         ErrataFilter.class,
         ModuleFilter.class,
+        PtfFilter.class,
         EnvironmentTarget.class,
         SoftwareEnvironmentTarget.class,
         ContentProjectHistoryEntry.class,
@@ -153,7 +154,8 @@ public class AnnotationRegistry {
         PlaybookPath.class,
         Pillar.class,
         CloudRmtHost.class,
-        PaygSshData.class
+        PaygSshData.class,
+        Task.class
     );
 
     /**

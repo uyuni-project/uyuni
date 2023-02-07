@@ -74,12 +74,13 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -110,9 +111,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 MockConnection.class.getName());
 
         createDirIfNotExists(new File(ConfigDefaults.get()
-                .getKickstartConfigDir() + "/" + KickstartData.WIZARD_DIR));
+                .getKickstartConfigDir() + File.separator + KickstartData.WIZARD_DIR));
         createDirIfNotExists(new File(ConfigDefaults.get()
-                .getKickstartConfigDir() + "/" + KickstartData.RAW_DIR));
+                .getKickstartConfigDir() + File.separator + KickstartData.RAW_DIR));
         createDirIfNotExists(CobblerSnippet.getSpacewalkSnippetsDir());
 
         KickstartableTreeTest.createKickstartTreeItems(u);
@@ -140,8 +141,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         KickstartData k2 = lookupById(user.getOrg(), k.getId());
         assertEquals(k2.getLabel(), k.getLabel());
-        //assertEquals(k2.getPostContents(), POST);
-        //assertEquals(k2.getPreContents(), PRE);
 
         KickstartPreserveFileList kf = createTestFileList();
         assertNotNull(kf);
@@ -180,18 +179,18 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE, k);
 
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) reload(k);
+        k = reload(k);
         KickstartFactory.saveKickstartData(k);
 
         String contents = FileUtils.readStringFromFile(k.buildCobblerFileName());
         assertTrue(contents.indexOf("\\$") > 0);
-        assertTrue(!contents.contains("\\$" +
+        assertFalse(contents.contains("\\$" +
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE));
         assertTrue(contents.indexOf("$" +
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE) > 0);
 
         // Check for SNIPPETS
-        assertTrue(!contents.contains("\\$SNIPPET"));
+        assertFalse(contents.contains("\\$SNIPPET"));
         assertTrue(contents.indexOf("$SNIPPET") > 0);
 
     }
@@ -233,7 +232,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         d1.setProfile(p);
         d1.getKstree().setChannel(p.getBaseChannel());
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) TestUtils.reload(k);
+        k = TestUtils.reload(k);
         return k;
     }
 
@@ -246,12 +245,12 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     @Test
     public void testInstallType() throws Exception {
 
-        List types = KickstartFactory.lookupKickstartInstallTypes();
+        List<KickstartInstallType> types = KickstartFactory.lookupKickstartInstallTypes();
         assertNotNull(types);
-        assertTrue(types.size() > 0);
-        assertTrue(types.get(0) instanceof KickstartInstallType);
+        assertFalse(types.isEmpty());
+        assertNotNull(types.get(0));
 
-        assertNotNull(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_4"));
+        assertNotNull(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_8"));
 
         KickstartData k = createTestKickstartData(user.getOrg());
         KickstartDefaults d1 = createDefaults(k, user);
@@ -315,27 +314,26 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(child);
         ksdata.addChildChannel(child);
         TestUtils.saveAndFlush(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = reload(ksdata);
         // Check to make sure its reloaded from DB properly
         assertNotNull(ksdata.getChildChannels());
         // Make sure we have 1 child channel
-        assertTrue(ksdata.getChildChannels().size() == 1);
+        assertEquals(1, ksdata.getChildChannels().size());
         // Make sure we can remove child channel
         ksdata.removeChildChannel(child);
-        assertTrue(ksdata.getChildChannels().size() == 0);
+        assertTrue(ksdata.getChildChannels().isEmpty());
     }
 
     /**
      * Helper method to lookup KickstartData by id
      * @param id Id to lookup
      * @return Returns the KickstartData
-     * @throws Exception
      */
-    private KickstartData lookupById(Org orgIn, Long id) throws Exception {
+    private KickstartData lookupById(Org orgIn, Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setLong("id", id)
-                          .setLong("org_id", orgIn.getId())
+                          .setParameter("id", id)
+                          .setParameter("org_id", orgIn.getId(), LongType.INSTANCE)
                           .uniqueResult();
     }
 
@@ -345,22 +343,20 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      *  for special command lists
      * @param lbl name to lookup
      * @return KickstartCommandName (single object)
-     * @throws Exception
      */
-    private static KickstartCommandName lookupByLabel(String lbl) throws Exception {
+    private static KickstartCommandName lookupByLabel(String lbl) {
         Session session = HibernateFactory.getSession();
         return (KickstartCommandName)session
                   .getNamedQuery("KickstartCommandName.findByLabel")
-                  .setString("name", lbl).
+                  .setParameter("name", lbl).
                   uniqueResult();
     }
 
     /**
      * Creates KickstartPreserveFileList for testing purposes.
      * @return Returns a committed KickstartPreserveFileList
-     * @throws Exception something bad happened
      */
-    public static KickstartPreserveFileList createTestFileList() throws Exception {
+    public static KickstartPreserveFileList createTestFileList() {
         FileList f = new FileList();
 
         f.setLabel("Test FileList" + TestUtils.randomString());
@@ -426,10 +422,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * @param data kickstart data
      * @param c channel
      * @return Returns a committed KickstartDefaults
-     * @throws Exception something bad happened
      */
     public static KickstartDefaults createDefaults(KickstartData data,
-            Channel c) throws Exception {
+            Channel c) {
         KickstartDefaults d = new KickstartDefaults();
         d.setKsdata(data);
         KickstartVirtualizationType type = KickstartFactory.
@@ -450,11 +445,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * Creates KickstartData for testing purposes.
      * @param orgIn the org
      * @return Returns a committed KickstartData
-     * @throws Exception something bad happened
      */
-    public static KickstartData createTestKickstartData(Org orgIn) throws Exception {
+    public static KickstartData createTestKickstartData(Org orgIn) {
         String label = "KS Data: " + TestUtils.randomString();
-        String name = "KS Data Name: " + TestUtils.randomString();
         String comments = "KS Data automated test";
 
         Date created = new Date();
@@ -483,14 +476,14 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         k.setKernelParams(KERNEL_PARAMS);
 
-        k = (KickstartData) TestUtils.saveAndReload(k);
+        k = TestUtils.saveAndReload(k);
 
         k.addKsPackage(new KickstartPackage(k, pn, 0L));
         k.addKsPackage(new KickstartPackage(k, pn2, 1L));
 
 
 
-        k = (KickstartData) TestUtils.saveAndReload(k);
+        k = TestUtils.saveAndReload(k);
         return k;
     }
 
@@ -510,9 +503,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(optionName);
         KickstartCommandName rootName = lookupByLabel("rootpw");
         assertNotNull(rootName);
-
-        //uncomment when schema supports include commands
-        //KickstartCommandName includeName = lookupByLabel('include');
 
         Date created = new Date();
         Date modified = new Date();
@@ -614,7 +604,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         kickstart.addPreserveFileList(list3);
         assertEquals(3, kickstart.getPreserveFileLists().size());
 
-        kickstart.setPreserveFileLists(new HashSet());
+        kickstart.setPreserveFileLists(Collections.emptySet());
         assertEquals(0, kickstart.getPreserveFileLists().size());
     }
 
@@ -643,19 +633,19 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.addDefaultRegToken(key.getToken());
 
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) reload(k);
+        k = reload(k);
         k = CryptoTest.addKeyToKickstart(k);
         k = KickstartIpTest.addIpRangesToKickstart(k);
 
         // save it and reload it
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) reload(k);
+        k = reload(k);
 
         // Now we deep copy it, save and reload
         KickstartData cloned = k.deepCopy(user,
                 "someNewLabel" + TestUtils.randomString());
         KickstartFactory.saveKickstartData(cloned);
-        cloned = (KickstartData) reload(cloned);
+        cloned = reload(cloned);
 
         // Test the basic fields
         assertEquals(k.getComments(), cloned.getComments());
@@ -676,8 +666,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         verifySet(cloned.getKsPackages(), k.getKsPackages(), KickstartPackage.class);
         verifySet(cloned.getPreserveFileLists(), k.getPreserveFileLists(), FileList.class);
         verifySet(cloned.getScripts(), k.getScripts(), KickstartScript.class);
-        // We don't clone IP ranges.
-        // verifySet(cloned.getIps(), k.getIps(), KickstartIpRange.class);
 
         KickstartScript ksscloned = cloned.getScripts().iterator().next();
         KickstartScript kss = k.getScripts().iterator().next();
@@ -696,39 +684,25 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(cloned);
     }
 
-    private void verifySet(Collection cloned, Collection orig, Class clazz) {
-        assertTrue(orig.size() > 0, "orig doesnt have any: " + clazz.getName());
-        assertTrue(cloned.size() > 0, "cloned doesnt have any: " + clazz.getName());
+    private <T> void verifySet(Collection<T> cloned, Collection<T> orig, Class<T> clazz) {
+        assertFalse(orig.isEmpty(), "orig doesnt have any: " + clazz.getName());
+        assertFalse(cloned.isEmpty(), "cloned doesnt have any: " + clazz.getName());
         assertEquals(cloned.size(), orig.size());
         assertTrue(clazz.isInstance(cloned.iterator().next()), "Not instance of: " + clazz.getName());
     }
-
-   /*
-    private void verifyList(List cloned, List orig, Class clazz) {
-        assertTrue("orig doesnt have any: " + clazz.getName(), orig.size() > 0);
-        assertTrue("cloned doesnt have any: " + clazz.getName(), cloned.size() > 0);
-        assertEquals(cloned.size(), orig.size());
-        assertTrue("Not instance of: " + clazz.getName(),
-                clazz.isInstance(cloned.iterator().next()));
-    }
-    */
 
     @Test
     public void testISRhelRevMethods() throws Exception {
 
         KickstartData k = createKickstartWithChannel(user.getOrg());
         k.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
-        assertFalse(k.isRhel2());
-        assertFalse(k.isRhel3());
-        assertFalse(k.isRhel4());
-        assertTrue(k.isRhel5());
-        assertTrue(k.isRhel5OrGreater());
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+        assertTrue(k.isRhel6OrGreater());
 
         k.getTree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.FEDORA_PREFIX + "18"));
-        assertTrue(k.isRhel5OrGreater());
-        assertFalse(k.isRhel5());
+        assertTrue(k.isRhel6OrGreater());
+        assertFalse(k.isRhel6());
     }
 
     @Test
@@ -737,13 +711,11 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.kvmGuest());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultKVMVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultKVMVirtBridge());
 
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.xenPV());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultXenVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultXenVirtBridge());
     }
 }

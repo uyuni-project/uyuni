@@ -1961,7 +1961,8 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="final">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt; {3} を表示しています</target>
+        <target state="final">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt; {3}
+ を表示しています</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
@@ -2839,12 +2840,12 @@ and try again.
         </context-group>
         <target>通知フィルターを作成</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+      <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>キックスタート/Autoyastファイルをアップロード</target>
+        <target state="final">キックスタート/AutoYaSTファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -7260,13 +7261,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>Email アドレス</target>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>ホスト名</target>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -8210,48 +8204,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>z/VM</target>
-      </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 1 日以内</target>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 1 週間以内</target>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 30 日以内</target>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 180 日以内</target>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target>昨年内</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>すべてのシステム</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -9965,7 +9917,7 @@ tree will not be usable for autoinstalling.</source>
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
         <target>電子メールがすでに送信されています。この動作の要求は {0} 秒ごとにのみ実行できます。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.passwordsent" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
         <target state="final">パスワードリセットの情報を {0} に送信しました。受信されない場合は、指定されたログイン情報と電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
@@ -9981,7 +9933,7 @@ tree will not be usable for autoinstalling.</source>
         <source>There are no registered accounts with that email address.</source>
         <target>該当する電子メールアドレスを持つ登録されたアカウントはありません。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.loginssent" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.loginssent" xml:space="preserve">
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
@@ -10333,10 +10285,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>CVE Audit</source>
         <target>CVE 監査</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
-        <source>IPMI</source>
-        <target>IPMI</target>
-      </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
         <target>次へ</target>
@@ -10427,14 +10375,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt;システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
         <context-group name="ctx">
@@ -10956,14 +10904,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">仮想ネットワークの更新</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target state="final">&lt;strong&gt;ansible 制御ノード&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この動作では状態の適用は &lt;em&gt;行なわれません&lt;/em&gt; 。状態を適用するには &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -11038,227 +10986,297 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">チャンネルモジュールを取得できません。詳細については、サーバログを確認してください。</target>
       </trans-unit>
-      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
         <target state="final">オプションのOVALファイル(カンマ区切り)</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
         <target state="final">資格情報が正常に更新されました</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
         <target state="final">処理を待機しています。</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
         <target state="final">インスタンスデータの取得中にエラーが発生しました: {0}</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
         <target state="final">認証データの抽出中に不明なエラーが発生しました。/var/log/rhn/のログを確認してください</target>
       </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
         <target state="final">説明が必要です。</target>
       </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
         <target state="final">説明は255文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
         <target state="final">ホストが必要です。</target>
       </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
         <target state="final">ホストは255文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
         <target state="final">ポートの値が無効です</target>
       </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">ユーザ名が必要です。</target>
       </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">ユーザ名は32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">パスワードは32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">SSH機密鍵パスフレーズは32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
         <target state="final">要塞ホストは255文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
         <target state="final">他の要塞プロパティが設定されている場合は、要塞ホストが必要です。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
         <target state="final">要塞ポートの値が無効です</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">ユーザ名が必要です。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">ユーザ名は32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">パスワードは32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">要塞SSH機密鍵パスフレーズは32文字を超えてはなりません。</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
         <target state="final">従量課金制の {0} が正常に作成されました</target>
       </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
         <target state="final">従量課金制のホストはすでに存在します</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
         <target state="final">従量課金制の {0} が正常に削除されました</target>
       </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="final">次の場所から認証データを更新するときにエラーが発生しました: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
         <target state="final">従量課金制の認証の更新</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
         <target state="final">従量課金制のRMTホストの更新</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
         <target state="final">製品データを更新する必要があります。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
         <target state="final">製品が見つかりません: 識別子 {0} がありません。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
         <target state="final">競合するチャンネルラベル {0} があります。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
         <target state="final">親製品が既存のチャンネルと競合しています。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
         <target state="final">製品の追加中に予期しないエラーが発生しました。</target>
       </trans-unit>
-      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、次のリンクを参照してください。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
         <target state="final">ブートストラップ状態の適用中にエラーが発生しました。サーバログを確認してください。</target>
       </trans-unit>
-      <trans-unit id="container.based.proxy.config" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
         <target state="final">プロキシの設定</target>
       </trans-unit>
-      <trans-unit id="Peripheral Server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">周辺機器サーバ</target>
       </trans-unit>
-      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">レポートデータベーススキーマ</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
         <target state="final">ブートストラップ中に予期しないエラーが発生しました。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
         <target state="final">ブートストラップ中に状態の適用に失敗しました(retcode={0})。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
         <target state="final">Salt実行中にエラーが発生しました: {0}。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
         <target state="final">関数 {0} は使用できません</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
         <target state="final">モジュール {0} はサポートされていません</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
         <target state="final">jsonを解析できません</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
         <target state="final">ssh接続を確立できません</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
         <target state="final">salt-ssh公開鍵を生成できませんでした。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
         <target state="final">salt-ssh公開鍵の生成に失敗しました: {0}。</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0} はサポートが終了しました</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0} はサポートが終了になりました。一般的なサポートは &lt;strong&gt;{1}&lt;/strong&gt; で終了しました。サポートを継続するには、この@@PRODUCT_NAME@@サーバインスタンスをアップグレードする&lt;strong&gt;必要があります。&lt;/strong&gt;
        &lt;/p&gt;@@PRODUCT_NAME@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em &gt;の&lt;em&gt;アップグレード&lt;セクションを参照してください。&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0} は、サポート終了に近づいています</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0} はサポート終了に近づいています。 一般的なサポートが &lt;strong&gt;{1}&lt;/strong&gt; で終了する前に、このサーバインスタンスのアップグレードを検討してください。&lt;/p&gt;
           &lt;p&gt;@@PRODUCT_NAME@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em&gt; の &lt;em&gt;アップグレード&lt;/em&gt; セクションを参照してください。&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
         <target state="final">有効な電子メールアドレスを入力してください。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.emptylogin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
         <target state="final">ログイン情報を入力してください。</target>
       </trans-unit>
-    </body>
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+        <source>IPMI lanplus</source>
+        <target state="final">IPMI lanplus</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+        <target state="final">ピックアップ済み状態のアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+        <target state="final">待機中の前提条件を持つアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="final">注意が必要なサブスクリプションがあります。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="final">間もなく期限切れになるサブスクリプション、またはすでに期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="final">ベースチャンネルが選択されていません。</target>
+      </trans-unit>
+    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

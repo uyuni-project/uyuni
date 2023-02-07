@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -38,9 +39,10 @@ public class CopyFileLocalSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(User userIn,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest requestIn) {
         RequestContext ctx = new RequestContext(requestIn);
         User user = ctx.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(ctx.getRequest());
@@ -51,15 +53,18 @@ public class CopyFileLocalSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected ConfigChannel getChannelFromElement(User usr, Long anId) {
         Server srv = ServerFactory.lookupById(anId);
         return srv.getLocalOverride();
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.local().getLabel();
     }

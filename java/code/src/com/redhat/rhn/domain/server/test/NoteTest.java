@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -45,8 +45,8 @@ public class NoteTest extends RhnBaseTestCase {
         Note note1 = createTestNote();
         Note note2 = new Note();
 
-        assertFalse(note1.equals(note2));
-        assertFalse(note1.equals(new Date()));
+        assertNotEquals(note1, note2);
+        assertNotEquals(note1, new Date());
 
         Session session = HibernateFactory.getSession();
         note2 = (Note) session.getNamedQuery("Note.findById")

@@ -52,10 +52,6 @@ declare global {
   var spacewalkContentObserver: MutationObserver;
   var registerSpacewalkContentObservers: Function | undefined;
 
-  // Used by cveaudit and spacewalk-checkall.js
-  var DWRItemSelector: any;
-  var dwr: any;
-
   // Defined in spacewalk-checkall.js
   var numericValidate: (event: any) => any;
   var update_server_set: (variable: any, set_label: any, checked: any, values: any) => void;

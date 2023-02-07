@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
@@ -70,7 +71,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -80,6 +80,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -89,7 +90,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -99,6 +100,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -109,8 +111,8 @@ import java.util.stream.Stream;
 public class ActionFactory extends HibernateFactory {
 
     private static ActionFactory singleton = new ActionFactory();
-    private static Logger log = LogManager.getLogger(ActionFactory.class);
-    private static Set actionArchTypes;
+    private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
+    private static Set<String> actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private ActionFactory() {
@@ -118,28 +120,22 @@ public class ActionFactory extends HibernateFactory {
         setupActionArchTypes();
     }
 
+    @SuppressWarnings("unchecked")
     private void setupActionArchTypes() {
         synchronized (this) {
-            Session session = null;
             try {
-                session = HibernateFactory.getSession();
-                List types = session.getNamedQuery("ActionArchType.loadAll")
-                        //Retrieve from cache if there
+                List<ActionArchType> types = getSession().getNamedQuery("ActionArchType.loadAll")
                         .setCacheable(true).list();
 
-                actionArchTypes = new HashSet();
-                for (Object typeIn : types) {
-                    ActionArchType type = (ActionArchType) typeIn;
-                    // don't cache the entire ActionArchType bean to avoid
-                    // any LazyInitializatoinException latter
-                    actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
-                            type.getActionStyle()));
-                }
+                // don't cache the entire ActionArchType bean to avoid
+                // any LazyInitializatoinException latter
+                actionArchTypes = types.stream()
+                        .map(type -> toActionArchTypeKey(type.getActionType().getId(), type.getActionStyle()))
+                        .collect(toSet());
             }
             catch (HibernateException he) {
-                log.error("Error loading ActionArchTypes from DB", he);
-                throw new
-                HibernateRuntimeException("Error loading ActionArchTypes from db");
+                LOG.error("Error loading ActionArchTypes from DB", he);
+                throw new HibernateRuntimeException("Error loading ActionArchTypes from db");
             }
         }
     }
@@ -153,15 +149,16 @@ public class ActionFactory extends HibernateFactory {
      * @param actionId action to remove
      * @return the number of failed systems to remove an action for.
      */
+    @SuppressWarnings("unchecked")
     public static int removeAction(Long actionId) {
 
-        Session session = HibernateFactory.getSession();
-        List<Long> ids = session.getNamedQuery("Action.findServerIds")
+        List<Long> ids = getSession().getNamedQuery("Action.findServerIds")
                 .setLong("action_id", actionId).list();
         int failed = 0;
         for (long id : ids) {
             try {
                 removeActionForSystem(actionId, id);
+                SystemManager.updateSystemOverview(id);
             }
             catch (Exception e) {
                 failed++;
@@ -186,8 +183,8 @@ public class ActionFactory extends HibernateFactory {
         Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
                     .collect(toSet());
-        Set<Server> involvedSystems = ServerFactory.lookupByIds(
-                new ArrayList<>(set.getElementValues())).stream().collect(toSet());
+        Set<Server> involvedSystems = new HashSet<>(ServerFactory.lookupByIds(
+                new ArrayList<>(set.getElementValues())));
         Action action = ActionFactory.lookupById(actionId);
 
         TASKOMATIC_API.deleteScheduledActions(Collections.singletonMap(action, involvedMinions));
@@ -195,6 +192,7 @@ public class ActionFactory extends HibernateFactory {
         return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
+                SystemManager.updateSystemOverview(sid);
                 return 0;
             }
             catch (Exception e) {
@@ -208,16 +206,15 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId the server id
      */
     public static void cancelPendingForSystem(Long serverId) {
-
-        SelectMode pending =
-                ModeFactory.getMode("System_queries", "system_pending_actions");
+        SelectMode pending = ModeFactory.getMode("System_queries", "system_pending_actions");
         Map<String, Long> params = new HashMap<>();
         params.put("sid", serverId);
-        DataResult<Map> dr = pending.execute(params);
+        DataResult<Row> dr = pending.execute(params);
 
-        for (Map action : dr) {
+        for (Row action : dr) {
             removeActionForSystem((Long) action.get("id"), serverId);
         }
+        SystemManager.updateSystemOverview(serverId);
     }
 
     /**
@@ -226,12 +223,11 @@ public class ActionFactory extends HibernateFactory {
      * @param sid to remove from Action
      */
     public static void removeActionForSystem(Number actionId, Number sid) {
-        CallableMode mode =
-                ModeFactory.getCallableMode("System_queries", "delete_action_for_system");
+        CallableMode mode = ModeFactory.getCallableMode("System_queries", "delete_action_for_system");
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", actionId);
         params.put("server_id",  sid);
-        mode.execute(params, new HashMap());
+        mode.execute(params, new HashMap<>());
     }
 
 
@@ -241,7 +237,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -250,8 +246,7 @@ public class ActionFactory extends HibernateFactory {
      * @param parent The parent action
      */
     public static void addServerToAction(Long sid, Action parent) {
-        addServerToAction(ServerFactory.lookupByIdAndOrg(sid,
-                parent.getOrg()), parent);
+        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
     }
 
     /**
@@ -276,8 +271,7 @@ public class ActionFactory extends HibernateFactory {
      * @param server The server for the action
      * @param parent The parent action
      */
-    public static void addConfigRevisionToAction(ConfigRevision revision, Server server,
-            ConfigAction parent) {
+    public static void addConfigRevisionToAction(ConfigRevision revision, Server server, ConfigAction parent) {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         cra.setConfigRevision(revision);
         cra.setCreated(new Date());
@@ -301,15 +295,7 @@ public class ActionFactory extends HibernateFactory {
         sad.setUsername(username);
         sad.setGroupname(groupname);
         sad.setTimeout(timeout);
-
-        try {
-            sad.setScript(script.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException uee) {
-            throw new
-            IllegalArgumentException(
-                    "This VM or environment doesn't support UTF-8");
-        }
+        sad.setScript(script.getBytes(StandardCharsets.UTF_8));
 
         return sad;
     }
@@ -319,14 +305,14 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId server
      * @return true if found, otherwise false
      */
+    @SuppressWarnings("unchecked")
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
         Session session = HibernateFactory.getSession();
-        Query query =
-                session.getNamedQuery("ServerAction.findPendingActionsForServer");
+        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
-        List retval = query.list();
-        return (retval != null && retval.size() > 0);
+        List<ServerAction> retval = query.list();
+        return (retval != null && !retval.isEmpty());
     }
 
     /**
@@ -335,17 +321,36 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId server
      * @return ID of a possibly scheduled migration or null.
      */
+    @SuppressWarnings("unchecked")
     public static Action isMigrationScheduledForServer(Long serverId) {
-        Action ret = null;
-        Query query = HibernateFactory.getSession().getNamedQuery(
+        Query<ServerAction> query = HibernateFactory.getSession().getNamedQuery(
                 "ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "distupgrade.upgrade");
         List<ServerAction> list = query.list();
-        if (list != null && list.size() > 0) {
-            ret = list.get(0).getParentAction();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getParentAction();
         }
-        return ret;
+        return null;
+    }
+
+    /**
+     * Check if the server has a scheudled reboot action. Return the action
+     * if available or null otherwise
+     * @param serverId server
+     * @return reboot Action or null otherwise
+     */
+    @SuppressWarnings("unchecked")
+    public static Action isRebootScheduled(Long serverId) {
+        Session session = HibernateFactory.getSession();
+        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
+        query.setParameter("serverId", serverId);
+        query.setParameter("label", "reboot.reboot");
+        List<ServerAction> list = query.list();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getParentAction();
+        }
+        return null;
     }
 
     /**
@@ -524,28 +529,19 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("aid", id);
-        params.put("orgId", user.getOrg().getId());
-        return (Action)singleton.lookupObjectByNamedQuery(
-                "Action.findByIdandOrgId", params);
+        return singleton.lookupObjectByNamedQuery("Action.findByIdandOrgId",
+                Map.of("aid", id, "orgId", user.getOrg().getId()));
     }
 
     /**
-     * Lookup the number of server actions for a particular action that have
-     *      a certain status
-     * @param org the org to look
+     * Lookup the number of server actions for a particular action that have a certain status
      * @param status the status you want
      * @param action the action id
      * @return the count
      */
-    public static Integer getServerActionCountByStatus(Org org, Action action,
-            ActionStatus status) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("aid", action.getId());
-        params.put("stid", status.getId());
-        return (Integer)singleton.lookupObjectByNamedQuery(
-                "Action.getServerActionCountByStatus", params);
+    public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
+        return singleton.lookupObjectByNamedQuery("Action.getServerActionCountByStatus",
+                Map.of("aid", action.getId(), "stid", status.getId()));
     }
 
 
@@ -560,16 +556,9 @@ public class ActionFactory extends HibernateFactory {
      * @param server the server who's latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user,
-            ActionType type,
-            Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", user.getId());
-        params.put("actionTypeId", type.getId());
-        params.put("serverId", server.getId());
-        return (Action)singleton.lookupObjectByNamedQuery(
-                "Action.findLastActionByServerIdAndActionTypeIdAndUserId",
-                params);
+    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
+        return singleton.lookupObjectByNamedQuery("Action.findLastActionByServerIdAndActionTypeIdAndUserId",
+                Map.of("userId", user.getId(), "actionTypeId", type.getId(), "serverId", server.getId()));
     }
 
 
@@ -589,22 +578,10 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionType corresponding to label
      */
     public static ActionType lookupActionTypeByLabel(String label) {
-        Map<String, String> params = new HashMap<>();
-        params.put("label", label);
-        return (ActionType)
-                singleton.lookupObjectByNamedQuery("ActionType.findByLabel", params, true);
-    }
-
-    /**
-     * Helper method to get a ActionType by name
-     * @param name the Action to lookup
-     * @return Returns the ActionType corresponding to name
-     */
-    public static ActionType lookupActionTypeByName(String name) {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        return (ActionType) singleton.lookupObjectByNamedQuery("ActionType.findByName",
-                params, true);
+        if (label == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ActionType.findByLabel", Map.of("label", label), true);
     }
 
     /**
@@ -613,39 +590,26 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        return (ActionStatus)
-                singleton.lookupObjectByNamedQuery("ActionStatus.findByName", params, true);
+        return singleton.lookupObjectByNamedQuery("ActionStatus.findByName", Map.of("name", name), true);
 
     }
 
     /**
-     * Helper method to get a ConfigRevisionActionResult by
-     *  Action Config Revision Id
-     * @param actionConfigRevisionId the id of the ActionConfigRevision
-     *                  for whom we want to lookup the result
+     * Helper method to get a ConfigRevisionActionResult by Action Config Revision Id
+     * @param actionConfigRevisionId the id of the ActionConfigRevision for whom we want to lookup the result
      * @return The ConfigRevisionActionResult corresponding to the revison ID.
      */
-    public static ConfigRevisionActionResult
-    lookupConfigActionResult(Long actionConfigRevisionId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", actionConfigRevisionId);
-        return (ConfigRevisionActionResult)
-                singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                        params, true);
+    public static ConfigRevisionActionResult lookupConfigActionResult(Long actionConfigRevisionId) {
+        return singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
+                Map.of("id", actionConfigRevisionId), true);
     }
 
     /**
-     * Helper method to get a ConfigRevisionAction by
-     *  Action Config Revision Id
-     * @param id the id of the ActionConfigRevision
-     *                  for whom we want to lookup the result
+     * Helper method to get a ConfigRevisionAction by Action Config Revision Id
+     * @param id the id of the ActionConfigRevision for whom we want to lookup the result
      * @return The ConfigRevisionAction corresponding to the revison ID.
      */
-    public static ConfigRevisionAction
-    lookupConfigRevisionAction(Long id) {
-
+    public static ConfigRevisionAction lookupConfigRevisionAction(Long id) {
         Session session = HibernateFactory.getSession();
         return session.get(ConfigRevisionAction.class, id);
     }
@@ -656,9 +620,8 @@ public class ActionFactory extends HibernateFactory {
      * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
      */
     public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
-        final Map<String, Long> params = Collections.singletonMap("action_id", actionId);
-        return (ApplyStatesActionDetails)
-                singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId", params, true);
+        return singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId",
+                Map.of("action_id", actionId), true);
     }
 
     /**
@@ -682,9 +645,8 @@ public class ActionFactory extends HibernateFactory {
                 actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
 
             PackageAction action = (PackageAction) actionIn;
-            Set details = action.getDetails();
-            for (Object detailIn : details) {
-                PackageActionDetails detail = (PackageActionDetails) detailIn;
+            Set<PackageActionDetails> details = action.getDetails();
+            for (PackageActionDetails detail : details) {
                 PackageEvr evr = detail.getEvr();
 
                 // It is possible to have a Package Action with only a package name
@@ -697,6 +659,11 @@ public class ActionFactory extends HibernateFactory {
         }
 
         singleton.saveObject(actionIn);
+        if (actionIn.getServerActions() != null) {
+            actionIn.getServerActions().stream()
+                    .map(sa -> sa.getServerId())
+                    .forEach(sid -> SystemManager.updateSystemOverview(sid));
+        }
         return actionIn;
     }
 
@@ -706,6 +673,9 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void remove(Action actionIn) {
         singleton.removeObject(actionIn);
+        actionIn.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -730,41 +700,26 @@ public class ActionFactory extends HibernateFactory {
      * @param parentAction Parent action.
      * @return Set of actions dependent on the given parent.
      */
+    @SuppressWarnings("unchecked")
     public static Stream<Action> lookupDependentActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
 
         Set<Action> returnSet = new HashSet<>();
-        List actionsAtHierarchyLevel = new LinkedList();
+        List<Long> actionsAtHierarchyLevel = new LinkedList<>();
         actionsAtHierarchyLevel.add(parentAction.getId());
         do {
-            Query findDependentActions = session.getNamedQuery(
-                    "Action.findDependentActions");
+            Query<Action> findDependentActions = session.getNamedQuery("Action.findDependentActions");
             findDependentActions.setParameterList("action_ids", actionsAtHierarchyLevel);
-            List results = findDependentActions.list();
+            List<Action> results = findDependentActions.list();
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
-            actionsAtHierarchyLevel = new LinkedList();
-            for (Object resultIn : results) {
-                actionsAtHierarchyLevel.add(((Action) resultIn).getId());
-            }
+            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).collect(Collectors.toList());
         }
-        while (actionsAtHierarchyLevel.size() > 0);
+        while (!actionsAtHierarchyLevel.isEmpty());
 
         return returnSet.stream();
     }
 
-    /**
-     * Delete the server actions associated with the given set of parent actions.
-     * @param parentActions Set of parent actions.
-     */
-    public static void deleteServerActionsByParent(Set parentActions) {
-        Session session = HibernateFactory.getSession();
-
-        Query serverActionsToDelete =
-                session.getNamedQuery("ServerAction.deleteByParentActions");
-        serverActionsToDelete.setParameterList("actions", parentActions);
-        serverActionsToDelete.executeUpdate();
-    }
     /**
      * Lookup a List of Action objects for a given Server.
      * @param user the user doing the search
@@ -772,11 +727,8 @@ public class ActionFactory extends HibernateFactory {
      * @return List of Action objects
      */
     public static List<Action> listActionsForServer(User user, Server serverIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", user.getOrg().getId());
-        params.put("server", serverIn);
-        return singleton.listObjectsByNamedQuery(
-                "Action.findByServerAndOrgId", params);
+        return singleton.listObjectsByNamedQuery("Action.findByServerAndOrgId",
+                Map.of("orgId", user.getOrg().getId(), "server", serverIn));
     }
 
     /**
@@ -784,12 +736,8 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of ServerAction objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServer", params);
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServer", Map.of("server", serverIn));
     }
 
     /**
@@ -799,14 +747,11 @@ public class ActionFactory extends HibernateFactory {
      * @param date you want to limit the completion date after
      * @return List of ServerAction objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
-        final Map<String, Object> params = new HashMap<>();
-
+        Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("actionType", actionType);
         params.put("date", date);
-
         return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
     }
     /**
@@ -815,13 +760,9 @@ public class ActionFactory extends HibernateFactory {
      * @param statusList to filter the ServerActoins by
      * @return List of ServerAction objects
      */
-    public static List<ServerAction> listServerActionsForServer(Server serverIn,
-            List<ActionStatus> statusList) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("statusList", statusList);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServerAndStatus", params);
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatus",
+                Map.of("server", serverIn, "statusList", statusList));
     }
 
     /**
@@ -831,13 +772,10 @@ public class ActionFactory extends HibernateFactory {
      * @param createdDate to filter the ServerActions by
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList, Date createdDate) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("statusList", statusList);
-        params.put("date", createdDate);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServerAndStatusAndCreatedDate", params);
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
+                                                                Date createdDate) {
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatusAndCreatedDate",
+                Map.of("server", serverIn, "statusList", statusList, "date", createdDate));
     }
 
     /**
@@ -846,13 +784,12 @@ public class ActionFactory extends HibernateFactory {
      * @param actionIn the action who's ServerAction you are searching for
      * @return matching ServerAction object
      */
-    public static ServerAction getServerActionForServerAndAction(Server serverIn,
-            Action actionIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("action", actionIn);
-        return (ServerAction) singleton.lookupObjectByNamedQuery(
-                "ServerAction.findByServerAndAction", params);
+    public static ServerAction getServerActionForServerAndAction(Server serverIn, Action actionIn) {
+        if (serverIn == null || actionIn == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ServerAction.findByServerAndAction",
+                Map.of("server", serverIn, "action", actionIn));
     }
 
     /**
@@ -867,6 +804,10 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .filter(sa -> sa.isFailed())
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -880,6 +821,9 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -887,9 +831,7 @@ public class ActionFactory extends HibernateFactory {
      * @return list of pending minions that contain minions
      */
     public static List<Action> pendingMinionServerActions() {
-        List<Action> result = singleton.listObjectsByNamedQuery(
-                "Action.lookupPendingMinionActions", null);
-        return result;
+        return singleton.listObjectsByNamedQuery("Action.lookupPendingMinionActions", Map.of());
     }
 
     /**
@@ -906,6 +848,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
         removeInvalidResults(action);
+        SystemManager.updateSystemOverview(server);
     }
 
     /**
@@ -913,10 +856,7 @@ public class ActionFactory extends HibernateFactory {
      * @return history event
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", aid);
-        return (ServerHistoryEvent) singleton.lookupObjectByNamedQuery(
-                "ServerHistory.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
     }
 
     /**
@@ -940,15 +880,14 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIds server Ids for which action is scheduled
      */
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}",
-                    ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}",
+                ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
 
         udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -958,14 +897,13 @@ public class ActionFactory extends HibernateFactory {
      * @param status {@link ActionStatus} object that needs to be set
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());
 
         udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -974,6 +912,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void save(ServerAction serverActionIn) {
         singleton.saveObject(serverActionIn);
+        SystemManager.updateSystemOverview(serverActionIn.getServerId());
     }
 
     /**
@@ -1034,6 +973,12 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionStatus STATUS_FAILED =
             lookupActionStatusByName("Failed");
+
+    /**
+     * All the possible action statuses
+     */
+    public static final List<ActionStatus> ALL_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP, STATUS_COMPLETED,
+        STATUS_FAILED);
 
     /**
      * The constant representing Package Refresh List action.  [ID:1]

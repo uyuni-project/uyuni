@@ -10,8 +10,14 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 from mock import Mock, patch
+from queue import Queue
 
-from spacewalk.satellite_tools.download import ThreadedDownloader, PyCurlFileObjectThread, pycurl
+from spacewalk.satellite_tools.download import (
+    DownloadThread,
+    ThreadedDownloader,
+    PyCurlFileObjectThread,
+    pycurl,
+)
 from urlgrabber.grabber import URLGrabberOptions
 
 class NoKeyErrorsDict(dict):
@@ -75,3 +81,37 @@ def test_reposync_configured_http_proxy_passed_to_urlgrabber():
         pycurlobj = PyCurlFileObjectThread(url, "file.rpm", opts, curl_spy, None)
         assert pycurlobj.opts.proxy == http_proxy
 
+
+def test_reposync_download_thread_fetch_url_proxy_pass():
+    http_proxy = "http://proxy.example.com:8080"
+    proxies = {"http": http_proxy, "https": http_proxy, "ftp": http_proxy}
+    queue = Queue()
+    queue.put(
+        {
+            "ssl_ca_cert": None,
+            "ssl_client_cert": None,
+            "ssl_client_key": None,
+            "bytes_range": None,
+            "proxy": http_proxy,
+            "proxy_username": "user",
+            "proxy_password": "password",
+            "proxies": proxies,
+            "http_headers": {},
+            "timeout": None,
+            "minrate": None,
+            "urls": [],
+            "relative_path": "",
+            "urlgrabber_logspec": None,
+        }
+    )
+    parent_mock = Mock()
+    parent_mock.retries = 0
+    url_grabber_opts_mock = Mock()
+    with patch(
+        "spacewalk.satellite_tools.download.URLGrabberOptions", url_grabber_opts_mock
+    ):
+        DownloadThread(parent_mock, queue).run()
+        assert url_grabber_opts_mock.mock_calls[0].kwargs["proxies"] == proxies
+        assert "proxy" not in url_grabber_opts_mock.mock_calls[0].kwargs
+        assert "username" not in url_grabber_opts_mock.mock_calls[0].kwargs
+        assert "password" not in url_grabber_opts_mock.mock_calls[0].kwargs

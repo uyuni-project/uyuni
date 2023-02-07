@@ -71,10 +71,9 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
 
     /**
      * Tests that the bootstrap fails when the keys for the host already exist.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testBootstrapFailsWhenKeysExist() throws Exception {
+    public void testBootstrapFailsWhenKeysExist() {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
 
@@ -197,9 +196,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Base for tests that check that bootstrap FAILS with on current bootstrapper (set in
      * implementations of this base class) and given activation key.
      * @param key activation key
-     * @throws Exception if anything goes wrong
      */
-    protected void testIncompatibleActivationKeysBase(ActivationKey key) throws Exception {
+    protected void testIncompatibleActivationKeysBase(ActivationKey key) {
         BootstrapHostsJson input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getFirstActivationKey();

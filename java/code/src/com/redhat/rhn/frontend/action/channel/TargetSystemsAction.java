@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.channel;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -40,16 +41,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * TargetSystemsAction
  */
-public class TargetSystemsAction extends RhnAction implements Listable {
+public class TargetSystemsAction extends RhnAction implements Listable<SystemOverview> {
 
     /**
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -78,7 +80,8 @@ public class TargetSystemsAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<SystemOverview> getResult(RequestContext context) {
         User user =  context.getCurrentUser();
         Long cid = context.getRequiredParam(RequestContext.CID);
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);

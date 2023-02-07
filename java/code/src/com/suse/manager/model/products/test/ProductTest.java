@@ -15,6 +15,8 @@
 package com.suse.manager.model.products.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
@@ -61,7 +63,7 @@ public class ProductTest  {
                 })
        );
 
-       assertEquals(false, nonSynchronizingProduct.isProvided());
+        assertFalse(nonSynchronizingProduct.isProvided());
 
        SetupWizardProductDto synchronizingProduct = new SetupWizardProductDto(
                2L,
@@ -86,7 +88,7 @@ public class ProductTest  {
                })
       );
 
-      assertEquals(true, synchronizingProduct.isProvided());
+        assertTrue(synchronizingProduct.isProvided());
     }
 
     /**

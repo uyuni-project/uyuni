@@ -22,16 +22,79 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Task
  */
+@Entity
+@Table(name = "rhnTaskQueue")
+@IdClass(Task.TaskId.class)
 public class Task implements Serializable {
 
+    public static class TaskId implements Serializable {
+        private String name;
+        private Long data;
+        private Date earliest;
+        private Org org;
+
+        @Override
+        public boolean equals(Object oIn) {
+            if (this == oIn) {
+                return true;
+            }
+
+            if (oIn == null || getClass() != oIn.getClass()) {
+                return false;
+            }
+
+            TaskId taskId = (TaskId) oIn;
+
+            return new EqualsBuilder()
+                    .append(name, taskId.name)
+                    .append(data, taskId.data)
+                    .append(earliest, taskId.earliest)
+                    .append(org, taskId.org)
+                    .isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(17, 37)
+                    .append(name)
+                    .append(data)
+                    .append(earliest)
+                    .append(org)
+                    .toHashCode();
+        }
+    }
+
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "task_name", nullable = false, length = 64)
     private String name;
+
+    @Id
+    @Column(name = "task_data")
     private Long data;
+
+    @Column
     private int priority;
+
+    @Id
+    @Column(nullable = false)
     private Date earliest;
+
+    @Id
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "org_id")
     private Org org;
 
 
@@ -108,8 +171,9 @@ public class Task implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof Task)) {
+        if (!(other instanceof Task)) {
             return false;
         }
         Task castOther = (Task) other;
@@ -124,6 +188,7 @@ public class Task implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(org)
                                     .append(name)

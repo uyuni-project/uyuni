@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.frontend.action.systems.ErrataSetupAction;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author bo
  */
-public class ErrataListAction extends ErrataSetupAction implements Listable {
+public class ErrataListAction extends ErrataSetupAction implements Listable<ErrataOverview> {
 
     /**
      * Entry-point caller.
@@ -89,7 +90,8 @@ public class ErrataListAction extends ErrataSetupAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ErrataOverview> getResult(RequestContext context) {
         String type = context.getParam(SELECTOR, false);
         List<String> typeList = getTypes(type);
         return ErrataManager.relevantErrataToSystemSet(context.getCurrentUser(), typeList);

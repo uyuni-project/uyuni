@@ -8,20 +8,21 @@ Feature: Bootstrap a Salt build host via the GUI
     Given I am authorized for the "Admin" section
 
   Scenario: Bootstrap a SLES build host
-     When I follow the left menu "Systems > Bootstrapping"
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "build_host" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I select the hostname of "proxy" from "proxies" if present
-     And I click on "Bootstrap"
-     And I wait until I see "Successfully bootstrapped host!" text
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "build_host" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select the hostname of "proxy" from "proxies" if present
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped build host in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "build_host", refreshing the page
     And I wait until onboarding is completed for "build_host"
     Then the Salt master can reach "build_host"
@@ -68,11 +69,11 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Apply the highstate to the build host
     Given I am on the Systems overview page of this "build_host"
     When I wait until no Salt job is running on "build_host"
-    And I enable repositories before installing Docker
     And I apply highstate on "build_host"
     And I wait until "docker" service is active on "build_host"
+    # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
+    And I install the needed packages for highstate in build host
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "build_host"
-    And I disable repositories after installing Docker
 
   Scenario: Check that the build host is now a build host
     Given I am on the Systems overview page of this "build_host"

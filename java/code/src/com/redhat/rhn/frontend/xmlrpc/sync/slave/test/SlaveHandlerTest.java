@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.sync.slave.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -41,6 +40,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
     private SlaveHandler handler = new SlaveHandler();
     private String slaveName;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -63,8 +63,8 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         try {
             IssSlave slave = handler.create(admin, slaveName, true, true);
             assertEquals(slaveName, slave.getSlave());
-            assertTrue("Y".equals(slave.getEnabled()));
-            assertTrue("Y".equals(slave.getAllowAllOrgs()));
+            assertEquals("Y", slave.getEnabled());
+            assertEquals("Y", slave.getAllowAllOrgs());
         }
         catch (PermissionCheckFailureException e) {
             fail();
@@ -94,8 +94,8 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
                     "new_" + slaveName, false, false);
             assertEquals("new_" + slaveName, updSlave.getSlave());
             assertEquals(slave.getId(), updSlave.getId());
-            assertTrue("N".equals(slave.getEnabled()));
-            assertTrue("N".equals(slave.getAllowAllOrgs()));
+            assertEquals("N", slave.getEnabled());
+            assertEquals("N", slave.getAllowAllOrgs());
         }
         catch (PermissionCheckFailureException e) {
             fail();
@@ -239,7 +239,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
 
     // Add half of any existing Orgs to this list
     private List<Integer> getBareOrgs() {
-        List<Integer> orgs = new ArrayList();
+        List<Integer> orgs = new ArrayList<>();
         int i = 0;
         for (Org o : OrgFactory.lookupAllOrgs()) {
             if (i++ % 2 == 0) {

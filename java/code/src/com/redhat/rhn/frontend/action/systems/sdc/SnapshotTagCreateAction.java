@@ -42,22 +42,23 @@ public class SnapshotTagCreateAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm)formIn;
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         Server server = context.lookupAndBindServer();
         Long snapshotID = getSnapshotID(context);
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put("sid", sid);
         if (snapshotID != null) {
             params.put("ss_id", snapshotID);
             request.setAttribute("parentUrl", request.getRequestURI() +
-                    "?sid=" + sid.toString() + "&ss_id=" + snapshotID.toString());
+                    "?sid=" + sid.toString() + "&ss_id=" + snapshotID);
         }
         else {
             request.setAttribute("parentUrl", request.getRequestURI() +
@@ -66,7 +67,7 @@ public class SnapshotTagCreateAction extends RhnAction {
 
         if (context.isSubmitted()) {
             String tagName = form.get("tagName").toString();
-            ServerSnapshot snap = null;
+            ServerSnapshot snap;
             if (snapshotID != null) {
                 snap = ServerFactory.lookupSnapshotById(snapshotID.intValue());
             }

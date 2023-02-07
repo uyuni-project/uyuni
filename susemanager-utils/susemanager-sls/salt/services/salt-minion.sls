@@ -43,8 +43,8 @@ logrotate_configuration:
     - contents: |
         /var/log/salt-ssh.log {
                 su root root
-                weekly
                 missingok
+                size 10M
                 rotate 7
                 compress
                 notifempty

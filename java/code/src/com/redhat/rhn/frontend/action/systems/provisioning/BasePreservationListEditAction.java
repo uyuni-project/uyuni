@@ -34,24 +34,28 @@ public abstract class BasePreservationListEditAction extends BaseEditAction {
     public static final String LABEL = "label";
     public static final String FILES_STRING = "files";
 
+    @Override
     protected String getSuccessKey() {
         return "preservation.key.success";
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx, PersistOperation opr) {
         BaseFileListEditCommand bopr = (BaseFileListEditCommand) opr;
         rctx.getRequest().setAttribute(FILE_LIST, bopr.getFileList());
     }
 
+    @Override
     protected ValidatorError processCommandSetters(PersistOperation opr,
-                                                        DynaActionForm form,
-                                                        HttpServletRequest request) {
+                                                   DynaActionForm form,
+                                                   HttpServletRequest request) {
         BaseFileListEditCommand bopr = (BaseFileListEditCommand) opr;
         bopr.setLabel(form.getString(LABEL));
         bopr.updateFiles(form.getString(FILES_STRING));
         return null;
     }
 
+    @Override
     protected void processFormValues(PersistOperation opr, DynaActionForm form) {
         BaseFileListEditCommand bopr = (BaseFileListEditCommand) opr;
         form.set(LABEL, bopr.getFileList().getLabel());

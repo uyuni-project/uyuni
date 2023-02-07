@@ -16,7 +16,7 @@ package com.redhat.rhn.manager.system.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -64,8 +64,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     private User user;
     private Server server;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -73,7 +74,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testInitialPlanExec() throws Exception {
+    public void testInitialPlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -91,7 +92,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testAddPlanExec() throws Exception {
+    public void testAddPlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -120,7 +121,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUpdatePlanExec() throws Exception {
+    public void testUpdatePlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -160,13 +161,13 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
                 assertEquals(1024, guest.getTotalMemory().longValue());
             }
             else {
-                assertTrue(false);
+                fail();
             }
         }
     }
 
     @Test
-    public void testRemovePlanExec() throws Exception {
+    public void testRemovePlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -199,7 +200,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testRefreshPlanExec() throws Exception {
+    public void testRefreshPlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -235,7 +236,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUnlinkVirtualInstanceFromHost() throws Exception {
+    public void testUnlinkVirtualInstanceFromHost() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -273,7 +274,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSwappedUuidPlanExec() throws Exception {
+    public void testSwappedUuidPlanExec() {
 
         Long id = server.getId();
         List<VmInfo> plan = new LinkedList<>();
@@ -308,13 +309,13 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
                 assertEquals(STATE_CRASHED, guest.getState().getLabel());
             }
             else {
-                assertTrue(false);
+                fail();
             }
         }
     }
 
     @Test
-    public void testUpdateGuestVirtualInstancesFromJSON() throws Exception {
+    public void testUpdateGuestVirtualInstancesFromJSON() {
 
         Long id = server.getId();
         Map<String, String> vms = new HashMap<>();
@@ -360,7 +361,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUpdateGuestVirtualInstancesFromJSONWithNoAdditionalVmData() throws Exception {
+    public void testUpdateGuestVirtualInstancesFromJSONWithNoAdditionalVmData() {
 
         Long id = server.getId();
         Map<String, String> vms = new HashMap<>();

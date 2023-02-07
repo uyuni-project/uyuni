@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_onboarding
@@ -35,10 +35,14 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Create a complete minion activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -60,7 +64,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
@@ -77,7 +81,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
-    Then I should see a "Test-Channel-x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel

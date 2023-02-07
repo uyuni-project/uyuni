@@ -25,7 +25,6 @@ import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,7 @@ public class GathererJob extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext jobExecutionContext)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
 
         String vhmLabel = null;
         if (jobExecutionContext.getJobDetail().getJobDataMap().containsKey(VHM_LABEL)) {
@@ -69,24 +67,22 @@ public class GathererJob extends RhnJavaJob {
             return;
         }
 
-        log.debug(String.format("Running gatherer for %d Virtual Host Managers",
-                managers.size()));
+        log.debug("Running gatherer for {} Virtual Host Managers", managers.size());
 
         try {
             Map<String, Map<String, HostJson>> results = new GathererRunner().run(managers);
             if (results == null) {
                 return;
             }
-            log.debug(String.format("Got %d Virtual Host Managers from gatherer",
-                    results.size()));
+            log.debug("Got {} Virtual Host Managers from gatherer", results.size());
 
             for (VirtualHostManager manager : managers) {
                 String label = manager.getLabel();
 
                 if (!results.containsKey(label)) {
-                    log.warn(String.format("Virtual Host Manager with label '%s' is not " +
+                    log.warn("Virtual Host Manager with label '{}' is not " +
                             "contained in the results from gatherer - skipping it.",
-                            label));
+                            label);
                     continue;
                 }
                 log.debug("Processing {}", label);

@@ -36,7 +36,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.net.IDN;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,28 +55,26 @@ public class GeneralConfigAction extends BaseConfigAction {
 
 
     private static final String[] STRING_CONFIG_ARRAY = {"traceback_mail",
-        "server.jabber_server", "server.satellite.http_proxy",
-        "server.satellite.http_proxy_username", "server.satellite.http_proxy_password",
-        "mount_point"};
+        ConfigDefaults.SERVER_HOSTNAME, ConfigDefaults.HTTP_PROXY,
+        ConfigDefaults.HTTP_PROXY_USERNAME, ConfigDefaults.HTTP_PROXY_PASSWORD,
+        ConfigDefaults.MOUNT_POINT};
 
     private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
 
-    private static final List COMBO_LIST = new LinkedList();
+    private static final List<String> ALLOWED_CONFIGS = new LinkedList<>();
     static {
-        COMBO_LIST.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
-        COMBO_LIST.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
+        ALLOWED_CONFIGS.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
+        ALLOWED_CONFIGS.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
     }
 
-    private final List BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
-
-    /** List of Config keys allowed by this Action */
-    public static final List ALLOWED_CONFIGS = COMBO_LIST;
+    private static final List<String> BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
 
     /*
      * enable_ssl, disconnected, mount_point
      */
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -97,7 +94,6 @@ public class GeneralConfigAction extends BaseConfigAction {
         if (isSubmitted(form)) {
             ConfigureSatelliteCommand csc =
                 (ConfigureSatelliteCommand) getCommand(currentUser);
-            Iterator i = ALLOWED_CONFIGS.iterator();
 
             errors = validateForm(form);
             errors.add(RhnValidationHelper.validateDynaActionForm(this, form));
@@ -108,22 +104,18 @@ public class GeneralConfigAction extends BaseConfigAction {
                 return mapping.findForward("failure");
             }
 
-
-            while (i.hasNext()) {
-                String configKey = (String) i.next();
+            for (String configKey : ALLOWED_CONFIGS) {
                 // Have to munge the property name to replace the dots with | since
                 // struts attempts to 'beanify' the form propert values if you include
                 // dot notation in the names.
 
                 if (BOOLEAN_CONFIGS.contains(configKey)) {
-                    Boolean value = (Boolean)
-                        form.get(translateFormPropertyName(configKey));
+                    Boolean value = (Boolean) form.get(translateFormPropertyName(configKey));
                     csc.updateBoolean(configKey, value);
                 }
                 else {
-                    String value = (String)
-                        form.get(translateFormPropertyName(configKey));
-                    if (configKey.equals("server.jabber_server")) {
+                    String value = (String) form.get(translateFormPropertyName(configKey));
+                    if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         value = IDN.toASCII(value);
                     }
                     csc.updateString(configKey, value);
@@ -140,8 +132,7 @@ public class GeneralConfigAction extends BaseConfigAction {
             }
         }
         else {
-            for (Object allowedConfigIn : ALLOWED_CONFIGS) {
-                String configKey = (String) allowedConfigIn;
+            for (String configKey: ALLOWED_CONFIGS) {
 
                 if (BOOLEAN_CONFIGS.contains(configKey)) {
                     Boolean configValue = Config.get().getBoolean(configKey);
@@ -152,14 +143,14 @@ public class GeneralConfigAction extends BaseConfigAction {
                     form.set(translateFormPropertyName(configKey),
                             configValue);
 
-                    if (configKey.equals("server.satellite.http_proxy_password")) {
+                    if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
                         form.set(
                                 translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
                                 configValue);
                     }
-                    else if (configKey.equals("server.jabber_server")) {
+                    else if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         form.set(
-                                translateFormPropertyName("server.jabber_server"),
+                                translateFormPropertyName(ConfigDefaults.SERVER_HOSTNAME),
                                 IDN.toUnicode(configValue));
                     }
                 }
@@ -187,9 +178,14 @@ public class GeneralConfigAction extends BaseConfigAction {
         return configKey.replace('.', '|');
     }
 
+    public static List<String> getAllowedConfigs() {
+        return ALLOWED_CONFIGS;
+    }
+
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getCommandClassName() {
         return Config.get().getString("web.com.redhat.rhn.frontend." +
                 "action.satellite.GeneralConfigAction.command",
@@ -200,7 +196,7 @@ public class GeneralConfigAction extends BaseConfigAction {
      * This function checks if the user entered a valid e-mail, hostname,
      * and if the password and password confirmation fields match. Any
      * errors found are returned.
-     * @param GeneralConfingForm to validate
+     * @param DynaActionForm to validate
      * @return errors that were found in the submitted form
      */
     private ActionErrors validateForm(DynaActionForm form) {
@@ -208,7 +204,7 @@ public class GeneralConfigAction extends BaseConfigAction {
 
         // Check if proxy is given as host:port
         String proxy = (String) form.get(
-                translateFormPropertyName("server.satellite.http_proxy"));
+                translateFormPropertyName(ConfigDefaults.HTTP_PROXY));
         HostPortValidator validator = HostPortValidator.getInstance();
         if (!(proxy.equals("") || validator.isValid(proxy))) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -216,13 +212,13 @@ public class GeneralConfigAction extends BaseConfigAction {
         }
 
         String password = (String) form.get(
-                   translateFormPropertyName("server.satellite.http_proxy_password"));
+                   translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD));
         String confirmationPassword = (String) form.get(
            translateFormPropertyName("server.satellite.http_proxy_password_confirm"));
 
         if (!password.equals(confirmationPassword)) {
             form.set(
-                    translateFormPropertyName("server.satellite.http_proxy_password"),
+                    translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD),
                     "");
 
             form.set(
@@ -237,4 +233,3 @@ public class GeneralConfigAction extends BaseConfigAction {
     }
 
 }
-

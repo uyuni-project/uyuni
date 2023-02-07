@@ -33,6 +33,7 @@ public class TaskoRunSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class getSupportedClass() {
         return TaskoRun.class;
     }
@@ -40,8 +41,9 @@ public class TaskoRunSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
+                            XmlRpcSerializer serializer)
         throws XmlRpcException, IOException {
 
         TaskoRun run = (TaskoRun) value;

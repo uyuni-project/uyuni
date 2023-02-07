@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -60,6 +61,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
             "Red Hat Enterprise Linux Server release 6.8 (Santiago)\n" +
             "# This is a \"SLES Expanded Support platform release 6.8\"\n" +
             "# The above \"Red Hat Enterprise Linux Server\" string is only used to \n" +
+            "# keep software compatibility.";
+    private static final String SLL_REDHAT_RELEASE =
+            "Red Hat Enterprise Linux release 9.0 (Plow)\n" +
+            "# This is a \"SUSE Liberty Linux 9.0\"\n" +
+            "# The above \"Red Hat Enterprise Linux Server\" string is only used to\n" +
             "# keep software compatibility.";
     private static final String CENTOS_REDHAT_RELEASE =
             "CentOS Linux release 7.2.1511 (Core)";
@@ -106,6 +112,16 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("6", os.get().getMajorVersion());
         assertEquals("8", os.get().getMinorVersion());
         assertEquals("Santiago", os.get().getRelease());
+    }
+
+    @Test
+    public void testParseReleaseFileSLL() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(SLL_REDHAT_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("RedHatEnterprise", os.get().getName());
+        assertEquals("9", os.get().getMajorVersion());
+        assertEquals("0", os.get().getMinorVersion());
+        assertEquals("Plow", os.get().getRelease());
     }
 
     @Test
@@ -205,6 +221,9 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         String whatProvidesRes = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
+        String whatProvidesSLL = map.get("cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
         minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         if (setupMinion != null) {
@@ -212,6 +231,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         }
         Optional<RhelUtils.RhelProduct> prod = RhelUtils.detectRhelProduct(minionServer,
                 Optional.ofNullable(whatProvidesRes),
+                Optional.ofNullable(whatProvidesSLL),
                 Optional.ofNullable(rhelReleaseContent),
                 Optional.ofNullable(centosReleaseContent),
                 Optional.ofNullable(oracleReleaseContent),
@@ -243,7 +263,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDetectCentOSProductRES() throws Exception {
-        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos2.json",
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos_res.json",
                 minionServer -> {
                     Channel resChannel = createResChannel(user, "6");
                     minionServer.addChannel(resChannel);
@@ -256,6 +276,23 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("Final", prod.get().getRelease());
                     assertEquals("6", prod.get().getVersion());
         });
+    }
+
+    @Test
+    public void testDetectRhelProductSLL() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_sll.json",
+                minionServer -> {
+                    Channel resChannel = createSLLChannel(user, "9");
+                    minionServer.addChannel(resChannel);
+                    minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+                },
+                prod -> {
+                    assertTrue(prod.get().getSuseProduct().isPresent());
+                    assertEquals("sll", prod.get().getSuseProduct().get().getName());
+                    assertEquals("RedHatEnterprise", prod.get().getName());
+                    assertEquals("Plow", prod.get().getRelease());
+                    assertEquals("9", prod.get().getVersion());
+                });
     }
 
     @Test
@@ -342,34 +379,67 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
-    public static Channel createResChannel(User user, String version) throws Exception {
-        return createResChannel(user, version, "x86_64", "channel-x86_64");
+    public static Channel createResChannel(User user, String version)
+            throws Exception {
+        return createExpandedSupportChannel(user, version, "x86_64", "channel-x86_64",
+                "RES", "RHEL Expanded Support");
     }
 
     public static Channel createResChannel(User user, String version, String archLabel, String channelLabel)
             throws Exception {
+        return createExpandedSupportChannel(user, version, archLabel, channelLabel,
+                "RES", "RHEL Expanded Support");
+    }
+
+    public static Channel createSLLChannel(User user, String version)
+            throws Exception {
+        return createExpandedSupportChannel(user, version, "x86_64", "channel-x86_64",
+                "SLL", "SUSE Liberty Linux");
+    }
+
+    public static Channel createSLLChannel(User user, String version, String archLabel, String channelLabel)
+            throws Exception {
+        return createExpandedSupportChannel(user, version, archLabel, channelLabel,
+                "SLL", "SUSE Liberty Linux");
+    }
+
+    public static Channel createExpandedSupportChannel(User user, String version,
+                                                       String shortName, String friendlyName) {
+        try {
+            return createExpandedSupportChannel(user, version, "x86_64", UUID.randomUUID().toString(),
+                    shortName, friendlyName);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Channel createExpandedSupportChannel(
+            User user, String version, String archLabel, String channelLabel, String shortName, String friendlyName
+    ) throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user, "channel-" + archLabel);
         c.setLabel(channelLabel);
         c.setOrg(null); // vendor channels don't have org
 
         SUSEProduct suseProduct = SUSEProductFactory.findAllSUSEProducts().stream()
-                .filter(p -> p.getName().equalsIgnoreCase("res") && p.getVersion().equals(version))
+                .filter(p -> p.getName()
+                        .equalsIgnoreCase(shortName) && p.getVersion().equals(version))
                 .findFirst().orElseGet(() -> {
                     SUSEProduct suseProd = new SUSEProduct();
                     suseProd.setBase(true);
-                    suseProd.setName("res");
+                    suseProd.setName(shortName.toLowerCase());
                     suseProd.setVersion(version);
                     suseProd.setRelease(null);
                     suseProd.setReleaseStage(ReleaseStage.released);
-                    suseProd.setFriendlyName("RHEL Expanded Support  " + version);
+                    suseProd.setFriendlyName(friendlyName + "  " + version);
                     suseProd.setProductId(new Random().nextInt(999999));
                     suseProd.setArch(null); // RES products can contain channels with different archs
                     SUSEProductFactory.save(suseProd);
                     SUSEProductFactory.getSession().flush();
                     return suseProd;
-        });
+                });
 
-        ProductName pn = ChannelFactoryTest.lookupOrCreateProductName("RES");
+        ProductName pn = ChannelFactoryTest.lookupOrCreateProductName(shortName.toUpperCase());
         c.setProductName(pn);
 
         SUSEProductChannel spc = new SUSEProductChannel();

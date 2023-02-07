@@ -31,7 +31,7 @@ import java.util.List;
 
 public class TranslationsTest extends RhnBaseTestCase {
     @Test
-    public void testNoTranslator() throws Exception {
+    public void testNoTranslator() {
         try {
             // Try a translation that should be impossible.  This should make
             // sure that nobody ever writes a translator to do this.
@@ -45,7 +45,7 @@ public class TranslationsTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testlongDateTranslation() throws Exception {
+    public void testlongDateTranslation() {
 
         long current = System.currentTimeMillis();
         Date translated = (Date)TestTranslations.convert(current,
@@ -54,7 +54,7 @@ public class TranslationsTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFailedTranslation() throws Exception {
+    public void testFailedTranslation() {
         try {
             TestTranslations.convert("hmmm", java.lang.Integer.class);
             fail("Translation should have failed");
@@ -66,7 +66,7 @@ public class TranslationsTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPrivateTranslator() throws Exception {
+    public void testPrivateTranslator() {
         try {
             TestTranslations.convert(1, java.lang.Long.class);
             fail("Translation should have failed");
@@ -78,14 +78,14 @@ public class TranslationsTest extends RhnBaseTestCase {
 
     @Test
     public void testListToString() {
-        List list = new ArrayList();
+        List list = new ArrayList<>();
         list.add(10);
         list.add("list");
         String s = (String) TestTranslations.convert(list, String.class);
         assertNotNull(s);
         assertEquals("[10, list]", s);
 
-        list = new LinkedList();
+        list = new LinkedList<>();
         list.add(20);
         list.add("list");
         s = (String) TestTranslations.convert(list, String.class);

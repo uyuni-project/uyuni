@@ -40,10 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemNoteDeleteAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rctx = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm)form;

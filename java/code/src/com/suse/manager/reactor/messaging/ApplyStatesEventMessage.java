@@ -43,7 +43,9 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String DISTUPGRADE = "distupgrade";
     public static final String SALTBOOT = "saltboot";
     public static final String SYSTEM_INFO = "util.systeminfo";
+    public static final String SYSTEM_INFO_FULL = "util.systeminfo_full";
     public static final String SET_PROXY = "bootstrap.set_proxy";
+    public static final String TRANSACTIONAL_REBOOT_CONFIG = "transactional_reboot.config";
 
     private final long serverId;
     private final Long userId;

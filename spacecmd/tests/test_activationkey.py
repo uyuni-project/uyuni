@@ -8,7 +8,7 @@ import time
 import hashlib
 import spacecmd.activationkey
 from xmlrpc import client as xmlrpclib
-from helpers import shell, exc2str
+from helpers import shell, exc2str, assert_list_args_expect
 
 
 class TestSCActivationKey:
@@ -1777,10 +1777,15 @@ class TestSCActivationKeyMethods:
         shell.do_activationkey_getcorresponding = MagicMock(return_value="some_channel")
 
         gsdd = MagicMock(return_value=({"one": "two", "three": "three"}, {"one": "two", "three": "four"}))
-        with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd):
-            out = spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
-        assert out == ['--- some_key\n', '+++ some_channel\n', '@@ -1 +1 @@\n', '-some data', '+some data again']
-    
+        with patch("spacecmd.activationkey.get_string_diff_dicts", gsdd), \
+             patch("spacecmd.activationkey.print") as mprint:
+            spacecmd.activationkey.do_activationkey_diff(shell, "some_key")
+
+        assert_list_args_expect(
+            mprint.call_args_list,
+            ['--- some_key\n', '+++ some_channel\n', '@@ -1 +1 @@\n', '-some data', '+some data again']
+        )
+
     def test_do_activationkey_diable_noargs(self, shell):
         """
         Test do_activationkey_disable command triggers help on no args.

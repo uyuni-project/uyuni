@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -71,14 +70,14 @@ public class ListHelper {
     private String listName = LIST;
     private String parentUrl;
     private RequestContext context;
-    private Map paramMap = new HashedMap();
+    private Map<String, Object> paramMap;
     /**
      * constructor
      * @param inp takes in a Listable Object.
      * @param request http servlet request
      * @param params the parameter map for this request
      */
-    public ListHelper(Listable inp, HttpServletRequest request, Map params) {
+    public ListHelper(Listable inp, HttpServletRequest request, Map<String, Object> params) {
         listable = inp;
         context = new RequestContext(request);
         paramMap = params;
@@ -90,7 +89,7 @@ public class ListHelper {
      * @param request http servlet request
      */
     public ListHelper(Listable inp, HttpServletRequest request) {
-        this(inp, request, Collections.EMPTY_MAP);
+        this(inp, request, Collections.emptyMap());
     }
     /**
      * Setup  the appropriate data bindings.
@@ -247,13 +246,13 @@ public class ListHelper {
             else {
                 url += "?";
             }
-            for (Object key : paramMap.keySet()) {
+            for (Map.Entry<String, Object> entry: paramMap.entrySet()) {
                 if (queryString.length() != 0) {
                     queryString.append("&");
                 }
-                queryString.append(key).append("=").append(paramMap.get(key));
+                queryString.append(entry.getKey()).append("=").append(entry.getValue());
             }
-            return url + queryString.toString();
+            return url + queryString;
         }
         return url;
     }
@@ -269,7 +268,7 @@ public class ListHelper {
     /**
      * @return the paramMap
      */
-    public Map getParamMap() {
+    public Map<String, Object> getParamMap() {
         return paramMap;
     }
 
@@ -277,7 +276,7 @@ public class ListHelper {
     /**
      * @param params the paramMap to set
      */
-    public void setParamMap(Map params) {
+    public void setParamMap(Map<String, Object> params) {
         this.paramMap = params;
     }
 

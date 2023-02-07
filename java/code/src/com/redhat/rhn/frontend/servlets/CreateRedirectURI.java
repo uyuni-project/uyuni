@@ -16,12 +16,10 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.suse.manager.webui.utils.LoginHelper;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -54,10 +52,8 @@ public class CreateRedirectURI {
      *
      * @param request The current request
      * @return A redirect URI with request params appended to the query string
-     * @throws IOException If an IO error occurs
-     * @throws ServletException If a servlet processing error occurs
      */
-    public String execute(HttpServletRequest request) throws IOException, ServletException {
+    public String execute(HttpServletRequest request) {
         StringBuilder redirectURI = new StringBuilder(request.getRequestURI()).append("?");
         String paramName = null;
         String paramValue = null;
@@ -81,7 +77,7 @@ public class CreateRedirectURI {
         return redirectURI.toString();
     }
 
-    private String encode(String string) throws UnsupportedEncodingException {
-        return URLEncoder.encode(string, "UTF-8");
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
  }

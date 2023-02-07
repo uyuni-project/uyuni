@@ -59,10 +59,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCreateAndGetVHM() throws Exception {
+    public void testCreateAndGetVHM() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -79,10 +78,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with credentials.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCreateAndGetVHManagerWithCreds() throws Exception {
+    public void testCreateAndGetVHManagerWithCreds() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -98,7 +96,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateVHM() throws Exception {
+    public void testUpdateVHM() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -129,10 +127,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with config.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCreateAndGetVHMWithConfigs() throws Exception {
+    public void testCreateAndGetVHMWithConfigs() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -148,10 +145,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests that creating a VirtualHostManager with null label will throw an
      * IllegalArgumentException.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCreateAndGetVHMNullLabel() throws Exception {
+    public void testCreateAndGetVHMNullLabel() {
         try {
             createAndSaveVirtualHostManager("test", null, SUSE_CLOUD,
                     Collections.emptyMap());
@@ -172,10 +168,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests deleting an existing Virtual Host Manager.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDeleteVirtualHostManager() throws Exception {
+    public void testDeleteVirtualHostManager() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -215,10 +210,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a list of VirtualHostManager an organization.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testCreateAndGetVHMs() throws Exception {
+    public void testCreateAndGetVHMs() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -237,10 +231,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests that after removing VirtualHostManager, its credentials are removed as well.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDeleteVHMAndCredentials() throws Exception {
+    public void testDeleteVHMAndCredentials() {
         Map<String, String> config = new HashMap<>();
         config.put("username", "foouser");
         config.put("password", "barpass");
@@ -257,10 +250,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests that createVirtualHostManager throws NullPointerException when
      * passing null params.
-     * @throws Exception - if anything goes wrong
      */
     @Test
-    public void testFailOnNullParameters() throws Exception {
+    public void testFailOnNullParameters() {
         try {
             // should throw a NullPointerException
             createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);

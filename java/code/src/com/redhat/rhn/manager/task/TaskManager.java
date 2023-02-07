@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.task;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageCapabilityDto;
@@ -35,7 +36,6 @@ import java.util.stream.Collectors;
  * TaskManager
  */
 public class TaskManager {
-
 
     private TaskManager() {
 
@@ -140,9 +140,9 @@ public class TaskManager {
      * Return task status info
      * @return task status info
      */
-    public static DataResult getTaskStatusInfo() {
+    public static DataResult<Row> getTaskStatusInfo() {
         SelectMode m = ModeFactory.getMode("Task_queries", "taskomatic_task_status");
-        return m.execute(new HashMap());
+        return m.execute(new HashMap<>());
     }
 
     /**

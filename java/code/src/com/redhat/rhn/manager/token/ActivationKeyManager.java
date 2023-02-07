@@ -399,7 +399,7 @@ public class ActivationKeyManager {
                         "system.entitle.invalid_addon_entitlement", entitlementLabel));
             }
         }
-        if (ve.getErrors().size() > 0) {
+        if (!ve.getErrors().isEmpty()) {
             throw new ValidatorException(ve);
         }
     }
@@ -441,11 +441,11 @@ public class ActivationKeyManager {
             if (ks.getCobblerId() != null) {
                 Profile prof = Profile.lookupById(CobblerXMLRPCHelper.getConnection(user),
                                                                     ks.getCobblerId());
-                Set oldSet = new HashSet();
+                Set oldSet = new HashSet<>();
                 if (!StringUtils.isEmpty(oldKey)) {
                     oldSet.add(oldKey);
                 }
-                Set newSet = new HashSet();
+                Set newSet = new HashSet<>();
                 if (!StringUtils.isEmpty(newKey)) {
                     newSet.add(newKey);
                 }
@@ -492,7 +492,7 @@ public class ActivationKeyManager {
                 List<Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
                         bcid, packageName, false);
                 Collections.sort(cids);
-                log.warn("sorted cids: {}", cids.toString());
+                log.warn("sorted cids: {}", cids);
                 if (cids.isEmpty()) {
                     // nothing to do
                     log.warn("No child channel of {} contains {}", bcid, packageName);

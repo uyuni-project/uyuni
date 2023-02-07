@@ -26,6 +26,7 @@ public abstract class BasePersistOperation implements PersistOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public User getUser() {
         return user;
     }

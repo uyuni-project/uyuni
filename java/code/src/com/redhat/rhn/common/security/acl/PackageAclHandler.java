@@ -39,14 +39,13 @@ public class PackageAclHandler extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if token as the entitlement checked is granted, false otherwise
      */
-    public boolean aclTokenHasEntitlement(Object ctx, String[] params) {
+    public boolean aclTokenHasEntitlement(Map<String, Object> ctx, String[] params) {
         if (params == null) {
             return false;
         }
 
-        Map map = (Map) ctx;
-        Long tid = getAsLong(map.get(RequestContext.TOKEN_ID));
-        User user = (User) map.get("user");
+        Long tid = getAsLong(ctx.get(RequestContext.TOKEN_ID));
+        User user = (User) ctx.get("user");
         Token t = TokenFactory.lookup(tid, user.getOrg());
         for (ServerGroupType sgt : t.getEntitlements()) {
             if (sgt.getLabel().equals(params[0])) {
@@ -63,17 +62,14 @@ public class PackageAclHandler extends BaseHandler {
      * @param params Parameters to use to fetch from context
      * @return true if the the package passes the ACL
      */
-    public boolean aclPackageTypeCapable(Object ctx, String[] params) {
-
+    public boolean aclPackageTypeCapable(Map<String, Object> ctx, String[] params) {
         if (params.length == 0) {
             return false;
         }
 
         String cap = params[0];
-        Map map = (Map) ctx;
-
-        User user = (User) map.get("user");
-        Long pid = getAsLong(map.get("pid"));
+        User user = (User) ctx.get("user");
+        Long pid = getAsLong(ctx.get("pid"));
         Package pack = PackageManager.lookupByIdAndUser(pid, user);
 
         if (user == null || pid == null || pack == null) {

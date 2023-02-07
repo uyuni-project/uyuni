@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.token;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -84,7 +85,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) formIn;
         if (CREATE_MODE.equals(mapping.getParameter())) {
@@ -331,7 +332,10 @@ public class ActivationKeyDetailsAction extends RhnAction {
 
     private Channel lookupChannel(DynaActionForm daForm, User user) {
         Long selectedChannel = (Long)daForm.get(SELECTED_BASE_CHANNEL);
-
+        if (selectedChannel == null) {
+            throw new ValidatorException(
+                    LocalizationService.getInstance().getMessage("activation-key.java.nochannel"));
+        }
         if (!DEFAULT_CHANNEL_ID.equals(selectedChannel)) {
             return ChannelManager.lookupByIdAndUser(
                                 selectedChannel, user);

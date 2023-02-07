@@ -162,6 +162,7 @@ public class ErrataListConfirmAction extends RhnAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ErrataOverview> getResult(RequestContext context) {
         return ErrataManager.lookupSelectedErrataInSystemSet(context.getCurrentUser(),
                 getSetDecl().getLabel());

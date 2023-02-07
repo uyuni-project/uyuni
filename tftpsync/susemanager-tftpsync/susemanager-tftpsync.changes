@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Jan 23 08:26:55 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Introduce threadpool for tftpsync to increase performance
+    while syncing files to proxies (bsc#1205489)
+
+-------------------------------------------------------------------
+Wed Sep 28 11:03:42 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Adjust sync_post_tftpd_proxies module to cobbler >= 3.3.1
+
+-------------------------------------------------------------------
 Mon Aug 09 11:11:44 CEST 2021 - jgonzalez@suse.com
 
 - version 4.3.1-1

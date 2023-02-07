@@ -6,9 +6,9 @@
 
  Requirements & configuration:
 
- https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
+ https://github.com/uyuni-project/uyuni/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -58,6 +58,10 @@
     <delete dir="${test.results.dir}" />
   </target>
 
+  <target name="maybe-clean" unless="build.incremental.compile">
+    <antcall target="clean" />
+  </target>
+
   <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
     <exec failonerror="true" executable="obs-to-maven">
       <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
@@ -68,7 +72,7 @@
     <ivy-retrieve sync="true" type="jar,bundle"/>
   </target>
 
-  <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
+  <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
     <mkdir dir="${build.dir}/java-branding" />
 
     <javac destdir="${build.dir}/java-branding"
@@ -88,7 +92,7 @@
   </target>
 
   <target name="compile"
-          depends="clean"
+          depends="maybe-clean"
           unless="precompiled"
           description="Compiles the main codebase"
   >
@@ -208,10 +212,9 @@
   </target>
 
   <target name="is-yarn-installed">
-    <property environment="env" />
-    <available file="yarn"
-               filepath="${env.PATH}"
-               property="yarn.installed"/>
+    <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
+      <arg line="--version" />
+    </exec>
   </target>
 
   <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
@@ -332,6 +335,7 @@
                 <sysproperty key="log4j.threshold" value="warn" />
                 <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
                 <jvmarg value="-ea" />
+                <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" /> -->
                 <jvmarg value="${jacocoagent}"/>
             </fork>
             <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
@@ -341,7 +345,7 @@
     </junitlauncher>
   </target>
 
-  <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">
+  <target name="test-pr" depends="test-report, test-coverage-report" description="Run unit tests for Pull Requests">
     <fail if="junit_failed"/>
   </target>
 
@@ -445,7 +449,7 @@
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
     <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="libjars" sourcepath="code/src"
-        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+        additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
       <fileset dir="code" >
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />

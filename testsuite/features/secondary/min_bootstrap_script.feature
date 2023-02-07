@@ -22,13 +22,13 @@ Feature: Register a Salt minion via Bootstrap-script
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script
-    When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap "sle_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I accept "sle_minion" key in the Salt master
     Then I should see "sle_minion" via spacecmd
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
@@ -40,8 +40,11 @@ Feature: Register a Salt minion via Bootstrap-script
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I do not see "Loading..." text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -52,6 +55,8 @@ Feature: Register a Salt minion via Bootstrap-script
    Given I am on the Systems overview page of this "sle_minion"
    When I follow "Software" in the content area
    And I follow "Install"
+   And I enter "orion-dummy" as the filtered package name
+   And I click on the filter button
    And I check row with "orion-dummy" and arch of "sle_minion"
    And I click on "Install Selected Packages"
    And I click on "Confirm"

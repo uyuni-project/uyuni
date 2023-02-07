@@ -31,16 +31,15 @@ Feature: Channel subscription with recommended or required dependencies
     Then I should see the child channel "SLE-Module-Server-Applications15-SP3-Pool for x86_64" "selected"
 
   Scenario: Play with recommended and required child channels selection in SSM
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
-    And I check the "sle_client" client
-    Then I should see "2" systems selected for SSM
+    Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "Test-Channel-x86_64", "2"
-    When I select "System Default Base Channel" from drop-down in table line with "Test-Channel-x86_64"
+    And I should see a table line with "Fake-RPM-SLES-Channel", "1"
+    When I select "System Default Base Channel" from drop-down in table line with "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see the toggler "disabled"
     And I should see a "SLE-Module-Basesystem15-SP3-Pool for x86_64" text
@@ -50,4 +49,4 @@ Feature: Channel subscription with recommended or required dependencies
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-SP3-Pool for x86_64" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
-    When I follow "Clear"
+    When I click on the clear SSM button

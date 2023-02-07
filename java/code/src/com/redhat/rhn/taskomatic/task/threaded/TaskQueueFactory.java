@@ -25,16 +25,16 @@ import java.util.Map;
  */
 public class TaskQueueFactory {
 
-    private static TaskQueueFactory instance = new TaskQueueFactory();
+    private static final TaskQueueFactory INSTANCE = new TaskQueueFactory();
 
-    private Map queues = new HashMap();
+    private final Map<String, TaskQueue> queues = new HashMap<>();
 
     /**
      * Get the singleton instance
      * @return the single instance of TaskQueueFactory
      */
     public static TaskQueueFactory get() {
-        return instance;
+        return INSTANCE;
     }
 
     private TaskQueueFactory() {
@@ -48,7 +48,7 @@ public class TaskQueueFactory {
      */
     public TaskQueue getQueue(String name) {
         synchronized (queues) {
-            return (TaskQueue) queues.get(name);
+            return queues.get(name);
         }
     }
 
@@ -62,14 +62,14 @@ public class TaskQueueFactory {
      * @return queue instance
      * @throws Exception error occurred during queue creation
      */
-    public TaskQueue createQueue(String name, Class driverClass, Logger loggerIn)
+    public TaskQueue createQueue(String name, Class<? extends QueueDriver<?>> driverClass, Logger loggerIn)
         throws Exception {
-        TaskQueue retval = null;
+        TaskQueue retval;
         synchronized (queues) {
-            retval = (TaskQueue) queues.get(name);
+            retval = queues.get(name);
             if (retval == null) {
                 retval = new TaskQueue();
-                QueueDriver driver = (QueueDriver) driverClass.newInstance();
+                QueueDriver<?> driver = driverClass.getDeclaredConstructor().newInstance();
                 driver.setLogger(loggerIn);
                 driver.initialize();
                 retval.setQueueDriver(driver);
@@ -86,19 +86,14 @@ public class TaskQueueFactory {
      * @return queue instance if found, otherwise null
      */
     public TaskQueue removeQueue(String name) {
-        TaskQueue retval = null;
         synchronized (queues) {
-            retval = (TaskQueue) queues.remove(name);
+            return queues.remove(name);
         }
-        return retval;
     }
 
     void closeAllQueues() {
         synchronized (queues) {
-            for (Object oIn : queues.values()) {
-                TaskQueue queue = (TaskQueue) oIn;
-                queue.shutdown();
-            }
+            queues.values().forEach(TaskQueue::shutdown);
         }
         queues.clear();
     }
@@ -106,14 +101,15 @@ public class TaskQueueFactory {
     /**
      * JVM shutdown hook used to clean up any remaining queues
      */
-    class ShutdownHook extends Thread {
+    static class ShutdownHook extends Thread {
 
-        private TaskQueueFactory factory;
+        private final TaskQueueFactory factory;
 
         ShutdownHook(TaskQueueFactory factoryIn) {
             factory = factoryIn;
         }
 
+        @Override
         public void run() {
             factory.closeAllQueues();
         }

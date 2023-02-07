@@ -41,6 +41,7 @@ public class WebSessionFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages
      * show up on the correct class
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -86,9 +87,10 @@ public class WebSessionFactory extends HibernateFactory {
      * a deactivated user's sessions to be alive..
      * @param user the user whose sessions are to be purged.
      */
+    @SuppressWarnings("unchecked")
     public static void purgeUserSessions(User user) {
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("WebSession.deleteByUserId");
+        Query<Integer> query = session.getNamedQuery("WebSession.deleteByUserId");
         query.setParameter("user_id", user.getId());
         query.executeUpdate();
     }

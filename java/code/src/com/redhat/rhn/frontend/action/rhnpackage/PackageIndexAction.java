@@ -109,6 +109,7 @@ public class PackageIndexAction extends LookupDispatchAction {
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
                                      ActionForm formIn,
                                      HttpServletRequest request,
@@ -123,6 +124,7 @@ public class PackageIndexAction extends LookupDispatchAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    @Override
     protected Map getKeyMethodMap() {
         Map<String, Object> params = new HashMap<>();
         params.put("packagesindex.jsp.update", "update");

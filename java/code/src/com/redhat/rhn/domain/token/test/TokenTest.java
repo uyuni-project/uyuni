@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.token.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -59,7 +60,7 @@ public class TokenTest extends RhnBaseTestCase {
         Token token1 = createTestToken();
         Token token2 = new Token();
 
-        assertFalse(token1.equals(token2));
+        assertNotEquals(token1, token2);
 
         Session session = HibernateFactory.getSession();
         token2 = (Token) session.getNamedQuery("Token.findById")
@@ -121,7 +122,7 @@ public class TokenTest extends RhnBaseTestCase {
         proc.add(t.getConfigChannelsFor(user), global2);
 
         TokenFactory.save(t);
-        List ls = new ArrayList();
+        List ls = new ArrayList<>();
         ls.add(global1);
         ls.add(global2);
 

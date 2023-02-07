@@ -14,11 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateDelete;
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateExistingTables;
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateInsert;
-import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateQuery;
+import static com.redhat.rhn.common.conf.ConfigDefaults.REPORT_DB_BATCH_SIZE;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -49,11 +45,11 @@ import java.util.stream.Collectors;
 
 public class HubReportDbUpdateWorker implements QueueWorker {
 
-    private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
+    private final int batchSize;
+    private final ReportDBHelper dbHelper;
     private TaskQueue parentQueue;
     private final MgrServerInfo mgrServerInfo;
-    private Logger log;
+    private final Logger log;
 
     private static final List<String> TABLES =
             List.of("SystemGroup", "SystemGroupPermission", "System", "SystemHistory", "SystemAction", "SystemChannel",
@@ -70,8 +66,22 @@ public class HubReportDbUpdateWorker implements QueueWorker {
      * @param mgrServerInfoIn mgr server to query data from
      */
     public HubReportDbUpdateWorker(Logger loggerIn, MgrServerInfo mgrServerInfoIn) {
+        this(loggerIn, mgrServerInfoIn, ReportDBHelper.INSTANCE, Config.get().getInt(REPORT_DB_BATCH_SIZE, 2000));
+    }
+
+    /**
+     * Test constructor for Hub Reporting DB Worker.
+     * @param loggerIn logger
+     * @param mgrServerInfoIn mgr server to query data from
+     * @param dbHelperIn the {@link ReportDBHelper}
+     * @param batchSizeIn the batch size
+     */
+    public HubReportDbUpdateWorker(Logger loggerIn, MgrServerInfo mgrServerInfoIn, ReportDBHelper dbHelperIn,
+                                      int batchSizeIn) {
         this.mgrServerInfo = mgrServerInfoIn;
         this.log = loggerIn;
+        this.dbHelper = dbHelperIn;
+        this.batchSize = batchSizeIn;
     }
 
     @Override
@@ -80,45 +90,43 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     }
 
     private List<String> filterExistingTables(Session remoteSession, Long serverId) {
-        SelectMode query = generateExistingTables(remoteSession, TABLES);
+        SelectMode query = dbHelper.generateExistingTables(remoteSession, TABLES);
         DataResult<Map<String, Object>> result = query.execute();
         Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
         tableEntry.removeIf(t -> {
             if (t.getValue() == null) {
-                log.warn("Table '" + t.getKey() + "' does not exist in server " + serverId + ": " +
-                        "this table will not be updated");
+                log.warn("Table '{}' does not exist in server {}: this table will not be updated",
+                        t.getKey(), serverId);
                 return true;
             }
             return false;
         });
-        List<String> existingTables = tableEntry.stream().map(t ->
-                String.valueOf(t.getValue())).collect(Collectors.toList());
-        return existingTables;
+
+        return tableEntry.stream().map(t -> String.valueOf(t.getValue())).collect(Collectors.toList());
     }
 
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {
         TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
-            SelectMode query = generateQuery(remoteSession, tableName, log);
+            SelectMode query = dbHelper.generateQuery(remoteSession, tableName, log);
 
             // Remove all the existing data
             log.debug("Deleting existing data in table {}", tableName);
-            WriteMode delete = generateDelete(localSession, tableName);
+            WriteMode delete = dbHelper.generateDelete(localSession, tableName);
             delete.executeUpdate(Map.of("mgm_id", mgmId));
 
             // Extract the first batch
-            @SuppressWarnings("unchecked")
-            DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", BATCH_SIZE));
+            DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", batchSize));
             firstBatch.forEach(e -> e.remove("mgm_id"));
 
             if (!firstBatch.isEmpty()) {
                 // Generate the insert using the column name retrieved from the select
-                WriteMode insert = generateInsert(localSession, tableName, mgmId, firstBatch.get(0).keySet());
+                WriteMode insert = dbHelper.generateInsert(localSession, tableName, mgmId, firstBatch.get(0).keySet());
                 insert.executeBatchUpdates(firstBatch);
                 log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
-                if (firstBatch.size() == BATCH_SIZE) {
-                    ReportDBHelper.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
+                if (firstBatch.size() == batchSize) {
+                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
                             .forEach(batch -> {
                                 batch.forEach(e -> e.remove("mgm_id"));
                                 insert.executeBatchUpdates(batch);
@@ -153,7 +161,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                 existingTables.forEach(table -> {
                     updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
                 });
-                ReportDBHelper.analyzeReportDb(localRh.getSession());
+                dbHelper.analyzeReportDb(localRh.getSession());
                 Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
                 mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
                 ServerFactory.save(mgrServer);

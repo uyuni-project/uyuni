@@ -180,7 +180,6 @@ class TestSCShell:
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
-    @patch("spacecmd.shell.SpacewalkShell.print_result", MagicMock())
     @patch("spacecmd.shell.readline.get_completer_delims", MagicMock(return_value=readline.get_completer_delims()))
     def test_shell_postcmd(self):
         """

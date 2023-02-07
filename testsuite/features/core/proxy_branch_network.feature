@@ -1,11 +1,10 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil) or if there is no private network ($private_net is nil)
 
 @sle_minion
-@sle_client
 @scope_proxy
 @scope_retail
 Feature: Setup Uyuni for Retail branch network
@@ -26,7 +25,6 @@ Feature: Setup Uyuni for Retail branch network
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
     And I manually install the "bind" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
@@ -35,6 +33,7 @@ Feature: Setup Uyuni for Retail branch network
     When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
     And I wait for "patterns-suma_retail" to be installed on "server"
+    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
@@ -43,6 +42,12 @@ Feature: Setup Uyuni for Retail branch network
     When I refresh the metadata for "server"
     When I install pattern "uyuni_retail" on this "server"
     And I wait for "patterns-uyuni_retail" to be installed on "server"
+    And I synchronize all Salt dynamic modules on "proxy"
+
+@proxy
+@private_net
+  Scenario: Restart spacewalk services
+    When I restart the spacewalk service
 
 @proxy
 @private_net
@@ -98,13 +103,9 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "broadcast" in broadcast address field
     And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
-    And I enter "client" in first reserved hostname field
-    And I enter the local IP address of "sle_client" in first reserved IP field
-    And I enter the MAC address of "sle_client" in first reserved MAC field
-    And I press "Add Item" in host reservations section
-    And I enter "minion" in second reserved hostname field
-    And I enter the local IP address of "sle_minion" in second reserved IP field
-    And I enter the MAC address of "sle_minion" in second reserved MAC field
+    And I enter "minion" in first reserved hostname field
+    And I enter the local IP address of "sle_minion" in first reserved IP field
+    And I enter the MAC address of "sle_minion" in first reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -128,14 +129,11 @@ Feature: Setup Uyuni for Retail branch network
     And I enter "proxy" in SOA name server field of example.org zone
     And I enter "admin@example.org." in SOA contact field of example.org zone
     And I press "Add Item" in A section of example.org zone
-    And I enter "client" in first A name field of example.org zone
-    And I enter the local IP address of "sle_client" in first A address field of example.org zone
+    And I enter "minion" in first A name field of example.org zone
+    And I enter the local IP address of "sle_minion" in first A address field of example.org zone
     And I press "Add Item" in A section of example.org zone
-    And I enter "minion" in second A name field of example.org zone
-    And I enter the local IP address of "sle_minion" in second A address field of example.org zone
-    And I press "Add Item" in A section of example.org zone
-    And I enter "proxy" in third A name field of example.org zone
-    And I enter the local IP address of "proxy" in third A address field of example.org zone
+    And I enter "proxy" in second A name field of example.org zone
+    And I enter the local IP address of "proxy" in second A address field of example.org zone
     And I press "Add Item" in NS section of example.org zone
     And I enter "proxy.example.org." in first NS field of example.org zone
     # reverse zone xx.168.192.in-addr.arpa:
@@ -167,17 +165,17 @@ Feature: Setup Uyuni for Retail branch network
     And I follow first "Dhcpd" in the content area
     And I click on "Expand All Sections"
     And I press "Add Item" in host reservations section
-    And I enter "pxeboot" in third reserved hostname field
-    And I enter the local IP address of "pxeboot_minion" in third reserved IP field
-    And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
+    And I enter "pxeboot" in second reserved hostname field
+    And I enter the local IP address of "pxeboot_minion" in second reserved IP field
+    And I enter the MAC address of "pxeboot_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
     And I click on "Expand All Sections"
     And I press "Add Item" in A section of example.org zone
-    And I enter "pxeboot" in fourth A name field of example.org zone
-    And I enter the local IP address of "pxeboot_minion" in fourth A address field of example.org zone
+    And I enter "pxeboot" in third A name field of example.org zone
+    And I enter the local IP address of "pxeboot_minion" in third A address field of example.org zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -211,16 +209,13 @@ Feature: Setup Uyuni for Retail branch network
 @private_net
   Scenario: Set up the terminals too
     When I set up the private network on the terminals
-    Then terminal "sle_client" should have got a retail network IP address
-    And name resolution should work on terminal "sle_client"
     And terminal "sle_minion" should have got a retail network IP address
     And name resolution should work on terminal "sle_minion"
 
 @proxy
 @private_net
   Scenario: The terminals should not reach the server
-    Then "sle_client" should not communicate with the server using private interface
-    And "sle_minion" should not communicate with the server using private interface
+    Then "sle_minion" should not communicate with the server using private interface
 
 @proxy
 @private_net

@@ -16,13 +16,16 @@ package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
+import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * KickstartCryptoKeysSetupAction - setup action to show the list of CryptoKeys
@@ -33,6 +36,7 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
        return RhnSetDecl.GPGSSL_KEYS;
     }
@@ -40,7 +44,8 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    @Override
+    protected DataResult<CryptoKeyDto> getDataResult(RequestContext rctx, PageControl pc) {
         return KickstartLister.getInstance().
             cryptoKeysInOrg(rctx.getCurrentUser().getOrg());
     }
@@ -49,11 +54,13 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
      *
      * {@inheritDoc}
      */
-    protected Iterator getCurrentItemsIterator(KickstartData ksdata) {
+    @Override
+    protected Iterator<CryptoKey> getCurrentItemsIterator(KickstartData ksdata) {
+        List<CryptoKey> keys = new ArrayList<>();
         if (ksdata.getCryptoKeys() != null) {
-            return ksdata.getCryptoKeys().iterator();
+            keys.addAll(ksdata.getCryptoKeys());
         }
-        return Collections.EMPTY_LIST.iterator();
+        return keys.iterator();
     }
 
 }

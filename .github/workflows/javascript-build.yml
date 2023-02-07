@@ -39,8 +39,9 @@ jobs:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
-    - name: Install dependencies
-      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
+    # We only install production dependencies here to simulate a situation similar to OBS/IBS
+    - name: Install production dependencies
+      run: yarn --cwd web/html/src install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline
 
     - name: Build application
       run: yarn --cwd web/html/src build

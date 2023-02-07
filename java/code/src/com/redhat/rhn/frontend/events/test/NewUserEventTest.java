@@ -45,8 +45,9 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mailer = new MockMail();
     }
 
@@ -62,7 +63,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
         assertContains(eventText, "A SUSE Manager login has been created for you");
         assertContains(eventText,
                 "SUSE Manager login, in combination with an active SUSE subscription,");
-        assertContains(eventText, "e-mail: redhatJavaTest@redhat.com");
+        assertContains(eventText, "e-mail: javaTest@example.com");
 
     }
 
@@ -85,9 +86,9 @@ public class NewUserEventTest extends RhnBaseTestCase {
         assertTrue(mailer.getBody().contains("Your SUSE Manager login:         testUser") ||
                    mailer.getBody().contains("Your RHN login:         testUser"));
         assertTrue(mailer.getBody().contains("Your SUSE Manager email address: " +
-                    "redhatJavaTest@redhat.com") ||
+                    "javaTest@example.com") ||
                    mailer.getBody().contains("Your RHN email address: " +
-                "redhatJavaTest@redhat.com"));
+                "javaTest@example.com"));
     }
 
     private NewUserEvent createTestEvent() {

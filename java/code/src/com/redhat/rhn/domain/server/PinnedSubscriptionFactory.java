@@ -31,7 +31,7 @@ import java.util.List;
 public class PinnedSubscriptionFactory extends HibernateFactory {
 
     /** The log. */
-    private static Logger log;
+    private static final Logger LOG = LogManager.getLogger(PinnedSubscriptionFactory.class);
 
     /** The instance. */
     private static PinnedSubscriptionFactory instance;
@@ -59,10 +59,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(PinnedSubscriptionFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**

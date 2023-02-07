@@ -40,28 +40,31 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AdminListAction
  */
-public class AdminListAction extends BaseListAction {
+public class AdminListAction extends BaseListAction<UserOverview> {
 
     private ManagedServerGroup serverGroup;
     private User user;
 
+    @Override
     protected void setup(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
         serverGroup = requestContext.lookupAndBindServerGroup();
         user = requestContext.getCurrentUser();
     }
 
+    @Override
     protected void processHelper(ListSessionSetHelper helper) {
         helper.ignoreEmptySelection();
 
         Set<String> preselected = new HashSet<>();
-        for (User item : (List<User>) ServerGroupFactory.listAdministrators(serverGroup)) {
+        for (User item : ServerGroupFactory.listAdministrators(serverGroup)) {
                 preselected.add(item.getId().toString());
         }
         helper.preSelect(preselected);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected ActionForward handleDispatch(
             ListSessionSetHelper helper,
             ActionMapping mapping,
@@ -101,7 +104,8 @@ public class AdminListAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<UserOverview> getResult(RequestContext context) {
         List<UserOverview> userList = UserManager.activeInOrg2(user);
         for (UserOverview uo : userList) {
             uo.setSelectable(true);

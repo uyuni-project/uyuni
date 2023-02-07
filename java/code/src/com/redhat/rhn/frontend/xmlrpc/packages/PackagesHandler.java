@@ -18,6 +18,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -25,6 +26,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageArchException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
@@ -99,7 +101,7 @@ public class PackagesHandler extends BaseHandler {
      *    #struct_end()
      */
     @ReadOnly
-    public Map getDetails(User loggedInUser, Integer pid) throws FaultException {
+    public Map<String, Object> getDetails(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
 
@@ -203,7 +205,7 @@ public class PackagesHandler extends BaseHandler {
 
         List<PackageFileDto> dr = PackageManager.packageFiles(pkg.getId());
 
-        List returnList = new ArrayList();
+        List<Map<String, Object>> returnList = new ArrayList<>();
 
         /*
          * Loop through the data result and merge the data into the correct format
@@ -298,7 +300,7 @@ public class PackagesHandler extends BaseHandler {
         Package pkg = lookupPackage(loggedInUser, pid);
 
         // The list we'll eventually return
-        List returnList = new ArrayList();
+        List<Map<String, String>> returnList = new ArrayList<>();
 
         /*
          * Loop through each of the types of dependencies and create a map representing the
@@ -306,7 +308,7 @@ public class PackagesHandler extends BaseHandler {
          */
         for (int i = 0; i < PackageManager.DEPENDENCY_TYPES.length; i++) {
             String depType = PackageManager.DEPENDENCY_TYPES[i];
-            DataResult dr = getDependencies(depType, pkg);
+            DataResult<Row> dr = getDependencies(depType, pkg);
 
             // In the off chance we get null back, we should skip the next loop
             if (dr == null || dr.isEmpty()) {
@@ -317,9 +319,8 @@ public class PackagesHandler extends BaseHandler {
              * Loop through each item in the dependencies data result, adding each row
              * to the returnList
              */
-            for (Object oIn : dr) {
-                Map row = new HashMap(); // The map we'll put into returnList
-                Map map = (Map) oIn;
+            for (Row map : dr) {
+                Map<String, String> row = new HashMap<>(); // The map we'll put into returnList
 
                 String name = (String) map.get("name");
                 String version = (String) map.get("version");
@@ -432,7 +433,7 @@ public class PackagesHandler extends BaseHandler {
     @ReadOnly
     public Object[] listSourcePackages(User loggedInUser) throws FaultException {
 
-        DataResult dr =
+        DataResult<PackageOverview> dr =
                 PackageManager.listCustomPackages(loggedInUser.getOrg().getId(), true);
         return dr.toArray();
     }
@@ -444,7 +445,7 @@ public class PackagesHandler extends BaseHandler {
      * @return Returns the data result containing the dependencies of a specific type for a
      * given package.
      */
-    private DataResult getDependencies(String type, Package pkg) {
+    private DataResult<Row> getDependencies(String type, Package pkg) {
         if (type.equals("requires")) {
             return PackageManager.packageRequires(pkg.getId());
         }

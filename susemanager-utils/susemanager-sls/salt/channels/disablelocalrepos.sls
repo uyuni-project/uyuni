@@ -5,7 +5,6 @@
 {% endif %}
 {% do repos_disabled.update({'count': 0}) %}
 
-{% if salt['config.get']('disable_local_repos', True) %}
 {% set repos = salt['pkg.list_repos']() %}
 {% for alias, data in repos.items() %}
 {% if grains['os_family'] == 'Debian' %}
@@ -38,4 +37,3 @@ disable_repo_{{ alias }}:
 {% endif %}
 {% endif %}
 {% endfor %}
-{% endif %}

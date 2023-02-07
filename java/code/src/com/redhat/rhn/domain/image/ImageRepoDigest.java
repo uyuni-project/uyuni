@@ -94,6 +94,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageRepoDigest)) {
             return false;
@@ -108,6 +109,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageInfo)

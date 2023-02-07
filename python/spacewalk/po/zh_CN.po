@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-20 04:12+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
+"PO-Revision-Date: 2022-08-26 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -71,7 +71,7 @@ msgstr "无效的 URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -163,7 +163,7 @@ msgstr "隐私声明"
 msgid "Expected a dictionary as a product argument"
 msgstr "预期需要提供一个字典作为产品参数"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "值 '%s'（为 %s (%s) 提供）无效"
@@ -1082,7 +1082,7 @@ msgstr ""
 "       问题。您是否已将通道 ISO 中的所有数据\n"
 "       迁移到此目录？如果是，请再次检查通道\n"
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
-"       重新挂载并重新填充临时软件源 (%s)。\n"
+"       重新装入并重新填充临时软件源 (%s)。\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format

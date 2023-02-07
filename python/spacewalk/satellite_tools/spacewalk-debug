@@ -141,13 +141,17 @@ cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
 rm -r $DIR/conf/rhn/sysconfig/rhn/schema-upgrade
 
 # there might be backups of rhn.conf so clean them up as well (bsc#1146419)
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
+
+# cleanup also some other files
+find $DIR/conf/rhn -name 'uln.conf*' -exec sed -i 's/^password.*/password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'signing.conf*' -exec sed -i 's/^GPGPASS=.*/GPGPASS=<replaced_by_debug_tool>/' {} \;
 
 if [ -f /etc/tnsnames.ora ] ; then
     cp -fad /etc/tnsnames.ora $DIR/conf
@@ -228,12 +232,6 @@ if [ -d /var/log/salt ]; then
     cp -fa /var/log/salt $DIR/salt-logs
 fi
 
-# grab jabberd info if it exists (it should)
-if [ -d /etc/jabberd ]; then
-    mkdir -p $DIR/jabberd
-    cp -fa /etc/jabberd $DIR/jabberd
-fi
-
 # tomcat for spacewalk 400+
 for tomcat in tomcat tomcat5 tomcat6 ; do
   if [ -d /etc/$tomcat ]; then
@@ -268,6 +266,9 @@ if [ -d /var/lib/rhn/kickstarts ]; then
    cp -fa /var/lib/rhn/kickstarts/* $DIR/kickstarts/
 fi
 
+# Remove passwords from cobbler settings
+find $DIR/conf/cobbler -type f -name 'settings*' -exec sed -i 's/^default_password_crypted.*/default_password_crypted <replaced_by_debug_tool>/' {} \;
+
 # ssl-build
 if [ -d /root/ssl-build ] ; then
     echo "    * copying ssl-build"
@@ -301,10 +302,12 @@ rpm -qa | sort > $DIR/rpm-manifest-clean
 echo "    * querying schema version, database charactersets and database"
 /usr/bin/rhn-schema-version > $DIR/database-schema-version
 /usr/bin/rhn-charsets > $DIR/database-character-sets
-if [ -f /usr/bin/smdba ] ; then
-    /usr/bin/smdba space-overview > $DIR/db-control-report
-elif [ -f /usr/bin/db-control ] && [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ] ; then
-    /usr/bin/db-control report > $DIR/db-control-report
+if [ "$(spacewalk-cfg-get externaldb)" = "0" ] ; then
+    if [ -f /usr/bin/smdba ] ; then
+        /usr/bin/smdba space-overview > $DIR/db-control-report
+    elif [ -f /usr/bin/db-control ] && [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ] ; then
+        /usr/bin/db-control report > $DIR/db-control-report
+    fi
 fi
 
 if [ -f /usr/bin/spacewalk-sql ] ; then
@@ -424,9 +427,8 @@ if [ $IS_SUSE -eq 1 ]; then
     if [ -x /usr/bin/spacewalk-report ] && [ $NO_REPORTS -eq 0 ]; then
         # get some inventory info
         echo "    * running spacewalk-report to create reports."
-        /usr/bin/spacewalk-report inventory > $DIR/inventory-report.csv
-        /usr/bin/spacewalk-report channels > $DIR/channels-report.csv
-        /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
+        /usr/bin/spacewalk-report --legacy-report inventory > $DIR/inventory-report.csv
+        /usr/bin/spacewalk-report --legacy-report channels > $DIR/channels-report.csv
     fi
 
     ls -laR $(spacewalk-cfg-get documentroot)/pub > $DIR/ls-laR-htdocs

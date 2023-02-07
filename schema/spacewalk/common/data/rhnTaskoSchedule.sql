@@ -39,6 +39,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         (SELECT id FROM rhnTaskoBunch WHERE name='ssh-push-bunch'),
         current_timestamp, '0 * * * * ?');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'system-overview-update-queue-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='system-overview-update-queue-bunch'),
+        current_timestamp, '0 * * * * ?');
+
 -- Every 10 minutes
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
@@ -89,6 +94,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-cleanup-bunch'),
         current_timestamp, '0 0 0 * * ?');
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-system-overview-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='update-system-overview-bunch'),
+        current_timestamp, '0 0 * * * ?');
 
 -- Once a day at 4:05:00 AM (beware of 2AM cronjobs)
 

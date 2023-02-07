@@ -45,7 +45,6 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
 import com.suse.utils.Opt;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -57,7 +56,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +71,7 @@ import java.util.stream.Collectors;
  */
 public class ErrataFactory extends HibernateFactory {
 
+    private static final String ERRATA_QUERIES = "Errata_queries";
     private static ErrataFactory singleton = new ErrataFactory();
     private static Logger log = LogManager.getLogger(ErrataFactory.class);
 
@@ -106,11 +105,7 @@ public class ErrataFactory extends HibernateFactory {
         DataResult<ErrataPackageFile> dr = executeSelectMode(
                 "ErrataCache_queries",
                 "package_associated_to_errata_and_channel", params);
-        List toReturn = new ArrayList<Long>();
-        for (ErrataPackageFile file : dr) {
-            toReturn.add(file.getPackageId());
-        }
-        return toReturn;
+        return dr.stream().map(file -> file.getPackageId()).collect(Collectors.toList());
     }
 
 
@@ -122,14 +117,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param org User organization
      * @return list of erratas found
      */
-    public static List lookupByIdentifier(String identifier, Org org) {
+    public static List<Errata> lookupByIdentifier(String identifier, Org org) {
         Long eid = null;
-        List retval = new LinkedList();
+        List<Errata> retval = new LinkedList<>();
         try {
             eid = Long.parseLong(identifier);
         }
         catch (NumberFormatException e) {
-            eid = null;
+            // Nothing to do
         }
         if (eid != null) {
             Errata errata = ErrataFactory.lookupErrataById(eid);
@@ -307,10 +302,8 @@ public class ErrataFactory extends HibernateFactory {
 
         }
         ChannelFactory.save(chan);
-        List chanList = new ArrayList();
-        chanList.add(chan.getId());
 
-        ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, errata);
+        ErrataCacheManager.insertCacheForChannelErrataAsync(List.of(chan.getId()), errata);
 
         return errata;
     }
@@ -371,10 +364,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param name name for the file
      * @return new Errata File
      */
-    public static ErrataFile createErrataFile(ErrataFileType ft,
-                                              String cs,
-                                              String name) {
-        return createErrataFile(ft, cs, name, new HashSet());
+    public static ErrataFile createErrataFile(ErrataFileType ft, String cs, String name) {
+        return createErrataFile(ft, cs, name, new HashSet<>());
     }
 
     /**
@@ -388,7 +379,7 @@ public class ErrataFactory extends HibernateFactory {
     public static ErrataFile createErrataFile(ErrataFileType ft,
                                               String cs,
                                               String name,
-                                              Set packages) {
+                                              Set<Package> packages) {
         ErrataFile file = new ErrataFile();
         file.setFileType(ft);
         file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
@@ -403,11 +394,9 @@ public class ErrataFactory extends HibernateFactory {
      * @return ErrataFileType instance
      */
     public static ErrataFileType lookupErrataFileType(String label) {
-        Session session = null;
-        ErrataFileType retval = null;
+        ErrataFileType retval;
         try {
-            session = HibernateFactory.getSession();
-            retval = (ErrataFileType) session.getNamedQuery("ErrataFileType.findByLabel")
+            retval = (ErrataFileType) getSession().getNamedQuery("ErrataFileType.findByLabel")
                     .setString("label", label).setCacheable(true).uniqueResult();
         }
         catch (HibernateException e) {
@@ -422,13 +411,10 @@ public class ErrataFactory extends HibernateFactory {
      * @param fileType file type label
      * @return list of ErrataFile instances
      */
-    public static List lookupErrataFilesByErrataAndFileType(Long errataId,
-            String fileType) {
-        Session session = null;
-        List retval = null;
+    public static List<ErrataFile> lookupErrataFilesByErrataAndFileType(Long errataId, String fileType) {
+        List<ErrataFile> retval;
         try {
-            session = HibernateFactory.getSession();
-            Query q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
+            Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType");
             q.setLong("errata_id", errataId);
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
@@ -440,7 +426,6 @@ public class ErrataFactory extends HibernateFactory {
 
 
     }
-
 
     /**
      * Lookup a Errata by their id
@@ -457,20 +442,18 @@ public class ErrataFactory extends HibernateFactory {
      * @param advisoryType to search for
      * @return the Errata found
      */
-    public static List lookupErratasByAdvisoryType(String advisoryType) {
-        Session session = null;
-        List retval = null;
+    @SuppressWarnings("unchecked")
+    public static List<Errata> lookupErratasByAdvisoryType(String advisoryType) {
+        List<Errata> retval;
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("Errata.findByAdvisoryType")
+            retval = getSession().getNamedQuery("Errata.findByAdvisoryType")
                     .setString("type", advisoryType)
                     //Retrieve from cache if there
                     .setCacheable(true).list();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);
-            throw new
-            HibernateRuntimeException("Error loading ActionArchTypes from db");
+            throw new HibernateRuntimeException("Error loading ActionArchTypes from db");
         }
         return retval;
     }
@@ -481,17 +464,14 @@ public class ErrataFactory extends HibernateFactory {
      * @return Errata if found, otherwise null
      */
     public static Errata lookupErrataById(Long id) {
-        Session session = null;
-        Errata retval = null;
+        Errata retval;
         try {
-            session = HibernateFactory.getSession();
-            retval = (Errata) session.getNamedQuery("Errata.findById")
+            retval = (Errata) getSession().getNamedQuery("Errata.findById")
                     .setLong("id", id).uniqueResult();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);
-            throw new
-            HibernateRuntimeException("Error loading ActionArchTypes from db");
+            throw new HibernateRuntimeException("Error loading ActionArchTypes from db");
         }
         return retval;
     }
@@ -502,6 +482,7 @@ public class ErrataFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the errata corresponding to the passed in advisory name.
      */
+    @SuppressWarnings("unchecked")
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
@@ -530,20 +511,17 @@ public class ErrataFactory extends HibernateFactory {
      * @param org User organization
      * @return Errata if found, otherwise null
      */
+    @SuppressWarnings("unchecked")
     public static List<Errata> lookupByAdvisoryId(String advisoryId, Org org) {
-        Session session = null;
-        List<Errata> retval = null;
+        List<Errata> retval;
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("Errata.findByAdvisory")
+            retval = getSession().getNamedQuery("Errata.findByAdvisory")
                     .setParameter("advisory", advisoryId)
                     .setParameter("org", org)
                     .getResultList();
         }
         catch (HibernateException e) {
-
-            throw new
-            HibernateRuntimeException("Error looking up errata by advisory name");
+            throw new HibernateRuntimeException("Error looking up errata by advisory name");
         }
         return retval;
     }
@@ -553,19 +531,15 @@ public class ErrataFactory extends HibernateFactory {
      * @param cve cve text
      * @return Errata if found, otherwise null
      */
-    public static List lookupByCVE(String cve) {
-        List retval = new LinkedList();
-        SelectMode mode = ModeFactory.getMode("Errata_queries", "erratas_for_cve");
+    public static List<Errata> lookupByCVE(String cve) {
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES, "erratas_for_cve");
         Map<String, Object> params = new HashMap<>();
         params.put("cve", cve);
-        List result = mode.execute(params);
+        DataResult<Map<String, Object>> result = mode.execute(params);
         Session session = HibernateFactory.getSession();
-        for (Object oIn : result) {
-            Map row = (Map) oIn;
-            Long rawId = (Long) row.get("id");
-            retval.add(session.load(Errata.class, rawId));
-        }
-        return retval;
+        return result.stream()
+                .map(row -> session.load(Errata.class, (Long) row.get("id")))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -574,17 +548,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupByOriginal(Org org, Errata original) {
-        Session session = null;
-        List retval = null;
+    public static List<Errata> lookupByOriginal(Org org, Errata original) {
+        List<Errata> retval;
 
         try {
-            session = HibernateFactory.getSession();
             retval = lookupErrataByOriginal(org, original);
         }
         catch (HibernateException e) {
-            throw new
-            HibernateRuntimeException("Error looking up errata by original errata");
+            throw new HibernateRuntimeException("Error looking up errata by original errata");
         }
         return retval;
     }
@@ -595,44 +566,38 @@ public class ErrataFactory extends HibernateFactory {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupErrataByOriginal(Org org, Errata original) {
-        Session session = null;
-        List retval = null;
+    @SuppressWarnings("unchecked")
+    public static List<Errata> lookupErrataByOriginal(Org org, Errata original) {
+        List<Errata> retval;
 
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("ClonedErrata.findByOriginal")
+            retval = getSession().getNamedQuery("ClonedErrata.findByOriginal")
                     .setParameter("original", original)
                     .setParameter("org", org).list();
         }
         catch (HibernateException e) {
-            throw new
-            HibernateRuntimeException("Error looking up errata by original errata");
+            throw new HibernateRuntimeException("Error looking up errata by original errata");
         }
         return retval;
     }
 
     /**
      * Lists errata present in both channels
-     * @param org orgaznization
      * @param channelFrom channel1
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listErrataInBothChannels(Org org, Channel channelFrom,
-                                                Channel channelTo) {
-        Session session = null;
-        List retval = null;
+    @SuppressWarnings("unchecked")
+    public static List<Errata> listErrataInBothChannels(Channel channelFrom, Channel channelTo) {
+        List<Errata> retval;
 
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("Errata.findErrataInBothChannels")
+            retval = getSession().getNamedQuery("Errata.findErrataInBothChannels")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }
         catch (HibernateException e) {
-            throw new
-            HibernateRuntimeException("Error looking up errata by original errata");
+            throw new HibernateRuntimeException("Error looking up errata by original errata");
         }
         return retval;
     }
@@ -640,44 +605,37 @@ public class ErrataFactory extends HibernateFactory {
     /**
      * Lists errata from channelFrom, that are cloned from the same original
      * as errata in channelTo
-     * @param org orgaznization
      * @param channelFrom channel1
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listSiblingsInChannels(Org org, Channel channelFrom,
-                                              Channel channelTo) {
-        Session session = null;
-        List retval = null;
+    @SuppressWarnings("unchecked")
+    public static List<Errata> listSiblingsInChannels(Channel channelFrom, Channel channelTo) {
+        List<Errata> retval;
 
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("ClonedErrata.findSiblingsInChannel")
+            retval = getSession().getNamedQuery("ClonedErrata.findSiblingsInChannel")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }
         catch (HibernateException e) {
-            throw new
-            HibernateRuntimeException("Error looking up errata by original errata");
+            throw new HibernateRuntimeException("Error looking up errata by original errata");
         }
         return retval;
     }
 
     /**
      * Lists errata from channelFrom, that have clones in channelTo
-     * @param org orgaznization
      * @param channelFrom channel1
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listClonesInChannels(Org org, Channel channelFrom,
-                                            Channel channelTo) {
-        Session session = null;
-        List retval = null;
+    @SuppressWarnings("unchecked")
+    public static List<Errata> listClonesInChannels(Channel channelFrom, Channel channelTo) {
+        List<Errata> retval;
 
         try {
-            session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("Errata.findClonesInChannel")
+            retval = getSession().getNamedQuery("Errata.findClonesInChannel")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo)
                     .list();
@@ -729,25 +687,10 @@ public class ErrataFactory extends HibernateFactory {
      * @param channel the channel you want to get the errata for
      * @return A list of Errata objects
      */
+    @SuppressWarnings("unchecked")
     public static List<Errata> listByChannel(Org org, Channel channel) {
         return HibernateFactory.getSession().
                 getNamedQuery("Errata.listByChannel")
-                .setParameter("org", org)
-                .setParameter("channel", channel)
-                .list();
-    }
-
-    /**
-     * Lists errata assigned to a particular channel,
-     *          sorted by date (from oldest to newest)
-     * @param org the Org in question
-     * @param channel the channel you want to get the errata for
-     * @return A list of Errata objects
-     */
-    public static List lookupByChannelSorted(Org org, Channel channel) {
-
-        return HibernateFactory.getSession().
-                getNamedQuery("Errata.lookupSortedByChannel")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .list();
@@ -763,8 +706,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param endDate the end date
      * @return A list of Errata objects
      */
-    public static List<Errata> lookupByChannelBetweenDates(Org org, Channel channel,
-            String startDate, String endDate) {
+    @SuppressWarnings("unchecked")
+    public static List<Errata> lookupByChannelBetweenDates(Org org, Channel channel, String startDate, String endDate) {
 
         return HibernateFactory.getSession().
                 getNamedQuery("Errata.lookupByChannelBetweenDates")
@@ -785,6 +728,7 @@ public class ErrataFactory extends HibernateFactory {
      * @param filename the filename of the package associated
      * @return an Optional that may or may not contain the requested errata file object
      */
+    @SuppressWarnings("unchecked")
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
@@ -802,11 +746,8 @@ public class ErrataFactory extends HibernateFactory {
      * @return pairs of package and server ids of packages that are retracted for a given server.
      */
     public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        params.put("sids", sids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery(
-                "Errata.retractedPackages", params);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackages",
+                Map.of("pids", pids, "sids", sids));
         return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
@@ -821,12 +762,10 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static List<Tuple2<Long, Long>> retractedPackagesByNevra(List<String> nevras, List<Long> sids) {
         if (nevras.isEmpty()) {
-            return new LinkedList<Tuple2<Long, Long>>();
+            return new LinkedList<>();
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("nevras", nevras);
-        params.put("sids", sids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra", params);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra",
+                Map.of("nevras", nevras, "sids", sids));
         return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
@@ -836,15 +775,11 @@ public class ErrataFactory extends HibernateFactory {
      * @param org Organization to match results with
      * @return a list of ErrataOverview that match the given errata ids.
      */
-    public static List<ErrataOverview> search(List eids, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("eids", eids);
-        params.put("org_id", org.getId());
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchById", params);
+    public static List<ErrataOverview> search(List<Long> eids, Org org) {
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchById",
+                Map.of("eids", eids, "org_id", org.getId()));
         List<ErrataOverview> errata = new ArrayList<>();
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             ErrataOverview eo = new ErrataOverview();
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             eo.setId((Long)values[0]);
@@ -871,22 +806,14 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview of Errata that match the given Package
      * ids.
      */
-    public static List<ErrataOverview> searchByPackageIds(List pids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        if (log.isDebugEnabled()) {
-            log.debug("pids = {}", pids);
-        }
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchByPackageIds", params);
-        if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
-        }
+    public static List<ErrataOverview> searchByPackageIds(List<Long> pids) {
+        log.debug("pids = {}", pids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIds", Map.of("pids", pids));
+        log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
         ErrataOverview eo = null;
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             Long curId = (Long)values[0];
 
@@ -907,10 +834,8 @@ public class ErrataFactory extends HibernateFactory {
                 errata.add(eo);
                 lastId = curId;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("curId = {}, lastId = {}", curId, lastId);
-                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
-            }
+            log.debug("curId = {}, lastId = {}", curId, lastId);
+            log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
         }
 
         return errata;
@@ -925,24 +850,15 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview of Errata that match the given Package
      * ids.
      */
-    public static List<ErrataOverview> searchByPackageIdsWithOrg(List pids, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        params.put("org_id", org.getId());
-        if (log.isDebugEnabled()) {
-            log.debug("org_id = {}", org.getId());
-            log.debug("pids = {}", pids);
-        }
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchByPackageIdsWithOrg", params);
-        if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
-        }
+    public static List<ErrataOverview> searchByPackageIdsWithOrg(List<Long> pids, Org org) {
+        log.debug("org_id = {}, pids = {}", org.getId(), pids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIdsWithOrg",
+                Map.of("pids", pids, "org_id", org.getId()));
+        log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
         ErrataOverview eo = null;
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             Long curId = (Long)values[0];
 
@@ -964,10 +880,8 @@ public class ErrataFactory extends HibernateFactory {
                 errata.add(eo);
                 lastId = curId;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("curId = {}, lastId = {}", curId, lastId);
-                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
-            }
+            log.debug("curId = {}, lastId = {}", curId, lastId);
+            log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
         }
 
         return errata;
@@ -1001,22 +915,15 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setAdvisoryStatus(original.getAdvisoryStatus());
 
         // Copy the packages
-        cloned.setPackages(new HashSet(original.getPackages()));
+        cloned.setPackages(new HashSet<>(original.getPackages()));
 
         // Copy the keywords
-        Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
-        while (keysItr.hasNext()) {
-            Keyword k = (Keyword) keysItr.next();
-            cloned.addKeyword(k.getKeyword());
-        }
+        original.getKeywords().forEach(k -> cloned.addKeyword(k));
 
         // Copy the bugs
-        Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
-        while (bugsItr.hasNext()) {
-            Bug bugIn = (Bug) bugsItr.next();
-            Bug cloneB = createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
-            cloned.addBug(cloneB);
-        }
+        original.getBugs().stream()
+                .map(bug -> createBug(bug.getId(), bug.getSummary(), bug.getUrl()))
+                .forEach(bug -> cloned.addBug(bug));
 
         // only update the cache if exactly one of patches is retracted
         if (previousAdvisoryStatus != cloned.getAdvisoryStatus() &&
@@ -1048,10 +955,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
-                params, ids, "eids");
+        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
     }
 
     /**
@@ -1060,9 +964,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param toCid but not in this one
      * @return list of errata overviews
      */
-    public static DataResult<ErrataOverview> relevantToOneChannelButNotAnother(
-            Long fromCid, Long toCid) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries",
+    public static DataResult<ErrataOverview> relevantToOneChannelButNotAnother(Long fromCid, Long toCid) {
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES,
                 "relevant_to_one_channel_but_not_another");
         Map<String, Object> params = new HashMap<>();
         params.put("from_cid", fromCid);
@@ -1076,9 +979,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param orgId Org id to look for
      * @return List of OwnedErrata
      */
-    public static DataResult<OwnedErrata> listOwnedUnmodifiedClonedErrata(
-            Long orgId) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries",
+    public static DataResult<OwnedErrata> listOwnedUnmodifiedClonedErrata(Long orgId) {
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES,
                 "owned_unmodified_cloned_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
@@ -1092,7 +994,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return Set of existing advisories
      */
     public static Set<String> listAdvisoriesEndingWith(String ending) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries", "advisories_ending_with");
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES, "advisories_ending_with");
         Map<String, Object> params = new HashMap<>();
         params.put("ending", "%" + ending);
         List<Map<String, Object>> results = mode.execute(params);
@@ -1110,7 +1012,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return Set of existing advisory names
      */
     public static Set<String> listAdvisoryNamesEndingWith(String ending) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries",
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES,
                 "advisory_names_ending_with");
         Map<String, Object> params = new HashMap<>();
         params.put("ending", "%" + ending);
@@ -1128,11 +1030,11 @@ public class ErrataFactory extends HibernateFactory {
      * @return ErrataOverview object
      */
     public static ErrataOverview getOverviewById(Long eid) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries", "overview_by_id");
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES, "overview_by_id");
         Map<String, Object> params = new HashMap<>();
         params.put("eid", eid);
         DataResult<ErrataOverview> results = mode.execute(params);
-        if (results.size() == 0) {
+        if (results.isEmpty()) {
             return null;
         }
         results.elaborate();
@@ -1145,11 +1047,11 @@ public class ErrataFactory extends HibernateFactory {
      * @return ErrataOverview object
      */
     public static ErrataOverview getOverviewByAdvisory(String advisory) {
-        SelectMode mode = ModeFactory.getMode("Errata_queries", "overview_by_advisory");
+        SelectMode mode = ModeFactory.getMode(ERRATA_QUERIES, "overview_by_advisory");
         Map<String, Object> params = new HashMap<>();
         params.put("advisory", advisory);
         DataResult<ErrataOverview> results = mode.execute(params);
-        if (results.size() == 0) {
+        if (results.isEmpty()) {
             return null;
         }
         results.elaborate();
@@ -1166,9 +1068,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param orgId org id to clone into
      * @return ErrataOverview for the cloned erratum
      */
-    public static ErrataOverview cloneErratum(Long originalEid, String advisory,
-            String advisoryName, Long orgId) {
-        WriteMode m = ModeFactory.getWriteMode("Errata_queries", "clone_erratum");
+    public static ErrataOverview cloneErratum(Long originalEid, String advisory, String advisoryName, Long orgId) {
+        WriteMode m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_erratum");
         Map<String, Object> params = new HashMap<>();
         params.put("eid", originalEid);
         params.put("advisory", advisory);
@@ -1178,30 +1079,30 @@ public class ErrataFactory extends HibernateFactory {
         ErrataOverview clone = getOverviewByAdvisory(advisory);
 
         // set original
-        m = ModeFactory.getWriteMode("Errata_queries", "set_original");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "set_original");
         params = new HashMap<>();
         params.put("original_id", originalEid);
         params.put("clone_id", clone.getId());
         m.executeUpdate(params);
 
         // clone bugs
-        m = ModeFactory.getWriteMode("Errata_queries", "clone_bugs");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_bugs");
         m.executeUpdate(params);
 
         // clone keywords
-        m = ModeFactory.getWriteMode("Errata_queries", "clone_keywords");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_keywords");
         m.executeUpdate(params);
 
         // clone packages
-        m = ModeFactory.getWriteMode("Errata_queries", "clone_packages");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_packages");
         m.executeUpdate(params);
 
         // clone cves
-        m = ModeFactory.getWriteMode("Errata_queries", "clone_cves");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_cves");
         m.executeUpdate(params);
 
         // clone files
-        m = ModeFactory.getWriteMode("Errata_queries", "clone_files");
+        m = ModeFactory.getWriteMode(ERRATA_QUERIES, "clone_files");
         m.executeUpdate(params);
 
         return clone;

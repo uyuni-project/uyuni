@@ -133,7 +133,7 @@ public class GathererJsonIO {
          * {@inheritDoc}
          */
         @Override
-        public VirtualHostManager read(JsonReader reader) throws IOException {
+        public VirtualHostManager read(JsonReader reader) {
             throw new UnsupportedOperationException("Reading VirtualHostManager " +
                     "from JSON is not supported.");
         }

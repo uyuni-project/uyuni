@@ -55,7 +55,7 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     And I enter "15-sp4-cobbler" as "kickstartLabel"
     And I select "SLE-15-SP4-TFTP" from "kstreeId"
     And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
@@ -102,6 +102,8 @@ Feature: PXE boot a terminal with Cobbler
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy-2.0-1.1" as the filtered package name
+    And I click on the filter button 
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -125,7 +127,7 @@ Feature: PXE boot a terminal with Cobbler
     Then I should not see a "SLE-15-SP4-TFTP" text
 
   Scenario: Cleanup: delete the PXE boot minion
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"

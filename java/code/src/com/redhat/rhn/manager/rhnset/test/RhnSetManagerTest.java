@@ -41,12 +41,14 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     private static final String TEST_USER_NAME = "automated_test_user_jesusr";
     private static final String TEST_ORG_NAME = "automated_test_org_jesusr";
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
         cleanup = new TestSetCleanup();
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         userId = null;
@@ -65,10 +67,9 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     /**
      * Creates an RhnSet then verifies that it was stored in the db
      * by trying to fetch it again.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testCreateDeleteRhnSet() throws Exception {
+    public void testCreateDeleteRhnSet() {
         String label = "test_rhn_set_label";
 
         RhnSet set = RhnSetManager.createSet(userId, label, cleanup);
@@ -155,10 +156,9 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
 
     /**
      * Testing the store method of RhnSetManager
-     * @throws Exception something bad happened
      */
     @Test
-    public void testStore() throws Exception {
+    public void testStore() {
         String label = "test_rhn_set_label_store";
 
         //Stores Set with null second element
@@ -207,7 +207,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testStoreElement3() throws Exception {
+    public void testStoreElement3() {
         String label = "test_rhn_set_store_element_3";
 
         // Tests storing something in element 3
@@ -231,6 +231,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
             super("test", "test");
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             return callbacks++;
         }

@@ -47,20 +47,21 @@ public class ScheduleDetailAction extends RhnAction {
     static final String SCHEDULE_NAME_REGEX = "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
         DynaActionForm form = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         User loggedInUser = ctx.getCurrentUser();
         Long scheduleId = ctx.getParamAsLong(("schid"));
 
         if (ctx.hasParam("schid")) {
             params.put("schid", scheduleId);
-            Map schedule = new HashMap();
+            Map<String, Object> schedule = new HashMap<>();
             try {
                 schedule = new TaskomaticApi().lookupScheduleById(loggedInUser, scheduleId);
             }
@@ -73,7 +74,7 @@ public class ScheduleDetailAction extends RhnAction {
             request.setAttribute("schedulename", scheduleName);
             form.set("schedulename", scheduleName);
             request.setAttribute("bunch", bunchName);
-            Boolean active = isActive(schedule);
+            boolean active = isActive(schedule);
             request.setAttribute("active", active);
             if (!active) {
                 request.setAttribute("activetill", schedule.get("active_till"));
@@ -128,7 +129,7 @@ public class ScheduleDetailAction extends RhnAction {
                     picker.getCronEntry()
                     );
             // check, whether it was created
-            Map schedule = tapi.lookupScheduleByBunchAndLabel(loggedInUser, bunchName,
+            Map<String, Object> schedule = tapi.lookupScheduleByBunchAndLabel(loggedInUser, bunchName,
                     scheduleName);
             if (schedule != null) {
                 if (ctx.hasParam("create_button")) {
@@ -166,7 +167,7 @@ public class ScheduleDetailAction extends RhnAction {
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }
 
-    private Boolean isActive(Map schedule) {
+    private Boolean isActive(Map<String, Object> schedule) {
         Date till = (Date) schedule.get("active_till");
         if (till == null) {
             return Boolean.TRUE;
@@ -183,13 +184,13 @@ public class ScheduleDetailAction extends RhnAction {
         if (schid != null) {
             try {
                 TaskomaticApi tapi = new TaskomaticApi();
-                Map schedule = tapi.lookupScheduleById(loggedInUser, schid);
+                Map<String, Object> schedule = tapi.lookupScheduleById(loggedInUser, schid);
                 String scheduleName = (String) schedule.get("job_label");
                 String bunchName = (String) schedule.get("bunch");
                 request.setAttribute("schedulename", scheduleName);
                 form.set("schedulename", scheduleName);
                 request.setAttribute("bunch", bunchName);
-                Map bunch = tapi.lookupBunchByName(loggedInUser, bunchName);
+                Map<String, Object> bunch = tapi.lookupBunchByName(loggedInUser, bunchName);
                 request.setAttribute("bunchdescription", bunch.get("description"));
                 RecurringEventPicker.prepopulatePicker(request, "date",
                         (String) schedule.get(("cron_expr")));
@@ -207,14 +208,14 @@ public class ScheduleDetailAction extends RhnAction {
     private void prepDropdowns(RequestContext ctx) {
         User loggedInUser = ctx.getCurrentUser();
         // populate parent base channels
-        List dropDown = new ArrayList();
+        List<Map<String, String>> dropDown = new ArrayList<>();
         try {
-            List<Map> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
+            List<Map<String, Object>> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
             // Since recurring states have their own place in the webUI we don't
             // want them to show up in the Task Schedules UI
             bunches.removeIf(bunch -> bunch.get("name").equals("recurring-state-apply-bunch"));
 
-            for (Map b : bunches) {
+            for (Map<String, Object> b : bunches) {
                 addOption(dropDown, (String)b.get("name"), (String)b.get("name"));
             }
         }
@@ -224,8 +225,8 @@ public class ScheduleDetailAction extends RhnAction {
         ctx.getRequest().setAttribute("bunches", dropDown);
     }
 
-    private void addOption(List options, String key, String value) {
-        Map selection = new HashMap();
+    private void addOption(List<Map<String, String>> options, String key, String value) {
+        Map<String, String> selection = new HashMap<>();
         selection.put("label", key);
         selection.put("value", value);
         options.add(selection);

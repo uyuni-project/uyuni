@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
  * Manages the pending errata queue
  *
  */
-public class ErrataQueue extends RhnQueueJob {
+public class ErrataQueue extends RhnQueueJob<ErrataQueueDriver> {
 
     public static final String DISPLAY_NAME = "errata_queue";
     private static Logger log = null;
@@ -47,7 +47,7 @@ public class ErrataQueue extends RhnQueueJob {
     }
 
     @Override
-    protected Class getDriverClass() {
+    protected Class<ErrataQueueDriver> getDriverClass() {
         return ErrataQueueDriver.class;
     }
 }

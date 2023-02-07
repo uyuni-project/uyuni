@@ -450,7 +450,7 @@
         </context-group>
         <target>감사</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve">
+      <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1177,7 +1177,7 @@
         </context-group>
         <target>Hr.</target>
       </trans-unit>
-      <trans-unit id="user prefix Miss" xml:space="preserve">
+      <trans-unit approved="yes" id="user prefix Miss" xml:space="preserve">
         <source>Miss</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -1191,7 +1191,7 @@
         </context-group>
         <target>Mr.</target>
       </trans-unit>
-      <trans-unit id="user prefix Mrs." xml:space="preserve">
+      <trans-unit approved="yes" id="user prefix Mrs." xml:space="preserve">
         <source>Mrs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -2843,11 +2843,11 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <target>통지 필터 생성</target>
       </trans-unit>
       <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>킥스타트/Autoyast 파일 업로드</target>
+        <target state="final">킥스타트/AutoYaST 파일 업로드</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -7017,7 +7017,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="config_channel.server_import" xml:space="preserve">
+      <trans-unit approved="yes" id="config_channel.server_import" xml:space="preserve">
         <source>Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
@@ -7262,13 +7262,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
         <target>이메일 주소</target>
-      </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>호스트명</target>
       </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
@@ -7913,7 +7906,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
         <target>Advanced Lights Out Manager</target>
         <context-group name="ctx">
@@ -7934,14 +7927,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.baytech" xml:space="preserve">
         <source>BayTech</source>
         <target>BayTech</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.bladecenter" xml:space="preserve">
         <source>BladeCenter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -7962,14 +7955,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
         <source>Cisco MDS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Cisco MDS</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
         <source>Cisco UCS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -7983,91 +7976,91 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac" xml:space="preserve">
         <source>Dell DRAC</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Dell DRAC</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac5" xml:space="preserve">
         <source>Dell DRAC 5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Dell DRAC 5</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Eaton SNMP</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.egenera" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.egenera" xml:space="preserve">
         <source>Egenera</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Egenera</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eps" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eps" xml:space="preserve">
         <source>ePowerSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>ePowerSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hds_cb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hds_cb" xml:space="preserve">
         <source>Hitachi HDS Compute Blade</source>
         <target>Hitachi HDS Compute Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hpblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hpblade" xml:space="preserve">
         <source>HP Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>HP Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ibmblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ibmblade" xml:space="preserve">
         <source>IBM Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>IBM Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ifmib" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ifmib" xml:space="preserve">
         <source>Cisco IF-MIB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Cisco IF-MIB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ilo" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ilo" xml:space="preserve">
         <source>HP Integrated Lights-Out</source>
         <target>HP Integrated Lights-Out</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
         <source>HP Integrated Lights-Out Management Processor</source>
         <target>HP Integrated Lights-Out Management Processor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.intelmodular" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.intelmodular" xml:space="preserve">
         <source>Intel Modular Server</source>
         <target>Intel Modular Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipdu" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipdu" xml:space="preserve">
         <source>HP Intelligent Power Distribution Unit</source>
         <target>HP Intelligent Power Distribution Unit</target>
         <context-group name="ctx">
@@ -8081,7 +8074,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IPMI</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ldom" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ldom" xml:space="preserve">
         <source>SPARC Logical Domains</source>
         <target>SPARC Logical Domains</target>
         <context-group name="ctx">
@@ -8095,14 +8088,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IBM LPAR</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.mcdata" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.mcdata" xml:space="preserve">
         <source>McData</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>McData</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.netio" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.netio" xml:space="preserve">
         <source>Koukaam NETIO</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8116,35 +8109,35 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>OVH</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rackswitch" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rackswitch" xml:space="preserve">
         <source>IBM RackSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>IBM RackSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rhevm" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rhevm" xml:space="preserve">
         <source>Red Hat Enterprise Virtualization Manager</source>
         <target>Red Hat Enterprise Virtualization Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsa" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsa" xml:space="preserve">
         <source>IBM Remote Supervisor Adapter</source>
         <target>IBM Remote Supervisor Adapter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsb" xml:space="preserve">
         <source>Fujitsu-Siemens RSB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Fujitsu-Siemens RSB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.sanbox2" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.sanbox2" xml:space="preserve">
         <source>QLogic SANbox2</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8158,14 +8151,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>SCSI-3</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.virsh" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.virsh" xml:space="preserve">
         <source>libvirt</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>libvirt</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.vixel" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.vixel" xml:space="preserve">
         <source>Vixel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8186,14 +8179,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.wti" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.wti" xml:space="preserve">
         <source>WTI PowerSwitch</source>
         <target>WTI PowerSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.xcat" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.xcat" xml:space="preserve">
         <source>Extreme Cloud Administration Toolkit</source>
         <target>Extreme Cloud Administration Toolkit</target>
         <context-group name="ctx">
@@ -8213,48 +8206,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>z/VM</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난날</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난주</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난 30일 사이</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>지난 180일 사이</target>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target>1년 이내</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>모든 시스템</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -9096,7 +9047,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cpuMHz" xml:space="preserve">
+      <trans-unit approved="yes" id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
         <target>CPU MHz</target>
         <context-group name="ctx">
@@ -9152,7 +9103,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="xid" xml:space="preserve">
+      <trans-unit approved="yes" id="xid" xml:space="preserve">
         <source>Xid</source>
         <target>Xid</target>
       </trans-unit>
@@ -9354,11 +9305,11 @@ Follow this url to see the full list of inactive systems:
         <source>s390x</source>
         <target>s390x</target>
       </trans-unit>
-      <trans-unit id="iSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="iSeries" xml:space="preserve">
         <source>iSeries</source>
         <target>iSeries</target>
       </trans-unit>
-      <trans-unit id="pSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="pSeries" xml:space="preserve">
         <source>pSeries</source>
         <target>pSeries</target>
       </trans-unit>
@@ -9378,11 +9329,11 @@ Follow this url to see the full list of inactive systems:
         <source>PowerPC Debian</source>
         <target>PowerPC Debian</target>
       </trans-unit>
-      <trans-unit id="ARM soft. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
         <target>ARM soft. FP</target>
       </trans-unit>
-      <trans-unit id="ARM hard. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
         <target>ARM hard. FP</target>
       </trans-unit>
@@ -9390,7 +9341,7 @@ Follow this url to see the full list of inactive systems:
         <source>arm Debian</source>
         <target>arm Debian</target>
       </trans-unit>
-      <trans-unit id="mips Debian" xml:space="preserve">
+      <trans-unit approved="yes" id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
         <target>mips Debian</target>
       </trans-unit>
@@ -9576,7 +9527,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>채널 이름 '{0}'은(는) 이미 사용 중입니다. 다른 이름을 입력하십시오.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
         <target>채널 이름 '{0}'은(는) 예약된 이름입니다. 다른 이름을 입력하십시오.</target>
         <context-group name="ctx">
@@ -10337,10 +10288,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>CVE Audit</source>
         <target>CVE 감사</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
-        <source>IPMI</source>
-        <target>IPMI</target>
-      </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
         <target>다음</target>
@@ -10431,14 +10378,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target>시스템에 가상화 시스템 유형을 추가한 후에, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
         <context-group name="ctx">
@@ -10829,12 +10776,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
         <target state="translated">지정된 일부 서버를 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Redfish</target>
+        <target state="final">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
@@ -11042,227 +10989,297 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">채널 모듈을 가져올 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
         <target state="final">선택적 OVAL 파일(쉼표로 구분)</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
         <target state="final">자격 증명 업데이트됨</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
         <target state="final">처리하기 위해 대기하는 중입니다.</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
         <target state="final">인스턴스 데이터를 가져오는 중 오류: {0}</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
         <target state="final">인증 데이터를 추출하는 동안 알 수 없는 오류가 발생했습니다. /var/log/rhn/에서 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
         <target state="final">설명은 필수입니다.</target>
       </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
         <target state="final">설명은 255자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
         <target state="final">호스트는 필수입니다.</target>
       </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
         <target state="final">호스트는 255자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
         <target state="final">포트의 값이 잘못됨</target>
       </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">사용자 이름은 필수입니다.</target>
       </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">사용자 이름은 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">비밀번호는 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">SSH 개인 키 암호 구문은 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
         <target state="final">베스천은 255자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
         <target state="final">다른 베스천 속성이 설정된 경우 베스천 호스트는 필수입니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
         <target state="final">베스천 포트의 값이 잘못됨</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">사용자 이름은 필수입니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">사용자 이름은 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">비밀번호는 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">베스천 SSH 개인 키 암호 구문은 32자 이하여야 합니다.</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
         <target state="final">용량제 {0} 생성됨</target>
       </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
         <target state="final">용량제 호스트 이미 있음</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
         <target state="final">용량제 {0} 삭제됨</target>
       </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="final">다음에서 인증 데이터 업데이트 중 오류: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
         <target state="final">용량제 인증 업데이트</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
         <target state="final">용량제 업데이트 RMT 호스트</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
         <target state="final">제품 데이터를 새로 고쳐야 합니다.</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
         <target state="final">제품을 찾을 수 없음: {0} 식별자 누락.</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
         <target state="final">충돌하는 채널 레이블 {0}이(가) 있습니다.</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
         <target state="final">상위 제품이 기존 채널과 충돌합니다.</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
         <target state="final">제품을 추가하는 동안 예기치 않은 오류가 발생했습니다.</target>
       </trans-unit>
-      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">지정된 CVE 번호를 데이터베이스에서 찾을 수 없습니다. 이 CVE에 대한 자세한 내용은 아래에서 제공되는 링크에서 확인할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
         <target state="final">부트스트랩 상태를 적용하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="container.based.proxy.config" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
         <target state="final">프록시 구성</target>
       </trans-unit>
-      <trans-unit id="Peripheral Server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">주변기기 서버</target>
       </trans-unit>
-      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">보고서 데이터베이스 스키마</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
         <target state="final">부트스트랩 중 예기치 못한 오류가 발생했습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
         <target state="final">부트스트랩 중 상태 적용에 실패했습니다(retcode={0}).</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
         <target state="final">Salt 실행 중 오류가 발생했습니다: {0}.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
         <target state="final">{0} 기능을 사용할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
         <target state="final">{0} 모듈이 지원되지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
         <target state="final">json을 파싱할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
         <target state="final">SSH 연결을 수립할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
         <target state="final">Salt-SSH 공개 키를 생성하지 못했습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
         <target state="final">Salt-SSH 공개 키 생성에 실패했습니다: {0}.</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0}의 수명이 다했습니다.</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명 주기가 다했습니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되었습니다. 계속해서 지원받으려면 &lt;strong&gt;반드시&lt;/strong&gt; @@PRODUCT_NAME@@ 서버 인스턴스를 업그레이드해야 합니다.&lt;/p&gt;
           &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다.</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되기 전, 서버 인스턴스 업그레이드를 고려해 보십시오.&lt;/p&gt;
           &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
         <target state="final">유효한 이메일을 입력하십시오.</target>
       </trans-unit>
-      <trans-unit id="help.credentials.emptylogin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
         <target state="final">로그인을 입력하십시오.</target>
       </trans-unit>
-    </body>
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+        <source>IPMI lanplus</source>
+        <target state="final">IPMI lanplus</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+        <target state="final">PICKED UP 상태에서는 작업을 취소할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+        <target state="final">대기 중인 전제 조건이 있는 작업을 취소할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="final">주의가 필요한 구독이 있습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="final">선택한 기본 채널이 없습니다.</target>
+      </trans-unit>
+    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

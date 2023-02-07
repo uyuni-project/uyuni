@@ -44,7 +44,6 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    When I force picking pending events on "ssh_minion" if necessary
     Then I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Remove a package from this SSH tunnel minion
@@ -57,7 +56,6 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I force picking pending events on "ssh_minion" if necessary
     Then I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Run a remote command on this SSH tunnel minion
@@ -82,7 +80,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap minion client "ssh_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd

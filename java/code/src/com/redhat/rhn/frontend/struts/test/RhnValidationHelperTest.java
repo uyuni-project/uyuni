@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,21 +36,20 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
 
     /**
      * Test StringsToActionErrors
-     * @throws Exception something bad happened
      */
     @Test
-     public void testValidatorErrorToActionMessages() throws Exception {
+     public void testValidatorErrorToActionMessages() {
         ValidatorError[] errors = new ValidatorError[3];
         errors[0] = new ValidatorError("error 1", "someval");
         errors[1] = new ValidatorError("error 2", "someval1");
         errors[2] = new ValidatorError("error 3", "someval2");
         ActionErrors am = RhnValidationHelper.validatorErrorToActionErrors(errors);
         assertNotNull(am);
-        assertTrue(am.size() == 3);
+        assertEquals(3, am.size());
      }
 
     @Test
-     public void testValidateDynaActionFormPathed() throws Exception {
+     public void testValidateDynaActionFormPathed() {
          ChannelOverviewAction coa = new ChannelOverviewAction();
          RhnMockDynaActionForm form = new RhnMockDynaActionForm();
          form.setFormName("channelOverviewForm");
@@ -67,7 +67,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
      }
 
     @Test
-     public void testFailedValidation() throws Exception {
+     public void testFailedValidation() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnValidationHelper.setFailedValidation(request);
         assertTrue(RhnValidationHelper.getFailedValidation(request));

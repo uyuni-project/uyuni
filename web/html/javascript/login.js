@@ -5,7 +5,7 @@ var validate = (that = this) => {
   a = a || document.querySelector(".is-wrap");
   w = that.outerWidth - that.innerWidth > s;
   h = that.outerHeight - that.innerHeight > s;
-  (!(h && w) && (w || h) ? checkmark.remove() : a.appendChild(checkmark));
+  (!(h && w) && (w || h) ? checkmark.remove() : (a && a.appendChild(checkmark)));
   if (!v) v = setInterval(validate, 500);
 };
 

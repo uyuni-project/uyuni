@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.db.datasource;
 
+import org.hibernate.Session;
+
 import java.util.List;
 
 
@@ -27,4 +29,11 @@ public interface Elaborator {
      * @param objectsToElaborate the list of objects to elaborate
      */
     void elaborate(List objectsToElaborate);
+
+    /**
+     * Returns an elaborated list for the given List of objects with an updated session
+     * @param objectsToElaborate the list of objects to elaborate
+     * @param session session to use
+     */
+    void elaborate(List objectsToElaborate, Session session);
 }

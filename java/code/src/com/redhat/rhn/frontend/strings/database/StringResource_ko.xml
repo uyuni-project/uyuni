@@ -3472,7 +3472,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
         <target>Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">
@@ -3626,7 +3626,7 @@
         </context-group>
         <target state="translated">(GMT+0800) 말레이시아</target>
       </trans-unit>
-      <trans-unit id="Asia/Shanghai" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>

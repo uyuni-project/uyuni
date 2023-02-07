@@ -41,6 +41,7 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
      *                  request values
      * @return Text of email.
      */
+    @Override
     public String toText() {
         LocalizationService ls = LocalizationService.getInstance();
         //gather information for the email to newUser

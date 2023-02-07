@@ -39,8 +39,8 @@ rhnServerOverview
     release,
     server_arch_name,
     locked,
-    proxy_id,
-    mgr_server_id
+    is_proxy,
+    is_mgr_server
 )
 as
 select
@@ -108,8 +108,8 @@ select
     release,
     ( select name from rhnServerArch where id = s.server_arch_id),
     coalesce((select 1 from rhnServerLock SL WHERE SL.server_id = S.id), 0),
-    ( select pxy.server_Id from rhnProxyInfo pxy where pxy.server_id = S.id),
-    ( select mgrs.server_Id from suseMgrServerInfo mgrs where mgrs.server_id = S.id)
+    coalesce((select TRUE from rhnProxyInfo pxy where pxy.server_id = S.id), FALSE),
+    coalesce((select TRUE from suseMgrServerInfo mgrs where mgrs.server_id = S.id), FALSE)
 from
     rhnServer S
 ;

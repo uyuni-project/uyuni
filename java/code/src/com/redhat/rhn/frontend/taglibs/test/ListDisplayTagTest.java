@@ -33,6 +33,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,6 @@ import javax.servlet.jsp.tagext.Tag;
 public class ListDisplayTagTest extends MockObjectTestCase {
 
     private ListDisplayTag ldt;
-    private ListTag lt;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -55,7 +55,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
         request = mock(HttpServletRequest.class);
@@ -64,11 +64,11 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         writer = new RhnMockJspWriter();
 
         ldt = new ListDisplayTag();
-        lt = new ListTag();
+        ListTag lt = new ListTag();
         ldt.setPageContext(pageContext);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).getOut();
@@ -121,12 +121,12 @@ public class ListDisplayTagTest extends MockObjectTestCase {
      * {@inheritDoc}
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 
     @Test
-    public void testTag() throws Exception {
+    public void testTag() throws JspException {
         ldt.setExportColumns("column1,column2,column3");
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).popBody();
@@ -161,7 +161,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testExport() throws Exception {
+    public void testExport() throws JspException, IOException {
         RhnMockServletOutputStream out = new RhnMockServletOutputStream();
         ldt.setExportColumns("column1,column2,column3");
 

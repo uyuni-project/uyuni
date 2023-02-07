@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-12 07:12+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
+"PO-Revision-Date: 2023-01-22 07:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -64,7 +64,7 @@ msgstr "Невалиден URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -102,7 +102,7 @@ msgstr "Се очекуваше пакет, а не: %s"
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "SUSE Manager Proxy сервис не е уклучен за сервер профилот: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -132,62 +132,64 @@ msgstr "Недостасуваат потребни корисници"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Пробај да се регистрира систем кон инвалидно корисничко име"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "Невалидна системска верзија беше побарана"
 
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
+"најдени."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} Влезна Порака"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
-msgstr ""
+msgstr "Изјава за Приватност"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Се очекуваше речник како аргумент на продуктот"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Невалидна вредност '%s' за %s (%s)"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr ""
+msgstr "Невалиден пар на system_id/action_id."
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Невалидна вредност %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "Не сте овластени да ги менаџирате пакетите во нул организација"
 
 #: ../server/importlib/userAuth.py:103
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgstr "Не сте овластени да ги менаџирате пакетите во %s организација"
 
 #: ../server/importlib/userAuth.py:121
 msgid "You are not allowed to perform administrative tasks"
-msgstr ""
+msgstr "Не сте овластени да извршувате административни задачи"
 
 #: ../server/importlib/userAuth.py:144
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
+msgstr "Не сте овластени да менаџирате каналот %s, или тој канале не постои"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -196,6 +198,9 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               %s корисникот е деактивиран на овој сервер.\n"
+"               Молиме контактирајте го Орг администраторот за помош."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -203,6 +208,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"Вашиот акаунт нема пристап до ниеден канал со параметрите "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -215,7 +222,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Системот е регистраран али неактивен"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -226,6 +233,12 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Невалидна Архитектура и ОС комбинација (%s, %s).\n"
+"Вашиот систем е регистриран, али нема да добива ажурирања\n"
+"затоа што неможење да се because it could not be претплати на основен "
+"канал.\n"
+"Молиме контактирајте го орг администраторот за помош.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -391,7 +404,7 @@ msgstr ""
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
-msgstr ""
+msgstr "Не е дозволено."
 
 #: ../common/rhnException.py:57
 msgid "Object not found."
@@ -493,7 +506,7 @@ msgstr ""
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr ""
+msgstr "Канална грешка"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
@@ -509,7 +522,7 @@ msgstr ""
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
-msgstr ""
+msgstr "Невалидна акција"
 
 #: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
@@ -675,7 +688,7 @@ msgstr ""
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
-msgstr ""
+msgstr "Невалидно име на корисник"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
@@ -803,7 +816,7 @@ msgstr ""
 
 #: ../common/rhnException.py:223
 msgid "Mismatching versions"
-msgstr ""
+msgstr "Верзиите не се согласуваат"
 
 #: ../common/rhnException.py:224
 msgid "Invalid channel version"
@@ -836,7 +849,7 @@ msgstr ""
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
-msgstr ""
+msgstr "Грешка во дозволата"
 
 #: ../common/rhnException.py:234
 msgid "Content missing for configuration file"
@@ -929,7 +942,7 @@ msgstr ""
 #: ../common/rhnException.py:356
 #, python-format
 msgid "Explanation: %s"
-msgstr ""
+msgstr "Објаснување: %s"
 
 #: ../common/rhnTB.py:201
 #, python-format
@@ -1044,12 +1057,12 @@ msgstr ""
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       успех: %d"
 
 #: ../satellite_tools/messages.py:73
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       неуспех:  %d"
 
 #: ../satellite_tools/messages.py:74
 #, python-format
@@ -1154,7 +1167,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Повторени неуспеси"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format
@@ -1168,15 +1181,15 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:311
 msgid "hours"
-msgstr ""
+msgstr "саати"
 
 #: ../satellite_tools/satsync.py:311
 msgid "minutes"
-msgstr ""
+msgstr "минути"
 
 #: ../satellite_tools/satsync.py:311
 msgid "seconds"
-msgstr ""
+msgstr "секунди"
 
 #: ../satellite_tools/satsync.py:357
 msgid ""
@@ -1192,7 +1205,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:404
 msgid "Skipping..."
-msgstr ""
+msgstr "Се прескокнува..."
 
 #: ../satellite_tools/satsync.py:442
 #, python-format
@@ -1220,7 +1233,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:541
 #, python-format
 msgid "   url: %s"
-msgstr ""
+msgstr "   урл: %s"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1256,7 +1269,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:602
 msgid "ERROR: exception (during parse) occurred: "
-msgstr ""
+msgstr "ГРЕШКА: исклучок (при анализа) се случи: "
 
 #: ../satellite_tools/satsync.py:603
 #, python-format
@@ -1272,11 +1285,11 @@ msgstr ""
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- %s ГРЕШКА ПРИ ПАРСИРАЊЕ/ИМПОРТИРАЊЕ -------"
 
 #: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
-msgstr ""
+msgstr "   ---------------------------------------"
 
 #: ../satellite_tools/satsync.py:611
 #, python-format
@@ -1285,60 +1298,60 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Превземање / парсирање податоци на канал"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr ""
+msgstr "Податоци на канал завршено"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s импортирано од %s"
 
 #: ../satellite_tools/satsync.py:738
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s импортирано од %s - %s"
 
 #: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:749
 msgid "p"
-msgstr ""
+msgstr "p"
 
 #: ../satellite_tools/satsync.py:751
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = претходно импортиран/синхронизиран канал"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = каналот сè уште не е импортиран/синхронизиран"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = каналот повеќе не е поддржан (крај-на-услуга)"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr ""
+msgstr "   ? = етикетата на каналот е невалидна --- печатна грешка?"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
 msgid "base-channels"
@@ -1362,7 +1375,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:815
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../satellite_tools/satsync.py:830
 #, python-format
@@ -1484,7 +1497,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"
-msgstr ""
+msgstr "Симнува:"
 
 #: ../satellite_tools/satsync.py:1595
 msgid " - complete"
@@ -1500,7 +1513,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1651
 msgid "Importing:  "
-msgstr ""
+msgstr "Импортира:  "
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1719

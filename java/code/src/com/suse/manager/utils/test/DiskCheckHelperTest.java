@@ -74,7 +74,7 @@ public class DiskCheckHelperTest {
         }
 
         @Override
-        protected int invokeExternalScript() throws IOException, InterruptedException {
+        protected int invokeExternalScript() {
             return scriptResult;
         }
     }

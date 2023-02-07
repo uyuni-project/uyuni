@@ -118,7 +118,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -130,12 +130,11 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         });
     }
 
-    public static Map createServerNeededCache(User userIn,
-            String errataType) throws Exception {
-        Map retval = new HashMap();
+    public static Map<String, Object> createServerNeededCache(User userIn, String errataType) throws Exception {
+        Map<String, Object> retval = new HashMap<>();
         Errata e = ErrataFactoryTest.createTestErrata(userIn.getOrg().getId());
         e.setAdvisoryType(errataType);
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         retval.put("errata", e);
         Server s = ServerFactoryTest.createTestServer(userIn);
         ServerFactory.save(s);
@@ -144,11 +143,11 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         Package p = PackageTest.createTestPackage(userIn.getOrg());
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr(
                 p.getPackageEvr().getEpoch(), p.getPackageEvr().getVersion(), "2", s.getPackageType());
-        evr = (PackageEvr) TestUtils.saveAndReload(evr);
+        evr = TestUtils.saveAndReload(evr);
         Package newPackage = PackageTest.createTestPackage(userIn.getOrg());
         newPackage.setPackageName(p.getPackageName());
         newPackage.setPackageEvr(evr);
-        newPackage = (Package) TestUtils.saveAndReload(newPackage);
+        newPackage = TestUtils.saveAndReload(newPackage);
 
         InstalledPackage ip = new InstalledPackage();
         ip.setServer(s);
@@ -191,7 +190,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -205,7 +204,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             rows = ErrataCacheManager.deleteNeededCache(sid, eid, pid);
             assertEquals(1, rows);
 
-            rs = stmt.executeQuery("SELECT * FROM rhnServerNeededCache WHERE server_id = " + sid.toString());
+            rs = stmt.executeQuery("SELECT * FROM rhnServerNeededCache WHERE server_id = " + sid);
             assertFalse(rs.next());
         });
     }
@@ -251,7 +250,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -283,7 +282,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -298,7 +297,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
 
             rs = statement.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertFalse(rs.next());
         });

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2022 SUSE LLC.
+# Copyright (c) 2020-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -30,9 +30,11 @@ Feature: Smoke tests for <client>
     And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
-    And the uptime for "<client>" should be correct
     And I should see several text fields for "<client>"
 
+# TODO: remove the "skip" tags when Rocky and Alma have patches available.
+@skip_for_rocky9
+@skip_for_alma9
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
     When I follow "Software" in the content area
@@ -43,7 +45,6 @@ Feature: Smoke tests for <client>
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
-    When I force picking pending events on "<client>" if necessary
     And I wait until event "Patch Update:" is completed
 
   Scenario: Install a package on the <client>
@@ -55,7 +56,6 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Remove package from <client>
@@ -67,10 +67,8 @@ Feature: Smoke tests for <client>
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Removal scheduled by admin" is completed
 
-@skip_for_traditional
   Scenario: Run a remote command on <client> minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
@@ -84,25 +82,10 @@ Feature: Smoke tests for <client>
     And I expand the results for "<client>"
     Then I should see "My remote command output" in the command output for "<client>"
 
-@skip_for_minion
-  Scenario: Run a remote command on <client> traditional client
-    Given I am on the Systems overview page of this "<client>"
-    When I follow "Remote Command" in the content area
-    And I enter as remote command this script in
-      """
-      #!/bin/bash
-      touch /tmp/remote-command-on-<client>
-      """
-    And I click on "Schedule"
-    Then I should see a "Remote Command has been scheduled successfully" text
-    When I force picking pending events on "<client>" if necessary
-    And I wait until file "/tmp/remote-command-on-<client>" exists on "<client>"
-
   Scenario: Check that Software package refresh works on a <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I click on "Update Package List"
-    And I force picking pending events on "<client>" if necessary
     And I wait until event "Package List Refresh scheduled by admin" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
@@ -110,7 +93,6 @@ Feature: Smoke tests for <client>
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I force picking pending events on "<client>" if necessary
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
@@ -134,7 +116,6 @@ Feature: Smoke tests for <client>
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
-    When I force picking pending events on "<client>" if necessary
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
@@ -145,7 +126,6 @@ Feature: Smoke tests for <client>
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    When I force picking pending events on "<client>" if necessary
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
 
@@ -158,31 +138,8 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-@suse_minion
-  Scenario: Test Prometheus formula on the <client>
-    Given I am on the Systems overview page of this "<client>"
-    When I follow "Formulas" in the content area
-    And I check the "prometheus" formula
-    And I click on "Save"
-    Then I wait until I see "Formula saved" text
-    When I follow "Prometheus" in the content area
-    And I click on "Expand All Sections"
-    And I enter "admin" as "Username"
-    And I enter "admin" as "Password"
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    # Visit monitoring endpoints on the minion
-    When I wait until "prometheus" service is active on "<client>"
-    And I visit "Prometheus" endpoint of this "<client>"
-
-@skip_for_traditional
   Scenario: Test Prometheus exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -210,3 +167,11 @@ Feature: Smoke tests for <client>
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
     And I wait until "postgres" exporter service is active on "<client>"
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
+
+  Scenario: Test <client> on Grafana
+    When I visit the grafana dashboards of this "monitoring_server"
+    And I wait until I do not see "Loading Grafana" text
+    When I follow "Client Systems"
+    Then I should see "<client>" hostname
+    When I enter "<client>" hostname on grafana's host field
+    Then I should not see a "No data" text

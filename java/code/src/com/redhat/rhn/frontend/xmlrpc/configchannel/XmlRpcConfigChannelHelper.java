@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -120,30 +120,23 @@ public class XmlRpcConfigChannelHelper {
         ConfigFileData form;
 
         if (ConfigFileType.file().equals(type)) {
-            try {
-                if (BooleanUtils.isTrue((Boolean) data.get(
-                                ConfigRevisionSerializer.BINARY))) {
-                    byte[] content = Base64.decodeBase64(
-                            ((String)data.get(ConfigRevisionSerializer.CONTENTS))
-                            .getBytes("UTF-8"));
+            if (BooleanUtils.isTrue((Boolean) data.get(
+                            ConfigRevisionSerializer.BINARY))) {
+                byte[] content = Base64.decodeBase64(
+                        ((String)data.get(ConfigRevisionSerializer.CONTENTS))
+                        .getBytes(StandardCharsets.UTF_8));
 
-                    if (content != null) {
-                        form = new BinaryFileData(new ByteArrayInputStream(content),
-                                                                        content.length);
-                    }
-                    else {
-                        form = new BinaryFileData(new ByteArrayInputStream(new byte[0]), 0);
-                    }
+                if (content != null) {
+                    form = new BinaryFileData(new ByteArrayInputStream(content),
+                                                                    content.length);
                 }
-                else {  // TEXT FILE
-                    String content = getContents(data);
-                    form = new TextFileData(content);
+                else {
+                    form = new BinaryFileData(new ByteArrayInputStream(new byte[0]), 0);
                 }
             }
-            catch (UnsupportedEncodingException e) {
-                String msg = "Following errors were encountered " +
-                    "when creating the config file.\n" + e.getMessage();
-                throw new ConfigFileErrorException(msg);
+            else {  // TEXT FILE
+                String content = getContents(data);
+                form = new TextFileData(content);
             }
             String startDelim = (String)data.get(ConfigRevisionSerializer.MACRO_START);
             String stopDelim = (String)data.get(ConfigRevisionSerializer.MACRO_END);
@@ -192,13 +185,13 @@ public class XmlRpcConfigChannelHelper {
         }
     }
 
-    protected String getContents(Map<String, Object> data) throws UnsupportedEncodingException {
+    protected String getContents(Map<String, Object> data) {
         String content;
         if (BooleanUtils.isTrue((Boolean) data.get(
                 ConfigRevisionSerializer.CONTENTS_ENC64))) {
             content = new String(Base64.decodeBase64(
                     ((String)data.get(ConfigRevisionSerializer.CONTENTS))
-                    .getBytes("UTF-8")), "UTF-8");
+                    .getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
         }
         else {
             content = (String)data.get(ConfigRevisionSerializer.CONTENTS);

@@ -69,8 +69,8 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.4.0
-Release:        0
+Version:        4.4.1
+Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Summary:        Spacewalk Configuration Client Libraries

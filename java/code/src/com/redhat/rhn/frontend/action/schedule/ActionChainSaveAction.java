@@ -59,14 +59,12 @@ public class ActionChainSaveAction {
      * @param deletedEntries list of deleted entries id
      * @param deletedSortOrders list of sort order values to delete
      * @param reorderedSortOrders non-deleted sort order numbers in new order
-     * @param request HTTP request object, filled automatically by DWR
+     * @param request HTTP request object
      * @return a JSON object with a success field and a text field
-     * @throws Exception if something goes wrong
      */
     public String save(Long actionChainId, String label, List<Long> deletedEntries,
             List<Integer> deletedSortOrders, List<Integer> reorderedSortOrders,
-            HttpServletRequest request)
-            throws Exception {
+            HttpServletRequest request) {
         try {
             User u = new RequestContext(request).getCurrentUser();
             ActionChain actionChain = ActionChainFactory.getActionChain(u, actionChainId);

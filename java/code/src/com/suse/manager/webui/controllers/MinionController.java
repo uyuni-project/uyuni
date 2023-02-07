@@ -73,6 +73,7 @@ public class MinionController {
         initSystemRoutes(jade);
         initStatesRoutes(jade);
         initSSMRoutes(jade);
+        initPTFRoutes(jade);
     }
 
     private static void initSystemRoutes(JadeTemplateEngine jade) {
@@ -132,6 +133,15 @@ public class MinionController {
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmHighstate))), jade);
         get("/manager/systems/ssm/proxy",
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmProxy))), jade);
+    }
+
+    private static void initPTFRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/ptf/overview",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfOverview))), jade);
+        get("/manager/systems/details/ptf/list",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfListRemove))), jade);
+        get("/manager/systems/details/ptf/install",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfInstall))), jade);
     }
 
     /**
@@ -522,6 +532,48 @@ public class MinionController {
         }
 
         return new ModelAndView(data, "templates/ssm/proxy.jade");
+    }
+
+    /**
+     * Handler for the overview PTFs page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ptfOverview(Request request, Response response, User user, Server server) {
+        return new ModelAndView(new HashMap<>(), "templates/minion/ptf-overview.jade");
+    }
+    /**
+     * Handler for the page to list and remove currently installed PTFs.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ptfListRemove(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        addActionChains(user, data);
+        return new ModelAndView(data, "templates/minion/ptf-list-remove.jade");
+    }
+
+    /**
+     * Handler for the page to install PTFs.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ptfInstall(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        addActionChains(user, data);
+        return new ModelAndView(data, "templates/minion/ptf-install.jade");
     }
 
 }

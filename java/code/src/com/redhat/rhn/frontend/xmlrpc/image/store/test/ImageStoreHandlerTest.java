@@ -41,7 +41,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     private ImageStoreHandler handler = new ImageStoreHandler();
 
     @Test
-    public void testListImageStoreTypes() throws Exception {
+    public void testListImageStoreTypes() {
         List<ImageStoreType> types = handler.listImageStoreTypes(admin);
         assertFalse(types.isEmpty(), "No image store types found");
         assertTrue(types.stream().anyMatch(t -> t.equals(ImageStoreFactory.TYPE_REGISTRY)));
@@ -49,7 +49,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateImageStore() throws Exception {
+    public void testCreateImageStore() {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
         assertEquals(1, ret);
@@ -63,7 +63,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetImageStore() throws Exception {
+    public void testGetImageStore() {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
         assertEquals(1, ret);
@@ -85,7 +85,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteImageStore() throws Exception {
+    public void testDeleteImageStore() {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
         assertEquals(1, ret);
@@ -101,11 +101,11 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
             assertContains(e.getMessage(), "registry.mgr");
             return;
         }
-        assertFalse(true);
+        fail();
     }
 
     @Test
-    public void testSetImageStore() throws Exception {
+    public void testSetImageStore() {
         Map<String, String> params = new HashMap<>();
         params.put("username", "admin");
         params.put("password", "secret");

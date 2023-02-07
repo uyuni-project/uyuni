@@ -13,10 +13,6 @@ Feature: Sanity checks
     And service "apache2" is active on "server"
     And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "jabberd" is enabled on "server"
-    And service "jabberd" is active on "server"
-    And service "osa-dispatcher" is enabled on "server"
-    And service "osa-dispatcher" is active on "server"
     And service "rhn-search" is enabled on "server"
     And service "rhn-search" is active on "server"
     And service "salt-api" is enabled on "server"
@@ -36,13 +32,6 @@ Feature: Sanity checks
     And reverse resolution should work for "proxy"
     And "proxy" should communicate with the server using public interface
     And the clock from "proxy" should be exact
-
-@sle_client
-  Scenario: The traditional client is healthy
-    Then "sle_client" should have a FQDN
-    And reverse resolution should work for "sle_client"
-    And "sle_client" should communicate with the server using public interface
-    And the clock from "sle_client" should be exact
 
 @sle_minion
   Scenario: The minion is healthy
@@ -86,13 +75,7 @@ Feature: Sanity checks
     And "kvm_server" should communicate with the server using public interface
     And the clock from "kvm_server" should be exact
 
-@virthost_xen
-  Scenario: The Xen host is healthy
-    Then "xen_server" should have a FQDN
-    And reverse resolution should work for "xen_server"
-    And "xen_server" should communicate with the server using public interface
-    And the clock from "xen_server" should be exact
-
+@skip_if_cloud
   Scenario: The external resources can be reached
     Then it should be possible to reach the test packages
     And it should be possible to reach the build sources
@@ -109,3 +92,7 @@ Feature: Sanity checks
 @no_auth_registry
   Scenario: The registry without authentication is healthy
     Then it should be possible to reach the not authenticated registry
+
+@custom_download_endpoint
+  Scenario: The custom download endpoint is working
+    Then it should be possible to use the custom download endpoint

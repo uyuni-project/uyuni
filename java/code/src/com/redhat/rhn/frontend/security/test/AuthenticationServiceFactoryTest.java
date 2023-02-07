@@ -46,7 +46,7 @@ public class AuthenticationServiceFactoryTest  {
     private AuthenticationServiceFactoryStub factory;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         factory = new AuthenticationServiceFactoryStub();
     }
 

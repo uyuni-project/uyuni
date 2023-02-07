@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Wed Dec 14 14:13:25 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Check if options.params is empty
+
+-------------------------------------------------------------------
+Fri Nov 18 15:05:43 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Stop using web.system_checkin_threshold configuration value
+  * Add --param option to overwrite report parameter default value
+
+-------------------------------------------------------------------
+Wed Sep 28 11:08:52 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Bump version to 4.4.0
+
+-------------------------------------------------------------------
 Wed May 04 15:21:53 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.4-1

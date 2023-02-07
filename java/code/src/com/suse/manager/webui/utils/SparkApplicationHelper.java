@@ -17,6 +17,8 @@ package com.suse.manager.webui.utils;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
@@ -36,6 +38,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -454,6 +459,39 @@ public class SparkApplicationHelper {
      */
     public static boolean isApiRequest(Request request) {
         return request.pathInfo().startsWith("/manager/api/");
+    }
+
+    /**
+     * Initially the transactions were committed only in {@link com.redhat.rhn.frontend.servlets.SessionFilter}
+     *
+     * But, it turns out that Spark closes response stream at {@link spark.http.matching.Body#serializeTo} and the
+     * response is sent back before the SessionFilter finishes running, creating a race condition. It was even possible
+     * to have an HTTP 200 response and a failure when committing the transaction.
+     *
+     * The {@link HibernateFactory#inTransaction} check was added to both sides to prevent commit from executing twice.
+     */
+    public static void setupHibernateSessionFilter() {
+        Logger logger = LogManager.getLogger(SparkApplicationHelper.class);
+        Spark.after((requestIn, responseIn) -> {
+            boolean committed = false;
+            try {
+                if (HibernateFactory.inTransaction()) {
+                    HibernateFactory.commitTransaction();
+                }
+                committed = true;
+            }
+            catch (HibernateException e) {
+                logger.error(HibernateFactory.ROLLBACK_MSG, e);
+                throw new HibernateRuntimeException(HibernateFactory.ROLLBACK_MSG, e);
+            }
+            catch (RuntimeException e) {
+                logger.error(HibernateFactory.ROLLBACK_MSG, e);
+                throw e;
+            }
+            finally {
+                HibernateFactory.rollbackTransactionAndCloseSession(committed);
+            }
+        });
     }
 
     /**

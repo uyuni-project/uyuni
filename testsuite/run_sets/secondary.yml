@@ -23,14 +23,9 @@
 - features/secondary/srv_handle_config_channels_with_ISS_v2.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
-- features/secondary/trad_config_channel.feature
-- features/secondary/trad_lock_packages.feature
 - features/secondary/min_rhlike_openscap_audit.feature
 - features/secondary/min_rhlike_remote_command.feature
 - features/secondary/min_rhlike_ssh.feature
-- features/secondary/trad_rhlike_client.feature
-# temporarily disabled by the RRTGs
-#- features/secondary/trad_rhlike_migrate_to_min.feature
 - features/secondary/min_deblike_openscap_audit.feature
 - features/secondary/min_deblike_remote_command.feature
 - features/secondary/min_deblike_ssh.feature
@@ -39,20 +34,12 @@
 - features/secondary/min_bootstrap_script.feature
 - features/secondary/min_ssh_tunnel.feature
 - features/secondary/min_activationkey.feature
-- features/secondary/trad_migrate_to_minion.feature
-- features/secondary/trad_migrate_to_sshminion.feature
-- features/secondary/trad_ssh_tunnel.feature
-- features/secondary/trad_baremetal_discovery.feature
+# Bare Metal discovery is not yet supported using Salt Minions https://github.com/SUSE/spacewalk/issues/18932
+# - features/secondary/min_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature
 - features/secondary/min_salt_lock_packages.feature
-- features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
-- features/secondary/trad_need_reboot.feature
-- features/secondary/trad_action_chain.feature
-# temporarily disabled by the RRTGs
-#- features/secondary/trad_deleted_migrate_to_minion.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
@@ -67,4 +54,7 @@
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature
+- features/secondary/srv_rename_hostname.feature
+- features/secondary/proxy_as_pod_basic_tests.feature
+- features/secondary/srv_logfile.feature
 ## Secondary features END ##

@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -55,8 +54,8 @@ public class CompareConfigFilesTask extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-            throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
 
         log.info("running config compare");
 
@@ -86,11 +85,11 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                 ActionFactory.addConfigRevisionToAction(crev, server, cfact);
             }
 
-            if (act.getServerActions() == null || act.getServerActions().size() < 1) {
+            if (act.getServerActions() == null || act.getServerActions().isEmpty()) {
                 continue;
             }
             Set<ConfigRevisionAction> cra = cfact.getConfigRevisionActions();
-            if (cra == null || cra.size() < 1) {
+            if (cra == null || cra.isEmpty()) {
                 continue;
             }
 

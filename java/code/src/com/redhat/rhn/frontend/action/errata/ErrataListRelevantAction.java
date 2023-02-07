@@ -21,6 +21,7 @@ package com.redhat.rhn.frontend.action.errata;
  */
 public class ErrataListRelevantAction extends ErrataListBaseAction {
 
+    @Override
     protected ErrataFilter getErrataFilter() {
         return ErrataFilter.RELEVANT;
     }

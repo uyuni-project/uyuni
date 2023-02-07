@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -604,19 +605,36 @@ public class HardwareMapper {
                     case "kvm":
                         virtTypeLabel = "qemu";
                         break;
+                    case "nitro":
+                        virtTypeLabel = "aws_nitro";
+                        break;
                     default:
-                        LOG.info(String.format("Detected virtual instance type '%s' for minion '%s'",
-                                virtTypeLabel, server.getMinionId()));
+                        LOG.info("Detected virtual instance type '{}' for minion '{}'",
+                                virtTypeLabel, server.getMinionId());
+                }
+                if (virtSubtype.startsWith("Amazon EC2")) {
+                    switch (virtTypeLowerCase) {
+                        case "xen":
+                            virtTypeLabel = "aws_xen";
+                            break;
+                        case "qemu":
+                        case "kvm":
+                        case "nitro":
+                            virtTypeLabel = "aws_nitro";
+                            break;
+                        default:
+                            virtTypeLabel = "aws";
+                    }
                 }
                 type = VirtualInstanceFactory.getInstance()
                         .getVirtualInstanceType(virtTypeLabel);
 
                 if (type == null) { // fallback
                     type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-                    LOG.warn(String.format(
-                            "Can't find virtual instance type for string '%s'. " +
-                            "Defaulting to '%s' for minion '%s'",
-                            virtTypeLowerCase, type.getLabel(), server.getMinionId()));
+                    LOG.warn(
+                            "Can't find virtual instance type for string '{}'. " +
+                            "Defaulting to '{}' for minion '{}'",
+                            virtTypeLowerCase, type.getLabel(), server.getMinionId());
                 }
 
             }
@@ -803,8 +821,8 @@ public class HardwareMapper {
             ServerFactory.saveNetworkInterface(iface);
             // flush & refresh iface because generated="insert"
             // on interfaceId does not seem to work
-            ServerFactory.getSession().flush();
-            ServerFactory.getSession().refresh(iface);
+            HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().refresh(iface);
 
             List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
             List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());

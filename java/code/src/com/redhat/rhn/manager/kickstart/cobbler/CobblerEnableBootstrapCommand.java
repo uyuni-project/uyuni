@@ -33,6 +33,7 @@ import org.cobbler.SystemRecord;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -105,7 +106,7 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel(kernelPath)
                 .setInitrd(initrdPath)
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .setBreed(config.getCobblerBootstrapBreed())
                 .setArch(config.getCobblerBootstrapArch())
                 .build(connection);
@@ -123,7 +124,7 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
             kernelOptions.put(splits[i * 2], splits[i * 2 + 1]);
         }
 
-        profile.setKernelOptions(kernelOptions);
+        profile.setKernelOptions(Optional.of(kernelOptions));
         profile.save();
         log.debug("Profile added");
 

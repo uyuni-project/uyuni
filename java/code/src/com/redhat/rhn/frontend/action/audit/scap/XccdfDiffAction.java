@@ -29,10 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 public class XccdfDiffAction extends org.apache.struts.action.Action {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 }

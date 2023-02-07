@@ -1,10 +1,16 @@
-# Copyright (c) 2010-2022 SUSE LLC.
+# Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains all step definitions concerning general product funtionality
+### as well as those which do not fit into any other category or are temporary workarounds.
+###
+### The definitions are divided into blocks marked with a summary headline.
 
 require 'jwt'
 require 'securerandom'
 require 'pathname'
 
+# Used for debugging purposes
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
   attach File.open(filename, 'rb'), 'image/png'
@@ -15,11 +21,16 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
 end
 
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
-  iso_path = "/tmp/#{name}.iso"
+  # When using a mirror it is automatically mounted at /mirror
+  if $mirror
+    iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
+  else
+    iso_path = "/tmp/#{name}.iso"
+    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 700)
+  end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
   $server.run("mkdir -p #{mount_point}")
-  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
+  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
 end
 
@@ -37,7 +48,8 @@ end
 
 Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   # skip this test for Red Hat-like and Debian-like systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
@@ -56,8 +68,8 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 
   lines = interface.lines
   # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
-  ipv6_addresses_list = lines.grep(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/)
-  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/) }
+  ipv6_addresses_list = lines.grep(/2[:0-9a-f]*|fe80:[:0-9a-f]*/)
+  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2[:0-9a-f]*|fe80:[:0-9a-f]*/) }
 
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
@@ -66,15 +78,11 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
-  node = get_target(host)
-  $api_test.auth.login('admin', 'admin')
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
-  $api_test.auth.logout
   step %(I should see a "#{client_id.to_s}" text)
 end
 
 Then(/^the system name for "([^"]*)" should be correct$/) do |host|
-  node = get_target(host)
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" text)
 end
@@ -129,19 +137,23 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
-When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until the event "([^"]*)" is completed$/) do |pickup_timeout, complete_timeout, event|
   # The code below is not perfect because there might be other events with the
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
+    And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
-    And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
+    And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
   )
+end
+
+When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+  step %(I wait 90 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
@@ -174,9 +186,10 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
 end
 
 # spacewalk errors steps
-Then(/^the up2date logs on client should contain no Traceback error$/) do
+Then(/^the up2date logs on "([^"]*)" should contain no Traceback error$/) do |host|
+  node = get_target(host)
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
-  _out, code = $client.run(cmd)
+  _out, code = node.run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
@@ -205,25 +218,28 @@ When(/^I enter as remote command this script in$/) do |multiline|
 end
 
 # bare metal
-When(/^I check the ram value$/) do
+When(/^I check the ram value of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
 end
 
-When(/^I check the MAC address value$/) do
+When(/^I check the MAC address value of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _local, _remote, _code = node.test_and_store_results_together(get_mac_address, 'root', 600)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
 end
 
-Then(/^I should see the CPU frequency of the client$/) do
+Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -247,8 +263,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    And I follow the left menu "Systems > Overview"
-    And I wait until I see "System Overview" text
+    And I follow the left menu "Systems > System List > All"
+    And I wait until I do not see "Loading..." text
   )
 end
 
@@ -257,24 +273,42 @@ Given(/^cobblerd is running$/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
+When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
   ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-When(/^I trigger cobbler system record$/) do
-  # not for SSH-push traditional client
+When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
+  ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
+end
+
+When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  raise 'system ' + system + ' already exists' if ct.system_exists(system)
+  ct.system_create(system, profile)
+end
+
+When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  ct.system_remove(system)
+end
+
+When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
   space = 'spacecmd -u admin -p admin'
-  host = $client.full_hostname
+  system_name = get_system_name(host)
   $server.run("#{space} clear_caches")
-  out, _code = $server.run("#{space} system_details #{host}")
+  out, _code = $server.run("#{space} system_details #{system_name}")
   unless out.include? 'ssh-push-tunnel'
-    # normal traditional client
     steps %(
       Given I am authorized as "testing" with password "testing"
-      And I follow this "sle_client" link
+      And I am on the Systems overview page of this "#{host}"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
@@ -288,16 +322,13 @@ Given(/^distro "([^"]*)" exists$/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
+Given(/^profile "([^"]*)" exists$/) do |profile|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
+  raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
 end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  $api_test.auth.login('admin', 'admin')
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
 
@@ -318,7 +349,6 @@ When(/^I remove kickstart profiles and distros$/) do
   profiles = $server.run('cobbler profile list')[0].split
   profiles.each { |profile| $server.run("cobbler profile remove --name '#{profile}'") }
   distros_api.each { |distro| $server.run("cobbler distro remove --name '#{distro}'") }
-  $api_test.auth.logout
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -328,10 +358,10 @@ end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
@@ -339,6 +369,193 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
     raise "The host #{host} has not yet a implementation for that step"
   end
 end
+
+# rubocop:disable Metrics/BlockLength
+# WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
+When(/^I install the needed packages for highstate in build host"$/) do
+  packages = "bea-stax
+  bea-stax-api
+  btrfsmaintenance
+  btrfsprogs
+  btrfsprogs-udev-rules
+  catatonit
+  checkmedia
+  containerd
+  cryptsetup
+  cryptsetup-lang
+  dbus-1-x11
+  device-mapper
+  docker
+  dpkg
+  fontconfig
+  git-core
+  git-gui
+  gitk
+  grub2-snapper-plugin
+  iptables
+  java-17-openjdk-headless
+  javapackages-filesystem
+  javapackages-tools
+  jing
+  kernel-default
+  kernel-firmware-all
+  kernel-firmware-amdgpu
+  kernel-firmware-ath10k
+  kernel-firmware-ath11k
+  kernel-firmware-atheros
+  kernel-firmware-bluetooth
+  kernel-firmware-bnx2
+  kernel-firmware-brcm
+  kernel-firmware-chelsio
+  kernel-firmware-dpaa2
+  kernel-firmware-i915
+  kernel-firmware-intel
+  kernel-firmware-iwlwifi
+  kernel-firmware-liquidio
+  kernel-firmware-marvell
+  kernel-firmware-media
+  kernel-firmware-mediatek
+  kernel-firmware-mellanox
+  kernel-firmware-mwifiex
+  kernel-firmware-network
+  kernel-firmware-nfp
+  kernel-firmware-nvidia
+  kernel-firmware-platform
+  kernel-firmware-prestera
+  kernel-firmware-qcom
+  kernel-firmware-qlogic
+  kernel-firmware-radeon
+  kernel-firmware-realtek
+  kernel-firmware-serial
+  kernel-firmware-sound
+  kernel-firmware-ti
+  kernel-firmware-ueagle
+  kernel-firmware-usb-network
+  kiwi-boot-descriptions
+  kiwi-man-pages
+  kiwi-systemdeps
+  kiwi-systemdeps-bootloaders
+  kiwi-systemdeps-containers
+  kiwi-systemdeps-core
+  kiwi-systemdeps-disk-images
+  kiwi-systemdeps-filesystems
+  kiwi-systemdeps-image-validation
+  kiwi-systemdeps-iso-media
+  kiwi-tools
+  kpartx
+  libaio1
+  libasound2
+  libbtrfs0
+  libburn4
+  libcontainers-common
+  libdevmapper-event1_03
+  libefa1
+  libfmt8
+  libfontconfig1
+  libfreebl3
+  libfreebl3-hmac
+  libibverbs
+  libibverbs1
+  libip6tc2
+  libisoburn1
+  libisofs6
+  libjpeg8
+  libjte1
+  liblcms2-2
+  liblmdb-0_9_17
+  liblttng-ust0
+  liblvm2cmd2_03
+  liblzo2-2
+  libmd0
+  libmediacheck6
+  libmlx4-1
+  libmlx5-1
+  libmpath0
+  libnetfilter_conntrack3
+  libnfnetlink0
+  libnftnl11
+  libnuma1
+  libpcsclite1
+  libpwquality1
+  libpwquality-lang
+  librados2
+  librbd1
+  librdmacm1
+  libreiserfscore0
+  libsgutils2-1_47-2
+  libsha1detectcoll1
+  libsnapper5
+  libsoftokn3
+  libsoftokn3-hmac
+  liburcu6
+  libX11-6
+  libX11-data
+  libXau6
+  libxcb1
+  libXext6
+  libXft2
+  libxkbcommon0
+  libxml2-tools
+  libXmuu1
+  libXrender1
+  libxslt1
+  libXss1
+  lvm2
+  make
+  make-lang
+  mdadm
+  mozilla-nspr
+  mozilla-nss
+  mozilla-nss-certs
+  mtools
+  multipath-tools
+  openssl
+  patch
+  pcsc-lite
+  perl-TimeDate
+  postfix
+  python3-cssselect
+  python3-docopt
+  python3-kiwi
+  python3-lxml
+  python3-simplejson
+  python3-solv
+  python3-xattr
+  qemu-block-curl
+  qemu-block-rbd
+  qemu-tools
+  rdma-core
+  rdma-ndd
+  relaxngDatatype
+  rollback-helper
+  runc
+  saxon9
+  saxon9-scripts
+  screen
+  sg3_utils
+  skopeo
+  snapper
+  snapper-zypp-plugin
+  sqlite3-tcl
+  squashfs
+  syslinux
+  tcl
+  thin-provisioning-tools
+  timezone-java
+  tk
+  umoci
+  xalan-j2
+  xerces-j2
+  xhost
+  xkeyboard-config
+  xkeyboard-config-lang
+  xml-commons-apis
+  xml-commons-resolver
+  xorriso
+  xtables-plugins"
+  $build_host.run("zypper --non-interactive in #{packages}", timeout: 600)
+end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
@@ -353,51 +570,26 @@ end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps
-# these steps currently work only for traditional clients
-Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  node = $client
+Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
+  node = get_target(host)
   arch, _code = node.run('uname -m')
   arch.chomp!
-  dir_file = client_raw_repodata_dir("test-channel-#{arch}")
-  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
-  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
-end
-
-Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
-  arch, _code = $client.run('uname -m')
-  arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
-  $client.run(cmd, timeout: 500)
+  # TODO: adapt for architectures
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles-channel/repodata/*updateinfo.xml.gz"
+  node.run(cmd, timeout: 500)
 end
 
 # package steps
@@ -409,7 +601,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-And(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
+When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   $server.run(command, timeout: 500)
@@ -428,7 +620,7 @@ end
 # setup wizard
 
 Then(/^HTTP proxy verification should have succeeded$/) do
-  raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+  raise 'Success icon not found' unless find('i.text-success', wait: 5)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
@@ -447,16 +639,16 @@ When(/^I enter the SCC credentials$/) do
   )
 end
 
-Then(/^the SCC credentials should be valid$/) do
+When(/^I wait until the SCC credentials are valid$/) do
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
-    raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+    raise 'Success icon not found' unless find('i.text-success', wait: 30)
   end
 end
 
 Then(/^the credentials for "([^"]*)" should be invalid$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Failure icon not found' unless find('i.text-danger', wait: DEFAULT_TIMEOUT)
+    raise 'Failure icon not found' unless find('i.text-danger', wait: 5)
   end
 end
 
@@ -493,7 +685,7 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
+When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
   # let the the select2js box filter open the hidden options
   xpath_query = "//div[@id='s2id_product-arch-filter']/ul/li/input"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
@@ -501,20 +693,10 @@ And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |ar
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
-  find(css).set(PACKAGE_BY_CLIENT[client])
-end
-
 When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
-end
-
-When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version
-    step %(I #{select} "#{product}" as a product)
-  end
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
@@ -541,17 +723,8 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
-When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
-  if $product == product_version
-    step %(I open the sub-list of the product "#{product}")
-  end
-end
-
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
-  # within(:xpath, xpath) do
-  #   raise unless find('i.fa-angle-down').click
-  # end
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
@@ -561,7 +734,7 @@ When(/^I select the addon "(.*?)"$/) do |addon|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
-And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
+Then(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
   xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
 end
@@ -573,7 +746,7 @@ Then(/^I should see the "(.*?)" selected$/) do |product|
   end
 end
 
-And(/^I wait until I see "(.*?)" product has been added$/) do |product|
+When(/^I wait until I see "(.*?)" product has been added$/) do |product|
   repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
@@ -594,15 +767,17 @@ end
 
 Then(/^the SLE12 SP5 product should be added$/) do
   output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
+  STDOUT.puts "Products list:\n#{output}"
   raise unless output.include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
     raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
+  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP5 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
 Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
   output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
+  STDOUT.puts "Products list:\n#{output}"
   raise unless output.include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise unless output.include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
   raise unless output.include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
@@ -680,7 +855,7 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
 end
 
 # rubocop:disable Metrics/BlockLength
-When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
+When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
   if target_type.include? 'server' or $proxy.nil?
@@ -689,18 +864,17 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   end
 
   # Prepare bootstrap script for different types of clients
-  client = client_type == 'traditional' ? '--traditional' : ''
   force_bundle = $use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
+  cmd = "mgr-bootstrap #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
-  output, = target.run(cmd)
+  output, = target.run(cmd, verbose: true)
   unless output.include? key
     log output
     raise "Key: #{key} not included"
@@ -713,7 +887,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
+  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
     log output
     raise "Bootstrap didn't finish properly"
@@ -732,159 +906,22 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-# Repository steps
-
-# Enable tools repositories (both stable and development)
-When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  _os_version, os_family = get_os_version(node)
-  case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
-    end
-  when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}")
-    end
-  else
-    raise "This step has no implementation for #{os_family} system."
-  end
-end
-
-When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  _os_version, os_family = get_os_version(node)
-  case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
-    end
-  when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}")
-    end
-  else
-    raise "This step has no implementation for #{os_family} system."
-  end
-end
-
-When(/^I enable repositories before installing Docker$/) do
-  os_version, os_family = get_os_version($build_host)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --enable #{repos}")
-
-  # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  $build_host.run('zypper -n --gpg-auto-import-keys ref')
-end
-
-When(/^I disable repositories after installing Docker$/) do
-  os_version, os_family = get_os_version($build_host)
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --disable #{repos}")
-
-  # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
-end
-
 # Register client
-Given(/^I update the profile of this client$/) do
-  step %(I update the profile of "sle_client")
-end
 
 Given(/^I update the profile of "([^"]*)"$/) do |client|
   node = get_target(client)
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I register using "([^"]*)" key$/) do |key|
-  step %(I register "sle_client" as traditional client with activation key "#{key}")
-end
-
-When(/^I register "([^"]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
-end
-
-And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
-  node = get_target(client)
-  if client.include? 'sle'
-    node.run('zypper --non-interactive install wget', timeout: 500)
-  else # As Debian-like has no support for traditional clients, it must be Red Hat-like
-    node.run('yum install wget', timeout: 600)
-  end
-  registration_url = if $proxy.nil?
-                       "https://#{$server.full_hostname}/XMLRPC"
-                     else
-                       "https://#{$proxy.full_hostname}/XMLRPC"
-                     end
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
-  log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
-  command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
-end
-
-When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
   )
-  if get_client_type(host) == 'traditional' and is_salt.empty?
-    get_target(host).run('rhn_check -vvv')
-  else
-    steps %(
-      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-      And I wait at most 500 seconds until event "Apply states" is completed
-      And I wait at most 500 seconds until event "Package List Refresh" is completed
-    )
-  end
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
@@ -892,7 +929,7 @@ Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   system_name = get_system_name(host)
   repeat_until_timeout(message: "system #{system_name} is not in the list yet") do
     $server.run("spacecmd -u admin -p admin clear_caches")
-    result, code = $server.run(command, check_errors: false)
+    result, _code = $server.run(command, check_errors: false, verbose: true)
     break if result.include? system_name
     sleep 1
   end
@@ -901,12 +938,6 @@ end
 Then(/^I should see "([^"]*)" as link$/) do |host|
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" link)
-end
-
-Then(/^I should see a text describing the OS release$/) do
-  _os_version, os_family = get_os_version($client)
-  release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
-  step %(I should see a "OS: #{release}" text)
 end
 
 When(/^I remember when I scheduled an action$/) do
@@ -975,7 +1006,7 @@ Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do 
   @token = token(server_secret, org: org, onlyChannels: [channel])
 end
 
-And(/^I should see the toggler "([^"]*)"$/) do |target_status|
+Then(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
@@ -988,7 +1019,7 @@ And(/^I should see the toggler "([^"]*)"$/) do |target_status|
   end
 end
 
-And(/^I click on the "([^"]*)" toggler$/) do |target_status|
+When(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = "//i[contains(@class, 'fa-toggle-on')]"
@@ -1001,7 +1032,7 @@ And(/^I click on the "([^"]*)" toggler$/) do |target_status|
   end
 end
 
-And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
+Then(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, target_status|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -1017,7 +1048,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel, 
   end
 end
 
-And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |target_channel, target_status, is_disabled|
+Then(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |target_channel, target_status, is_disabled|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -1034,7 +1065,7 @@ And(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |ta
   end
 end
 
-And(/^I select the child channel "([^"]*)"$/) do |target_channel|
+When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
@@ -1044,7 +1075,7 @@ And(/^I select the child channel "([^"]*)"$/) do |target_channel|
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
-And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
+Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
   xpath = "//a[contains(text(), '#{target_channel}')]"
   channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
 
@@ -1055,6 +1086,8 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
     xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
   when 'Unsubscribe'
     xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
+  else
+    log "Target Radio #{target_radio} not supported"
   end
 
   case target_status
@@ -1062,10 +1095,12 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
     raise "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
   when 'unselected'
     raise "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
+  else
+    log "Target status #{target_status} not supported"
   end
 end
 
-And(/^the notification badge and the table should count the same amount of messages$/) do
+Then(/^the notification badge and the table should count the same amount of messages$/) do
   table_notifications_count = count_table_items
 
   badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
@@ -1079,7 +1114,7 @@ And(/^the notification badge and the table should count the same amount of messa
   end
 end
 
-And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
+When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
   unless has_checked_field?(arg1)
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
@@ -1105,7 +1140,7 @@ Then(/^I check the first notification message$/) do
   end
 end
 
-And(/^I delete it via the "([^"]*)" button$/) do |target_button|
+When(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_delete_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
@@ -1114,27 +1149,12 @@ And(/^I delete it via the "([^"]*)" button$/) do |target_button|
   end
 end
 
-And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
+When(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_read_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step %(I wait until I see "1 message read status updated successfully." text)
-  end
-end
-
-When(/^I remove package "([^"]*)" from highstate$/) do |package|
-  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
-  rows = find(:xpath, event_table_xpath)
-  rows.all('tr').each do |tr|
-    next unless tr.text.include?(package)
-    log tr.text
-    tr.find("##{package}-pkg-state").select('Removed')
-    next if has_css?('#save[disabled]')
-    steps %(
-      Then I click on "Save"
-      And I click on "Apply"
-    )
   end
 end
 
@@ -1252,7 +1272,7 @@ When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
 end
 
-And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
+When(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
   key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
   ret_code = file_inject(
@@ -1279,7 +1299,7 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 #{dest}")
-  url = "http://#{$server.full_hostname}/pub/" + file
+  url = "https://#{$server.full_hostname}/pub/" + file
   log "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end
@@ -1303,19 +1323,10 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   raise 'File injection failed' unless return_code.zero?
 end
 
-When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host|
-  playbooks_dir = 'ansible/'
-  target = get_target(host)
-  dest = "/srv/playbooks/"
-  target.run("rm -rf #{dest}")
-end
-
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   node_id = $api_test.system.retrieve_server_id(system_name)
   react_key = $api_test.system.obtain_reactivation_key(node_id)
-  $api_test.auth.logout
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end
@@ -1339,4 +1350,164 @@ Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
   else
     raise "Port '#{port}' not open although it should be!" unless port_opened
   end
+end
+
+When(/^I prepare Cobbler for the buildiso command$/) do
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  $server.run("mkdir -p #{tmp_dir}")
+  # we need bootloaders for the buildiso command
+  out, code = $server.run("cobbler mkloaders", verbose: true)
+  raise "error in cobbler mkloaders.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distro|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  profiles = %w[orchid flame pearl]
+  isolinux_profiles = []
+  cobbler_profiles = []
+  profiles.each do |profile|
+    # get all profiles from Cobbler
+    result_cobbler, code = $server.run("cobbler profile list | grep -o #{profile}", verbose: true)
+    cobbler_profiles.push(result_cobbler) if code.zero?
+    # get all profiles from isolinux.cfg
+    result_isolinux, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{profile} | cut -c -6 | head -n 1")
+    unless result_isolinux.empty?
+      isolinux_profiles.push(result_isolinux)
+    end
+  end
+  raise "error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}" unless cobbler_profiles == isolinux_profiles
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without dns entries$/) do |distro, profile|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver", check_errors: false)
+  # we have to fail here if the command suceeds
+  raise "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
+end
+
+When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
+  # param can either be standalone or airgapped
+  # workaround to get the contents of the buildiso folder
+  step %(I run Cobbler buildiso for distro "#{distro}" and all profiles)
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  source_dir = "/var/cache/cobbler/source_#{param}"
+  $server.run("mv #{tmp_dir} #{source_dir}")
+  $server.run("mkdir -p #{tmp_dir}")
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
+  tmp_dir = "/var/cache/cobbler"
+  out, code = $server.run("cat >#{tmp_dir}/test_image <<-EOF
+BIOS
+UEFI
+EOF")
+  xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
+  iso_filter = "awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}'"
+  iso_file = "#{tmp_dir}/xorriso_#{name}"
+  out, code = $server.run("#{xorriso} | #{iso_filter} >> #{iso_file}")
+  raise "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
+  out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
+  raise "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I cleanup xorriso temp files$/) do
+  $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
+end
+
+Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
+  result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
+  puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
+  raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
+  raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I cleanup after Cobbler buildiso$/) do
+  result, code = $server.run("rm -Rf /var/cache/cobbler")
+  raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I reboot the server through SSH$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run('reboot > /dev/null 2> /dev/null &')
+  default_timeout = 300
+
+  check_shutdown($server.public_ip, default_timeout)
+  check_restart($server.public_ip, temp_server, default_timeout)
+
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+end
+
+When(/^I change the server's short hostname from hosts and hostname files$/) do
+  old_hostname = $server.hostname
+  new_hostname = old_hostname + '2'
+  log "New short hostname: #{new_hostname}"
+
+  $server.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{$server.public_ip} #{new_hostname}#{$server.full_hostname.delete_prefix($server.hostname)} #{new_hostname}' >> /etc/hosts")
+end
+
+When(/^I run spacewalk-hostname-rename command on the server$/) do
+  temp_server = twopence_init("ssh:#{$server.public_ip}")
+  temp_server.extend(LavandaBasic)
+  command = "spacewalk-hostname-rename #{$server.public_ip}
+            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
+            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
+            --ssl-ca-password=spacewalk -u admin -p admin"
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  log "#{out_spacewalk}"
+
+  default_timeout = 300
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server: spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
+  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+end
+
+When(/^I change back the server's hostname$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
+end
+
+When(/^I clean up the server's hosts file$/) do
+  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
+  $server.run(command)
 end

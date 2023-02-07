@@ -47,11 +47,13 @@ public class ModeFactory implements ManifestFactoryBuilder {
     private static XMLReader parser = null;
 
     /** {@inheritDoc} */
+    @Override
     public String getManifestFilename() {
         return "xml/file-list.xml";
     }
 
     /** {@inheritDoc} */
+    @Override
     public Object createObject(Map params) {
         try {
             if (parser == null) {
@@ -169,6 +171,16 @@ public class ModeFactory implements ManifestFactoryBuilder {
         SelectMode ret = getSelectMode(session, name, mode);
         ret.setClassString(clazz.getName());
         return ret;
+    }
+
+    /**
+     * Create a select mode out of an existing one, but using another hibernate session
+     * @param session hibernate session
+     * @param selectMode existing mode to duplicate
+     * @return the new mode with updated session
+     */
+    public static SelectMode getMode(Session session, SelectMode selectMode) {
+        return new SelectMode(session, selectMode.getParsedMode());
     }
 
     /**

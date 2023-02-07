@@ -65,6 +65,7 @@ public class ContainerBuildHostEntitlement extends Entitlement {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
         return isAllowedOnServer(server);
     }

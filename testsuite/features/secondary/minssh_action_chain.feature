@@ -15,7 +15,7 @@ Feature: Salt SSH action chain
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
     And I install package "milkyway-dummy" on this "ssh_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
-    And I run "zypper -n ref" on "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
     When I refresh packages list via spacecmd on "ssh_minion"
@@ -38,10 +38,8 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -67,6 +65,8 @@ Feature: Salt SSH action chain
   Scenario: Add a package installation to an action chain on SSH minion
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
@@ -206,7 +206,6 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for SSH minions
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
@@ -218,10 +217,8 @@ Feature: Salt SSH action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
@@ -234,7 +231,6 @@ Feature: Salt SSH action chain
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     When I follow the left menu "Configuration > Channels"

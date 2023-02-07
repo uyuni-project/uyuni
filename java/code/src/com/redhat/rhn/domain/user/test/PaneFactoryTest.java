@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.user.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -27,6 +27,6 @@ public class PaneFactoryTest extends RhnBaseTestCase  {
     @Test
     public void testAllPanesRetireval() {
         Map panes = PaneFactory.getAllPanes();
-        assertTrue(!panes.isEmpty());
+        assertFalse(panes.isEmpty());
     }
  }

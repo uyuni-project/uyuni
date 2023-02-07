@@ -1,13 +1,13 @@
-# Copyright (c) 2016-2021 SUSE LLC
+# Copyright (c) 2016-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
 Feature: Salt package states
 
   Scenario: Pre-requisite: install old packages on SLES minion
-    Then I apply highstate on "sle_minion"
+    When I apply highstate on "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
     And I install old package "virgo-dummy-1.0" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
@@ -40,13 +40,13 @@ Feature: Salt package states
     Then the system should have a base channel set
 
   Scenario: Remove a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should be installed on "sle_minion"
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -55,13 +55,13 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
 
   Scenario: Install a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should not be installed on "sle_minion"
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should not be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -70,13 +70,13 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be installed on "sle_minion"
 
   Scenario: Install an already installed package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "virgo-dummy" text
-    And "virgo-dummy-1.0" should be installed on "sle_minion"
+    And I wait until I see "virgo-dummy" text
+    Then "virgo-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Change" text
     And I click save
@@ -85,13 +85,13 @@ Feature: Salt package states
     And I wait for "virgo-dummy-1.0" to be installed on "sle_minion"
 
   Scenario: Upgrade a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0" should be installed on "sle_minion"
+    And I wait until I see "andromeda-dummy" text
+    Then "andromeda-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Change" text
     And I click save
@@ -100,7 +100,7 @@ Feature: Salt package states
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Verify the package states
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I should see a "Package States" text
     And I should see a "milkyway-dummy" text
@@ -108,14 +108,14 @@ Feature: Salt package states
     And I should see a "virgo-dummy" text
 
   Scenario: Use Salt presence mechanism on an active minion
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I click on "Show full highstate output"
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
   Scenario: Use Salt presence mechanism on an unreachable minion
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I run "pkill salt-minion" on "sle_minion" without error control
     And I run "pkill python.original" on "sle_minion" without error control
     And I follow "Highstate" in the content area
@@ -130,4 +130,4 @@ Feature: Salt package states
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I remove package "andromeda-dummy" from this "sle_minion" without error control
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"

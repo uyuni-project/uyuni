@@ -122,7 +122,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
 
     private void doSort(String sortedColumn) {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        getPageList().sort(new DynamicComparator(sortedColumn,
+        getPageList().sort(new DynamicComparator<>(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
     }
 
@@ -132,6 +132,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
         return request.getParameter(RequestContext.LIST_SORT);
     }
 
+    @Override
     protected void setupPageList() throws JspTagException {
         super.setupPageList();
         currRow = 0;
@@ -246,6 +247,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     //////////////////////////////////////////////////////////////////////////
 
     /** {@inheritDoc} */
+    @Override
     public int doStartTag() throws JspException {
         rowCnt = 0;
         JspWriter out = null;
@@ -306,6 +308,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
@@ -359,6 +362,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int doAfterBody() throws JspException {
         JspWriter out = null;
         try {

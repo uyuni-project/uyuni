@@ -229,4 +229,19 @@ describe("Testing filters form <> request mappers", () => {
       })
     );
   });
+
+  test("test filter all ptf", () => {
+    const filterForm: FilterFormType = {
+      filter_name: "all ptf",
+      matcher: "ptf_all",
+      type: "ptf_all",
+      rule: "deny",
+    };
+
+    expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0]).toEqual(
+      expect.objectContaining({ ...filterForm, ptf_all: "all" })
+    );
+    expect(mapFilterFormToRequest(filterForm).criteriaKey).toEqual("ptf_all");
+    expect(mapFilterFormToRequest(filterForm).criteriaValue).toEqual("all");
+  });
 });

@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EditAddressAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

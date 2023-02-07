@@ -39,6 +39,7 @@ public class CancelKickstartSessionOperation
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
 
         KickstartSession ksession =

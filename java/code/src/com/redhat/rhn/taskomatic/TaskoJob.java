@@ -27,13 +27,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -58,7 +60,7 @@ public class TaskoJob implements Job {
             tasks.put(task.getName(), 0);
             lastStatus.put(task.getName(), TaskoRun.STATUS_FINISHED);
         }
-        TaskoFactory.closeSession();
+        HibernateFactory.closeSession();
     }
 
     /**
@@ -72,9 +74,10 @@ public class TaskoJob implements Job {
 
     private boolean isTaskSingleThreaded(TaskoTask task) {
         try {
-            return Class.forName(task.getTaskClass()).newInstance() instanceof RhnQueueJob;
+            return Class.forName(task.getTaskClass()).getDeclaredConstructor().newInstance() instanceof RhnQueueJob;
         }
-        catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+        catch (InstantiationException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException |
+               InvocationTargetException e) {
             // will be caught later
             log.error("Error trying to instance a new class of {}: {}", task.getTaskClass(), e.getMessage());
             return false;
@@ -104,8 +107,8 @@ public class TaskoJob implements Job {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
         TaskoRun previousRun = null;
 
         TaskoSchedule schedule = TaskoFactory.lookupScheduleById(scheduleId);
@@ -120,98 +123,121 @@ public class TaskoJob implements Job {
         log.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
 
         for (TaskoTemplate template : schedule.getBunch().getTemplates()) {
-            if ((previousRun == null) ||    // first run
-                    (template.getStartIf() == null) ||  // do not care
-                    (previousRun.getStatus().equals(template.getStartIf()))) {
-                TaskoTask task = template.getTask();
-
-                if (isTaskSingleThreaded(task) && isTaskRunning(task)) {
-                    log.debug("{}: task {} already running ... LEAVING", schedule.getJobLabel(), task.getName());
-                    previousRun = null;
-                }
-                else {
-
-                    try {
-                        Class<RhnJob> jobClass = (Class<RhnJob>) Class.forName(template.getTask().getTaskClass());
-                        RhnJob job = jobClass.getDeclaredConstructor().newInstance();
-                        int rescheduleSeconds = job.getRescheduleTime();
-                        if (!isTaskThreadAvailable(job, task)) {
-                            log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
-                            TaskoQuartzHelper.rescheduleJob(schedule,
-                                    ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
-                        }
-                        else {
-
-                            markTaskRunning(task);
-
-                            try {
-                                log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
-                                TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
-                                TaskoFactory.save(taskRun);
-                                HibernateFactory.commitTransaction();
-                                HibernateFactory.closeSession();
-
-                                try {
-                                    job.execute(context, taskRun);
-                                }
-                                catch (Exception e) {
-                                    if (HibernateFactory.getSession().getTransaction().isActive()) {
-                                        HibernateFactory.rollbackTransaction();
-                                        HibernateFactory.closeSession();
-                                    }
-                                    job.appendExceptionToLogError(e);
-                                    taskRun.failed();
-                                    HibernateFactory.commitTransaction();
-                                    HibernateFactory.closeSession();
-                                }
-
-                                // rollback everything, what the application changed and didn't committed
-                                if (TaskoFactory.getSession().getTransaction().isActive()) {
-                                    TaskoFactory.rollbackTransaction();
-                                    HibernateFactory.closeSession();
-                                }
-
-                                log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
-                                        taskRun.getStatus().toLowerCase());
-                                if (((taskRun.getStatus() == TaskoRun.STATUS_FINISHED) ||
-                                        (taskRun.getStatus() == TaskoRun.STATUS_FAILED)) &&
-                                        (taskRun.getStatus() != lastStatus.get(task.getName()))) {
-                                    String email = "Taskomatic bunch " + schedule.getBunch().getName() +
-                                            " was scheduled to run within the " + schedule.getJobLabel() +
-                                            " schedule.\n\n" + "Subtask " + task.getName();
-                                    if (taskRun.getStatus() == TaskoRun.STATUS_FAILED) {
-                                        email += " failed.\n\n" + "For more information check ";
-                                        email += taskRun.getStdErrorPath() + ".";
-                                    }
-                                    else {
-                                        email += " finished successfully and is back to normal.";
-                                    }
-                                    log.info("Sending e-mail ... {}", task.getName());
-                                    TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
-                                    lastStatus.put(task.getName(), taskRun.getStatus());
-                                }
-                                previousRun = taskRun;
-                            }
-                            finally {
-                                unmarkTaskRunning(task);
-                            }
-                        }
-                    }
-                    catch (Exception e) {
-                        log.error(e);
-                    }
-                }
-
-            }
-            else {
+            if ((previousRun != null) &&    // first run
+                    (template.getStartIf() != null) &&  // do not care
+                    !previousRun.getStatus().equals(template.getStartIf())) {
                 log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
+            TaskoTask task = template.getTask();
+            previousRun = runTask(schedule, task, template, context);
         }
         HibernateFactory.closeSession();
         log.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
-        log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
-                TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
+        if (log.isDebugEnabled()) {
+            log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
+                    TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
+        }
+    }
+
+    private boolean isTaskRunning(TaskoSchedule schedule, TaskoTask task) {
+        if (isTaskSingleThreaded(task) && isTaskRunning(task)) {
+            log.debug("{}: task {} already running ... LEAVING", schedule.getJobLabel(), task.getName());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkThreadAvailable(TaskoSchedule schedule, RhnJob job, TaskoTask task) {
+        if (!isTaskThreadAvailable(job, task)) {
+            int rescheduleSeconds = job.getRescheduleTime();
+            log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
+            TaskoQuartzHelper.rescheduleJob(schedule,
+                    ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
+            return false;
+        }
+        return true;
+    }
+
+    private TaskoRun runTask(TaskoSchedule schedule, TaskoTask task, TaskoTemplate template,
+                             JobExecutionContext context) {
+        TaskoRun result = null;
+        if (!isTaskRunning(schedule, task)) {
+            try {
+                Class<RhnJob> jobClass = (Class<RhnJob>) Class.forName(template.getTask().getTaskClass());
+                RhnJob job = jobClass.getDeclaredConstructor().newInstance();
+
+                if (checkThreadAvailable(schedule, job, task)) {
+                    markTaskRunning(task);
+
+                    try {
+                        log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
+                        TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
+                        TaskoFactory.save(taskRun);
+                        HibernateFactory.commitTransaction();
+                        HibernateFactory.closeSession();
+
+                        doExecute(job, context, taskRun);
+
+                        // rollback everything, what the application changed and didn't committed
+                        if (HibernateFactory.getSession().getTransaction().isActive()) {
+                            HibernateFactory.rollbackTransaction();
+                            HibernateFactory.closeSession();
+                        }
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
+                                    taskRun.getStatus().toLowerCase());
+                        }
+                        if (List.of(TaskoRun.STATUS_FINISHED, TaskoRun.STATUS_FAILED)
+                                .contains(taskRun.getStatus()) &&
+                                !Objects.equals(taskRun.getStatus(), lastStatus.get(task.getName()))) {
+                            sendStatusMail(schedule, taskRun, task);
+                            lastStatus.put(task.getName(), taskRun.getStatus());
+                        }
+                        result = taskRun;
+                    }
+                    finally {
+                        unmarkTaskRunning(task);
+                    }
+                }
+            }
+            catch (Exception e) {
+                log.error(e);
+            }
+        }
+        return result;
+    }
+
+    private void doExecute(RhnJob job, JobExecutionContext context, TaskoRun taskRun) {
+        try {
+            job.execute(context, taskRun);
+        }
+        catch (Exception e) {
+            if (HibernateFactory.getSession().getTransaction().isActive()) {
+                HibernateFactory.rollbackTransaction();
+                HibernateFactory.closeSession();
+            }
+            job.appendExceptionToLogError(e);
+            taskRun.failed();
+            HibernateFactory.commitTransaction();
+            HibernateFactory.closeSession();
+        }
+    }
+
+    private void sendStatusMail(TaskoSchedule schedule, TaskoRun taskRun, TaskoTask task) {
+        String email = "Taskomatic bunch " + schedule.getBunch().getName() +
+                " was scheduled to run within the " + schedule.getJobLabel() +
+                " schedule.\n\n" + "Subtask " + task.getName();
+        if (Objects.equals(taskRun.getStatus(), TaskoRun.STATUS_FAILED)) {
+            email += " failed.\n\n" + "For more information check ";
+            email += taskRun.getStdErrorPath() + ".";
+        }
+        else {
+            email += " finished successfully and is back to normal.";
+        }
+        log.info("Sending e-mail ... {}", task.getName());
+        TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
     }
 
     /**

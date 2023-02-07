@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
 "PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/"
@@ -67,7 +67,7 @@ msgstr "Virheellinen URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -162,7 +162,7 @@ msgstr "Tietosuojailmoitus"
 msgid "Expected a dictionary as a product argument"
 msgstr "Tuoteparametriksi odotettiin sanastoa"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Virheellinen arvo ”%s” kohteelle %s (%s)"

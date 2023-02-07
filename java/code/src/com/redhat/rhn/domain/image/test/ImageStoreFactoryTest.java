@@ -73,7 +73,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupStoreType() throws Exception {
+    public void testLookupStoreType() {
         ImageStoreType stype = ImageStoreFactory.lookupStoreTypeByLabel("registry").get();
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, stype);
 
@@ -84,7 +84,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListImageStore() throws Exception {
+    public void testListImageStore() {
         ImageStore store = createImageStore("mystore", user);
         List<ImageStore> list = ImageStoreFactory.listImageStores(user.getOrg());
 
@@ -105,7 +105,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListByTypeLabelAndOrg() throws Exception {
+    public void testListByTypeLabelAndOrg() {
         Credentials creds = createCredentials();
         ImageStore store = createImageStore("mystore", creds, user);
 
@@ -134,7 +134,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupById() throws Exception {
+    public void testLookupById() {
         ImageStore store = createImageStore("mystore", user);
 
         assertNotNull(store.getId());
@@ -148,7 +148,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByIdAndOrg() throws Exception {
+    public void testLookupByIdAndOrg() {
         ImageStore store = createImageStore("mystore", user);
 
         assertNotNull(store.getId());
@@ -167,7 +167,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByIdsAndOrg() throws Exception {
+    public void testLookupByIdsAndOrg() {
         ImageStore store1 = createImageStore("mystore1", user);
         ImageStore store2 = createImageStore("mystore2", user);
         ImageStore store3 = createImageStore("mystore3", user);
@@ -200,7 +200,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupImageStore() throws Exception {
+    public void testLookupImageStore() {
         ImageStore store = createImageStore("mystore", user);
 
         ImageStore i =

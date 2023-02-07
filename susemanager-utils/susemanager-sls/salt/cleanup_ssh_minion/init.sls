@@ -1,6 +1,9 @@
 include:
     - cleanup_minion
 
+{%- set mgr_sudo_user = salt['pillar.get']('mgr_sudo_user') or 'root' %}
+{%- set home = salt['user.info'](mgr_sudo_user)['home'] %}
+
 {% if salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 # remove server to localhost aliasing from /etc/hosts
 mgr_remove_mgr_server_localhost_alias:
@@ -14,27 +17,21 @@ mgr_remove_mgr_server_localhost_alias:
 # remove server ssh authorization
 mgr_remove_mgr_ssh_identity:
   ssh_auth.absent:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: salt://salt_ssh/mgr_ssh_id.pub
 
 {%- if salt['pillar.get']('proxy_pub_key') and salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 # remove proxy ssh authorization (if any)
 mgr_remove_proxy_ssh_identity:
   ssh_auth.absent:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: salt://salt_ssh/{{ salt['pillar.get']('proxy_pub_key') }}
-{%- endif %}
-
-{%- if salt['pillar.get']('mgr_sudo_user') and salt['pillar.get']('mgr_sudo_user') != 'root' %}
-{%- set home = '/home/' ~ salt['pillar.get']('mgr_sudo_user') %}
-{%- else %}
-{%- set home = '/root' %}
 {%- endif %}
 
 # remove own key authorization
 mgr_no_own_key_authorized:
   ssh_auth.absent:
-    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - user: {{ mgr_sudo_user }}
     - source: {{ home }}/.ssh/mgr_own_id.pub
 
 # remove own keys

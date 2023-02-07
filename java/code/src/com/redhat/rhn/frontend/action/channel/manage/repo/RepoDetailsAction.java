@@ -70,6 +70,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RepoDetailsAction extends RhnAction {
 
+    private static final Logger LOG = LogManager.getLogger(RepoDetailsAction.class);
+
     public static final String CREATE_MODE = "create_mode";
     public static final String REPO = "repo";
     public static final String URL = "url";
@@ -86,9 +88,8 @@ public class RepoDetailsAction extends RhnAction {
                 "/com/redhat/rhn/frontend/action/channel/" +
                         "manage/repo/validation/repoForm.xsd";
 
-    private static Logger logger = LogManager.getLogger(RepoDetailsAction.class);
-
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                   ActionForm formIn,
                                   HttpServletRequest request,
@@ -189,6 +190,7 @@ public class RepoDetailsAction extends RhnAction {
             ContentSource repo = ChannelFactory.lookupContentSource(context.getParamAsLong("id"),
                     context.getCurrentUser().getOrg());
             if (repo == null) {
+                LOG.error("No repository with id {}", context.getParamAsLong("id"));
                 LocalizationService ls = LocalizationService.getInstance();
                 throw new LookupException("Repo with id " + context.getParamAsLong("id") + " does not exist",
                         ls.getMessage("lookup.jsp.title.repo"),
@@ -236,7 +238,7 @@ public class RepoDetailsAction extends RhnAction {
         // The goal here is to transform the db filter representation to
         // something user-friendly.
         String currentFlag = "";
-        String filterGroup = "";
+        StringBuilder filterGroup = new StringBuilder();
         List<ContentSourceFilter> filters = ChannelFactory
                 .lookupContentSourceFiltersById(repo.getId());
         List<String> filterGroups = new ArrayList<>();
@@ -244,20 +246,20 @@ public class RepoDetailsAction extends RhnAction {
         for (ContentSourceFilter filter : filters) {
             String flag = filter.getFlag();
             if (currentFlag.equals(flag)) {
-                filterGroup = filterGroup + "," + filter.getFilter();
+                filterGroup.append("," + filter.getFilter());
             }
             else {
-                if (!filterGroup.isEmpty()) {
-                    filterGroups.add(filterGroup);
+                if (!filterGroup.toString().isEmpty()) {
+                    filterGroups.add(filterGroup.toString());
                 }
-                filterGroup = flag + filter.getFilter();
+                filterGroup = new StringBuilder(flag + filter.getFilter());
                 currentFlag = flag;
             }
         }
         form.set(METADATA_SIGNED, repo.getMetadataSigned());
 
         // finally add the last one
-        filterGroups.add(filterGroup);
+        filterGroups.add(filterGroup.toString());
 
         form.set(FILTERS, StringUtils.join(filterGroups.toArray(), ' '));
         bindRepo(request, repo);

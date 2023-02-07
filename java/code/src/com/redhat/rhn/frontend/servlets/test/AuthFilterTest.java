@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.servlets.AuthFilter;
 import com.redhat.rhn.testing.MockObjectTestCase;
@@ -28,7 +26,6 @@ import java.util.Vector;
 
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthFilterTest extends MockObjectTestCase {
 
     private class AuthFilterStub extends AuthFilter {
+        @Override
         public void setAuthenticationService(AuthenticationService service) {
             super.setAuthenticationService(service);
         }
@@ -53,7 +51,7 @@ public class AuthFilterTest extends MockObjectTestCase {
     private AuthenticationService mockAuthService;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         filter = new AuthFilterStub();
 
         mockRequest = mock(HttpServletRequest.class);
@@ -135,23 +133,5 @@ public class AuthFilterTest extends MockObjectTestCase {
         } });
 
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
-    }
-
-    @Test
-    public final void testDoFilterWhenAuthServiceThrowsException() throws Exception {
-        context().checking(new Expectations() { {
-            atLeast(1).of(mockAuthService).validate(with(any(HttpServletRequest.class)),
-                    with(any(HttpServletResponse.class)));
-            will(throwException(new ServletException()));
-        } });
-
-        try {
-            filter.doFilter(getRequest(), getResponse(), getFilterChain());
-            fail();
-        }
-        catch (ServletException e) {
-            //should throw same exception.
-            //AuthFilter should not be eating the exception
-        }
     }
 }

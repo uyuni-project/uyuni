@@ -13,11 +13,11 @@ Feature: Remote command on the Red Hat-like Salt minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "*centos*"
+    And I enter target "rhlike_minion"
     And I click on preview
     And I click on run
     Then I should see "rhlike_minion" hostname
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
-    Then I should see a "rhel fedora" text
-    And I should see a "REDHAT_SUPPORT_PRODUCT" text
+    Then I should see a "rhel centos fedora" text
+    And I should see a "ROCKY_SUPPORT_PRODUCT" text

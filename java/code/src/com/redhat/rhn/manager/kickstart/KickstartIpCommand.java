@@ -44,7 +44,7 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return List representing ip ranges by this Kickstart, ksdata
      */
     public List getDisplayRanges() {
-        List l = new LinkedList();
+        List l = new LinkedList<>();
 
         Long id = this.ksdata.getId();
 

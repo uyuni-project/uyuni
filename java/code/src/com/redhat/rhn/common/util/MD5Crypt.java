@@ -17,7 +17,7 @@ package com.redhat.rhn.common.util;
 
 import org.apache.commons.codec.binary.Hex;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -193,16 +193,7 @@ public class MD5Crypt {
      * @return md5hexed String.
      */
     public static String md5Hex(String inputString) {
-        byte[] secretBytes;
-        try {
-            secretBytes = inputString.getBytes("UTF-8");
-
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UnsupportedEncodingException when" +
-                    " trying to convert a String into UTF-8.  This shouldn't happen.", e);
-        }
-        return md5Hex(secretBytes);
+        return md5Hex(inputString.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -217,7 +208,6 @@ public class MD5Crypt {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
-            //byte[] secretBytes = inputString.getBytes("UTF-8");
             md.update(secretBytes);
             // generate the digest
             byte[] digest = md.digest();

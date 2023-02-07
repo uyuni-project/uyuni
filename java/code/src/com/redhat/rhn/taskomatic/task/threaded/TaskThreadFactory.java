@@ -24,6 +24,7 @@ public class TaskThreadFactory implements ThreadFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Thread newThread(Runnable task) {
         Thread retval = new Thread(task);
         retval.setDaemon(true);

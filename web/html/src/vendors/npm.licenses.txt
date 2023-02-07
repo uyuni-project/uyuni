@@ -700,13 +700,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-bootstrap v3.1.1 - Twitter, Inc.
+bootstrap v3.4.1 - Twitter, Inc.
 https://github.com/twbs/bootstrap.git
 --------------------------------------------------------------------------------
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2014 Twitter, Inc
+Copyright (c) 2011-2019 Twitter, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1712,7 +1712,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-moment-timezone v0.5.33 - Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)
+moment-timezone v0.5.35 - Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)
 https://github.com/moment/moment-timezone.git
 --------------------------------------------------------------------------------
 

@@ -49,6 +49,7 @@ public class RhnSetFactory extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -66,7 +67,7 @@ public class RhnSetFactory extends HibernateFactory {
         params.put("user_id", uid);
         params.put("label", label);
         SelectMode m = ModeFactory.getMode(CATALOG, "lookup_set");
-        DataResult elements = m.execute(params);
+        DataResult<RhnSetElement> elements = m.execute(params);
         RhnSetImpl result = singleton.createFromList(elements, cleanup);
         if (result != null) {
             result.sync();
@@ -82,18 +83,14 @@ public class RhnSetFactory extends HibernateFactory {
      * @return a newly created RhnSet with the given userid and label, and
      * all elements populated.
      */
-    private RhnSetImpl createFromList(List elements, SetCleanup cleanup) {
+    private RhnSetImpl createFromList(List<RhnSetElement> elements, SetCleanup cleanup) {
         if (elements == null || elements.isEmpty()) {
             return null;
         }
 
-        RhnSetElement element = (RhnSetElement)elements.get(0);
-        RhnSetImpl set =
-            new RhnSetImpl(element.getUserId(), element.getLabel(), cleanup);
-        for (Object elementIn : elements) {
-            element = (RhnSetElement) elementIn;
-            set.addElement(element);
-        }
+        RhnSetElement element = elements.get(0);
+        RhnSetImpl set = new RhnSetImpl(element.getUserId(), element.getLabel(), cleanup);
+        elements.forEach(e -> set.addElement(e));
 
         return set;
     }
@@ -129,7 +126,7 @@ public class RhnSetFactory extends HibernateFactory {
             removeByLabel(simpl.getUserId(), simpl.getLabel());
         }
 
-        Set added;
+        Set<RhnSetElement> added;
         if (!simpl.isSynced()) {
             added = simpl.getElements();
         }
@@ -140,19 +137,15 @@ public class RhnSetFactory extends HibernateFactory {
         WriteMode insertEl2 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el2");
         WriteMode insertEl1 = ModeFactory.getWriteMode(CATALOG, "add_to_set_el1");
 
-        for (Object oIn : added) {
-            RhnSetElement current = (RhnSetElement) oIn;
+        for (RhnSetElement current : added) {
             try {
                 executeMode(current, insertEl3, insertEl2, insertEl1);
             }
-            catch (ConstraintViolationException e) {
+            catch (ConstraintViolationException | WrappedSQLException e) {
                 // a concurrent transaction has already inserted this row
                 // and COMMITted. This is tolerable and can happen because
                 // the default transaction isolation level is READ
                 // COMMITTED, thus this exception can be safely ignored
-            }
-            catch (WrappedSQLException e) {
-                // see ConstraintViolationException
             }
         }
         if (!added.isEmpty()) {

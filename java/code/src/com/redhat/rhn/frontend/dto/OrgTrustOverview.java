@@ -29,6 +29,7 @@ public class OrgTrustOverview extends BaseDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

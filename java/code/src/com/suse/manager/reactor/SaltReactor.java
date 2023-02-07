@@ -19,8 +19,10 @@ import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
@@ -41,9 +43,6 @@ import com.suse.manager.reactor.messaging.LibvirtEngineNetworkMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -125,10 +124,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
@@ -262,7 +257,6 @@ public class SaltReactor {
             LOG.debug("Trigger start and registration for minion: {}", minionId);
         }
         return of(
-            new MinionStartEventMessage(minionId),
             new RegisterMinionEventMessage(minionId, startupGrains)
         );
     }
@@ -306,8 +300,9 @@ public class SaltReactor {
      *
      * @param beaconEvent beacon event
      * @return event handler runnable
+     * Public only for unit tests.
      */
-    private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
+    public Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
         if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
             return of(
                     new RunnableEventMessage("ZypperEvent.PackageSetChanged",
@@ -321,6 +316,15 @@ public class SaltReactor {
                             LOG.error(e);
                         }
                     }))
+            );
+        }
+        else if (beaconEvent.getBeacon().equals("reboot_info")) {
+            Optional<MinionServer> minion = MinionServerFactory.findByMinionId(beaconEvent.getMinionId());
+            minion.ifPresent(
+                m -> {
+                    m.setRebootNeeded((Boolean) beaconEvent.getData().get("reboot_needed"));
+                    SystemManager.updateSystemOverview(m);
+                }
             );
         }
         return empty();

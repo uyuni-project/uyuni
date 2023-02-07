@@ -172,8 +172,7 @@ public class DownloadFile extends DownloadAction {
             super.execute(mapping, formIn, request, response);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            log.error("Package retrieval error on file download url: {}", url);
+            log.error("Package retrieval error on file download url: {}", url, e);
             return mapping.findForward("error");
         }
 
@@ -615,7 +614,7 @@ public class DownloadFile extends DownloadAction {
                     }
                     else if (path.endsWith("/modules.yaml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            "/" + tree.getChannel().getModules().getRelativeFilename();
+                            "/" + tree.getChannel().getLatestModules().getRelativeFilename();
                     }
                     else {
                         String[] split = StringUtils.split(path, '/');
@@ -649,7 +648,7 @@ public class DownloadFile extends DownloadAction {
             }
             else if (path.endsWith("/modules.yaml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    "/" + child.getModules().getRelativeFilename();
+                    "/" + child.getLatestModules().getRelativeFilename();
             }
             else {
                 String[] split = StringUtils.split(path, '/');

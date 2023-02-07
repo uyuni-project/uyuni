@@ -8,6 +8,4 @@ Feature: Create an activation key for <client>
   I want to use activation keys
 
   Scenario: Create an activation key with the channel and child channels for a <client>
-    When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "<client>" via API
-    And I logout from API
+    When I create an activation key including custom channels for "<client>" via API

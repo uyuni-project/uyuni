@@ -31,6 +31,7 @@ public abstract class LoggingInvocationProcessor {
     private static final Logger LOGGER = LogManager.getLogger(LoggingInvocationProcessor.class);
 
     private static ThreadLocal timer = new ThreadLocal() {
+        @Override
         protected synchronized Object initialValue() {
             return new StopWatch();
         }
@@ -66,7 +67,7 @@ public abstract class LoggingInvocationProcessor {
         RESTRICTED_ARGS.put(
             "proxy.container_config",
             Map.of(
-                6, "caCrt",
+                6, "caCertificate",
                 7, "caKey",
                 8, "caPassword"
             )
@@ -85,12 +86,12 @@ public abstract class LoggingInvocationProcessor {
     public void afterProcess(
         String handlerName,
         String methodName,
-        StringBuffer arguments,
+        StringBuilder arguments,
         String ip
     ) {
         try {
             // Create the call in a separate buffer for reuse
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append("REQUESTED FROM: ");
             buf.append(ip);
             buf.append(" CALL: ");

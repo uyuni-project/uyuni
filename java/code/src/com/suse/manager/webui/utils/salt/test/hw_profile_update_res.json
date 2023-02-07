@@ -1,0 +1,653 @@
+{
+  "mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run": {
+    "__id__": "cpuinfo",
+    "__run_num__": 4,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {
+        "address sizes": "42 bits physical, 48 bits virtual",
+        "apicid": "1",
+        "bogomips": "3595.83",
+        "cache size": "16384 KB",
+        "cache_alignment": "64",
+        "clflush size": "64",
+        "core id": "0",
+        "cpu MHz": "1797.917",
+        "cpu cores": "1",
+        "cpu family": "6",
+        "cpuid level": "13",
+        "flags": [
+          "fpu",
+          "de",
+          "pse",
+          "tsc",
+          "msr",
+          "pae",
+          "mce",
+          "cx8",
+          "apic",
+          "sep",
+          "mtrr",
+          "pge",
+          "mca",
+          "cmov",
+          "pse36",
+          "clflush",
+          "mmx",
+          "fxsr",
+          "sse",
+          "sse2",
+          "syscall",
+          "nx",
+          "lm",
+          "rep_good",
+          "nopl",
+          "xtopology",
+          "eagerfpu",
+          "pni",
+          "cx16",
+          "x2apic",
+          "hypervisor",
+          "lahf_lm"
+        ],
+        "fpu": "yes",
+        "fpu_exception": "yes",
+        "initial apicid": "1",
+        "microcode": "0x1",
+        "model": "6",
+        "model name": "QEMU Virtual CPU version 2.5+",
+        "physical id": "1",
+        "power management": "",
+        "processor": "1",
+        "siblings": "1",
+        "stepping": "3",
+        "vendor_id": "GenuineIntel",
+        "wp": "yes"
+      }
+    },
+    "comment": "Module function status.cpuinfo executed",
+    "duration": 3.062,
+    "name": "status.cpuinfo",
+    "result": true,
+    "start_time": "18:03:43.628268"
+  },
+  "mgrcompat_|-dns_fqdns_|-mgrnet.dns_fqdns_|-module_run": {
+    "__id__": "dns_fqdns",
+    "__run_num__": 13,
+    "__sls__": "hardware.profileupdate",
+    "dns_fqdns_changes": {},
+    "comment": "onlyif condition is false",
+    "duration": 1091.59,
+    "name": "mgrnet.dns_fqdns",
+    "result": true,
+    "skip_watch": true,
+    "start_time": "18:03:43.806567"
+  },
+  "mgrcompat_|-fqdns_|-network.fqdns_|-module_run": {
+    "__id__": "fqdns",
+    "__run_num__": 14,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {
+        "fqdns": [
+          "min-centos7.test.lab"
+        ]
+      }
+    },
+    "comment": "Module function network.fqdns executed",
+    "duration": 36.845,
+    "name": "network.fqdns",
+    "result": true,
+    "start_time": "18:03:44.899070"
+  },
+  "mgrcompat_|-grains_|-grains.items_|-module_run": {
+    "__id__": "grains",
+    "__run_num__": 3,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {
+        "__suse_reserved_pkg_all_versions_support": true,
+        "__suse_reserved_pkg_patches_support": true,
+        "__suse_reserved_saltutil_states_support": true,
+        "biosreleasedate": "04/01/2014",
+        "biosversion": "rel-1.14.0-0-g155821a-rebuilt.opensuse.org",
+        "cpu_flags": [
+          "fpu",
+          "de",
+          "pse",
+          "tsc",
+          "msr",
+          "pae",
+          "mce",
+          "cx8",
+          "apic",
+          "sep",
+          "mtrr",
+          "pge",
+          "mca",
+          "cmov",
+          "pse36",
+          "clflush",
+          "mmx",
+          "fxsr",
+          "sse",
+          "sse2",
+          "syscall",
+          "nx",
+          "lm",
+          "rep_good",
+          "nopl",
+          "xtopology",
+          "eagerfpu",
+          "pni",
+          "cx16",
+          "x2apic",
+          "hypervisor",
+          "lahf_lm"
+        ],
+        "cpu_model": "QEMU Virtual CPU version 2.5+",
+        "cpuarch": "x86_64",
+        "cwd": "/root",
+        "disks": [
+          "sr0",
+          "vda"
+        ],
+        "dns": {
+          "domain": "",
+          "ip4_nameservers": [
+            "192.168.43.254"
+          ],
+          "ip6_nameservers": [],
+          "nameservers": [
+            "192.168.43.254"
+          ],
+          "options": [],
+          "search": [
+            "test.lab.",
+            "example.org"
+          ],
+          "sortlist": []
+        },
+        "domain": "test.lab",
+        "efi": false,
+        "efi-secure-boot": false,
+        "fqdn": "min-centos7.test.lab",
+        "fqdn_ip4": [
+          "192.168.220.137"
+        ],
+        "fqdn_ip6": [],
+        "fqdns": [
+          "min-centos7.test.lab"
+        ],
+        "gid": 0,
+        "gpus": [],
+        "groupname": "root",
+        "host": "min-centos7",
+        "hwaddr_interfaces": {
+          "eth0": "aa:b2:92:03:00:89",
+          "eth1": "52:54:00:ca:26:99",
+          "lo": "00:00:00:00:00:00"
+        },
+        "id": "min-centos7.test.lab",
+        "init": "systemd",
+        "ip4_gw": "192.168.223.254",
+        "ip4_interfaces": {
+          "eth0": [
+            "192.168.220.137"
+          ],
+          "eth1": [
+            "192.168.43.128"
+          ],
+          "lo": [
+            "127.0.0.1"
+          ]
+        },
+        "ip6_gw": false,
+        "ip6_interfaces": {
+          "eth0": [
+            "fe80::a8b2:92ff:fe03:89"
+          ],
+          "eth1": [
+            "fe80:1234:ff:faaa:2699"
+          ],
+          "lo": [
+            "::1"
+          ]
+        },
+        "ip_gw": true,
+        "ip_interfaces": {
+          "eth0": [
+            "192.168.220.137",
+            "fe80::a8b2:92ff:fe03:89"
+          ],
+          "eth1": [
+            "192.168.43.128",
+            "fe80:1234:ff:faaa:2699"
+          ],
+          "lo": [
+            "127.0.0.1",
+            "::1"
+          ]
+        },
+        "ipv4": [
+          "192.168.220.137",
+          "127.0.0.1",
+          "192.168.43.128"
+        ],
+        "ipv6": [
+          "::1",
+          "fe80:1234:ff:faaa:2699",
+          "fe80::a8b2:92ff:fe03:89"
+        ],
+        "kernel": "Linux",
+        "kernelparams": [
+          [
+            "BOOT_IMAGE",
+            "/boot/vmlinuz-3.10.0-1127.el7.x86_64"
+          ],
+          [
+            "root",
+            null
+          ],
+          [
+            "ro",
+            null
+          ],
+          [
+            "console",
+            "tty0"
+          ],
+          [
+            "console",
+            "ttyS0,115200n8"
+          ],
+          [
+            "crashkernel",
+            "auto"
+          ],
+          [
+            "net.ifnames",
+            "0"
+          ],
+          [
+            "console",
+            "ttyS0"
+          ],
+          [
+            "LANG",
+            "en_US.UTF-8"
+          ]
+        ],
+        "kernelrelease": "3.10.0-1127.el7.x86_64",
+        "kernelversion": "#1 SMP Tue Mar 31 23:36:51 UTC 2020",
+        "locale_info": {
+          "defaultencoding": "UTF-8",
+          "defaultlanguage": "en_US",
+          "detectedencoding": "utf-8",
+          "timezone": "unknown"
+        },
+        "localhost": "min-centos7",
+        "lsb_distrib_codename": "CentOS Linux 7 (Core)",
+        "lsb_distrib_id": "CentOS Linux",
+        "machine_id": "482b50e885e40f6c8b22b844632b1a5c",
+        "manufacturer": "QEMU",
+        "master": "salt",
+        "mdadm": [],
+        "mem_total": 1837,
+        "nodename": "min-centos7",
+        "num_cpus": 2,
+        "num_gpus": 0,
+        "os": "CentOS",
+        "os_family": "RedHat",
+        "osarch": "x86_64",
+        "oscodename": "CentOS Linux 7 (Core)",
+        "osfinger": "CentOS Linux-7",
+        "osfullname": "CentOS Linux",
+        "osmajorrelease": 7,
+        "osrelease": "7.8.2003",
+        "osrelease_info": [
+          7,
+          8,
+          2003
+        ],
+        "path": "/var/tmp/venv-salt-minion/bin:/var/tmp/venv-salt-minion/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin",
+        "pid": 30158,
+        "productname": "Standard PC (i440FX + PIIX, 1996)",
+        "ps": "ps -efHww",
+        "pythonexecutable": "/var/tmp/venv-salt-minion/bin/python",
+        "pythonpath": [
+          "/var/tmp/venv-salt-minion/bin",
+          "/var/lib/venv-salt-minion/local",
+          "/var/tmp/venv-salt-minion/lib64/python310.zip",
+          "/var/tmp/venv-salt-minion/lib64/python3.10",
+          "/var/tmp/venv-salt-minion/lib64/python3.10/lib-dynload",
+          "/var/tmp/venv-salt-minion/lib64/python3.10/site-packages",
+          "/var/tmp/venv-salt-minion/lib/python3.10/site-packages"
+        ],
+        "pythonversion": [
+          3,
+          10,
+          5,
+          "final",
+          0
+        ],
+        "saltpath": "/var/tmp/venv-salt-minion/lib/python3.10/site-packages/salt",
+        "saltversion": "3004",
+        "saltversioninfo": [
+          3004
+        ],
+        "selinux": {
+          "enabled": true,
+          "enforced": "Enforcing"
+        },
+        "serialnumber": "",
+        "server_id": 1505676186,
+        "shell": "/bin/bash",
+        "ssds": [],
+        "swap_total": 0,
+        "systemd": {
+          "features": "+PAM +AUDIT +SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 -SECCOMP +BLKID +ELFUTILS +KMOD +IDN",
+          "version": "219"
+        },
+        "systempath": [
+          "/var/tmp/venv-salt-minion/bin",
+          "/var/tmp/venv-salt-minion/bin",
+          "/usr/local/sbin",
+          "/usr/local/bin",
+          "/usr/sbin",
+          "/usr/bin"
+        ],
+        "transactional": false,
+        "uid": 0,
+        "username": "root",
+        "uuid": "5f7ad903-cf95-4baa-928e-ac34354fc835",
+        "virtual": "kvm",
+        "zfs_feature_flags": false,
+        "zfs_support": false,
+        "zmqversion": "4.2.3"
+      }
+    },
+    "comment": "Module function grains.items executed",
+    "duration": 4.604,
+    "name": "grains.items",
+    "result": true,
+    "start_time": "18:03:43.623089"
+  },
+  "mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run": {
+    "__id__": "network-interfaces",
+    "__run_num__": 6,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {
+        "eth0": {
+          "hwaddr": "aa:b2:92:03:00:89",
+          "inet": [
+            {
+              "address": "192.168.220.137",
+              "broadcast": "192.168.223.255",
+              "label": "eth0",
+              "netmask": "255.255.252.0"
+            }
+          ],
+          "inet6": [
+            {
+              "address": "fe80::a8b2:92ff:fe03:89",
+              "prefixlen": "64",
+              "scope": "link"
+            }
+          ],
+          "up": true
+        },
+        "eth1": {
+          "hwaddr": "52:54:00:ca:26:99",
+          "inet": [
+            {
+              "address": "192.168.43.128",
+              "broadcast": "192.168.43.255",
+              "label": "eth1",
+              "netmask": "255.255.255.0"
+            }
+          ],
+          "inet6": [
+            {
+              "address": "fe80:1234:ff:faaa:2699",
+              "prefixlen": "64",
+              "scope": "link"
+            }
+          ],
+          "up": true
+        },
+        "lo": {
+          "hwaddr": "00:00:00:00:00:00",
+          "inet": [
+            {
+              "address": "127.0.0.1",
+              "broadcast": null,
+              "label": "lo",
+              "netmask": "255.0.0.0"
+            }
+          ],
+          "inet6": [
+            {
+              "address": "::1",
+              "prefixlen": "128",
+              "scope": "host"
+            }
+          ],
+          "up": true
+        }
+      }
+    },
+    "comment": "Module function network.interfaces executed",
+    "duration": 14.194,
+    "name": "network.interfaces",
+    "result": true,
+    "start_time": "18:03:43.716606"
+  },
+  "mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run": {
+    "__id__": "network-ips",
+    "__run_num__": 7,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {}
+    },
+    "comment": "Module function sumautil.primary_ips executed",
+    "duration": 24.414,
+    "name": "sumautil.primary_ips",
+    "result": true,
+    "start_time": "18:03:43.732143"
+  },
+  "mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run": {
+    "__id__": "network-modules",
+    "__run_num__": 8,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": {
+        "eth0": "virtio_net",
+        "eth1": "virtio_net",
+        "lo": null
+      }
+    },
+    "comment": "Module function sumautil.get_net_modules executed",
+    "duration": 5.1,
+    "name": "sumautil.get_net_modules",
+    "result": true,
+    "start_time": "18:03:43.757603"
+  },
+  "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
+    "__id__": "smbios-records-baseboard",
+    "__run_num__": 11,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": []
+    },
+    "comment": "Module function smbios.records executed",
+    "duration": 9.106,
+    "name": "smbios.records",
+    "result": true,
+    "start_time": "18:03:43.786358"
+  },
+  "mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run": {
+    "__id__": "smbios-records-bios",
+    "__run_num__": 9,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": [
+        {
+          "data": {
+            "address": "0xE8000",
+            "characteristics": [
+              "",
+              "BIOS characteristics not supported",
+              "Targeted content distribution is supported"
+            ],
+            "release_date": "04/01/2014",
+            "rom_size": "64 kB",
+            "runtime_size": "96 kB",
+            "vendor": "SeaBIOS",
+            "version": "rel-1.14.0-0-g155821a-rebuilt.opensuse.org"
+          },
+          "description": "BIOS Information",
+          "handle": "0x0000",
+          "type": 0
+        }
+      ]
+    },
+    "comment": "Module function smbios.records executed",
+    "duration": 11.828,
+    "name": "smbios.records",
+    "result": true,
+    "start_time": "18:03:43.763541"
+  },
+  "mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run": {
+    "__id__": "smbios-records-chassis",
+    "__run_num__": 12,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": [
+        {
+          "data": {
+            "asset_tag": "Not Specified",
+            "boot-up_state": "Safe",
+            "contained_elements": 0,
+            "height": "Unspecified",
+            "lock": "Not Present",
+            "manufacturer": "QEMU",
+            "number_of_power_cords": "Unspecified",
+            "oem_information": "0x00000000",
+            "power_supply_state": "Safe",
+            "security_status": "Unknown",
+            "serial_number": "Not Specified",
+            "thermal_state": "Safe",
+            "type": "Other",
+            "version": "pc-i440fx-5.2"
+          },
+          "description": "Chassis Information",
+          "handle": "0x0300",
+          "type": 3
+        }
+      ]
+    },
+    "comment": "Module function smbios.records executed",
+    "duration": 9.369,
+    "name": "smbios.records",
+    "result": true,
+    "start_time": "18:03:43.796322"
+  },
+  "mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run": {
+    "__id__": "smbios-records-system",
+    "__run_num__": 10,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": [
+        {
+          "data": {
+            "manufacturer": "QEMU",
+            "product_name": "Standard PC (i440FX + PIIX, 1996)",
+            "serial_number": "Not Specified",
+            "sku_number": "Not Specified",
+            "uuid": "5f7ad903-cf95-4baa-928e-ac34354fc835",
+            "version": "pc-i440fx-5.2",
+            "wake-up_type": "Power Switch"
+          },
+          "description": "System Information",
+          "handle": "0x0100",
+          "type": 1
+        }
+      ]
+    },
+    "comment": "Module function smbios.records executed",
+    "duration": 9.299,
+    "name": "smbios.records",
+    "result": true,
+    "start_time": "18:03:43.776205"
+  },
+  "mgrcompat_|-udev_|-udev.exportdb_|-module_run": {
+    "__id__": "udev",
+    "__run_num__": 5,
+    "__sls__": "hardware.profileupdate",
+    "changes": {
+      "ret": [
+        {
+          "E": {
+            "DEVPATH": "/devices/LNXSYSTM:00",
+            "ID_VENDOR_FROM_DATABASE": "The Linux Foundation",
+            "MODALIAS": "acpi:LNXSYSTM:",
+            "SUBSYSTEM": "acpi",
+            "USEC_INITIALIZED": 45782
+          },
+          "P": "/devices/LNXSYSTM:00"
+        },
+        {
+          "E": {
+            "DEVPATH": "/devices/LNXSYSTM:00/LNXPWRBN:00",
+            "DRIVER": "button",
+            "ID_VENDOR_FROM_DATABASE": "The Linux Foundation",
+            "MODALIAS": "acpi:LNXPWRBN:",
+            "SUBSYSTEM": "acpi",
+            "USEC_INITIALIZED": 46156
+          },
+          "P": "/devices/LNXSYSTM:00/LNXPWRBN:00"
+        }
+      ]
+    },
+    "comment": "Module function udev.exportdb executed",
+    "duration": 83.794,
+    "name": "udev.exportdb",
+    "result": true,
+    "start_time": "18:03:43.631886"
+  },
+  "pkg_|-mgr_install_dmidecode_|-dmidecode_|-installed": {
+    "__id__": "mgr_install_dmidecode",
+    "__run_num__": 2,
+    "__sls__": "hardware.profileupdate",
+    "changes": {},
+    "comment": "All specified packages are already installed",
+    "duration": 916.466,
+    "name": "dmidecode",
+    "result": true,
+    "start_time": "18:03:42.702627"
+  },
+  "saltutil_|-sync_modules_|-sync_modules_|-sync_modules": {
+    "__id__": "sync_modules",
+    "__run_num__": 1,
+    "__sls__": "util.syncmodules",
+    "changes": {},
+    "comment": "No updates to sync",
+    "duration": 1186.077,
+    "name": "sync_modules",
+    "result": true,
+    "start_time": "18:03:38.879632"
+  },
+  "saltutil_|-sync_states_|-sync_states_|-sync_states": {
+    "__id__": "sync_states",
+    "__run_num__": 0,
+    "__sls__": "util.syncstates",
+    "changes": {},
+    "comment": "No updates to sync",
+    "duration": 1403.262,
+    "name": "sync_states",
+    "result": true,
+    "start_time": "18:03:37.475681"
+  }
+}

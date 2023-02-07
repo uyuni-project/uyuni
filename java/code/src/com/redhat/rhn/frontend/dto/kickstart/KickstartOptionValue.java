@@ -138,6 +138,7 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -158,6 +159,7 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         int result;
         result = (name != null ? name.hashCode() : 0);
@@ -170,6 +172,7 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
      *
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(KickstartOptionValue o) {
         return getName().compareTo(o.getName());
     }

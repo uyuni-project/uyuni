@@ -1,5 +1,8 @@
-# Copyright 2015-2022 SUSE LLC
+# Copyright 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains all step definitions concerning Salt and bootstrapping
+### Salt minions.
 
 require 'timeout'
 require 'open-uri'
@@ -29,7 +32,8 @@ end
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run("rc#{pkgname} stop", check_errors: false)
   else
@@ -40,7 +44,8 @@ end
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run("rc#{pkgname} start", check_errors: false)
   else
@@ -51,7 +56,8 @@ end
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run("rc#{pkgname} restart", check_errors: false)
   else
@@ -97,15 +103,6 @@ When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   $server.run("salt-key -y --accept=#{system_name}*")
 end
 
-When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
-  system_name = get_system_name(host)
-  $server.run("salt-key -y --reject=#{system_name}")
-end
-
-When(/^I delete all keys in the Salt master$/) do
-  $server.run('salt-key -y -D')
-end
-
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   system_name = get_system_name(host)
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
@@ -117,14 +114,14 @@ end
 
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} state.apply #{state}")
+  $server.run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
@@ -143,16 +140,12 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   refute_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   assert_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should have been reformatted$/) do |host|
@@ -162,14 +155,6 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
-Given(/^I am authorized as an example user with no roles$/) do
-  $api_test.auth.login('admin', 'admin')
-  @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  $api_test.user.create_user(@username, 'linux')
-  step %(I am authorized as "#{@username}" with password "linux")
-  $api_test.auth.logout
-end
-
 When(/^I click on preview$/) do
   find('button#preview').click
 end
@@ -205,10 +190,6 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
-Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
-  $server.run_until_ok("rpm -q #{package}-formula")
-end
-
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
 end
@@ -241,12 +222,12 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  if has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
-    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT).click
+  if has_xpath?(xpath_query, wait: 2)
+    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: DEFAULT_TIMEOUT)
+    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
@@ -405,6 +386,10 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
+  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+    break unless find('button#search').disabled?
+    sleep 1
+  end
   find('button#search').click
 end
 
@@ -418,10 +403,6 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-When(/^I click undo for "(.*?)"$/) do |pkg|
-  find("button##{pkg}-undo").click
-end
-
 When(/^I click apply$/) do
   find('button#apply').click
 end
@@ -431,19 +412,6 @@ When(/^I click save$/) do
 end
 
 # salt-ssh steps
-When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
-  target = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if suse_host?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
-  elsif rh_host?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
-  elsif deb_host?(host)
-    pkgname = "salt-common salt-minion" if $product != 'Uyuni'
-    target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
-  end
-end
-
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
@@ -472,10 +440,8 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
-When(/^I enter "([^"]*)" password$/) do |host|
-  raise "#{host} minion password is unknown" unless %w[kvm_server xen_server].include?(host)
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm_server"
-  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
+When(/^I enter KVM Server password$/) do
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password")
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
@@ -509,22 +475,19 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   `rm #{path}`
 end
 
-When(/^I install a salt pillar file with name "([^"]*)" on the server$/) do |file|
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  inject_salt_pillar_file(source, file)
+When(/^I install the package download endpoint pillar file on the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  uri = URI.parse($custom_download_endpoint)
+  content = "pkg_download_point_protocol: #{uri.scheme}\n"\
+            "pkg_download_point_host: #{uri.host}\n"\
+            "pkg_download_point_port: #{uri.port}"
+  $server.run("echo -e \"#{content}\" > #{filepath}")
 end
 
-When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |type, file|
-  case type
-  when 'state'
-    path = "/srv/salt/" + file
-  when 'pillar'
-    path = "/srv/pillar/" + file
-  else
-    raise 'Invalid type.'
-  end
-  return_code = file_delete($server, path)
-  raise 'File Deletion failed' unless return_code.zero?
+When(/^I delete the package download endpoint pillar file from the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  return_code = file_delete($server, filepath)
+  raise 'File deletion failed' unless return_code.zero?
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
@@ -535,12 +498,4 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
-end
-
-When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
-  system_name = get_system_name(minion)
-  output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
-  if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    log output
-  end
 end

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.frontend.dto.SnapshotTagDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -22,10 +23,11 @@ import java.util.List;
 /**
  * SingleSnapshotTagsAction
  */
-public class SingleSnapshotTagsAction extends SnapshotBaseAction {
+public class SingleSnapshotTagsAction extends SnapshotBaseAction<SnapshotTagDto> {
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<SnapshotTagDto> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         return SystemManager.snapshotTagsForSystemAndSnapshot(sid, ssid, null);

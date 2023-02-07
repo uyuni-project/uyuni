@@ -1,31 +1,75 @@
 ## Install on k3s with MetalLB
 
-Install `k3s` without load balancer and traefik router:
+### Installing k3s
 
-    curl -sfL https://get.k3s.io | sh -s - server --disable=traefik --disable=servicelb
+On the proxy host machine, install `k3s` without the load balancer and traefik router:
 
-Copy `kubectl config view --flatten=true` output to the work machine and change the IP address to the proxy host FQDN.
+    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik --disable=servicelb --tls-san=<K3S_HOST_FQDN>" sh -
 
-Run `export KUBECONFIG=/path/to/dev-kubeconfig`.
+### Configuring cluster access
 
-Install metalLB:
+`helm` needs a configuration file to connect to the target kubernetes cluster.
+This file is usually called a `kubeconfig`
+
+On the cluster server machine run the following command
+You can optionally transfer the resulting `kubeconfig-k3s.yaml` to your work machine:
+
+    kubectl config view --flatten=true | sed 's/127.0.0.1/<K3S_HOST_FQDN>/' >kubeconfig-k3s.yaml
+
+Before calling `helm`, run `export KUBECONFIG=/path/to/kubeconfig-k3s.yaml`.
+
+### Installing helm
+
+On a SUSE Linux Enterprise Server machine, the **Containers Module** is required to install `helm`.
+Simply run:
+
+    zypper in helm
+
+### Installing metalLB
+
+MetalLB is the LoadBalancer that will expose the proxy pod services to the outside world.
+To install it, run:
 
     helm repo add metallb https://metallb.github.io/metallb
+    helm install --create-namespace -n metallb metallb metallb/metallb 
 
-Create a `metallb-values.yaml` with content like the following with adjusted IP addresses:
+MetalLB still requires a configuration to know the virtual IP address range to be used.
+In this example, the virtual IP addresses will be from `192.168.122.240` to `192.168.122.250`, but we could lower that range since only one address will be used in the end.
+This addresses obviously need to be a subset of the server network.
+
+Create a `metallb-config.yaml` with content like the following with an IP address range that aligns with the deployed network:
 
 ```yaml
-    configInline:
-      address-pools:
-       - name: default
-         protocol: layer2
-         addresses:
-           - 192.168.122.240-192.168.122.250
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: l2-pool
+  namespace: metallb
+spec:
+  addresses:
+  - 192.168.122.240-192.168.122.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2 
+  namespace: metallb
+spec:
+  ipAddressPools:
+  - l2-pool
 ```
 
-Run the following command to install metalLB:
+Apply this configuration by running:
 
-    helm install metallb metallb/metallb -f metallb-values.yaml 
+    kubectl apply -f metallb-config.yaml
+
+
+### Deploying the proxy helm chart
+
+Before deploying the proxy containers, we need to add a configuration file forcing the IP address MetalLB will use for the proxy services.
+This IP address needs to be the one to which the proxy FQDN entered when creating the proxy configuration.
+This example will use `192.168.122.241`.
+
 Create a `custom-values.yaml` file with the following content:
 
     services:
@@ -33,9 +77,16 @@ Create a `custom-values.yaml` file with the following content:
         metallb.universe.tf/allow-shared-ip: key-to-share-ip
         metallb.universe.tf/loadBalancerIPs: 192.168.122.241
 
-Add a `dev-pxy-k3s.mgr.lab` DNS entry for `192.168.122.241`
+If you want to configure the storage of the volumes to be used by the proxy pod, define persistent volumes for the following claims.
+Please refer to the [kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for more details.
 
-Deploy the proxy helm chart:
+* default/squid-cache-pv-claim
+* default/package-cache-pv-claim
+* default/tftp-boot-pv-claim
 
-    tar -x -C test -f ~/Downloads/dev-pxy-k3s-config.tar.gz
-    helm upgrade --install proxy ./proxy-helm -f test/config.yaml -f test/httpd.yaml -f test/ssh.yaml -f custom-values.yaml
+Copy and extract the proxy configuration file and then deploy the proxy helm chart:
+
+    tar xf /path/to/config.tar.gz
+    helm install uyuni-proxy oci://registry.opensuse.org/uyuni/proxy -f config.yaml -f httpd.yaml -f ssh.yaml -f custom-values.yaml
+
+To install the helm chart from SUSE Manager, use the `oci://registry.suse.com/suse/manager/4.3/proxy` URL instead.

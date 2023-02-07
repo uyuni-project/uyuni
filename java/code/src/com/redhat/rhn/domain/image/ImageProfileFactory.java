@@ -33,7 +33,7 @@ import javax.persistence.criteria.Root;
 public class ImageProfileFactory extends HibernateFactory {
 
     private static ImageProfileFactory instance = new ImageProfileFactory();
-    private static Logger log = LogManager.getLogger(ImageProfileFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ImageProfileFactory.class);
 
     /**
      * Default constructor.
@@ -48,10 +48,7 @@ public class ImageProfileFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ImageProfileFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**

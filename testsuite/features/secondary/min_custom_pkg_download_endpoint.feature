@@ -1,10 +1,11 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with
 # setting pillar data values as mentioned in upload_files/rpm_enpoint.sls. These scenarios test this feature
 
 @scope_onboarding
+@custom_download_endpoint
 Feature: Repos file generation based on custom pillar data
 
   Scenario: Log in as admin user
@@ -15,9 +16,9 @@ Feature: Repos file generation based on custom pillar data
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
+    And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -28,22 +29,22 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the default RPM download point values
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "https", "proxy" and "443" in the repo file on the "sle_minion"
+    And the repo file should contain the normal download endpoint on the "sle_minion"
 
   Scenario: Set the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     When I install a salt pillar top file for "pkg_endpoint" with target "*" on the server
     And I wait for "1" seconds
-    And I install a salt pillar file with name "pkg_endpoint.sls" on the server
+    And I install the package download endpoint pillar file on the server
     And I refresh the pillar data
 
   Scenario: Subscribe the SLES minion to a channel again so new RPM end-point will be taken into account
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
+    And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -54,10 +55,10 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the channel.repo file to see the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "ftp", "minima-mirror.mgr.prv.suse.net" and "445" in the repo file on the "sle_minion"
+    And the repo file should contain the custom download endpoint on the "sle_minion"
 
   Scenario: Cleanup: remove the custom RPM download point
-    When I delete a salt "pillar" file with name "pkg_endpoint.sls" on the server
+    When I delete the package download endpoint pillar file from the server
     And I install a salt pillar top file for "disable_local_repos_off, salt_bundle_config" with target "*" on the server
     And I refresh the pillar data
 
@@ -65,9 +66,11 @@ Feature: Repos file generation based on custom pillar data
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -77,5 +80,4 @@ Feature: Repos file generation based on custom pillar data
 
   Scenario: Cleanup: recheck the default RPM download point values
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "https", "proxy" and "443" in the repo file on the "sle_minion"
-
+    And the repo file should contain the normal download endpoint on the "sle_minion"

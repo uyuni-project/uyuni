@@ -192,7 +192,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public final void testList() throws Exception {
+    public final void testList() {
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
         ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
@@ -357,7 +357,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(store, info.getStore());
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().equals(key.getChannels()));
+        assertEquals(info.getChannels(), key.getChannels());
         assertTrue(info.getCustomDataValues().isEmpty());
         assertFalse(info.isExternalImage());
 
@@ -494,7 +494,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(0, info.getCustomDataValues().size());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().equals(channels.get()));
+        assertEquals(info.getChannels(), channels.get());
         assertTrue(info.getPackages().isEmpty());
         assertTrue(info.getInstalledProducts().isEmpty());
 
@@ -509,7 +509,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByIdsAndOrg() throws Exception {
+    public void testLookupByIdsAndOrg() {
         ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
@@ -543,7 +543,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateRevision() throws Exception {
+    public void testUpdateRevision() {
         ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("test", "1.0.0", user);
         ImageInfoFactory.updateRevision(img1);
@@ -558,7 +558,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0.tgz",
@@ -595,7 +595,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDeltaImage() throws Exception {
+    public void testDeltaImage() {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta1.tgz",

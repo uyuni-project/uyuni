@@ -48,10 +48,11 @@ public class SyncErrataAction extends RhnAction implements Listable<ErrataOvervi
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rc = new RequestContext(request);
         User user = rc.getCurrentUser();
@@ -93,6 +94,7 @@ public class SyncErrataAction extends RhnAction implements Listable<ErrataOvervi
      *
      * {@inheritDoc}
      */
+    @Override
     public List<ErrataOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         Channel chan = ChannelManager.lookupByIdAndUser(

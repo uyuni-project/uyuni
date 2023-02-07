@@ -38,6 +38,7 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -51,31 +52,37 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getLabel() {
         return this.label;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setLabel(String labelIn) {
         this.label = labelIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return this.name;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setName(String nameIn) {
         this.name = nameIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "RoleImpl.label: " + label;
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof RoleImpl)) {
             return false;
@@ -87,6 +94,7 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).
             append(getLabel()).toHashCode();

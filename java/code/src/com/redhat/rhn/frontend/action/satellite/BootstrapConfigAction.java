@@ -101,8 +101,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
         }
         else {
             String caCertPath = CACertPathUtil.processCACertPath();
-            form.set(HOSTNAME, IDN.toUnicode(
-                Config.get().getString(ConfigDefaults.JABBER_SERVER)));
+            form.set(HOSTNAME, IDN.toUnicode(ConfigDefaults.get().getHostname()));
             form.set(SSL_CERT, caCertPath);
             form.set(SALT, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);

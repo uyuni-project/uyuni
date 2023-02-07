@@ -47,11 +47,10 @@ import java.util.Set;
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
  */
-public class SSHPushDriver implements QueueDriver {
+public class SSHPushDriver implements QueueDriver<SystemSummary> {
 
     // Synchronized set of systems we are currently talking to
-    private static Set<SystemSummary> currentSystems =
-            Collections.synchronizedSet(new HashSet<>());
+    private static final Set<SystemSummary> CURRENT_SYSTEMS = Collections.synchronizedSet(new HashSet<>());
 
     // String constants
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
@@ -66,8 +65,6 @@ public class SSHPushDriver implements QueueDriver {
 
     private CheckinCandidatesResolver checkinCandidatesResolver;
 
-    // Properties used to determine when to look for checkin candidates
-    private int checkInterval = SystemCheckinUtils.CHECK_INTERVAL;
     private int moduloRemainder;
 
     /**
@@ -75,7 +72,7 @@ public class SSHPushDriver implements QueueDriver {
      * @return set of systems
      */
     public static Set<SystemSummary> getCurrentSystems() {
-        return currentSystems;
+        return CURRENT_SYSTEMS;
     }
 
     /**
@@ -93,10 +90,10 @@ public class SSHPushDriver implements QueueDriver {
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CHECKIN_CANDIDATES);
 
         // Randomly select a modulo remainder
-        moduloRemainder = SystemCheckinUtils.nextRandom(0, checkInterval - 1);
+        moduloRemainder = SystemCheckinUtils.nextRandom(0, SystemCheckinUtils.CHECK_INTERVAL - 1);
         if (log.isDebugEnabled()) {
-            log.debug("We will look for checkin candidates every {} minutes (remainder = {})", checkInterval,
-                    moduloRemainder);
+            log.debug("We will look for checkin candidates every {} minutes (remainder = {})",
+                SystemCheckinUtils.CHECK_INTERVAL, moduloRemainder);
         }
 
         // Skip all running or ready jobs if any
@@ -111,10 +108,8 @@ public class SSHPushDriver implements QueueDriver {
      */
     @Override
     public List<SystemSummary> getCandidates() {
-        List<SystemSummary> candidates = new LinkedList<>();
-
         // Find traditional systems with actions scheduled
-        candidates.addAll(getTraditionalCandidates());
+        List<SystemSummary> candidates = new LinkedList<>(getTraditionalCandidates());
 
         // Find Salt systems currently rebooting,
         // i.e with reboot actions in status picked-up with picked-up time older than 4 minutes
@@ -149,7 +144,7 @@ public class SSHPushDriver implements QueueDriver {
             log.debug("Current minutes: {}", currentMinutes);
         }
 
-        if (!isDefaultSchedule() || currentMinutes % checkInterval == moduloRemainder) {
+        if (!isDefaultSchedule() || currentMinutes % SystemCheckinUtils.CHECK_INTERVAL == moduloRemainder) {
             List<SystemSummary> checkinCandidates = this.checkinCandidatesResolver.getCheckinCandidates();
             checkinCandidates.stream().filter(c -> !candidates.contains(c)).forEach(candidates::add);
         }
@@ -159,8 +154,8 @@ public class SSHPushDriver implements QueueDriver {
         }
 
         // Do not return candidates we are talking to already
-        synchronized (currentSystems) {
-            for (SystemSummary s : currentSystems) {
+        synchronized (CURRENT_SYSTEMS) {
+            for (SystemSummary s : CURRENT_SYSTEMS) {
                 if (candidates.contains(s)) {
                     log.debug("Skipping system: {}", s.getName());
                     candidates.remove(s);
@@ -175,9 +170,7 @@ public class SSHPushDriver implements QueueDriver {
      * {@inheritDoc}
      */
     @Override
-    public QueueWorker makeWorker(Object item) {
-        SystemSummary system = (SystemSummary) item;
-
+    public QueueWorker makeWorker(SystemSummary system) {
         // Create a Salt worker if the system has a minion id
         if (system.getMinionId() != null) {
             return new SSHPushWorkerSalt(getLogger(), system,
@@ -228,7 +221,6 @@ public class SSHPushDriver implements QueueDriver {
      *
      * @return list of candidates with actions scheduled
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> getTraditionalCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_TRADITIONAL_CANDIDATES);
@@ -240,7 +232,6 @@ public class SSHPushDriver implements QueueDriver {
      *
      * @return list of candidates with ongoing reboot actions
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> getRebootingMinions() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_REBOOTING_MINIONS);
@@ -253,7 +244,6 @@ public class SSHPushDriver implements QueueDriver {
      *
      * @return list of candidates with ongoing reboot actions
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SSHPushAction> getQueuedMinionActionsWithPrerequisites() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_QUEUED_MINION_ACTIONS_WITH_PREREQ);

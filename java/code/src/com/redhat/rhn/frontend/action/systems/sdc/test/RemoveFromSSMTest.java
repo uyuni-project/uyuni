@@ -38,6 +38,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -55,7 +56,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
 
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         actionPerform();
         assertEquals(request.getParameter("sid"), server.getId().toString());

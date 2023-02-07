@@ -32,15 +32,6 @@ Feature: Reboot systems managed by Uyuni
     When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     And I should see a "Reboot completed." text
 
-  Scenario: Reboot a SLES traditional client
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    And I run "rhn_check -vvv" on "sle_client"
-    Then I wait and check that "sle_client" has rebooted
-
 @rhlike_minion
   Scenario: Reboot the Red Hat-like minion and wait until reboot is completed
     Given I am on the Systems overview page of this "rhlike_minion"

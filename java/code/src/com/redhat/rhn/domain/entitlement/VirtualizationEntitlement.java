@@ -41,6 +41,7 @@ public class VirtualizationEntitlement extends Entitlement {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPermanent() {
         return false;
     }
@@ -64,6 +65,7 @@ public class VirtualizationEntitlement extends Entitlement {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
         String type = grains.getOptionalAsString("virtual").orElse("physical");
         String subtype = grains.getOptionalAsString("virtual_subtype").orElse("");

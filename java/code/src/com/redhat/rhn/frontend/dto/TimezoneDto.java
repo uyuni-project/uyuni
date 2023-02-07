@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 import com.redhat.rhn.common.db.datasource.RowCallback;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class TimezoneDto extends BaseDto implements RowCallback {
      * Returns the Timezone's id.
      * @return the Timezone's id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -82,13 +82,16 @@ public class TimezoneDto extends BaseDto implements RowCallback {
     /**
      * {@inheritDoc}
      */
-    public void callback(ResultSet rs) throws SQLException {
+    @Override
+    public void callback(ResultSet rs) {
+        // Not needed
     }
 
     /**
      *
      * {@inheritDoc}
      */
+    @Override
     public List<String> getCallBackColumns() {
         return new ArrayList<>();
     }

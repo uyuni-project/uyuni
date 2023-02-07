@@ -158,7 +158,7 @@ public class IndexSystemsTaskTest extends BaseTestCase {
             assertNotNull(doc.getField("name").stringValue());
             assertNotNull(doc.getField("description").stringValue());
             assertNotNull(doc.getField("info").stringValue());
-            log.info("idx[" + indexName + "] doc [" + doc.toString() + "]");
+            log.info("idx[" + indexName + "] doc [" + doc + "]");
         }
 
         /**

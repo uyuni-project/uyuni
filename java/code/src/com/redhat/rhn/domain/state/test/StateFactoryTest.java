@@ -223,7 +223,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLatestServerGroupConfigChannels() throws Exception {
+    public void testLatestServerGroupConfigChannels() {
         ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
                 TestUtils.randomString(), "desc", user.getOrg());
 

@@ -32,13 +32,13 @@ import java.util.Map;
  */
 public class KickstartIpRangeFilter extends BaseListFilter {
 
-    /** Logger for this class */
-    private static Logger log = LogManager.getLogger(KickstartIpRangeFilter.class);
+    private static final Logger LOG = LogManager.getLogger(KickstartIpRangeFilter.class);
 
     /**
      * ${@inheritDoc}
      */
-    public void processMap(Map map, Locale userLocale) {
+    @Override
+    public void processMap(Map<String, String> map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();
         String label = ls.getMessage("list.filter.iprange",
@@ -49,8 +49,9 @@ public class KickstartIpRangeFilter extends BaseListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public boolean filter(Object object, String field,
-            String criteria) {
+                          String criteria) {
 
         KickstartIpRangeDto range = (KickstartIpRangeDto) object;
 
@@ -78,6 +79,7 @@ public class KickstartIpRangeFilter extends BaseListFilter {
      * @return true if it is contained, false otherwise
      */
     public boolean filterOnRange(String search, String min, String max) {
+        LOG.debug("search: {}, min: {}, max: {}", search, min, max);
         IpAddress minIp = new IpAddress(min);
         IpAddress maxIp = new IpAddress(max);
         IpAddress searchIp = new IpAddress(search);
@@ -87,6 +89,4 @@ public class KickstartIpRangeFilter extends BaseListFilter {
 
         return ipRange.isIpAddressContained(searchIp);
     }
-
-
 }

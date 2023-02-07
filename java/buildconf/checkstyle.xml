@@ -48,7 +48,7 @@
     <!-- Allows bypass checkstyle for certain places -->
     <module name="SuppressWarningsFilter" />
     <module name="LineLength">
-      <property name="ignorePattern" value="import"/>
+      <property name="ignorePattern" value="import|^ *\* @see .*$"/>
       <property name="max" value="120"/>
     </module>
 

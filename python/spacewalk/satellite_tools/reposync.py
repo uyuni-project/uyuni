@@ -179,7 +179,7 @@ class TreeInfoParser(object):
         fp = open(filename)
         try:
             try:
-                self.parser.readfp(fp)
+                self.parser.read_file(fp)
             except configparser.ParsingError:
                 raise TreeInfoError("Could not parse treeinfo file!")
         finally:
@@ -238,6 +238,22 @@ class TreeInfoParser(object):
 
         return addons_dirs
 
+    def remove_broken_variants(self):
+        try:
+            variants = self.parser.get("tree", "variants").split(",")
+            for variant in variants:
+                section_name = "variant-" + variant
+                if self.parser.get(section_name, "repository").startswith(".."):
+                    variants.remove(variant)
+                    self.parser.remove_section(section_name)
+            self.parser.set("tree", "variants", ",".join(variants))
+        except (configparser.NoOptionError, configparser.NoSectionError):
+            # This section and value may not exist in older version of the treeinfo
+            pass
+
+    def save(self, file_name):
+        with open(file_name, "w") as fd:
+            self.parser.write(fd)
 
 def set_filter_opt(option, opt_str, value, parser):
     # pylint: disable=W0613
@@ -697,6 +713,9 @@ class RepoSync(object):
                 log(0, '  Regenerating bootstrap repositories.')
                 subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
+        # update the server overview with new package / errata stats
+        self.update_servers()
+
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
         with cfg_component() as CFG:
@@ -715,6 +734,23 @@ class RepoSync(object):
         if sync_error == 0 and failed_packages > 0:
             sync_error = failed_packages
         return elapsed_time, sync_error
+
+    def update_servers(self):
+        """
+        Update the server overview table for the systems subscribed to the synced channel
+        """
+        server_ids = rhnSQL.fetchall_dict("""
+            SELECT S.id as id
+            FROM rhnServerChannel SC,
+                 rhnServer S
+            WHERE S.id = SC.server_id
+              AND SC.channel_id = :channel_id""", channel_id=self.channel["id"])
+
+        if server_ids is not None:
+            log(0, "  Updating overview of {} systems".format(len(server_ids)))
+            for row in server_ids:
+                taskomatic.add_to_system_overview_update_queue(row["id"])
+            rhnSQL.commit()
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
         self.ks_tree_type = tree_type
@@ -820,7 +856,11 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
-        log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
+
+        if comps_type == 'modules':
+            log(0, "*** NOTE: Importing {1} file for the channel '{0}'.".format(self.channel['label'], comps_type))
+        else:
+            log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
         file_timestamp = os.path.getmtime(filename)
@@ -832,26 +872,30 @@ class RepoSync(object):
             return abspath
 
         # update or insert
-        hu = rhnSQL.prepare("""update rhnChannelComps
-                                  set relative_filename = :relpath,
-                                      modified = current_timestamp,
-                                      last_modified = :last_modified
-                                where channel_id = :cid
-                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
+        hu = rhnSQL.prepare("""
+            update rhnChannelComps
+            set relative_filename = :relpath,
+                modified = current_timestamp,
+                last_modified = :last_modified
+            where channel_id = :cid
+                and comps_type_id = (select id from rhnCompsType where label = :ctype)
+                and relative_filename = :relpath""")
         hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
 
-        hi = rhnSQL.prepare("""insert into rhnChannelComps
-                              (id, channel_id, relative_filename, last_modified, comps_type_id)
-                              (select sequence_nextval('rhn_channelcomps_id_seq'),
-                                      :cid,
-                                      :relpath,
-                                      :last_modified,
-                              (select id from rhnCompsType where label = :ctype)
-                                 from dual
-                                where not exists (select 1 from rhnChannelComps
-                                    where channel_id = :cid
-                                    and comps_type_id = (select id from rhnCompsType where label = :ctype)))""")
+        hi = rhnSQL.prepare("""
+            insert into rhnChannelComps(id, channel_id, relative_filename, last_modified, comps_type_id)
+            (select sequence_nextval('rhn_channelcomps_id_seq'),
+                    :cid,
+                    :relpath,
+                    :last_modified,
+                    (select id from rhnCompsType where label = :ctype)
+                from dual
+                where not exists
+                    (select 1 from rhnChannelComps
+                        where channel_id = :cid
+                            and comps_type_id = (select id from rhnCompsType where label = :ctype)
+                            and relative_filename = :relpath))""")
         hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
         return abspath
@@ -1669,7 +1713,7 @@ class RepoSync(object):
             family = treeinfo_parser.get_family()
             if family == 'Fedora':
                 self.ks_install_type = 'fedora18'
-            elif family == 'CentOS':
+            elif family in ['CentOS', 'Rocky Linux', 'AlmaLinux']:
                 self.ks_install_type = 'rhel_' + treeinfo_parser.get_major_version()
             else:
                 self.ks_install_type = 'generic_rpm'
@@ -1770,7 +1814,13 @@ class RepoSync(object):
             downloader.run()
             log2background(0, "Download finished.")
             for item in to_download:
-                st = os.stat(os.path.join(mount_point, ks_path, item))
+                file_path = os.path.join(mount_point, ks_path, item)
+                if item in ["treeinfo", ".treeinfo"]:
+                    # Remove the appstream variant if possible as it will point to nowhere
+                    parser = TreeInfoParser(file_path)
+                    parser.remove_broken_variants()
+                    parser.save(file_path)
+                st = os.stat(file_path)
                 # update entity about current file in a database
                 delete_h.execute(id=ks_id, path=item)
                 insert_h.execute(id=ks_id, path=item,

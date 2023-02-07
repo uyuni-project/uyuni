@@ -109,7 +109,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 
     @Test
@@ -161,6 +161,6 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 }

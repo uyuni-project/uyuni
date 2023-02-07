@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -41,6 +41,6 @@ public class ScriptsSetupActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(ScriptsSetupAction.LIST_NAME);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
     }
 }

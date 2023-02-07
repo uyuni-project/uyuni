@@ -226,7 +226,7 @@ public class SystemDetailsEditAction extends RhnAction {
             try {
                 maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
                         cancelAffected);
-                log.debug(String.format("System %s assigned to schedule %s.", s.getId(), schedule.getName()));
+                log.debug("System {} assigned to schedule {}.", s.getId(), schedule.getName());
             }
             catch (IllegalArgumentException e) {
                 log.debug(e);
@@ -238,7 +238,7 @@ public class SystemDetailsEditAction extends RhnAction {
             // Retract schedule
             String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
             maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
-            log.debug(String.format("System %s unassigned from schedule %s.", s.getId(), scheduleName));
+            log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
         }
 
         if (!success) {
@@ -273,14 +273,14 @@ public class SystemDetailsEditAction extends RhnAction {
                 log.debug("Entitling server with: {}", e);
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
 
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorWarningToActionMessages(
                                     vr.getWarnings().toArray(new ValidatorWarning[] {})));
                 }
 
 
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     ValidatorError ve = vr.getErrors().get(0);
                     log.debug("Got error: {}", ve);
                     getStrutsDelegate().saveMessages(request,
@@ -397,7 +397,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Entitlement baseEntitlement = s.getBaseEntitlement();
 
-        List entitlements = new ArrayList();
+        List entitlements = new ArrayList<>();
 
         if (baseEntitlement == null) {
             entitlements.add(new LabelValueBean(
@@ -427,7 +427,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Map cmap = ls.availableCountries();
         Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList();
+        List countries = new LinkedList<>();
 
         countries.add(new LabelValueBean(ls.getMessage("sdc.details.edit.none"), ""));
         while (i.hasNext()) {

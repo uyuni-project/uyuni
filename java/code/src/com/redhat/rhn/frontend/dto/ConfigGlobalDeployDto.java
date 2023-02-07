@@ -50,6 +50,7 @@ public class ConfigGlobalDeployDto extends BaseDto {
     /**
      * @return system-id of the system whose deploy-state is the rest of the Dto data
      */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -151,6 +152,7 @@ public class ConfigGlobalDeployDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSelectable() {
         return getOutrankedCount().intValue() == 0 &&
                     getOverrideCount().intValue() == 0 && isDeployable();

@@ -332,7 +332,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       alertMessages = MessagesUtils.success(
         <p>
           {t("Successfully bootstrapped host! Your system should appear in")}{" "}
-          <a className="js-spa" href="/rhn/systems/SystemList.do">
+          <a className="js-spa" href="/rhn/manager/systems/list/all">
             {t("systems")}
           </a>{" "}
           {t("shortly")}.

@@ -12,6 +12,14 @@ mgr_deploy_customer_gpg_key:
     - source: salt://gpg/mgr-gpg-pub.key
     - makedirs: True
     - mode: 644
+
+mgr_trust_customer_gpg_key:
+  mgrcompat.module_run:
+    - name: pkg.add_repo_key
+    - path: /etc/pki/rpm-gpg/mgr-gpg-pub.key
+    - onchanges:
+      - file: mgr_deploy_customer_gpg_key
+
 {%- endif %}
 {%- endif %}
 
@@ -29,6 +37,13 @@ mgr_deploy_res_gpg_key:
   file.managed:
     - name: /etc/pki/rpm-gpg/res-gpg-pubkey-0182b964.key
     - source: salt://gpg/res-gpg-pubkey-0182b964.key
+    - makedirs: True
+    - mode: 644
+
+mgr_deploy_liberty_v2_gpg_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
+    - source: salt://gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
     - makedirs: True
     - mode: 644
 
@@ -59,4 +74,21 @@ mgr_deploy_{{ keyname }}:
 {%- endif %}
     - source: salt://gpg/{{ keyname }}
     - mode: 644
+{%- endfor %}
+
+
+{# trust GPG keys used in assigned channels #}
+
+{%- set gpg_urls = [] %}
+{%- for chan, args in pillar.get(pillar.get('_mgr_channels_items_name', 'channels'), {}).items() %}
+{%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'] not in gpg_urls %}
+{{ gpg_urls.append(args['gpgkeyurl']) | default("", True) }}
+{%- endif %}
+{%- endfor %}
+
+{% for url in gpg_urls %}
+{{ url | replace(':', '_') }}:
+  mgrcompat.module_run:
+    - name: pkg.add_repo_key
+    - path: {{ url }}
 {%- endfor %}

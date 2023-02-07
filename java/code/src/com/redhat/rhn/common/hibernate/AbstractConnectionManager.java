@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -45,11 +47,12 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
     protected final Logger LOG;
 
+    protected SessionFactory sessionFactory;
+
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
     private final Set<String> packageNames;
-
-    private SessionFactory sessionFactory;
+    private String unitLabelValue;
 
 
     /**
@@ -70,6 +73,13 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     @Override
     public void setAdditionalPackageNames(String[] packageNamesIn) {
         packageNames.addAll(Arrays.asList(packageNamesIn));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setComponentName(String componentName) {
+        this.unitLabelValue = componentName;
     }
 
     /**
@@ -154,6 +164,9 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         createSessionFactory();
+        if (unitLabelValue != null) {
+            new HibernateStatisticsCollector(sessionFactory, unitLabelValue).register();
+        }
     }
 
     /**
@@ -179,7 +192,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             packageNames.stream()
                         .map(FinderFactory::getFinder)
                         .flatMap(finder -> finder.find("hbm.xml").stream())
-                        .peek(hbmFile -> LOG.debug("Adding resource {0}", hbmFile))
+                        .peek(hbmFile -> LOG.debug("Adding resource {}", hbmFile))
                         .forEach(config::addResource);
 
             // Invoke each configurator to add additional entries to Hibernate config
@@ -256,6 +269,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
                     LOG.debug("YYY Opening Hibernate Session");
                 }
                 info = new SessionInfo(sessionFactory.openSession());
+                LOG.debug("YYY Opened Hibernate session {}", info.getSession());
             }
             catch (HibernateException e) {
                 throw new HibernateRuntimeException("couldn't open session", e);
@@ -310,7 +324,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         try {
             if (session != null && session.isOpen()) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("YYY Closing Hibernate Session");
+                    LOG.debug("YYY Closing Hibernate Session: {}", session);
                 }
                 session.close();
             }

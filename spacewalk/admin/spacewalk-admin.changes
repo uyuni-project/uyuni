@@ -1,6 +1,24 @@
-- Add --help option to mgr-monitoring-ctl
-- reportdb access: force new report_db_sslrootcert if
-  previous default is set
+-------------------------------------------------------------------
+Wed Dec 14 14:12:08 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+
+-------------------------------------------------------------------
+Fri Nov 18 15:04:15 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Make sure the networking is started, so any network management
+    network management can be used
+
+-------------------------------------------------------------------
+Wed Sep 28 11:01:29 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Ensure "cobbler mkloaders" is executed after restarting services
+  * Add --help option to mgr-monitoring-ctl
+  * reportdb access: force new report_db_sslrootcert if
+    previous default is set
 
 -------------------------------------------------------------------
 Fri May 20 00:16:12 CEST 2022 - jgonzalez@suse.com

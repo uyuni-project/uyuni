@@ -507,15 +507,13 @@ class ContentSource:
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['proxy'] = self.proxy_addr
-        params['proxy_username'] = self.proxy_user
-        params['proxy_password'] = self.proxy_pass
-        params['http_headers'] = self.repo.http_headers
+        params['http_headers'] = tuple(self.repo.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
+        with cfg_component('server.satellite') as CFG:
+            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod
     def get_file(path, local_base=None):

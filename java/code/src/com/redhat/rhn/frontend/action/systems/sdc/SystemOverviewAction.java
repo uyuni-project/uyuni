@@ -76,16 +76,15 @@ public class SystemOverviewAction extends RhnAction {
 
         if (s.getDescription() != null) {
             description = StringEscapeUtils.escapeHtml4(s.getDescription())
-                .replaceAll("\\n", "<br/>");
+                .replace("\\n", "<br/>");
         }
 
         // System Channels
-        Map baseChannel = new HashMap();
-        List childChannels = new ArrayList();
-        DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
+        Map<String, Object> baseChannel = new HashMap<>();
+        List<Map<String, Object>> childChannels = new ArrayList<>();
+        DataResult<Map<String, Object>> channelList = SystemManager.systemChannelSubscriptions(sid);
 
-        for (Object oIn : channelList) {
-            Map ch = (HashMap) oIn;
+        for (Map<String, Object> ch : channelList) {
 
             if (s.getBaseChannel() != null &&
                     ch.get("id").equals(s.getBaseChannel().getId())) {
@@ -111,6 +110,14 @@ public class SystemOverviewAction extends RhnAction {
         // Reboot needed after certain types of updates
         boolean rebootRequired = SystemManager.requiresReboot(user, sid);
 
+        // Check if reboot is scheduled
+        boolean rebootScheduled = false;
+        Action rebootAction = ActionFactory.isRebootScheduled(sid);
+        if (rebootAction != null) {
+            request.setAttribute("rebootActionId", rebootAction.getId());
+            rebootScheduled = true;
+        }
+
         if (!processLock(user, s, rctx)) {
             request.setAttribute("serverLock", s.getLock());
         }
@@ -132,6 +139,7 @@ public class SystemOverviewAction extends RhnAction {
         }
 
         request.setAttribute("rebootRequired", rebootRequired);
+        request.setAttribute("rebootScheduled", rebootScheduled);
         request.setAttribute("unentitled", s.getEntitlements().isEmpty());
         request.setAttribute("entitlements", entitlements);
         request.setAttribute("systemInactive", s.isInactive());
@@ -166,8 +174,8 @@ public class SystemOverviewAction extends RhnAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    protected List findUserServerPreferences(User user, Server s) {
-        List serverPreferenceList = new ArrayList();
+    protected List<String> findUserServerPreferences(User user, Server s) {
+        List<String> serverPreferenceList = new ArrayList<>();
 
         if (user.getEmailNotify() == 0) {
             serverPreferenceList.add("sdc.details.overview.notifications.disabled");

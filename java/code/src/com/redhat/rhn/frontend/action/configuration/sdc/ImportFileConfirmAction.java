@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ImportFileConfirmAction extends FileListConfirmSetupAction {
 
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_IMPORT_FILE_NAMES;
     }

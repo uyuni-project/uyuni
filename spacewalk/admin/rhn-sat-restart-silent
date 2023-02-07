@@ -20,4 +20,4 @@
 #   to keep the process running, so now we use this script to rid ourselves of output! :{
 #
 
-/usr/sbin/rhn-satellite restart &> /dev/null < /dev/null
+/usr/sbin/spacewalk-service restart &> /dev/null < /dev/null

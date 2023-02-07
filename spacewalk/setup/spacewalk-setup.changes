@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Wed Dec 14 14:07:13 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * remove jabberd and osa-dispatcher
+
+-------------------------------------------------------------------
+Fri Nov 18 15:01:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Re-added alternative usage of perl-Net-LibIDN2.
+
+-------------------------------------------------------------------
+Mon Nov 14 15:07:32 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Fix possible wrong autoinstall value from Cobbler collections (bsc#1203478)
+
+-------------------------------------------------------------------
+Fri Nov 04 17:14:50 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Execute migration of Cobbler version 2 collections (bsc#1203478)
+
+-------------------------------------------------------------------
+Thu Oct 20 10:41:06 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Fix detected issues to perform migration of Cobbler settings
+    and collections.
+
+-------------------------------------------------------------------
+Wed Sep 28 10:25:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Trigger migration of Cobbler settings and collections if necessary
+    during package installation (bsc#1203478)
+  * fix prototype missmatch in idn_to_ascii (bsc#1203385)
+  * Execute "cobbler mkloaders" when setting up cobbler
+  * Adjust next_server cobbler settings for cobbler >= 3.3.1
+  * Add options for connecting to a remote postgres instance
+
+-------------------------------------------------------------------
 Wed Jul 27 14:02:50 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.10-1

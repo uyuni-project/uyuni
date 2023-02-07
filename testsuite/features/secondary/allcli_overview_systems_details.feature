@@ -6,29 +6,6 @@ Feature: The system details of each minion and client provides an overview of th
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
-@sle_client
-  Scenario: Traditional client hardware refresh
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow "Hardware"
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I force picking pending events on "sle_client" if necessary
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
-
-@sle_client
-  Scenario: Traditional client grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "sle_client"
-    Then the hostname for "sle_client" should be correct
-    And the kernel for "sle_client" should be correct
-    And the OS version for "sle_client" should be correct
-    And the IPv4 address for "sle_client" should be correct
-    And the IPv6 address for "sle_client" should be correct
-    And the system ID for "sle_client" should be correct
-    And the system name for "sle_client" should be correct
-    And the uptime for "sle_client" should be correct
-    And I should see several text fields for "sle_client"
-
 @sle_minion
   Scenario: SLE minion hardware refresh
     Given I am on the Systems overview page of this "sle_minion"

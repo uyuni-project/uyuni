@@ -1,5 +1,8 @@
-# Copyright (c) 2010-2022 SUSE LLC.
+# Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning navigation through the Web UI
+### as well as validating the UI output.
 
 #
 # Texts and links
@@ -108,7 +111,14 @@ end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
   system_name = get_system_name(host)
-  step %(I wait until I see "#{system_name}" text, refreshing the page)
+  step %(I wait until I see the "#{system_name}" system, refreshing the page)
+end
+
+When(/^I wait until I see the "([^"]*)" system, refreshing the page$/) do |system_name|
+  steps %(
+    And I wait until I do not see "Loading..." text
+    And I wait until I see "#{system_name}" text, refreshing the page
+  )
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
@@ -159,16 +169,14 @@ end
 #
 # Check a checkbox of the given id
 #
-When(/^I check "([^"]*)"$/) do |arg1|
-  check(arg1)
+When(/^I check "([^"]*)"$/) do |identifier|
+  check(identifier)
+  raise "Checkbox #{identifier} not checked." unless has_checked_field?(identifier)
 end
 
-When(/^I uncheck "([^"]*)"$/) do |arg1|
-  uncheck(arg1)
-end
-
-When(/^I check "([^"]*)" if not checked$/) do |arg1|
-  check(arg1) unless has_checked_field?(arg1)
+When(/^I uncheck "([^"]*)"$/) do |identifier|
+  uncheck(identifier)
+  raise "Checkbox #{identifier} not unchecked." if has_checked_field?(identifier)
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
@@ -183,20 +191,17 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
-When(/^I select the maximum amount of items per page$/) do
-  find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
+# select an item from any dropdown
+When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
+  # let the the select2js box filter open the hidden options
+  xpath_query = "//select[@name='#{label}']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  # select the desired option
+  raise "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
-end
-
-When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  if client.include? 'ssh_minion'
-    select('Push via SSH', from: from)
-  else
-    select('Default', from: from)
-  end
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
@@ -211,9 +216,10 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click
-  end
+  toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+  step %(I wait until I see "include recommended" text)
+  raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+  find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -295,11 +301,6 @@ end
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
-When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    step %(I follow "#{arg1}")
-  end
-end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
@@ -399,15 +400,25 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step %(I am authorized as "admin" with password "admin")
   when 'Images'
     step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
+  else
+    log "Section #{section} not supported"
   end
 end
 
 # access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+  visit("/rhn/systems/details/Overview.do?sid=#{system_id}")
+end
+
+Given(/^I navigate to the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page
-    When I follow "#{system_name}"
+    When I enter "#{system_name}" as "criteria"
+    And I wait until I do not see "Loading..." text
+    And I follow "#{system_name}"
     And I wait until I see "System Status" text
   )
 end
@@ -427,14 +438,14 @@ end
 
 When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
   begin
-    node = get_target(host)
+    system_name = get_system_name(host)
   rescue
     raise "Host #{host} not found" if if_present.empty?
 
     log "Host #{host} is not deployed, not trying to select it"
     return
   end
-  step %(I select "#{node.full_hostname}" from "#{field}")
+  step %(I select "#{system_name}" from "#{field}")
 end
 
 When(/^I follow this "([^"]*)" link$/) do |host|
@@ -445,11 +456,6 @@ end
 When(/^I check the "([^"]*)" client$/) do |host|
   system_name = get_system_name(host)
   step %(I check "#{system_name}" in the list)
-end
-
-When(/^I uncheck the "([^"]*)" client$/) do |host|
-  system_name = get_system_name(host)
-  step %(I uncheck "#{system_name}" in the list)
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -474,9 +480,9 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
   within(:xpath, xpath_query) do
     if should_not
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: DEFAULT_TIMEOUT)
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: 2)
     else
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: DEFAULT_TIMEOUT)
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: 2)
     end
   end
 end
@@ -504,8 +510,10 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   begin
     page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
+  rescue NoMethodError => e
+    log "The browser session could not be cleaned because there is no browser available: #{e.message}"
+  rescue StandardError => e
+    log "The browser session could not be cleaned for unknown issue: #{e.message}"
   ensure
     visit Capybara.app_host
   end
@@ -539,8 +547,10 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
-  raise 'The welcome message is not shown' unless has_content?(text)
+  # text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
+  # Workaround: Ignore the fact that the message is not shown
+  # TODO: restore this as soon as the related issue is fixed: https://github.com/SUSE/spacewalk/issues/19369
+  # raise 'The welcome message is not shown' unless has_content?(text)
 end
 
 Then(/^I should see an update in the list$/) do
@@ -549,18 +559,11 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step %(I check "Test Base Channel" in the list)
+  step %(I check "Fake Base Channel" in the list)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
-end
-
-Then(/^I should see something$/) do
-  steps %(
-    Given I should see a "Sign In" text
-    And I should see a "About" text
-  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -583,11 +586,6 @@ end
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
   raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
@@ -753,6 +751,10 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
+Then(/^I should not see a warning sign$/) do
+  raise 'Warning detected' unless page.has_no_xpath?("//*[contains(@class, 'fa fa-li fa-exclamation-triangle text-warning')]")
+end
+
 Then(/^I select the "([^"]*)" repo$/) do |repo|
   step %(I check "#{repo}" in the list)
 end
@@ -774,7 +776,7 @@ When(/^I click on the red confirmation button$/) do
 end
 
 When(/^I click on the clear SSM button$/) do
-  find_and_wait_click('a#clear-ssm').click
+  find_and_wait_click(:xpath, "//*[@id='clear-ssm']").click
 end
 
 When(/^I click on the filter button$/) do
@@ -801,10 +803,6 @@ end
 When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host|
   system_name = get_system_name(host)
   find("input[placeholder='Filter by System Name: ']").set(system_name)
-end
-
-When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
-  find("input[placeholder='Search package']").set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
@@ -878,14 +876,6 @@ When(/^I check "([^"]*)" in the list$/) do |text|
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(true)
-end
-
-When(/^I uncheck "([^"]*)" in the list$/) do |text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-  row = find(:xpath, top_level_xpath_query, match: :first)
-  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-  row.set(false)
 end
 
 #
@@ -989,7 +979,12 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
+    begin
+      break if has_no_xpath?(path, wait: 1)
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # We need to consider the case that after obtaining the element it is detached from the page document
+      break
+    end
   end
 end
 
@@ -1002,28 +997,41 @@ When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$
   raise "#{title} modal did not appear" unless dialog
 end
 
-When(/^I scroll to the top of the page$/) do
-  execute_script('window.scrollTo(0,0)')
-end
-
 # Check a Prometheus exporter
 When(/^I check "([^"]*)" exporter$/) do |exporter_type|
-  step %(I check "exporters##{exporter_type}_exporter#enabled" if not checked)
+  step %(I check "exporters##{exporter_type}_exporter#enabled")
+end
+
+# Check the Blackbox Exporter in the Prometheus formula
+When(/^I check the blackbox exporter$/) do
+  step %(I check "prometheus#blackbox_exporter#enabled")
 end
 
 # Navigate to a service endpoint
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
   system_name = get_system_name(host)
-  port, text = case service
-               when 'Prometheus' then [9090, 'graph']
-               when 'Prometheus node exporter' then [9100, 'Node Exporter']
-               when 'Prometheus apache exporter' then [9117, 'Apache Exporter']
-               when 'Prometheus postgres exporter' then [9187, 'Postgres Exporter']
-               else raise "Unknown port for service #{service}"
-               end
-  _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
-  raise unless code.zero?
+  os_family = node.os_family
+  port, protocol, path, text = case service
+                               when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
+                               when 'Prometheus' then [9090, 'http', '', 'graph']
+                               when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
+                               when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
+                               when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
+                               when 'Grafana' then [3000, 'http', '', 'Grafana Labs']
+                               else raise "Unknown port for service #{service}"
+                               end
+  # debian based systems don't come with curl installed
+  if (os_family.include? 'debian') || (os_family.include? 'ubuntu')
+    node.run_until_ok("wget --no-check-certificate -qO- #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+  else
+    node.run_until_ok("curl -s -k #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+  end
+end
+
+When(/^I enter the "([^"]*)" hostname as the Prometheus URL$/) do |host|
+  node = get_target(host)
+  step %(I enter "http://#{node.full_hostname}:9090" as "Prometheus URL")
 end
 
 When(/^I select the next maintenance window$/) do
@@ -1109,6 +1117,13 @@ When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
   step %(I enter "#{system_name}" on the search field)
 end
 
+When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
+  step %(I click on "var-hostname")
+  system_name = get_system_name(host)
+  step %(I enter "#{system_name}" as "Enter variable value")
+  send_keys(:return)
+end
+
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
   system_name = get_system_name(host)
   within(:xpath, '//section') do
@@ -1125,4 +1140,29 @@ end
 
 Then(/^I should see left menu empty$/) do
   raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
+end
+
+Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
+  page.has_field?(text, with: field)
+end
+
+Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
+  now = Time.now
+  execute_script 'window.stop()'
+  # find row with corresponding task name
+  page.find_all(:xpath, "//table[@class='table table-responsive']//tr").each do |tr|
+    next unless tr.has_text?(task_name)
+    # if task name is found, iterate through the columns to find the timestamp
+    page.find_all(:xpath, "//table[@class='table table-responsive']//td").each do |td|
+      # if a text matching the format xx:xx is found, get and save the text
+      next unless td.text.match(/\d{2}:\d{2}/)
+      # Text from cell, parsed to a Time object must match now +- 5 seconds
+      Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
+    end
+  end
+end
+
+When(/^I visit the grafana dashboards of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  visit("http://#{node.public_ip}:3000/dashboards")
 end

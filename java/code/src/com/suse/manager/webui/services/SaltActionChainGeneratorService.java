@@ -145,32 +145,46 @@ public class SaltActionChainGeneratorService {
             }
             Optional<Long> nextActionId = nextActionId(states, i);
 
-            if (mustSplit(state, minion)) {
-                if (isSaltUpgrade(state)) {
-                    fileStates.add(
-                            endChunk(actionChain, chunk, nextActionId,
-                                    prevRequisiteRef(fileStates), sshExtraFileRefs));
-                    fileStates.add(state);
-                    fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
-                    fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
-                            prevRequisiteRef(Collections.singletonList(state))));
-                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
-                    fileStates.clear();
-                    chunk++;
-                    fileStates.add(checkSaltUpgradeChunk(state));
+            if (isSaltUpgrade(state)) {
+                fileStates.add(
+                        endChunk(actionChain, chunk, nextActionId,
+                                prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty(),
+                                Optional.empty()));
+                fileStates.add(state);
+                fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
+                fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
+                        prevRequisiteRef(Collections.singletonList(state))));
+                saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+                fileStates.clear();
+                chunk++;
+                fileStates.add(checkSaltUpgradeChunk(state));
+            }
+            else if (isRebootAction(state)) {
+                if (minion.isTransactionalUpdate()) {
+                    if (i < states.size() - 1) {
+                        fileStates.add(
+                                endChunk(actionChain, chunk, nextActionId,
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.of(true),
+                                        currentActionId(states, i)));
+                    }
+                    else {
+                        fileStates.add(endLastChunk(actionChain, currentActionId(states, i), Optional.of(true)));
+                    }
                 }
-                else {
+                else { // it's not transactional update
                     fileStates.add(state);
                     if (i < states.size() - 1) {
                         fileStates.add(
                                 endChunk(actionChain, chunk, nextActionId,
-                                        prevRequisiteRef(fileStates), sshExtraFileRefs));
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty(),
+                                        Optional.empty()));
                     }
-
-                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
-                    chunk++;
-                    fileStates.clear();
                 }
+
+                saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+
+                chunk++;
+                fileStates.clear();
             }
             else {
                 fileStates.add(state);
@@ -198,17 +212,44 @@ public class SaltActionChainGeneratorService {
         return Optional.empty();
     }
 
+    private Optional<Long> currentActionId(List<SaltState> states, int currentPos) {
+        SaltState state = states.get(currentPos);
+        if (state instanceof ActionSaltState) {
+            ActionSaltState actionState = (ActionSaltState)state;
+            return Optional.of(actionState.getActionId());
+        }
+        return Optional.empty();
+    }
+
+
     private SaltState endChunk(ActionChain actionChain, int chunk, Optional<Long> nextActionId,
-                               Optional<Pair<String, String>> lastRef, Optional<String> sshExtraFileRefs) {
+                               Optional<Pair<String, String>> lastRef, Optional<String> sshExtraFileRefs,
+                               Optional<Boolean> rebootRequired, Optional<Long> currentActionId) {
         Map<String, Object> args = new LinkedHashMap<>(2);
         args.put("actionchain_id", actionChain.getId());
         args.put("chunk", chunk + 1);
         nextActionId.ifPresent(actionId ->
                 args.put("next_action_id", actionId));
+        currentActionId.ifPresent(actionId ->
+                args.put("current_action_id", actionId));
         sshExtraFileRefs.ifPresent(refs ->
                 args.put("ssh_extra_filerefs", refs));
+        rebootRequired.ifPresent(refs ->
+                args.put("reboot_required", refs));
         SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.next", args);
         lastRef.ifPresent(ref -> modRun.addRequire(ref.getKey(), ref.getValue()));
+        return modRun;
+    }
+
+    private SaltState endLastChunk(ActionChain actionChain, Optional<Long> currentActionId,
+            Optional<Boolean> rebootRequired) {
+        Map<String, Object> args = new LinkedHashMap<>(2);
+        args.put("actionchain_id", actionChain.getId());
+        currentActionId.ifPresent(actionId ->
+                args.put("current_action_id", actionId));
+        rebootRequired.ifPresent(refs ->
+                args.put("reboot_required", refs));
+        SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
         return modRun;
     }
 
@@ -265,7 +306,7 @@ public class SaltActionChainGeneratorService {
      * @return a requisite reference
      */
     private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
-        if (fileStates.size() > 0) {
+        if (!fileStates.isEmpty()) {
             SaltState previousState = fileStates.get(fileStates.size() - 1);
             return previousState.getData().entrySet().stream().findFirst()
                 .map(entry -> ((Map<String, ?>)entry.getValue()).entrySet().stream()
@@ -296,7 +337,7 @@ public class SaltActionChainGeneratorService {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
                     if (!paramPillar.get("param_pkgs").stream()
-                            .filter(e -> e.size() > 0)
+                            .filter(e -> !e.isEmpty())
                             .map(e -> e.get(0))
                             .filter("salt"::equals)
                             .collect(Collectors.toList()).isEmpty()) {
@@ -317,31 +358,43 @@ public class SaltActionChainGeneratorService {
         return false;
     }
 
-    private boolean mustSplit(SaltState state, MinionSummary minion) {
-        boolean split = false;
+    private boolean isRebootAction(SaltState state) {
         if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun)state;
-
-            Optional<String> mods = getModsString(moduleRun);
-
-            if (mods.isPresent() &&
-                    mods.get().contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state) &&
-                    !minion.isSshPush()) {
-                // split only for regular minions, salt-ssh minions don't have a salt-minion process
-                split = true;
-            }
-            else if (mods.isPresent() &&
-                    mods.get().contains(PACKAGES_PATCHINSTALL) && isSaltUpgrade(state)) {
-                split = true;
-            }
-            else if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
-                split = true;
+            SaltModuleRun moduleRun = (SaltModuleRun) state;
+            if ("system.reboot".equalsIgnoreCase(moduleRun.getName()) ||
+                    "transactional_update.reboot".equalsIgnoreCase(moduleRun.getName())) {
+                return true;
             }
         }
         else if (state instanceof SaltSystemReboot) {
-            split = true;
+            return true;
         }
-        return split;
+        return false;
+    }
+
+    private boolean isUpgradeWithRebootRequired(SaltState state, MinionSummary minion) {
+        if (state instanceof SaltModuleRun) {
+            SaltModuleRun moduleRun = (SaltModuleRun) state;
+
+            Optional<String> mods = getModsString(moduleRun);
+
+            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL) &&
+                    isSaltUpgrade(state) && !minion.isSshPush()) {
+                // split only for regular minions, salt-ssh minions don't have a
+                // salt-minion process
+                return true;
+            }
+            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL) &&
+                    isSaltUpgrade(state)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean mustSplit(SaltState state, MinionSummary minion) {
+        return isUpgradeWithRebootRequired(state, minion) || isRebootAction(state);
     }
 
     private Optional<String> getModsString(SaltModuleRun moduleRun) {
@@ -426,7 +479,7 @@ public class SaltActionChainGeneratorService {
                 Files.deleteIfExists(path);
             }
             catch (IOException e) {
-                LOG.warn("Error deleting action chain file {}", path.toString(), e);
+                LOG.warn("Error deleting action chain file {}", path, e);
             }
         }
     }
@@ -439,13 +492,17 @@ public class SaltActionChainGeneratorService {
      */
     public List<String> findFileRefsToDelete(Path targetFilePath) {
         try {
+            List<String> res = new LinkedList<>();
+            if (!targetFilePath.toFile().exists()) {
+                LOG.debug("{} does not exists", targetFilePath.toFile());
+                return res;
+            }
             String slsContent = FileUtils.readFileToString(targetFilePath.toFile());
             // first remove line containing ssh_extra_filerefs because it contains
             // all the files used for an action chain and we want to delete
             // salt:// refs that belong only to the given file
             slsContent = slsContent.replaceAll("ssh_extra_filerefs.+", "");
             Matcher m = SALT_FILE_REF.matcher(slsContent);
-            List<String> res = new LinkedList<>();
             int start = 0;
             while (m.find(start)) {
                 String ref = m.group(2);

@@ -40,8 +40,11 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
     public void testGetCandidates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ErrataManager.insertErrataCacheTask(server);
+        Thread.sleep(1);
         ErrataManager.insertErrataCacheTask(server);
+        Thread.sleep(1);
         ErrataManager.insertErrataCacheTask(server);
+        Thread.sleep(1);
         ErrataManager.insertErrataCacheTask(server);
 
         // Get the candidates and verify

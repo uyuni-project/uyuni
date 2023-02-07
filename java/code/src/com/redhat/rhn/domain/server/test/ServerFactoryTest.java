@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -124,7 +125,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +189,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
         assertNotNull(s.getEntitledGroups());
-        assertTrue(s.getEntitledGroups().size() > 0);
+        assertFalse(s.getEntitledGroups().isEmpty());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // add the test key to the server and make sure we can get to it.
         testServer.addCustomDataValue(testKey.getLabel(), "foo", user);
         assertNotNull(testServer.getCustomDataValue(testKey));
-        assertTrue(testServer.getCustomDataValues().size() > 0);
+        assertFalse(testServer.getCustomDataValues().isEmpty());
 
         // try sending null for key
         int numVals = testServer.getCustomDataValues().size();
@@ -239,7 +239,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testServerGroupType() throws Exception {
+    public void testServerGroupType() {
         //let's hope nobody calls their server group this
         assertNull(ServerFactory.lookupServerGroupTypeByLabel("8dafs8320921kfgbzz"));
         assertNotNull(ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -282,21 +282,20 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test editing a server group.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testServerGroups() throws Exception {
+    public void testServerGroups() {
         Long id = server.getId();
 
-        Collection servers = new ArrayList();
+        Collection servers = new ArrayList<>();
         servers.add(server);
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 
         server = reload(server);
-        assertTrue(server.getEntitledGroupTypes().size() == 1);
-        assertTrue(server.getManagedGroups().size() == 1);
+        assertEquals(1, server.getEntitledGroupTypes().size());
+        assertEquals(1, server.getManagedGroups().size());
 
 
         String changedName = "The group name has been changed" +
@@ -310,7 +309,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().evict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(id, user.getOrg());
-        assertTrue(server2.getManagedGroups().size() == 1);
+        assertEquals(1, server2.getManagedGroups().size());
         sg1 = server2.getManagedGroups().iterator().next();
 
         assertEquals(changedName, sg1.getName());
@@ -439,7 +438,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddNoteToServer() throws Exception {
+    public void testAddNoteToServer() {
         Set notes = server.getNotes();
         assertNotNull(notes);
         assertTrue(notes.isEmpty());
@@ -469,7 +468,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddDeviceToServer() throws Exception {
+    public void testAddDeviceToServer() {
 
         Set devs = server.getDevices();
         assertNotNull(devs);
@@ -504,7 +503,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddingRamToServer() throws Exception {
+    public void testAddingRamToServer() {
         server.setRam(1024);
         assertEquals(1024, server.getRam());
 
@@ -523,7 +522,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddingDmiToServer() throws Exception {
+    public void testAddingDmiToServer() {
 
         Dmi dmi = new Dmi();
         dmi.setServer(server);
@@ -597,9 +596,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Create a test Server and commit it to the DB.
      * @param owner the owner of this Server
      * @return Server that was created
-     * @throws Exception something bad happened
      */
-    public static Server createTestServer(User owner) throws Exception {
+    public static Server createTestServer(User owner) {
         return createTestServer(owner, false);
     }
 
@@ -611,7 +609,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type, int stype) throws Exception {
+            ServerGroupType type, int stype) {
         return createTestServer(owner, ensureOwnerAccess, type, stype, new Date());
     }
 
@@ -847,13 +845,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         flushAndEvict(srvr1);
         srvr = reload(srvr);
         // Ok let's finally test what we came here for.
-        List list = ServerFactory.compatibleWithServer(user, srvr);
+        List<Row> list = ServerFactory.compatibleWithServer(user, srvr);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
-        for (Object o : list) {
-            assertEquals(HashMap.class, o.getClass(), "List contains something other than Profiles");
-            Map s = (Map) o;
+        for (Row s : list) {
+            assertNotNull(s, "List contains something other than Profiles");
             if (srvr1.getName().equals(s.get("name"))) {
                 found = true;
             }
@@ -862,7 +859,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListAdministrators() throws Exception {
+    public void testListAdministrators() {
 
         //The org admin user
         User admin = UserTestUtils.findNewUser("testUser",
@@ -882,12 +879,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //create server set and add it to the group
         Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
-        Set servers = new HashSet();
+        Set servers = new HashSet<>();
         servers.add(serverToSearch);
         SERVER_GROUP_MANAGER.addServers(group, servers, admin);
-        assertTrue(group.getServers().size() > 0);
+        assertFalse(group.getServers().isEmpty());
         //create admins set and add it to the grup
-        Set admins = new HashSet();
+        Set admins = new HashSet<>();
         admins.add(regular);
         SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
         assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
@@ -972,7 +969,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         server.addChannel(baseChan);
 
         Channel proxyChan = ChannelFactoryTest.createTestChannel(owner);
-        Set chanFamilies = new HashSet();
+        Set chanFamilies = new HashSet<>();
 
         ChannelFamily proxyFam = ChannelFamilyFactory.lookupByLabel(
                 ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL, owner.getOrg());
@@ -1015,7 +1012,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSet() throws Exception {
+    public void testSet() {
         Server serverIn = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
@@ -1036,7 +1033,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testListSnapshotsForServer() throws Exception {
+    public void testListSnapshotsForServer() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         ServerGroup grp = ServerGroupTestUtils.createEntitled(server2.getOrg(),
@@ -1051,7 +1048,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupSnapshotById() throws Exception {
+    public void testLookupSnapshotById() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         TestUtils.saveAndFlush(snap);
@@ -1062,7 +1059,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testDeleteSnapshot() throws Exception {
+    public void testDeleteSnapshot() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         TestUtils.saveAndFlush(snap);
@@ -1075,7 +1072,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testGetSnapshotTags() throws Exception {
+    public void testGetSnapshotTags() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
 
@@ -1175,7 +1172,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             Collection<String> regularPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
             assertEquals(1, regularPatches.size());
-            assertEquals(true, regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
+            assertTrue(regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
 
             Collection<String> updateStackPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_UPDATE_STACK_PATCHES);
@@ -1665,4 +1662,37 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(result.stream().anyMatch(pkgEvr1::equals));
         assertTrue(result.stream().anyMatch(pkgEvr3::equals));
     }
+
+    @Test
+    public void canIdentifyIfPtfUninstallationIsSupported() {
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+
+        Server noPtfSupport = createTestServer(user);
+        noPtfSupport.setOs(ServerConstants.ALMA);
+
+        Server ptfSupportNoUninstall = createTestServer(user);
+        ptfSupportNoUninstall.setOs(ServerConstants.SLES);
+        ptfSupportNoUninstall.setRelease("15");
+        PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), ptfSupportNoUninstall);
+
+        Server ptfFullSupport = createTestServer(user);
+        ptfFullSupport.setOs(ServerConstants.SLES);
+        ptfFullSupport.setRelease("15");
+        PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), ptfFullSupport);
+
+        noPtfSupport = TestUtils.reload(noPtfSupport);
+        ptfSupportNoUninstall = TestUtils.reload(ptfSupportNoUninstall);
+        ptfFullSupport = TestUtils.reload(ptfFullSupport);
+
+        assertFalse(noPtfSupport.doesOsSupportPtf());
+        assertFalse(ServerFactory.isPtfUninstallationSupported(noPtfSupport));
+
+        assertTrue(ptfSupportNoUninstall.doesOsSupportPtf());
+        assertFalse(ServerFactory.isPtfUninstallationSupported(ptfSupportNoUninstall));
+
+        assertTrue(ptfFullSupport.doesOsSupportPtf());
+        assertTrue(ServerFactory.isPtfUninstallationSupported(ptfFullSupport));
+    }
+
 }

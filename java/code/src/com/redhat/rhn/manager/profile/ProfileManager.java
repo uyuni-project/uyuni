@@ -161,7 +161,6 @@ public class ProfileManager extends BaseManager {
         return ProfileFactory.compatibleWithServer(server, org);
     }
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> canonicalProfilePackages(Long prid, Long orgid,
             PageControl pc) {
 
@@ -171,10 +170,9 @@ public class ProfileManager extends BaseManager {
         params.put("prid", prid);
         params.put("org_id", orgid);
         Map<String, Object> elabParams = new HashMap<>();
-        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> canonicalSystemsPackages(Long sid, Long orgid,
             PageControl pc) {
 
@@ -184,7 +182,7 @@ public class ProfileManager extends BaseManager {
         params.put("sid", sid);
         params.put("org_id", orgid);
         Map<String, Object> elabParams = new HashMap<>();
-        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1063,14 +1061,13 @@ public class ProfileManager extends BaseManager {
     }
 
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> getPackagesInChannelByIdCombo(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_in_channel_by_id_combo");
         Map<String, Object> params = new HashMap<>();
         Map<String, Object> elabParams = new HashMap<>();
         params.put("cid", cid);
-        return (DataResult<PackageListItem>)makeDataResult(params, elabParams, null, m);
+        return makeDataResult(params, elabParams, null, m);
     }
 
     private static List<PackageMetadata> findMissingPackages(DataResult<PackageMetadata> pkgs, Set<Channel> channels) {
@@ -1159,9 +1156,8 @@ public class ProfileManager extends BaseManager {
 
     /**
      * Creates a packagemetadata
-     * @param pli PackageListItem info
-     * @param systemEvr evr of curent system
-     * @param profileEvr evr of profile or other system
+     * @param sys PackageListItem info
+     * @param other packageListItem to compare with
      * @param comparison comparison
      * @param param compare string param
      * @return Packagemetadata with the information from the PackageListItem
@@ -1179,7 +1175,6 @@ public class ProfileManager extends BaseManager {
      * @param orgId The id of the org the profiles are associated with.
      * @return DataResult of ProfileOverviewDto
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<ProfileOverviewDto> listProfileOverviews(Long orgId) {
 
         SelectMode m = ModeFactory.getMode("profile_queries", "profile_overview");
@@ -1196,7 +1191,6 @@ public class ProfileManager extends BaseManager {
      * @param profileId The id of the profile the packages are associated with.
      * @return DataResult of ProfilePackageOverviewDto
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<ProfilePackageOverviewDto> listProfilePackages(
             Long profileId) {
 
@@ -1235,17 +1229,13 @@ public class ProfileManager extends BaseManager {
      * @param pc PageControl to filter the list.
      * @return DataResult containing ProfileDto objects
      */
-    @SuppressWarnings("unchecked")
-    public static DataResult<ProfileDto> compatibleWithChannel(
-            Channel channelIn,
-            Org orgIn, PageControl pc) {
-
+    public static DataResult<ProfileDto> compatibleWithChannel(Channel channelIn, Org orgIn, PageControl pc) {
         SelectMode m = ModeFactory.getMode("profile_queries",
                 "compatible_with_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         params.put("cid", channelIn.getId());
-        return  makeDataResult(params, new HashMap<String, Object>(), pc, m);
+        return  makeDataResult(params, new HashMap<>(), pc, m);
     }
 
 }

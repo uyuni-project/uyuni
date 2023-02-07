@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -49,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * PendingActionsConfirmAction
  */
-public class PendingActionsDeleteConfirmAction extends RhnAction implements Listable {
+public class PendingActionsDeleteConfirmAction extends RhnAction implements Listable<ScheduledAction> {
 
     private static final Logger LOG =
             LogManager.getLogger(PendingActionsDeleteConfirmAction.class);
@@ -86,7 +87,7 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ScheduledAction> getResult(RequestContext context) {
         return ActionManager.pendingActionsInSet(context.getCurrentUser(), null,
                 getSetDecl().getLabel());
     }

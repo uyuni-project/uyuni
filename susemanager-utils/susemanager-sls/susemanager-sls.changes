@@ -1,3 +1,74 @@
+- Support SLE Micro migration (bsc#1205011)
+
+-------------------------------------------------------------------
+Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Prevent possible errors from "mgractionschains" module when there
+    is no action chain to resume
+
+-------------------------------------------------------------------
+Mon Jan 23 08:30:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Do not pass server grains to minions (bsc#1207087)
+  * Reuse DB connection on compiling pillar with suma_minion
+  * Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
+  * Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+  * Add missing transactional_update.conf for SLE Micro
+  * filter out libvirt engine events (bsc#1206146)
+  * Improve _mgractionchains.conf logs
+  * install SUSE Liberty v2 GPG key
+  * Detect bootstrap repository path for SLE Micro
+  * Fix reboot info beacon installation
+  * Add state to properly configure the reboot action for transactional systems
+  * enforce installation of the PTF GPG key package
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * drop legacy way to prevent disabling local repos
+
+-------------------------------------------------------------------
+Fri Nov 18 15:13:42 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Avoid installing recommended packages from assigned products (bsc#1204330)
+  * Add beacon to check if a reboot is required in transactional systems
+  * Manager reboot in transactional update action chain (bsc#1201476)
+  * Fix kiwi inspect regexp to allow image names with "-" (bsc#1204541)
+  * Use the actual sudo user home directory for salt ssh
+    clients on bootstrap and clean up (bsc#1202093)
+  * dnf repo definition does not support multiline gpgkeys
+    (bsc#1204444)
+  * remove forced refresh in channel state as gpg key trust is now
+    handled in a different way (bsc#1204061)
+  * import gpg keys directly to prevent using gpg-auto-import-keys
+    on package operations (bsc#1203580)
+  * Perform refresh with packages.pkgupdate state (bsc#1203884)
+
+-------------------------------------------------------------------
+Wed Sep 28 11:14:52 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Prevent possible tracebacks on reading postgres opts
+    with suma_minion salt pillar extension module (bsc#1205255)
+  * Fix mgrnet availability check
+  * Remove dependence on Kiwi libraries
+  * disable always the bootstrap repository also when
+    "mgr_disable_local_repos" is set to False
+  * Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+  * fix syntax error - remove trailing colon (bsc#1203049)
+  * Add mgrnet salt module with mgrnet.dns_fqnd function implementation
+    allowing to get all possible FQDNs from DNS (bsc#1199726)
+  * Copy grains file with util.mgr_switch_to_venv_minion state apply
+  * Remove the message 'rpm: command not found' on using Salt SSH
+    with Debian based systems which has no Salt Bundle
+
 -------------------------------------------------------------------
 Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
 

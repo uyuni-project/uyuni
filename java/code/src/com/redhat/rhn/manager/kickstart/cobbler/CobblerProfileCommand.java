@@ -32,7 +32,9 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * CobblerProfileComand - class to contain logic to communicate with cobbler.
@@ -49,7 +51,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
 
     /**
      * @param ksDataIn - KickstartData to sync
-     * @param userIn - user wanting to sync with cobbler
+     * @param userIn   - user wanting to sync with cobbler
      */
     protected CobblerProfileCommand(KickstartData ksDataIn, User userIn) {
         super(userIn);
@@ -58,7 +60,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
 
     /**
      * Call this if you want to use the taskomatic_user.
-     *
+     * <p>
      * Useful for automated non-user initiated syncs
      *
      * @param ksDataIn - KickstartData to sync
@@ -73,14 +75,14 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
             profile.setDistro(getDistroForKickstart());
         }
         if (kernelOptions != null) {
-            profile.setKernelOptions(kernelOptions);
+            profile.setKernelOptions(Optional.of(kernelOptions));
         }
         if (postKernelOptions != null) {
-            profile.setKernelOptionsPost(postKernelOptions);
+            profile.setKernelOptionsPost(Optional.of(postKernelOptions));
         }
         // redhat_management_key
         KickstartSession ksession =
-            KickstartFactory.lookupDefaultKickstartSessionForKickstartData(this.ksData);
+                KickstartFactory.lookupDefaultKickstartSessionForKickstartData(this.ksData);
         if (ksession != null) {
             ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(ksession);
 
@@ -96,28 +98,37 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
                 }
             }
             log.debug("Setting setRedHatManagementKey to: {}", keystring);
-            profile.setRedHatManagementKey(keystring.toString());
+            profile.setRedHatManagementKey(Optional.of(keystring.toString()));
         }
         else {
             log.warn("We could not find a default kickstart session for this ksdata: {}", ksData.getLabel());
         }
 
-        Map meta = profile.getKsMeta();
+        Map<String, Object> meta;
+        if (profile.getKsMeta().isEmpty()) {
+            meta = new HashMap<>();
+        }
+        else {
+            meta = profile.getKsMeta().get();
+        }
         meta.put("org", this.ksData.getOrg().getId());
-        profile.setKsMeta(meta);
+        profile.setKsMeta(Optional.of(meta));
         // Check for para_host
         if (ksData.getKickstartDefaults().getVirtualizationType().
                 getLabel().equals(KickstartVirtualizationType.PARA_HOST)) {
-            profile.setVirtType(KickstartVirtualizationType.XEN_PARAVIRT);
+            profile.setVirtType(Optional.of(KickstartVirtualizationType.XEN_PARAVIRT));
         }
         //If we're using NONE, use KVM fully virt
         else if (ksData.getKickstartDefaults().getVirtualizationType().
                 getLabel().equals(KickstartVirtualizationType.NONE)) {
-            profile.setVirtType(KickstartVirtualizationType.KVM_FULLYVIRT);
+            profile.setVirtType(Optional.of(KickstartVirtualizationType.KVM_FULLYVIRT));
         }
         else {
-            profile.setVirtType(ksData.getKickstartDefaults().
-                    getVirtualizationType().getLabel());
+            profile.setVirtType(Optional.of(
+                    ksData.getKickstartDefaults()
+                            .getVirtualizationType()
+                            .getLabel()
+            ));
         }
 
         profile.setEnableMenu(ksData.getActive());
@@ -128,10 +139,17 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
     /**
      * Validate url in kickstart and kickstart meta. Filesystem paths are not correct,
      * translate it.
+     *
      * @param profile The profile to check
      */
     public void validateUrl(Profile profile) {
-        Map meta = profile.getKsMeta();
+        Map<String, Object> meta;
+        if (profile.getKsMeta().isEmpty()) {
+            meta = new HashMap<>();
+        }
+        else {
+            meta = profile.getKsMeta().get();
+        }
         String urlToCheck = ksData.getTree().getBasePath();
         if (!urlToCheck.startsWith("/")) {
             urlToCheck = "/" + urlToCheck;
@@ -143,19 +161,20 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
             if (urlToCheck.equals(cobblerMediaVariable)) {
                 meta.remove(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE);
             }
-            profile.setKsMeta(meta);
+            profile.setKsMeta(Optional.of(meta));
         }
     }
 
     /**
      * Get the cobbler distro for a particular kickstart file
-     *      selects the xen or non-xen cobbler distro depending
-     *      upon the virt type
+     * selects the xen or non-xen cobbler distro depending
+     * upon the virt type
+     *
      * @return the distro object
      */
     public Distro getDistroForKickstart() {
         KickstartDefaults def = ksData.getKickstartDefaults();
-        if (def ==  null) {
+        if (def == null) {
             return null;
         }
         return getCobblerDistroForVirtType(def.getKstree(),
@@ -170,7 +189,6 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
     }
 
 
-
     /**
      * @param postKernelOptionsIn The postKernelOptions to set.
      */
@@ -180,15 +198,16 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
 
     /**
      * Get the cobbler distro for a particular tree and virt type combo
-     *      selects the xen or non-xen cobbler distro depending
-     *      upon the virt type
-     * @param tree the kickstart tree
+     * selects the xen or non-xen cobbler distro depending
+     * upon the virt type
+     *
+     * @param tree     the kickstart tree
      * @param virtType the virt type
-     * @param user the user doing the query
+     * @param user     the user doing the query
      * @return null if there is none, otherwise the cobbler distro
      */
     public static Distro getCobblerDistroForVirtType(KickstartableTree tree,
-            KickstartVirtualizationType virtType, User user) {
+                                                     KickstartVirtualizationType virtType, User user) {
         CobblerConnection con = getCobblerConnection(user);
         if (virtType.equals(KickstartFactory.VIRT_TYPE_XEN_PV)) {
             if (tree.getCobblerXenId() == null) {

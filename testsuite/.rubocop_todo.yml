@@ -48,7 +48,6 @@ Layout/EmptyLineAfterGuardClause:
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/client_stack.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/lavanda.rb'
@@ -406,10 +405,10 @@ Style/GlobalVars:
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
     - 'features/support/namespaces/system.rb'
-    - 'features/support/client_stack.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/env.rb'
     - 'features/support/twopence_init.rb'
+    - 'features/support/xmlrpc_client.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -476,7 +475,6 @@ Style/MissingElse:
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/client_stack.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/env.rb'
     - 'features/support/http_client.rb'

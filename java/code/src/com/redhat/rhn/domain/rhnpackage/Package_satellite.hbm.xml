@@ -8,8 +8,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
-            <generator class="sequence">
-                <param name="sequence">RHN_PACKAGE_ID_SEQ</param>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">RHN_PACKAGE_ID_SEQ</param>
+                <param name="increment_size">1</param>
             </generator>
         </id>
 
@@ -207,6 +208,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 p.packageName.name = :name and
                         p.packageEvr.release = :release and
                         p.packageEvr.version = :version and
+                        (p.org is null or p.org = :org)
+        ]]>
+    </query>
+
+    <query name="Package.lookupByNevraIds">
+        <![CDATA[ select p
+                from com.redhat.rhn.domain.rhnpackage.Package as p
+                where p.packageArch.id = :archId and
+                        p.packageName.id = :nameId and
+                        p.packageEvr.id = :evrId and
                         (p.org is null or p.org = :org)
         ]]>
     </query>

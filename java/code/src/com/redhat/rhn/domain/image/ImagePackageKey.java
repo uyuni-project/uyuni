@@ -77,6 +77,7 @@ public class ImagePackageKey implements Serializable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder builder =  new HashCodeBuilder().append(name.getName())
                 .append(evr.getEpoch())
@@ -90,6 +91,7 @@ public class ImagePackageKey implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
 
         if (other instanceof ImagePackageKey) {

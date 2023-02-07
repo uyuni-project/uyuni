@@ -5,8 +5,8 @@
 select * from (
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS IS_MGR_SERVER,
-                   PI.server_id AS IS_PROXY,
+                   SI.server_id AS MGR_SERVER,
+                   PI.server_id AS PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
     LEFT OUTER JOIN suseMgrServerInfo SI ON S.id = SI.server_id
@@ -400,7 +400,7 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
 <mode name="potential_systems_for_package" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, pid, user_id">
 SELECT  S.id, S.name, 1 as selectable
-  FROM  rhnPackage P, suseChannelPackageRetractedStatusView CP, rhnServerChannel SC, rhnServer S, rhnServerArch SA, rhnArchType AT
+  FROM  susePackageExcludingPartOfPtf P, suseChannelPackageRetractedStatusView CP, rhnServerChannel SC, rhnServer S, rhnServerArch SA, rhnArchType AT
  WHERE  S.org_id = :org_id
    AND  SC.server_id = S.id
    AND  SA.id = S.server_arch_id
@@ -516,17 +516,19 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 </mode>
 
 <mode name="xmlrpc_visible_to_user_active" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="user_id, checkin_threshold">
+  <query params="user_id">
 select * from (
   SELECT  DISTINCT S.id AS ID,
           S.name AS NAME,
           INFO.checkin AS LAST_CHECKIN,
           S.last_boot AS LAST_BOOT
-    FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO
+    FROM  rhnServer S, rhnUserServerPerms USP, rhnServerInfo INFO,
+          (SELECT coalesce(value, default_value)::int AS threshold
+             FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
      AND  S.id = INFO.server_id
-     AND  INFO.checkin &gt; current_timestamp - numtodsinterval(:checkin_threshold * 86400, 'second')
+     AND  INFO.checkin &gt; current_timestamp - numtodsinterval(C.threshold * 86400, 'second')
 ) X
 ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   </query>
@@ -551,14 +553,21 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   <elaborator name="is_virtual_host" />
 </mode>
 
-<mode name="visible_to_user_physical_list" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query name="available_to_user_physical_list" />
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements"/>
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
+<mode name="system_ids">
+  <query>SELECT id FROM rhnServer;</query>
 </mode>
+
+<callable-mode name="update_system_overview">
+  <query params="sid">
+      {call update_system_overview(:sid)}
+  </query>
+</callable-mode>
+
+<write-mode name="delete_system_overview">
+  <query params="sid">
+      DELETE FROM suseSystemOverview WHERE id = :sid
+  </query>
+</write-mode>
 
 <mode name="system_currency" class="com.redhat.rhn.frontend.dto.SystemCurrency">
     <query params="uid">
@@ -793,225 +802,26 @@ SELECT  DISTINCT SP.server_id id,
    </elaborator>
 </mode>
 
-<mode name="out_of_date" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id">
-select * from (
-  SELECT    DISTINCT S.ID, S.NAME,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable
-  FROM    rhnServer S, rhnUserServerPerms USP, rhnServerNeededCache SNC
-  WHERE    S.ORG_ID = :org_id AND S.ID = USP.server_id AND USP.user_id = :user_id AND S.id = SNC.server_id
-) X
-ORDER BY  UPPER(COALESCE(X.NAME, '(none)')), X.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
-<mode name="unentitled" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id">
-SELECT    S.ID, S.NAME,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable
-  FROM    rhnServer S
- WHERE    S.ORG_ID = :org_id
-   AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-   AND    NOT EXISTS (SELECT 1 FROM rhnEntitledServers ES where ES.id = S.id)
-ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
-<mode name="ungrouped" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id">
-SELECT S.ID, S.NAME,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable
-  FROM rhnServer S
- WHERE S.org_id = :org_id
-   AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-   AND NOT EXISTS (SELECT 1
-                     FROM rhnServerGroup SG, rhnServerGroupMembers SGM
-                    WHERE SGM.server_id = S.id
-                      AND SG.id = SGM.server_group_id
-                      AND SG.group_type IS NULL)
-ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
-<mode name="systems_requiring_reboot" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id, sid">
-      SELECT DISTINCT S.id, S.NAME,
-           (SELECT 1
-            FROM rhnServerFeaturesView SFV
-            WHERE SFV.server_id = S.id
-              AND SFV.label = 'ftr_system_grouping') AS selectable
-      FROM rhnServer S 
-        JOIN rhnUserServerPerms USP ON USP.server_id = S.id
-      WHERE USP.user_id = :user_id
-        AND S.org_id = :org_id
-        AND ((CAST(:sid AS NUMERIC) IS NOT NULL AND S.id = :sid) OR (CAST(:sid AS NUMERIC) IS NULL)) 
-        AND (EXISTS (SELECT 1
-                    FROM rhnServerPackage SP
-                      JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
-                      JOIN rhnErrataPackage EP ON EP.package_id = P.id
-                      JOIN rhnErrata E ON EP.errata_id = E.id
-                      JOIN rhnerratakeyword EK ON E.id = EK.errata_id
-                    WHERE SP.server_id = S.id
-                      AND EK.keyword = 'reboot_suggested'
-                      AND (to_date('1970-01-01', 'YYYY-MM-DD')
-                           + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
-			   )
-             OR EXISTS
-                   (SELECT 1
-                    FROM rhnServerPackage SP
-                      JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
-                      JOIN rhnPackageProvides PP ON P.id = PP.package_id
-                      JOIN rhnPackageCapability PC ON PP.capability_id = PC.id
-                    WHERE SP.server_id = S.id
-                      AND PC.name = 'installhint(reboot-needed)'
-                      AND (to_date('1970-01-01', 'YYYY-MM-DD')
-                           + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
-                    ))
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
-<mode name="inactive" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id, checkin_threshold">
-SELECT S.id, S.NAME,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable,
-           TO_CHAR(si.checkin, 'YYYY-MM-DD HH24:MI:SS') as last_checkin
-  FROM rhnServerInfo SI,
-       rhnServer S
- WHERE S.org_id = :org_id
-   AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-   AND SI.server_id = S.id
-   AND SI.checkin &lt; current_timestamp - numtodsinterval(:checkin_threshold * 86400, 'second')
-ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
 <mode name="inactive_order_by_checkin_time" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id, checkin_threshold">
+  <query params="org_id, user_id">
 SELECT S.id, S.NAME,
        (SELECT 1
           FROM rhnServerFeaturesView SFV
          WHERE SFV.server_id = S.id
            AND SFV.label = 'ftr_system_grouping') AS selectable
   FROM rhnServerInfo SI,
-       rhnServer S
+       rhnServer S,
+       (SELECT coalesce(value, default_value)::int AS threshold
+          FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
  WHERE S.org_id = :org_id
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
    AND SI.server_id = S.id
-   AND SI.checkin &lt; current_timestamp - numtodsinterval(:checkin_threshold * 86400, 'second')
+   AND SI.checkin &lt; current_timestamp - numtodsinterval(C.threshold * 86400, 'second')
 ORDER BY SI.checkin DESC
   </query>
   <elaborator name="system_overview" />
   <elaborator name="system_config_files_with_diffs" />
   <elaborator name="entitlements" />
-</mode>
-
-<mode name="recently_registered" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id, threshold">
-SELECT S.id, S.NAME, S.info, S.created,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable,
-                (select C.name
-                        from rhnChannel C
-                        inner join rhnServerChannel SC on SC.channel_id = C.id
-                        where SC.server_id = S.id
-                        and C.parent_channel IS NULL) AS CHANNEL_LABELS,
-       (SELECT wc.login
-          FROM web_contact wc
-         WHERE wc.id = s.creator_id) as creator_name
-  FROM rhnServer S
- WHERE S.org_id = :org_id
-   AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-   AND S.created &gt; current_timestamp - numtodsinterval(:threshold * 86400, 'second')
-ORDER BY S.created DESC
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
-<mode name="all_systems_by_registration" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id">
-SELECT S.id, S.NAME, S.info, S.created,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable,
-                (select C.name
-                        from rhnChannel C
-                        inner join rhnServerChannel SC on SC.channel_id = C.id
-                        where SC.server_id = S.id
-                        and C.parent_channel IS NULL) AS CHANNEL_LABELS,
-    (SELECT wc.login
-          FROM web_contact wc
-         WHERE wc.id = s.creator_id) as creator_name
-  FROM rhnServer S
- WHERE S.org_id = :org_id
-   AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP
-                WHERE USP.user_id = :user_id
-                  AND USP.server_id = S.id)
-ORDER BY S.created DESC
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-</mode>
-
-<mode name="proxy_servers" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="user_id">
-SELECT PI.server_id ID, S.name,
-       (SELECT 1
-          FROM rhnServerFeaturesView SFV
-         WHERE SFV.server_id = S.id
-           AND SFV.label = 'ftr_system_grouping') AS selectable
-  FROM rhnServer S, rhnProxyInfo PI
- WHERE EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = PI.server_id)
-   AND S.id = PI.server_id
-  </query>
-  <elaborator name="system_overview"/>
-  <elaborator name="system_config_files_with_diffs" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
 </mode>
 
 <mode name="virtual_guests_for_host" class="com.redhat.rhn.frontend.dto.VirtualSystemOverview">
@@ -1043,37 +853,6 @@ ORDER BY NAME, VI.virtual_system_id, VI.uuid DESC
   <elaborator name="virtual_system_overview"/>
   <elaborator name="system_config_files_with_diffs" />
   <elaborator name="virtual_system_entitlements" />
-</mode>
-
-<mode name="virtual_servers" class="com.redhat.rhn.frontend.dto.VirtualSystemOverview">
-    <query params="user_id">
-        SELECT
-        DISTINCT VI.id,
-        VI.host_system_id,
-        (SELECT S.name FROM rhnServer S WHERE S.id = VI.host_system_id) as host_server_name,
-        VI.virtual_system_id,
-        VI.uuid,
-        COALESCE(VII.name, '(none)') AS NAME,
-        COALESCE(VIS.name, '(unknown)') AS STATE_NAME,
-        COALESCE(VIS.label, 'unknown') AS STATE_LABEL,
-        COALESCE(VII.vcpus, 0) AS VCPUS,
-        COALESCE(VII.memory_size, 0) AS MEMORY,
-        COALESCE(((SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = VI.virtual_system_id)), 0 ) as accessible,
-        rhn_channel.user_role_check((select channel_id from rhnServerOverview where server_id = VI.virtual_system_id), :user_id, 'subscribe') AS subscribable,
-        COALESCE((SELECT 1 FROM rhnServerFeaturesView SFV WHERE (SFV.server_id = VI.virtual_system_id OR (VI.uuid IS NULL AND SFV.server_id = VI.host_system_id)) AND SFV.label = 'ftr_system_grouping'), 0) AS selectable
-        FROM rhnVirtualInstance VI
-        LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id
-        LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id
-        WHERE EXISTS (SELECT 1
-        FROM rhnUserServerPerms USP
-        WHERE USP.user_id = :user_id
-        AND (USP.server_id = VI.host_system_id OR VI.host_system_id IS NULL))
-        AND VI.uuid IS NOT NULL
-        ORDER BY NAME, VI.virtual_system_id, VI.uuid DESC
-    </query>
-    <elaborator name="virtual_system_overview"/>
-    <elaborator name="system_config_files_with_diffs" />
-    <elaborator name="virtual_system_entitlements" />
 </mode>
 
 <query name="total_virtual_instances" params="">
@@ -1233,23 +1012,11 @@ SELECT  DISTINCT ST.element AS ID
    WHERE  USP.user_id = :user_id
 </query>
 
-<query name="available_to_user_physical_list" params="user_id">
-  SELECT  DISTINCT S.id,
-                   S.name,
-                  (SELECT 1
-                     FROM rhnServerFeaturesView SFV
-                    WHERE SFV.server_id = S.id
-                      AND SFV.label = 'ftr_system_grouping') AS selectable
-    FROM  rhnServer S inner join  rhnUserServerPerms USP on S.id = USP.server_id
-   WHERE  USP.user_id = :user_id
-     AND  NOT EXISTS (SELECT DISTINCT virtual_system_id as vid FROM rhnVirtualInstance where S.id=virtual_system_id)
-</query>
-
 <query name="available_to_user_with_errata" params="user_id">
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS IS_MGR_SERVER,
-                   PI.server_id AS IS_PROXY,
+                   SI.server_id AS MGR_SERVER,
+                   PI.server_id AS PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
                    SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
                    SO.OUTDATED_PACKAGES, SO.SERVER_NAME, SO.SERVER_ADMINS, SO.GROUP_COUNT,
@@ -1310,7 +1077,7 @@ ORDER BY S.ID
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
           LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
-          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_PROXY, MGR_SERVER_ID AS IS_MGR_SERVER
+          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, IS_PROXY AS PROXY, IS_MGR_SERVER AS MGR_SERVER
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
@@ -2006,50 +1773,6 @@ ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="system_config_files_with_diffs" />
 </mode>
 
-<mode name="extra_packages_systems_count"
-      class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="userid, orgid">
-select s.id as id,
-       s.name as name,
-       1 as selectable,
-       count(sp.name_id) as extra_pkg_count
-       from rhnServer s
-  join rhnUserServerPerms usp on (usp.server_id = s.id and
-                                  usp.user_id = :userid)
-  join rhnServerPackage sp on (s.id = sp.server_id)
-       left outer join (select sc.server_id,
-                               cp.package_id,
-                               p.name_id,
-                               p.evr_id,
-                               p.package_arch_id
-                          from rhnPackage p,
-                               rhnServerChannel sc,
-                               rhnServerPackage sp2,
-                               rhnChannelPackage cp,
-                               rhnUserServerPerms usp2
-                         where cp.package_id = p.id
-                           and cp.channel_id = sc.channel_id
-                           and sc.server_id = usp2.server_id
-                           and usp2.user_id = :userid
-                           and sc.server_id = sp2.server_id
-                           and sp2.name_id = p.name_id
-                           and sp2.evr_id = p.evr_id
-                           and sp2.package_arch_id = p.package_arch_id
-                       ) scp on (scp.server_id = sp.server_id and
-                                 sp.name_id = scp.name_id and
-                                 sp.evr_id = scp.evr_id and
-                                 sp.package_arch_id = scp.package_arch_id)
- where scp.package_id is null and
-       s.org_id = :orgid
- group by s.name, s.id
- order by name, id
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-</mode>
-
 <mode name="system_events_history"
   class="com.redhat.rhn.frontend.dto.SystemEventDto">
   <query params="sid, oid, date, limit, offset">
@@ -2164,55 +1887,45 @@ select count(action_id) as count
 <mode name="system_events_pending"
   class="com.redhat.rhn.frontend.dto.SystemPendingEventDto">
   <query params="sid">
-select SA.action_id as ID,
-               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
-               A.earliest_action as scheduled_for,
-               AType.label as history_type,
-               AType.name as history_type_name,
-               A.prerequisite as prereq_aid,
-               A.name as action_name
-          from rhnActionType AType,
-               rhnActionStatus AStat,
-               rhnAction A left outer join
-               web_contact U
-            on U.id = A.scheduler,
-               rhnServerAction SA
-         where SA.server_id = :sid
-           and SA.action_id = A.id
-           and AType.id = A.action_type
-           and AStat.id = SA.status
-           and AStat.id = 0
-order by scheduled_for desc, prereq_aid nulls first
+  SELECT SA.action_id AS id
+                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') AS summary
+                , A.earliest_action AS scheduled_for
+                , AType.label AS history_type
+                , AType.name AS history_type_name
+                , A.prerequisite AS prereq_aid
+                , SP.status AS prereq_status_id
+                , A.name AS action_name
+    FROM rhnServerAction SA
+                INNER JOIN rhnAction A ON SA.action_id = A.id
+                INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
+                INNER JOIN rhnActionType AType ON AType.id = A.action_type
+                LEFT JOIN rhnserveraction SP ON SA.server_id = SP.server_id AND A.prerequisite = SP.action_id
+                LEFT JOIN web_contact U on U.id = A.scheduler
+   WHERE SA.server_id = :sid AND AStat.id = 0
+ORDER BY scheduled_for DESC, prereq_aid NULLS FIRST
   </query>
 </mode>
 
 <mode name="pending_actions_to_delete_in_set"
   class="com.redhat.rhn.frontend.dto.SystemPendingEventDto">
   <query params="sid, user_id, set_label">
-<!--select ST.element as id
-  from rhnSet ST
- where ST.user_id = :user_id
-   and ST.label = :set_label-->
-select SA.action_id as ID,
-               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
-               A.earliest_action as scheduled_for,
-               AType.label as history_type,
-               AType.name as history_type_name,
-               A.prerequisite as prereq_aid,
-               A.name as action_name
-          from rhnActionType AType,
-               rhnActionStatus AStat,
-               rhnAction A left outer join
-               web_contact U
-            on U.id = A.scheduler,
-               rhnServerAction SA
-         where SA.server_id = :sid
-           and SA.action_id = A.id
-           and AType.id = A.action_type
-           and AStat.id = SA.status
-           and AStat.id = 0
-           and exists (select 1 from rhnset where user_id = :user_id and label = :set_label and element = SA.action_id)
-order by scheduled_for desc, prereq_aid nulls first
+  SELECT SA.action_id AS ID
+                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') AS summary
+                , A.earliest_action AS scheduled_for
+                , AType.label AS history_type
+                , AType.name AS history_type_name
+                , A.prerequisite AS prereq_aid
+                , SP.status As prereq_status_id
+                , A.name AS action_name
+    FROM rhnServerAction SA
+                INNER JOIN rhnAction A ON SA.action_id = A.id
+                INNER JOIN rhnActionStatus AStat ON AStat.id = SA.status
+                INNER JOIN rhnActionType AType ON AType.id = A.action_type
+                LEFT JOIN rhnserveraction SP ON SA.server_id = SP.server_id AND A.prerequisite = SP.action_id
+                LEFT JOIN web_contact U ON U.id = A.scheduler
+   WHERE SA.server_id = :sid AND AStat.id = 0
+                AND EXISTS (SELECT 1 FROM rhnset WHERE user_id = :user_id AND label = :set_label AND element = SA.action_id)
+ORDER BY scheduled_for DESC, prereq_aid NULLS FIRST
   </query>
 </mode>
 
@@ -2293,14 +2006,6 @@ select a.id
   </query>
 </mode>
 
-<mode name="find_compatible_channel_arch">
-  <query params="server_arch_id">
-SELECT channel_arch_id
-  FROM rhnServerChannelArchCompat
- WHERE server_arch_id = :server_arch_id
-  </query>
-</mode>
-
 <mode name="count_systems_in_set_without_entitlement">
   <query params="user_id, set_label">
     SELECT COUNT(*) as count
@@ -2310,6 +2015,15 @@ SELECT channel_arch_id
         rhnSet.label = :set_label AND
         (rhnServerEntitlementView.is_base IS NULL OR rhnServerEntitlementView.is_base = 'Y') AND
         (rhnServerEntitlementView.label IS NULL OR (rhnServerEntitlementView.label NOT IN (%s)))
+  </query>
+</mode>
+
+<mode name="count_systems_with_entitlement">
+  <query params="user_id, entitlement_label">
+    SELECT  count(S.id)
+    FROM  rhnServer S
+    WHERE EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
+    AND EXISTS (SELECT 1 FROM rhnServerEntitlementView E where E.label = :entitlement_label AND E.server_id = S.id)
   </query>
 </mode>
 

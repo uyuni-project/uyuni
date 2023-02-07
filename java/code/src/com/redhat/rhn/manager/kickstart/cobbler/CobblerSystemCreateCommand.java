@@ -284,25 +284,28 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
 
         if (server != null) {
-            if (this.activationKeys == null || this.activationKeys.length() == 0) {
+            if (this.activationKeys == null || this.activationKeys.isEmpty()) {
                 log.error("This cobbler profile does not " +
                         "have a redhat_management_key set ");
             }
             else {
-                rec.setRedHatManagementKey(activationKeys);
+                rec.setRedHatManagementKey(Optional.of(activationKeys));
             }
         }
         if (!StringUtils.isBlank(getKickstartHost())) {
-            rec.setServer(getKickstartHost());
+            rec.setServer(Optional.of(getKickstartHost()));
         }
         else {
-            rec.setServer("");
+            rec.setServer(Optional.empty());
         }
 
         // Setup the kickstart metadata so the URLs and activation key are setup
-        Map<String, Object> ksmeta = rec.getKsMeta();
-        if (ksmeta == null) {
+        Map<String, Object> ksmeta;
+        if (rec.getKsMeta().isEmpty()) {
             ksmeta = new HashMap<>();
+        }
+        else {
+            ksmeta = rec.getKsMeta().get();
         }
 
         if (!StringUtils.isBlank(mediaPath)) {
@@ -319,7 +322,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         if (this.ksDistro != null) {
             ksmeta.put(KickstartFormatter.KS_DISTRO, this.ksDistro);
         }
-        rec.setKsMeta(ksmeta);
+        rec.setKsMeta(Optional.of(ksmeta));
         Profile recProfile = rec.getProfile();
         if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed())) {
             if (kernelOptions != null && kickstartHost != null && mediaPath != null) {
@@ -350,8 +353,12 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         else if (serverName != null) {
             rec.setHostName(serverName);
         }
-        rec.setKernelOptions(kernelOptions);
-        rec.setKernelOptionsPost(postKernelOptions);
+        if (kernelOptions != null) {
+            rec.setKernelOptions(Optional.of(kernelOptions));
+        }
+        if (postKernelOptions != null) {
+            rec.setKernelOptionsPost(Optional.of(postKernelOptions));
+        }
         // The comment is optional
         if (comment != null) {
             rec.setComment(comment);
@@ -425,11 +432,11 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                         }
 
                         ArrayList<String> ipv6Addresses = n.getGlobalIpv6Addresses();
-                        if (ipv6Addresses.size() > 0) {
+                        if (!ipv6Addresses.isEmpty()) {
                             net.setIpv6Address(ipv6Addresses.get(0));
                             ipv6Addresses.remove(0);
                         }
-                        if (ipv6Addresses.size() > 0) {
+                        if (!ipv6Addresses.isEmpty()) {
                             net.setIpv6Secondaries(ipv6Addresses);
                         }
                         if (setupBridge && bridgeSlaves.contains(n.getName())) {

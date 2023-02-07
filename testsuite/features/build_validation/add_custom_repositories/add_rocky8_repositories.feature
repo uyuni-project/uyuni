@@ -61,7 +61,7 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: The custom channel for Rocky 8 has been synced
     When I wait until the channel "rocky-8-iso" has been synced
 
-  Scenario: Create CLM filters to remove AppStream metadata
+  Scenario: Create CLM filters to remove AppStream metadata from Rocky 8
     Given I am authorized for the "Admin" section
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -69,6 +69,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Create a new filter" text
     And I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
@@ -76,24 +77,27 @@ Feature: Add the Rocky 8 distribution custom repositories
     When I click on "Create Filter"
     Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
+    # 3.6 is the version needed by our spacecmd
     When I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
     And I enter "python36" as "moduleName"
     And I enter "3.6" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "python-3.6" text
 
-  Scenario: Create a CLM project to remove AppStream metadata
+  Scenario: Create a CLM project to remove AppStream metadata from Rocky 8
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
-    And I enter "Remove AppStream metadata" as "name"
-    And I enter "no-appstream" as "label"
+    And I enter "Remove AppStream metadata from Rocky 8" as "name"
+    And I enter "no-appstream-8" as "label"
     And I click on "Create"
-    Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
+    Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
     When I click on "Attach/Detach Sources"
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"
+    And I check "Custom Channel for rocky8_minion"
     And I click on "Save"
     Then I should see a "Custom Channel for Rocky 8 DVD" text
     When I click on "Attach/Detach Filters"

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ListPackagesAction
  */
-public class ListPackagesAction extends RhnAction implements Listable {
+public class ListPackagesAction extends RhnAction implements Listable<PackageOverview> {
 
     public static final String LIST_NAME = "packageList";
     public static final String DATASET_NAME = "packages";
@@ -75,14 +76,12 @@ public class ListPackagesAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<PackageOverview> getResult(RequestContext context) {
         //Get the errata from the eid in the request
         Errata errata = context.lookupErratum();
-        List<PackageOverview> vals =
-           PackageManager.packagesInErrata(errata, null);
+        List<PackageOverview> vals = PackageManager.packagesInErrata(errata, null);
         for (PackageOverview dto : vals) {
-            DataResult providing =
-              PackageManager.providingChannels(context.getCurrentUser(), dto.getId());
+            DataResult<Row> providing = PackageManager.providingChannels(context.getCurrentUser(), dto.getId());
             dto.setPackageChannels(providing);
         }
         return vals;

@@ -104,7 +104,7 @@ public class ListRhnSetHelper extends ListSetHelper {
      */
     public ListRhnSetHelper(Listable inp, HttpServletRequest request,
                             RhnSetDecl declIn) {
-        this(inp, request, declIn, Collections.EMPTY_MAP);
+        this(inp, request, declIn, Collections.emptyMap());
     }
 
     /**
@@ -118,16 +118,19 @@ public class ListRhnSetHelper extends ListSetHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void destroy() {
         clear();
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getDecl() {
         return decl.getLabel();
     }
 
     /** {@inheritDoc} */
+    @Override
     public Collection getAddedKeys() {
         Set preSelectedValues = getPreSelected();
         Set setValues = set.getElementValues();
@@ -136,6 +139,7 @@ public class ListRhnSetHelper extends ListSetHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Collection getRemovedKeys() {
         Set setValues = set.getElementValues();
         Set preSelectedValues = getPreSelected();
@@ -144,11 +148,13 @@ public class ListRhnSetHelper extends ListSetHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void execute(List dataSet) {
         helper.execute(set, getListName(), dataSet);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected Map getSelections() {
         Map<String, String> selections = new HashMap<>();
         for (Long id : set.getElementValues()) {
@@ -158,22 +164,26 @@ public class ListRhnSetHelper extends ListSetHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected int size() {
         return set.size();
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void syncSelections(List dataSet) {
         helper.syncSelections(set, dataSet);
 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void update() {
         helper.updateSet(set, getListName());
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void add(Set c) {
         for (Object elem : c) {
             set.addElement((Long) elem);
@@ -182,6 +192,7 @@ public class ListRhnSetHelper extends ListSetHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void clear() {
         set.clear();
         RhnSetManager.store(set);

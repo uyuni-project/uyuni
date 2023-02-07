@@ -28,11 +28,11 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import redstone.xmlrpc.XmlRpcFault;
@@ -63,8 +63,8 @@ public class CobblerSyncTask extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext ctxIn)
-            throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext ctxIn) {
 
         try {
             XMLRPCInvoker invoker = (XMLRPCInvoker)
@@ -73,7 +73,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             Double mtime = null;
             try {
                 mtime = (Double)invoker.invokeMethod("last_modified_time",
-                        new ArrayList());
+                        new ArrayList<>());
             }
             catch (XmlRpcFault e) {
                 log.error("Error calling cobbler.", e);
@@ -93,10 +93,10 @@ public class CobblerSyncTask extends RhnJavaJob {
             // if we need to update a profile's kickstart tree, do that now
             List<KickstartData> profiles = KickstartFactory
                     .lookupKickstartDataByUpdateable();
-            for (KickstartData profile : profiles) {
+            profiles.forEach(profile -> {
                 KickstartableTree tree = KickstartFactory.getNewestTree(
                         profile.getRealUpdateType(), profile.getChannel()
-                        .getId(), profile.getOrg());
+                                .getId(), profile.getOrg());
                 if (tree != null && !tree.equals(profile.getTree())) {
                     KickstartEditCommand cmd = new KickstartEditCommand(
                             profile, null);
@@ -109,13 +109,13 @@ public class CobblerSyncTask extends RhnJavaJob {
                         cpec.store();
                     }
                 }
-            }
+            });
 
-
-            log.debug("mtime: {}, last modified: {}", mtime.longValue(), LAST_UPDATED.get());
+            Long mtimeLong = Optional.ofNullable(mtime).map(t -> t.longValue()).orElse(null);
+            log.debug("mtime: {}, last modified: {}", mtimeLong, LAST_UPDATED.get());
             //If we got an mtime from cobbler and that mtime is before our last update
             // Then don't update anything
-            if (mtime.longValue() < CobblerSyncTask.LAST_UPDATED.get()) {
+            if (Optional.ofNullable(mtimeLong).map(t -> t < CobblerSyncTask.LAST_UPDATED.get()).orElse(false)) {
                 log.debug("Cobbler mtime is less than last change, skipping");
                 return;
             }

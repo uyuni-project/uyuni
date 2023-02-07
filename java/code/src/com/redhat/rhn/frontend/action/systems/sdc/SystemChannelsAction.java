@@ -81,10 +81,11 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                     ActionForm formIn,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
@@ -95,13 +96,13 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         request.setAttribute(RequestContext.SYSTEM, s);
         if (s.getBaseChannel() != null) {
             Channel baseChannel = s.getBaseChannel();
-            List channels = baseChannel.getAccessibleChildrenFor(user);
+            List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
-            channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
+            channels.sort(new DynamicComparator<>("name", RequestContext.SORT_ASC));
 
             ChildChannelDto[] childchannels = new ChildChannelDto[channels.size()];
             for (int i = 0; i < channels.size(); i++) {
-                Channel child = (Channel) channels.get(i);
+                Channel child = channels.get(i);
                 childchannels[i] = new ChildChannelDto(child.getId(), child.getName(),
                         s.isSubscribed(child),
                         child.isSubscribable(user.getOrg(), s));
@@ -338,6 +339,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                 RequestContext.SID, s.getId().toString());
     }
 
+    @Override
     protected Map getKeyMethodMap() {
         Map<String, String> map = new HashMap<>();
         map.put("sdc.channels.edit.confirm_update_base", "confirmUpdateBaseChannel");

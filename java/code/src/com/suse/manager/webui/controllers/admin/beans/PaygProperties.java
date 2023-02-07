@@ -196,19 +196,19 @@ public class PaygProperties {
         this.bastionKeyPassword = bastionKeyPasswordIn;
     }
 
-    public Boolean isInstanceEdit() {
+    public boolean isInstanceEdit() {
         return instanceEdit;
     }
 
-    public void setInstanceEdit(Boolean instanceEditIn) {
+    public void setInstanceEdit(boolean instanceEditIn) {
         instanceEdit = instanceEditIn;
     }
 
-    public Boolean isBastionEdit() {
+    public boolean isBastionEdit() {
         return bastionEdit;
     }
 
-    public void setBastionEdit(Boolean bastionEditIn) {
+    public void setBastionEdit(boolean bastionEditIn) {
         bastionEdit = bastionEditIn;
     }
 }

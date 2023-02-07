@@ -81,23 +81,23 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
      * @param request - the spark request being processed
      * @param handler - the name of the handler
      * @param methodName - the name of the method
-     * @return the params as a StringBuffer ready to be logged
+     * @return the params as a StringBuilder ready to be logged
      */
-    public StringBuffer processParams(Request request, String handler, String methodName) {
+    public StringBuilder processParams(Request request, String handler, String methodName) {
         Map<String, String> paramsMap = getQueryMapParams(request);
         paramsMap.putAll(parseBody(request.body()));
         return processParams(paramsMap, handler, methodName);
     }
 
     /**
-     * Convert the params from a Map to a StringBuffer with format of a method call
+     * Convert the params from a Map to a StringBuilder with format of a method call
      * @param paramsMap the Map containing the parameters
      * @param handler name of the handler
      * @param methodName name of the method
-     * @return the params as a StringBuffer ready to be logged
+     * @return the params as a StringBuilder ready to be logged
      */
-    public StringBuffer processParams(Map<String, String> paramsMap, String handler, String methodName) {
-        StringBuffer params = new StringBuffer();
+    public StringBuilder processParams(Map<String, String> paramsMap, String handler, String methodName) {
+        StringBuilder params = new StringBuilder();
         for (String key : paramsMap.keySet()) {
             params.append(key);
             params.append("=");

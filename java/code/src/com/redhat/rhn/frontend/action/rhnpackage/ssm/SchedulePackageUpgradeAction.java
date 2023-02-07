@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -74,10 +75,11 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         DynaActionForm f = (DynaActionForm) actionForm;
@@ -113,7 +115,8 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
 
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
@@ -147,7 +150,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
             RhnSetManager.store(packageSet);
         }
 
-        DataResult results = SystemManager.ssmSystemPackagesToUpgrade(user,
+        DataResult<Row> results = SystemManager.ssmSystemPackagesToUpgrade(user,
             RhnSetDecl.SSM_UPGRADE_PACKAGES_LIST.getLabel());
 
         TagHelper.bindElaboratorTo("groupList", results.getElaborator(), request);
@@ -181,21 +184,21 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
         ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
 
         log.debug("Getting package upgrade data.");
-        List<Map> result =  getResult(context);
-        ((DataResult) result).elaborate();
+        List<Row> result =  getResult(context);
+        ((DataResult<Row>) result).elaborate();
 
 
         Map<Long, List<Map<String, Long>>> sysPackageSet =
                 new HashMap<>();
-        for (Map sys : result) {
+        for (Row sys : result) {
             Long sysId = (Long) sys.get("id");
             List<Map<String, Long>> pkgSet = new ArrayList<>();
             sysPackageSet.put(sysId, pkgSet);
-            for (Map pkg : (List<Map>) sys.get("elaborator0")) {
-                Map<String, Long> newPkg = new HashMap();
-                newPkg.put("name_id", (Long) pkg.get("name_id"));
-                newPkg.put("evr_id", (Long) pkg.get("evr_id"));
-                newPkg.put("arch_id", (Long) pkg.get("arch_id"));
+            for (Map<String, Long> pkg : (List<Map<String, Long>>) sys.get("elaborator0")) {
+                Map<String, Long> newPkg = new HashMap<>();
+                newPkg.put("name_id", pkg.get("name_id"));
+                newPkg.put("evr_id", pkg.get("evr_id"));
+                newPkg.put("arch_id", pkg.get("arch_id"));
                 pkgSet.add(newPkg);
             }
 

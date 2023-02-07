@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.FlushModeType;
 
@@ -229,8 +230,7 @@ public class CachedStatement implements Serializable {
     }
 
     int executeUpdate(Map<String, ?> parameters, List<?> inClause) {
-        Integer res = (Integer) internalExecute(parameters, inClause, null);
-        return res;
+        return internalExecuteUpdate(parameters, inClause, null);
     }
 
     /**
@@ -268,73 +268,109 @@ public class CachedStatement implements Serializable {
     }
 
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(Map<String, ?> parameters, Mode mode) {
-        return (DataResult<Object>) internalExecute(parameters, null, mode);
+    <T> DataResult<T> execute(Map<String, ?> parameters, Mode mode) {
+        return internalExecute(parameters, null, mode);
     }
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(List<?> parameters, Mode mode) {
-        return (DataResult<Object>) internalExecute(null, parameters, mode);
+    <T> DataResult<T> execute(List<?> parameters, Mode mode) {
+        return internalExecute(null, parameters, mode);
     }
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(Map<String, ?> parameters, List<?> inClause,
+    <T> DataResult<T> execute(Map<String, ?> parameters, List<?> inClause,
             Mode mode) {
-        return (DataResult<Object>) internalExecute(parameters, inClause, mode);
+        return internalExecute(parameters, inClause, mode);
+    }
+
+    private Integer internalExecuteUpdateNoSubClause(Map<String, ?> parameters, Mode mode) {
+        Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
+        if (resultObj instanceof Integer) {
+            return (Integer) resultObj;
+        }
+        return 0;
+    }
+
+    private <T> DataResult<T> internalExecuteNoSubClause(Map<String, ?> parameters, Mode mode) {
+        storeForRestart(parameters, null, mode);
+        this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+        Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
+        Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
+        if (drClazz.isAssignableFrom(resultObj.getClass())) {
+            return drClazz.cast(executeChecking(sqlStatement, qMap, parameters, mode, null));
+        }
+        return new DataResult<>(mode);
+    }
+
+    private int internalExecuteUpdate(Map<String, ?> parameters, List<?> inClause, Mode mode) {
+        storeForRestart(parameters, inClause, mode);
+        this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+
+        if (sqlStatement.contains("%s")) {
+            int returnInt = 0;
+
+            int subStart = 0;
+            while (subStart < inClause.size()) {
+                int subLength = subStart + BATCH_SIZE >= inClause.size() ? inClause.size() - subStart : BATCH_SIZE;
+
+                List<?> subClause = inClause.subList(subStart, subStart + subLength);
+                String finalQuery = sqlStatement.replace("%s", commaSeparatedList(subClause));
+                Object resultObj = executeChecking(finalQuery, qMap, parameters, mode, null);
+                subStart += subLength;
+
+                if (resultObj instanceof Integer) {
+                    returnInt = returnInt + (Integer) resultObj;
+                }
+            }
+            return returnInt;
+        }
+        else {
+            return internalExecuteUpdateNoSubClause(parameters, mode);
+        }
+    }
+
+    private List<String> queryBatches(List<?> inClause) {
+        List<String> queries = new ArrayList<>();
+
+        int subStart = 0;
+        while (subStart < inClause.size()) {
+            int subLength = subStart + BATCH_SIZE >= inClause.size() ?
+                    inClause.size() - subStart : BATCH_SIZE;
+
+            List<?> subClause = inClause.subList(subStart, subStart + subLength);
+            queries.add(sqlStatement.replace("%s", commaSeparatedList(subClause)));
+            subStart += subLength;
+        }
+        return queries;
     }
 
     @SuppressWarnings("unchecked")
-    private Object internalExecute(Map<String, ?> parameters, List<?> inClause,
-            Mode mode) {
+    private <T> DataResult<T> internalExecute(Map<String, ?> parameters, List<?> inClause, Mode mode) {
 
         storeForRestart(parameters, inClause, mode);
         this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
 
-        if (sqlStatement.indexOf("%s") > 0) {
+        if (sqlStatement.contains("%s")) {
             if (inClause == null || inClause.isEmpty()) {
                 return new DataResult<>(mode);
             }
-            // one of these two items is the return value. Ugly, but...
-            Integer returnInt = null;
-            DataResult<Object> returnDataResult = null;
+            Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
 
-            int subStart = 0;
-            while (subStart < inClause.size()) {
-                int subLength = subStart + BATCH_SIZE >= inClause.size() ?
-                        inClause.size() - subStart : BATCH_SIZE;
-
-                List<?> subClause = inClause.subList(subStart, subStart + subLength);
-                String finalQuery =
-                        sqlStatement.replaceAll("%s", commaSeparatedList(subClause));
-                Object resultObj =
-                        executeChecking(finalQuery, qMap, parameters, mode, null);
-                subStart += subLength;
-
-                if (resultObj instanceof DataResult) {
-                    if (returnDataResult == null) {
-                        returnDataResult = (DataResult<Object>) resultObj;
-                    }
-                    else {
-                        returnDataResult.addDataResult((DataResult<Object>) resultObj);
-                    }
-                }
-                else {
-                    if (returnInt == null) {
-                        returnInt = (Integer) resultObj;
-                    }
-                    else {
-                        returnInt = returnInt + (Integer) resultObj;
-                    }
+            List<String> batches = queryBatches(inClause);
+            List<DataResult<T>> results = batches.stream()
+                    .map(finalQuery -> executeChecking(finalQuery, qMap, parameters, mode, null))
+                    .filter(res -> drClazz.isAssignableFrom(res.getClass()))
+                    .map(res -> drClazz.cast(res))
+                    .collect(Collectors.toList());
+            DataResult<T> result = null;
+            if (!results.isEmpty()) {
+                result = results.get(0);
+                for (DataResult<T> subResult : results.subList(1, results.size())) {
+                    result.addDataResult(subResult);
                 }
             }
-            if (returnInt != null) {
-                return returnInt;
-            }
-            return returnDataResult;
+            return result;
         }
         else {
-            return executeChecking(sqlStatement, qMap, parameters, mode, null);
+            return internalExecuteNoSubClause(parameters, mode);
         }
     }
 
@@ -582,7 +618,6 @@ public class CachedStatement implements Serializable {
         });
     }
 
-    @SuppressWarnings("unchecked")
     private DataResult<Object> processResultSet(ResultSet rs, SelectMode mode,
             List<Object> currentResults) {
 
@@ -612,9 +647,9 @@ public class CachedStatement implements Serializable {
                  * If no className was specified *or* if the caller wants a Map
                  */
                 if (className == null || className.equals("java.util.Map")) {
-                    Map<String, Object> resultMap;
+                    Row resultMap;
                     if (pointers == null) {
-                        resultMap = new HashMap<>();
+                        resultMap = new Row();
                     }
                     else {
                         Integer pos = pointers.get(getObject(rs, getColumn()));
@@ -626,8 +661,7 @@ public class CachedStatement implements Serializable {
                          * a bug here or a bug with the query that allows such
                          * effect. Decide what to do about it.
                          */
-                        resultMap =
-                                (Map<String, Object>) currentResults.get(pos);
+                        resultMap = (Row) currentResults.get(pos);
                     }
                     addToMap(columns, rs, resultMap,
                             mode.getElaborators().indexOf(parentStatement));
@@ -672,7 +706,7 @@ public class CachedStatement implements Serializable {
             // bowels of CachedStatement inside datasource.
             // Remove this pointless coupling once we move the paging
             // logic elsewhere.
-            if (dr.size() > 0) {
+            if (!dr.isEmpty()) {
                 dr.setStart(1);
                 dr.setEnd(dr.size());
                 dr.setTotalSize(dr.size());
@@ -874,7 +908,6 @@ public class CachedStatement implements Serializable {
         return MethodUtil.callMethod(obj, StringUtil.beanify("get " + key), new Object[0]);
     }
 
-    @SuppressWarnings("unchecked")
     private Map<Object, Integer> generatePointers(List<Object> dr, String key) {
 
         Iterator<Object> i = dr.iterator();
@@ -884,8 +917,8 @@ public class CachedStatement implements Serializable {
         while (i.hasNext()) {
             Object row = i.next();
 
-            if (row instanceof Map) {
-                pointers.put(((Map<String, Object>) row).get(key), pos);
+            if (row instanceof Row) {
+                pointers.put(((Row) row).get(key), pos);
             }
             else {
                 Object keyData = MethodUtil.callMethod(row,
@@ -915,12 +948,15 @@ public class CachedStatement implements Serializable {
 
     /**
      * Restart the latest query
+     * @param newSession the new hibernate session to use
+     * @param <T> the type of the returned items
      * @return what the previous query returned or null.
      */
-    public DataResult<?> restartQuery() {
-        restoreSessionIfClosed();
+    public <T> DataResult<T> restartQuery(Session newSession) {
+        session = newSession;
+
         return restartData == null ? null :
-                (DataResult<?>) internalExecute(restartData.getParameters(),
+                internalExecute(restartData.getParameters(),
                         restartData.getInClause(), restartData.getMode());
     }
 
@@ -935,7 +971,7 @@ public class CachedStatement implements Serializable {
             try {
                 sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
 
-                return executeBatch(connection, sqlStatement, qMap, batch, null, null);
+                return executeBatch(connection, sqlStatement, qMap, batch);
             }
             catch (SQLException e) {
                 throw SqlExceptionTranslator.sqlException(e);
@@ -947,39 +983,26 @@ public class CachedStatement implements Serializable {
 
             }
             catch (RhnRuntimeException e) {
-                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                log.error("Error while processing cached statement sql: {}", getQuery(), e);
                 throw e;
             }
         });
     }
 
     private int [] executeBatch(Connection connection, String sql,
-            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch, Mode mode,
-            List<Object> dr) throws SQLException {
+            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch) throws SQLException {
         if (log.isDebugEnabled()) {
-            log.debug("execute() - Executing: " + sql);
-            log.debug("execute() - With: " + batch);
+            log.debug("execute() - Executing: {}", sql);
+            log.debug("execute() - With: {}", batch);
         }
 
         PreparedStatement ps = null;
         try {
-            ps = prepareStatement(connection, sql, mode);
+            ps = prepareStatement(connection, sql, null);
             return NamedPreparedStatement.executeBatch(ps, parameterMap, batch);
         }
         finally {
             HibernateHelper.cleanupDB(ps);
         }
-    }
-
-    /**
-     * Restore the linked hibernate session if it is closed
-     */
-    public void restoreSessionIfClosed() {
-        if (session.isOpen()) {
-            return;
-        }
-
-        session = session.getSessionFactory().openSession();
-        session.beginTransaction();
     }
 }

@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,20 +38,22 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SatSchedulesAction
  */
-public class SatSchedulesAction extends RhnAction implements Listable {
+public class SatSchedulesAction extends RhnAction implements Listable<Map<String, Object>> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext contextIn) {
+    @Override
+    public List<Map<String, Object>> getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         try {
             return new TaskomaticApi().findActiveSchedules(user);
@@ -58,7 +61,7 @@ public class SatSchedulesAction extends RhnAction implements Listable {
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),
                     "repos.jsp.message.taskomaticdown", null);
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 }

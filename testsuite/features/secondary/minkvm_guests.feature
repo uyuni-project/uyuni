@@ -1,6 +1,11 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# This feature is not idempotent, we leave the system registered in order to have the history of events
+# available.
+
+# This feature has not dependencies and it can run in parallel with other features.
+
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
@@ -9,57 +14,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap KVM virtual host
-    When I follow the left menu "Systems > Bootstrapping"
-    Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "kvm_server" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
-    And I enter "kvm_server" password
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies" if present
-    And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
-    And I wait until onboarding is completed for "kvm_server"
-
   Scenario: Show the KVM host system overview
     Given I am on the Systems overview page of this "kvm_server"
-
-  Scenario: Set the virtualization entitlement for KVM
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "virtualization_host"
-    And I click on "Update Properties"
-    Then I should see a "Since you added a Virtualization system type to the system" text
-
-  Scenario: Enable the virtualization host formula for KVM
-    When I follow "Formulas" in the content area
-    Then I should see a "Choose formulas" text
-    And I should see a "Virtualization" text
-    When I check the "virtualization-host" formula
-    And I click on "Save"
-    And I wait until I see "Formula saved." text
-    Then the "virtualization-host" formula should be checked
-
-  Scenario: Parametrize the KVM virtualization host
-    When I follow "Formulas" in the content area
-    And I follow first "Virtualization Host" in the content area
-    And I click on "Expand All Sections"
-    And I select "NAT" in virtual network mode field
-    And I enter "192.168.124.1" in virtual network IPv4 address field
-    And I enter "192.168.124.2" in first IPv4 address for DHCP field
-    And I enter "192.168.124.254" in last IPv4 address for DHCP field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Apply the KVM virtualization host formula via the highstate
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    Then service "libvirtd" is enabled on "kvm_server"
-
-  Scenario: Restart the minion to enable libvirt_events engine configuration
-    Then I restart salt-minion on "kvm_server"
 
   Scenario: Prepare a KVM test virtual machine and list it
     When I delete default virtual network on "kvm_server"
@@ -70,9 +26,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create "test-vm" virtual machine on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
-
-  Scenario: Show the KVM host virtualization tab
-    Given I follow "Virtualization" in the content area
 
   Scenario: Start a KVM virtual machine
     When I click on "Start" in row "test-vm"
@@ -182,15 +135,16 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "add_disk"
     And I select "test-pool0" from "disk1_source_pool"
     And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
@@ -221,14 +175,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I check "uefi"
     And I enter "/usr/share/qemu/ovmf-x86_64-ms.bin" as "uefiLoader"
     And I enter "/usr/share/qemu/ovmf-x86_64-ms-vars.bin" as "nvramTemplate"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
@@ -346,7 +301,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "192.168.128.10" as "ipv4def_dhcpranges0_start"
     And I enter "192.168.128.20" as "ipv4def_dhcpranges0_end"
     And I click on "Create"
-    Then I should see a "Virtual Networks" text
+    And I wait until I see "Virtual Networks" text
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual network: test-net2" is completed
+    And I follow "Virtualization" in the content area
+    And I follow "Networks"
     And I wait until table row for "test-net2" contains button "Stop"
     And table row for "test-net2" should contain "running"
     And I should see a "test-net2" virtual network on "kvm_server"
@@ -388,7 +346,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     When I enter "15-sp4-kvm" as "kickstartLabel"
     And I select "SLE-15-SP4-KVM" from "kstreeId"
     And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
@@ -417,8 +375,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "15-sp4-kvm" from "cobbler_profile"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     # Test the VM boot params
     Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
@@ -451,36 +410,3 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-KVM" text
-
-# End of provisioning scenarios
-
-  Scenario: Cleanup: Unregister the KVM virtualization host
-    Given I am on the Systems overview page of this "kvm_server"
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
-
-  Scenario: Cleanup: Cleanup KVM virtualization host
-    When I run "zypper -n mr -e --all" on "kvm_server" without error control
-    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
-    And I stop salt-minion on "kvm_server"
-    And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
-    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
-    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm_server" without error control
-    # In case the delete VM test failed we need to clean up ourselves.
-    And I run "virsh undefine --remove-all-storage test-vm" on "kvm_server" without error control
-    And I run "virsh destroy test-vm2" on "kvm_server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm2" on "kvm_server" without error control
-    And I delete test-net0 virtual network on "kvm_server" without error control
-    And I delete test-net1 virtual network on "kvm_server" without error control
-    And I delete test-net2 virtual network on "kvm_server" without error control
-    And I delete test-pool0 virtual storage pool on "kvm_server" without error control
-    And I delete test-pool1 virtual storage pool on "kvm_server" without error control
-    And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
-
-  @salt_bundle
-  Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
-    And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
-    And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control
-    And I run "rm /etc/venv-salt-minion/pki/minion/minion_master.pub" on "kvm_server" without error control

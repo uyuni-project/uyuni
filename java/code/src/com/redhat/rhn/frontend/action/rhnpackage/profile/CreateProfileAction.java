@@ -54,8 +54,9 @@ public class CreateProfileAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         StrutsDelegate strutsDelegate = getStrutsDelegate();
@@ -86,7 +87,7 @@ public class CreateProfileAction extends RhnAction {
                     forward = strutsDelegate.forwardParams(mapping.findForward("created"),
                             params);
                     if (log.isDebugEnabled() && (forward != null)) {
-                        log.debug("Where are we going [{}]", forward.toString());
+                        log.debug("Where are we going [{}]", forward);
                     }
                 }
                 else {

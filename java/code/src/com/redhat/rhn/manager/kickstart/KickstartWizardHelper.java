@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Provides convenience methods for creating a kickstart profile.
@@ -149,24 +150,20 @@ public class KickstartWizardHelper {
             // Setup the default CryptoKeys
             List<CryptoKey> keys = KickstartFactory
                     .lookupCryptoKeys(this.currentUser.getOrg());
-            if (keys != null && keys.size() > 0) {
+            if (keys != null && !keys.isEmpty()) {
                 if (ksdata.getCryptoKeys() == null) {
-                    ksdata.setCryptoKeys(new HashSet());
+                    ksdata.setCryptoKeys(new HashSet<>());
                 }
-                for (CryptoKey key : keys) {
-                    if (key.getCryptoKeyType().equals(
-                            KickstartFactory.KEY_TYPE_SSL)) {
-                        ksdata.getCryptoKeys().add(key);
-                    }
-                }
+                ksdata.getCryptoKeys().addAll(
+                        keys.stream()
+                            .filter(key -> key.getCryptoKeyType().equals(KickstartFactory.KEY_TYPE_SSL))
+                            .collect(Collectors.toList()));
             }
         }
         ksdata.setOrg(currentUser.getOrg());
         ksdata.setCreated(new Date());
-        if (!ksdata.isRawData()) {
-            if (ksdata.getCommand("url") != null) {
-                ksdata.getCommand("url").setCreated(new Date());
-            }
+        if (!ksdata.isRawData() && ksdata.getCommand("url") != null) {
+            ksdata.getCommand("url").setCreated(new Date());
         }
 
         ksdata.getKickstartDefaults().setCreated(new Date());
@@ -196,15 +193,7 @@ public class KickstartWizardHelper {
      * @param ksdata the data to which the repos have to be processed
      */
     public void processRepos(KickstartData ksdata) {
-        if (ksdata.isRhel5()) {
-            Set<RepoInfo> repos = ksdata.getRepoInfos();
-            RepoInfo vt = RepoInfo.vt();
-            if (!repos.contains(vt)) {
-                repos.add(vt);
-                ksdata.setRepoInfos(repos);
-            }
-        }
-        else if (ksdata.isRhel8()) {
+        if (ksdata.isRhel8()) {
             Set<RepoInfo> repos = ksdata.getRepoInfos();
             RepoInfo appstream = RepoInfo.appstream();
             if (!repos.contains(appstream)) {
@@ -220,17 +209,9 @@ public class KickstartWizardHelper {
     /**
      * Basically add or remove key --skip to the ks file...
      * mainly used for the wizard
-     * @param ksdata the ksdata to which the key command has to be aded or removed..
+     * @param ksdata the ksdata to which the key command has to be added or removed.
      */
     public void processSkipKey(KickstartData ksdata) {
-        if (ksdata.isRhel5()) {
-            KickstartCommand command = ksdata.getCommand("key");
-            if (command == null) {
-                createCommand("key", "--skip", ksdata);
-            }
-        }
-        else {
-            ksdata.removeCommand("key", false);
-        }
+        ksdata.removeCommand("key", false);
     }
 }

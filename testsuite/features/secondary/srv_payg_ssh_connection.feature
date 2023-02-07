@@ -115,7 +115,7 @@ Feature: Pay as you go
     Then I should not see a "my-host.local" link
     And I should not see a "my-host.local" text
 
-  Scenario: Cleanup: delete Full information for payg ssh connection data
+  Scenario: Cleanup: delete full information for payg ssh connection data
     When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
     And I follow "my-host-full.local"
     And I click on "Delete"

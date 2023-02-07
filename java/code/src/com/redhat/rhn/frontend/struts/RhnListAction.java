@@ -75,7 +75,7 @@ public class RhnListAction extends RhnAction {
 
     protected List trackSet(RhnSet set, HttpServletRequest request) {
 
-        List newlist = new ArrayList();
+        List newlist = new ArrayList<>();
         String hiddenvars = request.getParameter("newset");
         String returnvisit = request.getParameter("returnvisit");
 

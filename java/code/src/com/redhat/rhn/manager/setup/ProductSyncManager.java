@@ -133,7 +133,6 @@ public class ProductSyncManager {
      * @param productsId the scc product ids of the product  to check
      * @return a map containing the internal product id and the list of channel that are in conflicting
      */
-    @SuppressWarnings("unchecked")
     public Map<Long, List<String>> verifyChannelConflicts(List<Long> productsId) {
         final SelectMode query = ModeFactory.getMode("Product_queries", "verify_channel_conflicts");
         final DataResult<Map<String, Object>> dataResult = query.execute(productsId);
@@ -153,7 +152,6 @@ public class ProductSyncManager {
      *                   Only the base product and its children will be computed.
      * @return a map specifying for each internal product id which is the internal parent id.
      */
-    @SuppressWarnings("unchecked")
     public Map<Long, Long> getProductTreeMap(List<Long> productsId) {
         final SelectMode query = ModeFactory.getMode("Product_queries", "extract_product_tree");
         final DataResult<Map<String, Long>> dataResult = query.execute(productsId);
@@ -391,31 +389,12 @@ public class ProductSyncManager {
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
-        if (selector.execute(params).size() > 0) {
+        if (!selector.execute(params).isEmpty()) {
             return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
         }
 
         // Otherwise return FAILED
         return new SyncStatus(SyncStatus.SyncStage.FAILED);
-    }
-
-    /**
-     * For a given {@link TaskoSchedule} return the id of the associated channel.
-     * @param schedule a taskomatic schedule
-     * @return channel ID as {@link Long} or null in case of an error
-     */
-    @SuppressWarnings("unchecked")
-    private Long getChannelIdForSchedule(TaskoSchedule schedule) {
-        Long ret = null;
-        Map<String, Object> dataMap = schedule.getDataMap();
-        String channelIdString = (String) dataMap.get("channel_id");
-        try {
-            ret = Long.parseLong(channelIdString);
-        }
-        catch (NumberFormatException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return ret;
     }
 
     /**

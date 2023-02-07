@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,7 +31,6 @@ import org.jose4j.jwt.NumericDate;
 import org.junit.jupiter.api.Test;
 
 import java.security.Key;
-import java.util.Arrays;
 
 /**
  * Tests for the TokenBuilder class.
@@ -50,9 +50,9 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         String secret = DigestUtils.sha256Hex("0123456789abcd");
         Key key = TokenBuilder.getKeyForSecret(secret);
         assertNotNull(key);
-        assertTrue(Arrays.equals(new byte[]{
+        assertArrayEquals(new byte[]{
                 -88, 44, -110, 39, -52, 84, -57, 71, 86, 32, -50, -123, -70, 31, -54, 30, 111,
-                82, -84, -119, -99, 20, -82, 114, -21, 38, 65, 25, -50, 88, 44, -8}, key.getEncoded()));
+                82, -84, -119, -99, 20, -82, 114, -21, 38, 65, 25, -50, 88, 44, -8}, key.getEncoded());
     }
 
     @Test

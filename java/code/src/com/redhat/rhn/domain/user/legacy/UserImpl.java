@@ -29,8 +29,10 @@ import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.EnterpriseUser;
+import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.User;
@@ -40,6 +42,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -62,7 +65,6 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
-    //private Address address;
     private EnterpriseUserImpl euser;
     private Long id;
     private String login;
@@ -73,8 +75,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     private Org org;
     private Set<StateChange> stateChanges;
     private Set<Address> addresses;
-    private Set hiddenPanes;
-    private Set associatedServerGroups;
+    private Set<Pane> hiddenPanes;
+    private Set<ServerGroup> associatedServerGroups;
     private Set<Server> servers;
     // PersonalInfo sub-object object
     private PersonalInfo personalInfo;
@@ -95,14 +97,15 @@ public class UserImpl extends BaseDomainHelper implements User {
         userInfo.setUser(this);
         stateChanges = new TreeSet<>();
         addresses = new HashSet<>();
-        hiddenPanes = new HashSet();
-        associatedServerGroups = new HashSet();
+        hiddenPanes = new HashSet<>();
+        associatedServerGroups = new HashSet<>();
     }
 
     /**
      * Gets the current value of id
      * @return long the current value
      */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -111,6 +114,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of id to new value
      * @param idIn New value for id
      */
+    @Override
     public void setId(Long idIn) {
         this.id = idIn;
     }
@@ -119,6 +123,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of login
      * @return String the current value
      */
+    @Override
     public String getLogin() {
         return this.login;
     }
@@ -127,6 +132,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of login to new value
      * @param loginIn New value for login
      */
+    @Override
     public void setLogin(String loginIn) {
         this.login = loginIn;
         setLoginUc(loginIn.toUpperCase());
@@ -136,6 +142,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of loginUc
      * @return String the current value
      */
+    @Override
     public String getLoginUc() {
         return this.loginUc;
     }
@@ -144,6 +151,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of loginUc to new value
      * @param loginUcIn New value for loginUc
      */
+    @Override
     public void setLoginUc(String loginUcIn) {
         this.loginUc = loginUcIn;
     }
@@ -152,6 +160,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of password
      * @return String the current value
      */
+    @Override
     public String getPassword() {
         return this.password;
     }
@@ -160,6 +169,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of password as is to new value, no encryption
      * @param passwordIn New raw value for password
      */
+    @Override
     public void setRawPassword(String passwordIn) {
         this.password = passwordIn;
     }
@@ -168,6 +178,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of password to new value
      * @param passwordIn New value for password
      */
+    @Override
     public void setPassword(String passwordIn) {
         /**
          * If we're using encrypted passwords, encode the
@@ -209,6 +220,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Set<Role> getRoles() {
         Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
@@ -226,6 +238,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Set<Role> getTemporaryRoles() {
         Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
@@ -245,6 +258,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Set<Role> getPermanentRoles() {
         Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
@@ -264,6 +278,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean hasRole(Role label) {
         // We use checkRoleSet to get the correct logic for the
         // implied roles.
@@ -276,16 +291,19 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean hasPermanentRole(Role label) {
         return getPermanentRoles().contains(label);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void addTemporaryRole(Role label) {
         addRole(label, true);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void addPermanentRole(Role label) {
         addRole(label, false);
     }
@@ -293,7 +311,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     private void addRole(Role label, boolean temporary) {
         checkPermanentOrgAdmin();
-        Set<Role> roles = new HashSet<>();
+        Set<Role> roles;
         if (temporary) {
             roles = this.getTemporaryRoles();
         }
@@ -314,11 +332,13 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void removeTemporaryRole(Role label) {
         removeRole(label, true);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void removePermanentRole(Role label) {
         removeRole(label, false);
     }
@@ -361,6 +381,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean authenticate(String thePassword) {
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         boolean result = false;
@@ -368,8 +389,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * If we have a valid pamAuthService and the user uses pam authentication,
          * authenticate via pam, otherwise, use the db.
          */
-        if (pamAuthService != null && pamAuthService.trim().length() > 0 &&
-                this.getUsePamAuthentication()) {
+        if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
             Pam pam = new Pam(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
@@ -378,64 +398,65 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
         }
         else {
-            /**
+            /*
              * If we're using encrypted passwords, check
              * thePassword encrypted, otherwise just do
              * a straight clear-text comparison.
              */
-            boolean useEncrPasswds =
-                Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
+            boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
             if (useEncrPasswds) {
                 // user uses SHA-256 encrypted password
                 if (password.startsWith(CryptHelper.getSHA256Prefix())) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
                 }
                 // user still uses MD5 encrypted password
-                else if (password.startsWith(CryptHelper.getMD5Prefix())) {
-                    if (MD5Crypt.crypt(thePassword, password).equals(password)) {
-                        // if authenticated with md5 pass, convert it to sha-256
-                        setPassword(thePassword);
-                        result = true;
-                    }
-                    else {
-                        result = false;
-                    }
+                else if (password.startsWith(CryptHelper.getMD5Prefix()) &&
+                        MD5Crypt.crypt(thePassword, password).equals(password)) {
+                    // if authenticated with md5 pass, convert it to sha-256
+                    setPassword(thePassword);
+                    result = true;
                 }
             }
             else {
                 result = password.equals(thePassword);
             }
-            if (LOG.isDebugEnabled() && !useEncrPasswds) {
-                String encr = useEncrPasswds ? "with" : "without";
-                LOG.debug("DB login for user {} {} encrypted passwords failed", this, encr);
-            }
+            debug(!result, "DB login for user {} {} encrypted passwords failed", this,
+                        useEncrPasswds ? "with" : "without");
         }
-        if (LOG.isDebugEnabled() && result) {
-            LOG.debug("PAM login for user {} succeeded. ", this);
-        }
+        debug(result, "PAM login for user {} succeeded. ", this);
         return result;
+    }
+
+    private void debug(boolean condition, String message, Object... args) {
+        if (condition) {
+            LOG.debug(message, args);
+        }
     }
 
     /**
      * Associates the user with an Org.
      * @param orgIn Org to be associated to this user.
      */
+    @Override
     public void setOrg(Org orgIn) {
         org = orgIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Org getOrg() {
         return org;
     }
 
     /** {@inheritDoc} */
-    public Set getDefaultSystemGroupIds() {
+    @Override
+    public Set<Long> getDefaultSystemGroupIds() {
         return UserManager.getDefaultSystemGroupIds(this);
     }
 
     /** {@inheritDoc} */
-    public void setDefaultSystemGroupIds(Set dsg) {
+    @Override
+    public void setDefaultSystemGroupIds(Set<Long> dsg) {
         UserManager.setDefaultSystemGroupIds(this, dsg);
     }
 
@@ -480,6 +501,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * or not
      * @return Returns true if the user is disabled
      */
+    @Override
     public boolean isDisabled() {
         return UserFactory.isDisabled(this);
     }
@@ -487,6 +509,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addChange(StateChange change) {
         this.stateChanges.add(change);
     }
@@ -494,84 +517,99 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
-    public Set getStateChanges() {
+    @Override
+    public Set<StateChange> getStateChanges() {
         return stateChanges;
     }
 
     /**
      * @param s The stateChanges to set.
      */
-    public void setStateChanges(Set s) {
+    public void setStateChanges(Set<StateChange> s) {
         this.stateChanges = s;
     }
 
-    /*************   UserInfo methods **************/
+    // ************   UserInfo methods **************
     /** {@inheritDoc} */
+    @Override
     public int getPageSize() {
         return this.userInfo.getPageSize();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setPageSize(int pageSizeIn) {
         this.userInfo.setPageSize(pageSizeIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean getUsePamAuthentication() {
         return this.userInfo.getUsePamAuthentication();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setUsePamAuthentication(boolean usePamAuthenticationIn) {
         this.userInfo.setUsePamAuthentication(usePamAuthenticationIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getShowSystemGroupList() {
         return this.userInfo.getShowSystemGroupList();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setShowSystemGroupList(String showSystemGroupListIn) {
         this.userInfo.setShowSystemGroupList(showSystemGroupListIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Date getLastLoggedIn() {
         return this.userInfo.getLastLoggedIn();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setLastLoggedIn(Date lastLoggedInIn) {
         this.userInfo.setLastLoggedIn(lastLoggedInIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setPreferredLocale(String locale) {
         this.userInfo.setPreferredLocale(locale);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getPreferredLocale() {
         return this.userInfo.getPreferredLocale();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setPreferredDocsLocale(String docsLocale) {
         this.userInfo.setPreferredDocsLocale(docsLocale);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getPreferredDocsLocale() {
         return this.userInfo.getPreferredDocsLocale();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCsvSeparator(char csvSeparator) {
         this.userInfo.setCsvSeparator(csvSeparator);
     }
 
     /** {@inheritDoc} */
+    @Override
     public char getCsvSeparator() {
         return this.userInfo.getCsvSeparator();
     }
@@ -582,6 +620,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of prefix
      * @return String the current value
      */
+    @Override
     public String getPrefix() {
         return this.personalInfo.getPrefix();
     }
@@ -590,6 +629,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of prefix to new value
      * @param prefixIn New value for prefix
      */
+    @Override
     public void setPrefix(String prefixIn) {
         this.personalInfo.setPrefix(prefixIn);
     }
@@ -598,6 +638,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of firstNames
      * @return String the current value
      */
+    @Override
     public String getFirstNames() {
         return this.personalInfo.getFirstNames();
     }
@@ -606,6 +647,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of firstNames to new value
      * @param firstNamesIn New value for firstNames
      */
+    @Override
     public void setFirstNames(String firstNamesIn) {
         this.personalInfo.setFirstNames(firstNamesIn);
     }
@@ -614,6 +656,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of lastName
      * @return String the current value
      */
+    @Override
     public String getLastName() {
         return this.personalInfo.getLastName();
     }
@@ -622,6 +665,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of lastName to new value
      * @param lastNameIn New value for lastName
      */
+    @Override
     public void setLastName(String lastNameIn) {
         this.personalInfo.setLastName(lastNameIn);
     }
@@ -630,6 +674,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of company
      * @return String the current value
      */
+    @Override
     public String getCompany() {
         return this.personalInfo.getCompany();
     }
@@ -638,6 +683,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of company to new value
      * @param companyIn New value for company
      */
+    @Override
     public void setCompany(String companyIn) {
         this.personalInfo.setCompany(companyIn);
     }
@@ -646,6 +692,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of title
      * @return String the current value
      */
+    @Override
     public String getTitle() {
         return this.personalInfo.getTitle();
     }
@@ -654,6 +701,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of title to new value
      * @param titleIn New value for title
      */
+    @Override
     public void setTitle(String titleIn) {
         this.personalInfo.setTitle(titleIn);
     }
@@ -662,6 +710,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of phone
      * @return String the current value
      */
+    @Override
     public String getPhone() {
         return getAddress().getPhone();
     }
@@ -670,6 +719,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of phone to new value
      * @param phoneIn New value for phone
      */
+    @Override
     public void setPhone(String phoneIn) {
         getAddress().setPhone(phoneIn);
     }
@@ -678,6 +728,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of fax
      * @return String the current value
      */
+    @Override
     public String getFax() {
         return getAddress().getFax();
     }
@@ -686,6 +737,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of fax to new value
      * @param faxIn New value for fax
      */
+    @Override
     public void setFax(String faxIn) {
         getAddress().setFax(faxIn);
     }
@@ -694,6 +746,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Gets the current value of email
      * @return String the current value
      */
+    @Override
     public String getEmail() {
         return this.personalInfo.getEmail();
     }
@@ -702,17 +755,20 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Sets the value of email to new value
      * @param emailIn New value for email
      */
+    @Override
     public void setEmail(String emailIn) {
         this.personalInfo.setEmail(emailIn);
     }
 
 
     /** {@inheritDoc} */
+    @Override
     public RhnTimeZone getTimeZone() {
         return this.userInfo.getTimeZone();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setTimeZone(RhnTimeZone timeZoneIn) {
         this.userInfo.setTimeZone(timeZoneIn);
     }
@@ -724,6 +780,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     * Output User to String for debugging
     * @return String output of the User
     */
+    @Override
     public String toString() {
         return LocalizationService.getInstance().getDebugMessage("user") + " " + getLogin() +
                 " (id " + getId() + ", org_id " + getOrg().getId() + ")";
@@ -732,8 +789,9 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof User)) {
+        if (!(other instanceof User)) {
             return false;
         }
         User otherUser = (User) other;
@@ -746,6 +804,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(login).append(org).append(id).toHashCode();
     }
@@ -754,6 +813,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for address1
      * @return Address1
      */
+    @Override
     public String getAddress1() {
         return getAddress().getAddress1();
     }
@@ -762,6 +822,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for address1
      * @param address1In New value for address1
      */
+    @Override
     public void setAddress1(String address1In) {
         getAddress().setAddress1(address1In);
     }
@@ -770,6 +831,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for address2
      * @return Address2
      */
+    @Override
     public String getAddress2() {
         return getAddress().getAddress2();
     }
@@ -778,6 +840,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for address2
      * @param address2In New value for address2
      */
+    @Override
     public void setAddress2(String address2In) {
         getAddress().setAddress2(address2In);
     }
@@ -786,6 +849,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for city
      * @return City
      */
+    @Override
     public String getCity() {
         return getAddress().getCity();
     }
@@ -794,6 +858,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for city
      * @param cityIn New value for city
      */
+    @Override
     public void setCity(String cityIn) {
         getAddress().setCity(cityIn);
     }
@@ -802,6 +867,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for state
      * @return State
      */
+    @Override
     public String getState() {
         return getAddress().getState();
     }
@@ -810,6 +876,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for state
      * @param stateIn New value for state
      */
+    @Override
     public void setState(String stateIn) {
         getAddress().setState(stateIn);
     }
@@ -818,6 +885,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for zip
      * @return Zip
      */
+    @Override
     public String getZip() {
         return getAddress().getZip();
     }
@@ -826,6 +894,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for zip
      * @param zipIn New value for zip
      */
+    @Override
     public void setZip(String zipIn) {
         getAddress().setZip(zipIn);
     }
@@ -834,6 +903,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for country
      * @return Country
      */
+    @Override
     public String getCountry() {
         return getAddress().getCountry();
     }
@@ -842,6 +912,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for country
      * @param countryIn New value for country
      */
+    @Override
     public void setCountry(String countryIn) {
         getAddress().setCountry(countryIn);
     }
@@ -851,6 +922,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Getter for isPoBox
      * @return isPoBox
      */
+    @Override
     public String getIsPoBox() {
         return getAddress().getIsPoBox();
     }
@@ -859,6 +931,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Setter for isPoBox
      * @param isPoBoxIn New value for isPoBox
      */
+    @Override
     public void setIsPoBox(String isPoBoxIn) {
         getAddress().setIsPoBox(isPoBoxIn);
     }
@@ -866,6 +939,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public EnterpriseUser getEnterpriseUser() {
         if (euser == null) {
             euser = new EnterpriseUserImpl();
@@ -876,14 +950,16 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
-    public Set getHiddenPanes() {
+    @Override
+    public Set<Pane> getHiddenPanes() {
         return hiddenPanes;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setHiddenPanes(Set p) {
+    @Override
+    public void setHiddenPanes(Set<Pane> p) {
         hiddenPanes = p;
     }
 
@@ -896,7 +972,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         Address baddr = null;
         Address addr = null;
         Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-        if (addresses.size() > 0) {
+        if (!addresses.isEmpty()) {
             for (Address addressIn : addrA) {
                 if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
                     addr = addressIn;
@@ -959,6 +1035,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of id
         * @return long the current value
         */
+        @Override
         public Long getId() {
             return id;
         }
@@ -967,49 +1044,16 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of id to new value
         * @param idIn New value for id
         */
+        @Override
         public void setId(Long idIn) {
-        }
-
-        /**
-        * Add a User to this instance.
-        *
-        * @param u a User to add
-        */
-        public void addUser(User u) {
-        }
-
-        /**
-        * Remove a User from this instance.
-        *
-        * @param u the User to remove
-        */
-        public void removeUser(User u) {
-        }
-
-        /**
-        * Return an iterator over all Users associated with
-        * this instance.
-        *
-        * @return Iterator an iterator over all users
-        */
-        public Iterator allUsers() {
-            return null;
-        }
-
-        /**
-        * Find the user having the id provided. Return null if
-        * not found.
-        * @param idIn id to use
-        * @return User or null
-        */
-        public User findUserById(Long idIn) {
-            return null;
+            id = idIn;
         }
 
         /**
         * Gets the current value of login
         * @return String the current value
         */
+        @Override
         public String getLogin() {
             return login;
         }
@@ -1018,6 +1062,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of login to new value
         * @param loginIn New value for login
         */
+        @Override
         public void setLogin(String loginIn) {
             login = loginIn;
         }
@@ -1026,6 +1071,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of password
         * @return String the current value
         */
+        @Override
         public String getPassword() {
             return password;
         }
@@ -1034,6 +1080,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of password to new value
         * @param passwordIn New value for password
         */
+        @Override
         public void setPassword(String passwordIn) {
             /**
             * If we're using encrypted passwords, encode the
@@ -1052,6 +1099,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of prefix
         * @return String the current value
         */
+        @Override
         public String getPrefix() {
             return personalInfo.getPrefix();
         }
@@ -1060,6 +1108,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of prefix to new value
         * @param prefixIn New value for prefix
         */
+        @Override
         public void setPrefix(String prefixIn) {
             personalInfo.setPrefix(prefixIn);
         }
@@ -1068,6 +1117,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of firstNames
         * @return String the current value
         */
+        @Override
         public String getFirstNames() {
             return personalInfo.getFirstNames();
         }
@@ -1076,6 +1126,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of firstNames to new value
         * @param firstNamesIn New value for firstNames
         */
+        @Override
         public void setFirstNames(String firstNamesIn) {
             personalInfo.setFirstNames(firstNamesIn);
         }
@@ -1084,6 +1135,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of lastName
         * @return String the current value
         */
+        @Override
         public String getLastName() {
             return personalInfo.getLastName();
         }
@@ -1092,6 +1144,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of lastName to new value
         * @param lastNameIn New value for lastName
         */
+        @Override
         public void setLastName(String lastNameIn) {
             personalInfo.setLastName(lastNameIn);
         }
@@ -1100,6 +1153,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of title
         * @return String the current value
         */
+        @Override
         public String getTitle() {
             return personalInfo.getTitle();
         }
@@ -1108,6 +1162,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of title to new value
         * @param titleIn New value for title
         */
+        @Override
         public void setTitle(String titleIn) {
             personalInfo.setTitle(titleIn);
         }
@@ -1116,6 +1171,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Gets the current value of email
         * @return String the current value
         */
+        @Override
         public String getEmail() {
             return personalInfo.getEmail();
         }
@@ -1124,6 +1180,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Sets the value of email to new value
         * @param emailIn New value for email
         */
+        @Override
         public void setEmail(String emailIn) {
             personalInfo.setEmail(emailIn);
         }
@@ -1132,6 +1189,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Getter for lastLoggedIn
         * @return lastLoggedIn
         */
+        @Override
         public Date getLastLoggedIn() {
             return userInfo.getLastLoggedIn();
         }
@@ -1140,6 +1198,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Setter for lastLoggedIn
         * @param lastLoggedInIn New value for lastLoggedIn
         */
+        @Override
         public void setLastLoggedIn(Date lastLoggedInIn) {
             userInfo.setLastLoggedIn(lastLoggedInIn);
         }
@@ -1148,13 +1207,16 @@ public class UserImpl extends BaseDomainHelper implements User {
         * @inheritDoc
         * @param modifiedIn the modified date
         */
+        @Override
         public void setModified(Date modifiedIn) {
+            // Not implemented
         }
 
         /**
         * @inheritDoc
         * @return date modified
         */
+        @Override
         public Date getModified() {
             return null;
         }
@@ -1163,13 +1225,16 @@ public class UserImpl extends BaseDomainHelper implements User {
         * @inheritDoc
         * @param createdIn date created in
         */
+        @Override
         public void setCreated(Date createdIn) {
+            // Not implemented
         }
 
         /**
         * @inheritDoc
         * @return date was created
         */
+        @Override
         public Date getCreated() {
             return null;
         }
@@ -1177,12 +1242,14 @@ public class UserImpl extends BaseDomainHelper implements User {
         /**
         * @return Returns the timeZone.
         */
+        @Override
         public RhnTimeZone getTimeZone() {
             return userInfo.getTimeZone();
         }
         /**
         * @param timeZoneIn The timeZone to set.
         */
+        @Override
         public void setTimeZone(RhnTimeZone timeZoneIn) {
             userInfo.setTimeZone(timeZoneIn);
         }
@@ -1191,6 +1258,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         * Set the address of this enterprise user.
         * @param addressIn the address to set
         */
+        @Override
         public void setAddress(Address addressIn) {
             addresses.clear();
             addresses.add(addressIn);
@@ -1200,11 +1268,12 @@ public class UserImpl extends BaseDomainHelper implements User {
         *
         * @return returns the address info
         */
+        @Override
         public Address getAddress() {
             Address baddr = null;
             Address addr = null;
             Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-            if (addresses.size() > 0) {
+            if (!addresses.isEmpty()) {
                 for (Address addressIn : addrA) {
                     if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
                         addr = addressIn;
@@ -1238,6 +1307,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         *
         * @param companyIn the company value
         */
+        @Override
         public void setCompany(String companyIn) {
             personalInfo.setCompany(companyIn);
         }
@@ -1246,17 +1316,20 @@ public class UserImpl extends BaseDomainHelper implements User {
         *
         * @return returns the company value
         */
+        @Override
         public String getCompany() {
             return personalInfo.getCompany();
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setEmailNotify(int emailNotifyIn) {
        this.userInfo.setEmailNotify(emailNotifyIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public int getEmailNotify() {
         return this.userInfo.getEmailNotify();
     }
@@ -1265,7 +1338,8 @@ public class UserImpl extends BaseDomainHelper implements User {
      *
      * {@inheritDoc}
      */
-    public Set getAssociatedServerGroups() {
+    @Override
+    public Set<ServerGroup> getAssociatedServerGroups() {
         return associatedServerGroups;
     }
 
@@ -1274,25 +1348,32 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Meant for use by hibernate only (hence protected)
      * @param serverGroups the servergroups to set.
      */
-    protected void setAssociatedServerGroups(Set serverGroups) {
+    protected void setAssociatedServerGroups(Set<ServerGroup> serverGroups) {
         associatedServerGroups = serverGroups;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Set<Server> getServers() {
         return servers;
     }
 
-    private void setServers(Set<Server> serversIn) {
+    /**
+     * @param serversIn the servers to set
+     */
+    public void setServers(Set<Server> serversIn) {
+        // This method is used by hibernate
         this.servers = serversIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void addServer(Server server) {
         servers.add(server);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void removeServer(Server server) {
         servers.remove(server);
     }
@@ -1300,6 +1381,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * @return Returns whether user is readonly
      */
+    @Override
     public boolean isReadOnly() {
         return readOnly;
     }
@@ -1307,26 +1389,31 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * @param readOnlyIn readOnly to set
      */
+    @Override
     public void setReadOnly(boolean readOnlyIn) {
         this.readOnly = readOnlyIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean getTaskoNotify() {
         return this.userInfo.getTaskoNotify();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setTaskoNotify(boolean taskoNotifyIn) {
         this.userInfo.settaskoNotify(taskoNotifyIn);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getWebTheme() {
         return this.userInfo.getWebTheme();
     }
 
     /** {@inheritDoc} */
+    @Override
     public void  setWebTheme(String webThemeIn) {
         this.userInfo.setWebTheme(webThemeIn);
     }

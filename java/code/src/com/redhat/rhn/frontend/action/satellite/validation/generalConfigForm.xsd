@@ -9,7 +9,7 @@
 		<maxLength value="100" />
 		</simpleType>
 	</attribute>
-	<attribute name="server|jabber_server">
+	<attribute name="java|hostname">
 		<simpleType baseType="string">
 		<minLength value="1" />
 		<maxLength value="100" />

@@ -54,7 +54,7 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * Action handling the advanced system search page.
  */
-public class SystemSearchAction extends BaseSearchAction implements Listable {
+public class SystemSearchAction extends BaseSearchAction implements Listable<SystemSearchResult> {
 
     public static final String DATA_SET = "searchResults";
 
@@ -106,7 +106,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
     public static final List<String> VALID_WHERE_STRINGS =
                     Arrays.asList(new String[] {WHERE_ALL, WHERE_SSM});
 
-    private final Logger log = LogManager.getLogger(SystemSearchAction.class);
+    private static final Logger LOG = LogManager.getLogger(SystemSearchAction.class);
 
     @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
@@ -177,8 +177,9 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         request.setAttribute(WHERE_TO_SEARCH, where);
     }
 
+   @Override
    protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                   DynaActionForm form) {
+                                     DynaActionForm form) {
         String viewMode = form.getString(VIEW_MODE);
         String searchString = form.getString(SEARCH_STR).trim();
 
@@ -212,7 +213,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         helper.execute();
 
         List results = (List) request.getAttribute(getDataSetName());
-       log.debug("SystemSearch results.size() = {}", results != null ? results.size() : "null results");
+       LOG.debug("SystemSearch results.size() = {}", results != null ? results.size() : "null results");
         if ((results != null) && (results.size() == 1)) {
             SystemSearchResult s = (SystemSearchResult) results.get(0);
             return StrutsDelegate.getInstance().forwardParam(mapping.findForward("single"),
@@ -221,7 +222,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    protected DataResult performSearch(RequestContext context) {
+    protected DataResult<SystemSearchResult> performSearch(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         String searchString = (String)request.getAttribute(SEARCH_STR);
         String viewMode = (String)request.getAttribute(VIEW_MODE);
@@ -231,7 +232,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         Boolean isFineGrained = (Boolean)request.getAttribute(FINE_GRAINED);
 
         ActionErrors errs = new ActionErrors();
-        DataResult dr = null;
+        DataResult<SystemSearchResult> dr = null;
         try {
             dr = SystemSearchHelper.systemSearch(context,
                     searchString,
@@ -240,20 +241,20 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
                     whereToSearch, isFineGrained);
         }
         catch (MalformedURLException | XmlRpcException e) {
-            log.error("Caught Exception :{}", e, e);
+            LOG.error("Caught Exception :{}", e, e);
             errs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.connection_error"));
         }
         catch (XmlRpcFault e) {
-            log.info("Caught Exception :{}, code [{}]", e, e.getErrorCode(), e);
+            LOG.info("Caught Exception :{}, code [{}]", e, e.getErrorCode(), e);
             if (e.getErrorCode() == 100) {
-                log.error("Invalid search query", e);
+                LOG.error("Invalid search query", e);
                 errs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.could_not_parse_query",
                                           searchString));
             }
             else if (e.getErrorCode() == 200) {
-                log.error("Index files appear to be missing: ", e);
+                LOG.error("Index files appear to be missing: ", e);
                 errs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("packages.search.index_files_missing",
                                           searchString));
@@ -300,14 +301,15 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<SystemSearchResult> getResult(RequestContext context) {
         String searchString = (String)context.getRequest().getAttribute(SEARCH_STR);
 
         if (!StringUtils.isBlank(searchString)) {
-            log.debug("SystemSearchSetupAction.getResult() calling performSearch()");
+            LOG.debug("SystemSearchSetupAction.getResult() calling performSearch()");
             return performSearch(context);
         }
-        log.debug("SystemSearchSetupAction.getResult() returning Collections.EMPTY_LIST");
+        LOG.debug("SystemSearchSetupAction.getResult() returning Collections.emptyList()");
         return Collections.emptyList();
     }
 

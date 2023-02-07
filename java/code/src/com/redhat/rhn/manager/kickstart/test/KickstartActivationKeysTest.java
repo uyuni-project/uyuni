@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testActivationKeysForKickstart() throws Exception {
+    public void testActivationKeysForKickstart() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String note = TestUtils.randomString() +
@@ -53,7 +54,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         DataResult dr = KickstartLister.getInstance()
             .getActivationKeysInOrg(ksdata.getOrg(), null);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
         boolean found = false;
         for (Object oIn : dr) {
             ActivationKeyDto row = (ActivationKeyDto) oIn;
@@ -73,7 +74,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testKickstartActivationKeysCommand() throws Exception {
+    public void testKickstartActivationKeysCommand() {
 
         KickstartFactory.saveKickstartData(ksdata);
 
@@ -91,17 +92,17 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
         ActivationKeyFactory.save(key2);
         ActivationKeyFactory.save(key3);
 
-        ArrayList one = new ArrayList();
+        ArrayList one = new ArrayList<>();
         one.add(key1.getId());
-        ArrayList two = new ArrayList();
+        ArrayList two = new ArrayList<>();
         two.add(key2.getId());
-        ArrayList oneAndTwo = new ArrayList();
+        ArrayList oneAndTwo = new ArrayList<>();
         oneAndTwo.add(key1.getId());
         oneAndTwo.add(key2.getId());
-        ArrayList oneAndThree = new ArrayList();
+        ArrayList oneAndThree = new ArrayList<>();
         oneAndThree.add(key1.getId());
         oneAndThree.add(key3.getId());
-        ArrayList all = new ArrayList();
+        ArrayList all = new ArrayList<>();
         all.add(key1.getId());
         all.add(key2.getId());
         all.add(key3.getId());

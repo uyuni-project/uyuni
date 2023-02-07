@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.taglibs.list;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.struts.Expandable;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
-import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
+import com.redhat.rhn.frontend.taglibs.list.helper.ListSetHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,7 +26,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -134,18 +134,18 @@ public class SelectableColumnTag extends TagSupport {
     public int doStartTag() throws JspException {
 
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
-        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+        ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                 ListTag.class);
         listName = parent.getUniqueName();
-        int retval = BodyTagSupport.SKIP_BODY;
+        int retval = Tag.SKIP_BODY;
         setupRhnSet();
         if (command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
         }
         else if (command.equals(ListCommand.COL_HEADER)) {
             renderHeader(parent);
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
         }
         else if (command.equals(ListCommand.RENDER)) {
             renderCheckbox();
@@ -164,7 +164,7 @@ public class SelectableColumnTag extends TagSupport {
             ListTagUtil.write(pageContext, "</td>");
         }
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
@@ -264,7 +264,7 @@ public class SelectableColumnTag extends TagSupport {
 
         String itemsName = ListTagUtil.makeSelectedItemsName(listName);
         ListTag parent = (ListTag)
-                    BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+                    TagSupport.findAncestorWithClass(this, ListTag.class);
         if (!parent.isParentAnElement() &&
                     RhnListTagFunctions.isExpandable(getCurrent())) {
             itemsName = "parent_" + itemsName;
@@ -334,7 +334,7 @@ public class SelectableColumnTag extends TagSupport {
         String memberIds = "[]";
         String parentId = "";
         ListTag parentTag = (ListTag)
-            BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+            TagSupport.findAncestorWithClass(this, ListTag.class);
 
         if (RhnListTagFunctions.isExpandable(current)) {
             childIds = getChildIds(current);
@@ -396,7 +396,7 @@ public class SelectableColumnTag extends TagSupport {
         ListTagUtil.write(pageContext, "list_items_" + listName + "_" + listId);
         String pageItems = ListTagUtil.makePageItemsName(listName);
         ListTag parent = (ListTag)
-                    BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+                    TagSupport.findAncestorWithClass(this, ListTag.class);
         if (!parent.isParentAnElement() &&
                 RhnListTagFunctions.isExpandable(getCurrent())) {
             pageItems = "parent_" + pageItems;
@@ -412,10 +412,9 @@ public class SelectableColumnTag extends TagSupport {
             return selectExpr.equalsIgnoreCase("true");
         }
 
-        ListTag parent = (ListTag)BodyTagSupport.
-                        findAncestorWithClass(this, ListTag.class);
+        ListTag parent = (ListTag)TagSupport.findAncestorWithClass(this, ListTag.class);
 
-        String selectionsKey = ListSessionSetHelper.makeSelectionsName(parent.getName());
+        String selectionsKey = ListSetHelper.makeSelectionsName(parent.getName());
         Map selections = (Map)pageContext.getRequest().getAttribute(selectionsKey);
 
         return selections != null && selections.containsKey(valueExpr);
@@ -456,19 +455,19 @@ public class SelectableColumnTag extends TagSupport {
 
     private Object getCurrent() {
         ListTag parent = (ListTag)
-        BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+        TagSupport.findAncestorWithClass(this, ListTag.class);
         return parent.getCurrentObject();
     }
 
     private Object getParentObject() {
         ListTag parent = (ListTag)
-        BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+        TagSupport.findAncestorWithClass(this, ListTag.class);
         return parent.getParentObject();
     }
 
     private String getIgnorableParentIds() {
         ListTag parent = (ListTag)
-                BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+                TagSupport.findAncestorWithClass(this, ListTag.class);
         if (!parent.isParentAnElement()) {
             StringBuilder buf = new StringBuilder();
             for (Object current : parent.getPageData()) {

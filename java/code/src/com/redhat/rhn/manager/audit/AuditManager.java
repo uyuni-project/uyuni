@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -127,7 +128,7 @@ public class AuditManager /* extends BaseManager */ {
             log.warn("AAAAHHHH IOException", ioex);
         }
 
-        if (dr == null || dr.size() == 0) {
+        if (dr == null || dr.isEmpty()) {
             return null;
         }
 
@@ -313,7 +314,7 @@ public class AuditManager /* extends BaseManager */ {
         Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
         // if machineName is null, look up all review sections by recursion
-        if (machineName == null || machineName.length() == 0) {
+        if (machineName == null || machineName.isEmpty()) {
             dr = null;
 
             for (AuditMachineDto aumachine : getMachines()) {
@@ -333,10 +334,10 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         // otherwise, just look up this one machine
-        hostDir = new File(logDirStr + "/" + machineName + "/audit");
+        hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
 
         if (!hostDir.exists()) {
-            return new DataResult(new LinkedList());
+            return new DataResult(new LinkedList<>());
         }
 
         for (String auditLog : hostDir.list()) {

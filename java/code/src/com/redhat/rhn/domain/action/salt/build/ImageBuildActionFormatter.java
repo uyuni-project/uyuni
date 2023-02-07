@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionFormatter;
  */
 public class ImageBuildActionFormatter extends ActionFormatter {
 
-    private final ImageBuildActionDetails actionDetails;
 
     /**
      * Instantiates a new Image build action formatter.
@@ -30,7 +29,6 @@ public class ImageBuildActionFormatter extends ActionFormatter {
      */
     public ImageBuildActionFormatter(ImageBuildAction actionIn) {
         super(actionIn);
-        actionDetails = actionIn.getDetails();
     }
 
     /**

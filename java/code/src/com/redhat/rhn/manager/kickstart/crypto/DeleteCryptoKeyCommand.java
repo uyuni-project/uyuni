@@ -64,6 +64,7 @@ public class DeleteCryptoKeyCommand extends BaseCryptoKeyCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDescription(String descIn) {
        // no op
     }
@@ -71,6 +72,7 @@ public class DeleteCryptoKeyCommand extends BaseCryptoKeyCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setType(String typeIn) {
         // no op
     }
@@ -78,6 +80,7 @@ public class DeleteCryptoKeyCommand extends BaseCryptoKeyCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setContents(String contentsIn) {
         // no op
     }
@@ -89,6 +92,7 @@ public class DeleteCryptoKeyCommand extends BaseCryptoKeyCommand {
      * BaseCryptoKeyEditAction
      * @return ValidatorError[] array of errors.
      */
+    @Override
     public ValidatorError[] store() {
         if (this.key.getOrg() != null) {
             CryptoKey foundKey = KickstartFactory.lookupCryptoKey(

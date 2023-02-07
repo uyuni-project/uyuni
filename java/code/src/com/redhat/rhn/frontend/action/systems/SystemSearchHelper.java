@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
@@ -100,54 +101,13 @@ public class SystemSearchHelper {
     public static final String HARDWARE_DEVICE_INDEX = "hwdevice";
     public static final String SNAPSHOT_TAG_INDEX = "snapshotTag";
     public static final String SERVER_CUSTOM_INFO_INDEX = "serverCustomInfo";
-    public static final Double PACKAGE_SCORE_THRESHOLD = 0.5;
 
     protected SystemSearchHelper() { }
 
-    public static final String[] OPT_GROUPS_TITLES = {"systemsearch.jsp.details",
-        "systemsearch.jsp.activity",
-        "systemsearch.jsp.hardware",
-        "systemsearch.jsp.devices",
-        "systemsearch.jsp.dmiinfo",
-        "systemsearch.jsp.networkinfo",
-        "systemsearch.jsp.packages",
-        "systemsearch.jsp.location"};
+    private static final String SCORE = "score";
+    private static final String MATCHING_FIELD = "matchingField";
+    private static final String MATCHING_FIELD_VALUE = "matchingFieldValue";
 
-    public static final String[][] OPT_GROUPS = {
-                    /* details */
-                    { SystemSearchHelper.NAME_AND_DESCRIPTION, SystemSearchHelper.ID,
-                                    SystemSearchHelper.CUSTOM_INFO,
-                                    SystemSearchHelper.SNAPSHOT_TAG,
-                                    SystemSearchHelper.RUNNING_KERNEL,
-                                    SystemSearchHelper.UUID },
-                    /* activity group */
-                    { SystemSearchHelper.CHECKIN, SystemSearchHelper.REGISTERED },
-                    /* hardware group */
-                    { SystemSearchHelper.CPU_MODEL, SystemSearchHelper.CPU_MHZ_LT,
-                                    SystemSearchHelper.CPU_MHZ_GT,
-                                    SystemSearchHelper.NUM_CPUS_LT,
-                                    SystemSearchHelper.NUM_CPUS_GT,
-                                    SystemSearchHelper.RAM_LT, SystemSearchHelper.RAM_GT },
-                    /* device group */
-                    { SystemSearchHelper.HW_DESCRIPTION, SystemSearchHelper.HW_DRIVER,
-                                    SystemSearchHelper.HW_DEVICE_ID,
-                                    SystemSearchHelper.HW_VENDOR_ID },
-                    /* dmiinfo */
-                    { SystemSearchHelper.DMI_SYSTEM, SystemSearchHelper.DMI_BIOS,
-                                    SystemSearchHelper.DMI_ASSET },
-                    /* network info */
-                    { SystemSearchHelper.HOSTNAME, SystemSearchHelper.IP,
-                                    SystemSearchHelper.IP6 },
-                    /* packages */
-                    { SystemSearchHelper.INSTALLED_PACKAGES,
-                                    SystemSearchHelper.NEEDED_PACKAGES },
-                    /* location */
-                    { SystemSearchHelper.LOC_COUNTRY_CODE, SystemSearchHelper.LOC_STATE,
-                                    SystemSearchHelper.LOC_CITY,
-                                    SystemSearchHelper.LOC_ADDRESS,
-                                    SystemSearchHelper.LOC_BUILDING,
-                                    SystemSearchHelper.LOC_ROOM,
-                                    SystemSearchHelper.LOC_RACK } };
 
     /**
      * Returns a DataResult of SystemSearchResults which are based on the user's search
@@ -192,7 +152,7 @@ public class SystemSearchHelper {
     public static DataResult<SystemSearchResult> systemSearch(String sessionKey,
             String searchString,
             String viewMode,
-            Boolean invertResults,
+            boolean invertResults,
             String whereToSearch, Boolean isFineGrained)
         throws XmlRpcFault, MalformedURLException {
 
@@ -206,21 +166,17 @@ public class SystemSearchHelper {
                                       sessionKey);
         }
 
-        /**
+        /*
          * Determine what index to search and form the query
          */
         Map<String, String> params = preprocessSearchString(searchString, viewMode);
         String query = params.get("query");
         String index = params.get("index");
-        /**
-         * Contact the XMLRPC search server and get back the results
-         */
-        List results = performSearch(sessionId, index, query, isFineGrained);
-        /**
-         * We need to translate these results into a fleshed out DTO object which
-         * can be displayed.by the JSP
-         */
-        Map serverIds = null;
+        // Contact the XMLRPC search server and get back the results
+        List<Map<String, Object>> results = performSearch(sessionId, index, query, isFineGrained);
+
+        // We need to translate these results into a fleshed out DTO object which can be displayed.by the JSP
+        Map<Long, Map<String, Object>> serverIds;
         if (PACKAGES_INDEX.equals(index)) {
             serverIds = getResultMapFromPackagesIndex(user, results, viewMode);
         }
@@ -248,28 +204,28 @@ public class SystemSearchHelper {
         // to use the System Set Manager systems only.  In that case we simply do a
         // filter of returned search results to only return IDs which are in SSM
         if ("system_list".equals(whereToSearch)) {
-            serverIds = filterOutIdsNotInSSM(user, serverIds);
+            filterOutIdsNotInSSM(user, serverIds);
         }
         return processResultMap(user, serverIds, viewMode);
     }
 
-    protected static List performSearch(Long sessionId, String index, String query,
+    protected static List<Map<String, Object>> performSearch(Long sessionId, String index, String query,
                 Boolean isFineGrained) throws XmlRpcFault, MalformedURLException {
 
         log.info("Performing system search: index = {}, query = {}", index, query);
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
-        List args = new ArrayList();
+        List<Object> args = new ArrayList<>();
         args.add(sessionId.toString());
         args.add(index);
         args.add(query);
         args.add(isFineGrained);
-        List results = (List)client.invoke("index.search", args);
+        List<Map<String, Object>> results = (List<Map<String, Object>>)client.invoke("index.search", args);
         if (log.isDebugEnabled()) {
             log.debug("results = [{}]", results);
         }
         if (results.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return results;
     }
@@ -466,15 +422,14 @@ public class SystemSearchHelper {
      * TODO:  Look into a quicker/more efficient implementation.  This appears to
      * work....but I think it can be become quicker.
      */
-    protected static Map getResultMapFromPackagesIndex(User user,
-            List searchResults, String viewMode) {
+    protected static Map<Long, Map<String, Object>> getResultMapFromPackagesIndex(User user,
+                List<Map<String, Object>> searchResults, String viewMode) {
         // this is our main result Map which we will return, it's keys
         // represent the list of server Ids this search yielded
-        Map serverMaps = new HashMap();
+        Map<Long, Map<String, Object>> serverMaps = new HashMap<>();
         log.info("Entering getResultMapFromPackagesIndex() searchResults.size() = {}", searchResults.size());
 
-        for (Object item : searchResults) {
-            Map result = (Map)item;
+        for (Map<String, Object> result : searchResults) {
             Long pkgId = Long.valueOf((String)result.get("id"));
             List<Long> serverIds = null;
             if (INSTALLED_PACKAGES.equals(viewMode)) {
@@ -483,57 +438,49 @@ public class SystemSearchHelper {
             else if (NEEDED_PACKAGES.equals(viewMode)) {
                 serverIds = getSystemsByNeededPackageId(user, pkgId);
             }
-            if (serverIds.size() < 1) {
+            if (serverIds == null || serverIds.isEmpty()) {
                 continue;
             }
-            Map pkgItem = new HashMap();
-            pkgItem.put("rank", result.get("rank"));
-            pkgItem.put("score", result.get("score"));
-            pkgItem.put("name", result.get("name"));
-            pkgItem.put("pkgId", result.get("id"));
-            Double currentScore = (Double)result.get("score");
+            Double currentScore = (Double)result.get(SCORE);
             log.info("Name = {}, Score = {}", result.get("name"), currentScore);
 
-            for (Long s : serverIds) {
-                if (!serverMaps.containsKey(s)) {
+            int countServerIds = serverIds.size();
+            serverMaps.putAll(serverIds.stream().distinct().collect(Collectors.toMap(s -> s, s -> {
                     // Create the serverInfo which we will be returning back
                     Package pkg = PackageFactory.lookupByIdAndUser(pkgId, user);
                     if (pkg == null) {
-                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex()  problem when looking up package" +
-                                " id <{} PackageFactory.lookupByIdAndUser returned null.", pkgId);
-                        continue;
+                        log.warn("SystemSearchHelper.getResultMapFromPackagesIndex() problem when looking " +
+                                "up package id <{} PackageFactory.lookupByIdAndUser returned null.", pkgId);
+                        return null;
                     }
                     log.info("Package {}, id = {}, score = {}, serverIds associated with package = {}",
-                            pkg.getNameEvra(), pkgId, currentScore, serverIds.size());
-                    Map serverInfo = new HashMap();
-                    serverInfo.put("score", result.get("score"));
-                    serverInfo.put("matchingField", "packageName");
-                    serverInfo.put("matchingFieldValue", pkg.getNvrea());
+                            pkg.getNameEvra(), pkgId, currentScore, countServerIds);
+                    Map<String, Object> serverInfo = new HashMap<>();
+                    serverInfo.put(SCORE, result.get(SCORE));
+                    serverInfo.put(MATCHING_FIELD, "packageName");
+                    serverInfo.put(MATCHING_FIELD_VALUE, pkg.getNvrea());
                     serverInfo.put("packageName", pkg.getNameEvra());
-                    serverMaps.put(s, serverInfo);
-                    if (log.isDebugEnabled()) {
-                        log.debug("created new map for server id: {}, searched with packageName: {} score = {}",
-                                s, pkg.getNameEvra(), serverInfo.get("score"));
-                    }
-                }
-            } // end for looping over servers per packageId
+                    log.debug("created new map for server id: {}, searched with packageName: {} score = {}",
+                            s, pkg.getNameEvra(), serverInfo.get(SCORE));
+                    return serverInfo;
+                })));
         } // end looping over packageId
         return serverMaps;
     }
 
-    protected static Map getResultMapFromServerIndex(List searchResults) {
+    protected static Map<Long, Map<String, Object>> getResultMapFromServerIndex(
+            List<Map<String, Object>> searchResults) {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
-        for (Object obj : searchResults) {
-            Map result = (Map)obj;
-            Map serverItem = new HashMap();
+        Map<Long, Map<String, Object>> serverIds = new HashMap<>();
+        for (Map<String, Object> result : searchResults) {
+            Map<String, Object> serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
-            serverItem.put("score", result.get("score"));
+            serverItem.put(SCORE, result.get(SCORE));
             serverItem.put("name", result.get("name"));
-            String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            String matchingField = (String)result.get(MATCHING_FIELD);
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
             else if ("system_id".compareTo(matchingField) == 0) {
@@ -541,8 +488,8 @@ public class SystemSearchHelper {
                 //we want to treat it as if 'id' was used for all lookups
                 matchingField = "id";
             }
-            serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
+            serverItem.put(MATCHING_FIELD, matchingField);
+            serverItem.put(MATCHING_FIELD_VALUE, result.get(MATCHING_FIELD_VALUE));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for system id: {} new map = {}", result.get("id"), serverItem);
             }
@@ -551,35 +498,35 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static Map getResultMapFromHardwareDeviceIndex(List searchResults) {
+    protected static Map<Long, Map<String, Object>> getResultMapFromHardwareDeviceIndex(
+            List<Map<String, Object>> searchResults) {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
-        for (Object obj : searchResults) {
-            Map result = (Map)obj;
+        Map<Long, Map<String, Object>> serverIds = new HashMap<>();
+        for (Map<String, Object> result : searchResults) {
             Long sysId = Long.valueOf((String)result.get("serverId"));
             if (serverIds.containsKey(sysId)) {
-                Map priorResult = (Map)serverIds.get(sysId);
-                Double priorScore = (Double)priorResult.get("score");
-                Double thisScore = (Double)result.get("score");
+                Map<String, Object> priorResult = serverIds.get(sysId);
+                Double priorScore = (Double)priorResult.get(SCORE);
+                Double thisScore = (Double)result.get(SCORE);
                 if (priorScore >= thisScore) {
                     // We only want to capture the best match of a hwdevice for each system
                     continue;
                 }
             }
 
-            Map serverItem = new HashMap();
+            Map<String, Object> serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
-            serverItem.put("score", result.get("score"));
+            serverItem.put(SCORE, result.get(SCORE));
             serverItem.put("name", result.get("name"));
             serverItem.put("hwdeviceId", result.get("id"));
-            String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            String matchingField = (String)result.get(MATCHING_FIELD);
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
-            serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
+            serverItem.put(MATCHING_FIELD, matchingField);
+            serverItem.put(MATCHING_FIELD_VALUE, result.get(MATCHING_FIELD_VALUE));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for serverId = {}, hwdevice id: {} new map = {}",
                         result.get("serverId"), result.get("id"), serverItem);
@@ -589,24 +536,24 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static Map getResultMapFromSnapshotTagIndex(List searchResults) {
+    protected static Map<Long, Map<String, Object>> getResultMapFromSnapshotTagIndex(
+            List<Map<String, Object>> searchResults) {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
-        for (Object obj : searchResults) {
-            Map result = (Map)obj;
-            Map serverItem = new HashMap();
+        Map<Long, Map<String, Object>> serverIds = new HashMap<>();
+        for (Map<String, Object> result : searchResults) {
+            Map<String, Object> serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
-            serverItem.put("score", result.get("score"));
+            serverItem.put(SCORE, result.get(SCORE));
             serverItem.put("name", result.get("name"));
             serverItem.put("snapshotId", result.get("snapshotId"));
-            String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            String matchingField = (String)result.get(MATCHING_FIELD);
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
-            serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
+            serverItem.put(MATCHING_FIELD, matchingField);
+            serverItem.put(MATCHING_FIELD_VALUE, result.get(MATCHING_FIELD_VALUE));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for serverId = {}, snapshotID: {} new map = {}",
                         result.get("serverId"), result.get("snapshotId"), serverItem);
@@ -616,28 +563,28 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static Map getResultMapFromServerCustomInfoIndex(List searchResults) {
+    protected static Map<Long, Map<String, Object>> getResultMapFromServerCustomInfoIndex(
+            List<Map<String, Object>> searchResults) {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
-        for (Object obj : searchResults) {
-            Map result = (Map)obj;
-            Map serverItem = new HashMap();
+        Map<Long, Map<String, Object>> serverIds = new HashMap<>();
+        for (Map<String, Object> result : searchResults) {
+            Map<String, Object> serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
-            serverItem.put("score", result.get("score"));
+            serverItem.put(SCORE, result.get(SCORE));
             serverItem.put("name", result.get("value"));
             serverItem.put("snapshotId", result.get("snapshotId"));
-            String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            String matchingField = (String)result.get(MATCHING_FIELD);
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("value");
             }
-            serverItem.put("matchingField", matchingField);
-            String matchingFieldValue = (String)result.get("matchingFieldValue");
-            if (matchingFieldValue.length() == 0) {
+            serverItem.put(MATCHING_FIELD, matchingField);
+            String matchingFieldValue = (String)result.get(MATCHING_FIELD_VALUE);
+            if (matchingFieldValue.isEmpty()) {
                 matchingFieldValue = (String)result.get("value");
             }
-            serverItem.put("matchingFieldValue", matchingFieldValue);
+            serverItem.put(MATCHING_FIELD_VALUE, matchingFieldValue);
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for serverId = {}, customValueID: {} new map = {}",
                         result.get("serverId"), result.get("id"), serverItem);
@@ -647,60 +594,58 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static DataResult<SystemSearchResult> processResultMap(User userIn, Map serverIds,
-            String viewMode) {
-        DataResult<SystemSearchResult> serverList =
-            UserManager.visibleSystemsAsDtoFromList(userIn,
-                    new ArrayList(serverIds.keySet()));
+    private static void fillSystemSearchResult(Map<String, Object> details, SystemSearchResult sr) {
+        String field = (String)details.get(MATCHING_FIELD);
+        sr.setMatchingField(field);
+        if (details.containsKey("packageName")) {
+            sr.setPackageName((String)details.get("packageName"));
+        }
+        if (details.containsKey("hwdeviceId")) {
+            Long hwId = Long.parseLong((String)details.get("hwdeviceId"));
+            sr.setHw(SystemManager.getHardwareDeviceById(hwId));
+            // we want the matching field to call into the HardwareDeviceDto
+            // to return back the value of what matched
+            sr.setMatchingField("hw." + field);
+        }
+        if (details.containsKey("uuid")) {
+            sr.setUuid((String)details.get("uuid"));
+        }
+        if (details.containsKey("rank")) {
+            sr.setRank((Integer)details.get("rank"));
+        }
+        if (details.containsKey(SCORE)) {
+            sr.setScore((Double)details.get(SCORE));
+        }
+        if (details.containsKey(MATCHING_FIELD_VALUE)) {
+            sr.setMatchingFieldValue((String)details.get(MATCHING_FIELD_VALUE));
+        }
+    }
+
+    protected static DataResult<SystemSearchResult> processResultMap(User userIn,
+                                                                     Map<Long, Map<String, Object>> serverIds,
+                                                                     String viewMode) {
+        DataResult<SystemSearchResult> serverList = UserManager.visibleSystemsAsDtoFromList(userIn,
+                    new ArrayList<>(serverIds.keySet()));
         if (serverList == null) {
             return null;
         }
-        for (SystemSearchResult sr : serverList) {
-            Map details = (Map)serverIds.get(sr.getId());
-            String field = (String)details.get("matchingField");
-            sr.setMatchingField(field);
-            if (details.containsKey("packageName")) {
-                sr.setPackageName((String)details.get("packageName"));
-            }
-            if (details.containsKey("hwdeviceId")) {
-                Long hwId = Long.parseLong((String)details.get("hwdeviceId"));
-                sr.setHw(SystemManager.getHardwareDeviceById(hwId));
-                // we want the matching field to call into the HardwareDeviceDto
-                // to return back the value of what matched
-                sr.setMatchingField("hw." + field);
-            }
-            if (details.containsKey("uuid")) {
-                sr.setUuid((String)details.get("uuid"));
-            }
-            if (details.containsKey("rank")) {
-                sr.setRank((Integer)details.get("rank"));
-            }
-            if (details.containsKey("score")) {
-                sr.setScore((Double)details.get("score"));
-            }
-            if (details.containsKey("matchingFieldValue")) {
-                sr.setMatchingFieldValue((String)details.get("matchingFieldValue"));
-            }
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("sorting server data based on score from lucene search");
-        }
 
-        /** RangeQueries return a constant score of 1.0 for anything that matches.
+        serverList.forEach(sr -> fillSystemSearchResult(serverIds.get(sr.getId()), sr));
+        log.debug("sorting server data based on score from lucene search");
+
+        /* RangeQueries return a constant score of 1.0 for anything that matches.
          * Therefore we need to do more work to understand how to best sort results.
          * Sorting will be done based on value for 'matchingFieldValue', this is a best
          * guess from the search server of what field in the document most influenced
          * the result.
-         * */
-        if (REGISTERED.equals(viewMode) || CPU_MHZ_GT.equals(viewMode) ||
-                NUM_CPUS_GT.equals(viewMode) || RAM_GT.equals(viewMode)) {
+         */
+        if (List.of(REGISTERED, CPU_MHZ_GT, NUM_CPUS_GT, RAM_GT).contains(viewMode)) {
             // We want to sort Low to High
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds);
             serverList.sort(comparator);
         }
-        else if (CHECKIN.equals(viewMode) || CPU_MHZ_LT.equals(viewMode) ||
-                NUM_CPUS_LT.equals(viewMode) || RAM_LT.equals(viewMode)) {
+        else if (List.of(CHECKIN, CPU_MHZ_LT, NUM_CPUS_LT, RAM_LT).contains(viewMode)) {
             // We want to sort High to Low
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds, false);
@@ -711,14 +656,12 @@ public class SystemSearchHelper {
                 new SearchResultScoreComparator(serverIds);
             serverList.sort(scoreComparator);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("sorted server data = {}", serverList);
-        }
+        log.debug("sorted server data = {}", serverList);
         return serverList;
     }
 
     protected static List<Long> getSystemsByInstalledPackageId(User user, Long pkgId) {
-        List serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         List<SystemOverview> data = SystemManager.listSystemsWithPackage(user, pkgId);
         if (data == null) {
             log.info("SystemSearchHelper.getSystemsByInstalledPackageId({}) got back null.", pkgId);
@@ -731,7 +674,7 @@ public class SystemSearchHelper {
     }
 
     protected static List<Long> getSystemsByNeededPackageId(User user, Long pkgId) {
-        List serverIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<>();
         List<SystemOverview> data = SystemManager.listSystemsWithNeededPackage(user, pkgId);
         if (data == null) {
             log.info("SystemSearchHelper.getSystemsByNeededPackageId({}) got back null.", pkgId);
@@ -743,47 +686,43 @@ public class SystemSearchHelper {
         return serverIds;
     }
 
-    protected static Map filterOutIdsNotInSSM(User user, Map ids) {
+    protected static void filterOutIdsNotInSSM(
+            User user, Map<Long, Map<String, Object>> ids) {
         RhnSet systems = RhnSetDecl.SYSTEMS.get(user);
-        Object[] keys = ids.keySet().toArray();
-        for (Object key : keys) {
-            if (!systems.contains((Long)key)) {
+        for (Long id : ids.keySet()) {
+            if (!systems.contains(id)) {
                 log.debug("SystemSearchHelper.filterOutIdsNotInSSM() removing system id {}, because it is not" +
-                        " in the SystemSetManager list of ids", key);
-                ids.remove(key);
+                        " in the SystemSetManager list of ids", id);
+                ids.remove(id);
             }
         }
-        return ids;
     }
 
-    protected static Map invertResults(User user, Map ids) {
-        // Hack to guess at what the matchingField should be, use the "matchingField" from
+    protected static Map<Long, Map<String, Object>> invertResults(User user, Map<Long, Map<String, Object>> ids) {
+        // Hack to guess at what the matchingField should be, use the MATCHING_FIELD from
         // the first item in the passed in Map of ids
-        String matchingField = "";
-        if (!ids.isEmpty()) {
-            Object key = ids.keySet().toArray()[0];
-            Map firstItem = (Map)ids.get(key);
-            matchingField = (String)firstItem.get("matchingField");
-        }
+        String matchingField = ids.values().stream()
+                .findFirst()
+                .map(firstItem -> (String) firstItem.get(MATCHING_FIELD))
+                .orElse("");
         log.info("Will use <{}> as the value to supply for matchingField in all of these invertMatches", matchingField);
         // Get list of all SystemIds and save to new Map
-        Map invertedIds = new HashMap();
+        Map<Long, Map<String, Object>> invertedIds = new HashMap<>();
         DataResult<SystemOverview> dr = SystemManager.systemList(user, null);
         log.info("{} systems came back as the total number of visible systems to this user", dr.size());
         for (SystemOverview so : dr) {
             log.debug("Adding system id: {} to allIds map", so.getId());
-            Map info = new HashMap();
-            info.put("matchingField", matchingField);
+            Map<String, Object> info = new HashMap<>();
+            info.put(MATCHING_FIELD, matchingField);
             invertedIds.put(so.getId(), info);
         }
         // Remove each entry which matches passed in ids
-        Object[] currentIds = ids.keySet().toArray();
-        for (Object id : currentIds) {
-            if (invertedIds.containsKey(id)) {
-                invertedIds.remove(id);
-                log.debug("removed {} from allIds", id);
-            }
-        }
+        ids.keySet().stream()
+                .filter(id -> invertedIds.containsKey(id))
+                .forEach(id -> {
+                    invertedIds.remove(id);
+                    log.debug("removed {} from allIds", id);
+                });
         log.info("returning {} system ids as the inverted results", invertedIds.size());
         return invertedIds;
     }
@@ -801,41 +740,35 @@ public class SystemSearchHelper {
      * Will compare two SystemOverview objects based on their score from a
      * lucene search Creates a list ordered from highest score to lowest
      */
-    public static class SearchResultScoreComparator implements Comparator {
-        private int S1_FIRST = -1;
-        private int S2_FIRST = 1;
-        private int EQUAL = 0;
+    public static class SearchResultScoreComparator implements Comparator<SystemOverview> {
+        private static final int S1_FIRST = -1;
+        private static final int S2_FIRST = 1;
 
-        protected Map results;
-
-        protected SearchResultScoreComparator() {
-        }
+        protected Map<Long, Map<String, Object>> results;
 
         /**
          * @param resultsIn
          *            map of server related info to use for comparisons
          */
-        public SearchResultScoreComparator(Map resultsIn) {
+        public SearchResultScoreComparator(Map<Long, Map<String, Object>> resultsIn) {
             this.results = resultsIn;
         }
 
         /**
-         * @param o1 systemOverview11
-         * @param o2 systemOverview2
+         * @param sys1 systemOverview11
+         * @param sys2 systemOverview2
          * @return comparison info based on lucene score
          */
         @Override
-        public int compare(Object o1, Object o2) {
-            SystemOverview sys1 = (SystemOverview) o1;
-            SystemOverview sys2 = (SystemOverview) o2;
+        public int compare(SystemOverview sys1, SystemOverview sys2) {
             Long serverId1 = sys1.getId();
             Long serverId2 = sys2.getId();
             if (results == null) {
                 return compareByNameAndSID(sys1, sys2);
             }
 
-            Map sMap1 = (Map) results.get(serverId1);
-            Map sMap2 = (Map) results.get(serverId2);
+            Map<String, Object> sMap1 = results.get(serverId1);
+            Map<String, Object> sMap2 = results.get(serverId2);
             if ((sMap1 == null) && (sMap2 == null)) {
                 return compareByNameAndSID(sys1, sys2);
             }
@@ -848,10 +781,8 @@ public class SystemSearchHelper {
                 return S1_FIRST;
             }
 
-            Double score1 = (sMap1.containsKey("score") ?
-                            (Double) sMap1.get("score") : null);
-            Double score2 = (sMap2.containsKey("score") ?
-                            (Double) sMap2.get("score") : null);
+            Double score1 = (sMap1.containsKey(SCORE) ? (Double) sMap1.get(SCORE) : null);
+            Double score2 = (sMap2.containsKey(SCORE) ? (Double) sMap2.get(SCORE) : null);
             if ((score1 == null) && (score2 == null)) {
                 return compareByNameAndSID(sys1, sys2);
             }
@@ -916,16 +847,14 @@ public class SystemSearchHelper {
      * Compares search results by 'matchingFieldValue'
      *
      */
-    public static class SearchResultMatchedFieldComparator implements Comparator {
-        protected Map results;
+    public static class SearchResultMatchedFieldComparator implements Comparator<SystemOverview> {
+        protected Map<Long, Map<String, Object>> results;
         protected boolean sortLowToHigh;
 
-        protected SearchResultMatchedFieldComparator() {
-        }
         /**
          * @param resultsIn map of server related info to use for comparisons
          */
-        public SearchResultMatchedFieldComparator(Map resultsIn) {
+        public SearchResultMatchedFieldComparator(Map<Long, Map<String, Object>> resultsIn) {
             this.results = resultsIn;
             this.sortLowToHigh = true;
         }
@@ -933,44 +862,42 @@ public class SystemSearchHelper {
          * @param resultsIn map of server related info to use for comparisons
          * @param sortLowToHighIn sort order boolean
          */
-        public SearchResultMatchedFieldComparator(Map resultsIn, boolean sortLowToHighIn) {
+        public SearchResultMatchedFieldComparator(Map<Long, Map<String, Object>> resultsIn, boolean sortLowToHighIn) {
             this.results = resultsIn;
             this.sortLowToHigh = sortLowToHighIn;
         }
         /**
-         * @param o1 systemOverview11
-         * @param o2 systemOverview2
+         * @param sys1 systemOverview11
+         * @param sys2 systemOverview2
          * @return comparison info based on matchingFieldValue
          */
         @Override
-        public int compare(Object o1, Object o2) {
-            SystemOverview sys1 = (SystemOverview)o1;
-            SystemOverview sys2 = (SystemOverview)o2;
+        public int compare(SystemOverview sys1, SystemOverview sys2) {
             Long serverId1 = sys1.getId();
             Long serverId2 = sys2.getId();
             if (results == null) {
                 return 0;
             }
-            Map sMap1 = (Map)results.get(serverId1);
-            Map sMap2 = (Map)results.get(serverId2);
+            Map<String, Object> sMap1 = results.get(serverId1);
+            Map<String, Object> sMap2 = results.get(serverId2);
             if ((sMap1 == null) && (sMap2 == null)) {
                 return 0;
             }
-            if ((sMap1 == null) && (sMap2 != null)) {
+            if (sMap1 == null) {
                 return -1;
             }
-            if ((sMap1 != null) && (sMap2 == null)) {
+            if (sMap2 == null) {
                 return 1;
             }
-            String val1 = (String)sMap1.get("matchingFieldValue");
-            String val2 = (String)sMap2.get("matchingFieldValue");
+            String val1 = (String)sMap1.get(MATCHING_FIELD_VALUE);
+            String val2 = (String)sMap2.get(MATCHING_FIELD_VALUE);
             if ((val1 == null) && (val2 == null)) {
                 return 0;
             }
-            if ((val1 == null) && (val2 != null)) {
+            if (val1 == null) {
                 return -1;
             }
-            if ((val1 != null) && (val2 == null)) {
+            if (val2 == null) {
                 return 1;
             }
             try {
@@ -982,7 +909,7 @@ public class SystemSearchHelper {
                 return lng2.compareTo(lng1);
             }
             catch (NumberFormatException e) {
-                // String isn't a Long so continue;
+                // String isn't a Long so continue
             }
             try {
                 Double doub1 = Double.parseDouble(val1);
@@ -993,7 +920,7 @@ public class SystemSearchHelper {
                 return doub2.compareTo(doub1);
             }
             catch (NumberFormatException e) {
-                // String isn't a Double so continue;
+                // String isn't a Double so continue
             }
             // Fallback to standard string sort
             if (sortLowToHigh) {

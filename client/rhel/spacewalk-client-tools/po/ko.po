@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 04:14+0000\n"
-"PO-Revision-Date: 2022-06-20 09:13+0000\n"
+"POT-Creation-Date: 2022-11-25 16:22+0100\n"
+"PO-Revision-Date: 2022-10-13 07:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/ko/>\n"
@@ -1303,7 +1303,7 @@ msgstr "CPU 모델: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "호스트명: "
+msgstr "호스트 이름: "
 
 #: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
@@ -2214,7 +2214,7 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
-"시스템은 기본 소프트웨어 채널이 등록될 것입니다. 계속 진행하시면 이 시스템을 "
+"시스템은 기본 소프트웨어 채널이 등록될 것입니다. 계속 진행하면 이 시스템을 "
 "더 이전의 마이너 릴리즈로 변경할 수 없습니다(이후 릴리즈로 변경할 수 있음)."
 
 #: ../data/rh_register.glade.h:115

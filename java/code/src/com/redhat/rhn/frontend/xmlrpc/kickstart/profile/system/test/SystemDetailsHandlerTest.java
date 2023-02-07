@@ -63,6 +63,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private User userNotOrgOne;
     private String userKey;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -104,7 +105,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.enableConfigManagement(admin, profile.getLabel());
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(true, newKsProfile.isConfigManageable());
+        assertTrue(newKsProfile.isConfigManageable());
 
         boolean configManaged = handler.checkConfigManagement(admin, profile.getLabel());
         assertTrue(configManaged);
@@ -112,7 +113,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.disableConfigManagement(admin, profile.getLabel());
         newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(false, newKsProfile.isConfigManageable());
+        assertFalse(newKsProfile.isConfigManageable());
 
         configManaged = handler.checkConfigManagement(admin, profile.getLabel());
         assertFalse(configManaged);
@@ -125,7 +126,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.enableRemoteCommands(admin, profile.getLabel());
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(true, newKsProfile.isRemoteCommandable());
+        assertTrue(newKsProfile.isRemoteCommandable());
 
         boolean remoteCommands = handler.checkRemoteCommands(admin, profile.getLabel());
         assertTrue(remoteCommands);
@@ -133,7 +134,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.disableRemoteCommands(admin, profile.getLabel());
         newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(false, newKsProfile.isRemoteCommandable());
+        assertFalse(newKsProfile.isRemoteCommandable());
 
         remoteCommands = handler.checkRemoteCommands(admin, profile.getLabel());
         assertFalse(remoteCommands);
@@ -223,7 +224,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         //   Add the key to the profile
         KickstartCryptoKeyCommand command =
             new KickstartCryptoKeyCommand(profile.getId(), userNotOrgOne);
-        List keyList = new ArrayList();
+        List keyList = new ArrayList<>();
         keyList.add(key.getDescription());
         command.addKeysByDescriptionAndOrg(keyList, userNotOrgOne.getOrg());
         command.store();
@@ -266,7 +267,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         KickstartData profile = createProfile(userNotOrgOne, userKey);
 
         // Test
-        List descriptions = new ArrayList();
+        List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
         int result = handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
 
@@ -300,7 +301,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         //   Create profile to add the key to
         KickstartData profile = createProfile(userNotOrgOne, userKey);
 
-        List descriptions = new ArrayList();
+        List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
         int result = handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
 

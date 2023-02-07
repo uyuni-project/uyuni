@@ -41,7 +41,7 @@ public class ErrataOverview extends BaseDto {
     private Date issueDate;
     private Integer affectedSystemCount;
     private String advisoryLastUpdated;
-    private List cves = new ArrayList();
+    private List cves = new ArrayList<>();
     private List<String> packageNames = new ArrayList<>();
     private List<Long> pids = new ArrayList<>();
     private List actionId;
@@ -364,6 +364,7 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }

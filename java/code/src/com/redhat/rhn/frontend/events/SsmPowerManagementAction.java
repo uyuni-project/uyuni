@@ -61,7 +61,7 @@ public class SsmPowerManagementAction implements MessageAction {
 
         try {
             for (Long sid : sids) {
-                log.debug("Running operation {} on server {}", operation.toString(), sid);
+                log.debug("Running operation {} on server {}", operation, sid);
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
 
                 ValidatorError error = null;

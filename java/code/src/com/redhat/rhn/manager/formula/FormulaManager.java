@@ -29,7 +29,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,10 +64,8 @@ public class FormulaManager {
      * @param systemId systemId
      * @param formulaName formulaName
      * @param content content
-     * @throws IOException IOException
      */
-    public void saveServerFormulaData(User user, Long systemId, String formulaName, Map<String, Object> content)
-            throws IOException {
+    public void saveServerFormulaData(User user, Long systemId, String formulaName, Map<String, Object> content) {
         MinionServer minion = MinionServerFactory.lookupById(systemId)
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
         FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
@@ -82,10 +79,8 @@ public class FormulaManager {
      * @param groupId group Id
      * @param formulaName formula name
      * @param content contents
-     * @throws IOException IOException
      */
-    public void saveGroupFormulaData(User user, Long groupId, String formulaName, Map<String, Object> content)
-            throws IOException {
+    public void saveGroupFormulaData(User user, Long groupId, String formulaName, Map<String, Object> content) {
 
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
@@ -311,9 +306,8 @@ public class FormulaManager {
      * Enable formula on the given minion
      * @param minion minion
      * @param formulaName formula name
-     * @throws IOException if saving the formula encountered an error
      */
-    public void enableFormula(MinionServer minion, String formulaName) throws IOException {
+    public void enableFormula(MinionServer minion, String formulaName) {
         List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinion(minion));
         if (!enabledFormulas.contains(formulaName)) {
             enabledFormulas.add(formulaName);

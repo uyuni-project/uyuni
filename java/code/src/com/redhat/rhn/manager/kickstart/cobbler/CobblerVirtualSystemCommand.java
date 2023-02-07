@@ -31,6 +31,7 @@ import org.cobbler.XmlRpcException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -114,7 +115,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
     @Override
     public String getCobblerSystemRecordName() {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        return CobblerVirtualSystemCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
+        return CobblerSystemCreateCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
                 guestName.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
     }
 
@@ -130,7 +131,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             String newMac = details.getMacAddress();
             if (newMac == null || newMac.equals("")) {
                 newMac = (String) invokeXMLRPC("get_random_mac",
-                        Collections.EMPTY_LIST);
+                        Collections.emptyList());
             }
             Network net = new Network(getCobblerConnection(), "eth0");
             net.setMacAddress(newMac);
@@ -163,10 +164,10 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(user), getCobblerSystemRecordName());
         if (rec != null) {
-            rec.setVirtRam(memoryMB);
-            rec.setVirtFileSize(diskSizeGb);
-            rec.setVirtCpus(vcpus);
-            rec.setVirtPath(diskPath);
+            rec.setVirtRam(Optional.of(memoryMB));
+            rec.setVirtFileSize(Optional.of(diskSizeGb));
+            rec.setVirtCpus(Optional.of(vcpus));
+            rec.setVirtPath(Optional.of(diskPath));
             rec.save();
         }
     }

@@ -54,7 +54,7 @@ public class ConfigAction extends Action {
      */
     public void addConfigRevisionAction(ConfigRevisionAction crIn) {
         if (configRevisionActions == null) {
-            configRevisionActions = new HashSet();
+            configRevisionActions = new HashSet<>();
         }
         crIn.setParentAction(this);
         configRevisionActions.add(crIn);

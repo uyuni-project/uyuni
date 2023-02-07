@@ -27,8 +27,9 @@ import org.stringtree.json.JSONReader;
 import org.stringtree.json.JSONWriter;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    private static final Random RANDOM = new SecureRandom();
     /**
      * Script check errors.
      */
@@ -124,7 +126,8 @@ public class StringUtil {
         StringBuilder result = new StringBuilder(str.length());
         boolean wasWhitespace = false;
 
-        for (int i = 0, j = 0; i < str.length(); i++) {
+        int j = 0;
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             if (Character.isLetterOrDigit(c)) {
                 if (wasWhitespace) {
@@ -158,36 +161,6 @@ public class StringUtil {
                 result.append("_");
             }
             result.append(Character.toLowerCase(c));
-        }
-        return result.toString();
-    }
-
-    /**
-     * Converts the passed in string to a valid java Class name. This basically
-     * capitalizes each word and removes all word delimiters.
-     * @param strIn The string to convert.
-     * @return The converted string.
-     */
-    public static String classify(String strIn) {
-        String str = strIn.trim();
-        StringBuilder result = new StringBuilder(str.length());
-        boolean wasWhitespace = false;
-
-        for (int i = 0, j = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (Character.isLetterOrDigit(c)) {
-                if (i == 0) {
-                    c = Character.toUpperCase(c);
-                }
-                if (wasWhitespace) {
-                    c = Character.toUpperCase(c);
-                    wasWhitespace = false;
-                }
-                result.insert(j, c);
-                j++;
-                continue;
-            }
-            wasWhitespace = true;
         }
         return result.toString();
     }
@@ -234,8 +207,7 @@ public class StringUtil {
     public static String replaceTags(String source, Map<String, String> params) {
         String ret = source;
         for (Map.Entry<String, String> me : params.entrySet()) {
-            ret = StringUtils.replace(ret, "<" + me.getKey() + " />", me.getValue()
-                    .toString());
+            ret = StringUtils.replace(ret, "<" + me.getKey() + " />", me.getValue());
         }
 
         return ret;
@@ -276,14 +248,13 @@ public class StringUtil {
             throw new IllegalArgumentException("Length too short");
         }
         StringBuilder sb = new StringBuilder(lengthIn);
-        Random rand = new Random();
         int length = lengthIn;
         while (length-- > 5) {
-            sb.append((char) ('A' + rand.nextInt(26)));
+            sb.append((char) ('A' + RANDOM.nextInt(26)));
         }
 
         while (length-- >= 0) {
-            sb.append((char) ('0' + rand.nextInt(10)));
+            sb.append((char) ('0' + RANDOM.nextInt(10)));
         }
         return sb.toString();
     }
@@ -294,7 +265,7 @@ public class StringUtil {
      * @param clazz The Class we want to get the name of
      * @return String name of the class without the package
      */
-    public static String getClassNameNoPackage(final Class clazz) {
+    public static String getClassNameNoPackage(final Class<?> clazz) {
         String fullyQualifiedClassName = clazz.getName();
         int idx = fullyQualifiedClassName.lastIndexOf('.');
         return fullyQualifiedClassName.substring(idx + 1);
@@ -317,10 +288,10 @@ public class StringUtil {
             logger.debug("htmlifyText() - {}", convertIn);
         }
         String retval = StringEscapeUtils.escapeHtml4(convertIn);
-        retval = retval.replaceAll("\\\\r\\\\n", "<br/>");
-        retval = retval.replaceAll("\\\\n", "<br/>");
-        retval = retval.replaceAll("\r\n", "<br/>");
-        retval = retval.replaceAll("\n", "<br/>");
+        retval = retval.replace("\\r\\n", "<br/>");
+        retval = retval.replace("\\n", "<br/>");
+        retval = retval.replace("\r\n", "<br/>");
+        retval = retval.replace("\n", "<br/>");
 
         Pattern startUrl = Pattern.compile("https?://"); // http:// or https://
         Matcher next = startUrl.matcher(retval);
@@ -359,16 +330,16 @@ public class StringUtil {
                 StringBuilder modify = new StringBuilder("<a href=\"");
                 if (end != -1) { // if the end of the url is not the end of the
                                  // token
-                    modify.append(current.substring(0, end).replaceAll("&amp;", "&"));
+                    modify.append(current.substring(0, end).replace("&amp;", "&"));
                     modify.append("\">");
                     modify.append(current.substring(0, end));
                     modify.append("</a>");
                     modify.append(current.substring(end));
                 }
                 else { // if the end of the url is the end of the token
-                    modify.append(current.substring(0).replaceAll("&amp;", "&"));
+                    modify.append(current.replace("&amp;", "&"));
                     modify.append("\">");
-                    modify.append(current.substring(0));
+                    modify.append(current);
                     modify.append("</a>");
                 }
                 current = modify.toString();
@@ -694,7 +665,7 @@ public class StringUtil {
      * other kinds of non-Linux EOLs, so we can use it on uploaded files as well
      */
     public static String webToLinux(String inWebStr) {
-        return (inWebStr == null ? null : inWebStr.replaceAll("\r\n", "\n"));
+        return (inWebStr == null ? null : inWebStr.replace("\r\n", "\n"));
     }
 
     /**
@@ -703,14 +674,7 @@ public class StringUtil {
      * @return Encoded version of source.
      */
     public static String urlEncode(String source) {
-        String encodedParam = null;
-        try {
-            encodedParam = URLEncoder.encode(source, "UTF-8");
-        }
-        catch (Exception e) {
-            encodedParam = URLEncoder.encode(source);
-        }
-        return encodedParam;
+        return URLEncoder.encode(source, StandardCharsets.UTF_8);
     }
 
     /**
@@ -796,8 +760,8 @@ public class StringUtil {
     public static String convertMapToString(Map<String, Object> map, String seperator) {
 
         StringBuilder string = new StringBuilder();
-        for (Object key : map.keySet()) {
-            string.append(key + "=" + map.get(key) + seperator);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            string.append(entry.getKey()).append("=").append(entry.getValue()).append(seperator);
         }
         return string.toString();
     }
@@ -819,11 +783,11 @@ public class StringUtil {
      * @return the hexString equivalent
      */
     public static String getHexString(byte[] b) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (byte bIn : b) {
-            result += Integer.toString((bIn & 0xff) + 0x100, 16).substring(1);
+            result.append(Integer.toString((bIn & 0xff) + 0x100, 16).substring(1));
         }
-        return result;
+        return result.toString();
     }
 
 
@@ -848,14 +812,9 @@ public class StringUtil {
      * @return truncated String
      */
     public static String getBytesTruncatedString(String str, int length) {
-        try {
-            byte[] bytes = str.getBytes("UTF-8");
-            if (bytes.length > length) {
-                return new String(Arrays.copyOf(bytes, length), "UTF-8");
-            }
-        }
-        catch (UnsupportedEncodingException e) {
-            logger.warn("Unable to convert to UTF-8 bytes.");
+        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+        if (bytes.length > length) {
+            return new String(Arrays.copyOf(bytes, length), StandardCharsets.UTF_8);
         }
         return str;
     }
@@ -868,10 +827,10 @@ public class StringUtil {
      * @return null if empty (see description), original string otherwise.
      */
     public static String nullOrValue(String str) {
-        return (str == null ? "" : str)
-                   .trim()
-                   .replaceAll("[^\\p{L}\\p{Nd}]", "")
-                   .isEmpty() ? null : str;
+        String notNull = str == null ? "" : str;
+        return notNull.trim()
+                .replaceAll("[^\\p{L}\\p{Nd}]", "")
+                .isEmpty() ? null : str;
     }
 
     /**
@@ -892,34 +851,43 @@ public class StringUtil {
     public static ScriptCheckResult scriptPrematureCheck(String script) {
         ScriptCheckResult result = null; // Assume the script is valid.
         if (StringUtil.nullOrValue(script) == null) {
-            result = ScriptCheckResult.NO_SCRIPT_DEFINED;
+            return ScriptCheckResult.NO_SCRIPT_DEFINED;
         }
-        else {
-            boolean hasShellDeclaration = false;
-            int codeLines = 0;
 
-            String[] lines = script.split(System.getProperty("line.separator"));
-            for (String lineIn : lines) {
-                String line = StringUtil.nullOrValue(lineIn);
-                if (line != null) {
-                    line = line.trim();
-                    if (line.startsWith("#!/") && !hasShellDeclaration) {
-                        hasShellDeclaration = true;
-                    }
-                    else if (!line.startsWith("#")) {
-                        codeLines++;
-                    }
+        boolean hasShellDeclaration = false;
+        int codeLines = 0;
+
+        String[] lines = script.split(System.getProperty("line.separator"));
+        for (String lineIn : lines) {
+            String line = StringUtil.nullOrValue(lineIn);
+            if (line != null) {
+                line = line.trim();
+                if (line.startsWith("#!/") && !hasShellDeclaration) {
+                    hasShellDeclaration = true;
+                }
+                else if (!line.startsWith("#")) {
+                    codeLines++;
                 }
             }
+        }
 
-            if (codeLines == 0) {
-                result = ScriptCheckResult.NO_SCRIPT_DEFINED;
-            }
-            else if (!hasShellDeclaration) {
-                result = ScriptCheckResult.NO_SHELL_DEFINED;
-            }
+        if (codeLines == 0) {
+            result = ScriptCheckResult.NO_SCRIPT_DEFINED;
+        }
+        else if (!hasShellDeclaration) {
+            result = ScriptCheckResult.NO_SHELL_DEFINED;
         }
 
         return result;
+    }
+
+    /**
+     * Strip characters that could break log pattern. Use this function on all user-provided log parameters
+     *
+     * @param input the input string to sanitize
+     * @return the safe string
+     */
+    public static String sanitizeLogInput(String input) {
+        return input != null ? input.replaceAll("[\n\r\t]", "_") : null;
     }
 }

@@ -23,11 +23,10 @@ deb {{ trust_string }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/
 [{{ args['alias'] }}]
 name={{ args['name'] }}
 enabled={{ args['enabled'] }}
-{%- if args['gpgkeyurl'] is defined %}
+{%- if args['gpgkeyurl'] is defined and salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
+gpgkey={{ args['gpgkeyurl'] }} file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
+{%- elif args['gpgkeyurl'] is defined %}
 gpgkey={{ args['gpgkeyurl'] }}
-{%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
-file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
-{%- endif %}
 {%- elif salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 gpgkey=file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
 {%- endif %}

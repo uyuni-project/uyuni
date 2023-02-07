@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -76,13 +77,13 @@ public class GathererJsonIOTest  {
                 assertTrue(g.getParameters().containsKey("tenant"));
             }
             else {
-                assertTrue(false, "Unknown Module");
+                fail("Unknown Module");
             }
         }
     }
 
     @Test
-    public void testVHMtoJson() throws Exception {
+    public void testVHMtoJson() {
         Credentials creds = CredentialsFactory.createVHMCredentials();
         creds.setUsername("tux");
         creds.setPassword("penguin");

@@ -37,6 +37,7 @@ public class KickstartScriptCreateCommand extends BaseKickstartScriptCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         // Its important that we add the script only before
         // we save otherwise we will get scripts showing up

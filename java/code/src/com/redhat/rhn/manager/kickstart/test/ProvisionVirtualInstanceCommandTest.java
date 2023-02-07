@@ -31,7 +31,7 @@ import java.util.Date;
 public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testKickstartPackageName() throws Exception {
+    public void testKickstartPackageName() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());

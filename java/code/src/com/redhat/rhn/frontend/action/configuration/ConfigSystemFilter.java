@@ -27,14 +27,16 @@ public class ConfigSystemFilter extends BaseConfigFilter {
      * Create a new filter with "name" added to its filter-criteria
      */
     public ConfigSystemFilter() {
-        fields = new ArrayList();
+        fields = new ArrayList<>();
         fields.add("name");
     }
 
+    @Override
     protected List activeNames() {
         return fields;
     }
 
+    @Override
     protected String getI18NPrefix() {
         return "configsystemfilter";
     }

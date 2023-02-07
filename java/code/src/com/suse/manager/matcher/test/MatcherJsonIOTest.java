@@ -251,7 +251,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testProductsToJson() throws Exception {
+    public void testProductsToJson() {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
 

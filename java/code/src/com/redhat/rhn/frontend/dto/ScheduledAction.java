@@ -17,6 +17,9 @@ package com.redhat.rhn.frontend.dto;
 import com.redhat.rhn.common.db.datasource.RowCallback;
 import com.redhat.rhn.common.localization.LocalizationService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,18 +32,21 @@ import java.util.List;
  */
 public class ScheduledAction extends BaseDto implements RowCallback {
 
+    private static final Logger LOG = LogManager.getLogger(ScheduledAction.class);
+
     /** Status of Queued Action */
-    private static final String QUEUED = "Queued";
+    private static final String STATUS_QUEUED = "Queued";
     /** Status of an Action which was picked up to executed. */
-    private static final String PICKED_UP = "Picked Up";
+    private static final String STATUS_PICKED_UP = "Picked Up";
     /** Status of a completed Action */
-    private static final String COMPLETED = "Completed";
+    private static final String STATUS_COMPLETED = "Completed";
     /** Status of an Action which did not complete */
-    private static final String FAILED = "Failed";
+    private static final String STATUS_FAILED = "Failed";
 
     private Long id;
     private Long actionStatusId;
     private Long prerequisite;
+    private boolean prerequisiteAllFailed;
     private Date earliest;
     private String typeName;
     private String actionName;
@@ -61,6 +67,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      * Returns the Action's id.
      * @return the Action's id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -243,23 +250,28 @@ public class ScheduledAction extends BaseDto implements RowCallback {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void callback(ResultSet rs) throws SQLException {
         if (rs != null) {
 
             String status = getString(rs, "ACTION_STATUS");
             long count = rs.getLong("TALLY");
             tally += count;
-            if (QUEUED.equals(status)) {
-                queued += count;
-            }
-            else if (PICKED_UP.equals(status)) {
-                pickedUp += count;
-            }
-            else if (COMPLETED.equals(status)) {
-                completed += count;
-            }
-            else if (FAILED.equals(status)) {
-                failed += count;
+            switch (status) {
+                case STATUS_QUEUED:
+                    queued += count;
+                    break;
+                case STATUS_PICKED_UP:
+                    pickedUp += count;
+                    break;
+                case STATUS_COMPLETED:
+                    completed += count;
+                    break;
+                case STATUS_FAILED:
+                    failed += count;
+                    break;
+                default:
+                    LOG.warn("Ignoring action counting for unknown status {}", status);
             }
         }
     }
@@ -269,6 +281,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      *
      * {@inheritDoc}
      */
+    @Override
     public List<String> getCallBackColumns() {
         List<String> list = new ArrayList<>();
         list.add("ACTION_STATUS".toLowerCase());
@@ -356,10 +369,25 @@ public class ScheduledAction extends BaseDto implements RowCallback {
     }
 
     /**
+     * @return true if all servers have failed executing the prerequisite action
+     */
+    public boolean isPrerequisiteAllFailed() {
+        return prerequisiteAllFailed;
+    }
+
+    /**
+     * @param prerequisiteAllFailedIn true if all servers have failed executing the prerequisite action
+     */
+    public void setPrerequisiteAllFailed(boolean prerequisiteAllFailedIn) {
+        this.prerequisiteAllFailed = prerequisiteAllFailedIn;
+    }
+
+    /**
      * @return True if this entry should be selectable in the UI.
      */
+    @Override
     public boolean isSelectable() {
-        return prerequisite == null;
+        return prerequisite == null || prerequisiteAllFailed;
     }
 
 }

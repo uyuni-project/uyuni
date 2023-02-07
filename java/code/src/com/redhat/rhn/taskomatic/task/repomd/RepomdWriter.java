@@ -135,7 +135,7 @@ public abstract class RepomdWriter {
      * @return modified epoch string
      */
     protected static String getPackageEpoch(String epoch) {
-        if (epoch == null || epoch.length() == 0) {
+        if (epoch == null || epoch.isEmpty()) {
             epoch = "0";
         }
         return epoch;

@@ -1,11 +1,10 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@scope_monitoring
+@scope_spacewalk_utils
 @sle_minion
-@sle_client
 Feature: Advanced Search
-  In order to check and maintain the clients and minions
+  In order to check and maintain the minions
   As an authorized user
   I want to be able to search for specific systems according to location or other characteristics
 
@@ -13,10 +12,11 @@ Feature: Advanced Search
     Given I am authorized for the "Admin" section
 
   Scenario: No search results - inverse results
+    Given I clean the search index on the server
     When I follow the left menu "Systems > Advanced Search"
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
-    And I check "invertlabel"
+    And I check "invert"
     And I click on the search button
     Then I should see a "No results found." text
 
@@ -25,7 +25,7 @@ Feature: Advanced Search
     When I follow the left menu "Systems > Advanced Search"
     And I enter "Little Whinging" on the search field
     And I select "City" from "Field to Search"
-    And I check "fineGrainedlabel"
+    And I check "fineGrained"
     And I click on the search button
     Then I should land on system's overview page
 
@@ -34,7 +34,7 @@ Feature: Advanced Search
     When I follow the left menu "Systems > Advanced Search"
     And I enter "Surrey" on the search field
     And I select "State/Province" from "Field to Search"
-    And I check "fineGrainedlabel"
+    And I check "fineGrained"
     And I click on the search button
     Then I should land on system's overview page
 
@@ -43,7 +43,7 @@ Feature: Advanced Search
     When I follow the left menu "Systems > Advanced Search"
     And I enter "PT" on the search field
     And I select "Country Code" from "Field to Search"
-    And I check "fineGrainedlabel"
+    And I check "fineGrained"
     And I click on the search button
     Then I should land on system's overview page
 
@@ -51,7 +51,7 @@ Feature: Advanced Search
     When I follow the left menu "Systems > Advanced Search"
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
-    And I check "fineGrainedlabel"
+    And I check "fineGrained"
     And I click on the search button
     Then I should land on system's overview page
 

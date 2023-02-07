@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.Date;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
      * @see org.quartz.Job#execute(JobExecutionContext)
      */
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         long actionId = context.getJobDetail()
                 .getJobDataMap().getLongValueFromString("action_id");
         boolean forcePkgRefresh = context.getJobDetail().getJobDataMap().getBooleanValue("force_pkg_list_refresh");

@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -47,17 +47,17 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testPopulatePartition() throws Exception {
+    public void testPopulatePartition() {
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
-        assertTrue(formval.length() > 0);
+        assertFalse(formval.isEmpty());
     }
 
     @Test
-    public void testCleanSubmit() throws Exception {
+    public void testCleanSubmit() {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
         "logvol swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +
@@ -70,7 +70,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
         assertNotNull(formval);
-        assertTrue(formval.length() > 0);
+        assertFalse(formval.isEmpty());
         assertEquals(data, formval);
         String[] keys = {"kickstart.partition.success",
                          "kickstart.software.changeencryption"};
@@ -81,7 +81,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testMultipleSwapsSubmit() throws Exception {
+    public void testMultipleSwapsSubmit() {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
         "partition swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +
@@ -94,7 +94,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
 
-        assertTrue(formval.length() > 0);
+        assertFalse(formval.isEmpty());
         assertEquals(data, formval);
         assertNotNull(ksdata.getPartitionData());
         assertEquals(data, ksdata.getPartitionData());

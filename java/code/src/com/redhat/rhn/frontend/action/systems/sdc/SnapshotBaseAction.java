@@ -33,8 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SnapshotBaseAction
+ * @param <T> the type of the list items
  */
-public abstract class SnapshotBaseAction extends RhnAction implements Listable {
+public abstract class SnapshotBaseAction<T> extends RhnAction implements Listable<T> {
 
     protected static final String SNAPSHOT_ID = "ss_id";
     protected static final String SNAPSHOT_CREATED = "snapshot_created";

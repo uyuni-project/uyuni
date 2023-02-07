@@ -14,10 +14,6 @@ columns:
 	organization_id	Id of organization system belongs to
 	last_checkin	Last check of the system
 
-params:
-
-	tresh	web.system_checkin_threshold
-
 sql:
 
 	select * from (
@@ -26,9 +22,13 @@ sql:
 		rhnServer.org_id as organization_id,
 		rhnServerInfo.checkin as last_checkin
 	from rhnServer
-		join rhnServerInfo on rhnServer.id=rhnServerInfo.server_id
+		join rhnServerInfo on rhnServer.id=rhnServerInfo.server_id,
+		(
+			select cast(coalesce(value, default_value) as integer) as thresh from rhnConfiguration
+			where key = 'system_checkin_threshold'
+		) C
 	where rhnServerInfo.checkin < current_timestamp - numtodsinterval(
-	:tresh * 86400, 'second')
+	C.thresh * 86400, 'second')
 	) X
 	-- where placeholder
 	order by system_id, organization_id

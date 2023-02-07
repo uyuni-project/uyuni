@@ -34,6 +34,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
 
     private static Logger log = LogManager.getLogger(TraceBackAction.class);
 
+    @Override
     protected String getSubject(BaseEvent evtIn) {
         // setup subject
         StringBuilder subject = new StringBuilder();
@@ -56,6 +57,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         return subject.toString();
     }
 
+    @Override
     protected String[] getRecipients(User userIn) {
         Config c = Config.get();
         String[] retval = null;

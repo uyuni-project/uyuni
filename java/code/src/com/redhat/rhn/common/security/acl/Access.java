@@ -17,18 +17,23 @@ package com.redhat.rhn.common.security.acl;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.ChannelPerms;
+import com.redhat.rhn.frontend.dto.OrgProxyServer;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -62,9 +67,8 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclUidRole(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long uid = getAsLong(map.get("uid"));
+    public boolean aclUidRole(Map<String, Object> ctx, String[] params) {
+        Long uid = getAsLong(ctx.get("uid"));
         User user = UserFactory.lookupById(uid);
         return user.hasRole(RoleFactory.lookupByLabel(params[0]));
     }
@@ -76,9 +80,8 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclUserRole(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
+    public boolean aclUserRole(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
         if (user != null) {
             boolean retval = user.hasRole(RoleFactory.lookupByLabel(params[0]));
             if (LOG.isDebugEnabled()) {
@@ -99,7 +102,7 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclIs(Object ctx, String[] params) {
+    public boolean aclIs(Map<String, Object> ctx, String[] params) {
         if (params == null || params.length < 1) {
             // FIXME: need to localize exception text
             throw new IllegalArgumentException("Invalid number of parameters.");
@@ -116,18 +119,17 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclOrgChannelFamily(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
+    public boolean aclOrgChannelFamily(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
         String label = params[0];
 
         SelectMode m = ModeFactory.getMode("Org_queries",
                 "has_channel_family_entitlement");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        DataResult<Row> dr = m.execute(queryParams);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -136,16 +138,15 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if the org has proxies, false otherwise
      */
-    public boolean aclOrgHasProxies(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
+    public boolean aclOrgHasProxies(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
 
         SelectMode m = ModeFactory.getMode("System_queries",
                 "org_proxy_servers");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        DataResult<OrgProxyServer> dr = m.execute(queryParams);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -154,9 +155,8 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if access is granted, false otherwise
      */
-    public boolean aclSystemFeature(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemFeature(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         String feature = params[0];
 
         return SystemManager.serverHasFeature(sid, feature);
@@ -168,10 +168,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has virtualization entitlement, false otherwise.
      */
-    public boolean aclSystemHasVirtualizationEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemHasVirtualizationEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
 
         return SystemManager.serverHasVirtuaizationEntitlement(sid, user.getOrg());
     }
@@ -182,9 +181,8 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has virtualization entitlement, false otherwise.
      */
-    public boolean aclSystemHasBootstrapEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemHasBootstrapEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
 
         return SystemManager.serverHasBootstrapEntitlement(sid);
     }
@@ -195,11 +193,8 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return true if at all systems in the set have the feature passed as params[0]
      */
-    @SuppressWarnings("unchecked")
-    public boolean aclAllSystemsInSetHaveFeature(Object ctx,
-            String[] params) {
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        User user = (User) map.get("user");
+    public boolean aclAllSystemsInSetHaveFeature(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
 
         return SystemManager.countSystemsInSetWithoutFeature(user,
                 RhnSetDecl.SYSTEMS.getLabel(), params[0]) == 0;
@@ -211,10 +206,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has management entitlement, false otherwise.
      */
-    public boolean aclSystemHasManagementEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemHasManagementEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         try {
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server == null) {
@@ -233,13 +227,11 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has salt entitlement, false otherwise.
      */
-    public boolean aclSystemHasSaltEntitlement(Object ctx, String[] params) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemHasSaltEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
-            User user = (User) map.get("user");
+            User user = (User) ctx.get("user");
             try {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
                 if (server != null) {
@@ -259,13 +251,11 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has salt entitlement, false otherwise.
      */
-    public boolean aclSystemHasAnsibleControlNodeEntitlement(Object ctx, String[] params) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemHasAnsibleControlNodeEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
-            User user = (User) map.get("user");
+            User user = (User) ctx.get("user");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server != null) {
                 ret = server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE);
@@ -280,13 +270,11 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has foreign entitlement, false otherwise.
      */
-    public boolean aclSystemHasForeignEntitlement(Object ctx, String[] params) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemHasForeignEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
-            User user = (User) map.get("user");
+            User user = (User) ctx.get("user");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server != null) {
                 ret = server.hasEntitlement(EntitlementManager.FOREIGN);
@@ -301,12 +289,11 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system is a MinionServer with bootstrap entitlement, false otherwise.
      */
-    public boolean aclSystemIsBootstrapMinionServer(Object ctx, String[] params) {
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+    public boolean aclSystemIsBootstrapMinionServer(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
-            User user = (User) map.get("user");
+            User user = (User) ctx.get("user");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server != null) {
                 ret = server.asMinionServer().isPresent();
@@ -323,11 +310,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if any system has salt entitlement, false otherwise.
      */
-    public boolean aclAnySystemWithSaltEntitlement(Object ctx, String[] params) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclAnySystemWithSaltEntitlement(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         boolean ret = false;
         if (sid != null) {
             Server server = SystemManager.lookupByIdAndUser(sid, user);
@@ -350,10 +335,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a satellite, false otherwise
      */
-    public boolean aclSystemIsVirtual(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemIsVirtual(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
 
         return lookedUp.isVirtualGuest();
@@ -365,10 +349,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use (unused)
      * @return true if a system is a proxy, false otherwise
      */
-    public boolean aclSystemIsProxy(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemIsProxy(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
 
         return lookedUp.isProxy();
@@ -380,10 +363,9 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return True if system has management entitlement, false otherwise.
      */
-    public boolean aclSystemIsInSSM(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemIsInSSM(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         return set.contains(sid);
     }
@@ -395,9 +377,8 @@ public class Access extends BaseHandler {
      * @param params Used to specify the Role label
      * @return true if access is granted, false otherwise
      */
-    public boolean aclOrgRole(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User)map.get("user");
+    public boolean aclOrgRole(Map<String, Object> ctx, String[] params) {
+        User user = (User)ctx.get("user");
         if (user != null) {
             Org org = user.getOrg();
             return org.hasRole(RoleFactory.lookupByLabel(params[0]));
@@ -412,9 +393,8 @@ public class Access extends BaseHandler {
      * @param params Not used
      * @return true if access is granted, false otherwise
      */
-    public boolean aclUserAuthenticated(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User)map.get("user");
+    public boolean aclUserAuthenticated(Map<String, Object> ctx, String[] params) {
+        User user = (User)ctx.get("user");
         return (user != null);
     }
 
@@ -426,7 +406,7 @@ public class Access extends BaseHandler {
      * @param p parameters for acl (ignored)
      * @return true if the system is a satellite and has any users.
      */
-    public boolean aclNeedFirstUser(Object ctx, String[] p) {
+    public boolean aclNeedFirstUser(Map<String, Object> ctx, String[] p) {
         return !(UserFactory.satelliteHasUsers());
     }
 
@@ -436,9 +416,8 @@ public class Access extends BaseHandler {
      * @param params params need the channel id as param 0
      * @return true if has read access false otherwise
      */
-    public boolean aclCanAccessChannel(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
+    public boolean aclCanAccessChannel(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
 
         try {
             if (user != null) {
@@ -461,12 +440,11 @@ public class Access extends BaseHandler {
      * @param params parameters for acl (ignored)
      * @return true if the user is either a channel admin or org admin
      */
-    public boolean aclUserCanManageChannels(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
+    public boolean aclUserCanManageChannels(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
         if (user != null) {
-            List chans = UserManager.channelManagement(user, null);
-            return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || chans.size() > 0;
+            List<ChannelPerms> chans = UserManager.channelManagement(user, null);
+            return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
         }
 
         return false;
@@ -478,10 +456,9 @@ public class Access extends BaseHandler {
      * @param params parameters for acl (ignored)
      * @return true if the user is channel admin of the corresponding channel.
      */
-    public boolean aclIsModularChannel(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long cid = getAsLong(map.get("cid"));
-        User user = (User) map.get("user");
+    public boolean aclIsModularChannel(Map<String, Object> ctx, String[] params) {
+        Long cid = getAsLong(ctx.get("cid"));
+        User user = (User) ctx.get("user");
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
 
         return chan.isModular();
@@ -494,10 +471,9 @@ public class Access extends BaseHandler {
      * @param params parameters for acl (ignored)
      * @return true if the user is channel admin of the corresponding channel.
      */
-    public boolean aclUserIsChannelAdmin(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long cid = getAsLong(map.get("cid"));
-        User user = (User) map.get("user");
+    public boolean aclUserIsChannelAdmin(Map<String, Object> ctx, String[] params) {
+        Long cid = getAsLong(ctx.get("cid"));
+        User user = (User) ctx.get("user");
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
 
         return UserManager.verifyChannelAdmin(user, chan);
@@ -509,13 +485,12 @@ public class Access extends BaseHandler {
      * @param params parameters for acl (ignored)
      * @return true if the query param exists.
      */
-    public boolean aclFormvarExists(Object ctx, String[] params) {
-        Map map = (Map) ctx;
+    public boolean aclFormvarExists(Map<String, Object> ctx, String[] params) {
         if (params.length < 1) {
             return false;
         }
 
-        return map.get(params[0]) != null;
+        return ctx.get(params[0]) != null;
     }
 
     /**
@@ -524,10 +499,9 @@ public class Access extends BaseHandler {
      * @param params parameters for acl (ignored)
      * @return true if user org is owner of channel
      */
-    public boolean aclTrustChannelAccess(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
-        Long cid = getAsLong(map.get("cid"));
+    public boolean aclTrustChannelAccess(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
+        Long cid = getAsLong(ctx.get("cid"));
         Channel c = ChannelFactory.lookupById(cid);
 
         return c.getOrg().getId() == user.getOrg().getId();
@@ -539,9 +513,8 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return if channel is protected
      */
-    public boolean aclIsProtected(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long cid = getAsLong(map.get("cid"));
+    public boolean aclIsProtected(Map<String, Object> ctx, String[] params) {
+        Long cid = getAsLong(ctx.get("cid"));
         Channel c = ChannelFactory.lookupById(cid);
         return c.isProtected();
     }
@@ -552,9 +525,8 @@ public class Access extends BaseHandler {
      * @param params nevim, dal
      * @return whether the erratum isn't a Red Hat erratum
      */
-    public boolean aclErrataEditable(Object ctx, String[] params) {
-        Map map = (Map)ctx;
-        Long eid = getAsLong(map.get("eid"));
+    public boolean aclErrataEditable(Map<String, Object> ctx, String[] params) {
+        Long eid = getAsLong(ctx.get("eid"));
         Errata e = ErrataFactory.lookupById(eid);
         return e != null && e.getOrg() != null;
     }
@@ -565,10 +537,9 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return whether the formula values is equal to the given arg
      */
-    public boolean aclFormulaValueEquals(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclFormulaValueEquals(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         if (params == null || params.length < 3) {
             return false;
         }
@@ -585,12 +556,53 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return true if the server uses ssh-push or ssh-push-tunnel
      */
-    public boolean aclHasSshPushContactMethod(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclHasSshPushContactMethod(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
+    }
+
+    /**
+     * Checks if a server can support product temporary fixes (ptf).
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the server can have ptf
+     */
+    public boolean aclHasPtfRepositories(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null || !server.doesOsSupportPtf()) {
+            return false;
+        }
+
+        // Evaluate if any of the subscript channel refers to a PTF repository
+        return server.getChannels()
+                     .stream()
+                     .flatMap(c -> c.getSources().stream())
+                     .map(ContentSource::getSourceUrl)
+                     .anyMatch(url -> url.contains("/PTF/"));
+    }
+
+    /**
+     * Checks if a system allows manual uninstallation of ptfs without user intervention
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the system support automated ptf uninstallation
+     */
+    public boolean aclSystemSupportsPtfRemoval(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return SystemManager.serverHasFeature(sid, "ftr_package_remove") &&
+            ServerFactory.isPtfUninstallationSupported(server);
     }
 
 }

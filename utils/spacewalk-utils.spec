@@ -18,8 +18,8 @@
 
 
 Name:           spacewalk-utils
-Version:        4.4.0
-Release:        0
+Version:        4.4.4
+Release:        1
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other
@@ -29,6 +29,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common

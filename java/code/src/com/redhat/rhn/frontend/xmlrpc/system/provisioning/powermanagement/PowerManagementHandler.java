@@ -55,7 +55,7 @@ import java.util.Map;
  * call these functions.
  */
 public class PowerManagementHandler extends BaseHandler {
-    private static Logger log = LogManager.getLogger(PowerManagementHandler.class);
+    private static final Logger LOG = LogManager.getLogger(PowerManagementHandler.class);
 
     /**
      * Return a list of available power management types
@@ -237,10 +237,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.PowerOn).store();
         if (error != null) {
-            log.error("Power management action 'powerOn' failed");
+            LOG.error("Power management action 'powerOn' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'powerOn' succeeded");
+        LOG.info("Power management action 'powerOn' succeeded");
         return 1;
     }
 
@@ -261,10 +261,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.PowerOn).store();
         if (error != null) {
-            log.error("Power management action 'powerOn' failed");
+            LOG.error("Power management action 'powerOn' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'powerOn' succeeded");
+        LOG.info("Power management action 'powerOn' succeeded");
         return 1;
     }
 
@@ -284,10 +284,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.PowerOff).store();
         if (error != null) {
-            log.error("Power management action 'powerOff' failed");
+            LOG.error("Power management action 'powerOff' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'powerOff' succeeded");
+        LOG.info("Power management action 'powerOff' succeeded");
         return 1;
     }
 
@@ -308,10 +308,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.PowerOff).store();
         if (error != null) {
-            log.error("Power management action 'powerOff' failed");
+            LOG.error("Power management action 'powerOff' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'powerOff' succeeded");
+        LOG.info("Power management action 'powerOff' succeeded");
         return 1;
     }
 
@@ -331,10 +331,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.Reboot).store();
         if (error != null) {
-            log.error("Power management action 'reboot' failed");
+            LOG.error("Power management action 'reboot' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'reboot' succeeded");
+        LOG.info("Power management action 'reboot' succeeded");
         return 1;
     }
 
@@ -355,10 +355,10 @@ public class PowerManagementHandler extends BaseHandler {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.Reboot).store();
         if (error != null) {
-            log.error("Power management action 'reboot' failed");
+            LOG.error("Power management action 'reboot' failed");
             throw new PowerManagementOperationFailedException(error.getMessage());
         }
-        log.info("Power management action 'reboot' succeeded");
+        LOG.info("Power management action 'reboot' succeeded");
         return 1;
     }
 
@@ -411,7 +411,7 @@ public class PowerManagementHandler extends BaseHandler {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(loggedInUser), name);
         if (rec == null) {
-            log.error("System with cobbler name {} not found.", name);
+            LOG.error("System with cobbler name {} not found.", name);
         }
         return rec;
     }

@@ -5,8 +5,7 @@
 Feature: API "channel" namespace and sub-namespaces
 
   Scenario: Create a custom software channel
-    When I am logged in API as user "admin" and password "admin"
-    And I create the following channels:
+    When I create the following channels:
       | LABEL  | NAME   | SUMMARY | ARCH           | PARENT |
       | foobar | foobar | foobar  | channel-x86_64 |        |
     Then "foobar" should get listed with a call of listSoftwareChannels
@@ -37,7 +36,4 @@ Feature: API "channel" namespace and sub-namespaces
     Then "foobar" should not get listed with a call of listSoftwareChannels
 
   Scenario: Check last synchronization of a synced channel
-    Then channel "test-channel-i586" should have attribute "yumrepo_last_sync" that is a date
-
-  Scenario: Cleanup: log out API
-    When I logout from API
+    Then channel "fake-i586-channel" should have attribute "yumrepo_last_sync" that is a date

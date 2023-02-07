@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class RenderEngine {
     private NavTreeIndex treeIndex;
-    private StringBuffer result;
+    private StringBuilder result;
 
     /**
      * public constructor
@@ -50,7 +50,7 @@ public class RenderEngine {
      * @return the rendered nav
      */
     public String render(Renderable renderer, Map parameters) {
-        result = new StringBuffer();
+        result = new StringBuilder();
         List todo = treeIndex.getTree().getNodes();
 
         renderer.preNav(result);
@@ -62,7 +62,7 @@ public class RenderEngine {
 
     private void renderLevel(Renderable renderer, List todo,
                              Map parameters, int depth) {
-        if (todo == null || todo.size() == 0) {
+        if (todo == null || todo.isEmpty()) {
             return;
         }
 

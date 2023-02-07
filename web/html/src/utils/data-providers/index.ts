@@ -5,6 +5,7 @@ export { default as AsyncDataProvider } from "./async-data-provider";
 export type PagedData = {
   items: Array<any>;
   total: number;
+  selectedIds?: Array<number>;
 };
 
 export type Comparator = (a: any, b: any, key: string, direction: number) => number;

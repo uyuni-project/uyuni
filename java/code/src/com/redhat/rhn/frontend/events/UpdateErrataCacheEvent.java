@@ -53,6 +53,7 @@ public class UpdateErrataCacheEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toText() {
         // really a noop
         return "";
@@ -103,6 +104,7 @@ public class UpdateErrataCacheEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Transaction getTransaction() {
         return this.txn;
     }
@@ -142,6 +144,7 @@ public class UpdateErrataCacheEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getUserId() {
         return null;
     }

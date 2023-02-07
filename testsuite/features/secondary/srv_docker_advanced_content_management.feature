@@ -20,7 +20,7 @@ Feature: Advanced content management
     And I follow "Create"
     And I enter "suse_docker_admin" as "label"
     And I select "galaxy-registry" from "imageStore"
-    And I select "1-DOCKER-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 

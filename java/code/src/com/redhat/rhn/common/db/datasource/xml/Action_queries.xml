@@ -95,6 +95,7 @@ order by id desc
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
+        (SELECT COUNT(*) = COUNT(*) FILTER (WHERE status = 3) FROM rhnserveraction WHERE action_id = A.prerequisite) AS PREREQUISITE_ALL_FAILED,
         UAO.type_name,
         (CASE WHEN UAO.action_name IS NULL THEN UAO.type_name ELSE UAO.action_name END) || ' scheduled by ' || (CASE WHEN WC.login IS NULL THEN '(unknown)' ELSE WC.login END) AS ACTION_NAME,
         UAO.scheduler,
@@ -121,6 +122,7 @@ ORDER BY EARLIEST DESC
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
+        (SELECT COUNT(*) = COUNT(*) FILTER (WHERE status = 3) FROM rhnserveraction WHERE action_id = A.prerequisite) AS PREREQUISITE_ALL_FAILED,
         UAO.type_name,
         (CASE WHEN UAO.action_name IS NULL THEN UAO.type_name ELSE UAO.action_name END) AS ACTION_NAME,
         UAO.scheduler,
@@ -305,12 +307,5 @@ INSERT INTO rhnServerAction (server_id, action_id, status, REMAINING_TRIES)
      where s.id in (%s)
   </query>
 </write-mode>
-<write-mode name="add_config_rev_to_action">
-  <query params="sid, aid, crid">
-INSERT INTO rhnActionConfigRevision (id, server_id, action_id, config_revision_id)
-   values (sequence_nextval('rhn_actioncr_id_seq'), :sid, :aid, :crid)
-  </query>
-</write-mode>
-
 
 </datasource_modes>

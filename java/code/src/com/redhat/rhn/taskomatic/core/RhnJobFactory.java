@@ -18,7 +18,6 @@ import com.redhat.rhn.taskomatic.TaskoJob;
 
 import org.quartz.Job;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 
@@ -33,8 +32,7 @@ public class RhnJobFactory implements JobFactory {
      * {@inheritDoc}
      */
     @Override
-    public synchronized Job newJob(TriggerFiredBundle trigger, Scheduler s)
-        throws SchedulerException {
+    public synchronized Job newJob(TriggerFiredBundle trigger, Scheduler s) {
         Long scheduleId = trigger.getJobDetail().getJobDataMap().getLong("schedule_id");
 
         return new TaskoJob(scheduleId);

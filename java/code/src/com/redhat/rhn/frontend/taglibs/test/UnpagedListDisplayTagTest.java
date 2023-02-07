@@ -32,6 +32,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
@@ -43,44 +45,42 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private UnpagedListDisplayTag ldt;
-    private ListTag lt;
-
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private PageContext context;
+    private PageContext pageContext;
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
 
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
-        context = mock(PageContext.class);
+        pageContext = mock(PageContext.class);
         writer = new RhnMockJspWriter();
 
         ldt = new UnpagedListDisplayTag();
-        lt = new ListTag();
-        ldt.setPageContext(context);
+        ListTag lt = new ListTag();
+        ldt.setPageContext(pageContext);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
-            atLeast(1).of(context).getOut();
+            atLeast(1).of(pageContext).getOut();
             will(returnValue(writer));
-            atLeast(1).of(context).getRequest();
+            atLeast(1).of(pageContext).getRequest();
             will(returnValue(request));
-            atLeast(1).of(context).setAttribute("current", null);
+            atLeast(1).of(pageContext).setAttribute("current", null);
         } });
     }
 
     @Test
     public void testTitle() throws JspException {
         context().checking(new Expectations() { {
-            atLeast(1).of(context).popBody();
-            atLeast(1).of(context).pushBody();
+            atLeast(1).of(pageContext).popBody();
+            atLeast(1).of(pageContext).pushBody();
             atLeast(1).of(request).getParameter(RequestContext.LIST_DISPLAY_EXPORT);
             will(returnValue(null));
             atLeast(1).of(request).getParameter(RequestContext.LIST_SORT);
@@ -98,15 +98,15 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 
     @Test
-    public void testTag() throws Exception {
+    public void testTag() throws JspException {
         context().checking(new Expectations() { {
-            atLeast(1).of(context).popBody();
-            atLeast(1).of(context).pushBody();
+            atLeast(1).of(pageContext).popBody();
+            atLeast(1).of(pageContext).pushBody();
             atLeast(1).of(request).getParameter(RequestContext.LIST_DISPLAY_EXPORT);
             will(returnValue("2"));
             atLeast(1).of(request).getParameter(RequestContext.LIST_SORT);
@@ -125,12 +125,12 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testExport() throws Exception {
+    public void testExport() throws JspException, IOException {
         RhnMockServletOutputStream out = new RhnMockServletOutputStream();
         context().checking(new Expectations() { {
             atLeast(1).of(request).getParameter(RequestContext.LIST_DISPLAY_EXPORT);
             will(returnValue("1"));
-            atLeast(1).of(context).getResponse();
+            atLeast(1).of(pageContext).getResponse();
             will(returnValue(response));
             atLeast(1).of(response).reset();
         } });

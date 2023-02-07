@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.taglibs.SystemTimeMessageTag;
@@ -31,8 +30,6 @@ import com.mockobjects.servlet.MockJspWriter;
 import com.mockobjects.servlet.MockPageContext;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -61,8 +58,6 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Server server = ServerFactoryTest.createTestServer(user);
-        server.setServerInfo(new ServerInfo());
-        server.getServerInfo().setCheckin(new Date());
         tag.setServer(server);
         tag.doEndTag();
 
@@ -80,6 +75,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
             super();
         }
 
+        @Override
         public void print(String in) {
             printed.append(in);
         }
@@ -100,6 +96,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         /**
          * @return A custom fake writer
          */
+        @Override
         public JspWriter getOut() {
             return writer;
         }

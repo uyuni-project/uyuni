@@ -74,7 +74,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
      */
     public ProvisionVirtualInstanceCommand(Long selectedServer, User userIn) {
         super(selectedServer, null, (KickstartData)null, userIn, null, null);
-        this.setPackagesToInstall(new LinkedList());
+        this.setPackagesToInstall(new LinkedList<>());
     }
 
     /**
@@ -301,10 +301,18 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
             Profile prf = Profile.lookupById(
                     CobblerXMLRPCHelper.getConnection(this.getUser()), dto.getCobblerId());
             if (prf != null) {
-                dto.setVirtBridge(prf.getVirtBridge());
-                dto.setVirtCpus(prf.getVirtCpus());
-                dto.setVirtMemory(prf.getVirtRam());
-                dto.setVirtSpace(prf.getVirtFileSize());
+                if (prf.getVirtBridge().isPresent()) {
+                    dto.setVirtBridge(prf.getVirtBridge().get());
+                }
+                if (prf.getVirtCpus().isPresent()) {
+                    dto.setVirtCpus(prf.getVirtCpus().get());
+                }
+                if (prf.getVirtRam().isPresent()) {
+                    dto.setVirtMemory(prf.getVirtRam().get());
+                }
+                if (prf.getVirtFileSize().isPresent()) {
+                    dto.setVirtSpace(prf.getVirtFileSize().get());
+                }
             }
             else {
                 itr.remove();
@@ -369,6 +377,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError doValidation() {
         if (guestName.length() < MIN_NAME_SIZE) {
             return new ValidatorError(

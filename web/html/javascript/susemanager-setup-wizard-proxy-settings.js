@@ -7,22 +7,24 @@ function saveProxySettings() {
   hostname = jQuery('#http-proxy-input-hostname').val();
   username = jQuery('#http-proxy-input-username').val();
   password = jQuery('#http-proxy-input-password').val();
-  ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
-    makeAjaxHandler(function(settings) {
-      console.log("Proxy settings saved!");
-      jQuery('#http-proxy-save').prop('disabled', false);
-      // TODO make sure it succeeded
-      setProxySettings(settings);
-      setProxySettingsEditable(false);
+  
+  function onSuccess(settings) {
+    console.log("Proxy settings saved!");
+    jQuery('#http-proxy-save').prop('disabled', false);
+    // TODO make sure it succeeded
+    setProxySettings(settings);
+    setProxySettingsEditable(false);
 
-      // Force refresh of the cache
-      verifyProxySettings(true);
-    })
-  );
+    // Force refresh of the cache
+    verifyProxySettings(true);
+  }
+
+  ajax("save-proxy-settings", { hostname, username, password }, onSuccess)
 }
 
 // sets in the UI if the proxy settings were verified
-function setProxySettingsVerified(valid) {
+function setProxySettingsVerified(result) {
+  const valid = JSON.parse(result)
   if (valid) {
     jQuery('#http-proxy-verify').html('<i class="fa fa-check-square text-success"></i>');
   } else {
@@ -33,11 +35,7 @@ function setProxySettingsVerified(valid) {
 // verify the proxy settings on the server side, pass true to refresh the cache
 function verifyProxySettings(forceRefresh) {
   showSpinner('http-proxy-verify');
-  ProxySettingsRenderer.verifyProxySettings(forceRefresh,
-    makeAjaxHandler(function(valid) {
-    console.log("verified proxy: " + valid);
-    setProxySettingsVerified(valid);
-  }));
+  ajax('verify-proxy-settings', { forceRefresh }, setProxySettingsVerified, 'application/json')
 }
 
 // just sets the given settings in the form
@@ -48,8 +46,11 @@ function setProxySettings(settings) {
   jQuery('#http-proxy-input-username').val(settings.username);
   jQuery('p.http-proxy-username').html(settings.username);
 
-  jQuery('#http-proxy-input-password').val(settings.password);
-  jQuery('p.http-proxy-password').html(Array(settings.password.length).join('&#9679'));
+  if (settings.hostname) {
+    jQuery('p.http-proxy-password').html(Array(8).join('&#9679'));
+  } else {
+    jQuery('p.http-proxy-password').html("");
+  }
 }
 
 // Sets the spinner, retrieves the settings from the server
@@ -57,18 +58,18 @@ function setProxySettings(settings) {
 // if there is no proxy set
 function retrieveProxySettings() {
   showSpinner('http-proxy-verify');
-  ProxySettingsRenderer.retrieveProxySettings(
-    makeAjaxHandler(function(settings) {
-      setProxySettings(settings);
-      console.log(JSON.stringify(settings));
+  
+  function onSuccess(settings) {
+    setProxySettings(settings);
 
-      if (settings.hostname) {
-        verifyProxySettings(false);
-      } else {
-        setProxySettingsEditable(true);
-      }
-    })
-  );
+    if (settings.hostname) {
+      verifyProxySettings(false);
+    } else {
+      setProxySettingsEditable(true);
+    }
+  }
+
+  ajax('retrieve-proxy-settings', '', onSuccess, 'application/json')
 }
 
 // Switches the proxy settings into an (non)editable form

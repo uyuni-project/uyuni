@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.user.User;
@@ -32,9 +33,6 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +49,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AdminViewsController {
 
-    private static Logger log = LogManager.getLogger(AdminViewsController.class);
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
@@ -86,6 +83,7 @@ public class AdminViewsController {
      */
     public static ModelAndView showMonitoring(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
+        data.put("isUyuni", ConfigDefaults.get().isUyuni());
         return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
     }
 

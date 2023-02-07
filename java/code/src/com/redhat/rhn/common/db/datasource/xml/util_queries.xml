@@ -11,7 +11,7 @@
 
 <mode name="get_satconfig_value">
   <query params="key">
-    SELECT value
+    SELECT coalesce(value, default_value) as value
     FROM rhnConfiguration
     WHERE key = :key
   </query>

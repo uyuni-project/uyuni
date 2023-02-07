@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -93,6 +94,7 @@ public class PackageProperty extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder hash = new HashCodeBuilder();
         hash.append(this.getSense());
@@ -105,6 +107,7 @@ public class PackageProperty extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PackageProperty)) {
             return false;
@@ -117,4 +120,12 @@ public class PackageProperty extends BaseDomainHelper {
         return eq.isEquals();
     }
 
+    @Override
+    public String toString() {
+        if (capability.getVersion() != null) {
+            return capability.getName() + "  " + PackageManager.getDependencyModifier(sense, capability.getVersion());
+        }
+
+        return capability.getName();
+    }
 }

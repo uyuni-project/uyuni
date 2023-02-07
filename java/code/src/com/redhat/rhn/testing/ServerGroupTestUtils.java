@@ -21,6 +21,10 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
 
 
 /**
@@ -51,9 +55,22 @@ public class ServerGroupTestUtils {
      * @return ManagedServerGroup created
      */
     public static ManagedServerGroup createManaged(User user) {
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         ServerGroupTest.checkSysGroupAdminRole(user);
         return GlobalInstanceHolder.SERVER_GROUP_MANAGER.
                                         create(user, NAME + TestUtils.randomString(),
                                                     DESCRIPTION);
+    }
+
+    /**
+     * Remove ManagedServerGroup
+     * @param user owning user
+     * @param group group to be removed
+     * @param saltApi the mocked Salt Api
+     */
+    public static void removeManaged(User user, ManagedServerGroup group, SaltApi saltApi) {
+        ServerGroupTest.checkSysGroupAdminRole(user);
+        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
+        groupManager.remove(user, group);
     }
 }

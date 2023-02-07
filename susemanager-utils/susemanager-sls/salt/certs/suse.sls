@@ -10,7 +10,7 @@ mgr_ca_cert:
 {%- if grains['osrelease']|int == 11 %}
 mgr_split_ca:
   cmd.wait_script:
-    - name: salt://certs/update-multi-cert.sh:
+    - name: salt://certs/update-multi-cert.sh
     - runas: root
     - watch:
         - file: mgr_ca_cert

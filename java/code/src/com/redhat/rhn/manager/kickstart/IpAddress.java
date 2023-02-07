@@ -152,6 +152,7 @@ public class IpAddress {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof IpAddress)) {
             return false;
@@ -165,6 +166,7 @@ public class IpAddress {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getOctets())
                                     .append(this.getNumber())
@@ -175,6 +177,7 @@ public class IpAddress {
      *
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return this.octets[0] + "." +
         this.octets[1] + "." +

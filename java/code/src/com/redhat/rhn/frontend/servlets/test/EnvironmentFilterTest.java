@@ -15,7 +15,7 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
  */
 public class EnvironmentFilterTest extends BaseFilterTst {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -61,7 +62,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         request.setupAddParameter("messagep3", "param value");
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());
-        assertFalse(expectedRedir.equals(response.getRedirect()));
+        assertNotEquals(expectedRedir, response.getRedirect());
 
         request.setupGetRequestURI("/rhn/rpc/api");
         response.clearRedirect();

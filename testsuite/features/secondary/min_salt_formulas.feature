@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_formulas
@@ -13,8 +13,6 @@ Feature: Use salt formulas
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
-     And I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
-     And I refresh the metadata for "sle_minion"
 
   Scenario: The new formula appears on the server
      When I follow the left menu "Salt > Formula Catalog"
@@ -69,7 +67,7 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "+05"
-     And the keymap on "sle_minion" should be "ca.map.gz"
+     And the keymap on "sle_minion" should be "ca"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
 
   Scenario: Reset the formula on the minion
@@ -92,7 +90,7 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "CET"
-     And the keymap on "sle_minion" should be "us.map.gz"
+     And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Disable the formula on the minion
@@ -159,13 +157,11 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "CET"
-     And the keymap on "sle_minion" should be "us.map.gz"
+     And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
      When I manually uninstall the "locale" formula from the server
-     And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
-     And I refresh the metadata for "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I follow "Clear"
+     When I click on the clear SSM button

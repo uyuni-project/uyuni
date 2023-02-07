@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -75,7 +76,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
     }
 
     public static TokenPackage populateTestPackage(User user, ActivationKey key,
-            TokenPackage p) throws Exception {
+            TokenPackage p) {
 
         PackageName pname = PackageNameTest.createTestPackageName();
 

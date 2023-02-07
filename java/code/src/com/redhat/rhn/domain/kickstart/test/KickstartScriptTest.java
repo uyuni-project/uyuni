@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.TestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 /**
@@ -99,7 +100,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartScript script = createPost(ksdata);
         script.setPosition(1L);
         KickstartScript scriptEmpty = createPost(ksdata);
-        script.setData(largeString.getBytes("UTF-8"));
+        script.setData(largeString.getBytes(StandardCharsets.UTF_8));
 
         // Make sure we are setting the blob to be an empty byte
         // array.  The bug happens when one script is empty.
@@ -114,7 +115,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ksdata = (KickstartData) reload(ksdata);
         Iterator i = ksdata.getScripts().iterator();
         boolean found = false;
-        assertTrue(ksdata.getScripts().size() == 2);
+        assertEquals(2, ksdata.getScripts().size());
         while (i.hasNext()) {
             KickstartScript loaded = (KickstartScript) i.next();
             if (loaded.getDataContents().equals(largeString)) {

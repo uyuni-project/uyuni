@@ -39,8 +39,9 @@ public class ImageStoreFactory extends HibernateFactory {
     public static final ImageStoreType TYPE_OS_IMAGE = lookupStoreTypeByLabel("os_image").get();
     public static final ImageStoreType TYPE_REGISTRY = lookupStoreTypeByLabel("registry").get();
 
+    private static final Logger LOG = LogManager.getLogger(ImageStoreFactory.class);
+
     private static ImageStoreFactory instance = new ImageStoreFactory();
-    private static Logger log = LogManager.getLogger(ImageStoreFactory.class);
     public static final String USER_KEY = "username";
     public static final String PASS_KEY = "password";
 
@@ -57,10 +58,7 @@ public class ImageStoreFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ImageStoreFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**

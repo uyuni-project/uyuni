@@ -304,6 +304,7 @@ public class VirtualInstance extends BaseDomainHelper {
      * and has the same uuid as this VirtualInstance, <code>false</code>
      * otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != getClass()) {
             return false;
@@ -321,6 +322,7 @@ public class VirtualInstance extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getUuid())
@@ -331,6 +333,7 @@ public class VirtualInstance extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("uuid", uuid)
                 .toString();

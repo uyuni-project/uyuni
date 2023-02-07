@@ -56,7 +56,7 @@ public class RamTest extends RhnBaseTestCase {
     }
 
 
-    private void verifyInDb(Long serverId, long ram, long swap) throws Exception {
+    private void verifyInDb(Long serverId, long ram, long swap) {
         HibernateFactory.getSession().doWork(connection -> {
             ResultSet rs = null;
             PreparedStatement ps = null;

@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @scope_maintenance_windows
+@sle_minion
+@rhlike_minion
 Feature: Maintenance windows
 
   Scenario: Log in as admin user
@@ -62,9 +64,9 @@ Feature: Maintenance windows
     Then I should see a "System properties changed" text
 
   Scenario: Assign systems to a multi schedule using SSM
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
-    And I check the "sle_client" client
+    When I follow the left menu "Systems > System List > All"
+    And I click on the clear SSM button
+    And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
     And I select "SAP Maintenance Window" from "scheduleId"
@@ -78,21 +80,29 @@ Feature: Maintenance windows
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     When I wait until I do not see "Loading..." text
-    Then I should see "Test-Channel-x86_64 Child Channel" as unchecked
-    When I check "Test-Channel-x86_64 Child Channel"
+    Then I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    When I check "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I pick "17:30" as time
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
 
+  Scenario: Remove a package and update package list
+    When I remove package "virgo-dummy" from this "rhlike_minion" without error control
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+
   Scenario: Schedule package installation action
-    When I remove package "virgo-dummy" from this "sle_client" without error control
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I select the next maintenance window
@@ -100,9 +110,8 @@ Feature: Maintenance windows
     Then I should see a "1 package install has been scheduled for" text
 
   Scenario: Detach systems from schedules
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
-    And I check the "sle_client" client
+    When I follow the left menu "Systems > System List > All"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -111,9 +120,7 @@ Feature: Maintenance windows
     Then I should see a "Maintenance schedule has been cleared" text
 
   Scenario: Cleanup: cancel all scheduled actions
-    Given I am logged in API as user "admin" and password "admin"
     When I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Delete maintenance schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"

@@ -3,10 +3,11 @@ include:
   - certs
   - channels.gpg-keys
 
-{%- if salt['pillar.get']('mgr_disable_local_repos', True) %}
-{# disable all local repos which are not from susemanager unless the pillar say it different #}
-{%- include 'channels/disablelocalrepos.sls' %}
+{%- if not salt['pillar.get']('mgr_disable_local_repos', True) %}
+{# disable at least the SUSE-Manager-Bootstrap repo #}
+{% set repos_disabled = {'match_str': 'SUSE-Manager-Bootstrap', 'matching': true} %}
 {%- endif %}
+{% include 'channels/disablelocalrepos.sls' %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 
@@ -143,23 +144,6 @@ install_gnupg_debian:
       - gnupg
 {%- endif %}
 
-mgrchannels_refresh_repositories:
-  mgrcompat.module_run:
-    - name: pkg.refresh_db
-{%- if grains['os_family'] == 'Suse' %}
-    {#- same behavior as RedHat where --assumeyes is default #}
-    - gpg_auto_import_keys: True
-    - onlyif: /usr/bin/zypper -x lr | grep 'enabled="1"'
-{%- elif grains['os_family'] == 'RedHat' %}
-{%- if is_dnf %}
-    -  unless: "/usr/bin/dnf repolist | grep \"repolist: 0$\""
-{%- else %}
-    -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
-{%- endif %}
-{%- endif %}
-    - require:
-      - file: mgrchannels_repo
-
 {%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
 {%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3' %}
 mgrchannels_install_products:
@@ -172,5 +156,13 @@ mgrchannels_install_products:
       - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
+{%- endif %}
 
+{%- if grains['os_family'] == 'Suse' and "opensuse" not in grains['oscodename']|lower %}
+{# take care that the suse-build-key package with the PTF key is installed #}
+mgrchannels_inst_suse_build_key:
+  pkg.installed:
+    - name: suse-build-key
+    - require:
+      - file: mgrchannels_repo
 {%- endif %}

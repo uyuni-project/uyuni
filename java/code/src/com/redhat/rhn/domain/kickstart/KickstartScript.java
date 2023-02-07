@@ -90,6 +90,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -177,9 +178,9 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
 
     /**
      * Getter for errorOnFail
-     * @return Boolean to get
+     * @return boolean to get
      */
-    public Boolean getErrorOnFail() {
+    public boolean getErrorOnFail() {
         return this.errorOnFail;
     }
 
@@ -318,6 +319,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
      * @param scriptIn KickstartScript to compare order to
      * @return the position order of this script
      */
+    @Override
     public int compareTo(KickstartScript scriptIn) {
         final int before = -1;
         final int after = 1;
@@ -351,7 +353,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
     /**
      * @return Returns the raw.
      */
-    public Boolean getRaw() {
+    public boolean getRaw() {
         return raw;
     }
 

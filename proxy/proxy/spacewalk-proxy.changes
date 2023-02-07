@@ -1,5 +1,23 @@
-- renew the cached token when requested channel is not listed in
-  the old token (bsc#1202724)
+-------------------------------------------------------------------
+Mon Jan 23 08:24:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:07:53 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Handle tftp in rhn-proxy (bsc#1205976)
+  * remove jabberd and osa-dispatcher
+
+-------------------------------------------------------------------
+Wed Sep 28 10:44:28 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Prefix log messages with the component name to ease analysis
+  * renew the cached token when requested channel is not listed in
+    the old token (bsc#1202724)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:09:14 CEST 2022 - jgonzalez@suse.com

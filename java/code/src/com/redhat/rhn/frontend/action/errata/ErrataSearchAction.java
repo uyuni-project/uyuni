@@ -21,12 +21,15 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
 import com.redhat.rhn.frontend.action.common.DateRangePicker.DatePickerResults;
+import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
@@ -55,8 +58,11 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class ErrataSearchAction extends BaseSearchAction {
 
+    private static final Logger LOG = LogManager.getLogger(ErrataSearchAction.class);
+
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
         throws MalformedURLException, XmlRpcFault {
         RequestContext ctx = new RequestContext(request);
 
@@ -65,7 +71,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         String viewmode = form.getString(VIEW_MODE);
         Boolean fineGrained = (Boolean)form.get(FINE_GRAINED);
 
-        List searchOptions = new ArrayList();
+        List searchOptions = new ArrayList<>();
         // setup the option list for select box (view_mode).
         addOption(searchOptions, OPT_ALL_FIELDS, OPT_ALL_FIELDS);
         addOption(searchOptions, OPT_ADVISORY, OPT_ADVISORY);
@@ -118,7 +124,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                     search, viewmode, form);
 
             request.setAttribute(RequestContext.PAGE_LIST,
-                    results != null ? results : Collections.EMPTY_LIST);
+                    results != null ? results : Collections.emptyList());
         }
         else {
             // Reset info on date pickers
@@ -128,7 +134,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 LOG.debug("Issue Start Date = {}", dates.getStart().getDate());
                 LOG.debug("End Start Date = {}", dates.getEnd().getDate());
             }
-            request.setAttribute(RequestContext.PAGE_LIST, Collections.EMPTY_LIST);
+            request.setAttribute(RequestContext.PAGE_LIST, Collections.emptyList());
 
         }
         ActionMessages dateErrors = dates.getErrors();
@@ -142,6 +148,7 @@ public class ErrataSearchAction extends BaseSearchAction {
      * can find them
      * @param form where we expect values to be
      */
+    @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
         String viewmode = form.getString(VIEW_MODE);
         if (viewmode.equals("")) { //first time viewing page
@@ -181,7 +188,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         }
     }
 
-    protected List performSearch(HttpServletRequest request, Long sessionId,
+    protected List<ErrataOverview> performSearch(HttpServletRequest request, Long sessionId,
             String searchString, String mode, DynaActionForm formIn)
         throws XmlRpcFault, MalformedURLException {
 
@@ -191,8 +198,8 @@ public class ErrataSearchAction extends BaseSearchAction {
         // call search server
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
-        String path = null;
-        List args = new ArrayList();
+        String path;
+        List<Object> args = new ArrayList<>();
         args.add(sessionId.toString());
         // do a package search instead of an errata one. This uses
         // a different lucene index to find pkgs then reconciles
@@ -204,7 +211,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             args.add("errata");
         }
 
-        List results = new ArrayList();
+        List<Map<String, Object>> results;
         //
         // Note:  This is how "issue date" search works.
         // It functions in one of 2 ways, depending on the state of "searchString"
@@ -221,7 +228,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // has been activated. Search will proceed as normal, then the final step
         // will be to filter the results by issue date.
         //
-        Boolean dateSearch = getOptionIssueDateSearch(request);
+        boolean dateSearch = getOptionIssueDateSearch(request);
         LOG.debug("Datesearch is {}", dateSearch);
 
         Date startDate = getPickerDate(request, "start");
@@ -250,7 +257,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Calling to search server (XMLRPC):  \"index.search\", args={}", args);
         }
-        results = (List)client.invoke(path, args);
+        results = (List<Map<String, Object>>)client.invoke(path, args);
         if (LOG.isDebugEnabled()) {
             LOG.debug("results = [{}]", results);
         }
@@ -272,7 +279,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // if we go forward we end up with gtk:1 and kernel:2 but we wanted
         // kernel:2, gtk:0.
         for (int x = results.size() - 1; x >= 0; x--) {
-            Map item = (Map) results.get(x);
+            Map<String, Object> item = results.get(x);
             lookupmap.put(Long.valueOf((String)item.get("id")), x);
             Long id = Long.valueOf((String)item.get("id"));
             ids.add(id);
@@ -282,10 +289,9 @@ public class ErrataSearchAction extends BaseSearchAction {
         // In order to maintain the ranking from the search server, we
         // need to reorder the database results to match. This will lead
         // to a better user experience.
-        List<ErrataOverview> unsorted = new ArrayList<>();
+        List<ErrataOverview> unsorted;
         if (OPT_PKG_NAME.equals(mode)) {
-            unsorted = ErrataManager.searchByPackageIdsWithOrg(ids,
-                    ctx.getCurrentUser().getOrg());
+            unsorted = ErrataManager.searchByPackageIdsWithOrg(ids, ctx.getCurrentUser().getOrg());
 
         }
         else {
@@ -296,16 +302,15 @@ public class ErrataSearchAction extends BaseSearchAction {
             // Flesh out all CVEs for each errata returned..generally this is a
             // small number of Errata to operate on.
             for (ErrataOverview eo : unsorted) {
-                DataResult dr = ErrataManager.errataCVEs(eo.getId());
+                DataResult<CVE> dr = ErrataManager.errataCVEs(eo.getId());
                 eo.setCves(dr);
             }
         }
         List<ErrataOverview> filtered = new ArrayList<>();
         // Filter based on errata type selected
-        List<ErrataOverview> filteredByType = new ArrayList<>();
-        filteredByType = filterByAdvisoryType(unsorted, formIn);
+        List<ErrataOverview> filteredByType = filterByAdvisoryType(unsorted, formIn);
 
-        List<ErrataOverview> filteredByIssueDate = new ArrayList<>();
+        List<ErrataOverview> filteredByIssueDate;
         if (dateSearch && !StringUtils.isBlank(searchString)) {
             // search string is not blank, therefore a search was run so filter the results
             LOG.debug("Performing filter on issue date, we only want records between {} - {}", startDate, endDate);
@@ -350,8 +355,8 @@ public class ErrataSearchAction extends BaseSearchAction {
             }
 
             boolean added = false;
-            for (ListIterator itr = ordered.listIterator(); itr.hasNext();) {
-                ErrataOverview curpo = (ErrataOverview) itr.next();
+            for (ListIterator<ErrataOverview> itr = ordered.listIterator(); itr.hasNext();) {
+                ErrataOverview curpo = itr.next();
                 int curidx = lookupmap.get(curpo.getId());
                 if (idx <= curidx) {
                     itr.previous();
@@ -436,7 +441,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         int recordsRead = 0;
         while (recordsRead < idsIn.size()) {
             List<Long> chunkIDs = idsIn.subList(recordsRead, toIndex);
-            if (chunkIDs.size() == 0) {
+            if (chunkIDs.isEmpty()) {
                 LOG.warn("Processing 0 size chunkIDs....something seems wrong.");
                 break;
             }

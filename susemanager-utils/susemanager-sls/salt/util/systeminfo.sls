@@ -1,3 +1,5 @@
+# Update system info on each minion start
+
 include:
   - util.syncmodules
   - util.syncstates

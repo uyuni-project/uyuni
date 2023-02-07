@@ -1,6 +1,8 @@
 #! /bin/bash
 
 DBNAME_ATTRIBUTE="report_db_name"
+DBPROVIDER_ATTRIBUTE="externaldb_provider"
+
 RHN_CONF="/etc/rhn/rhn.conf"
 INTERACTIVE=1
 INTERACTIVE_RETRIES=3
@@ -104,6 +106,7 @@ parse_properties() {
 }
 
 parse_properties $DBNAME_ATTRIBUTE DBNAME
+parse_properties $DBPROVIDER_ATTRIBUTE DBPROVIDER
 
 if [ -z $DBNAME ]; then
   echo "$DBNAME_ATTRIBUTE is missing. Exit"
@@ -197,6 +200,7 @@ else ### INTERACTIVE=0
 
 fi
 
+echo $EXTERNAL
 ADMIN_USERS=$(echo "SELECT usename FROM pg_catalog.pg_user WHERE usesuper='t' " | spacewalk-sql -select-mode - | tail -n +3 | head -n -2 | tr '[:upper:]' '[:lower:]')
 
 for USER in $ADMIN_USERS; do
@@ -219,7 +223,15 @@ case "$ACTION" in
     QUERY="ALTER USER ${DBUSER} PASSWORD '${DBPASSWORD}';"
   ;;
   d)
-    QUERY="DROP OWNED BY ${DBUSER}; DROP ROLE ${DBUSER};"
+    if [[ -n $DBPROVIDER && "${DBPROVIDER,,}" == "aws" ]] ; then
+      QUERY="REVOKE SELECT ON ALL SEQUENCES IN SCHEMA public FROM ${DBUSER};
+        REVOKE ALL ON ALL TABLES IN SCHEMA public FROM ${DBUSER};
+        REVOKE ALL ON SCHEMA public FROM ${DBUSER};
+        REVOKE CONNECT ON DATABASE ${DBNAME} FROM ${DBUSER};
+        DROP ROLE ${DBUSER};"
+    else
+      QUERY="DROP OWNED BY ${DBUSER}; DROP ROLE ${DBUSER};"
+    fi
   ;;
 esac
 

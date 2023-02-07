@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -42,14 +41,16 @@ class BufferedResponseWrapper extends HttpServletResponseWrapper {
     /**
      * ${@inheritDoc}
      */
-    public ServletOutputStream getOutputStream() throws IOException {
+    @Override
+    public ServletOutputStream getOutputStream() {
         return out;
     }
 
     /**
      * ${@inheritDoc}
      */
-    public PrintWriter getWriter() throws IOException {
+    @Override
+    public PrintWriter getWriter() {
         return writer;
     }
 
@@ -64,9 +65,8 @@ class BufferedResponseWrapper extends HttpServletResponseWrapper {
     /**
      * Gets buffered content from underlying output stream
      * @return string
-     * @throws UnsupportedEncodingException
      */
-    public String getBufferedOutput() throws UnsupportedEncodingException {
+    public String getBufferedOutput() {
         return out.getBufferedContent();
     }
 }

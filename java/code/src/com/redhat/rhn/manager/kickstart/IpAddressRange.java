@@ -116,6 +116,7 @@ public class IpAddressRange {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof IpAddressRange)) {
             return false;
@@ -129,6 +130,7 @@ public class IpAddressRange {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getMax())
                                     .append(this.getMin())
@@ -154,6 +156,7 @@ public class IpAddressRange {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getRange();
     }

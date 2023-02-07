@@ -131,7 +131,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     protected boolean cobblerOnly;
     private KickstartSession kickstartSession;
     private Date scheduleDate;
-    private List packagesToInstall;
+    private List<Map<String, Long>> packagesToInstall;
     private String profileType;
     private String proxyHost;
     private Server targetServer;
@@ -346,13 +346,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
 
-    private void initialize(Long selectedHostServerId,
-            Long selectedTargetServerId,
-            User userIn) {
+    private void initialize(Long selectedHostServerId, Long selectedTargetServerId, User userIn) {
 
         log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId,
                 selectedTargetServerId);
-        this.setPackagesToInstall(new LinkedList());
+        this.setPackagesToInstall(new LinkedList<>());
 
         // There must always be a host server present.
 
@@ -383,7 +381,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     public DataResult<KickstartDto> getKickstartProfiles() {
         log.debug("getKickstartProfiles()");
         DataResult<KickstartDto> retval = new DataResult<KickstartDto>(
-                Collections.EMPTY_LIST);
+                Collections.emptyList());
 
         // Profiles are associated with the host; the target system might not be created
         // yet.  Also, the host will be the one performing the kickstart, so the profile
@@ -473,7 +471,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return ProfileManager.compatibleWithChannel(this.ksdata.getKickstartDefaults().getKstree().getChannel(),
                     user.getOrg(), null);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
 
     }
 
@@ -594,10 +592,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             else {
                 // RegistrationType.DELETION && RegistrationType.NONE
                 CobblerConnection connection = CobblerXMLRPCHelper
-                        .getConnection(ConfigDefaults.get()
-                                .getCobblerAutomatedUser());
-                tokenList = org.cobbler.Profile.lookupById(connection,
-                        ksdata.getCobblerId()).getRedHatManagementKey();
+                        .getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
+                org.cobbler.Profile profile = org.cobbler.Profile.lookupById(
+                        connection,
+                        ksdata.getCobblerId()
+                );
+                if (profile.getRedHatManagementKey().isPresent()) {
+                    tokenList = profile.getRedHatManagementKey().get();
+                }
+                else {
+                    // If we need a guaranteed token then uncomment the following line and remove the active code
+                    // tokenList = profile.getResolvedRedHatManagementKey();
+                    tokenList = "";
+                }
             }
 
             cmd = getCobblerSystemCreateCommand(user, server,
@@ -767,7 +774,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
-        Set fileList = Collections.EMPTY_SET;
+        Set fileList = Collections.emptySet();
 
         if (!isCobblerOnly()) {
             fileList = ksdata.getPreserveFileLists();
@@ -895,7 +902,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
 
         // Add child channels to the key
-        if (ksdata.getChildChannels() != null && ksdata.getChildChannels().size() > 0) {
+        if (ksdata.getChildChannels() != null && !ksdata.getChildChannels().isEmpty()) {
             Iterator i = ksdata.getChildChannels().iterator();
             log.debug("Add the child Channels");
             while (i.hasNext()) {
@@ -942,7 +949,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         log.debug("PROFILE_TYPE={}", profileTypeIn);
 
         if (profileTypeIn == null ||
-                profileTypeIn.length() == 0 || // TODO: fix this hack
+                profileTypeIn.isEmpty() || // TODO: fix this hack
                 profileTypeIn.equals(TARGET_PROFILE_TYPE_NONE)) {
             return null;
         }
@@ -1146,18 +1153,18 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     // Check to make sure up2date is 2.9.0
     protected ValidatorError validateUp2dateVersion() {
         Server hostServer = getHostServer();
-        List packages = PackageManager.systemPackageList(hostServer.getId(), null);
+        List<PackageListItem> packages = PackageManager.systemPackageList(hostServer.getId(), null);
         if (packages != null) {
             log.debug("    packages.size() : {}", packages.size());
         }
         // PackageListItem
-        Iterator i = packages.iterator();
+        Iterator<PackageListItem> i = packages.iterator();
         String up2dateepoch = null;
         String up2dateversion = null;
         String up2daterelease = null;
 
         while (i.hasNext()) {
-            PackageListItem pli = (PackageListItem) i.next();
+            PackageListItem pli = i.next();
             if (pli.getName().equals("dnf-plugin-spacewalk")) {
                 // found dnf-plugin-spacewalk - returning
                 return null;
@@ -1215,7 +1222,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             Package p = PackageFactory.lookupByIdAndUser(packageId, this.user);
 
-            Map evrmap = new HashMap();
+            Map<String, Long> evrmap = new HashMap<>();
             evrmap.put("name_id", p.getPackageName().getId());
             evrmap.put("evr_id", p.getPackageEvr().getId());
             evrmap.put("arch_id", p.getPackageArch().getId());
@@ -1237,7 +1244,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return SystemManager.systemsSubscribedToChannel(
                     this.getKsdata().getKickstartDefaults().getKstree().getChannel(), user);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 

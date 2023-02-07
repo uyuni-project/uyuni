@@ -18,8 +18,11 @@ type SearchPanelProps = {
   /** flag indicating whether to show the number of selected items */
   selectable?: boolean;
 
-  /** function called when a search is performed. Takes the criteria as single parameter */
+  /** function called when the search value is changed. Takes the criteria as single parameter */
   onSearch: (criteria: string) => void;
+
+  /** function called when the search field is changed. Takes the field as single parameter */
+  onSearchField: (field: string) => void;
 
   /** function called when the clear button is clicked. This should reset the selection. */
   onClear: () => void;
@@ -30,6 +33,9 @@ type SearchPanelProps = {
   /** Search criteria value */
   criteria?: string;
 
+  /** Search field value */
+  field?: string;
+
   /** Search field components */
   children?: React.ReactNode;
 };
@@ -39,7 +45,12 @@ export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className="spacewalk-list-filter table-search-wrapper">
       {React.Children.toArray(props.children).map((child) =>
-        cloneReactElement(child, { criteria: props.criteria, onSearch: props.onSearch })
+        cloneReactElement(child, {
+          criteria: props.criteria,
+          field: props.field,
+          onSearch: props.onSearch,
+          onSearchField: props.onSearchField,
+        })
       )}
       <div className="d-inline-block">
         <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>

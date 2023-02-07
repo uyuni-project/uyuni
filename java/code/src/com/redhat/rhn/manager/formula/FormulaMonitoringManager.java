@@ -24,7 +24,6 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,8 @@ public class FormulaMonitoringManager implements MonitoringManager {
     /**
      * {@inheritDoc}
      */
-    public void enableMonitoring(MinionServer minion) throws IOException, ValidatorException {
+    @Override
+    public void enableMonitoring(MinionServer minion) throws ValidatorException {
         // Assign the monitoring formula to the system unless it belongs to a group with monitoring enabled
         if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
             List<String> formulas = FormulaFactory.getFormulasByMinion(minion);
@@ -61,7 +61,8 @@ public class FormulaMonitoringManager implements MonitoringManager {
     /**
      * {@inheritDoc}
      */
-    public void disableMonitoring(MinionServer minion) throws IOException {
+    @Override
+    public void disableMonitoring(MinionServer minion) {
         if (this.isMonitoringCleanupNeeded(minion)) {
             // Get the current data and set all exporters to disabled
             String minionId = minion.getMinionId();

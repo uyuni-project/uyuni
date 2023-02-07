@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
  */
 public class CloneErrataActionTest extends RhnMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -45,7 +46,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testEmptySet() throws Exception {
+    public void testEmptySet() {
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
                                                           "clone_errata_list",
                                                           SetCleanup.NOOP);

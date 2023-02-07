@@ -75,7 +75,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testVerifyOrgFamily() throws Exception {
+    public void testVerifyOrgFamily() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Org org = user.getOrg();
@@ -119,7 +119,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
     public static ChannelFamily createTestChannelFamily(User user, boolean nullOrg,
-            String prefix) throws Exception {
+            String prefix) {
         String label = prefix + "Label" + TestUtils.randomString();
         String name = prefix + "Name" + TestUtils.randomString();
 

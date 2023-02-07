@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * CompletedSystemsAction
  */
-public class CompletedSystemsAction extends RhnAction implements Listable {
+public class CompletedSystemsAction extends RhnAction implements Listable<ActionedSystem> {
 
     protected void setup(HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
@@ -68,6 +68,7 @@ public class CompletedSystemsAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -92,9 +93,8 @@ public class CompletedSystemsAction extends RhnAction implements Listable {
     }
 
     @Override
-    public List getResult(RequestContext context) {
+    public List<ActionedSystem> getResult(RequestContext context) {
         Action action = context.lookupAndBindAction();
-        PageControl pc = new PageControl();
-        return ActionManager.completedSystems(context.getCurrentUser(), action, pc);
+        return ActionManager.completedSystems(context.getCurrentUser(), action, null);
     }
 }

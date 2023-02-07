@@ -23,7 +23,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +46,8 @@ public class RecurringStateApplyJob extends RhnJavaJob {
      *
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
         String scheduleName = context.getJobDetail().getKey().getName();
         Optional<RecurringAction> recurringAction = RecurringActionFactory.lookupByJobName(scheduleName);
 
@@ -77,11 +77,10 @@ public class RecurringStateApplyJob extends RhnJavaJob {
     }
 
     private void cleanSchedule(String scheduleName) {
-        log.warn(String.format("Can't find a recurring action data for schedule '%s'. " +
-                "Cleaning the schedule!", scheduleName));
+        log.warn("Can't find a recurring action data for schedule '{}'. Cleaning the schedule!", scheduleName);
         int result = new TaskoXmlRpcHandler().unscheduleBunch(null, scheduleName);
         if (result != 1) {
-            log.error(String.format("Error cleaning schedule '%s'", scheduleName));
+            log.error("Error cleaning schedule '{}'", scheduleName);
         }
     }
 }

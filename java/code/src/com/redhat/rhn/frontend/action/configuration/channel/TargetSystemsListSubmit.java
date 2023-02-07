@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -46,9 +47,10 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(User userIn,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest requestIn) {
         RequestContext ctx = new RequestContext(requestIn);
         ConfigChannel cc = ConfigActionHelper.getChannel(requestIn);
         return ConfigurationManager.getInstance().listSystemsNotInChannel(ctx.getCurrentUser(), cc, null);
@@ -57,6 +59,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_TARGET_SYSTEMS;
     }
@@ -64,6 +67,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("targetsystems.jsp.subscribe", "processSubscribe");
     }
@@ -71,6 +75,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

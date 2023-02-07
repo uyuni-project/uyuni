@@ -39,8 +39,9 @@ import java.util.List;
 public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         action = new PreservationListDeleteSubmitAction();
     }
 
@@ -55,7 +56,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
         ah.getRequest().setRequestURL("");
         ah.getRequest().setupAddParameter("newset", (String)null);
         ah.getRequest().setupAddParameter("items_on_page", (String)null);
-        List ids = new LinkedList();
+        List ids = new LinkedList<>();
 
         // give list some FileLists
         for (int i = 0; i < 5; i++) {

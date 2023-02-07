@@ -5,12 +5,12 @@
 #       it is tested in buildhost_docker_build_image.feature and
 #                       buildhost_docker_auth_registry.feature
 
+@skip_if_cloud
 @scope_building_container_images
 Feature: API "image" namespace for containers and sub-namespaces
 
   Scenario: Test "image.store" namespace
-    When I am logged in API as user "admin" and password "admin"
-    And I create and delete an image store via API
+    When I create and delete an image store via API
     And I list image store types and image stores via API
     And I set and get details of image store via API
 
@@ -19,7 +19,6 @@ Feature: API "image" namespace for containers and sub-namespaces
     And I create and delete profile custom values via API
     And I list image profiles via API
     And I set and get profile details via API
-    And I logout from API
 
   Scenario: Cleanup: remove custom system info
     Given I am authorized for the "Admin" section

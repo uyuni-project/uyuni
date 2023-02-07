@@ -1686,7 +1686,8 @@ def do_activationkey_diff(self, args):
     source_data = self.dump_activationkey(source_channel, source_replacedict)
     target_data = self.dump_activationkey(target_channel, target_replacedict)
 
-    return diff(source_data, target_data, source_channel, target_channel)
+    for line in diff(source_data, target_data, source_channel, target_channel):
+        print(line)
 
 ####################
 

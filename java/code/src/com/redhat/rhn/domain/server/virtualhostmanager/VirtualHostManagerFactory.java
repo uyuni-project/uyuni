@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -60,7 +61,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     public static final String KUBERNETES = "Kubernetes";
 
     private static VirtualHostManagerFactory instance;
-    private static Logger log;
+    private static final Logger LOG = LogManager.getLogger(VirtualHostManagerFactory.class);
 
     /**
      * Name of parameter specifying username in Virtual Host Manager Config
@@ -96,10 +97,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(VirtualHostManagerFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**
@@ -218,7 +216,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Files.delete(Paths.get(kubeconfig));
         }
         catch (IOException e) {
-            log.error("Could not remove Kubernetes config file: {}", kubeconfig);
+            LOG.error("Could not remove Kubernetes config file: {}", kubeconfig);
         }
     }
 
@@ -235,7 +233,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Org org,
             String moduleName,
             Map<String, String> parameters) {
-        getLogger().debug("Creating VirtualHostManager with label '{}'.", label);
+        if (getLogger().isDebugEnabled()) {
+            getLogger().debug("Creating VirtualHostManager with label '{}'.", StringUtil.sanitizeLogInput(label));
+        }
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);

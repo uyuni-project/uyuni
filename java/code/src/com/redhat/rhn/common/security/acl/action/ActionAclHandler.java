@@ -42,9 +42,8 @@ public class ActionAclHandler implements AclHandler {
      * @param params Parameters to use to fetch from Context
      * @return true if type type matches, false otherwise.
      */
-    public boolean aclGenericActionType(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        String said = (String) map.get("aid");
+    public boolean aclGenericActionType(Map<String, Object> ctx, String[] params) {
+        String said = (String) ctx.get("aid");
         Long aid = Long.valueOf(said);
         Action action = ActionFactory.lookupById(aid);
 

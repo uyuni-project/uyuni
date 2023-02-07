@@ -31,7 +31,7 @@ import java.util.Map;
 public class ServerNoteFactory extends HibernateFactory {
 
     private static ServerNoteFactory singleton = new ServerNoteFactory();
-    private static Logger log = LogManager.getLogger(ServerFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ServerNoteFactory.class);
 
     private ServerNoteFactory() {
         super();
@@ -41,8 +41,9 @@ public class ServerNoteFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */
+    @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -61,10 +62,10 @@ public class ServerNoteFactory extends HibernateFactory {
     public static void delete(Note note) {
         HibernateFactory.getSession().evict(note);
         CallableMode m = ModeFactory.getCallableMode("System_queries", "delete_note");
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("id", note.getId());
         map.put("server_id", note.getServer().getId());
-        m.execute(map, new HashMap());
+        m.execute(map, new HashMap<>());
         HibernateFactory.getSession().evict(note);
     }
 }

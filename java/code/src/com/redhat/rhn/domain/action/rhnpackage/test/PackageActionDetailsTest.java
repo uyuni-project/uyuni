@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,7 +46,7 @@ import java.util.Set;
 public class PackageActionDetailsTest extends RhnBaseTestCase {
 
     @Test
-    public void testBeanMethods() throws Exception {
+    public void testBeanMethods() {
         PackageActionDetails pad = new PackageActionDetails();
         Long id = 456L;
         Date now = new Date();
@@ -72,16 +73,16 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         assertEquals(foo, pad.getParameter());
 
         pad.setArch(arch);
-        assertTrue(arch.equals(pad.getArch()));
+        assertEquals(arch, pad.getArch());
 
         pad.setEvr(evr);
-        assertTrue(evr.equals(pad.getEvr()));
+        assertEquals(evr, pad.getEvr());
 
         pad.setPackageName(pn);
-        assertTrue(pn.equals(pad.getPackageName()));
+        assertEquals(pn, pad.getPackageName());
 
         pad.setParentAction(action);
-        assertTrue(action.equals(pad.getParentAction()));
+        assertEquals(action, pad.getParentAction());
     }
 
     @Test
@@ -105,7 +106,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         assertFalse(pad.getResults().contains(null));
         assertTrue(pad.getResults().contains(par1));
 
-        Set results = new HashSet();
+        Set results = new HashSet<>();
         results.add(par);
         results.add(par1);
         results.add(par2);
@@ -126,30 +127,30 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         parent1.setId(2L);
 
 
-        assertTrue(pad.equals(pad1));
+        assertEquals(pad, pad1);
 
         pad.setParentAction(parent);
-        assertFalse(pad.equals(pad1));
-        assertFalse(pad1.equals(pad));
+        assertNotEquals(pad, pad1);
+        assertNotEquals(pad1, pad);
 
         pad1.setParentAction(parent1);
-        assertFalse(pad.equals(pad1));
+        assertNotEquals(pad, pad1);
 
         parent1.setId(3L);
-        assertTrue(pad.equals(pad1));
+        assertEquals(pad, pad1);
 
         pad1.setParentAction(parent);
-        assertTrue(pad.equals(pad1));
+        assertEquals(pad, pad1);
 
         pad.setPackageId(2L);
-        assertFalse(pad.equals(pad1));
-        assertFalse(pad1.equals(pad));
+        assertNotEquals(pad, pad1);
+        assertNotEquals(pad1, pad);
 
         pad1.setPackageId(3L);
-        assertFalse(pad.equals(pad1));
+        assertNotEquals(pad, pad1);
 
         pad.setPackageId(3L);
-        assertTrue(pad.equals(pad1));
+        assertEquals(pad, pad1);
 
     }
 

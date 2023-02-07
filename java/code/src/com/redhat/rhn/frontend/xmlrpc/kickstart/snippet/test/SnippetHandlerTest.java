@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,7 +39,7 @@ public class SnippetHandlerTest extends BaseHandlerTestCase {
         List old = handler.listAll(admin);
         CobblerSnippet.createOrUpdate(true, "foo", "My foo snippet", admin.getOrg());
         List newList = handler.listAll(admin);
-        assertTrue(old.size() + 1 == newList.size());
+        assertEquals(old.size() + 1, newList.size());
 
     }
 
@@ -55,14 +56,14 @@ public class SnippetHandlerTest extends BaseHandlerTestCase {
     public void testCreateOrUpdate() {
         deleteAllSnippets();
         handler.createOrUpdate(admin, "foobar", "My Little foobar");
-        assertTrue(handler.listCustom(admin).get(0).getName().equals("foobar"));
+        assertEquals("foobar", handler.listCustom(admin).get(0).getName());
     }
 
     @Test
     public void testDelete() {
         deleteAllSnippets();
         handler.createOrUpdate(admin, "foobar", "My Little foobar");
-        assertTrue(handler.listCustom(admin).get(0).getName().equals("foobar"));
+        assertEquals("foobar", handler.listCustom(admin).get(0).getName());
         handler.delete(admin, "foobar");
         assertTrue(handler.listCustom(admin).isEmpty());
     }

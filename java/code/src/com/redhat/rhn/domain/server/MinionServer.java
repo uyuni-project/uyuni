@@ -35,11 +35,18 @@ import java.util.Set;
 public class MinionServer extends Server implements SaltConfigurable {
 
     private String minionId;
-    private String osFamily;
     private String kernelLiveVersion;
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
     private Set<Pillar> pillars = new HashSet<>();
+    /**
+       We typically look at the packages installed on a system to identify whether a reboot is necessary.
+       This property initially only works for transactional systems, but the idea is that gradually the
+       other types of systems also provide this information directly to be stored here so we no longer rely
+       on package related inference to determine whether a reboot is necessary. Even because this
+       information does not always depend only on the packages.
+    */
+    private Boolean rebootNeeded;
 
     /**
      * Constructs a MinionServer instance.
@@ -49,8 +56,19 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * Minimal constructor used to avoid loading all properties in SSM config channel subscription
+     *
+     * @param idIn the server id
+     * @param machineIdIn the machine id
+     */
+    public MinionServer(long idIn, String machineIdIn) {
+        super(idIn, machineIdIn);
+    }
+
+    /**
      * @return the minion id
      */
+    @Override
     public String getMinionId() {
         return minionId;
     }
@@ -60,24 +78,6 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
-    }
-
-    /**
-     * Getter for os family
-     *
-     * @return String to get
-     */
-    public String getOsFamily() {
-        return this.osFamily;
-    }
-
-    /**
-     * Setter for os family
-     *
-     * @param osFamilyIn to set
-     */
-    public void setOsFamily(String osFamilyIn) {
-        this.osFamily = osFamilyIn;
     }
 
     /**
@@ -165,6 +165,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      *
      * @return <code>true</code> if OS supports Transactional Update
      */
+    @Override
     public boolean doesOsSupportsTransactionalUpdate() {
         return isSLEMicro();
     }
@@ -172,98 +173,8 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() || isRocky8() ||
                 isRocky9() || isDebian11() || isDebian10();
-    }
-
-    /**
-     * @return true if the installer type is of SLES 10
-     */
-    private boolean isSLES10() {
-        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("10");
-    }
-
-    /**
-     * @return true if the installer type is of SLES 11
-     */
-    private boolean isSLES12() {
-        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("12");
-    }
-
-    /**
-     * @return true if the installer type is of SLES 11
-     */
-    private boolean isSLES11() {
-        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("11");
-    }
-
-    /**
-     * @return true if the installer type is of SLE Micro
-     */
-    private boolean isSLEMicro() {
-        return ServerConstants.SLEMICRO.equals(getOs());
-    }
-
-    /**
-     * @return true if the installer type is of SLES 15
-     */
-    private boolean isSLES15() {
-        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
-    }
-
-    private boolean isLeap15() {
-        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
-    }
-
-    private boolean isUbuntu1804() {
-        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
-    }
-
-    private boolean isUbuntu2004() {
-        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
-    }
-
-    private boolean isUbuntu2204() {
-        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
-    }
-
-    private boolean isDebian11() {
-        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
-    }
-
-    private boolean isDebian10() {
-        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
-    }
-
-    /**
-     * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
-     */
-    private boolean isRedHat6() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
-    }
-
-    private boolean isRedHat7() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
-    }
-
-    private boolean isRedHat8() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
-    }
-
-    private boolean isAlibaba2() {
-        return ServerConstants.ALIBABA.equals(getOs());
-    }
-
-    private boolean isAmazon2() {
-        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
-    }
-
-    private boolean isRocky8() {
-        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("8.");
-    }
-
-    private boolean isRocky9() {
-        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("9.");
     }
 
     /**
@@ -405,5 +316,13 @@ public class MinionServer extends Server implements SaltConfigurable {
                 }
         }
         return changed;
+    }
+
+    public Boolean isRebootNeeded() {
+        return rebootNeeded;
+    }
+
+    public void setRebootNeeded(Boolean rebootNeededIn) {
+        this.rebootNeeded = rebootNeededIn;
     }
 }

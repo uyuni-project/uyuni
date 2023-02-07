@@ -38,6 +38,7 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -54,14 +55,14 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testSetupExecute() throws Exception {
+    public void testSetupExecute() {
         setRequestPathInfo("/kickstart/KickstartFilePreservationLists");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
     @Test
-    public void testSubmitExecute() throws Exception {
+    public void testSubmitExecute() {
         addSelectedItem(list1.getId());
         addSelectedItem(list2.getId());
         addDispatchCall(KickstartPreservationListSubmitAction.UPDATE_METHOD);

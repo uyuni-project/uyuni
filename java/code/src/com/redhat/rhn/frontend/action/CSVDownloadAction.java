@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.db.datasource.CachedStatement;
 import com.redhat.rhn.common.db.datasource.Elaborator;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.download.ByteArrayStreamInfo;
 import com.redhat.rhn.domain.user.User;
@@ -24,6 +26,8 @@ import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,6 +54,9 @@ import javax.servlet.http.HttpSession;
  * @author jmatthews
  */
 public class CSVDownloadAction extends DownloadAction {
+
+    private static final Logger LOG = LogManager.getLogger(CSVDownloadAction.class);
+
     public static final String EXPORT_COLUMNS = "__CSV__exportColumnsParam";
     public static final String PAGE_LIST_DATA = "___CSV_pageListData";
     public static final String QUERY_DATA = "__CSV_queryMode";
@@ -59,9 +66,9 @@ public class CSVDownloadAction extends DownloadAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         try {
             super.execute(mapping, form, request, response);
         }
@@ -70,7 +77,7 @@ public class CSVDownloadAction extends DownloadAction {
              * Overridden to redirect for case of errors while processing CSV Export,
              * example: Session timeout.
              */
-            e.printStackTrace();
+            LOG.error("Failed to generate CSV", e);
             return mapping.findForward("error");
         }
         return null;
@@ -84,18 +91,15 @@ public class CSVDownloadAction extends DownloadAction {
      * @param request HTTP request
      * @param session HTTP session
      * @return exported columns
-     * @throws Exception thrown if request attribute EXPORT_COLUMN is missing.
      */
-    protected String getExportColumns(HttpServletRequest request,
-            HttpSession session)
-        throws Exception {
+    protected String getExportColumns(HttpServletRequest request, HttpSession session) {
         String paramExportColumns = request.getParameter(EXPORT_COLUMNS);
         if (null == paramExportColumns) {
-            throw new Exception("Missing request parameter, " + EXPORT_COLUMNS);
+            throw new IllegalArgumentException("Missing request parameter, " + EXPORT_COLUMNS);
         }
         String exportColumns = (String) session.getAttribute(paramExportColumns);
         if (null == exportColumns) {
-            throw new Exception("Missing value for session attribute, " +
+            throw new IllegalArgumentException("Missing value for session attribute, " +
                     paramExportColumns);
         }
         return exportColumns;
@@ -109,45 +113,38 @@ public class CSVDownloadAction extends DownloadAction {
      * @param request HTTP Request
      * @param session HTTP session
      * @return page data
-     * @throws Exception thrown if column missing.
      */
-    protected List getPageData(HttpServletRequest request, HttpSession session)
-        throws Exception {
+    @SuppressWarnings("unchecked")
+    protected List<SystemSearchResult> getPageData(HttpServletRequest request, HttpSession session) {
         String paramQuery = request.getParameter(QUERY_DATA);
         if (paramQuery != null) {
             CachedStatement query = (CachedStatement) session.getAttribute(paramQuery);
             if (query == null) {
-                throw new Exception("Missing request parameter, " + QUERY_DATA);
+                throw new IllegalArgumentException("Missing request parameter, " + QUERY_DATA);
             }
-            /*if (session.getAttribute("ssr_" + paramQuery) != null) {
-                return (DataResult) session.getAttribute("ssr_" + paramQuery);
-            }*/
-            return query.restartQuery();
+            return query.restartQuery(HibernateFactory.getSession());
         }
 
         String paramPageData = request.getParameter(PAGE_LIST_DATA);
         if (null == paramPageData) {
-            throw new Exception("Missing request parameter, " + EXPORT_COLUMNS);
+            throw new IllegalArgumentException("Missing request parameter, " + EXPORT_COLUMNS);
         }
-        List pageData = (List) session.getAttribute(paramPageData);
+        List<SystemSearchResult> pageData = (List<SystemSearchResult>) session.getAttribute(paramPageData);
         if (null == pageData) {
-            throw new Exception("Missing value for session attribute, " +
-                    paramPageData);
+            throw new IllegalArgumentException("Missing value for session attribute, " + paramPageData);
         }
         return pageData;
     }
 
     /**
-     * Returns the value of the UNIQUE_NAME attribute or exception if value
-     * is null.
+     * Returns the value of the UNIQUE_NAME attribute or exception if value is null.
      * @param request HTTP request containing UNIQUE_NAME parameter
      * @return unique name
-     * @throws Exception thrown if UNIQUE_NAME value is null.
      */
-    protected String getUniqueName(HttpServletRequest request) throws Exception {
+    protected String getUniqueName(HttpServletRequest request) {
         String uniqueName = request.getParameter(UNIQUE_NAME);
         if (uniqueName == null) {
-            throw new Exception("Missing request parameter, " + UNIQUE_NAME);
+            throw new IllegalArgumentException("Missing request parameter, " + UNIQUE_NAME);
         }
         return uniqueName;
     }
@@ -157,10 +154,8 @@ public class CSVDownloadAction extends DownloadAction {
      * @param request the http servlet request
      * @param session the session
      * @return the header name
-     * @throws Exception something bad happened
      */
-    protected String getHeaderText(HttpServletRequest request, HttpSession session)
-        throws Exception {
+    protected String getHeaderText(HttpServletRequest request, HttpSession session) {
         String paramHeader = request.getParameter(HEADER_NAME);
         if (null == paramHeader) {
             // this is an optional parameter, return null if it's not there.
@@ -169,8 +164,7 @@ public class CSVDownloadAction extends DownloadAction {
         }
         String header = (String) session.getAttribute(paramHeader);
         if (null == header) {
-            throw new Exception("Missing value for session attribute, " +
-                    paramHeader);
+            throw new IllegalArgumentException("Missing value for session attribute, " + paramHeader);
         }
         return header;
     }
@@ -179,17 +173,16 @@ public class CSVDownloadAction extends DownloadAction {
     /**
      * {@inheritDoc}
      */
-    protected StreamInfo getStreamInfo(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response)
-    throws Exception {
+    @Override
+    @SuppressWarnings("unchecked")
+    protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession(false);
         if (null == session) {
-            throw new Exception("Missing session");
+            throw new RhnRuntimeException("Missing session");
         }
         String exportColumns = getExportColumns(request, session);
-        List pageData = getPageData(request, session);
+        List<SystemSearchResult> pageData = getPageData(request, session);
 
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
@@ -204,10 +197,10 @@ public class CSVDownloadAction extends DownloadAction {
         Elaborator elab = TagHelper.lookupElaboratorFor(
                 getUniqueName(request), request);
         if (elab != null) {
-            elab.elaborate(pageData);
-            if (!pageData.isEmpty() && pageData.get(0) instanceof SystemSearchResult) {
-                pageData = mergeWithPartialResult(pageData,
-                        (Map)session.getAttribute("ssr_" + request
+            elab.elaborate(pageData, HibernateFactory.getSession());
+            if (!pageData.isEmpty() && pageData.get(0) != null) {
+                mergeWithPartialResult(pageData,
+                        (Map<Long, SystemSearchPartialResult>)session.getAttribute("ssr_" + request
                                 .getParameter(QUERY_DATA)));
             }
         }
@@ -221,11 +214,10 @@ public class CSVDownloadAction extends DownloadAction {
         return new ByteArrayStreamInfo(contentType, expW.getContents().getBytes());
     }
 
-    private List mergeWithPartialResult(List full, Map partial) {
-        for (Object oIn : full) {
-            SystemSearchResult r = (SystemSearchResult) oIn;
-            SystemSearchPartialResult p =
-                    (SystemSearchPartialResult) partial.get(r.getId());
+    private List<SystemSearchResult> mergeWithPartialResult(List<SystemSearchResult> full,
+                                                            Map<Long, SystemSearchPartialResult> partial) {
+        for (SystemSearchResult r : full) {
+            SystemSearchPartialResult p = partial.get(r.getId());
             r.setMatchingField(p.getMatchingField());
             r.setMatchingFieldValue(p.getMatchingFieldValue());
         }

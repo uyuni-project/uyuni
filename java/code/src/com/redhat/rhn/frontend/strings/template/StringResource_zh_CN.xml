@@ -261,11 +261,9 @@ Affected Systems List
 ---------------------
 This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
-package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
-as root on the system in question to refresh your software profile.
+package profile for that server is out of date.
     </source>
-        <target state="final">
+        <target state="needs-adaptation">
 ---------------------
 受影响的系统列表
 ---------------------
@@ -449,7 +447,6 @@ Thank you for using @@PRODUCT_NAME@@.
 ----------------------
 
 要为系统禁用此电子邮件，请访问以下网址的“首选项”页面：
-
 https://{4}/rhn/account/UserPreferences.do
 
 

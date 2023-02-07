@@ -37,10 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseChannelTreeAction extends RhnUnpagedListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
             RequestContext requestContext = new RequestContext(request);
 

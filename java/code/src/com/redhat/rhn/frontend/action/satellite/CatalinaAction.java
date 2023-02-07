@@ -35,8 +35,9 @@ public class CatalinaAction extends RhnAction {
     private static final String LOGFILE_PATH = "/var/log/rhn/rhn_web_ui.log";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("logfile_path", LOGFILE_PATH);
         String contents = FileUtils.getTailOfFile(LOGFILE_PATH, 1000);
         contents = StringEscapeUtils.escapeHtml4(contents);

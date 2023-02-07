@@ -14,18 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task.errata;
 
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Performs errata cache recalc for a given server or channel
@@ -53,6 +49,7 @@ public class ErrataCacheWorker implements QueueWorker {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run() {
         try {
             removeTask();
@@ -104,6 +101,7 @@ public class ErrataCacheWorker implements QueueWorker {
      * Set the parent so we can tell it when we're done
      * @param queue the parent queue
      */
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }
@@ -112,12 +110,6 @@ public class ErrataCacheWorker implements QueueWorker {
      * Remove the task related to this worker from the DB via mode query.
      */
     private void removeTask() {
-        WriteMode mode = ModeFactory.getWriteMode("Task_queries", "delete_task");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", task.getOrg().getId());
-        params.put("name", task.getName());
-        params.put("task_data", task.getData());
-        params.put("priority", task.getPriority());
-        mode.executeUpdate(params);
+        TaskFactory.deleteByOrgNameDataPriority(task.getOrg(), task.getName(), task.getData(), task.getPriority());
     }
 }

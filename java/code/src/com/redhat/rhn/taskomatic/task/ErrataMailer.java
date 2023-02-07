@@ -16,7 +16,9 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -29,7 +31,6 @@ import com.suse.manager.utils.MailHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -52,55 +53,43 @@ public class ErrataMailer extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext context) {
 
-        List results = getErrataToProcess();
-        if (results == null || results.size() == 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("No patch found...exiting");
-            }
+        List<Row> results = getErrataToProcess();
+        if (results == null || results.isEmpty()) {
+            log.debug("No patch found...exiting");
         }
         else {
-            if (log.isDebugEnabled()) {
-                log.debug("=== Queued up {} patches", results.size());
-            }
-            for (Object resultIn : results) {
-                Map row = (Map) resultIn;
+            log.debug("=== Queued up {} patches", results.size());
+            for (Row row: results) {
                 Long errataId = (Long) row.get("errata_id");
                 Long orgId = (Long) row.get("org_id");
                 Long channelId = (Long) row.get("channel_id");
                 markErrataDone(errataId, orgId, channelId);
                 if (OrgFactory.lookupById(orgId).getOrgConfig().isErrataEmailsEnabled()) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Processing patch {} for org {}", errataId, orgId);
-                    }
+                    log.debug("Processing patch {} for org {}", errataId, orgId);
                     try {
                         sendEmails(errataId, orgId, channelId);
-                        if (log.isDebugEnabled()) {
-                            log.debug("Finished patch {} for org {}", errataId, orgId);
-                        }
+                        log.debug("Finished patch {} for org {}", errataId, orgId);
                     }
                     catch (JavaMailException e) {
                         log.error("Error sending mail", e);
                     }
                 }
                 else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Errata notifications disabled for whole org {} => skipping {}", orgId, errataId);
-                    }
+                    log.debug("Errata notifications disabled for whole org {} => skipping {}", orgId, errataId);
                 }
             }
         }
     }
 
-    protected List getErrataToProcess() {
+    protected List<Row> getErrataToProcess() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATAMAILER_FIND_ERRATA);
         Map<String, Object> params = new HashMap<>();
         params.put("threshold", 1);
-        List results = select.execute(params);
-        return results;
+        return select.execute(params);
     }
 
     private void markErrataDone(Long errataId, Long orgId, Long channelId) {
@@ -118,27 +107,27 @@ public class ErrataMailer extends RhnJavaJob {
     }
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
-        Errata errata = (Errata) HibernateFactory.getSession().load(Errata.class,
-                errataId);
-        List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
+        Errata errata = HibernateFactory.getSession().load(Errata.class, errataId);
+        List<Row> orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
-        if (orgServers == null || orgServers.size() == 0) {
+        if (orgServers == null || orgServers.isEmpty()) {
             log.debug("No relevant servers found for patch {} in channel {} for org {} ... skipping.",
                     errata.getId(), channelId, orgId);
             return;
         }
 
-        Map<Long, List> userMap = createUserEmailMap(orgServers);
+        Map<Long, List<Row>> userMap = createUserEmailMap(orgServers);
 
         log.info("Found {} user(s) to notify about erratum {} in channel {} for org {}.", userMap.keySet().size(),
                 errata.getId(), channelId, orgId);
 
-        for (Long userId : userMap.keySet()) {
-            Map userInfo = getUserInfo(userId);
+        for (Map.Entry<Long, List<Row>> entry : userMap.entrySet()) {
+            Row userInfo = getUserInfo(entry.getKey());
             String email = (String) userInfo.get("email");
             String login = (String) userInfo.get("login");
-            List servers = userMap.get(userId);
-            log.info("Notification for user {}({}) about {} relevant server(s).", login, userId, servers.size());
+            List<Row> servers = entry.getValue();
+            log.info("Notification for user {}({}) about {} relevant server(s).",
+                    login, entry.getKey(), servers.size());
             String emailBody = formatEmail(login, email, errata, servers);
             String rhnHeader = "Autogenerated mail for " + login;
             String subject = Config.get().getString("web.product_name") + " Patch Alert: " +
@@ -148,13 +137,13 @@ public class ErrataMailer extends RhnJavaJob {
         }
     }
 
-    private Map createUserEmailMap(List orgServersIn) {
-        Map<Long, List> map = new HashMap<>();
-        for (Iterator i = orgServersIn.iterator(); i.hasNext();) {
-            Map row = (Map) i.next();
+    private Map<Long, List<Row>> createUserEmailMap(List<Row> orgServersIn) {
+        Map<Long, List<Row>> map = new HashMap<>();
+        for (Iterator<Row> i = orgServersIn.iterator(); i.hasNext();) {
+            Row row = i.next();
             Long userId = (Long) row.get("user_id");
             if (!map.containsKey(userId)) {
-                map.put(userId, new ArrayList<Map>());
+                map.put(userId, new ArrayList<>());
             }
             map.get(userId).add(row);
             i.remove();
@@ -162,15 +151,16 @@ public class ErrataMailer extends RhnJavaJob {
         return map;
     }
 
-    private Map getUserInfo(Long userId) {
+    private Row getUserInfo(Long userId) {
         SelectMode mode = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATAMAILER_GET_USERINFO);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", userId);
-        return (Map) mode.execute(params).get(0);
+        DataResult<Row> dr = mode.execute(params);
+        return dr.get(0);
     }
 
-    protected List getOrgRelevantServers(Long errataId, Long orgId, Long channelId) {
+    protected List<Row> getOrgRelevantServers(Long errataId, Long orgId, Long channelId) {
         SelectMode mode = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATAMAILER_GET_RELEVANT_SERVERS);
         Map<String, Object> params = new HashMap<>();
@@ -262,7 +252,7 @@ public class ErrataMailer extends RhnJavaJob {
         printWriter.flush();
         args[0] = writer.toString();
         //URL for the system list
-        args[1] = host + "/rhn/systems/Overview.do";
+        args[1] = host + "/rhn/manager/systems/list/all";
         buffy.append(ls.getMessage("email.errata.notification.body.affected", args));
         return buffy.toString();
     }

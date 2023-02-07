@@ -68,6 +68,9 @@ export default class PagedDataEndpoint {
       query.set("ps", String(pageControl.pageSize));
       if (pageControl.query) {
         query.set("q", pageControl.query);
+        if (pageControl.queryField != null) {
+          query.set("qc", pageControl.queryField);
+        }
       }
 
       const sort = pageControl.sort;

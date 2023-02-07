@@ -1,7 +1,33 @@
-- Add Rocky Linux 9 to spacewalk-common-channels
-- spacewalk-common-channels now syncs the channels automatically
-  on creation, if the new configuration property named
-  'unify_custom_channel_management' is enabled
+-------------------------------------------------------------------
+Mon Jan 23 08:24:57 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add Uyuni SLE-Micro Client Tools repositories
+  * fix Oracle Linux 9 repository definition
+
+-------------------------------------------------------------------
+Wed Dec 14 14:08:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+  * spacewalk-hostname-rename changes also report db host (bsc#1200801)
+
+-------------------------------------------------------------------
+Fri Nov 18 15:02:27 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Add EL9 Client Tools for SUSE Liberty Linux
+
+-------------------------------------------------------------------
+Wed Sep 28 10:46:25 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Make spacewalk-hostname-rename working with settings.yaml
+    cobbler config file (bsc#1203564)
+  * Add Rocky Linux 9 to spacewalk-common-channels
+  * spacewalk-common-channels now syncs the channels automatically
+    on creation, if the new configuration property named
+    'unify_custom_channel_management' is enabled
 
 -------------------------------------------------------------------
 Wed Jul 27 14:09:58 CEST 2022 - jgonzalez@suse.com

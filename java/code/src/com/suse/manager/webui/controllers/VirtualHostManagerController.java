@@ -40,7 +40,6 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -303,6 +302,7 @@ public class VirtualHostManagerController {
      * @param user the user
      * @return the json response
      */
+    @SuppressWarnings("unchecked")
     public static String validateKubeconfig(Request request, Response response,
                                             User user) {
         try {
@@ -310,7 +310,7 @@ public class VirtualHostManagerController {
 
             Optional<FileItem> kubeconfigFile = findFileItem(items, CONFIG_KUBECONFIG);
 
-            if (!kubeconfigFile.isPresent()) {
+            if (kubeconfigFile.isEmpty()) {
                 throw new IllegalArgumentException("No kubeconfig file found in request");
             }
 
@@ -318,12 +318,15 @@ public class VirtualHostManagerController {
             try (InputStream fi = kubeconfigFile.get().getInputStream()) {
                 map = new Yaml().loadAs(fi, Map.class);
                 List<Map<String, Object>> contexts = null;
-                if (map.get("contexts") != null && map.get("contexts") instanceof List) {
+                if (map.get("contexts") instanceof List) {
                     contexts = (List<Map<String, Object>>) map.get("contexts");
                     if (contexts.stream().map(m -> (String) m.get("name")).filter(StringUtils::isEmpty).count() > 1) {
                         throw new IllegalArgumentException(
                                 "Only one default (unnamed) context is allowed in a kubeconfig file.");
                     }
+                }
+                if (contexts == null) {
+                    throw new IllegalArgumentException("No context found in kubeconfig file");
                 }
 
                 String currentContext = null;
@@ -331,7 +334,7 @@ public class VirtualHostManagerController {
                     currentContext = (String)map.get("current-context");
                 }
 
-                Map<String, Object> json = new HashedMap();
+                Map<String, Object> json = new HashMap<>();
                 json.put("contexts", contexts.stream()
                         .map(ctx -> ctx.get("name"))
                         .collect(Collectors.toList()));

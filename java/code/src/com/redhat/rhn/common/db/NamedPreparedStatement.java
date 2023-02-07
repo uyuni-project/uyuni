@@ -44,7 +44,7 @@ public final class NamedPreparedStatement {
     private NamedPreparedStatement() {
     }
 
-    private static int findColon(int start, StringBuffer query) {
+    private static int findColon(int start, StringBuilder query) {
         boolean inQuotes = false;
         for (int i = start; i < query.length(); i++) {
             char c = query.charAt(i);
@@ -78,7 +78,7 @@ public final class NamedPreparedStatement {
      */
     public static String replaceBindParams(String rawSQL,
             Map<String, List<Integer>> parameterMap) {
-        StringBuffer sql = new StringBuffer(rawSQL);
+        StringBuilder sql = new StringBuilder(rawSQL);
 
         int idx = findColon(0, sql);
         int variableNumber = 1;
@@ -109,12 +109,12 @@ public final class NamedPreparedStatement {
      * @param outParams A map of parameter name to Integer object of
      *                  SQL Types representing the type of data to be returned.
      * @return true if CallableStatement executed without error, false otherwise.
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static boolean execute(CallableStatement cs,
             Map<String, List<Integer>> parameterMap,
             Map<String, ?> inParams, Map<String, Integer> outParams)
-            throws RuntimeException {
+            throws DatabaseException {
         try {
             setVars(cs, parameterMap, inParams);
             setOutputVars(cs, parameterMap, outParams);
@@ -134,7 +134,7 @@ public final class NamedPreparedStatement {
      * @see java.sql.PreparedStatement#execute()
      * @return true if PreparedStatement received a result set
      *         false if PreparedStatement received an update count
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static boolean execute(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap,
@@ -152,7 +152,7 @@ public final class NamedPreparedStatement {
      * logic is to find the first character that can't be used in a Java
      * identifier.  This may be wrong, but we'll fix that later.
      */
-    private static int findEndofVariable(StringBuffer sql, int idx) {
+    private static int findEndofVariable(StringBuilder sql, int idx) {
         int i = idx + 1;
         while (i < sql.length() && Character.isJavaIdentifierPart(sql.charAt(i))) {
             i++;
@@ -228,7 +228,7 @@ public final class NamedPreparedStatement {
      * @param batch The values to substitute for the named bind parameters
      * @see java.sql.PreparedStatement#executeBatch()
      * @return an array of update counts containing one element for each command in the batch
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static int[] executeBatch(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch) {

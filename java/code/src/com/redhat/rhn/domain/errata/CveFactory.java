@@ -19,7 +19,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,6 +39,7 @@ public class CveFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages
      * show up on the correct class
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -50,9 +50,10 @@ public class CveFactory extends HibernateFactory {
      * @return CVE object found
      */
     public static Cve lookupByName(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        return (Cve)singleton.lookupObjectByNamedQuery("Cve.lookupByName", params);
+        if (name == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("Cve.lookupByName", Map.of("name", name));
     }
 
     /**

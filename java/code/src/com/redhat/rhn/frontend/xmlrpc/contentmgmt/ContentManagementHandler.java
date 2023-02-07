@@ -283,7 +283,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
      * @apidoc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
-     * @apidoc.param #param_desc("string", "envlabel", "new Content Environment label")
+     * @apidoc.param #param_desc("string", "envLabel", "new Content Environment label")
      * @apidoc.param #param_desc("string", "name", "new Content Environment name")
      * @apidoc.param #param_desc("string", "description", "new Content Environment description")
      * @apidoc.returntype $ContentEnvironmentSerializer
@@ -606,7 +606,8 @@ public class ContentManagementHandler extends BaseHandler {
      *   #item("by type - field: advisory_type (e.g. 'Security Advisory'); matcher: equals")
      *   #item("by synopsis - field: synopsis; matcher: equals, contains or matches")
      *   #item("by keyword - field: keyword; matcher: contains")
-     *   #item("by date - field: issue_date; matcher: greater or greatereq")
+     *   #item("by date - field: issue_date; matcher: greater or greatereq; value needs to be in ISO format e.g
+     *   2022-12-10T12:00:00Z")
      *   #item("by affected package name - field: package_name; matcher: contains_pkg_name or matches_pkg_name")
      *   #item("by affected package with version - field: package_nevr; matcher: contains_pkg_lt_evr,
      *   contains_pkg_le_evr, contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
@@ -635,8 +636,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.returntype $ContentFilterSerializer
      */
     public ContentFilter createFilter(User loggedInUser, String name, String rule, String entityType,
-            Map<String, Object> criteria) {
+                                      Map<String, Object> criteria) {
         ensureOrgAdmin(loggedInUser);
+        ContentManager.lookupFilterByNameAndOrg(name, loggedInUser).ifPresent(cp -> {
+            throw new EntityExistsFaultException(cp);
+        });
 
         ContentFilter.Rule ruleObj = ContentFilter.Rule.lookupByLabel(rule);
         ContentFilter.EntityType entityTypeObj = ContentFilter.EntityType.lookupByLabel(entityType);
@@ -755,14 +759,13 @@ public class ContentManagementHandler extends BaseHandler {
         if (criteria.isEmpty()) {
             return empty();
         }
-        if (!criteria.containsKey("matcher") || !criteria.containsKey("field") ||
-                !criteria.containsKey("value")) {
+        if (!criteria.containsKey("matcher") || !criteria.containsKey("field")) {
             throw new InvalidArgsException("Incomplete filter criteria");
         }
         return of(new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel((String) criteria.get("matcher")),
                 (String) criteria.get("field"),
-                (String) criteria.get("value")));
+                StringUtils.trimToNull((String) criteria.get("value"))));
     }
 
     /**

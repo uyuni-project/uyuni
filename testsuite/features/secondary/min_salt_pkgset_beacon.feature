@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 SUSE LLC
+# Copyright (c) 2016-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -6,7 +6,7 @@ Feature: System package list is updated if packages are manually installed or re
 
   Scenario: Pre-requisite: install milkyway-dummy-1.0 package
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
 
   Scenario: Pre-requisite: refresh package list and check installed packages on SLE minion client
@@ -52,4 +52,4 @@ Feature: System package list is updated if packages are manually installed or re
   Scenario: Cleanup: remove milkyway-dummy packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"

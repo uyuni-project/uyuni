@@ -57,6 +57,7 @@ import java.util.List;
  * ActivationKeyTest
  */
 public class ActivationKeyTest extends BaseTestCaseWithUser {
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -123,7 +124,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
      }
     @Test
-    public void testBadKeys()  throws Exception {
+    public void testBadKeys() {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         try {
             manager.createNewActivationKey(user, "A,B", "Cool", null, null, false);
@@ -135,7 +136,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testKeyTrimming()  throws Exception  {
+    public void testKeyTrimming() {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         String keyName = " Test Space  ";
         ActivationKey k = manager.createNewActivationKey
@@ -167,16 +168,16 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testNullServer() throws Exception {
+    public void testNullServer() {
         ActivationKey key = ActivationKeyFactory.createNewKey(user,
                 TestUtils.randomString());
         assertNotNull(key.getEntitlements());
-        assertTrue(key.getEntitlements().size() == 1);
+        assertEquals(1, key.getEntitlements().size());
     }
 
     // See BZ: 191007
     @Test
-    public void testCreateWithCustomGroups() throws Exception {
+    public void testCreateWithCustomGroups() {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroup testGroup = ServerGroupTestUtils.createManaged(user);
@@ -201,7 +202,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
                 createTestChannel(user);
             k.addChannel(c);
         }
-        assertTrue(k.getChannels().size() == 5);
+        assertEquals(5, k.getChannels().size());
     }
 
     @Test
@@ -212,7 +213,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         createTestActivationKey(user, s);
         createTestActivationKey(user, s);
         List keys = ActivationKeyFactory.lookupByServer(s);
-        assertTrue(keys.size() == 4);
+        assertEquals(4, keys.size());
     }
 
     @Test
@@ -225,7 +226,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
     }
 
-    public static ActivationKey createTestActivationKey(User user) throws Exception {
+    public static ActivationKey createTestActivationKey(User user) {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
@@ -244,7 +245,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDuplicateKeyCreation() throws Exception {
+    public void testDuplicateKeyCreation() {
         String keyName = "Hey!";
         ActivationKeyManager.getInstance().createNewActivationKey
                 (user, keyName, null, null, null, false);

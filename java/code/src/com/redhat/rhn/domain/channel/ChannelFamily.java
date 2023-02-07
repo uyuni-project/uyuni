@@ -117,6 +117,7 @@ public class ChannelFamily extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ChannelFamily)) {
             return false;
@@ -133,6 +134,7 @@ public class ChannelFamily extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(label)
@@ -144,6 +146,7 @@ public class ChannelFamily extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name)
             .append("label", label).toString();

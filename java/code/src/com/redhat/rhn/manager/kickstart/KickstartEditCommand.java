@@ -229,7 +229,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
                 this.ksdata.removeCommand("repo", false);
                 this.ksdata.removeCommand("key", true);
                 logger.debug("updateKickstartableTree(Long, String, String, Long)" +
-                        " - end - return value=" + null);
+                        " - end - return value=null");
             }
             return null;
         }
@@ -363,20 +363,18 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      * @param reposIn the names of the repos to be associated with this KS data.
      */
     public void updateRepos(String[] reposIn) {
-        if (ksdata.isRhel5OrGreater()) {
-            List<RepoInfo> repoList = RepoInfo.getStandardRepos(
-                    ksdata.getKickstartDefaults().getKstree());
-            Map<String, RepoInfo> repoSet = new HashMap<>();
-            for (RepoInfo rInfo : repoList) {
-                repoSet.put(rInfo.getName(), rInfo);
-            }
-            Set<RepoInfo> selected = new HashSet<>();
-            for (String repoIn : reposIn) {
-                selected.add(repoSet.get(repoIn));
-            }
-            ksdata.setRepoInfos(selected);
-            KickstartWizardHelper ksHelper = new KickstartWizardHelper(user);
-            ksHelper.processSkipKey(ksdata);
+        List<RepoInfo> repoList = RepoInfo.getStandardRepos(
+                ksdata.getKickstartDefaults().getKstree());
+        Map<String, RepoInfo> repoSet = new HashMap<>();
+        for (RepoInfo rInfo : repoList) {
+            repoSet.put(rInfo.getName(), rInfo);
         }
+        Set<RepoInfo> selected = new HashSet<>();
+        for (String repoIn : reposIn) {
+            selected.add(repoSet.get(repoIn));
+        }
+        ksdata.setRepoInfos(selected);
+        KickstartWizardHelper ksHelper = new KickstartWizardHelper(user);
+        ksHelper.processSkipKey(ksdata);
     }
 }

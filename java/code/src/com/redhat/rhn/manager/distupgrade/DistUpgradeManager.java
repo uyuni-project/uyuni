@@ -94,7 +94,6 @@ public class DistUpgradeManager extends BaseManager {
         HashMap<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sid", server.getId());
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, ? extends Number>> dr = m.execute(params);
         return dr.get(0).get("count").intValue() > 0;
     }
@@ -105,7 +104,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration target product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -119,7 +117,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration source product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findSourceProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -135,7 +132,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param baseChannelID the base channel id for the product set
      * @return list of channel DTOs
      */
-    @SuppressWarnings("unchecked")
     public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<>();
@@ -153,7 +149,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param arch channel arch
      * @return base channel
      */
-    @SuppressWarnings("unchecked")
     public static EssentialChannelDto getProductBaseChannelDto(long productID, ChannelArch arch) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("pid", productID);
@@ -161,7 +156,7 @@ public class DistUpgradeManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Channel_queries", "suse_base_channels_for_suse_product");
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
-        if (channels.size() > 0) {
+        if (!channels.isEmpty()) {
             ret = channels.get(0);
         }
         if (channels.size() > 1) {
@@ -703,7 +698,7 @@ public class DistUpgradeManager extends BaseManager {
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.get().getAddonProducts().isEmpty()) {
                 migrationTargets.add(t);
-                logger.debug("Found valid migration target: {}", t.toString());
+                logger.debug("Found valid migration target: {}", t);
                 continue;
             }
             List<SUSEProduct> missingAddonSuccessors = installedProducts.get().getAddonProducts()
@@ -712,13 +707,15 @@ public class DistUpgradeManager extends BaseManager {
                 .collect(Collectors.toList());
 
             if (missingAddonSuccessors.isEmpty()) {
-                logger.debug("Found valid migration target: {}", t.toString());
+                logger.debug("Found valid migration target: {}", t);
                 migrationTargets.add(t);
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
                         .collect(Collectors.toList());
-                logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                if (logger.isWarnEnabled()) {
+                    logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                }
                 missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
             }
         }

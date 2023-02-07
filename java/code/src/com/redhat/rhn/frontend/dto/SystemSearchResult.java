@@ -81,7 +81,6 @@ public class SystemSearchResult extends SystemOverview {
             }
         }
         catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
             // ignore
         }
         catch (NoSuchMethodException e) {

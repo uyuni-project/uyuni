@@ -24,6 +24,7 @@ import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -39,6 +40,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -55,6 +57,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -121,8 +124,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAccessWithInvalidAcl() {
-        Map context = new HashMap();
-        boolean rc = acl.evalAcl(context, "is(foo)");
+        boolean rc = acl.evalAcl(new HashMap<>(), "is(foo)");
         assertFalse(rc);
     }
 
@@ -137,15 +139,13 @@ public class AccessTest extends BaseTestCaseWithUser {
         c.setBoolean("test.on", "on");
         c.setBoolean("test.ON", "ON");
 
-        Map context = new HashMap();
-
-        assertTrue(acl.evalAcl(context, "is(test.true)"), "test.true is false");
-        assertTrue(acl.evalAcl(context, "is(test.TrUe)"), "test.TrUe is false");
-        assertTrue(acl.evalAcl(context, "is(test.one)"), "test.one is false");
-        assertTrue(acl.evalAcl(context, "is(test.yes)"), "test.yes is false");
-        assertTrue(acl.evalAcl(context, "is(test.YES)"), "test.YES is false");
-        assertTrue(acl.evalAcl(context, "is(test.on)"), "test.on is false");
-        assertTrue(acl.evalAcl(context, "is(test.ON)"), "test.ON is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.true)"), "test.true is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.TrUe)"), "test.TrUe is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.one)"), "test.one is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.yes)"), "test.yes is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.YES)"), "test.YES is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.on)"), "test.on is false");
+        assertTrue(acl.evalAcl(new HashMap<>(), "is(test.ON)"), "test.ON is false");
     }
 
     @Test
@@ -159,20 +159,18 @@ public class AccessTest extends BaseTestCaseWithUser {
         c.setBoolean("test.off", "off");
         c.setBoolean("test.OFF", "OFF");
 
-        Map context = new HashMap();
-
-        assertFalse(acl.evalAcl(context, "is(test.false)"), "test.false is true");
-        assertFalse(acl.evalAcl(context, "is(test.FaLse)"), "test.FaLse is true");
-        assertFalse(acl.evalAcl(context, "is(test.zero)"), "test.zero is true");
-        assertFalse(acl.evalAcl(context, "is(test.no)"), "test.no is true");
-        assertFalse(acl.evalAcl(context, "is(test.NO)"), "test.NO is true");
-        assertFalse(acl.evalAcl(context, "is(test.off)"), "test.off is true");
-        assertFalse(acl.evalAcl(context, "is(test.OFF)"), "test.OFF is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.false)"), "test.false is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.FaLse)"), "test.FaLse is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.zero)"), "test.zero is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.no)"), "test.no is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.NO)"), "test.NO is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.off)"), "test.off is true");
+        assertFalse(acl.evalAcl(new HashMap<>(), "is(test.OFF)"), "test.OFF is true");
     }
 
     @Test
     public void testUserRoleAcl() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         User user = new MockUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         context.put("user", user);
@@ -182,7 +180,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUserCanManageChannelAcl() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         User user =  UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
@@ -193,7 +191,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUserRoleAclFalse() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         User user = new MockUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         context.put("user", user);
@@ -203,13 +201,13 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testNeedsFirstUser() {
-        boolean rc = acl.evalAcl(new HashMap(), "need_first_user()");
+        boolean rc = acl.evalAcl(new HashMap<>(), "need_first_user()");
         assertFalse(rc);
     }
 
     @Test
-    public void testSystemFeature() throws Exception {
-        Map context = new HashMap();
+    public void testSystemFeature() {
+        Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         context.put("user", user);
@@ -222,8 +220,8 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAclSystemHasManagementEntitlement() throws Exception {
-        Map context = new HashMap();
+    public void testAclSystemHasManagementEntitlement() {
+        Map<String, Object> context = new HashMap<>();
 
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -247,10 +245,9 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     /**
      * Test ACL: system_has_salt_entitlement()
-     * @throws Exception in case of an error
      */
     @Test
-    public void testAclSystemHasSaltEntitlement() throws Exception {
+    public void testAclSystemHasSaltEntitlement() {
         Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -299,7 +296,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         // Check with a minion system with bootstrap entitlement
         SystemManager.addMinionInfoToServer(s.getId(), "testMid");
-        s = TestUtils.saveAndReload(s);
+        TestUtils.saveAndReload(s);
 
         assertTrue(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
 
@@ -322,7 +319,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGlobalConfigIsGone() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         try {
             acl.evalAcl(context, "global_config(foo)");
             fail("global_config is back, what moron undid my change!");
@@ -335,7 +332,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testCanAccessChannel() {
         try {
-            Map context = new HashMap();
+            Map<String, Object> context = new HashMap<>();
             User user =  UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName());
             context.put("user", user);
@@ -351,7 +348,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsModularChannel() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
         context.put("user", user);
 
@@ -369,10 +366,8 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         assertFalse(acl.evalAcl(context, "is_modular_channel()"));
 
-        Modules mod = new Modules();
-        mod.setRelativeFilename("filename");
-        chan.setModules(mod);
-        mod.setChannel(chan);
+        Modules mod = new Modules("filename", new Date());
+        chan.addModules(mod);
 
         assertTrue(acl.evalAcl(context, "is_modular_channel()"));
 
@@ -380,7 +375,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFormvarExists() {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         assertFalse(acl.evalAcl(context, "formvar_exists(cid)"));
         context.put("cid", "161");
         assertTrue(acl.evalAcl(context, "formvar_exists(cid)"));
@@ -389,10 +384,10 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     private void evalAclAssertFalse(Acl aclIn, String aclStr) {
-        Map context = new HashMap();
+        Map<String, Object> context = new HashMap<>();
         // acl methods must be in the following form
         // aclXxxYyy(Object context, String[] params) and invoked
-        // xxx_yyy(param);
+        // xxx_yyy(param)
         boolean rc = aclIn.evalAcl(context, aclStr);
         assertFalse(rc);
     }
@@ -403,20 +398,93 @@ public class AccessTest extends BaseTestCaseWithUser {
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 
         Access a = new Access();
-        Map ctx = new HashMap();
+        Map<String, Object> ctx = new HashMap<>();
         ctx.put("sid", guest.getId());
         ctx.put("user", user);
         assertTrue(a.aclSystemIsVirtual(ctx, null));
+    }
+
+    @Test
+    public void testCanEvalIfServerHasPtfRepositories() throws Exception {
+        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        serverNoSupport.setOs(ServerConstants.ALMA);
+
+        Server serverWithSupport = ServerFactoryTest.createTestServer(user, true);
+        serverWithSupport.setOs(ServerConstants.SLES);
+
+        Server serverWithSupportAndChannel = ServerFactoryTest.createTestServer(user, true);
+        serverWithSupportAndChannel.setOs(ServerConstants.SLES);
+
+        Channel normalChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/REPO/RPMS"));
+        Channel ptfChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/PTF/RPMS"));
+
+        SystemManager.subscribeServerToChannel(user, serverNoSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(user, serverWithSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(user, serverWithSupportAndChannel, ptfChannel);
+
+        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
+        serverWithSupport = TestUtils.saveAndReload(serverWithSupport);
+        serverWithSupportAndChannel = TestUtils.saveAndReload(serverWithSupportAndChannel);
+
+        Access access = new Access();
+        Map<String, Object> context = new HashMap<>();
+        context.put("user", user);
+
+        context.put("sid", serverNoSupport.getId());
+        assertFalse(access.aclHasPtfRepositories(context, null));
+
+        context.put("sid", serverWithSupport.getId());
+        assertFalse(access.aclHasPtfRepositories(context, null));
+
+        context.put("sid", serverWithSupportAndChannel.getId());
+        assertTrue(access.aclHasPtfRepositories(context, null));
+    }
+
+    @Test
+    public void testCanEvalIfServerSupportsPtfRemoval() {
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+
+        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        serverNoSupport.setOs(ServerConstants.ALMA);
+
+        Server serverOnlyPtf = ServerFactoryTest.createTestServer(user, true);
+        serverOnlyPtf.setOs(ServerConstants.SLES);
+        serverOnlyPtf.setRelease("15");
+
+        Server serverPtfAndRemoval = ServerFactoryTest.createTestServer(user, true);
+        serverPtfAndRemoval.setOs(ServerConstants.SLES);
+        serverPtfAndRemoval.setRelease("15");
+
+        PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), serverOnlyPtf);
+        PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), serverPtfAndRemoval);
+
+        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
+        serverOnlyPtf = TestUtils.saveAndReload(serverOnlyPtf);
+        serverPtfAndRemoval = TestUtils.saveAndReload(serverPtfAndRemoval);
+
+        Access access = new Access();
+        Map<String, Object> context = new HashMap<>();
+        context.put("user", user);
+
+        context.put("sid", serverNoSupport.getId());
+        assertFalse(access.aclSystemSupportsPtfRemoval(context, null));
+
+        context.put("sid", serverOnlyPtf.getId());
+        assertFalse(access.aclSystemSupportsPtfRemoval(context, null));
+
+        context.put("sid", serverPtfAndRemoval.getId());
+        assertTrue(access.aclSystemSupportsPtfRemoval(context, null));
     }
 
     /**
      * Override the methods in User that talk to the database
      */
     class MockUser extends UserImpl {
-        private final Set mockRoles;
+        private final Set<Role> mockRoles;
 
         MockUser() {
-            mockRoles = new HashSet();
+            mockRoles = new HashSet<>();
         }
 
         /**

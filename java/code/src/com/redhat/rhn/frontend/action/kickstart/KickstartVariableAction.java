@@ -32,6 +32,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.cobbler.CobblerObject;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,10 +48,11 @@ public abstract class KickstartVariableAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
 
@@ -97,7 +102,7 @@ public abstract class KickstartVariableAction extends RhnAction {
     protected void setupFormValues(RequestContext ctx,
             DynaActionForm form, String cId) {
         CobblerObject cobj = getCobblerObject(cId, ctx.getCurrentUser());
-        form.set(VARIABLES, StringUtil.convertMapToString(cobj.getKsMeta(), "\n"));
+        form.set(VARIABLES, StringUtil.convertMapToString(cobj.getKsMeta().get(), "\n"));
     }
 
 
@@ -113,8 +118,11 @@ public abstract class KickstartVariableAction extends RhnAction {
         try {
 
             CobblerObject cobj = getCobblerObject(cId, ctx.getCurrentUser());
-            cobj.setKsMeta(StringUtil.convertOptionsToMap((String)form.get(VARIABLES),
-                    "kickstart.jsp.error.invalidvariable", "\n"));
+            Map<String, Object> convertedMap = new HashMap<>(StringUtil.convertOptionsToMap(
+                    (String) form.get(VARIABLES),
+                    "kickstart.jsp.error.invalidvariable",
+                    "\n"));
+            cobj.setKsMeta(Optional.of(convertedMap));
             cobj.save();
 
             return null;

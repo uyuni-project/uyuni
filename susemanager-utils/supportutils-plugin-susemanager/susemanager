@@ -72,6 +72,9 @@ plugin_command "salt-master --versions-report"
 
 plugin_command "echo \"select username scc_org from susecredentials sc join susecredentialstype sct on sct.id = sc.type_id where sct.label = 'scc';\" | spacewalk-sql --select-mode-direct -"
 
+plugin_command "echo \"Number of elements in table susesaltevent. If the next number is too high, please verify the large scale tuning guide property 'java.message_queue_thread_pool_size'.\""
+plugin_command "echo \"select count(*) from susesaltevent;\" | spacewalk-sql --select-mode-direct -"
+
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 plugin_command "cp /var/log/zypper.log $LOG"
 plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"

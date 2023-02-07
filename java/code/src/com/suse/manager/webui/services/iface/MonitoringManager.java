@@ -17,8 +17,6 @@ package com.suse.manager.webui.services.iface;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.MinionServer;
 
-import java.io.IOException;
-
 /**
  * Manage enablement and disablement of monitoring exporters.
  */
@@ -28,16 +26,14 @@ public interface MonitoringManager {
      * Configure system for monitoring when the entitlement is added.
      *
      * @param minion the MinionServer to be configured for monitoring
-     * @throws IOException if an IO error occurs while saving the data
      * @throws ValidatorException if a formula is not present (unchecked)
      */
-    void enableMonitoring(MinionServer minion) throws IOException, ValidatorException;
+    void enableMonitoring(MinionServer minion) throws ValidatorException;
 
     /**
      * Configure the monitoring formula for cleanup (disable exporters) if needed.
      *
      * @param minion the MinionServer to be configured for monitoring cleanup
-     * @throws IOException if an IO error occurs while saving the data
      */
-    void disableMonitoring(MinionServer minion) throws IOException;
+    void disableMonitoring(MinionServer minion);
 }

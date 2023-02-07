@@ -24,6 +24,8 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,6 +35,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
@@ -191,7 +194,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         // DENY filters for all modular packages
         // Deny-all rule for all modular packages (are overridden by ALLOW filters for the selected modules)
-        api.getAllPackages(singletonList(modularChannel))
+        api.getAllPackages(modularChannel.getLatestModules())
                 .forEach(p -> assertTrue(filters.stream().anyMatch(f -> isDenyNevraEquals(f, p))));
     }
 
@@ -210,9 +213,25 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         assertEquals(10, result.size());
         // There should be one and only one "perl" api filter
         assertEquals(1, result.stream().filter(f -> isDenyNameMatches(f, "perl")).count());
-        // There should be allow filters for both versions
+        // There should be "allow" filters for both versions
         assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.0-xxx.x86_64")));
         assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.1-yyy.x86_64")));
+    }
+
+    /**
+     * Test the resolver with modularity disabled
+     */
+    @Test
+    public void testResolveModuleFiltersDisabled() {
+        FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2, user);
+
+        DependencyResolutionException exception = assertThrows(DependencyResolutionException.class,
+                () -> resolver.resolveFilters(List.of(moduleFilter, noModules)));
+
+        assertTrue(exception.getCause() instanceof ModularityDisabledException);
     }
 
     /**
@@ -276,6 +295,22 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         catch (DependencyResolutionException e) {
             assertTrue(e.getCause() instanceof ConflictingStreamsException);
         }
+    }
+
+    /**
+     * Test if the modularity is disabled via a module:none filter
+     */
+    @Test
+    public void testIsModulesDisabled() {
+        FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria2, user);
+
+        assertFalse(DependencyResolver.isModulesDisabled(emptyList()));
+        assertFalse(DependencyResolver.isModulesDisabled(List.of(moduleFilter)));
+        assertTrue(DependencyResolver.isModulesDisabled(List.of(noModules)));
+        assertTrue(DependencyResolver.isModulesDisabled(List.of(moduleFilter, noModules)));
     }
 
     private boolean isAllowNevraEquals(ContentFilter f, String value) {

@@ -70,8 +70,9 @@ public class TreeFilter implements ResultsFilter {
      *  /      \
      * C3      C5
      */
+    @Override
     public void filterData(DataResult dr, String filterData,
-            String filterColumn) {
+                           String filterColumn) {
 
         /*
          * The overall logic of this function is to go through
@@ -97,8 +98,8 @@ public class TreeFilter implements ResultsFilter {
         if (!dr.isEmpty() &&
                 !StringUtils.isBlank(filterData) &&
                 !StringUtils.isBlank(filterColumn)) {
-            positions = new HashSet();
-            filtered = new LinkedList();
+            positions = new HashSet<>();
+            filtered = new LinkedList<>();
             Iterator it = dr.iterator();
             NodeInfo current = NodeInfo.instance((DepthAware)it.next(),
                     0);
@@ -148,7 +149,7 @@ public class TreeFilter implements ResultsFilter {
      * @param result the main data result passed in the input.
      */
     private void addMatchedPath(NodeInfo current, DataResult result) {
-        LinkedList path = new LinkedList();
+        LinkedList path = new LinkedList<>();
         if (!positions.contains(current.position)) {
             positions.add(current.position);
             path.addFirst(result.get(current.position));
@@ -190,7 +191,7 @@ public class TreeFilter implements ResultsFilter {
      * @param result list of nodes to solve
      */
     protected void handleOrphans(DataResult result) {
-        if (result.size() > 0) {
+        if (!result.isEmpty()) {
             Class clazz = result.get(0).getClass();
             if (result.get(0) instanceof Comparable) {
                 Collections.sort(result);

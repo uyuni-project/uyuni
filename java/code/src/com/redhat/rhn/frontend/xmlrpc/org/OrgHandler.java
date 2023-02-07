@@ -71,7 +71,6 @@ public class OrgHandler extends BaseHandler {
 
     private static final String VALIDATION_XSD =
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
-    private static final String USED_KEY = "used";
     private static Logger log = LogManager.getLogger(OrgHandler.class);
 
     private final MigrationManager migrationManager;
@@ -177,7 +176,7 @@ public class OrgHandler extends BaseHandler {
 
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         if (usePamAuth) {
-            if (pamAuthService != null && pamAuthService.trim().length() > 0) {
+            if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
                 cmd.setUsePam(usePamAuth);
             }
             else {

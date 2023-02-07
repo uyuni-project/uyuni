@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,11 +35,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Channel
@@ -77,7 +80,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private ChannelProduct product;
     private ProductName productName;
     private Comps comps;
-    private Modules modules;
+    private Set<Modules> modules;
     private MediaProducts mediaProducts;
     private String summary;
     private Set<Errata> erratas = new HashSet<>();
@@ -220,8 +223,29 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @param modulesIn The Modules to set.
      */
-    public void setModules(Modules modulesIn) {
+    public void setModules(Set<Modules> modulesIn) {
         this.modules = modulesIn;
+    }
+
+    /**
+     * Add a module metadata file to the channel
+     * @param modulesIn the module metadata entity to add
+     */
+    public void addModules(Modules modulesIn) {
+        if (this.modules == null) {
+            this.modules = new HashSet<>();
+        }
+        modulesIn.setChannel(this);
+        this.modules.add(modulesIn);
+    }
+
+    /**
+     * Remove an existing module metadata file from the channel
+     * @param modulesIn the module metadata entity to remove
+     */
+    public void removeModules(Modules modulesIn) {
+        this.modules.remove(modulesIn);
+        modulesIn.setChannel(null);
     }
 
     /**
@@ -234,14 +258,27 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Gets the synced module metadata files belonging to the channel
+     * <p>
+     * See {@link Channel#getLatestModules()} to get the latest metadata file currently in use.
+     *
      * @return Returns the Modules.
      */
-    public Modules getModules() {
+    public Set<Modules> getModules() {
         return modules;
     }
 
+    /**
+     * Gets the latest module metadata file in use
+     *
+     * @return the module metadata (modules.yaml) file
+     */
+    public Modules getLatestModules() {
+        return modules.stream().max(Comparator.comparing(Modules::getLastModified)).orElse(null);
+    }
+
     public boolean isModular() {
-        return modules != null;
+        return CollectionUtils.isNotEmpty(modules);
     }
 
     /**
@@ -464,10 +501,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * @deprecated Do not use this method
+     * Do not use this function to get the count of packages as this is not efficient.
+     *
      * @return Returns the set of packages for this channel.
      */
-    @Deprecated
     public Set<Package> getPackages() {
         return packages;
     }
@@ -596,7 +633,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param channelFamilyIn The channelFamily to add
      */
     public void addChannelFamily(ChannelFamily channelFamilyIn) {
-        if (this.getChannelFamilies().size() > 0) {
+        if (!this.getChannelFamilies().isEmpty()) {
             throw new TooManyChannelFamiliesException(this.getId(),
                     "A channel can only have one channel family");
         }
@@ -918,6 +955,15 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @return the clonedChannels
      */
+
+    /**
+     * Returns all cloned channels of this channel which includes all clones of clones.
+     * @return all cloned channels
+     */
+    public Stream<ClonedChannel> allClonedChannels() {
+        return getClonedChannels().stream().flatMap(c -> Stream.concat(Stream.of(c), c.allClonedChannels()));
+    }
+
     public Set<ClonedChannel> getClonedChannels() {
         return clonedChannels;
     }
@@ -948,6 +994,16 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Channel getOriginal() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Creates a Stream starting with this channel and waking up the getOriginal chain
+     * until getting to the original non cloned channel.
+     *
+     * @return stream of channels
+     */
+    public Stream<Channel> originChain() {
+        return Stream.iterate(this, c -> c != null, c -> c.isCloned() ? c.getOriginal() : null);
     }
 
     /**

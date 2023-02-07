@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon Jan 23 08:29:01 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * update susemanager plugin to export the number of pending salt events
+
+-------------------------------------------------------------------
+Fri Nov 18 15:09:16 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Added dependency for XML Simple
+
+-------------------------------------------------------------------
+Wed Sep 28 11:13:44 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Bump version to 4.4.0
+
+-------------------------------------------------------------------
 Fri Mar 11 15:32:19 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.4-1

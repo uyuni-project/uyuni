@@ -114,7 +114,9 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
-        log.debug("readStringFromFile: {}", path);
+        if (log.isDebugEnabled()) {
+            log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
+        }
 
         File f = new File(path);
         BufferedReader input;

@@ -37,6 +37,7 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -46,14 +47,14 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
     }
 
     @Test
-    public void testSetupExecute() throws Exception {
+    public void testSetupExecute() {
         setRequestPathInfo("/kickstart/KickstartCryptoKeysList");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
     @Test
-    public void testSubmitExecute() throws Exception {
+    public void testSubmitExecute() {
         addSelectedItem(key.getId());
         addDispatchCall(KickstartCryptoKeysSubmitAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/KickstartCryptoKeysListSubmit");

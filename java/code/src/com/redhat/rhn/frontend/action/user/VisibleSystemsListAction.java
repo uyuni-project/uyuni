@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.dto.BaseDto;
+import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -52,6 +53,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
+    @Override
     public ActionForward selectall(ActionMapping mapping,
                                    ActionForm formIn,
                                    HttpServletRequest request,
@@ -85,9 +87,10 @@ public class VisibleSystemsListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<VisibleSystems> getDataResult(User user,
+                                                       ActionForm formIn,
+                                                       HttpServletRequest request) {
         //user is logged in user, but we care about target user
         Long uid = new RequestContext(request).getRequiredParam("uid");
         User targetUser = UserManager.lookupUser(user, uid);
@@ -97,6 +100,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         // no op
     }
@@ -104,6 +108,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -113,6 +118,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.SYSTEMS;
     }

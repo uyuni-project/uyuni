@@ -31,11 +31,12 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
     private TestRestartCommand command;
 
     @Test
-    public void testAction() throws Exception {
+    public void testAction() {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         command = new TestRestartCommand(user);
         RestartSatelliteEvent event = new RestartSatelliteEvent(user);
         RestartSatelliteAction action = new RestartSatelliteAction() {
+            @Override
             protected RestartCommand getCommand(User currentUser) {
                 return command;
             }
@@ -54,6 +55,7 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
         /**
          * {@inheritDoc}
          */
+        @Override
         public ValidatorError[] storeConfiguration() {
             stored = true;
             return null;

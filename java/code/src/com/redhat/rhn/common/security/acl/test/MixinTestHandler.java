@@ -23,12 +23,6 @@ import com.redhat.rhn.common.security.acl.AclHandler;
 public class MixinTestHandler implements AclHandler {
 
     /**
-     * Constructor for Access object
-     */
-    public MixinTestHandler() {
-    }
-
-    /**
      * Returns true if the User whose uid matches the given uid, is
      * in the given Role. Requires a uid String in the Context.
      * @param ctx Context Map to pass in

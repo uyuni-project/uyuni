@@ -94,6 +94,9 @@ def processCommandline(argv):
         Option('--like-<column-id>', action='store', metavar='VALUE',
             dest='_like_trap',
             help='limit the output to records where column-id has value like VALUE (string only)'),
+        Option('-p', '--param', action='append', metavar='PARAM=VALUE',
+            dest='params',
+            help='Parameter value to pass to the report, overriding the default.'),
         Option('--timezone', action='store', type='str',
             dest='timezone',
             help='set timezone for all dates reported to custom one instead of UTC'),
@@ -183,8 +186,17 @@ if __name__ == '__main__':
         if len(sys.argv) > 1:
             report_name = sys.argv[1]
 
+            # Convert the parameters into a dict
+            params = {}
+            if options.params is not None:
+                for param_value in options.params:
+                    matcher = re.match("^([^=]+)=([^=]+)$", param_value)
+                    if not matcher:
+                        systemExit(-5, 'Invalid parameter value: ' + param_value)
+                    params[matcher.group(1)] = matcher.group(2)
+
             try:
-                report = reports.report(report_name, dataDir)
+                report = reports.report(report_name, dataDir, params)
             except(reports.spacewalk_unknown_report):
                 if not reportdb_configured:
                     # if reportdb is not configured, we have already looked for the legacy report and it's missing.
@@ -194,8 +206,9 @@ if __name__ == '__main__':
                 # Check if the other type of report is available
                 options.use_reportdb = not options.use_reportdb
                 dataDir = getDataDir(options.use_reportdb)
+
                 try:
-                    report = reports.report(report_name, dataDir)
+                    report = reports.report(report_name, dataDir, params)
                     sys.stderr.write("Warning: %s does not exists as a %s report. Using the %s one\n" % (report_name, getDatabaseType(not options.use_reportdb), getDatabaseType(options.use_reportdb)))
                 except(reports.spacewalk_unknown_report):
                     systemExit(-4, 'Unknown report [%s].' % report_name)

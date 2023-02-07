@@ -81,7 +81,7 @@ public class TextFileData extends ConfigFileData {
     @Override
     public InputStream getContentStream() {
         if (getContents() != null) {
-            // Note we didn;t do getContents().getBytes("UTF-8")
+            // Note we didn;t do getContents().getBytes(StandardCharsets.UTF_8)
             // becasue linux config files are not utf8..
             // So default platform encoding should be ok...
             return new ByteArrayInputStream(getContents().getBytes());

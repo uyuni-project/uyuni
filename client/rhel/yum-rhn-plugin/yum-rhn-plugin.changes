@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Dec 14 14:15:25 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Fri Nov 18 15:14:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Wed Sep 28 11:15:08 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Bump version to 4.4.0
+
+-------------------------------------------------------------------
 Wed Jul 27 14:17:40 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.5-1

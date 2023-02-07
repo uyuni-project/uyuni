@@ -107,6 +107,7 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof UserGroupMembers)) {
             return false;
@@ -121,6 +122,7 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
             .append(this.getUser())

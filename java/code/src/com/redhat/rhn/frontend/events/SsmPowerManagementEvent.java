@@ -69,6 +69,7 @@ public class SsmPowerManagementEvent implements EventMessage {
      * Gets the user id.
      * @return the user id
      */
+    @Override
     public Long getUserId() {
         return userId;
     }
@@ -76,6 +77,7 @@ public class SsmPowerManagementEvent implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toText() {
         return toString();
     }

@@ -316,9 +316,9 @@ public class MatcherJsonIO {
         Set<Long> result = new LinkedHashSet<>();
 
         if (!Arrays.asList(AMD64_ARCH_STR, S390_ARCH_STR, PPC64LE_ARCH_STR).contains(arch)) {
-            logger.warn(String.format("Couldn't determine products for SUMA server itself" +
-                    " for architecture %s. Master SUSE Manager Server system products" +
-                    " won't be reported to the subscription matcher.", arch));
+            logger.warn("Couldn't determine products for SUMA server itself" +
+                    " for architecture {}. Master SUSE Manager Server system products" +
+                    " won't be reported to the subscription matcher.", arch);
             return result;
         }
 

@@ -29,7 +29,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"
 
@@ -52,7 +52,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
+    And I check radio button "Fake Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -68,14 +68,14 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "*centos*"
+    And I enter target "rhlike_minion"
     And I click on preview
     And I click on run
     Then I should see "rhlike_minion" hostname
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
-    Then I should see a "rhel fedora" text
-    And I should see a "REDHAT_SUPPORT_PRODUCT" text
+    Then I should see a "rhel centos fedora" text
+    And I should see a "ROCKY_SUPPORT_PRODUCT" text
 
   Scenario: Check events history for failures on SSH-managed Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
@@ -99,7 +99,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"
 
@@ -108,7 +108,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
+    And I check radio button "Fake Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

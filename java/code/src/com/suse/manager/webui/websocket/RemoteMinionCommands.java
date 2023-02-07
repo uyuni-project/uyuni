@@ -267,8 +267,10 @@ public class RemoteMinionCommands {
                     res = saltApi
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
-                    LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(),
-                            msg.getCommand(), String.join(", ", previewedMinions));
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(),
+                                msg.getCommand(), String.join(", ", previewedMinions));
+                    }
 
                 }
                 catch (NullPointerException e) {

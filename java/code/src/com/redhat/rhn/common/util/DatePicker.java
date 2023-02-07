@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 /**
  * A bean to support date picking in the UI. To add a date picker to a form,
@@ -113,7 +114,7 @@ public class DatePicker {
     public static final int YEAR_RANGE_NEGATIVE = 1;
 
     private static final int YEAR_RANGE_SIZE = 5;
-    private static final Map FIELD_CALENDAR_MAP = new HashMap();
+    private static final Map<Boolean, Map<String, Integer>> FIELD_CALENDAR_MAP = new HashMap<>();
 
     static {
         FIELD_CALENDAR_MAP.put(Boolean.TRUE, makeFieldCalendarMap(true));
@@ -412,13 +413,12 @@ public class DatePicker {
      * @param map a map from date widget field names to <code>Integer</code>
      *            or <code>String</code> values.
      */
-    public void readMap(Map map) {
+    public void readMap(Map<String, ?> map) {
         cal.clear();
-        Map fieldCalMap = getFieldCalMap();
+        Map<String, Integer> fieldCalMap = getFieldCalMap();
 
         //go through and read all of the fields we need.
-        for (Object oIn : fieldCalMap.keySet()) {
-            String field = (String) oIn;
+        for (String field: fieldCalMap.keySet()) {
             Object value = map.get(propertyName(field));
             Integer fieldValue;
             if (value == null) {
@@ -474,12 +474,9 @@ public class DatePicker {
      *
      * @param map a map from date widget field names to <code>Integer</code> values
      */
-    public void writeToMap(Map map) {
-        Map fieldCalMap = getFieldCalMap();
-        for (Object oIn : fieldCalMap.keySet()) {
-            String field = (String) oIn;
-            map.put(propertyName(field), getField(field));
-        }
+    public void writeToMap(Map<String, Integer> map) {
+        map.putAll(getFieldCalMap().keySet().stream()
+                .collect(Collectors.toMap(k -> propertyName(k), k -> getField(k))));
     }
 
     /**
@@ -565,12 +562,12 @@ public class DatePicker {
     }
 
     private int getCalField(String field) {
-        Map fieldCalMap = getFieldCalMap();
-        return (Integer) fieldCalMap.get(field);
+        Map<String, Integer> fieldCalMap = getFieldCalMap();
+        return fieldCalMap.get(field);
     }
 
-    private Map getFieldCalMap() {
-        return (Map) FIELD_CALENDAR_MAP.get(isLatin());
+    private Map<String, Integer> getFieldCalMap() {
+        return FIELD_CALENDAR_MAP.get(isLatin());
     }
 
 
@@ -593,8 +590,8 @@ public class DatePicker {
         isDayBeforeMonth = pattern.indexOf('d') < pattern.indexOf('M');
     }
 
-    private static Map makeFieldCalendarMap(boolean isLatin) {
-        Map result = new HashMap();
+    private static Map<String, Integer> makeFieldCalendarMap(boolean isLatin) {
+        Map<String, Integer> result = new HashMap<>();
         result.put(YEAR, Calendar.YEAR);
         result.put(MONTH, Calendar.MONTH);
         result.put(DAY, Calendar.DAY_OF_MONTH);

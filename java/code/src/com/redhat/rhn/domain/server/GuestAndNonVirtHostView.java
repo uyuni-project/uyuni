@@ -153,6 +153,7 @@ public class GuestAndNonVirtHostView {
      * @return <code>true</code> if <code>object</code> is a GuestAndNonVirtHostView and
      * the <code>virtualInstanceId</code> properties are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != this.getClass()) {
             return false;
@@ -176,6 +177,7 @@ public class GuestAndNonVirtHostView {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder().append(guestSystemId)
                 .append(guestOrgId).append(guestName);

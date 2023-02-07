@@ -134,7 +134,7 @@ public class Notification {
                 );
         }
         else {
-            LOG.debug(String.format("Session not registered or broken: [id:%s]", session.getId()));
+            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
         }
     }
 
@@ -172,8 +172,7 @@ public class Notification {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
-                            session.getId()));
+                    LOG.debug("Could not send websocket message. Session [id:{}] is already closed.", session.getId());
                     handbreakSession(session);
                 }
             }
@@ -213,17 +212,12 @@ public class Notification {
                 USER_NOTIFICATIONS, Notification::prepareUserNotifications,
                 SSM_COUNT, Notification::prepareSsmCount
         );
-        try {
-            Map<String, Object> data = properties.stream()
-                    .filter(preparers::containsKey)
-                    .collect(Collectors.toMap(Function.identity(),
-                            property -> preparers.get(property).apply(session, user)));
-            if (!data.isEmpty()) {
-                sendMessage(session, GSON.toJson(data));
-            }
-        }
-        finally {
-            HibernateFactory.closeSession();
+        Map<String, Object> data = properties.stream()
+                .filter(preparers::containsKey)
+                .collect(Collectors.toMap(Function.identity(),
+                        property -> preparers.get(property).apply(session, user)));
+        if (!data.isEmpty()) {
+            sendMessage(session, GSON.toJson(data));
         }
     }
 

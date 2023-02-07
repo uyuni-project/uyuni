@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -6,7 +6,7 @@ Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package on SLE minion
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I install old package "virgo-dummy-1.0" on this "sle_minion" without error control
 
   Scenario: Pre-requisite: refresh package list and check old packages installed on SLE minion
@@ -45,6 +45,6 @@ Feature: Install a patch on the client via Salt through the UI
   Scenario: Cleanup: remove virgo-dummy package from SLE minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
     And I remove package "virgo-dummy" from this "sle_minion" without error control
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished

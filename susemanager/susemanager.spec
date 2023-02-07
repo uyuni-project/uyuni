@@ -47,8 +47,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.4.0
-Release:        0
+Version:        4.4.4
+Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -74,8 +74,8 @@ BuildRequires:  python3-pycurl
 BuildRequires:  python-curl
 BuildRequires:  python-mock
 %endif
-BuildRequires:  python2
 %if !0%{?rhel}
+BuildRequires:  python2
 BuildRequires:  pyxml
 %endif
 BuildRequires:  spacewalk-backend >= 1.7.38.20
@@ -216,6 +216,11 @@ install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_p
 %else
 mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
+%endif
+
+%if 0%{?sle_version} && !0%{?is_opensuse}
+# this script migrate the server to Uyuni. It should not be available on SUSE Manager
+rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 %endif
 
 make -C po install PREFIX=$RPM_BUILD_ROOT

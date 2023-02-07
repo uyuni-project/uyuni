@@ -21,8 +21,8 @@ Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.0
-Release:        0
+Version:        4.4.3
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -32,6 +32,7 @@ Requires:       httpd
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-ssl-cert-check
+BuildRequires:  make
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -67,9 +68,7 @@ Requires:       %{name}-docs
 Requires:       %{name}-html
 Requires:       %{name}-redirect = %{version}
 Requires:       httpd
-Requires:       jabberd
 Requires:       spacewalk-backend >= 1.7.24
-Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       sos
 Requires(preun):initscripts
@@ -138,6 +137,14 @@ Requires:       %{name}-broker >= %{version}
 Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
+
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:       weakremover(jabberd)
+Provides:       weakremover(jabberd-sqlite)
+Provides:       weakremover(jabberd-db)
+Provides:       weakremover(spacewalk-setup-jabberd)
+
 
 %description common
 The Spacewalk Proxy Server allows package caching

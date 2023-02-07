@@ -42,6 +42,7 @@ public abstract class BaseCopyFileSubmitAction extends BaseSetOperateOnSelectedI
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("copycentral.jsp.copy", "operateOnSelectedSet");
     }
@@ -49,6 +50,7 @@ public abstract class BaseCopyFileSubmitAction extends BaseSetOperateOnSelectedI
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {
@@ -65,8 +67,9 @@ public abstract class BaseCopyFileSubmitAction extends BaseSetOperateOnSelectedI
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean operateOnElement(ActionForm formIn, HttpServletRequest requestIn,
-            RhnSetElement elementIn, User user) {
+                                    RhnSetElement elementIn, User user) {
 
         RequestContext requestContext = new RequestContext(requestIn);
 
@@ -97,10 +100,11 @@ public abstract class BaseCopyFileSubmitAction extends BaseSetOperateOnSelectedI
         return Boolean.FALSE;
     }
 
+    @Override
     protected void addToMessage(ActionMessages msg,
-            String methodName,
-            boolean success,
-            long count) {
+                                String methodName,
+                                boolean success,
+                                long count) {
         if (count > 0) {
             String key = "";
             if (success) {

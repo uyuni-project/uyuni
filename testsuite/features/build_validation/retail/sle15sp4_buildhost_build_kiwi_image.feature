@@ -14,12 +14,10 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     When I perform a full salt minion cleanup on "sle15sp4_buildhost"
 
   Scenario: Prepare activation key for SLES 15 SP4 build host
-    When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "sle15sp4_buildhost" via API
-    And I logout from API
+    When I create an activation key including custom channels for "sle15sp4_buildhost" via API
 
   Scenario: Bootstrap the SLES 15 SP4 build host
-    When I bootstrap minion client "sle15sp4_buildhost" using bootstrap script with activation key "1-sle15sp4_buildhost_key" from the proxy
+    When I bootstrap "sle15sp4_buildhost" using bootstrap script with activation key "1-sle15sp4_buildhost_key" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle15sp4_buildhost" as "unaccepted"
     And I accept "sle15sp4_buildhost" key in the Salt master
     And I wait until onboarding is completed for "sle15sp4_buildhost"

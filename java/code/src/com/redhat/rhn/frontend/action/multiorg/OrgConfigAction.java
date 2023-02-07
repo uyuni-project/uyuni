@@ -46,8 +46,7 @@ public class OrgConfigAction extends RhnAction {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         Org org = ctx.getCurrentUser().getOrg();
         if (!ctx.getCurrentUser().hasRole(RoleFactory.ORG_ADMIN)) {

@@ -32,7 +32,7 @@ import io.prometheus.client.Collector;
  */
 public class SchedulerCollector extends Collector {
 
-    private static final Logger LOG = LogManager.getLogger(PrometheusExporter.class);
+    private static final Logger LOG = LogManager.getLogger(SchedulerCollector.class);
 
     private Scheduler scheduler;
     private String schedulerId;

@@ -1,6 +1,9 @@
+/* eslint-disable simple-import-sort/imports */
 import * as React from "react";
 
 import { useWebSocket } from "../../shared/websocket/useWebSocket";
+import { Button } from "components/buttons";
+import Network from "utils/network";
 
 type Props = {
   count?: number;
@@ -12,13 +15,23 @@ export function SsmCounter(props: Props) {
   useWebSocket(errors, setErrors, "ssm-count", (value: number) => {
     setCount(value);
   });
+  const ssm_clear = () => {
+    Network.post("/rhn/manager/api/sets/system_list/clear");
+  };
+
   return (
-    <div id="header_selcount">
-      <span id="spacewalk-set-system_list-counter" className="badge">
-        {count}
-      </span>
-      {count === 1 ? t("system selected") : t("systems selected")}
-    </div>
+    <>
+      <a href="/rhn/ssm/index.do" id="manage-ssm" title={t("Manage")}>
+        <div id="ssm-counter" />
+        <div id="header_selcount">
+          <span id="spacewalk-set-system_list-counter" className="badge">
+            {count}
+          </span>
+          {count === 1 ? t("system selected") : t("systems selected")}
+        </div>
+      </a>
+      <Button id="clear-ssm" title={t("Clear")} handler={ssm_clear} icon="fa-eraser" />
+    </>
   );
 }
 SsmCounter.defaultProps = {

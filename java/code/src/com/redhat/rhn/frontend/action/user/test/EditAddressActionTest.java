@@ -114,7 +114,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPerformExecuteNewAddressFailure() throws Exception {
+    public void testPerformExecuteNewAddressFailure() {
         setUpFailure();
         // Creating a user automatically creates a MARKETING address, so as long
         // as that is the only address in the User, we know there is no SHIPPING
@@ -129,7 +129,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPerformExecuteNewAddressSuccess() throws Exception {
+    public void testPerformExecuteNewAddressSuccess() {
         setUpSuccess();
         // Creating a user automatically creates a MARKETING address, so as long
         // as that is the only address in the User, we know there is no SHIPPING

@@ -7,8 +7,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 table="rhnServerNotes">
                 <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
-            <generator class="sequence">
-                <param name="sequence">RHN_SERVER_NOTE_ID_SEQ</param>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">RHN_SERVER_NOTE_ID_SEQ</param>
+                <param name="increment_size">1</param>
             </generator>
                 </id>
                 <property name="subject" column="subject" type="string" length="80" />

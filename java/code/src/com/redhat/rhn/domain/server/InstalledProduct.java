@@ -166,6 +166,7 @@ public class InstalledProduct extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof InstalledProduct)) {
             return false;
@@ -182,6 +183,7 @@ public class InstalledProduct extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName())
                 .append(getVersion())

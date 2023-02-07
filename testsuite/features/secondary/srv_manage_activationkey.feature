@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC
+# Copyright (c) 2010-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Manipulate activation keys
@@ -12,6 +12,7 @@ Feature: Manipulate activation keys
   Scenario: Create an activation key for i586
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE Test Key i586" as "description"
     And I enter "SUSE-TEST-i586" as "key"
     And I check "virtualization_host"
@@ -21,6 +22,7 @@ Feature: Manipulate activation keys
   Scenario: Change limit of the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
+    And I wait until I do not see "Loading..." text
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
@@ -29,13 +31,15 @@ Feature: Manipulate activation keys
   Scenario: Change the base channel of the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
-    And I select "Test-Channel-i586" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
+    And I select "Fake-i586-Channel" from "selectedBaseChannel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
   Scenario: Delete the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586" in the content area
+    And I wait until I do not see "Loading..." text
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been deleted." text
@@ -43,10 +47,11 @@ Feature: Manipulate activation keys
   Scenario: Create an activation key with a channel and a package list for i586
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-TEST-2-i586" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-i586" from "selectedBaseChannel"
+    And I select "Fake-i586-Channel" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"
@@ -63,10 +68,11 @@ Feature: Manipulate activation keys
   Scenario: Create an activation key with a channel and a package list for x86_64
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-TEST-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"

@@ -18,7 +18,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -65,7 +65,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testListImageProfileTypes() throws Exception {
+    public final void testListImageProfileTypes() {
         List<String> types = handler.listImageProfileTypes(admin);
         assertEquals(2, types.size(), "Wrong number of image profile types found.");
         assertTrue(types.stream().anyMatch(ImageProfile.TYPE_DOCKERFILE::equals));
@@ -366,7 +366,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         createImageStore("newstore", admin);
         createImageStore("newosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
         ActivationKey newKey = createActivationKey(admin);
-        assertFalse(key.equals(newKey));
+        assertNotEquals(key, newKey);
 
         Map<String, String> details = new HashMap<>();
 

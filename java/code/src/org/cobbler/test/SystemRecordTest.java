@@ -18,8 +18,6 @@ package org.cobbler.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
@@ -33,31 +31,35 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests SystemRecord.
  */
-public class SystemRecordTest extends BaseTestCaseWithUser {
+public class SystemRecordTest {
 
-    /** The connection. */
+    /**
+     * The connection.
+     */
     private CobblerConnection connection;
 
-    /** The system. */
+    /**
+     * The system.
+     */
     private SystemRecord system;
 
     /**
      * Sets up a connection and system.
-     * @throws Exception in case anything goes wrong
+     *
      */
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
-        Distro distro = new Distro.Builder()
+    public void setUp() {
+        connection = new MockConnection("http://localhost", "token");
+        Distro distro = new Distro.Builder<String>()
                 .setName("test-distro")
                 .setKernel("kernel")
                 .setInitrd("initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .setBreed("redhat")
                 .setOsVersion("rhel6")
                 .setArch("x86_64")
@@ -114,9 +116,15 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSetGetPowerAddress() {
+        // Arrange
         String expected = TestUtils.randomString();
+
+        // Act
         system.setPowerAddress(expected);
-        assertEquals(expected, system.getPowerAddress());
+        String result = system.getPowerAddress();
+
+        // Assert
+        assertEquals(expected, result);
         assertSystemKeyEquals(expected, SystemRecord.POWER_ADDRESS);
     }
 
@@ -125,9 +133,15 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSetGetPowerUsername() {
+        // Arrange
         String expected = TestUtils.randomString();
+
+        // Act
         system.setPowerUsername(expected);
-        assertEquals(expected, system.getPowerUsername());
+        String result = system.getPowerUsername();
+
+        // Assert
+        assertEquals(expected, result);
         assertSystemKeyEquals(expected, SystemRecord.POWER_USERNAME);
     }
 
@@ -147,9 +161,15 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSetGetPowerId() {
+        // Arrange
         String expected = TestUtils.randomString();
+
+        // Act
         system.setPowerId(expected);
-        assertEquals(expected, system.getPowerId());
+        String result = system.getPowerId();
+
+        // Assert
+        assertEquals(expected, result);
         assertSystemKeyEquals(expected, SystemRecord.POWER_ID);
     }
 
@@ -172,15 +192,16 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Check in MockConnection that the current system has a certain value
      * corresponding to a key
+     *
      * @param expected the expected value for key
-     * @param key the key
+     * @param key      the key
      */
     @SuppressWarnings("unchecked")
     private void assertSystemKeyEquals(String expected, String key) {
         HashMap<String, Object> criteria = new HashMap<>();
         criteria.put("uid", system.getId());
         List<Map<String, Object>> result = (List<Map<String, Object>>) connection
-            .invokeMethod("find_system", criteria);
+                .invokeMethod("find_system", criteria);
         assertEquals(expected, result.get(0).get(key));
     }
 }

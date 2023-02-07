@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Exports a List of data to a comma separated value string
@@ -100,10 +102,8 @@ public class CSVTag extends BodyTagSupport {
      *
      * @param nameIn
      *            name of dataset
-     * @throws JspException
-     *             indicates something went wrong
      */
-    public void setDataset(String nameIn) throws JspException {
+    public void setDataset(String nameIn) {
         dataSetName = nameIn;
     }
 
@@ -159,7 +159,7 @@ public class CSVTag extends BodyTagSupport {
             renderExport();
         }
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
@@ -169,7 +169,7 @@ public class CSVTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
 
         verifyEnvironment();
-        return BodyTagSupport.EVAL_BODY_INCLUDE;
+        return Tag.EVAL_BODY_INCLUDE;
     }
 
     /**
@@ -194,15 +194,15 @@ public class CSVTag extends BodyTagSupport {
      */
     private void renderExport() throws JspException {
         IconTag i = new IconTag("item-download-csv");
-        String exportLink = new String("<div class=\"spacewalk-csv-download\">" +
+        String exportLink = "<div class=\"spacewalk-csv-download\">" +
                 "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
                 makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
-                "listdisplay.csv") + "</a></div>");
+                "listdisplay.csv") + "</a></div>";
         ListTagUtil.write(pageContext, exportLink);
     }
 
     private void verifyEnvironment() throws JspException {
-        if (BodyTagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
+        if (TagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
             throw new JspException("List must be enclosed by a ListSetTag");
         }
     }
@@ -266,10 +266,9 @@ public class CSVTag extends BodyTagSupport {
         return CSVDownloadAction.PAGE_LIST_DATA + "=" + paramPageList;
     }
 
-    private Map makePartialResult(List result) {
-        Map output = new HashMap();
-        for (Object oIn : result) {
-            SystemSearchResult r = (SystemSearchResult) oIn;
+    private Map<Long, SystemSearchPartialResult> makePartialResult(List<SystemSearchResult> result) {
+        Map<Long, SystemSearchPartialResult> output = new HashMap<>();
+        for (SystemSearchResult r : result) {
             SystemSearchPartialResult partial = new SystemSearchPartialResult(r);
             output.put(r.getId(), partial);
         }

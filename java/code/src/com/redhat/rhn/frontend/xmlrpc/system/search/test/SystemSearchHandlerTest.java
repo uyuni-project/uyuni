@@ -31,10 +31,9 @@ public class SystemSearchHandlerTest extends BaseHandlerTestCase {
 
     /**
      * empty test to act as a place holder
-     * @throws Exception something bad happened
      */
     @Test
-    public void testDummy() throws Exception {
+    public void testDummy() {
         assertTrue(true);
     }
 }

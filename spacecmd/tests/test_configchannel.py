@@ -465,7 +465,6 @@ class TestSCConfigChannel:
         :param shell:
         :return:
         """
-        mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
         shell.client.configchannel.lookupFileInfo = MagicMock(return_value={
@@ -474,7 +473,7 @@ class TestSCConfigChannel:
         shell.do_configchannel_listfiles = MagicMock(return_value=[
             "/tmp/valid.file", "/tmp/another-valid.file", "/tmp/file.txt"
         ])
-        with patch("spacecmd.configchannel.print", mprint) as prt, \
+        with patch("spacecmd.configchannel.print") as mprint, \
                 patch("spacecmd.configchannel.logging", logger) as lgr:
             result = spacecmd.configchannel.do_configchannel_filedetails(
                 shell, "base_channel /tmp/file.txt 3")
@@ -483,14 +482,24 @@ class TestSCConfigChannel:
         assert not shell.help_configchannel_filedetails.called
         assert not logger.warning.called
         assert not logger.error.called
-        assert not mprint.called
         assert shell.client.configchannel.lookupFileInfo.called
         assert shell.do_configchannel_listfiles.called
 
-        assert result is not None
-        assert result == ['Path:     /tmp.file.txt', 'Type:     N/A', 'Revision: N/A', 'Created:  N/A',
-                          'Modified: N/A', '', 'Owner:           N/A', 'Group:           N/A',
-                          'Mode:            N/A', 'SELinux Context: N/A']
+        assert_list_args_expect(
+            mprint.call_args_list,
+            [
+                'Path:     /tmp.file.txt',
+                'Type:     N/A',
+                'Revision: N/A',
+                'Created:  N/A',
+                'Modified: N/A',
+                '',
+                'Owner:           N/A',
+                'Group:           N/A',
+                'Mode:            N/A',
+                'SELinux Context: N/A'
+            ]
+        )
 
     def test_configchannel_filedetails_with_correct_revision_data(self, shell):
         """
@@ -499,7 +508,6 @@ class TestSCConfigChannel:
         :param shell:
         :return:
         """
-        mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
         shell.client.configchannel.lookupFileInfo = MagicMock(return_value={
@@ -512,7 +520,7 @@ class TestSCConfigChannel:
         shell.do_configchannel_listfiles = MagicMock(return_value=[
             "/tmp/valid.file", "/tmp/another-valid.file", "/tmp/file.txt"
         ])
-        with patch("spacecmd.configchannel.print", mprint) as prt, \
+        with patch("spacecmd.configchannel.print") as mprint, \
                 patch("spacecmd.configchannel.logging", logger) as lgr:
             result = spacecmd.configchannel.do_configchannel_filedetails(
                 shell, "base_channel /tmp/file.txt 3")
@@ -521,15 +529,29 @@ class TestSCConfigChannel:
         assert not shell.help_configchannel_filedetails.called
         assert not logger.warning.called
         assert not logger.error.called
-        assert not mprint.called
         assert shell.client.configchannel.lookupFileInfo.called
         assert shell.do_configchannel_listfiles.called
 
-        assert result is not None
-        assert result == ['Path:     /tmp.file.txt', 'Type:     file', 'Revision: 3', 'Created:  2019.01.01',
-                          'Modified: 2019.01.02', '', 'Owner:           Fred', 'Group:           lusers',
-                          'Mode:            0700', 'SELinux Context: system_u', 'SHA256:          1234567',
-                          'Binary:          False', '', 'Contents', '--------', 'Improper keyboard linear orientation']
+        assert_list_args_expect(
+            mprint.call_args_list,
+            ['Path:     /tmp.file.txt',
+             'Type:     file',
+             'Revision: 3',
+             'Created:  2019.01.01',
+             'Modified: 2019.01.02',
+             '',
+             'Owner:           Fred',
+             'Group:           lusers',
+             'Mode:            0700',
+             'SELinux Context: system_u',
+             'SHA256:          1234567',
+             'Binary:          False',
+             '',
+             'Contents',
+             '--------',
+             'Improper keyboard linear orientation'
+            ]
+        )
 
     def test_configchannel_backup_noargs(self, shell):
         """

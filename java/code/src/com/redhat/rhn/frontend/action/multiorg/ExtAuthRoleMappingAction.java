@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
+import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -24,7 +25,6 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
 
@@ -35,13 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ExtAuthRoleMappingAction
  */
-public class ExtAuthRoleMappingAction extends RhnAction implements Listable {
+public class ExtAuthRoleMappingAction extends RhnAction implements Listable<UserExtGroup> {
 
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) {
-        DynaActionForm daForm = (DynaActionForm) formIn;
 
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request);
         helper.execute();
@@ -51,9 +50,9 @@ public class ExtAuthRoleMappingAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
+    @Override
+    public List<UserExtGroup> getResult(RequestContext contextIn) {
         User user = contextIn.getCurrentUser();
         return UserGroupFactory.listExtAuthGroups(user);
     }
-
 }

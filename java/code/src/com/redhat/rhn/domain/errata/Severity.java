@@ -135,6 +135,7 @@ public class Severity {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "Id: " + getId() + ", Rank: " + getRank() + ", Label: " + getLabel() +
             ", Localized label: " + getLocalizedLabel();

@@ -132,21 +132,27 @@ public class MenuTree {
     private MenuItem getSystemsNode(User user, Map<String, Boolean> adminRoles) {
         return new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details")
             .withDir("/rhn/manager/systems/details")
-            .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
             .addChild(new MenuItem("System List").addChild(new MenuItem("All")
-                    .withPrimaryUrl("/rhn/systems/SystemList.do"))
-                    .addChild(new MenuItem("Physical Systems").withPrimaryUrl("/rhn/systems/PhysicalList.do"))
+                    .withPrimaryUrl("/rhn/manager/systems/list/all"))
+                    .addChild(new MenuItem("Physical Systems")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=physical"))
                     .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/manager/systems/list/virtual"))
                     .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
-                    .addChild(new MenuItem("Out of Date").withPrimaryUrl("/rhn/systems/OutOfDate.do"))
-                    .addChild(new MenuItem("Requiring Reboot").withPrimaryUrl("/rhn/systems/RequiringReboot.do"))
-                    .addChild(new MenuItem("Extra Packages").withPrimaryUrl("/rhn/systems/ExtraPackagesSystems.do"))
-                    .addChild(new MenuItem("Unentitled").withPrimaryUrl("/rhn/systems/Unentitled.do"))
-                    .addChild(new MenuItem("Ungrouped").withPrimaryUrl("/rhn/systems/Ungrouped.do")
+                    .addChild(new MenuItem("Out of Date")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=critical"))
+                    .addChild(new MenuItem("Requiring Reboot")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=requires_reboot&q=true"))
+                    .addChild(new MenuItem("Extra Packages")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=extra_pkg_count&q=>0"))
+                    .addChild(new MenuItem("Ungrouped")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
                             .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Inactive").withPrimaryUrl("/rhn/systems/Inactive.do"))
-                    .addChild(new MenuItem("Recently Registered").withPrimaryUrl("/rhn/systems/Registered.do"))
-                    .addChild(new MenuItem("Proxy").withPrimaryUrl("/rhn/systems/ProxyList.do")
+                    .addChild(new MenuItem("Inactive")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=awol"))
+                    .addChild(new MenuItem("Recently Registered")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
+                    .addChild(new MenuItem("Proxy")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
                             .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
                                     adminRoles.get("org")))
                     .addChild(new MenuItem("Duplicate Systems").withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
@@ -574,7 +580,7 @@ public class MenuTree {
                     activeItem = item;
                     return activeItem;
                 }
-                if (item.getUrls() != null && item.getUrls().size() > 0) {
+                if (item.getUrls() != null && !item.getUrls().isEmpty()) {
                     for (String link : item.getUrls()) {
                         if (url.equalsIgnoreCase(link)) {
                             activeItem = item;

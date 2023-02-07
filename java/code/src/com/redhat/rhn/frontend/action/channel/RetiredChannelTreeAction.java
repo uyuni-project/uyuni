@@ -29,8 +29,9 @@ public class RetiredChannelTreeAction extends BaseChannelTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult<ChannelTreeNode> getDataResult(RequestContext requestContext,
-            ListControl lc) {
+                                                        ListControl lc) {
         User user = requestContext.getCurrentUser();
         return ChannelManager.retiredChannelTree(user, lc);
     }

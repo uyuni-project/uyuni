@@ -59,6 +59,8 @@ import com.suse.utils.Opt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -94,15 +96,11 @@ public class RegistrationUtils {
      * @param activationKey the activation key
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
+     * @param isSaltSSH true if the minion is ssh push minion
      */
     public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
-            Optional<User> creator, boolean enableMinionService) {
+            Optional<User> creator, boolean enableMinionService, boolean isSaltSSH) {
         String minionId = minion.getMinionId();
-        // get hardware and network async
-        triggerHardwareRefresh(minion);
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
         // Generate pillar data
         try {
@@ -130,10 +128,13 @@ public class RegistrationUtils {
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+        if (minion.doesOsSupportsTransactionalUpdate()) {
+            statesToApply.add(ApplyStatesEventMessage.TRANSACTIONAL_REBOOT_CONFIG);
+        }
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
-        else {
+        if (isSaltSSH) {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
@@ -149,11 +150,18 @@ public class RegistrationUtils {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
         SystemManager.setReportDbUser(minion, false);
+
+        // get hardware and network async
+        // Hardware refresh depends on channels being assigned so as a temporary
+        // solution we schedule it 1 minute in the future. This should be fixed when
+        // refactoring this method to provide clear dependencies for example via action chains.
+        triggerHardwareRefresh(minion);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
         try {
-            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
+            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
+                    Date.from(Instant.now().plus(1, ChronoUnit.MINUTES)));
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
@@ -200,10 +208,10 @@ public class RegistrationUtils {
                     e.isAllowedOnServer(server, grains) &&
                     systemEntitlementManager.canEntitleServer(server, e)) {
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     LOG.warn(vr.getWarnings().toString());
                 }
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     LOG.error(vr.getErrors().toString());
                 }
             }
@@ -284,6 +292,7 @@ public class RegistrationUtils {
 
         server.setChannels(
                 filterCompatibleChannelsForServerArch(server.getServerArch(), unfilteredChannels, activationKey));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -367,9 +376,9 @@ public class RegistrationUtils {
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
-                            x.getOracleReleaseContent(), x.getAlibabaReleaseContent(), x.getAlmaReleaseContent(),
-                            x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
+                            server, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
+                            x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
+                            x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

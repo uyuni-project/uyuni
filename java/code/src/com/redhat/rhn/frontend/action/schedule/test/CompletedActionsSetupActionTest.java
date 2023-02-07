@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
  */
 public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -47,7 +48,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
 
 
         actionPerform();

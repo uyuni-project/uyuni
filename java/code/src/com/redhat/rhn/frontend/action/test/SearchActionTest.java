@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 public class SearchActionTest extends RhnMockStrutsTestCase {
 
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -35,7 +36,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSystemRedirect() throws Exception {
+    public void testSystemRedirect() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
         addRequestParameter("search_type", "systems");
@@ -44,7 +45,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testErrataRedirect() throws Exception {
+    public void testErrataRedirect() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
         addRequestParameter("search_type", "errata");
@@ -53,7 +54,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testPackageRedirect() throws Exception {
+    public void testPackageRedirect() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
         addRequestParameter("search_type", "packages");
@@ -62,7 +63,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testFaultySubmit() throws Exception {
+    public void testFaultySubmit() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
         addRequestParameter("search_type", "l337_hax0r");

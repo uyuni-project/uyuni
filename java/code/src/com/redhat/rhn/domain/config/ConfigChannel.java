@@ -29,7 +29,6 @@ import java.util.SortedSet;
  * ConfigChannel - Class representation of the table rhnConfigChannel.
  */
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
-
     private Long id;
     private Org org;
     private String name;
@@ -38,7 +37,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
 
     private ConfigChannelType configChannelType;
 
-    private SortedSet configFiles;
+    private SortedSet<ConfigFile> configFiles;
 
     /**
      * Protected constructor
@@ -52,6 +51,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -209,7 +209,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      * Setter for list of config files associated to this channel
      * @param cfg to set
     */
-    protected void setConfigFiles(SortedSet cfg) {
+    protected void setConfigFiles(SortedSet<ConfigFile> cfg) {
         this.configFiles = cfg;
     }
 
@@ -259,7 +259,11 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof ConfigChannel)) {
+            return false;
+        }
         ConfigChannel that = (ConfigChannel) obj;
         return new EqualsBuilder().
                 append(this.getLabel(), that.getLabel()).
@@ -273,6 +277,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         // The id field has been intentionally ignored here
         // because for a new object the id can be null

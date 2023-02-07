@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2020-11-20 20:26+0000\n"
+"POT-Creation-Date: 2022-12-09 16:58+0100\n"
+"PO-Revision-Date: 2022-08-11 16:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -65,7 +65,7 @@ msgstr "Neplatné URI %s"
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/xmlrpc/registration.py:1272
 #, python-format
 msgid ""
 "\n"
@@ -159,7 +159,7 @@ msgstr "Vyhlásenie o ochrane súkromia"
 msgid "Expected a dictionary as a product argument"
 msgstr "Očakávaný slovník ako argument produktu"
 
-#: ../server/handlers/xmlrpc/registration.py:1376
+#: ../server/handlers/xmlrpc/registration.py:1339
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pre %s (%s)"
@@ -1913,8 +1913,8 @@ msgstr "CHYBA: Nepodarilo sa nájsť Org Id %s"
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
-"UPOZORNENIE: Voľba --list-channels prepíše akúkoľvek voľbu --step. --step "
-"ignorované."
+"UPOZORNENIE: Voľba --list-channels prepíše akúkoľvek voľbu --step. Voľba --"
+"step je ignorovaná."
 
 #: ../satellite_tools/satsync.py:2387
 #, python-format

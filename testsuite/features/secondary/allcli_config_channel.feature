@@ -27,17 +27,6 @@ Feature: Management of configuration of all types of clients in a single channel
     And file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
     And file "/srv/susemanager/salt/manager_org_1/mixedchannel/etc/s-mgr/config" should exist on server
 
-@sle_client
-  Scenario: Subscribe a traditional client to the configuration channel
-    When I am on the Systems overview page of this "sle_client"
-    And I follow "Configuration" in the content area
-    And I follow "Manage Configuration Channels" in the content area
-    And I follow first "Subscribe to Channels" in the content area
-    And I check "Mixed Channel" in the list
-    And I click on "Continue"
-    And I click on "Update Channel Rankings"
-    Then I should see a "Channel Subscriptions successfully changed for" text
-
 @sle_minion
   Scenario: Subscribe a Salt minion to the configuration channel
     When I am on the Systems overview page of this "sle_minion"
@@ -83,19 +72,13 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Deploy the file to all systems
-    When I run "rhn-actions-control --enable-all" on "sle_client"
-    And I follow the left menu "Configuration > Channels"
+    When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/s-mgr/config" link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "revision-deploys are being scheduled," text
     And I should see a "0 revision-deploys overridden." text
-
-@sle_client
-  Scenario: Check that file has been created on traditional client
-    When I run "rhn_check -vvv" on "sle_client"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
 
 @sle_minion
   Scenario: Check that file has been created on SLE minion
@@ -187,75 +170,30 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "+COLOR=white" text
     And I should see a "-COLOR=red" text
 
-@sle_client
-  Scenario: Check configuration channel and files via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
-    Then channel "mixedchannel" should exist
-    And channel "mixedchannel" should contain file "/etc/s-mgr/config"
-    And "sle_client" should be subscribed to channel "mixedchannel"
-    When I logout from API
-
 @sle_minion
   Scenario: Check configuration channel and files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_minion" should be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Extend configuration channel and deploy files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle_minion"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I wait until file "/etc/s-mgr/other" exists on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_minion"
-    When I logout from API
-
-@sle_client
-  Scenario: Extend configuration channel and deploy files via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
-    When I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle_client"
-    And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
-    And I deploy all systems registered to channel "mixedchannel"
-    And I run "rhn_check -vvv" on "sle_client"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
-    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_client"
-    When I logout from API
-
-@sle_client
-  Scenario: Unsubscribe systems via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
-    When I unsubscribe "sle_client" from configuration channel "mixedchannel"
-    Then "sle_client" should not be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Unsubscribe systems via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_minion" from configuration channel "mixedchannel"
     Then "sle_minion" should not be subscribed to channel "mixedchannel"
-    When I logout from API
-
-@sle_client
-  Scenario: Re-add Salt minion via SSM
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
-    And I check the "sle_client" client
-    And I follow the left menu "Systems > System Set Manager > Overview"
-    And I follow "config channel subscriptions" in the content area
-    And I check "Mixed Channel" in the list
-    And I click on "Continue"
-    And I click on "Apply Subscriptions"
-    And I click on "Confirm"
-    Then I should see a "Configuration channel subscriptions changed for 1 system successfully." text
 
 @sle_minion
-  Scenario: Re-add traditional client via SSM
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+  Scenario: Re-add SLE Minion via SSM
+    When I follow the left menu "Systems > System List > All"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "config channel subscriptions" in the content area
@@ -264,15 +202,6 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Apply Subscriptions"
     And I click on "Confirm"
     Then I should see a "Configuration channel subscriptions changed for 1 system successfully." text
-
-@sle_client
-  Scenario: Cleanup: remove remaining traditional client from configuration channel
-    When I follow the left menu "Configuration > Channels"
-    And I follow "Mixed Channel"
-    And I follow "Systems" in the content area
-    And I check the "sle_client" client
-    And I click on "Unsubscribe systems"
-    Then I should see a "Successfully unsubscribed 1 system(s)." text
 
 @sle_minion
   Scenario: Cleanup: remove remaining Salt minion from configuration channel
@@ -290,13 +219,9 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Delete Config Channel"
     Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should not exist on server
 
-@sle_client
-  Scenario: Cleanup: delete configuration files on remaining traditional client
-    When I destroy "/etc/s-mgr" directory on "sle_client"
-
 @sle_minion
   Scenario: Cleanup: delete configuration files on remaining Salt minion
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
-    When I follow "Clear"
+    When I click on the clear SSM button

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -24,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
+import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
@@ -39,7 +39,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -80,10 +79,11 @@ public class DailySummary extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext ctxIn)
-        throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext ctxIn) {
 
         processEndOfLifeNotification();
+        processSubscriptionWarningNotification();
 
         processEmails();
     }
@@ -119,6 +119,16 @@ public class DailySummary extends RhnJavaJob {
                 new EndOfLifePeriod(endOfLifeDate));
             UserNotificationFactory.storeNotificationMessageFor(notification,
                 Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+        }
+    }
+
+    private void  processSubscriptionWarningNotification() {
+        SubscriptionWarning sw = new SubscriptionWarning();
+        if (sw.expiresSoon()) {
+            NotificationMessage notificationMessage =
+                    UserNotificationFactory.createNotificationMessage(new SubscriptionWarning());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
         }
     }
 
@@ -189,8 +199,8 @@ public class DailySummary extends RhnJavaJob {
             List awol = getAwolServers(ru.idAsLong());
             // send email
             List actions = getActionInfo(ru.idAsLong());
-            if ((awol == null || awol.size() == 0) && (actions == null ||
-                    actions.size() == 0)) {
+            if ((awol == null || awol.isEmpty()) && (actions == null ||
+                    actions.isEmpty())) {
                 log.debug("Skipping ORG {} because daily summary info has changed", orgId);
                 continue;
             }
@@ -222,8 +232,6 @@ public class DailySummary extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_USERS_AWOL_SERVERS);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
-        params.put("checkin_threshold",
-                Config.get().getInteger(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
 
         return m.execute(params);
     }
@@ -314,7 +322,7 @@ public class DailySummary extends RhnJavaJob {
         StringBuilder url = new StringBuilder();
         url.append("https://");
         url.append(getHostname());
-        url.append("/rhn/systems/Inactive.do");
+        url.append("/rhn/manager/systems/list/all?q=awol&qc=status_type");
 
         return LocalizationService.getInstance().getMessage(
                 "taskomatic.msg.awolservers", buf.toString(), url);
@@ -333,10 +341,10 @@ public class DailySummary extends RhnJavaJob {
         StringBuilder body = new StringBuilder();
         StringBuilder legend = new StringBuilder();
         StringBuilder msg = new StringBuilder();
-        LinkedHashSet<String> statusSet = new LinkedHashSet();
-        TreeMap<String, Map<String, Integer>> nonErrataActions = new TreeMap();
-        TreeMap<String, Map<String, Integer>> errataActions = new TreeMap();
-        TreeMap<String, String> errataSynopsis = new TreeMap();
+        LinkedHashSet<String> statusSet = new LinkedHashSet<>();
+        TreeMap<String, Map<String, Integer>> nonErrataActions = new TreeMap<>();
+        TreeMap<String, Map<String, Integer>> errataActions = new TreeMap<>();
+        TreeMap<String, String> errataSynopsis = new TreeMap<>();
 
         legend.append(LocalizationService
                 .getInstance().getMessage("taskomatic.daily.errata"));
@@ -355,7 +363,7 @@ public class DailySummary extends RhnJavaJob {
                 String advisoryKey = ERRATA_INDENTION + am.getAdvisory();
 
                 if (!errataActions.containsKey(advisoryKey)) {
-                    errataActions.put(advisoryKey, new HashMap());
+                    errataActions.put(advisoryKey, new HashMap<>());
                     if (advisoryKey.length() + HEADER_SPACER > longestActionLength) {
                         longestActionLength = advisoryKey.length() + HEADER_SPACER;
                     }
@@ -376,7 +384,7 @@ public class DailySummary extends RhnJavaJob {
                     if (am.getType().equals("Apply states")) {
                         am.setType("Apply states (total)");
                     }
-                    nonErrataActions.put(am.getType(), new HashMap());
+                    nonErrataActions.put(am.getType(), new HashMap<>());
                     if (am.getType().length() + HEADER_SPACER > longestActionLength) {
                         longestActionLength = am.getType().length() + HEADER_SPACER;
                     }
@@ -410,12 +418,12 @@ public class DailySummary extends RhnJavaJob {
         body.append(formattedNonErrataActions);
 
         // finally put all this together
-        msg.append(hdr.toString());
+        msg.append(hdr);
         msg.append("\n");
-        msg.append(body.toString());
+        msg.append(body);
         msg.append("\n\n");
         if (!errataSynopsis.isEmpty()) {
-            msg.append(legend.toString());
+            msg.append(legend);
         }
         return msg.toString();
     }

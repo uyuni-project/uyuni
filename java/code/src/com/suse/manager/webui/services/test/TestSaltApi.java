@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -34,7 +35,6 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.event.EventStream;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 
@@ -52,7 +52,7 @@ import java.util.concurrent.CompletionStage;
 public class TestSaltApi implements SaltApi {
 
     @Override
-    public void deployChannels(List<String> minionIds) throws SaltException {
+    public void deployChannels(List<String> minionIds) {
         throw new UnsupportedOperationException();
     }
 
@@ -82,7 +82,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) {
         throw new UnsupportedOperationException();
     }
 
@@ -92,12 +92,17 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<SystemInfo> getSystemInfoFull(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Map<Boolean, String> storeMinionScapFiles(MinionServer minion, String uploadDir, Long actionId) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Map<String, Result<Object>> showHighstate(String minionId) throws SaltException {
+    public Map<String, Result<Object>> showHighstate(String minionId) {
         throw new UnsupportedOperationException();
     }
 
@@ -216,8 +221,7 @@ public class TestSaltApi implements SaltApi {
     @Override
     public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(BootstrapParameters parameters,
                                                                              List<String> bootstrapMods,
-                                                                             Map<String, Object> pillarData)
-            throws SaltException {
+                                                                             Map<String, Object> pillarData) {
         throw new UnsupportedOperationException();
     }
 
@@ -267,12 +271,12 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
-                                                       Optional<ScheduleMetadata> metadataIn) throws SaltException {
+                                                       Optional<ScheduleMetadata> metadataIn) {
         return Optional.empty();
     }
 
     @Override
-    public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+    public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) {
         throw new UnsupportedOperationException();
     }
 

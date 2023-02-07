@@ -415,7 +415,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(fstEntry.getMessage(), fstEntryFromDb.getMessage());
         assertEquals(sndEntry.getMessage(), sndEntryFromDb.getMessage());
 
-        assertTrue(!sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
+        assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
         UserFactory.deleteUser(user.getId());
         fstEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(fstEntryFromDb);
@@ -541,10 +541,9 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests looking up non-existing {@link SoftwareEnvironmentTarget}
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testLookupNonExistingEnvironmentTargetById() throws Exception {
+    public void testLookupNonExistingEnvironmentTargetById() {
         assertFalse(ContentProjectFactory.lookupSwEnvironmentTargetById(123321L).isPresent());
     }
 
@@ -615,8 +614,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
             fail("Must not purge.");
         }
         catch (ContentManagementException e) {
-            assertEquals("The target " + target.toString() +
-                    " is being used in an autoinstallation profile. Cannot remove.", e.getMessage());
+            assertEquals("The target is being used in an autoinstallation profile. Cannot remove.", e.getMessage());
         }
         finally {
             assertEquals(1, envdev.getTargets().size());
@@ -627,10 +625,9 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test listing {@link ContentProject}s used by given {@link ContentFilter}
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testListFilterProjects() throws Exception {
+    public void testListFilterProjects() {
         user.addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter(

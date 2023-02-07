@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -14,7 +14,7 @@ Feature: OpenSCAP audit of Debian-like Salt minion
 
   Scenario: Enable all the necessary repositories for OpenSCAP on Debian-like minion
     When I enable Debian-like "universe" repository on "deblike_minion"
-    And I enable client tools repositories on "deblike_minion"
+    And I enable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
 
   Scenario: Install the OpenSCAP packages on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
@@ -30,6 +30,7 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
+    # workaround for bsc#1206586
     And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu2004-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
@@ -38,7 +39,7 @@ Feature: OpenSCAP audit of Debian-like Salt minion
   Scenario: Check the results of the OpenSCAP scan on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
+    And I follow "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_standard"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Ubuntu" text
     And I should see a "XCCDF Rule Results" text
@@ -76,5 +77,5 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     When I remove OpenSCAP dependencies from "deblike_minion"
 
   Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Debian-like minion
-    When I disable client tools repositories on "deblike_minion"
+    When I disable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
     And I disable Debian-like "universe" repository on "deblike_minion"

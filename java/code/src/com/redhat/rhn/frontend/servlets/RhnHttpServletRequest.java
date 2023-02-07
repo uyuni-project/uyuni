@@ -48,6 +48,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getServerName() {
         String hostname = getHeader("X-Server-Hostname");
         if (hostname != null) {
@@ -59,6 +60,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public StringBuffer getRequestURL() {
         try {
             URL u = new URL(super.getRequestURL().toString());
@@ -74,6 +76,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProtocol() {
         if (isSecure()) {
             return "https";
@@ -85,6 +88,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSecure() {
         return super.isSecure();
     }
@@ -92,6 +96,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getHeader(String name) {
         if (name.equalsIgnoreCase("Host")) {
             return getServerName();
@@ -103,6 +108,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      * Kind of a standard method here.
      * @return lots of information about this object in a String object.
      */
+    @Override
     public String toString() {
         StringBuilder retval = new StringBuilder();
 
@@ -176,6 +182,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Locale getLocale() {
         return Context.getCurrentContext().getLocale();
     }
@@ -183,6 +190,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Enumeration<Locale> getLocales() {
         return this.locales.elements();
     }
@@ -191,6 +199,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      *
      * {@inheritDoc}
      */
+    @Override
     public Cookie[] getCookies() {
         return super.getCookies();
     }
@@ -198,6 +207,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getAttribute(String name) {
         if (ACTIVE_LANG_ATTR.equals(name)) {
             return Context.getCurrentContext().getActiveLocaleLabel();
@@ -207,6 +217,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Enumeration<String> getAttributeNames() {
         Vector<String> tmp = new Vector<>();
         tmp.add(ACTIVE_LANG_ATTR);
@@ -218,6 +229,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeAttribute(String name) {
         if (ACTIVE_LANG_ATTR.equals(name)) {
             return;
@@ -227,6 +239,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAttribute(String name, Object value) {
         if (ACTIVE_LANG_ATTR.equals(name)) {
             return;

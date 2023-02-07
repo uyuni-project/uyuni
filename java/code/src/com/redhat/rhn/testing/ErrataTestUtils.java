@@ -112,9 +112,8 @@ public class ErrataTestUtils {
     /**
      * Create a {@link ChannelProduct}.
      * @return the newly created channel product
-     * @throws Exception if anything goes wrong
      */
-    public static ChannelProduct createTestChannelProduct() throws Exception {
+    public static ChannelProduct createTestChannelProduct() {
         ChannelProduct product = new ChannelProduct();
         product.setProduct("ChannelProduct" + TestUtils.randomString());
         product.setVersion("11.3");
@@ -142,9 +141,8 @@ public class ErrataTestUtils {
     /**
      * Create a {@link ChannelFamily}.
      * @return the newly created channel family
-     * @throws Exception if anything goes wrong
      */
-    public static ChannelFamily createTestChannelFamily() throws Exception {
+    public static ChannelFamily createTestChannelFamily() {
         String label = "ChannelFamilyLabel" + TestUtils.randomString();
         String name = "ChannelFamilyName" + TestUtils.randomString();
 
@@ -225,9 +223,8 @@ public class ErrataTestUtils {
      * Create a {@link Cve}.
      * @param name the vulnerability identifier
      * @return the newly created CVE object
-     * @throws Exception if anything goes wrong
      */
-    public static Cve createTestCve(String name) throws Exception {
+    public static Cve createTestCve(String name) {
         Cve result = new Cve();
         result.setName(name);
         TestUtils.saveAndFlush(result);
@@ -258,10 +255,9 @@ public class ErrataTestUtils {
      * @param cves a set of CVE vulnerabilities fixed by this errata
      * @param aPackage a package to include in the cloned errata
      * @return the newly created errata
-     * @throws Exception if anything goes wrong
      */
     public static Errata createTestClonedErrata(User user, Errata original, Set<Cve> cves,
-            Package aPackage) throws Exception {
+            Package aPackage) {
         ClonedErrata clone = new ClonedErrata();
         copyErrataDetails(clone, original);
         ErrataHelper.setUniqueAdvisoryCloneName(original, clone);
@@ -296,11 +292,10 @@ public class ErrataTestUtils {
      * @param original the channel to clone from
      * @param packages packages to include in the cloned channel
      * @return the newly created channel
-     * @throws Exception if anything goes wrong
      */
     @SuppressWarnings("deprecation")
     public static Channel createTestClonedChannel(User user, Errata errata,
-            Channel original, Collection<Package> packages) throws Exception {
+            Channel original, Collection<Package> packages) {
         Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(original, user);
         clonedChannel.addErrata(errata);
 
@@ -333,10 +328,9 @@ public class ErrataTestUtils {
      * @param channel the channel in which the new package is to be published
      * @param arch the package architecture label
      * @return the newly created patch
-     * @throws Exception if anything goes wrong
      */
     public static Package createTestPackage(User user, Errata errata, Channel channel,
-            String arch) throws Exception {
+            String arch) {
         Package result = PackageTest.createTestPackage(user.getOrg());
         result.setPackageArch(PackageFactory.lookupPackageArchByLabel(arch));
 
@@ -424,10 +418,9 @@ public class ErrataTestUtils {
      * @param packageIn the package to install
      * @param server the server
      * @return the newly created installed package
-     * @throws Exception if anything goes wrong
      */
     public static InstalledPackage createTestInstalledPackage(Package packageIn,
-            Server server) throws Exception {
+            Server server) {
         InstalledPackage result = new InstalledPackage();
         result.setEvr(packageIn.getPackageEvr());
         result.setArch(packageIn.getPackageArch());
@@ -501,6 +494,6 @@ public class ErrataTestUtils {
         copy.setLastModified(original.getLastModified());
 
         // Copy the packages
-        copy.setPackages(new HashSet(original.getPackages()));
+        copy.setPackages(new HashSet<>(original.getPackages()));
     }
 }

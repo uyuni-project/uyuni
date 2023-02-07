@@ -15,6 +15,8 @@
 package com.redhat.rhn.common.db.datasource;
 
 
+import org.hibernate.Session;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,14 @@ public class ModeElaborator implements Elaborator, Serializable {
      *
      * {@inheritDoc}
      */
+    @Override
     public void elaborate(List objectsToElaborate) {
+        mode.elaborate(objectsToElaborate, params);
+    }
+
+    @Override
+    public void elaborate(List objectsToElaborate, Session session) {
+        mode = ModeFactory.getMode(session, mode);
         mode.elaborate(objectsToElaborate, params);
     }
 }
