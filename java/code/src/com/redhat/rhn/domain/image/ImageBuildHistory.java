@@ -53,7 +53,7 @@ public class ImageBuildHistory extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgbuildhistory_seq")
     @SequenceGenerator(name = "imgbuildhistory_seq",
-            sequenceName = "suse_img_buildhistory_id_seq")
+            sequenceName = "suse_img_buildhistory_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
