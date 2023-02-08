@@ -469,9 +469,9 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
   within(:xpath, xpath_query) do
     if should_not
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: DEFAULT_TIMEOUT)
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: 2)
     else
-      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: DEFAULT_TIMEOUT)
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: 2)
     end
   end
 end
