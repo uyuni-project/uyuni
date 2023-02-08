@@ -2318,7 +2318,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Return <code>true</code> if OS supports Product Temporary Fixes (PTF)
+     * Return <code>true</code> if OS supports Program Temporary Fixes (PTFs)
      *
      * @return <code>true</code> if OS supports PTF uninstallation
      */

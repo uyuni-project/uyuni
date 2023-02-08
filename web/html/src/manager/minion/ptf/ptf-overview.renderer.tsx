@@ -51,7 +51,7 @@ class PtfOverview extends React.Component<Props, State> {
     return (
       <>
         <MessagesContainer />
-        <InnerPanel title={t("Product Temporary Fixes (PTF)")} icon="fa-fire-extinguisher">
+        <InnerPanel title={t("Program Temporary Fixes (PTFs)")} icon="fa-fire-extinguisher">
           {this.state.loading ? (
             <Loading text={t("Loading...")} />
           ) : this.state.allowedActions.length === 0 ? (
