@@ -596,7 +596,7 @@ public class Access extends BaseHandler {
     }
 
     /**
-     * Checks if a server can support product temporary fixes (ptf).
+     * Checks if a server can support Program Temporary Fixes (PTFs).
      * @param ctx acl context
      * @param params parameters for acl
      * @return true if the server can have ptf
