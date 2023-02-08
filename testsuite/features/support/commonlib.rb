@@ -183,6 +183,10 @@ def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
 
+def slemicro_host?(name)
+  (name.include? 'slemicro') || (name.include? 'micro')
+end
+
 def rh_host?(name)
   (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
 end

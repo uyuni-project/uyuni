@@ -54,6 +54,10 @@ if $build_validation
   $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $slemicro52_minion = twopence_init("ssh:#{ENV['SLEMICRO52_MINION']}") if ENV['SLEMICRO52_MINION']
+  $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
+  $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
+  $slemicro53_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO53_SSHMINION']}") if ENV['SLEMICRO53_SSHMINION']
   $centos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
@@ -84,12 +88,14 @@ if $build_validation
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
-  $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
-             $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
-             $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
-             $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
-             $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
-             $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
+  $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion,
+             $sle12sp5_minion, $sle12sp5_ssh_minion,
+             $sle15sp1_minion, $sle15sp1_ssh_minion,
+             $sle15sp2_minion, $sle15sp2_ssh_minion,
+             $sle15sp3_minion, $sle15sp3_ssh_minion,
+             $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $slemicro52_minion, $slemicro52_ssh_minion,
+             $slemicro53_minion, $slemicro53_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $rocky9_minion, $rocky9_ssh_minion,
@@ -296,6 +302,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp4_client'           => $sle15sp4_client,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'slemicro52_minion'         => $slemicro52_minion,
+                  'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
+                  'slemicro53_minion'         => $slemicro53_minion,
+                  'slemicro53_ssh_minion'     => $slemicro53_ssh_minion,
                   'centos7_client'            => $centos7_client,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
