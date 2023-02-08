@@ -733,7 +733,7 @@
       <trans-unit id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">Product Temporary Fixes Navigation Tabs</context>
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Search" xml:space="preserve">
@@ -7611,10 +7611,10 @@ Follow this url to see the full list of inactive systems:
         <source>Invalid package: {0}</source>
       </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
-        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
       </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
-        <source>Product Temporary Fixes packages (PTF): {0}</source>
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
         <source>Patch already exists with advisory {0}</source>
