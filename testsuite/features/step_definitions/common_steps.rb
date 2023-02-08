@@ -1467,6 +1467,25 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot > /dev/null 2> /dev/null &')
+  reboot_timeout = 120
+  check_shutdown($node.public_ip, reboot_timeout)
+  check_restart($server.public_ip, node, reboot_timeout)
+end
+
+When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
+  step %(Given I am on the Systems overview page of this "#{host}")
+  step %(When I follow first "Schedule System Reboot")
+  step %(Then I should see a "System Reboot Confirmation" text")
+  step %(And I should see a "Reboot system" button")
+  step %(When I click on "Reboot system")
+  step %(Then I should see a "Reboot scheduled for system" text")
+  step %(And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed")
+  step %(Then I should see a "This action's status is: Completed" text")
+end
+
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   old_hostname = $server.hostname
   new_hostname = old_hostname + '2'
