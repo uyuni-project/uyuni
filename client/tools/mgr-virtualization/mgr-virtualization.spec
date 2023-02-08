@@ -58,6 +58,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
+BuildRequires:  make
 %if 0%{?suse_version}
 # make chkconfig work in OBS
 BuildRequires:  sysconfig
