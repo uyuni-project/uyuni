@@ -1,4 +1,9 @@
-- Increase maximum object size to 500MB (bsc#1204011)
+-------------------------------------------------------------------
+Thu Feb 09 09:44:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.8-1
+  * Increase maximum object size to 500MB (bsc#1204011)
+
 -------------------------------------------------------------------
 Wed Oct 06 09:35:51 CEST 2021 - jgonzalez@suse.com
 
