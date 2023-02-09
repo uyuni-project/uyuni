@@ -79,8 +79,16 @@ public class SCCVirtualizationHostPropertiesJson {
         threads = Optional.ofNullable(s.getCpu()).map(CPU::getNrThread).orElse(1L) * cores;
         ramMb = s.getRam();
         type = s.getGuests().stream()
-                .map(vi -> vi.getType().getHypervisor().orElse(""))
-                .filter(st -> !st.isBlank())
+                .sorted((v1, v2) -> {
+                    if (v1.isRegisteredGuest() == v2.isRegisteredGuest()) {
+                        return 0;
+                    }
+                    else if (v1.isRegisteredGuest()) {
+                        return -1;
+                    }
+                    return 1;
+                })
+                .flatMap(vi -> vi.getType().getHypervisor().stream())
                 .findFirst()
                 .orElse("");
     }
