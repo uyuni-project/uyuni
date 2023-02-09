@@ -1,17 +1,21 @@
-- Improve _mgractionchains.conf logs
-- Prevent possible errors from "mgractionschains" module when there is no action chain to resume.
-- Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
-- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
-- filter out libvirt engine events (bsc#1206146)
-- Optimize the number of salt calls on minion startup (bsc#1203532)
-- Updated logrotate configuration (bsc#1206470)
-- Make libvirt-events.conf path depend on what minion is used (bsc#1205920)
-- Fix kiwi inspect regexp to allow image names with "-" (bsc#1204541)
-- Avoid installing recommended packages from assigned products (bsc#1204330)
-- Manager reboot in transactional update action chain (bsc#1201476)
-- Use the actual sudo user home directory for salt ssh
-  clients on bootstrap and clean up (bsc#1202093)
-- Perform refresh with packages.pkgupdate state (bsc#1203884)
+-------------------------------------------------------------------
+Thu Feb 09 09:46:22 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.29-1
+  * Improve _mgractionchains.conf logs
+  * Prevent possible errors from "mgractionschains" module when there is no action chain to resume.
+  * Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+  * Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+  * filter out libvirt engine events (bsc#1206146)
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+  * Make libvirt-events.conf path depend on what minion is used (bsc#1205920)
+  * Fix kiwi inspect regexp to allow image names with "-" (bsc#1204541)
+  * Avoid installing recommended packages from assigned products (bsc#1204330)
+  * Manager reboot in transactional update action chain (bsc#1201476)
+  * Use the actual sudo user home directory for salt ssh
+    clients on bootstrap and clean up (bsc#1202093)
+  * Perform refresh with packages.pkgupdate state (bsc#1203884)
 
 -------------------------------------------------------------------
 Tue Oct 18 10:05:44 CEST 2022 - jgonzalez@suse.com
