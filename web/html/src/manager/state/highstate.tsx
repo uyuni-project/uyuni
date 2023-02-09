@@ -68,7 +68,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
             </span>
           ) : (
             <span>
-              {t("Applying the highstate has been '{0}'.", <ActionLink id={data}>{t("scheduled")}</ActionLink>)}
+              {t("Applying the highstate has been {0}.", <ActionLink id={data}>{t("scheduled")}</ActionLink>)}
             </span>
           )
         );
