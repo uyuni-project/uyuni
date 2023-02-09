@@ -135,4 +135,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-overview-update-queu
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-system-overview-bunch', 'Update the DB table gathering the systems data to show in lists', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-profile-refresh-bunch', 'Refresh System Profiles of all registered servers', null);
+
 commit;
