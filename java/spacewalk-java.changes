@@ -1,3 +1,4 @@
+- Improve automatic dependency selection for vendor clones
 - Fix taskomatic logging (bsc#1207867)
 - Added APIs to allow frontend to install and remove ptf
 - Fix not being able to delete CLM environment if there are custom child
