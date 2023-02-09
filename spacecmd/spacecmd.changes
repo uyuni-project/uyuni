@@ -1,9 +1,13 @@
-- Prevent string api parameters to be parsed as dates if not in
-  ISO-8601 format (bsc#1205759)
-- Add python-dateutil dependency, required to process date values in
-  spacecmd api calls
-- Correctly understand 'ssm' keyword on scap scheduling
-- Fix dict_keys not supporting indexing in systems_setconfigchannelorger
+-------------------------------------------------------------------
+Thu Feb 09 09:22:45 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.21-1
+  * Prevent string api parameters to be parsed as dates if not in
+    ISO-8601 format (bsc#1205759)
+  * Add python-dateutil dependency, required to process date values in
+    spacecmd api calls
+  * Correctly understand 'ssm' keyword on scap scheduling
+  * Fix dict_keys not supporting indexing in systems_setconfigchannelorger
 
 -------------------------------------------------------------------
 Tue Oct 18 09:56:40 CEST 2022 - jgonzalez@suse.com
