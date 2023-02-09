@@ -372,7 +372,7 @@ end
 
 # rubocop:disable Metrics/BlockLength
 # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
-When(/^I install the needed packages for highstate in build host"$/) do
+When(/^I install the needed packages for highstate in build host$/) do
   packages = "bea-stax
   bea-stax-api
   btrfsmaintenance
