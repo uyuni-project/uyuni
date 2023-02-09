@@ -38,7 +38,7 @@ Feature: OpenSCAP audit of Debian-like Salt minion
   Scenario: Check the results of the OpenSCAP scan on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_standard"
+    And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Ubuntu" text
     And I should see a "XCCDF Rule Results" text
