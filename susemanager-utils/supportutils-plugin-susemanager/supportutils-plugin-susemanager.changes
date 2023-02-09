@@ -1,5 +1,9 @@
-- Added dependency for XML Simple
-- update susemanager plugin to export the number of pending salt events
+-------------------------------------------------------------------
+Thu Feb 09 09:45:39 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.5-1
+  * Added dependency for XML Simple
+  * update susemanager plugin to export the number of pending salt events
 
 -------------------------------------------------------------------
 Tue Mar 29 14:23:22 CEST 2022 - jmassaguerpla@suse.de
