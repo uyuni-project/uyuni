@@ -374,7 +374,7 @@ class apacheHandler(rhnApache):
         # All good; we expect ret to be an HTTP return code
         if not isinstance(ret, type(1)):
             raise rhnException("Invalid status code type %s" % type(ret))
-        log_debug(1, "Leaving with status code %s" % ret)
+        log_debug(2, "Leaving with status code %s" % ret)
         return ret
 
     @staticmethod
