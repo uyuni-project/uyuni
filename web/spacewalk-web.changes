@@ -1,8 +1,12 @@
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
-- fix frontend logging in react pages
-- Add bugzilla references to past security fixes
-  * shell-quote fix CVE-2021-42740 (bsc#1203287)
-  * moment fix CVE-2022-31129 (bsc#1203288)
+-------------------------------------------------------------------
+Thu Feb 09 10:06:22 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.32-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * fix frontend logging in react pages
+  * Add bugzilla references to past security fixes
+    * shell-quote fix CVE-2021-42740 (bsc#1203287)
+    * moment fix CVE-2022-31129 (bsc#1203288)
 
 -------------------------------------------------------------------
 Fri Nov 18 12:40:58 CET 2022 - jgonzalez@suse.com
