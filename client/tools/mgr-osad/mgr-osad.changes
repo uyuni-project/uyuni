@@ -1,4 +1,8 @@
-- Updated logrotate configuration (bsc#1206470)
+-------------------------------------------------------------------
+Thu Feb 09 09:43:25 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.9-1
+  * Updated logrotate configuration (bsc#1206470)
 
 -------------------------------------------------------------------
 Wed Mar 30 16:22:04 CEST 2022 - jmassaguerpla@suse.de
