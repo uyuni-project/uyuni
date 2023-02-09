@@ -45,7 +45,7 @@ class HandlerWrap:
             componentType = getComponentType(req)
             initCFG(componentType)
             initLOG(CFG.LOG_FILE, CFG.DEBUG)
-            log_debug(1, 'New request, component %s' % (componentType, ))
+            log_debug(2, 'New request, component %s' % (componentType, ))
 
         # Instantiate the handlers
         if HandlerWrap.svrHandlers is None:

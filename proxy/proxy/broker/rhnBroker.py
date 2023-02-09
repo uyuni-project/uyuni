@@ -328,7 +328,7 @@ class BrokerHandler(SharedHandler):
                 log_error(msg)
                 log_debug(0, msg)
             elif error == '1004':
-                log_debug(1,
+                log_debug(2,
                     "SUSE Manager Proxy Session Token expired, acquiring new one.")
             else: # this should never happen.
                 msg = "SUSE Manager Proxy login failed, error code is %s" % error
