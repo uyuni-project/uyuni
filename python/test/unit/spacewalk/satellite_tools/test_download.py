@@ -107,11 +107,13 @@ def test_reposync_download_thread_fetch_url_proxy_pass():
     parent_mock = Mock()
     parent_mock.retries = 0
     url_grabber_opts_mock = Mock()
+    url_grabber_opts_mock.return_value.retrycodes = [-1]
     with patch(
         "spacewalk.satellite_tools.download.URLGrabberOptions", url_grabber_opts_mock
     ):
         DownloadThread(parent_mock, queue).run()
-        assert url_grabber_opts_mock.mock_calls[0].kwargs["proxies"] == proxies
-        assert "proxy" not in url_grabber_opts_mock.mock_calls[0].kwargs
-        assert "username" not in url_grabber_opts_mock.mock_calls[0].kwargs
-        assert "password" not in url_grabber_opts_mock.mock_calls[0].kwargs
+        assert url_grabber_opts_mock.mock_calls[1].kwargs["proxies"] == proxies
+        assert url_grabber_opts_mock.mock_calls[1].kwargs["retrycodes"] == [-1, 14]
+        assert "proxy" not in url_grabber_opts_mock.mock_calls[1].kwargs
+        assert "username" not in url_grabber_opts_mock.mock_calls[1].kwargs
+        assert "password" not in url_grabber_opts_mock.mock_calls[1].kwargs
