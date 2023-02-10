@@ -1397,42 +1397,42 @@
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.name" xml:space="preserve">
         <source>Inactive Systems</source>
-        <target/>
+        <target>Neaktívne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.description" xml:space="preserve">
         <source> Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
-        <target/>
+        <target> Vypíše zoznam registrovaných systémov @@PRODUCT_NAME@@, ktoré nedávno zastavili prihlasovanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.name" xml:space="preserve">
         <source>Recently Scheduled Actions</source>
-        <target/>
+        <target>Nedávno naplánované akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.description" xml:space="preserve">
         <source> Lists the scheduled actions of the user.</source>
-        <target/>
+        <target> Vypíše zoznam naplánovaných akcií používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.name" xml:space="preserve">
         <source>Recently Registered Systems</source>
-        <target/>
+        <target>Nedávno registrované systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.description" xml:space="preserve">
         <source> A listing of the most recently registered systems within the past 30 days.</source>
-        <target/>
+        <target> Zoznam naposledy zaregistrovaných systémov za posledných 30 dní.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1440,28 +1440,28 @@
       <!--END of  the Pane entries Section-->
       <trans-unit id="preferences.jsp.entriesperpage" xml:space="preserve">
         <source> entries per list page</source>
-        <target/>
+        <target> položiek na stránku zoznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.tz" xml:space="preserve">
         <source>Time Zone</source>
-        <target/>
+        <target>Časové pásmo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.datestimes" xml:space="preserve">
         <source>Dates and times, like system checkin times, will be shown according to the selected timezone.</source>
-        <target/>
+        <target>Dátumy a časy, ako napríklad časy prihlásenia do systému, sa budú zobrazovať podľa vybraného časového pásma.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.displaytimesas" xml:space="preserve">
         <source>Display all times as</source>
-        <target/>
+        <target>Zobraziť všetky časy ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>

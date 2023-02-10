@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-27 10:28+0100\n"
-"PO-Revision-Date: 2022-08-03 18:13+0000\n"
+"POT-Creation-Date: 2023-02-10 15:22+0100\n"
+"PO-Revision-Date: 2023-01-27 18:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-2/sk/"
 ">\n"
@@ -2532,9 +2532,8 @@ msgstr "poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:122
-#, fuzzy
 msgid "none (disable modularity)"
-msgstr "(žiadne, zakázať službu)"
+msgstr "žiadne (zakázať modularitu)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
 msgid "NEVRA"
@@ -2569,9 +2568,8 @@ msgid "enable module"
 msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
-#, fuzzy
 msgid "disable all modules"
-msgstr "povoliť modul"
+msgstr "zakázať všetky moduly"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
 msgid "Build ({0})"
