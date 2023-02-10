@@ -268,11 +268,6 @@ Given(/^I am on the Systems page$/) do
   )
 end
 
-Given(/^cobblerd is running$/) do
-  ct = CobblerTest.new
-  raise 'cobblerd is not running' unless ct.running?
-end
-
 When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
@@ -298,23 +293,6 @@ When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct = CobblerTest.new
   ct.login(user, pwd)
   ct.system_remove(system)
-end
-
-When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
-  space = 'spacecmd -u admin -p admin'
-  system_name = get_system_name(host)
-  $server.run("#{space} clear_caches")
-  out, _code = $server.run("#{space} system_details #{system_name}")
-  unless out.include? 'ssh-push-tunnel'
-    steps %(
-      Given I am authorized as "testing" with password "testing"
-      And I am on the Systems overview page of this "#{host}"
-      And I follow "Provisioning"
-      And I click on "Create PXE installation configuration"
-      And I click on "Continue"
-      And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
-    )
-  end
 end
 
 Given(/^distro "([^"]*)" exists$/) do |distro|
@@ -752,27 +730,6 @@ Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
   else
     raise "Port '#{port}' not open although it should be!" unless port_opened
   end
-end
-
-When(/^I cleanup xorriso temp files$/) do
-  $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
-end
-
-Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
-  result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
-  puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
-  raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
-end
-
-When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
-  tmp_dir = "/var/cache/cobbler/buildiso"
-  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
-end
-
-When(/^I cleanup after Cobbler buildiso$/) do
-  result, code = $server.run("rm -Rf /var/cache/cobbler")
-  raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I reboot the server through SSH$/) do
