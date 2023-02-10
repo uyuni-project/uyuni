@@ -1,3 +1,4 @@
+- Prevent HTTP API restricted args from being logged (bsc#1208119)
 - Fix reconnection of postgres event stream
 - Add the create/update methods for kickstart to accepts kernel and kernel post options(jsc#suma-251)
 - Fix duplicate keys in suseImageFile and other tables (bsc#1207799)
