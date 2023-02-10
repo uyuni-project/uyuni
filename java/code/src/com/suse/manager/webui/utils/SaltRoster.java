@@ -90,17 +90,13 @@ public class SaltRoster {
      * @param sshOption Additional SSH option to pass to salt-ssh
      * @param timeout SSH connect timeout
      * @param minionOpts Minion configuration parameters
-     * @param sshPreflightScriptPath The path to salt-ssh pre flight script
-     * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
             Optional<List<String>> sshOption, Optional<Integer> timeout,
-            Optional<Map<String, Object>> minionOpts,
-            Optional<String> sshPreflightScriptPath,
-            Optional<List<Object>> sshPreflightScriptArgs) {
+            Optional<Map<String, Object>> minionOpts) {
         addHost(host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding, sshOption, timeout,
-                minionOpts, sshPreflightScriptPath, sshPreflightScriptArgs);
+                minionOpts, Optional.empty(), Optional.empty());
     }
 
     /**

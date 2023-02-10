@@ -1,11 +1,15 @@
-- Fix reposync error about missing "content-type" key when syncing certain channels
-- Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
-- Updated logrotate configuration (bsc#1206470)
-- Add 'octet-stream' to accepted content-types for reposync mirrorlists
-- Exclude invalid mirror urls for reposync (bsc#1203826)
-- do not fetch mirrorlist when a file url is given
-- Keep older module metadata files in database (bsc#1201893)
-- Removed the activation keys report from the debug information
+-------------------------------------------------------------------
+Thu Feb 09 09:46:05 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.26-1
+  * Fix reposync error about missing "content-type" key when syncing certain channels
+  * Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
+  * Updated logrotate configuration (bsc#1206470)
+  * Add 'octet-stream' to accepted content-types for reposync mirrorlists
+  * Exclude invalid mirror urls for reposync (bsc#1203826)
+  * do not fetch mirrorlist when a file url is given
+  * Keep older module metadata files in database (bsc#1201893)
+  * Removed the activation keys report from the debug information
 
 -------------------------------------------------------------------
 Tue Oct 18 10:05:17 CEST 2022 - jgonzalez@suse.com

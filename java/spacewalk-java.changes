@@ -1,42 +1,52 @@
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
-- Improve logs when sls action chain file is missing
-- Do not forward ssh command if proxy and tunnel are present (bsc#1200096)
-- Fix not being able to delete CLM environment if there are custom child
-  channels that where not built by the environment (bsc#1206932)
-- Include missing 'gpg' states to avoid issues on SSH minions.
-- Optimize the number of salt calls on minion startup (bsc#1203532)
-- Fix CVE Audit ignoring errata in parent channels if patch in successor
-  product exists (bsc#1206168)
-- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
-- Fix modular channel check during system update via XMLRPC (bsc#1206613)
-- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
-- prevent ISE on activation key page when selected base channel value is null
-- Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
-- Updated logrotate configuration (bsc#1206470)
-- Limit changelog data in generated metadata to 20 entries
-- Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
-- check for NULL in DEB package install size value
-- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
-- disable cloned vendor channel auto selection by default (bsc#1204186)
-- adapt permissions of temporary ssh key directory
-- format results for package, errata and image build actions in
-  system history similar to state apply results
-- Fix ClassCastException
-- Run only minion actions that are in the pending status (bsc#1205012)
-- Manager reboot in transactional update action chain (bsc#1201476
-- Optimize performance of config channels operations for UI and API (bsc#1204029)
-- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
-- fix xmlrpc call randomly failing with translation error (bsc#1203633)
-- Optimize action chain processing on job return event (bsc#1203532)
-- Re-calculate salt event queue numbers on restart
-- Fix out of memory error when building a CLM project (bsc#1202217)
-- Process salt events in FIFO order (bsc#1203532)
-- Remove 'SSM' column text where not applicable (bsc#1203588)
-- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
-- Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
-- Deny packages from older module metadata when building CLM projects (bsc#1201893)
-- Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
-- delay hardware refresh action to avoid missing channels (bsc#1204208)
+-------------------------------------------------------------------
+Fri Feb 10 13:35:38 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.46-1
+  * Fix registration with proxy and tunnel SSH (bsc#1200096)
+
+-------------------------------------------------------------------
+Thu Feb 09 09:49:24 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.45-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Improve logs when sls action chain file is missing
+  * Do not forward ssh command if proxy and tunnel are present (bsc#1200096)
+  * Fix not being able to delete CLM environment if there are custom child
+    channels that where not built by the environment (bsc#1206932)
+  * Include missing 'gpg' states to avoid issues on SSH minions.
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Fix CVE Audit ignoring errata in parent channels if patch in successor
+    product exists (bsc#1206168)
+  * Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+  * Fix modular channel check during system update via XMLRPC (bsc#1206613)
+  * Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+  * prevent ISE on activation key page when selected base channel value is null
+  * Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
+  * Updated logrotate configuration (bsc#1206470)
+  * Limit changelog data in generated metadata to 20 entries
+  * Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
+  * check for NULL in DEB package install size value
+  * Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+  * disable cloned vendor channel auto selection by default (bsc#1204186)
+  * adapt permissions of temporary ssh key directory
+  * format results for package, errata and image build actions in
+    system history similar to state apply results
+  * Fix ClassCastException
+  * Run only minion actions that are in the pending status (bsc#1205012)
+  * Manager reboot in transactional update action chain (bsc#1201476
+  * Optimize performance of config channels operations for UI and API (bsc#1204029)
+  * Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+  * fix xmlrpc call randomly failing with translation error (bsc#1203633)
+  * Optimize action chain processing on job return event (bsc#1203532)
+  * Re-calculate salt event queue numbers on restart
+  * Fix out of memory error when building a CLM project (bsc#1202217)
+  * Process salt events in FIFO order (bsc#1203532)
+  * Remove 'SSM' column text where not applicable (bsc#1203588)
+  * Fix rendering of ssm/MigrateSystems page (bsc#1204651)
+  * Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
+  * Deny packages from older module metadata when building CLM projects (bsc#1201893)
+  * Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
+  * delay hardware refresh action to avoid missing channels (bsc#1204208)
 
 -------------------------------------------------------------------
 Fri Nov 18 12:41:18 CET 2022 - jgonzalez@suse.com

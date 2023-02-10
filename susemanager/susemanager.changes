@@ -1,11 +1,15 @@
-- fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
-- make venv-salt-minion optional for SUSE Manager Proxy 4.2
-  bootstrap repository (bsc#1206933)
-- show RHEL target for bootstrap repo creation only if it is
-  really connected to the CDN (bsc#1206861)
-- add python3-extras to bootstrap repo as dependency of
-  python3-libxml2, optional SLES 15 does not have it and it
-  is only required on SP4 or greater (bsc#1204437) 
+-------------------------------------------------------------------
+Thu Feb 09 09:48:46 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.39-1
+  * fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
+  * make venv-salt-minion optional for SUSE Manager Proxy 4.2
+    bootstrap repository (bsc#1206933)
+  * show RHEL target for bootstrap repo creation only if it is
+    really connected to the CDN (bsc#1206861)
+  * add python3-extras to bootstrap repo as dependency of
+    python3-libxml2, optional SLES 15 does not have it and it
+    is only required on SP4 or greater (bsc#1204437) 
 
 -------------------------------------------------------------------
 Tue Oct 18 10:06:46 CEST 2022 - jgonzalez@suse.com

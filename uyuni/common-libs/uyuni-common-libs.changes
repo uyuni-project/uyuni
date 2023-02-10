@@ -1,5 +1,9 @@
-- some i18n functions moved to new module which needs to be loaded
-  (bsc#1201142)
+-------------------------------------------------------------------
+Thu Feb 09 09:44:02 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.8-1
+  * some i18n functions moved to new module which needs to be loaded
+    (bsc#1201142)
 
 -------------------------------------------------------------------
 Thu Sep 08 09:30:34 CEST 2022 - mc@suse.de

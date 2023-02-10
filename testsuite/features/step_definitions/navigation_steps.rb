@@ -938,7 +938,7 @@ end
 
 # Click on a button in a modal window with a specific title
 When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
-  path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
+  path = "//*[text() = \"#{title}\"]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
   # We wait until the element becomes visible, because
