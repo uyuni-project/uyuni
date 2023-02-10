@@ -47,7 +47,6 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
@@ -86,7 +85,6 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
     raise "Bootstrap didn't finish properly"
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
   node = get_target(host)
