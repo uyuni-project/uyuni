@@ -204,15 +204,21 @@ Given(/^I update the profile of "([^"]*)"$/) do |client|
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
   steps %(
-    When I follow the left menu "Systems > System List > All"
+    When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
   )
+  if get_client_type(host) == 'traditional' and is_salt.empty?
+    get_target(host).run('rhn_check -vvv')
+  else
+    steps %(
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
+    )
+  end
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
@@ -504,4 +510,35 @@ When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
     unique_repo_name = generate_repository_name(repo_url)
     step %(I check "#{unique_repo_name}" in the list)
   end
+end
+
+# Register client
+Given(/^I update the profile of this client$/) do
+  step %(I update the profile of "sle_client")
+end
+
+When(/^I register "([^"]*)" as traditional client$/) do |client|
+  step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
+end
+
+And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
+  node = get_target(client)
+  if client.include? 'sle'
+    node.run('zypper --non-interactive install wget', timeout: 500)
+  else
+    # As Debian-like has no support for traditional clients, it must be Red Hat-like
+    node.run('yum install wget', timeout: 600)
+  end
+  registration_url = $proxy.nil? ? "https://#{$server.full_hostname}/XMLRPC" : "https://#{$proxy.full_hostname}/XMLRPC"
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
+  log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
+  command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
+  log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
+end
+
+Then(/^I should see a text describing the OS release$/) do
+  os_family = $client.os_family
+  release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
+  step %(I should see a "OS: #{release}" text)
 end

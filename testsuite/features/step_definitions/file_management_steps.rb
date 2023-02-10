@@ -47,7 +47,7 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
   node.run("echo \"#{content}\" > #{filename}", timeout: 600)
 end
 
-When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
+When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
   if target_type.include? 'server' or $proxy.nil?
@@ -56,17 +56,18 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   end
 
   # Prepare bootstrap script for different types of clients
+  client = client_type == 'traditional' ? '--traditional' : ''
   force_bundle = $use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{force_bundle} &&
+  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
-  output, = target.run(cmd, verbose: true)
+  output, = target.run(cmd)
   unless output.include? key
     log output
     raise "Key: #{key} not included"
@@ -79,7 +80,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
+  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
   unless output.include? '-bootstrap complete-'
     log output
     raise "Bootstrap didn't finish properly"
