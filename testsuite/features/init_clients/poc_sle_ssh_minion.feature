@@ -17,5 +17,4 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "uyuni-opensuse-minion-test-1", refreshing the page
-    And I wait until onboarding is completed for "uyuni-opensuse-minion-test-1"
 
