@@ -66,7 +66,6 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -106,6 +105,7 @@ public class SaltSSHService {
 
     private static final String SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
     public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
+    public static final String SSH_PUBKEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id.pub";
     private static final String SSH_TEMP_BOOTSTRAP_KEY_DIR = SSH_KEY_DIR + "/temp_bootstrap_keys";
     private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
     private static final String PROXY_SSH_PUSH_KEY =
@@ -113,7 +113,8 @@ public class SaltSSHService {
 
     private static final int SSL_PORT = 443;
 
-    public static final int SSH_PUSH_PORT = 22;
+    public static final int SSH_DEFAULT_PORT = 22;
+    public static final int SSH_PUSH_PORT = SSH_DEFAULT_PORT;
 
     private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
@@ -211,9 +212,9 @@ public class SaltSSHService {
             throws SaltException {
         // Using custom LocalCall timeout if included in the payload
         Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
-                    Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
+                Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
                     getSshPushTimeout();
-        SaltRoster roster = prepareSaltRoster(target, sshTimeout);
+        Optional<SaltRoster> roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
                 callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs));
     }
@@ -235,13 +236,15 @@ public class SaltSSHService {
         return callSyncSSH(call, target, Optional.empty());
     }
 
-    private SaltRoster prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
+    private Optional<SaltRoster> prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
         SaltRoster roster = new SaltRoster();
+        boolean pendingMinion = false;
 
         // these values are mostly fixed, which should change when we allow configuring
         // per-minion server
         for (String mid : target.getTarget()) {
             if (MinionPendingRegistrationService.containsSSHMinion(mid)) {
+                pendingMinion = true;
                 MinionPendingRegistrationService.get(mid).ifPresent(minion -> {
                     String contactMethodLabel = minion.getContactMethod();
 
@@ -254,15 +257,14 @@ public class SaltSSHService {
                             sshProxyCommandOption(proxyPath,
                                 contactMethodLabel,
                                 mid,
-                                minion.getSSHPushPort().orElse(SSH_PUSH_PORT)
-                            ),
+                                minion.getSSHPushPort().orElse(SSH_PUSH_PORT)),
                             sshTimeout,
                             minionOpts(mid, contactMethodLabel),
                             Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                             Optional.of(Arrays.asList(
                                     proxyPath.isEmpty() ?
                                             ConfigDefaults.get().getCobblerHost() :
-                                            proxyPath.get(proxyPath.size() - 1),
+                                            proxyPath.get(proxyPath.size() - 1).split(":")[0],
                                     ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
                                             getSshPushRemotePort() : SSL_PORT,
                                     getSSHUseSaltThin() ? 1 : 0
@@ -281,24 +283,16 @@ public class SaltSSHService {
                             sshProxyCommandOption(proxyPath,
                                 contactMethodLabel,
                                 minion.getMinionId(),
-                                Optional.ofNullable(minion.getSSHPushPort()).orElse(SSH_PUSH_PORT)
-                            ),
+                                Optional.ofNullable(minion.getSSHPushPort()).orElse(SSH_PUSH_PORT)),
                             sshTimeout,
-                            minionOpts(mid, contactMethodLabel),
-                            Optional.ofNullable(getSaltSSHPreflightScriptPath()),
-                            Optional.of(Arrays.asList(
-                                    proxyPath.isEmpty() ?
-                                            ConfigDefaults.get().getCobblerHost() :
-                                            proxyPath.get(proxyPath.size() - 1),
-                                    ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
-                                            getSshPushRemotePort() : SSL_PORT,
-                                    getSSHUseSaltThin() ? 1 : 0
-                            ))
+                            minionOpts(mid, contactMethodLabel)
                     );
                 }, () -> LOG.error("Minion id='" + mid + "' not found in the database"));
             }
         }
-        return roster;
+        // we only need a roster when we may contact pending minions which are not yet in DB
+        // otherwise the roster is generated from DB
+        return pendingMinion ? Optional.of(roster) : Optional.empty();
     }
 
     /**
@@ -326,7 +320,7 @@ public class SaltSSHService {
     public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel,
             Optional<String> extraFilerefs) {
-        SaltRoster roster = prepareSaltRoster(target, getSshPushTimeout());
+        Optional<SaltRoster> roster = prepareSaltRoster(target, getSshPushTimeout());
         Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
         target.getTarget().forEach(minionId ->
                 futures.put(minionId, new CompletableFuture<>())
@@ -394,7 +388,7 @@ public class SaltSSHService {
         }
 
         List<ServerPath> proxyPath = sortServerPaths(serverPaths);
-        List<String> hostnamePath = proxyPath.stream().map(ServerPath::getHostname).collect(Collectors.toList());
+        List<String> hostnamePath = proxyPath.stream().map(path -> path.getHostname()).collect(Collectors.toList());
 
         lastProxy.ifPresent(hostnamePath::add);
 
@@ -431,7 +425,10 @@ public class SaltSSHService {
         StringBuilder proxyCommand = new StringBuilder();
         proxyCommand.append("ProxyCommand='");
         for (int i = 0; i < proxyPath.size(); i++) {
-            String proxyHostname = proxyPath.get(i);
+            String[] proxyHostPort = proxyPath.get(i).split(":");
+            String proxyHostname = proxyHostPort[0];
+            String proxyPort = proxyHostPort.length > 1 ? proxyHostPort[1] : Integer.toString(SSH_DEFAULT_PORT);
+
             String key;
             String stdioFwd = "";
             if (i == 0) {
@@ -440,64 +437,33 @@ public class SaltSSHService {
             else {
                 key = PROXY_SSH_PUSH_KEY;
             }
-            if (!tunnel && i == proxyPath.size() - 1) {
+            if (i == proxyPath.size() - 1) {
                 stdioFwd = String.format(" -W %s:%s", minionHostname, sshPushPort);
             }
 
             proxyCommand.append(String.format(
-                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s%s %s ",
-                    key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
-        }
-        if (tunnel) {
-            Map<String, String> values = new HashMap<>();
-            values.put("pushKey", PROXY_SSH_PUSH_KEY);
-            values.put("user", getSSHUser());
-            values.put("pushPort", getSshPushRemotePort() + "");
-            values.put("proxy", proxyPath.get(proxyPath.size() - 1));
-            values.put("sslPort", SSL_PORT + "");
-            values.put("minion", minionHostname);
-            values.put("ownKey",
-                    ("root".equals(getSSHUser()) ? "/root" : "/home/" + getSSHUser()) +
-                            "/.ssh/mgr_own_id");
-            values.put("sshPort", Integer.toString(sshPushPort));
-
-            StrSubstitutor sub = new StrSubstitutor(values);
-            proxyCommand.append(
-                sub.replace("/usr/bin/ssh -i ${pushKey} -o StrictHostKeyChecking=no " +
-                        "-o User=${user} -R ${pushPort}:${proxy}:${sslPort} ${minion} " +
-                            "ssh -i ${ownKey} -W ${minion}:${sshPort} " +
-                            "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
+                    "/usr/bin/ssh -p %s -i %s -o StrictHostKeyChecking=no -o User=%s%s %s ",
+                    proxyPort, key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
         }
         proxyCommand.append("'");
-        List<String> sshcommand = Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString());
-        return Optional.of(sshcommand);
+        return Optional.of(Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString()));
     }
 
     private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         minions.forEach(minion -> {
             List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(), Optional.empty());
-            String contactMethodLabel = minion.getContactMethod().getLabel();
             roster.addHost(minion.getMinionId(),
                     getSSHUser(),
                     Optional.empty(),
                     Opt.wrapFirstNonNull(minion.getSSHPushPort(), SSH_PUSH_PORT),
-                    remotePortForwarding(proxyPath, contactMethodLabel),
+                    remotePortForwarding(proxyPath, minion.getContactMethod().getLabel()),
                     sshProxyCommandOption(proxyPath,
                         minion.getContactMethod().getLabel(),
                         minion.getMinionId(),
                         Optional.ofNullable(minion.getSSHPushPort()).orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
-                    minionOpts(minion.getMinionId(), contactMethodLabel),
-                    Optional.ofNullable(getSaltSSHPreflightScriptPath()),
-                    Optional.of(Arrays.asList(
-                        proxyPath.isEmpty() ?
-                            ConfigDefaults.get().getCobblerHost() : proxyPath.get(proxyPath.size() - 1),
-                        ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
-                            getSshPushRemotePort() : SSL_PORT,
-                        getSSHUseSaltThin() ? 1 : 0
-                    ))
-            );
+                    minionOpts(minion.getMinionId(), minion.getContactMethod().getLabel()));
         });
         return !minions.isEmpty();
     }
@@ -558,15 +524,14 @@ public class SaltSSHService {
                     sshProxyCommandOption(bootstrapProxyPath,
                         contactMethod,
                         parameters.getHost(),
-                        parameters.getPort().orElse(SSH_PUSH_PORT)
-                    ),
+                        parameters.getPort().orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
                     minionOpts(parameters.getHost(), contactMethod),
                     Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
                             bootstrapProxyPath.isEmpty() ?
                                     ConfigDefaults.get().getCobblerHost() :
-                                    bootstrapProxyPath.get(bootstrapProxyPath.size() - 1),
+                                    bootstrapProxyPath.get(bootstrapProxyPath.size() - 1).split(":")[0],
                             ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod) ?
                                     getSshPushRemotePort() : SSL_PORT,
                             getSSHUseSaltThin() ? 1 : 0,
@@ -577,7 +542,7 @@ public class SaltSSHService {
             Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
                     callSyncSSHInternal(call,
                             new MinionList(parameters.getHost()),
-                            roster,
+                            Optional.of(roster),
                             parameters.isIgnoreHostKeys(),
                             isSudoUser(parameters.getUser()));
             return result.get(parameters.getHost());
@@ -680,38 +645,52 @@ public class SaltSSHService {
      * @return result of the call
      */
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
         return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty());
     }
 
 
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo, Optional<String> extraFilerefs)
-            throws SaltException {
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo,
+            Optional<String> extraFilerefs) throws SaltException {
         if (!(target instanceof MinionList || target instanceof Glob)) {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");
         }
 
         try {
-            final Path rosterPath = roster.persistInTempFile();
+            final Path rosterPath;
+            if (roster.isPresent()) {
+                rosterPath = roster.get().persistInTempFile();
+            }
+            else {
+                rosterPath = null;
+            }
+
             SaltSSHConfig.Builder sshConfigBuilder = new SaltSSHConfig.Builder()
                     .ignoreHostKeys(ignoreHostKeys)
-                    .rosterFile(rosterPath.getFileName().toString())
                     .priv(SSH_KEY_PATH)
                     .sudo(sudo)
                     .refreshCache(true);
+            roster.ifPresentOrElse(
+                    r -> sshConfigBuilder.rosterFile(rosterPath.getFileName().toString()),
+                    () -> {
+                        sshConfigBuilder.roster("uyuni");
+                        LOG.info("No roster file used, using Uyuni roster module!");
+                    });
             extraFilerefs.ifPresent(filerefs -> sshConfigBuilder.extraFilerefs(filerefs));
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
             LOG.debug("Local callSyncSSH: " + SaltService.localCallToString(call));
             return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
                     .whenComplete((r, e) -> {
-                        try {
-                            Files.deleteIfExists(rosterPath);
-                        }
-                        catch (IOException ex) {
-                            LOG.error("Can't delete roster file: " + ex.getMessage());
+                        if (roster.isPresent()) {
+                            try {
+                                Files.deleteIfExists(rosterPath);
+                            }
+                            catch (IOException ex) {
+                                LOG.error("Can't delete roster file: " + ex.getMessage());
+                            }
                         }
                     }));
         }
@@ -740,7 +719,7 @@ public class SaltSSHService {
                 return unwrapSSHReturn(
                         callSyncSSHInternal(Match.glob(target),
                                 new Glob(target),
-                                roster,
+                                Optional.empty(),
                                 false,
                                 isSudoUser(getSSHUser())));
             }
@@ -784,8 +763,7 @@ public class SaltSSHService {
     public static Optional<String> retrieveSSHPushProxyPubKey(long proxyId) {
         Server proxy = ServerFactory.lookupById(proxyId);
         String keyFile = proxy.getHostname() + ".pub";
-        List<String> proxyPath = proxyPathToHostnames(proxy.getServerPaths(),
-                Optional.of(proxy.getHostname()));
+        List<String> proxyPath = proxyPathToHostnames(proxy);
 
         Map<String, String> options = new HashMap<>();
         options.put("StrictHostKeyChecking", "no");
@@ -821,7 +799,7 @@ public class SaltSSHService {
      * @return list of error messages or empty if no error
      */
     public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
-        CompletableFuture timeoutAfter = FutureUtils.failAfter(timeout);
+        CompletableFuture<GenericError> timeoutAfter = FutureUtils.failAfter(timeout);
         try {
             Map<String, Object> pillarData = new HashMap<>();
             if (!minion.getServerPaths().isEmpty()) {
@@ -848,17 +826,15 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return applyResult.fold((saltErr) ->
-                            Optional.of(singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage())),
-                            (saltRes) -> saltRes.values().stream()
-                                    .filter(value -> !value.isResult())
-                                    .map(value -> value.getComment())
-                                    .collect(Collectors
-                                            .collectingAndThen(Collectors.toList(),
-                                                    (list) -> list.isEmpty() ?
-                                                            Optional.<List<String>>empty() :
-                                                            Optional.of(list)))
+                    List<String> result = applyResult.fold(
+                        (saltErr) -> singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage()),
+                        (saltRes) -> saltRes.values().stream()
+                                            .filter(value -> !value.isResult())
+                                            .map(value -> value.getComment())
+                                            .collect(Collectors.toList())
                     );
+
+                    return result.isEmpty() ? Optional.<List<String>>empty() : Optional.of(result);
                 }
                 else if (err instanceof TimeoutException) {
                     return Optional.of(singletonList(SaltService.MINION_UNREACHABLE_ERROR));
