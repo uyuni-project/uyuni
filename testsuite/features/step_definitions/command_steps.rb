@@ -472,10 +472,6 @@ Then(/^the log messages should not contain out of memory errors$/) do
   raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
-When(/^I restart cobbler on the server$/) do
-  $server.run('systemctl restart cobblerd.service')
-end
-
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
@@ -602,17 +598,6 @@ end
 When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run('rm /tmp/test_user_defined_state')
-end
-
-Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
-  node = get_target(host)
-  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
-end
-
-Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
-  output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
