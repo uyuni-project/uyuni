@@ -206,11 +206,12 @@ Then(/^the salt event log on server should contain no failures$/) do
   count_failures = output.to_s.scan(/false/).length
   output = output.join.to_s if output.respond_to?(:join)
   # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
+  ignore_error = false
   if count_failures == 1 && !$build_validation
     ignore_error = output.include?('remove lock')
   end
-  if count_failures.nonzero?
-    raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" unless ignore_error
+  if count_failures.nonzero? and not ignore_error
+    raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n"
   end
 end
 
