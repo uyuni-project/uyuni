@@ -1,4 +1,8 @@
-- Fix registration with proxy and tunnel SSH (bsc#1200096)
+-------------------------------------------------------------------
+Fri Feb 10 13:35:38 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.46-1
+  * Fix registration with proxy and tunnel SSH (bsc#1200096)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:49:24 CET 2023 - jgonzalez@suse.com
