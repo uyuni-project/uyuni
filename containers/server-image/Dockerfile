@@ -4,24 +4,28 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE
 
-# TODO consider setting product repos from the configuration
 ARG PRODUCT_REPO
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
 RUN sh add_repos.sh ${PRODUCT_REPO}
 
-# Main packages
-RUN zypper ref
-RUN zypper -n in vi
-RUN zypper -n in python3-simplejson
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
-    patterns-uyuni_server
-RUN zypper mr -d repo-backports-update repo-sle-update
+# Copy Uyuni setup script
+COPY setup_env.sh /root/setup_env.sh
 
-# Additional configuration
-COPY configure.sh /usr/bin
-RUN sh configure.sh
+# Main packages
+# TODO Remove vi and possibly python3-simplejson
+RUN zypper ref
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
+    patterns-uyuni_server \
+    vi \
+    python3-simplejson
+
+
+# FIXME hack to correct the report db script to work on containers
+RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
+RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
+RUN sed -i 's/-a "$PG_SOCKET"//g' /usr/bin/uyuni-setup-reportdb
 
 # LABELs
 ARG PRODUCT=Uyuni
@@ -32,7 +36,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-httpd
 LABEL org.opencontainers.image.title="${PRODUCT} server container"
-LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} server"
+LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
