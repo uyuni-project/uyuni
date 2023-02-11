@@ -240,6 +240,8 @@ suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
+suseImageSyncItem              :: web_customer suseImageSyncProject
+suseImageSyncProject           :: web_customer suseImageStore
 suseMaintenanceCalendar        :: web_customer
 suseMaintenanceSchedule        :: web_customer suseMaintenanceCalendar
 suseMgrServerInfo              :: rhnServer rhnPackageEVR suseCredentials
