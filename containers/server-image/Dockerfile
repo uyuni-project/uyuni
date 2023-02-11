@@ -5,6 +5,7 @@ ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE
 
 ARG PRODUCT_REPO
+ARG PRODUCT_PATTERN="patterns-uyuni_server"
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
@@ -17,7 +18,7 @@ COPY setup_env.sh /root/setup_env.sh
 # TODO Remove vi and possibly python3-simplejson
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
-    patterns-uyuni_server \
+    ${PRODUCT_PATTERN} \
     vi \
     python3-simplejson
 
