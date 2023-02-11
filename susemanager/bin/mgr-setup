@@ -47,56 +47,28 @@ if [ ! $? -eq 0 ]; then
 fi
 
 TMPDIR="/var/spacewalk/tmp"
-DO_MIGRATION=0
 DO_SETUP=0
 LOGFILE="0"
 WAIT_BETWEEN_STEPS=0
 MANAGER_FORCE_INSTALL=0
 PROGRAM="/usr/lib/susemanager/bin/mgr-setup"
 
-MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
 MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
 MANAGER_COMPLETE_HOOK="/usr/lib/susemanager/hooks/suma_completehook.sh"
-RSYNC_LOG="/var/log/rhn/migration-rsync.log"
 
-SATELLITE_HOST=""
-SATELLITE_DOMAIN=""
-SATELLITE_DB_USER=""
-SATELLITE_DB_PASS=""
-SATELLITE_DB_SID=""
-
-SATELLITE_FQDN=""
-SATELLITE_IP=""
-
-FROMVERSION="3.2"
-KEYFILE="/root/migration-key"
-DBDUMPFILE="susemanager.dmp.gz"
-SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
 [ -z "$SERVER_KEY" ] && { SERVER_KEY="/etc/pki/tls/private/spacewalk.key"; }
-
-RSYNC_PASSWORD=""
 
 LOCAL_DB=1
 DB_BACKEND="postgresql"
 
-# setup_hostname()
 # setup_spacewalk()
-# dump_remote_db()
-# import_db()
-# upgrade_schema()
-# copy_remote_files()
 
 function help() {
     echo "
 Usage: $0 [OPTION]
 helper script to do migration or setup of $PRODUCT_NAME
 
-  -m             full migration of an existing $PRODUCT_NAME
-  -r             only sync remote files (useful for migration only)
-  -f             version of $PRODUCT_NAME to migrate from.
-                 Must be one of: 3.1 or 3.2
-                 NOTE: Needs to be specified before '-r' or '-m'
   -s             fresh setup of the $PRODUCT_NAME installation
   -w             wait between steps (in case you do -r -m)
   -l LOGFILE     write a log to LOGFILE
@@ -169,32 +141,6 @@ fi
 # bsc#979664 - SUSE Manager requires a working mail system
 systemctl --quiet enable postfix 2>&1
 systemctl restart postfix
-}
-
-setup_hostname() {
-    # The SUSE Manager server needs to have the same hostname as the·
-    # old satellite server.·
-
-    cp /etc/hosts /etc/hosts.backup.suse.manager
-
-    # change the hostname to the satellite hostname
-    hostname $SATELLITE_HOST
-
-    # modify /etc/hosts to fake the own hostname
-    #
-    # add line·
-    # <ip>  <fqdn> <shortname>
-    #
-    echo -e "\n$MANAGER_IP $SATELLITE_FQDN $SATELLITE_HOST" >> /etc/hosts
-
-    # test if the output of "hostname -f" is equal to $SATELLITE_FQDN
-    # test if "ping $SATELLITE_HOST" ping the own host
-}
-
-cleanup_hostname() {
-    if [ -f /etc/hosts.backup.suse.manager ]; then
-        mv /etc/hosts.backup.suse.manager /etc/hosts
-    fi;
 }
 
 exists_db() {
@@ -461,13 +407,8 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 
     PARAM_DB="--external-postgresql"
 
-    if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-services-restart --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
-        SWRET=$?
-    else
-        /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
-        SWRET=$?
-    fi
+    /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
+    SWRET=$?
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
         MANAGER_MAIL_FROM="$PRODUCT_NAME ($REALHOSTNAME) <root@$MY_DOMAIN>"
@@ -481,309 +422,6 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
         echo "ERROR: spacewalk-setup failed" >&2
         exit 1
     fi
-}
-
-dump_remote_db() {
-    echo "`date +"%H:%M:%S"`   Dumping remote database to $TMPDIR/$DBDUMPFILE on target system. Please wait..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | gzip\"" > $TMPDIR/$DBDUMPFILE
-    if [ $? -eq 0 ]; then
-        echo -n "`date +"%H:%M:%S"`   Database successfully dumped. Size is: "
-        du -h $TMPDIR/$DBDUMPFILE | cut -f 1
-    else
-        echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
-    fi
-}
-
-import_db() {
-    # Integrity check is no longer necessary since we ensure remote commands
-    # can be executed silently; so no motd should corrupt the dump any more
-    # echo "`date +"%H:%M:%S"`   Checking the integrity of the database dump archive."
-    # gzip -t $TMPDIR/$DBDUMPFILE || { echo "`date +"%H:%M:%S"`   FAILURE!"; exit 1; }
-
-    echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
-    su -s /bin/bash - postgres -c "zcat $TMPDIR/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
-    if [ $? -eq 0 ]; then
-        echo "`date +"%H:%M:%S"`   Database dump successfully imported."
-        rm -f $TMPDIR/$DBDUMPFILE
-    else
-        echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
-    fi
-}
-
-upgrade_schema() {
-    spacewalk-schema-upgrade -y
-    if [ $? -eq 0 ]; then
-        echo "`date +"%H:%M:%S"`   Schema upgrade successful."
-    else
-        echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
-    fi
-}
-
-copy_remote_files() {
-    SUMAFILES="/etc/salt
-               /root/ssl-build
-               /srv/www/cobbler/images
-               /srv/www/cobbler/ks_mirror
-               /srv/www/cobbler/links
-               /srv/www/cobbler/localmirror
-               /srv/www/cobbler/pub
-               /srv/www/cobbler/rendered
-               /srv/www/cobbler/repo_mirror
-               /srv/formula_metadata
-               /srv/pillar
-               /srv/salt
-               /srv/susemanager
-               /srv/tftpboot
-               /srv/www/htdocs/pub
-               /srv/www/os-images
-               /var/cache/rhn
-               /var/cache/salt
-               /var/lib/cobbler/config
-               /var/lib/Kiwi
-               /var/lib/rhn
-               /var/lib/salt
-               /var/lib/spacewalk
-               /var/log/rhn
-               /var/spacewalk"
-
-    echo "Copy files from old $PRODUCT_NAME..."
-
-    for DIR in $SUMAFILES; do
-        DEST=`dirname "$DIR"`
-        ssh -i $KEYFILE root@$SATELLITE_IP "test -d $DIR"
-        if [ $? -eq 0 ]; then
-            echo "`date +"%H:%M:%S"`   Copy $DIR ..."
-            rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:$DIR $DEST >> $RSYNC_LOG
-        else
-            echo "`date +"%H:%M:%S"`   Skipping non-existing $DIR ..."
-        fi
-    done
-
-    echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
-
-    echo "`date +"%H:%M:%S"`   Copy /etc/cobbler/settings ..."
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/etc/cobbler/settings /etc/cobbler/settings.old >> $RSYNC_LOG
-
-    echo "`date +"%H:%M:%S"`   Copy certificates ..."
-    scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt
-    scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
-    ln -sf ../../../apache2/ssl.crt/server.crt /etc/pki/tls/certs/spacewalk.crt
-    ln -sf ../../../apache2/ssl.key/server.key /etc/pki/tls/private/spacewalk.key
-    scp -i $KEYFILE -p root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-$FROMVERSION
-
-    # assert correct ownership and permissions
-    chown -R tomcat:tomcat /var/lib/rhn/kickstarts
-    chown wwwrun:tftp /srv/tftpboot
-    chmod 750 /srv/tftpboot
-    chown -R wwwrun.www /var/spacewalk
-    ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
-    /usr/share/rhn/certs/update-ca-cert-trust.sh
-    /usr/lib/susemanager/bin/migrate-cobbler.sh
-}
-
-create_ssh_key() {
-    rm -f $KEYFILE
-    rm -f $KEYFILE.pub
-    cleanup_hostname
-    echo "Please enter the root password of the remote machine."
-    ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
-    ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null 2>&1
-
-    TMPFILE=`mktemp`
-    echo -n "Testing for silent remote command execution... "
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"true\"" > $TMPFILE
-    if [ -s $TMPFILE ]; then
-        echo "FAILED!"
-        echo
-        echo "************************************************************************************"
-        echo
-        echo "Disturbing output from remote shell detected!"
-        echo "Please make sure remote commands can be executed silently and try again."
-        echo
-        echo "Check /etc/profile.d/* and .bashrc files of users root and postgres."
-        echo
-        echo "For testing make sure the following command does *NOT* produce any output:"
-        echo
-        echo "ssh -i $KEYFILE root@$SATELLITE_IP \"su -s /bin/bash - postgres -c true\""
-        echo
-        echo "************************************************************************************"
-        echo
-        rm -f $TMPFILE
-        exit 1
-    else
-        echo "Ok"
-        rm -f $TMPFILE
-    fi
-}
-
-remove_ssh_key() {
-    ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
-    rm -f $KEYFILE
-    rm -f $KEYFILE.pub
-
-    # migration also copies the ss stuff from the old machine
-    # so remove migration key also from local copy
-    if [ -f /root/.ssh/authorized_keys ]; then
-        grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys
-    fi
-}
-
-check_remote_type() {
-    case "$FROMVERSION" in
-        3.1)
-            echo "Migrating from remote system $PRODUCT_NAME 3.1"
-            ;;
-        3.2)
-            echo "Migrating from remote system $PRODUCT_NAME 3.2"
-            ;;
-        *)
-            echo
-            echo "Unknown version to migrate from: \"$FROMVERSION\""
-            echo "Type \"$PROGRAM -h\" for valid versions."
-            echo
-            exit 1
-            ;;
-    esac
-
-    echo -n "Checking for /etc/pki/tls/certs/spacewalk.crt..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
-    if [ $? -eq 0 ]; then
-        echo " found"
-        SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
-        SERVER_KEY="/etc/pki/tls/private/spacewalk.key"
-    else
-        echo " not found"
-        echo -n "Checking for /etc/apache2/ssl.crt/spacewalk.crt..."
-        ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
-        if [ $? -eq 0 ]; then
-            echo " found"
-            SERVER_CRT="/etc/apache2/ssl.crt/spacewalk.crt"
-            SERVER_KEY="/etc/apache2/ssl.key/spacewalk.key"
-        else
-            echo " not found"
-            echo
-            echo "Cannot find /etc/pki/tls/certs/spacewalk.crt nor /etc/pki/tls/certs/spacewalk.crt"
-            echo "on source system. Giving up!"
-            echo
-            exit 1
-        fi
-    fi
-
-    echo "Found $SERVER_CRT and $SERVER_KEY on source system."
-}
-
-postgres_fast() {
-    cp -a /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.migrate
-    echo "fsync = off" >> /var/lib/pgsql/data/postgresql.conf
-    echo "full_page_writes = off" >> /var/lib/pgsql/data/postgresql.conf
-    echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
-    systemctl restart postgresql
-}
-
-postgres_safe() {
-    if [ -f /var/lib/pgsql/data/postgresql.conf.migrate ]; then
-        mv /var/lib/pgsql/data/postgresql.conf.migrate /var/lib/pgsql/data/postgresql.conf
-        systemctl restart postgresql
-    fi
-}
-
-do_migration() {
-    if [ ! -d $TMPDIR ]; then
-        echo "$TMPDIR does not exist; creating it..."
-        umask 0022
-        mkdir -p $TMPDIR
-    fi
-
-    if [ "$DB_BACKEND" = "postgresql" ]; then
-        echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
-        chmod go+rx $TMPDIR
-    fi
-
-    echo
-    echo
-    echo "Migration needs to execute several commands on the remote machine."
-    create_ssh_key
-
-    if [ "x" = "x$SATELLITE_HOST" ]; then
-        echo -n "SATELLITE_HOST:";   read SATELLITE_HOST
-        echo -n "SATELLITE_DOMAIN:"; read SATELLITE_DOMAIN
-        echo -n "SATELLITE_DB_USER"; read SATELLITE_DB_USER
-        echo -n "SATELLITE_DB_PASS"; read SATELLITE_DB_PASS
-        echo -n "SATELLITE_DB_SID";  read SATELLITE_DB_SID
-        echo -n "MANAGER_IP";        read MANAGER_IP
-    fi;
-
-    # re-use database configuration from source system on new one
-    DB_BACKEND="postgresql"
-    LOCAL_DB="1"
-    MANAGER_DB_HOST="localhost"
-    MANAGER_DB_PORT="5432"
-    MANAGER_DB_PROTOCOL="TCP"
-    MANAGER_DB_NAME=$SATELLITE_DB_SID
-    MANAGER_USER=$SATELLITE_DB_USER
-    MANAGER_PASS=$SATELLITE_DB_PASS
-    MANAGER_PASS2=$SATELLITE_DB_PASS
-
-    setup_hostname
-
-    # those values will be overwritten by the copied certificate
-    CERT_CNAMES=""
-    CERT_O="dummy"
-    CERT_OU="dummy"
-    CERT_CITY="dummy"
-    CERT_STATE="dummy"
-    CERT_COUNTRY="DE"
-    CERT_PASS="dummy"
-    CERT_EMAIL="dummy@example.net"
-    MANAGER_ENABLE_TFTP="y"
-    ACTIVATE_SLP="n"
-
-    check_remote_type
-    wait_step
-
-    echo "Shutting down remote spacewalk services..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "/usr/sbin/spacewalk-service stop"
-    wait_step
-
-    do_setup
-    wait_step
-
-    if [ "$DB_BACKEND" = "postgresql" ]; then
-        dump_remote_db
-        wait_step
-
-        echo "Reconfigure postgresql for high performance..."
-        postgres_fast
-        import_db
-        wait_step
-        echo "Reconfigure postgresql for normal safe operation..."
-        postgres_safe
-    fi
-
-    echo "Upgrade database schema..."
-    upgrade_schema
-    wait_step
-
-    copy_remote_files
-    wait_step
-
-    cleanup_hostname
-    remove_ssh_key
-    if [ -d /root/.ssh.new ]; then
-        mv /root/.ssh /root/.ssh.orig
-        mv /root/.ssh.new /root/.ssh
-    fi
-
-    mv /etc/rhn/rhn.conf /etc/rhn/rhn.conf.setup
-    cp /etc/rhn/rhn.conf-$FROMVERSION /etc/rhn/rhn.conf
-    chmod 640 /etc/rhn/rhn.conf
-    # Detect the Apache group name (SUSE/RHEL differences)
-    APACHE_GROUP=`cut -d: -f3 < <((getent group www)||(getent group apache))`
-    chown root:${APACHE_GROUP} /etc/rhn/rhn.conf
 }
 
 do_setup() {
@@ -890,46 +528,13 @@ do_setup() {
 
 PROGRAM="$0"
 
-# clean up fake hostname in /etc/hosts in case of previous error
-cleanup_hostname
-
 while [ -n "$1" ]
 do
     p="$1"
 
     case "$p" in
-    -m)
-        DO_MIGRATION=1
-        . $MIGRATION_ENV 2> /dev/null
-        . $SETUP_ENV
-        SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
-        echo "Migrating from $SATELLITE_FQDN"
-        SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
-        if [ -z "$SATELLITE_IP" ]; then
-            echo "Something went wrong. IP address of remote host can not be found."
-            exit 1
-        fi
-        if [ "$LOGFILE" = "0" ]; then
-            LOGFILE=/var/log/rhn/migration.log
-        fi
-       ;;
-    -f)
-        shift
-        FROMVERSION="$1"
-       ;;
     -s)
         DO_SETUP=1
-       ;;
-    -r)
-        . $MIGRATION_ENV 2> /dev/null
-        . $SETUP_ENV
-        SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
-        SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
-        check_btrfs_dirs
-        create_ssh_key
-        check_remote_type
-        copy_remote_files
-        remove_ssh_key
        ;;
     -h)
         help
@@ -957,13 +562,10 @@ if [ "$LOGFILE" != "0" ]; then
     exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
 fi
 
-if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+if [ "$DO_SETUP" = "1" ]; then
     wait_step
     check_btrfs_dirs
     open_firewall_ports
-fi
-
-if [ "$DO_SETUP" = "1" ]; then
     do_setup
 
     if [ -f $MANAGER_COMPLETE_HOOK ]; then
@@ -971,18 +573,8 @@ if [ "$DO_SETUP" = "1" ]; then
     else
         echo "You can access $PRODUCT_NAME via https://`hostname -f`" > /etc/motd
     fi
-fi
-wait_step
+    wait_step
 
-if [ "$DO_MIGRATION" = "1" ]; then
-    if [ "$DB_BACKEND" != "postgresql" ]; then
-        echo "Unknown DB Backend!" >&2
-        exit 1
-    fi
-    do_migration
-fi
-
-if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ $EXTERNALDB = "0" ]; then
         /usr/bin/smdba system-check autotuning
     fi
@@ -996,9 +588,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
         systemctl start spacewalk-diskcheck.timer
     fi
-fi
 
-if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
         if [ -x /usr/bin/firewall-cmd ]; then
             firewall-cmd --state 2> /dev/null
@@ -1014,21 +604,6 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         systemctl --quiet enable slpd 2>&1
         systemctl start slpd
     fi
-fi
-
-if [ "$DO_MIGRATION" = "1" ]; then
-    echo
-    echo
-    echo "============================================================================"
-    echo "Migration complete."
-    echo "Please shut down the old $PRODUCT_NAME server now."
-    echo "Reboot the new server and make sure it uses the same IP address and hostname"
-    echo "as the old $PRODUCT_NAME server!"
-    echo
-    echo "IMPORTANT: Make sure, if applicable, that your external storage is mounted"
-    echo "in the new server as well as the ISO images needed for distributions before"
-    echo "rebooting the new server!"
-    echo "============================================================================"
 fi
 
 # vim: set expandtab:

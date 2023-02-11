@@ -1,3 +1,4 @@
+- Remove migration parameters from mgr-setup
 - Create repostories with sha256 instead of sha1.
 
 -------------------------------------------------------------------
