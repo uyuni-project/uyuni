@@ -19,7 +19,8 @@ COPY setup_env.sh /root/setup_env.sh
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
     ${PRODUCT_PATTERN} \
-    vi \
+    libyui-ncurses-pkg16 \
+    vim \
     python3-simplejson
 
 
