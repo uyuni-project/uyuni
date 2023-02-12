@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/server:latest uyuni/server:4.4.0 uyuni/server:4.4.0.%RELEASE%
+#!BuildTag: uyuni/server:latest uyuni/server:%PKG_VERSION% uyuni/server:%PKG_VERSION%.%RELEASE%
 
 ARG INIT_BASE=registry.suse.com/bci/bci-base:15.4
 FROM $INIT_BASE
@@ -9,10 +9,13 @@ ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
-RUN sh add_repos.sh ${PRODUCT_REPO}
+RUN sh add_repos.sh
 
 # Copy Uyuni setup script
 COPY uyuni-setup.service /usr/lib/systemd/system/
+
+COPY remove_unused.sh .  
+RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 
 # Main packages
 RUN zypper ref && zypper --non-interactive up
@@ -49,9 +52,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtual-host-gatherer-VMware \
     vim
 
-
-# FIXME hack to correct the report db script to work on containers
-RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN systemctl enable uyuni-setup
