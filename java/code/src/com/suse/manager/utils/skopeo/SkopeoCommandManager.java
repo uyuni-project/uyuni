@@ -51,6 +51,8 @@ public class SkopeoCommandManager {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("list-repos");
+        //FIXME: change insecure setting
+        cmd.add("--tls-verify=false");
         cmd.add("--limit=5000");
         if (!StringUtils.isEmpty(filter)) {
             // FIXME this will change, and should be a parameter at the end, after the URL
@@ -80,6 +82,8 @@ public class SkopeoCommandManager {
         List<String> cmd = new ArrayList<>();
         cmd.add("skopeo");
         cmd.add("list-tags");
+        //FIXME: change insecure setting
+        cmd.add("--tls-verify=false");
 
         if (store.getCreds() != null) {
             cmd.add(String.format("--username=%s", store.getCreds().getUsername()));
@@ -108,6 +112,8 @@ public class SkopeoCommandManager {
         // FIXME needed to sync all archs, and should be solved when we manage archs correctly
         cmd.add("-a");
         cmd.add("--keep-going=true");
+        //FIXME: change insecure setting
+        cmd.add("--dest-tls-verify=false");
 
         if (projectIn.isScoped()) {
             cmd.add("--scoped=true");
