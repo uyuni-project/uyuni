@@ -159,7 +159,7 @@ Then(/^the SLE12 SP5 product should be added$/) do
   if $product != 'Uyuni'
     raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP5 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
+  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
 Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
