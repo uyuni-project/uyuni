@@ -48,7 +48,6 @@ end
 
 # Extract the OS version and OS family
 # We get these data decoding the values in '/etc/os-release'
-# rubocop:disable Metrics/AbcSize
 def get_os_version(node)
   os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
   return nil, nil unless code.zero?
@@ -82,4 +81,3 @@ def get_gpg_keys(node, target = $server)
   end
   gpg_keys.lines.map(&:strip)
 end
-# rubocop:enable Metrics/AbcSize
