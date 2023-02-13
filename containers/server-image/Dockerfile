@@ -21,6 +21,7 @@ RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
     ${PRODUCT_PATTERN} \
     snapper \
+    btrfsprogs \
     libyui-ncurses-pkg16 \
     vim
 
