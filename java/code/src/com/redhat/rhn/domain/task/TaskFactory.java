@@ -65,7 +65,7 @@ public class TaskFactory extends HibernateFactory {
         t.setData(data);
         t.setEarliest(new Date()); //set to now
         save(t); //store the task to the db
-        return t;
+        return reload(t);
     }
 
     /**
