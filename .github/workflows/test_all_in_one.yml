@@ -51,7 +51,7 @@ jobs:
       - name: java-build
         run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /java && ant -f manager-build.xml ivy refresh-branding-jar deploy-local"
       - name: js-build
-        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -av dist/ /srv/www/htdocs/"
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /srv/www/htdocs/"
       - name: opensuse-minion
         run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name uyuni-opensuse-minion-test-1 -h ssh_minion ghcr.io/$UYUNI_PROJECT/uyuni/opensuse-minion:$UYUNI_VERSION
       - name: docker-ps
