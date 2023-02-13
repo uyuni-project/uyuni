@@ -28,12 +28,27 @@ import java.util.Date;
 public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private Long id;
     private String name;
     private Long data;
     private int priority;
     private Date earliest;
     private Org org;
 
+    /**
+     * @return Returns the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn - the id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the data.

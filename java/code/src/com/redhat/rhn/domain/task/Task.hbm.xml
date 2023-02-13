@@ -5,16 +5,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.task.Task"
         table="rhnTaskQueue">
-        <composite-id unsaved-value="any">
-            <key-many-to-one name="org"
-                class="com.redhat.rhn.domain.org.Org"
-                column="org_id" />
-            <key-property name="name" type="string" column="task_name" length="64"/>
-                        <key-property name="data" column="task_data" type="long"/>
-                <key-property name="earliest" column="earliest" type="timestamp"/>
-        </composite-id>
+        <id name="id" type="long" column="id">
+            <meta attribute="scope-set">protected</meta>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">rhn_task_queue_id_seq</param>
+                <param name="increment_size">1</param>
+            </generator>
+        </id>
 
-                <property name="priority" column="priority" type="int"/>
+        <property name="name" type="string" column="task_name" length="64"/>
+        <property name="data" column="task_data" type="long"/>
+        <property name="priority" column="priority" type="int"/>
+        <property name="earliest" column="earliest" type="timestamp"/>
+        <many-to-one name="org"
+                     class="com.redhat.rhn.domain.org.Org"
+                     column="org_id" />
     </class>
 
     <query name="Task.lookup">
