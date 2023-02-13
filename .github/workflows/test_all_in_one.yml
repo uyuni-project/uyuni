@@ -1,5 +1,8 @@
 name: test-all-in-one
 on: pull_request
+env:
+  UYUNI_PROJECT: jordimassaguerpla
+  UYUNI_VERSION: master
 jobs:
   test-uyuni:
     runs-on: ubuntu-latest
@@ -9,10 +12,32 @@ jobs:
       - name: create_tmp
         run: bash -c "rm -rf /tmp/test-all-in-one && mkdir /tmp/test-all-in-one"
       - uses: actions/checkout@v3
+      - name: Cache-jar-files
+        uses: actions/cache@v3
+        with:
+          path: java/buildconf/ivy/repository/
+          key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-cache-uyuni-jars-
+
+      - name: Cache-obs-to-maven files
+        uses: actions/cache@v3
+        with:
+          path: java/.obs-to-maven-cache
+          key: ${{ runner.os }}-build-cache-uyuni-obs-to-maven-${{ hashFiles('**/java/buildconf/ivy/obs-maven-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-cache-uyuni-obs-to-maven-
+      - name: Cache-nodejs
+        uses: actions/cache@v3
+        with:
+          path: web/html/src/node_modules
+          key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-cache-uyuni-nodejs-
       - name: create-docker-network
         run: docker network create uyuni-network-1
       - name: start_controller
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name controller-test-1 -h controller-test-1 -v /home/runner/work/uyuni/uyuni/testsuite:/testsuite ghcr.io/jordimassaguerpla/uyuni/controller-dev:master
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name controller-test-1 -h controller-test-1 -v /home/runner/work/uyuni/uyuni/testsuite:/testsuite ghcr.io/$UYUNI_PROJECT/uyuni/controller-dev:$UYUNI_VERSION
       - name: sleep5
         run: sleep 5
       - name: docker_ps
@@ -20,15 +45,15 @@ jobs:
       - name: create_ssh_conf
         run: docker exec controller-test-1 bash -c "ssh-keygen -f /root/.ssh/id_rsa -t rsa -N \"\" && cp /root/.ssh/id_rsa.pub /tmp/authorized_keys && cd /testsuite && bundle.ruby2.5 install --gemfile Gemfile"
       - name: start-server-container
-        run: docker run --rm --tmpfs /run -v /home/runner/work/uyuni/uyuni/web:/web -v /home/runner/work/uyuni/uyuni/branding:/branding -v /home/runner/work/uyuni/uyuni/java:/java -v /sys/fs/cgroup:/sys/fs/cgroup:rw -v /tmp/test-all-in-one:/tmp  --cgroupns=host --add-host=download.opensuse.org:195.135.221.134 -h uyuni-server-all-in-one-test-1 -p 8443:443 -p 8080:80 -p 4505:4505 -p 4506:4506 -d --name=uyuni-server-all-in-one-test-1 --network uyuni-network-1 ghcr.io/jordimassaguerpla/uyuni/server-all-in-one-dev:master 
+        run: docker run --rm --tmpfs /run -v /home/runner/work/uyuni/uyuni/schema/spacewalk/upgrade/:/etc/sysconfig/rhn/schema-upgrade/ -v /home/runner/work/uyuni/uyuni/schema/reportdb/upgrade/:/etc/sysconfig/rhn/reportdb-schema-upgrade/ -v /home/runner/work/uyuni/uyuni/web:/web -v /home/runner/work/uyuni/uyuni/branding:/branding -v /home/runner/work/uyuni/uyuni/java:/java -v /sys/fs/cgroup:/sys/fs/cgroup:rw -v /tmp/test-all-in-one:/tmp  --cgroupns=host --add-host=download.opensuse.org:195.135.221.134 -h uyuni-server-all-in-one-test-1 -p 8443:443 -p 8080:80 -p 4505:4505 -p 4506:4506 -d --name=uyuni-server-all-in-one-test-1 --network uyuni-network-1 ghcr.io/$UYUNI_PROJECT/uyuni/server-all-in-one-dev:$UYUNI_VERSION
       - name: mgr-setup
         run: docker exec uyuni-server-all-in-one-test-1 bash -c "/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s"
       - name: java-build
         run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /java && ant -f manager-build.xml ivy refresh-branding-jar deploy-local"
       - name: js-build
-        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -av dist/ /srv/www/htdocs/"
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /srv/www/htdocs/"
       - name: opensuse-minion
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name uyuni-opensuse-minion-test-1 -h ssh_minion ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name uyuni-opensuse-minion-test-1 -h ssh_minion ghcr.io/$UYUNI_PROJECT/uyuni/opensuse-minion:$UYUNI_VERSION
       - name: docker-ps
         run: docker ps
       - name: test_from_host
