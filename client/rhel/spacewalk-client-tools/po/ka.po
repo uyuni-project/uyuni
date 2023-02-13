@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2018-03-16 11:01+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Georgian (http://www.transifex.com/projects/p/spacewalk/"
-"language/ka/)\n"
+"PO-Revision-Date: 2023-02-13 22:14+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools-4-3/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -110,9 +110,8 @@ msgid "This system may not be updated until it is associated with a channel."
 msgstr ""
 
 #: ../src/up2date_client/rhncli.py:65
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "დამატებითი გამონატანის ჩვენება"
+msgstr "დამატებითი გამონატანის ჩვენება. მეტი დეტალისთვის გაიმეორეთ."
 
 #: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
@@ -175,7 +174,7 @@ msgstr "შეცდომა ავტენთიფიკაციის დ�
 #: ../src/up2date_client/rhncli.py:139
 #, python-format
 msgid "You must be root to run %s"
-msgstr "%s-ის გასაშვებად უნდა იყოთ root "
+msgstr "%s-ის გასაშვებად უნდა იყოთ root"
 
 #: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
 msgid "Unable to open gui. Try `up2date --nox`"
@@ -235,9 +234,9 @@ msgid "Cannot contact selected server"
 msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "ჩვენ ვცდილობთ დავუკავშირდეთ Red Hat Network-ის სერვერს მისამართზე %s."
+msgstr "{PRODUCT_NAME}-ს ან პროქსის, მისამართზე '{HOST}' ვერ ვუკავშირდები."
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -333,7 +332,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
-msgstr "პრობლემა სისტემის დარეგისტრირებისას:"
+msgstr "სისტემის რეგისტრაციის პრობლემა."
 
 #: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
@@ -485,9 +484,9 @@ msgid "SSL certificate:"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "თქვენ უნდა შეიყვანოთ პაროლი."
+msgstr "{PRODUCT_NAME}-ის სწორი URL-ის შეყვანა აუცილებელია."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
@@ -502,9 +501,9 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "Red Hat Network-ის სერვერთან დაკავშირების მცდელობა."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "ჩვენ ვცდილობთ დავუკავშირდეთ Red Hat Network-ის სერვერს მისამართზე %s."
+msgstr "{PRODUCT_NAME} სერვერის %s-ზე დაკავშირების მცდელობა."
 
 #: ../src/up2date_client/rhnreg_constants.py:39
 #, python-format
@@ -532,9 +531,9 @@ msgstr ""
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "რატომ უნდა დავუკავშირდე RHN-ს? ..."
+msgstr "რატომ უნდა დავუკავშირდე {PRODUCT_NAME}-ს?..."
 
 #: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
 msgid "Why Register"
@@ -557,7 +556,7 @@ msgstr "ჩამოტვირთვები და განახლებ�
 
 #: ../src/up2date_client/rhnreg_constants.py:62
 msgid "Support:"
-msgstr "მხარდაჭერა"
+msgstr "მხარდაჭერა:"
 
 #: ../src/up2date_client/rhnreg_constants.py:63
 msgid "Compliance:"
@@ -664,7 +663,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:95
 msgid "Please enter and verify a password."
-msgstr "გთხოვთ შეიყვანოთ და დაადასტუროთ პაროლი:"
+msgstr "შეიყვანეთ და დაადასტურეთ პაროლი."
 
 #. OS Release Window
 #: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
@@ -674,7 +673,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid "Operating System version:"
-msgstr "ოპერაციული სისტემის ვერსია"
+msgstr "ოპერაციული სისტემის ვერსია:"
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid " Minor Release: "
@@ -687,7 +686,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:102
 #: ../data/rh_register.glade.h:151
 msgid "All available updates"
-msgstr "ყველა ხელმისაწვდომი განახლება."
+msgstr "ყველა ხელმისაწვდომი განახლება"
 
 #: ../src/up2date_client/rhnreg_constants.py:103
 msgid "Confirm operating system release selection"
@@ -1103,7 +1102,7 @@ msgstr ""
 
 #: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
-msgstr "დაკავშირება შეწყდა მომხმარებლის მიერ."
+msgstr "დაკავშირება შეწყდა მომხმარებლის მიერ"
 
 #: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
@@ -1131,7 +1130,7 @@ msgstr "პროფილის სახელი:"
 
 #: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "ვერსია:"
+msgstr "ვერსია: "
 
 #: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
@@ -1139,7 +1138,7 @@ msgstr "CPU მოდელი: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "ჰოსტის სახელი:"
+msgstr "ჰოსტის სახელი: "
 
 #: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
@@ -1151,7 +1150,7 @@ msgstr "IP მისამართი: "
 
 #: ../src/up2date_client/tui.py:796
 msgid "Memory: "
-msgstr "მეხსიერება:"
+msgstr "მეხსიერება: "
 
 #: ../src/up2date_client/tui.py:800
 #, python-format
@@ -1172,7 +1171,7 @@ msgstr "პრობლემა პაკეტების სიის გა
 
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
-msgstr "პრობლემა პაკეტების სიის გაგზავნისას:"
+msgstr "პრობლემა პაკეტების სიის გაგზავნისას."
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1244,7 +1243,7 @@ msgstr ""
 
 #: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
-msgstr "ქსელური შეცდომა:"
+msgstr "ქსელის შეცდომა: "
 
 #: ../src/up2date_client/up2dateErrors.py:297
 msgid ""
