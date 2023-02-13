@@ -32,6 +32,7 @@ Requires:       httpd
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-ssl-cert-check
+BuildRequires:  make
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24

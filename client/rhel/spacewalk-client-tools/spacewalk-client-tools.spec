@@ -132,6 +132,7 @@ Conflicts:      yum-rhn-plugin < 1.6.4-1
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
 BuildRequires:  intltool
+BuildRequires:  make
 
 %if 0%{?fedora}
 BuildRequires:  dnf

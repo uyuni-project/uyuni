@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-20 14:16+0100\n"
+"POT-Creation-Date: 2023-02-10 15:07+0100\n"
 "PO-Revision-Date: 2023-01-21 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -158,6 +158,7 @@ msgid "Back"
 msgstr "Späť"
 
 #: ../html/src/components/config-channels.tsx:284
+#: ../html/src/components/package/PackageListActionScheduler.tsx:176
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
@@ -354,6 +355,61 @@ msgstr "Začať písať..."
 #: ../html/src/components/input/Select.test.tsx:59
 msgid "No flavor"
 msgstr "Žiadny druh"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:83
+#: ../html/src/manager/state/highstate.tsx:65
+#, fuzzy
+msgid "Action has been successfully added to the action chain '{0}'."
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/state/highstate.tsx:71
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr "naplánované"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#, fuzzy
+msgid "The action has been {0}."
+msgstr "Akcia bola "
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:94
+#, fuzzy
+msgid "Unable to clear selection"
+msgstr "Späť na výber systému"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:103
+msgid "Unable to perform action."
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:185
+#: ../html/src/manager/state/recurring-states-edit.tsx:133
+msgid "Back to list"
+msgstr "Späť na zoznam"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:204
+#: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#, fuzzy
+msgid "Filter by package name"
+msgstr "Filtrovať podľa názvu"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:210
+#: ../html/src/components/package/PackageListActionScheduler.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
+#: ../html/src/manager/images/image-view-packages.tsx:49
+#: ../html/src/manager/minion/packages/package-states.tsx:343
+msgid "Package Name"
+msgstr "Názov balíka"
 
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
@@ -564,6 +620,7 @@ msgstr "Vybrať všetko"
 
 #: ../html/src/components/table/TableDataHandler.tsx:372
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
@@ -1157,6 +1214,7 @@ msgstr "Popis produktu"
 #: ../html/src/manager/admin/setup/products/products.tsx:1013
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "Architektúra"
@@ -1935,16 +1993,6 @@ msgstr "Typ filtra"
 msgid "Matcher"
 msgstr "Párovač"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
-#: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/minion/packages/package-states.tsx:343
-msgid "Package Name"
-msgstr "Názov balíka"
-
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 msgid "Epoch"
@@ -2261,7 +2309,8 @@ msgid "all"
 msgstr "všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
-msgid "all product temporary fixes"
+#, fuzzy
+msgid "all program temporary fixes"
 msgstr "všetky dočasné opravy produktov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
@@ -2678,7 +2727,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
+#: ../html/src/manager/state/highstate.tsx:140
 msgid "Highstate"
 msgstr "Highstate"
 
@@ -2756,16 +2805,6 @@ msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
 msgstr "Zostavenie obrazu bolo "
-
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
-msgstr "naplánované"
 
 #: ../html/src/manager/images/image-build.tsx:241
 msgid "Profile Summary"
@@ -3244,6 +3283,7 @@ msgstr "Opätovne skontrolovať obraz"
 
 #: ../html/src/manager/images/image-view-packages.tsx:54
 #: ../html/src/manager/minion/packages/package-states.tsx:323
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:42
 msgid "Installed"
 msgstr "Nainštalované"
 
@@ -3879,7 +3919,7 @@ msgid "Loading playbook contents.."
 msgstr "Načítavajú obsahy scenárov.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/highstate.tsx:119
 #: ../html/src/manager/state/recurring-states-edit.tsx:115
 msgid "Test mode"
 msgstr "Režim testu"
@@ -4003,6 +4043,76 @@ msgstr "Stavy balíkov boli uložené."
 msgid "Applying the packages states has been "
 msgstr "Použitie stavov balíkov bolo "
 
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
+#: ../html/src/manager/notifications/notification-messages.tsx:520
+msgid "Summary"
+msgstr "Súhrn"
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
+#, fuzzy
+msgid "Install Program Temporary Fixes (PTFs)"
+msgstr "všetky dočasné opravy produktov"
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are available for installation "
+"on this system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
+msgid "No Program Temporary Fixes (PTFs) available."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
+#, fuzzy
+msgid "Install PTFs"
+msgstr "Nainštalované"
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
+msgid "Confirm Program Temporary Fixes (PTFs) Installation"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
+msgid "Remove Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are currently installed on this "
+"system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
+msgid "No Program Temporary Fixes (PTFs) installed."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
+#, fuzzy
+msgid "Remove PTFs"
+msgstr "Odstrániť"
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
+msgid "Confirm Program Temporary Fixes (PTFs) Removal"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
+#, fuzzy
+msgid "Program Temporary Fixes (PTFs)"
+msgstr "Product Temporary Fix"
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
+msgid "There are no relevant actions that can be executed on this system."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
+msgid "List / Remove Installed PTFs"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
+#, fuzzy
+msgid "Install PTF"
+msgstr "Nainštalované"
+
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
 msgstr "Začlenenie sa zlyhalo"
@@ -4100,10 +4210,6 @@ msgstr "Filtrovať podľa súhrnu"
 #: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Severity"
 msgstr "Závažnosť"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:520
-msgid "Summary"
-msgstr "Súhrn"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Created"
@@ -4549,23 +4655,16 @@ msgstr "Zobraziť úplný výstup highstate"
 msgid "System Group"
 msgstr "Systémová skupina"
 
-#: ../html/src/manager/state/highstate.tsx:64
-msgid "Action has been successfully added to the "
-msgstr "Akcia bola úspešne pridaná do "
-
-#: ../html/src/manager/state/highstate.tsx:69
-msgid "Applying the highstate has been "
+#: ../html/src/manager/state/highstate.tsx:71
+#, fuzzy
+msgid "Applying the highstate has been {0}."
 msgstr "Použitie highstate bolo "
 
-#: ../html/src/manager/state/highstate.tsx:70
-msgid "scheduled."
-msgstr "naplánované."
-
-#: ../html/src/manager/state/highstate.tsx:126
+#: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
 msgstr "Použiť Highstate"
 
-#: ../html/src/manager/state/highstate.tsx:135
+#: ../html/src/manager/state/highstate.tsx:136
 msgid "Create Recurring"
 msgstr "Vytvoriť opakovanie sa"
 
@@ -4630,10 +4729,6 @@ msgstr "Aktualizovať "
 #: ../html/src/manager/state/recurring-states-edit.tsx:123
 msgid "Create "
 msgstr "Vytvoriť "
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:133
-msgid "Back to list"
-msgstr "Späť na zoznam"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:141
 msgid "Schedule Recurring Highstate"
@@ -6317,6 +6412,12 @@ msgstr "nedefinované"
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
 
+#~ msgid "Action has been successfully added to the "
+#~ msgstr "Akcia bola úspešne pridaná do "
+
+#~ msgid "scheduled."
+#~ msgstr "naplánované."
+
 #~ msgid "Loading.."
 #~ msgstr "Načítava sa.."
 
@@ -6452,9 +6553,6 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "Node Hostname"
 #~ msgstr "Názov hostiteľa uzla"
-
-#~ msgid "Action has been "
-#~ msgstr "Akcia bola "
 
 #~ msgid " successfully."
 #~ msgstr " úspešne."

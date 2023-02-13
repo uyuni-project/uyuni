@@ -11252,12 +11252,12 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
       <target state="new"/>
   </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
-        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
-      <target state="new"/>
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
-        <source>Product Temporary Fixes packages (PTF): {0}</source>
-      <target state="new"/>
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
@@ -11278,6 +11278,21 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
       <target state="new"/>
   </trans-unit>
       </body>

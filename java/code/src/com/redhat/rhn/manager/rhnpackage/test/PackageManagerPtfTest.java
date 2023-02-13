@@ -92,7 +92,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemPackageList() {
+    public void testSystemAvailablePackageList() {
         // Add the packages to the channel
         channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
         channel = TestUtils.saveAndReload(channel);
@@ -146,5 +146,46 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
         // No packages should be part of a PTF
         assertEquals(0L, packages.stream().filter(Package::isPartOfPtf).count());
     }
+
+    @Test
+    public void testSystemInstalledPtfList() {
+        // Add the packages to the channel
+        channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
+        channel = TestUtils.saveAndReload(channel);
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+
+        PackageTestUtils.installPackagesOnServer(List.of(ptfPackage, ptfMaster, standard), server);
+
+        DataResult<PackageListItem> installedPtf = PackageManager.systemPtfList(server.getId(), null);
+
+        assertNotNull(installedPtf);
+        // There should be one installed ptf
+        assertEquals(1, installedPtf.size());
+        // The package retrieved must be a master ptf package
+        assertEquals(0L, installedPtf.stream()
+                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
+                                            .filter(p -> !p.isMasterPtfPackage())
+                                            .count());
+    }
+    @Test
+    public void testSystemAvailablePtfList() {
+        // Add the packages to the channel
+        channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
+        channel = TestUtils.saveAndReload(channel);
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+
+        DataResult<PackageListItem> installablePackages = PackageManager.systemAvailablePtf(server.getId(), null);
+
+
+        assertNotNull(installablePackages);
+        // There should be one installable ptf
+        assertEquals(1, installablePackages.size());
+        // The package retrieved must be a master ptf package
+        assertEquals(0L, installablePackages.stream()
+                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
+                                            .filter(p -> !p.isMasterPtfPackage())
+                                            .count());
+    }
+
 }
 

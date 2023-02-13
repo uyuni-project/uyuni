@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -109,14 +110,14 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(dataMap));
         }});
 
-        MinionActionExecutor executor = new MinionActionExecutor();
-        executor.setSaltServerActionService(saltServerActionService);
+        MinionActionExecutor executor = new MinionActionExecutor(saltServerActionService);
         executor.execute(ctx);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        MinionServer server2 = MinionServerFactory.lookupById(serverId).get();
+        MinionServer server2 = MinionServerFactory.lookupById(serverId).orElse(null);
+        assertNotNull(server);
         assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
         assertNull(serverAction.getResultCode());
         assertEquals(server2, serverAction.getServer());

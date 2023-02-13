@@ -176,6 +176,10 @@ def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
 
+def slemicro_host?(name)
+  (name.include? 'slemicro') || (name.include? 'micro')
+end
+
 def rh_host?(name)
   (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
 end
@@ -253,7 +257,6 @@ def check_shutdown(host, time_out)
   end
 end
 
-# rubocop:disable Metrics/MethodLength
 def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
   repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
@@ -275,11 +278,9 @@ def check_restart(host, node, time_out)
     end
   end
 end
-# rubocop:enable Metrics/MethodLength
 
 # Extract the OS version and OS family
 # We get these data decoding the values in '/etc/os-release'
-# rubocop:disable Metrics/AbcSize
 def get_os_version(node)
   os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
   return nil, nil unless code.zero?
@@ -316,4 +317,3 @@ def get_gpg_keys(node, target = $server)
   end
   gpg_keys.lines.map(&:strip)
 end
-# rubocop:enable Metrics/AbcSize

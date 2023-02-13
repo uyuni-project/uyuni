@@ -726,7 +726,7 @@ public class ConfigDefaults {
      * selection
      */
     public boolean getClonedChannelAutoSelection() {
-        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION);
+        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION, true);
     }
 
     /**

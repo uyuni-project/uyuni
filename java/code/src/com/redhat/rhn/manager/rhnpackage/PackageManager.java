@@ -1803,4 +1803,24 @@ public class PackageManager extends BaseManager {
     public static String getNevr(PackageName name, PackageEvr evr) {
         return name.getName() + "-" + evr.toString();
     }
+
+    /**
+     * Returns the list of installed ptf on the given server
+     * @param sid Server Id
+     * @param pc package control
+     * @return list of packages marked as master ptf installed on given server
+     */
+    public static DataResult<PackageListItem> systemPtfList(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_ptfs_list", pc);
+    }
+
+    /**
+     * Returns available of ptf for given server
+     * @param sid Server Id
+     * @param pc package control
+     * @return list of packages marked as master ptf available for given server
+     */
+    public static DataResult<PackageListItem> systemAvailablePtf(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_available_ptfs", pc);
+    }
 }

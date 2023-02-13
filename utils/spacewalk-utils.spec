@@ -29,6 +29,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common

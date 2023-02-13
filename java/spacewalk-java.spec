@@ -177,7 +177,7 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-jaxb-runtime
@@ -355,7 +355,7 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client

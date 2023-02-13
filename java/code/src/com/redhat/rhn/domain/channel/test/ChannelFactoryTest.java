@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.common.ChecksumType;
@@ -45,6 +47,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -124,6 +127,28 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
+        ChannelFactory.save(c);
+        return c;
+    }
+
+    public static Channel createTestChannel(User user, List<String> contentSourceUrls) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
+        // assume we want the user to have access to this channel once created
+        UserManager.addChannelPerm(user, c.getId(), "subscribe");
+        UserManager.addChannelPerm(user, c.getId(), "manage");
+
+        ContentSourceType type = ChannelManager.findCompatibleContentSourceType(c.getChannelArch());
+        contentSourceUrls.stream()
+                         .map(url -> {
+                             ContentSource cs = new ContentSource();
+                             cs.setLabel(c.getLabel() + "-CS-" + RandomStringUtils.randomAlphabetic(8));
+                             cs.setOrg(user.getOrg());
+                             cs.setType(type);
+                             cs.setSourceUrl(url);
+                             return TestUtils.saveAndReload(cs);
+                         })
+                         .forEach(c.getSources()::add);
+
         ChannelFactory.save(c);
         return c;
     }
@@ -368,14 +393,20 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * @return a test cloned channel
      */
     public static Channel createTestClonedChannel(Channel original, User user) {
+        return createTestClonedChannel(original, user, "clone-", "",
+                "Clone of ", "", null);
+    }
+
+    public static Channel createTestClonedChannel(Channel original, User user, String labelPrefix, String labelSuffix,
+                                                  String namePrefix, String nameSuffix, Channel parent) {
         Org org = user.getOrg();
         ClonedChannel clone = new ClonedChannel();
         ChannelFamily cfam = ChannelFamilyFactory.lookupOrCreatePrivateFamily(org);
 
         clone.setOrg(org);
-        clone.setLabel("clone-" + original.getLabel());
+        clone.setLabel(labelPrefix + original.getLabel() + labelSuffix);
         clone.setBaseDir(original.getBaseDir());
-        clone.setName("Clone of " + original.getName());
+        clone.setName(namePrefix + original.getName() + nameSuffix);
         clone.setSummary(original.getSummary());
         clone.setDescription(original.getDescription());
         clone.setLastModified(new Date());
@@ -391,6 +422,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         /* clone specific calls */
         clone.setOriginal(original);
+        clone.setParentChannel(parent);
 
         ChannelFactory.save(clone);
 
@@ -400,6 +432,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         return clone;
     }
+
     @Test
     public void testAccessibleChildChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",

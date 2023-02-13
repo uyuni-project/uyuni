@@ -74,8 +74,8 @@ BuildRequires:  python3-pycurl
 BuildRequires:  python-curl
 BuildRequires:  python-mock
 %endif
-BuildRequires:  python2
 %if !0%{?rhel}
+BuildRequires:  python2
 BuildRequires:  pyxml
 %endif
 BuildRequires:  spacewalk-backend >= 1.7.38.20

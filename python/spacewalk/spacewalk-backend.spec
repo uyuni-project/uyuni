@@ -80,6 +80,7 @@ BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
@@ -252,7 +253,7 @@ Requires:       mod_ssl
 %endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 

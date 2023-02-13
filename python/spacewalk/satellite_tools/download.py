@@ -215,6 +215,7 @@ class DownloadThread(Thread):
             http_headers=params["http_headers"],
             timeout=params["timeout"],
             minrate=params["minrate"],
+            logspec=params["urlgrabber_logspec"],
             keepalive=True,
             retry=3,
             retrycodes=retrycodes,
@@ -365,12 +366,12 @@ class ThreadedDownloader:
 
             # wait to finish
             try:
-                while any(t.isAlive() for t in started_threads):
+                while any(t.is_alive() for t in started_threads):
                     time.sleep(1)
             except KeyboardInterrupt:
                 e = sys.exc_info()[1]
                 self.fail_download(e)
-                while any(t.isAlive() for t in started_threads):
+                while any(t.is_alive() for t in started_threads):
                     time.sleep(1)
                 break
 
