@@ -376,7 +376,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 end
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
 end
 
@@ -385,7 +385,7 @@ Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
   logfiles.each do |logs|
     _result, code = $server.run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
     if code.zero?
-      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: true)
+      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: false)
       raise "Errors during #{logs} reposync:\n#{result}" if code.zero?
     end
   end
