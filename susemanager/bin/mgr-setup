@@ -129,8 +129,11 @@ if [ $SWAP -eq 0 ]; then
         echo "Not enough space on /. Not adding swap space. Good luck..."
     else
         FSTYPE=`df -T / | tail -1 | awk '{print $2}'`
+        # Ignore for overlay too
         if [ $FSTYPE == "btrfs" ]; then
             echo "Will *NOT* create swapfile on btrfs. Make sure you have enough RAM!"
+        elif [ $FSTYPE == "overlay" ]; then
+            echo "Will *NOT* create swapfile in a container!"
         else
             if [ -f /SWAPFILE ]; then
                 swapoff /SWAPFILE
