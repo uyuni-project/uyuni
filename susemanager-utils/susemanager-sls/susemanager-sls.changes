@@ -1,4 +1,3 @@
-- Fix missing module when bootstraping transactional systems (bsc#1207792)
 - Support SLE Micro migration (bsc#1205011)
 
 -------------------------------------------------------------------
