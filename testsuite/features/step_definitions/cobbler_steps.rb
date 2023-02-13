@@ -202,3 +202,23 @@ When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
+
+# cobbler commands
+When(/^I copy autoinstall mocked files on server$/) do
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  $server.run("mkdir -p #{target_dirs}")
+  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
+  source_dir = "/var/autoinstall/"
+  return_codes = []
+  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
+  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
+  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
+  raise 'File injection failed' unless return_codes.all?(&:zero?)
+end
+
+When(/^I synchronize the tftp configuration on the proxy with the server$/) do
+  out, _code = $server.run('cobbler sync')
+  raise 'cobbler sync failed' if out.include? 'Push failed'
+end

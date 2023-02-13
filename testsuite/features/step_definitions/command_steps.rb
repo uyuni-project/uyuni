@@ -616,11 +616,6 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   end
 end
 
-When(/^I synchronize the tftp configuration on the proxy with the server$/) do
-  out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failed' if out.include? 'Push failed'
-end
-
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
@@ -1488,20 +1483,6 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
-end
-
-When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
-  $server.run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/var/autoinstall/"
-  return_codes = []
-  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
-  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
-  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
-  raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
 When(/^I copy unset package file on server$/) do
