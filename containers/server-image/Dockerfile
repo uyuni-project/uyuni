@@ -16,9 +16,11 @@ COPY setup_env.sh /root/setup_env.sh
 
 # Main packages
 # TODO Remove vi and possibly python3-simplejson
+# snapper is installed by the setupscript anyway... pre-install it
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
     ${PRODUCT_PATTERN} \
+    snapper \
     libyui-ncurses-pkg16 \
     vim \
     python3-simplejson
