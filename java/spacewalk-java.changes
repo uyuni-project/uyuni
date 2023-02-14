@@ -1,3 +1,4 @@
+- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 - fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix taskomatic logging (bsc#1207867)
 - Do not specify a cobbler version, as that is now centralized at the
