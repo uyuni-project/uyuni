@@ -16,7 +16,6 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.taskomatic.LogUtils;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -52,10 +51,6 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
         getLogger().error(e.getMessage(), e);
     }
 
-    private void logToNewFile() {
-        log = LogUtils.configureLogger(getClass(), jobRun.buildStdOutputLogPath(), jobRun.buildStdErrorLogPath());
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -89,13 +84,12 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
             jobRun.start();
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
-            logToNewFile();
             getLogger().debug("Starting run {}", jobRun.getId());
         }
         else {
             // close current run
             TaskoRun run = HibernateFactory.reload(jobRun);
-            run.appendToOutputLog("Run with id " + queue.getQueueRun().getId() + " handles the whole task queue.");
+            log.debug("Run with id {} handles the whole task queue.", queue.getQueueRun().getId());
             run.skipped();
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
