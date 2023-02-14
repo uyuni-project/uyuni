@@ -31,6 +31,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop("string", "label")
  *   #prop("string", "abs_path")
  *   #prop("int", "channel_id")
+ *   #prop("string", "kernel_options")
+ *   #prop("string", "post_kernel_options")
  *   $KickstartInstallTypeSerializer
  * #struct_end()
  */
@@ -49,6 +51,8 @@ public class KickstartTreeDetailSerializer extends ApiResponseSerializer<Kicksta
                 .add("abs_path", src.getAbsolutePath())
                 .add("channel_id", src.getChannel().getId())
                 .add("install_type", src.getInstallType())
+                .add("kernel_options", src.getKernelOptions())
+                .add("post_kernel_options", src.getKernelOptionsPost())
                 .build();
     }
 }
