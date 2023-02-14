@@ -292,7 +292,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'terminal', 'minion'
   client.sub! 'monitoring_server', 'sle15sp3_minion'
   custom_channel = if client.include? 'rocky8'
-                     'no-appstream-8-result-custom_channel_rocky8_minion'
+                     'no-appstream-result-custom_channel_rocky8_minion'
                    elsif client.include? 'rocky9'
                      'no-appstream-9-result-custom_channel_rocky9_minion'
                    else
