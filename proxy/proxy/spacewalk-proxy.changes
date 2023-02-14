@@ -1,3 +1,5 @@
+- Avoid unnecessary debug messages from proxy backend (bsc#1207490)
+
 -------------------------------------------------------------------
 Wed Jan 11 12:38:30 CET 2023 - jgonzalez@suse.com
 
