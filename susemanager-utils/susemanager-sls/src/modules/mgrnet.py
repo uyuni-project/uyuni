@@ -9,6 +9,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import salt.utils.network
 
+try:
+    from salt.utils.network import _get_interfaces
+except:
+    from salt.grains.core import _get_interfaces
+
+try:
+    from salt.utils.path import which as _which
+except:
+    from salt.utils import which as _which
+
 log = logging.getLogger(__name__)
 
 
@@ -16,7 +26,7 @@ def __virtual__():
     """
     Only works on POSIX-like systems having 'host' or 'nslookup' available
     """
-    if not (__utils__["path.which"]("host") or __utils__["path.which"]("nslookup")):
+    if not (_which("host") or _which("nslookup")):
         return (False, "Neither 'host' nor 'nslookup' is available on the system")
     return True
 
@@ -32,10 +42,10 @@ def dns_fqdns():
     grains = {}
     fqdns = set()
     cmd_run_all_func = __salt__["cmd.run_all"]
-    if __utils__["path.which"]("host"):
+    if _which("host"):
         cmd = "host"
         cmd_ret_regex = re.compile(r".* domain name pointer (.*)\.$")
-    elif __utils__["path.which"]("nslookup"):
+    elif _which("nslookup"):
         cmd = "nslookup"
         cmd_ret_regex = re.compile(r".*\tname = (.*)\.$")
     else:
@@ -60,11 +70,11 @@ def dns_fqdns():
     start = time.time()
 
     addresses = salt.utils.network.ip_addrs(
-        include_loopback=False, interface_data=salt.utils.network._get_interfaces()
+        include_loopback=False, interface_data=_get_interfaces()
     )
     addresses.extend(
         salt.utils.network.ip_addrs6(
-            include_loopback=False, interface_data=salt.utils.network._get_interfaces()
+            include_loopback=False, interface_data=_get_interfaces()
         )
     )
 
@@ -73,7 +83,7 @@ def dns_fqdns():
         # Create a ThreadPoolExecutor to process the underlying calls
         # to resolve DNS FQDNs in parallel.
         with ThreadPoolExecutor(max_workers=8) as executor:
-            results = {executor.submit(_lookup_dns_fqdn, ip): ip for ip in addresses}
+            results = dict((executor.submit(_lookup_dns_fqdn, ip), ip) for ip in addresses)
             for item in as_completed(results):
                 item = item.result()
                 if item:
