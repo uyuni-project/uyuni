@@ -368,6 +368,11 @@ public class ConfigDefaults {
      */
     public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
 
+    /**
+     * Disable SSL redirection
+     */
+    public static final String NO_SSL = "server.no_ssl";
+
     private ConfigDefaults() {
     }
 
@@ -1129,4 +1134,10 @@ public class ConfigDefaults {
         return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT, true);
     }
 
+    /**
+     * @return true if SSL is enabled, false otherwise
+     */
+    public boolean isSsl() {
+        return !Config.get().getBoolean(NO_SSL, false);
+    }
 }
