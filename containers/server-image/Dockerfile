@@ -20,6 +20,7 @@ COPY setup_env.sh /root/setup_env.sh
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
     ${PRODUCT_PATTERN} \
+    javamail \
     snapper \
     btrfsprogs \
     libyui-ncurses-pkg16 \
