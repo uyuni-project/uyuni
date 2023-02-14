@@ -16,7 +16,6 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
-import com.redhat.rhn.taskomatic.LogUtils;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,8 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 
 
@@ -34,15 +31,10 @@ import java.util.Arrays;
  */
 public abstract class RhnJavaJob implements RhnJob {
 
-    protected static String defaultPluginName = "File";
     protected Logger log = LogManager.getLogger(getClass());
 
     protected Logger getLogger() {
         return log;
-    }
-
-    protected void enableLogging(TaskoRun run) {
-        log = LogUtils.configureLogger(getClass(), run.buildStdOutputLogPath(), run.buildStdErrorLogPath());
     }
 
     /**
@@ -50,14 +42,7 @@ public abstract class RhnJavaJob implements RhnJob {
      */
     @Override
     public void appendExceptionToLogError(Exception e) {
-        Logger logger = getLogger();
-        logger.error("Executing a task threw an exception: {}", e.getClass().getName());
-        logger.error("Message: {}", e.getMessage());
-        logger.error("Cause: {}", e.getCause());
-
-        StringWriter errors = new StringWriter();
-        e.printStackTrace(new PrintWriter(errors));
-        logger.error("Stack trace:{}", errors.toString());
+        getLogger().error("Executing a task threw an exception: {}", e.getClass().getName(), e);
     }
 
     /**
@@ -66,12 +51,10 @@ public abstract class RhnJavaJob implements RhnJob {
     @Override
     public void execute(JobExecutionContext context, TaskoRun run) throws JobExecutionException {
         run.start();
-        enableLogging(run);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
         execute(context);
         run.saveStatus(TaskoRun.STATUS_FINISHED);
-        LogUtils.cleanLogging(getClass().getName());
         run.finished();
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();

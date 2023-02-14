@@ -541,62 +541,6 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
-     * get last specified number of bytes of the organizational run std output log
-     * whole log is returned if nBytes is negative
-     * @param orgId organization id
-     * @param runId run id
-     * @param nBytes number of bytes
-     * @return last n bytes of a run log
-     * @throws InvalidParamException thrown if run id not known
-     */
-    public String getRunStdOutputLog(Integer orgId, Integer runId, Integer nBytes)
-        throws InvalidParamException {
-        TaskoRun run = TaskoFactory.lookupRunByOrgAndId(orgId, runId);
-        return run.getTailOfStdOutput(nBytes);
-    }
-
-    /**
-     * get last specified number of bytes of the satellite run std output log
-     * whole log is returned if nBytes is negative
-     * @param runId run id
-     * @param nBytes number of bytes
-     * @return last n bytes of a run log
-     * @throws InvalidParamException thrown if run id not known
-     */
-    public String getSatRunStdOutputLog(Integer runId, Integer nBytes)
-    throws InvalidParamException {
-        return getRunStdOutputLog(null, runId, nBytes);
-    }
-
-    /**
-     * get last specified number of bytes of the organizational run std error log
-     * whole log is returned if nBytes is negative
-     * @param orgId organization id
-     * @param runId run id
-     * @param nBytes number of bytes
-     * @return last n bytes of a run log
-     * @throws InvalidParamException thrown if run id not known
-     */
-    public String getRunStdErrorLog(Integer orgId, Integer runId, Integer nBytes)
-        throws InvalidParamException {
-        TaskoRun run = TaskoFactory.lookupRunByOrgAndId(orgId, runId);
-        return run.getTailOfStdError(nBytes);
-    }
-
-    /**
-     * get last specified number of bytes of the satellite run std error log
-     * whole log is returned if nBytes is negative
-     * @param runId run id
-     * @param nBytes number of bytes
-     * @return last n bytes of a run log
-     * @throws InvalidParamException thrown if run id not known
-     */
-    public String getSatRunStdErrorLog(Integer runId, Integer nBytes)
-    throws InvalidParamException {
-        return getRunStdErrorLog(null, runId, nBytes);
-    }
-
-    /**
      * reinitialize all schedules
      * meant to be called, when taskomatic has to be reinitialized
      * (f.e. because of time shift)
