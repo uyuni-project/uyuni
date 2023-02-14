@@ -21,6 +21,8 @@
   <property name="deploy.port" value="22" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />
+  <property name="deploy.namespace" value="default"/>
+  <property name="deploy.pod" value="uyuni"/>
 
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
@@ -37,6 +39,8 @@
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
   <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
   <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
+
+  <property name="kubectl.args" value="-n ${deploy.namespace} ${deploy.pod}"/>
 
   <!-- Taskdefs -->
   <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
@@ -226,7 +230,14 @@
     <fail>yarn is not in the PATH. Please install yarn first.</fail>
   </target>
 
-  <target name="deploy-static-resources" depends="open-ssh-socket,warn-if-yarn-not-installed" description="Deploy css/js/img/font files">
+  <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
+    <echo message="Calling yarn build ..."/>
+    <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
+      <arg line="build:novalidate"/>
+    </exec>
+  </target>
+
+  <target name="deploy-static-resources" depends="open-ssh-socket,build-js" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
         <available file="${basedir}/../susemanager" type="dir"/>
@@ -235,10 +246,6 @@
     <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
-    <echo message="Calling yarn build ..."/>
-    <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
-      <arg line="build:novalidate"/>
-    </exec>
 
     <echo message="Copying frontend files to remote host...${static.files.dir}"/>
     <exec failonerror="true" executable="rsync">
@@ -293,6 +300,129 @@
   </target>
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
+
+  <target name="is-kubectl-installed">
+    <exec failifexecutionfails="false" resultproperty="kubectl.installed" executable="kubectl">
+      <arg line="version" />
+    </exec>
+  </target>
+
+  <target name="warn-if-kubectl-not-installed" depends="is-kubectl-installed" unless="kubectl.installed">
+    <fail>kubectl is not in the PATH. Please install kubectl first.</fail>
+  </target>
+
+  <target name="deploy-kube" depends="webapp,warn-if-kubectl-not-installed" description="Deploy a new copy of SUSE Manager in a running kubernetes pod">
+    <echo message="Copying files to pod..." />
+
+    <exec failonerror="true" executable="sh">
+        <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${deploy.dir}'"/>
+    </exec>
+
+    <echo message="Linking the branding jar..." />
+    <exec failonerror="true" executable="kubectl">
+        <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+    </exec>
+
+    <exec failonerror="true" executable="kubectl">
+      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+    </exec>
+
+    <echo message="Linking jars for Taskomatic..."/>
+    <exec failonerror="true" executable="kubectl">
+      <arg line="exec ${kubectl.args} -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+    </exec>
+    <exec failonerror="true" executable="kubectl">
+      <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+    </exec>
+    <exec failonerror="true" executable="kubectl">
+      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+    </exec>
+  </target>
+
+  <target name="deploy-static-resources-kube" depends="build-js,warn-if-kubectl-not-installed" description="Deploy css/js/img/font files in a running kubernetes pod">
+    <echo message="Copying frontend files to remote host..."/>
+    <exec failonerror="true" executable="sh">
+        <arg line="-c 'tar c -p -C ${frontend.dist.dir} -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C /srv/www/htdocs'"/>
+    </exec>
+  </target>
+
+  <target name="deploy-salt-files-kube" depends="warn-if-kubectl-not-installed" description="Deploy Salt files in a running kubernetes pod">
+    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
+    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+
+    <echo message="Copying Salt sls files to remote host.."/>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/salt/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${salt.state.files.dir}'"/>
+    </exec>
+    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_grains/'"/>
+    </exec>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_beacons/'"/>
+    </exec>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_modules/'"/>
+    </exec>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
+    </exec>
+    <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
+    <exec executable="sh">
+      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/reactor -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
+    </exec>
+  </target>
+
+  <target name="restart-tomcat-kube" depends="warn-if-kubectl-not-installed" description="Restart the tomcat process in a running kubernetes pod">
+    <echo message="Launching Tomcat restart..."/>
+    <exec executable="kubectl">
+        <arg line="exec ${kubectl.args} -- rctomcat restart"/>
+    </exec>
+  </target>
+
+  <target name="restart-taskomatic-kube" depends="warn-if-kubectl-not-installed" description="Restart the taskomatic process in a running kubernetes pod">
+    <echo message="Launching Taskomatic restart..."/>
+    <exec executable="kubectl">
+      <arg line="exec ${kubectl.args} -- rctaskomatic restart"/>
+    </exec>
+  </target>
+
+  <target name="deploy-restart-kube" depends="deploy-kube, restart-tomcat-kube, restart-taskomatic-kube" />
+
+  <target name="check-tomcat-has-opts">
+    <exec executable="kubectl" resultproperty="tomcat.has_opts_result" failonerror="false">
+      <arg line="exec ${kubectl.args} -- grep JAVA_OPTS /etc/sysconfig/tomcat"/>
+    </exec>
+    <condition property="tomcat.has_opts">
+      <equals arg1="${tomcat.has_opts_result}" arg2="0"/>
+    </condition>
+  </target>
+
+  <target name="append-tomcat-debug-kube" depends="check-tomcat-has-opts" unless="tomcat.has_opts">
+    <exec executable="kubectl">
+        <arg value="exec"/>
+        <arg value="-n"/>
+        <arg value="${deploy.namespace}"/>
+        <arg value="${deploy.pod}"/>
+        <arg value="--"/>
+        <arg value="sh"/>
+        <arg value="-c"/>
+        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
+    </exec>
+  </target>
+
+  <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
+    <exec executable="kubectl">
+        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
+    </exec>
+  </target>
+
+  <target name="enable-java-debug-kube" depends="warn-if-kubectl-not-installed, append-tomcat-debug-kube, replace-tomcat-debug-kube" description="Add tomcat and taskomatic options to connect a Java debugger">
+    <exec executable="kubectl">
+      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
+    </exec>
+    <echo message="Restart taskomatic and tomcat at your convenience to debug"/>
+  </target>
 
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
