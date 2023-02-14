@@ -48,7 +48,6 @@ Layout/ClosingHeredocIndentation:
 Layout/EmptyLineAfterGuardClause:
   Exclude:
     - 'features/step_definitions/api_common.rb'
-    - 'features/step_definitions/cobbler_steps.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
@@ -579,7 +578,6 @@ Style/StringLiterals:
   Exclude:
     - 'Gemfile'
     - 'ext-tools/maintenance_crawler.rb'
-    - 'features/step_definitions/cobbler_steps.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/datepicker_steps.rb'

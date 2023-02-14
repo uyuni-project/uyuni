@@ -28,6 +28,7 @@ When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
+
   ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
@@ -35,6 +36,7 @@ When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with pa
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
+
   ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
@@ -42,6 +44,7 @@ When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with pa
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'system ' + system + ' already exists' if ct.system_exists(system)
+
   ct.system_create(system, profile)
 end
 
@@ -106,18 +109,19 @@ end
 
 # buildiso
 When(/^I prepare Cobbler for the buildiso command$/) do
-  tmp_dir = "/var/cache/cobbler/buildiso"
+  tmp_dir = '/var/cache/cobbler/buildiso'
   $server.run("mkdir -p #{tmp_dir}")
   # we need bootloaders for the buildiso command
-  out, code = $server.run("cobbler mkloaders", verbose: true)
+  out, code = $server.run('cobbler mkloaders', verbose: true)
   raise "error in cobbler mkloaders.\nLogs:\n#{out}" if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distro|
-  tmp_dir = "/var/cache/cobbler/buildiso"
-  iso_dir = "/var/cache/cobbler"
+  tmp_dir = '/var/cache/cobbler/buildiso'
+  iso_dir = '/var/cache/cobbler'
   out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}", verbose: true)
   raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+
   profiles = %w[orchid flame pearl]
   isolinux_profiles = []
   cobbler_profiles = []
@@ -135,17 +139,18 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
-  tmp_dir = "/var/cache/cobbler/buildiso"
-  iso_dir = "/var/cache/cobbler"
+  tmp_dir = '/var/cache/cobbler/buildiso'
+  iso_dir = '/var/cache/cobbler'
   out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}", verbose: true)
   raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without dns entries$/) do |distro, profile|
-  tmp_dir = "/var/cache/cobbler/buildiso"
-  iso_dir = "/var/cache/cobbler"
+  tmp_dir = '/var/cache/cobbler/buildiso'
+  iso_dir = '/var/cache/cobbler'
   out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns", verbose: true)
   raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver", check_errors: false)
   # we have to fail here if the command suceeds
   raise "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
@@ -155,8 +160,8 @@ When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distr
   # param can either be standalone or airgapped
   # workaround to get the contents of the buildiso folder
   step %(I run Cobbler buildiso for distro "#{distro}" and all profiles)
-  tmp_dir = "/var/cache/cobbler/buildiso"
-  iso_dir = "/var/cache/cobbler"
+  tmp_dir = '/var/cache/cobbler/buildiso'
+  iso_dir = '/var/cache/cobbler'
   source_dir = "/var/cache/cobbler/source_#{param}"
   $server.run("mv #{tmp_dir} #{source_dir}")
   $server.run("mkdir -p #{tmp_dir}")
@@ -165,7 +170,7 @@ When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distr
 end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
-  tmp_dir = "/var/cache/cobbler"
+  tmp_dir = '/var/cache/cobbler'
   out, code = $server.run("cat >#{tmp_dir}/test_image <<-EOF
 BIOS
 UEFI
@@ -175,6 +180,7 @@ EOF")
   iso_file = "#{tmp_dir}/xorriso_#{name}"
   out, code = $server.run("#{xorriso} | #{iso_filter} >> #{iso_file}")
   raise "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
+
   out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
   raise "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
 end
@@ -192,23 +198,23 @@ Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(dist
 end
 
 When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
-  tmp_dir = "/var/cache/cobbler/buildiso"
+  tmp_dir = '/var/cache/cobbler/buildiso'
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
   raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
 end
 
 # cleanup steps
 When(/^I cleanup after Cobbler buildiso$/) do
-  result, code = $server.run("rm -Rf /var/cache/cobbler")
+  result, code = $server.run('rm -Rf /var/cache/cobbler')
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
 # cobbler commands
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = '/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock'
   $server.run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/var/autoinstall/"
+  base_dir = File.dirname(__FILE__) + '/../upload_files/autoinstall/cobbler/'
+  source_dir = '/var/autoinstall/'
   return_codes = []
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
