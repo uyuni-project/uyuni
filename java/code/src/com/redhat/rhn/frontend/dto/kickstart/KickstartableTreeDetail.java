@@ -36,6 +36,8 @@ public class KickstartableTreeDetail extends KickstartableTree {
         this.setCobblerXenId(tree.getCobblerXenId());
         this.setOrg(tree.getOrg());
         this.setTreeType(tree.getTreeType());
+        this.setKernelOptions(tree.getKernelOptions());
+        this.setKernelOptionsPost(tree.getKernelOptionsPost());
     }
 
 }

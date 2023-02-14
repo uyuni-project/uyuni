@@ -78,9 +78,10 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         handler.create(admin, label,
                 KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath(),
-                baseChan.getLabel(), KickstartInstallType.RHEL_6);
+                baseChan.getLabel(), KickstartInstallType.RHEL_6, "self_update=0", "");
         assertEquals(origCount + 1, KickstartFactory.
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
+
     }
 
     @Test
@@ -93,7 +94,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         Channel newChan = ChannelFactoryTest.createTestChannel(admin);
         handler.update(admin, testTree.getLabel(),
                 newBase, newChan.getLabel(),
-                testTree.getInstallType().getLabel());
+                testTree.getInstallType().getLabel(), "self_update=0", "");
 
         assertEquals(testTree.getBasePath(), newBase);
         assertEquals(testTree.getChannel(), newChan);
