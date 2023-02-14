@@ -465,18 +465,6 @@ Then(/^the log messages should not contain out of memory errors$/) do
   raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
-When(/^I restart cobbler on the server$/) do
-  $server.run('systemctl restart cobblerd.service')
-end
-
-When(/^I restart the spacewalk service$/) do
-  $server.run('spacewalk-service restart')
-end
-
-When(/^I shutdown the spacewalk service$/) do
-  $server.run('spacewalk-service stop')
-end
-
 When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
   code = file_extract($server, "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
@@ -588,17 +576,6 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
-  node = get_target(host)
-  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
-end
-
-Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
-  output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
-end
-
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
   raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
 
@@ -611,11 +588,6 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 --proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
   end
-end
-
-When(/^I synchronize the tftp configuration on the proxy with the server$/) do
-  out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
@@ -1524,20 +1496,6 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
-end
-
-When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP3-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
-  $server.run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/var/autoinstall/"
-  return_codes = []
-  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
-  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
-  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp3/initrd', source_dir + 'SLES15-SP3-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp3/linux', source_dir + 'SLES15-SP3-x86_64/DVD1/boot/x86_64/loader/linux')
-  raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
 When(/^I copy unset package file on server$/) do
