@@ -112,7 +112,6 @@ if [ -x /usr/bin/lsof ]; then
     LSOF="/usr/bin/lsof"
 fi
 RUNUSER=runuser
-FQDN=$(hostname -f)
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
 CA_CERT=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
@@ -126,7 +125,7 @@ create() {
         if $LOCAL ; then
             ADDRESS="127.0.0.1"
             REMOTE="127.0.0.1/32,::1/128"
-            FQDN="localhost"
+            HOST="localhost"
         else
             [ ! -s "$SSL_CERT" ] && {
                 echo "SSL Certificate ($SSL_CERT) is required to setup the reporting database" >&2
@@ -254,7 +253,7 @@ report_db_backend = postgresql
 report_db_user = $PGUSER
 report_db_password = $PGPASSWORD
 report_db_name = $PGNAME
-report_db_host = $FQDN
+report_db_host = $HOST
 report_db_port = $PORT
 report_db_ssl_enabled = 1
 report_db_sslrootcert = $CA_CERT
@@ -264,11 +263,7 @@ EOF
         rhn_reconfig "report_db_user" "$PGUSER"
         rhn_reconfig "report_db_password" "$PGPASSWORD"
         rhn_reconfig "report_db_name" "$PGNAME"
-        if [ $EXTERNALDB = "0" ] ; then 
-            rhn_reconfig "report_db_host" "$FQDN"
-        else
-            rhn_reconfig "report_db_host" "$HOST"
-        fi
+        rhn_reconfig "report_db_host" "$HOST"
         rhn_reconfig "report_db_port" "$PORT"
 	if ! $LOCAL ; then
             rhn_reconfig "report_db_ssl_enabled" "1"
@@ -616,12 +611,14 @@ while true ; do
     shift
 done
 
-case $HOST in
-    "localhost"|$(hostname -s)|$(hostname -f)|"")
-        EXTERNALDB=0 ;;
-    *)
-        EXTERNALDB=1 ;;
-esac
+EXTERNALDB=0
+if [ -n "$EXTERNALDB_ADMIN_USER" ]; then
+    EXTERNALDB=1
+fi
+
+if [ -z "$HOST" ]; then
+    HOST=$(hostname -f)
+fi
 
 case $1 in
         create) create
