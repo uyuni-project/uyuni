@@ -328,7 +328,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-systemctl status salt-minion > /dev/null 2>&1
+systemctl status salt-minion > /dev/null 2>&1 || systemctl status venv-salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
     MASTER_CONF=/etc/salt/minion.d/susemanager.conf
