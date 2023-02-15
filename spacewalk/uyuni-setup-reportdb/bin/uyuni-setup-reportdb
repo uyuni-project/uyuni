@@ -284,8 +284,7 @@ EOF
         if $LSOF /proc > /dev/null ; then
             while [ -f "$PG_PIDFILE" ] ; do
                 # wait for postmaster to be ready
-                $LSOF -t -p $(head -1 "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
-                    && break
+                pg_isready -q -U $(grep -oP '^db_user ?= ?\K.*' $RHN_CONF) && break
                 sleep 1
             done
         fi
