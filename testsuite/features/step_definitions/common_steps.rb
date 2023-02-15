@@ -203,7 +203,10 @@ Then(/^the salt event log on server should contain no failures$/) do
   output, _code = $server.run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
   output = output.join.to_s if output.respond_to?(:join)
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero?
+  # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
+  ignore_error = false
+  ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? and !ignore_error
 end
 
 # action chains
