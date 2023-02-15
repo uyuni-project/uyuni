@@ -1,3 +1,4 @@
+- fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix duplicate keys in suseImageFile and other tables (bsc#1207799)
 - Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 - Change Rocky Linux Advisory page URL

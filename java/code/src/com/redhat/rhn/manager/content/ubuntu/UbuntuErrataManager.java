@@ -260,7 +260,7 @@ public class UbuntuErrataManager {
                     .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
                             Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-            return collect.entrySet().stream().map(e -> {
+            return collect.entrySet().stream().flatMap(e -> {
                 Optional<Org> org = e.getKey();
                 Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(
                             entry.getId(), org.orElse(null)
@@ -276,8 +276,20 @@ public class UbuntuErrataManager {
                 errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
                 errata.setIssueDate(Date.from(entry.getDate()));
                 errata.setUpdateDate(Date.from(entry.getDate()));
-                String[] split = entry.getId().split("-", 2);
-                errata.setAdvisoryRel(Long.parseLong(split[1]));
+
+
+                String[] split = entry.getId().split("-", 3);
+                if (split.length == 3 && split[0].equals("USN")) {
+                    errata.setAdvisoryRel(Long.parseLong(split[2]));
+                }
+                else if (split.length == 2) {
+                    errata.setAdvisoryRel(Long.parseLong(split[1]));
+                }
+                else {
+                    LOG.warn("Could not parse advisory id: {}", entry.getId());
+                    return Stream.empty();
+                }
+
                 errata.setProduct("Ubuntu");
                 errata.setSolution("-");
                 errata.setSynopsis(entry.getIsummary());
@@ -311,7 +323,7 @@ public class UbuntuErrataManager {
                 if (errata.getId() == null) {
                     changedErrata.add(errata);
                 }
-                return errata;
+                return Stream.of(errata);
             });
         }).forEach(ErrataFactory::save));
 
