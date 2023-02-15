@@ -34,16 +34,19 @@ end
 
 When(/^I create distro "([^"]*)"$/) do |distro|
   raise "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
+
   $cobbler_test.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I create profile "([^"]*)" for distro "([^"]*)"$/) do |profile, distro|
   raise "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
+
   $cobbler_test.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
   raise "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
+
   $cobbler_test.system_create(system, profile)
 end
 
