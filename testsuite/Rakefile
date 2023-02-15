@@ -223,7 +223,7 @@ namespace :jenkins do
   desc 'Generate all the Rakefiles needed for Build Validation'
   task :generate_rake_files_build_validation do
     instances = []
-    ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') }.each do |key, _value|
+    ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') }.each do |key, _value|
       # Convert ENV variables into testsuite variables
       instance = "#{key}".downcase
       instances << instance.gsub('sshminion', 'ssh_minion')
