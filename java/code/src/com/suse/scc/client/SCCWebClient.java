@@ -223,6 +223,8 @@ public class SCCWebClient implements SCCClient {
         HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
         addHeaders(request);
         BufferedReader streamReader = null;
+        log.debug("Send DELETE to {}", config.getUrl() + "/connect/organizations/systems/" + id);
+
         try {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request,
@@ -230,10 +232,8 @@ public class SCCWebClient implements SCCClient {
 
             int responseCode = response.getStatusLine().getStatusCode();
 
-            if (responseCode == HttpStatus.SC_NO_CONTENT) {
-                // DELETE requests do not have content
-            }
-            else {
+            // DELETE requests do not have content NO_CONTENT is OK
+            if (responseCode != HttpStatus.SC_NO_CONTENT) {
                 // Request was not successful
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
                         username, config.getLoggingDir(), !config.isSkipOwner());
@@ -266,6 +266,11 @@ public class SCCWebClient implements SCCClient {
         Map<String, List<SCCUpdateSystemJson>> payload = Map.of("systems", systems);
         request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
 
+        if (log.isDebugEnabled()) {
+            log.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
+            log.debug(gson.toJson(payload));
+        }
+
         try {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request, username, password);
@@ -297,6 +302,11 @@ public class SCCWebClient implements SCCClient {
         // Additional request headers
         addHeaders(request);
         request.setEntity(new StringEntity(gson.toJson(system), ContentType.APPLICATION_JSON));
+
+        if (log.isDebugEnabled()) {
+            log.debug("Send POST to {}", config.getUrl() + "/connect/organizations/systems");
+            log.debug(gson.toJson(system));
+        }
 
         Reader streamReader = null;
         try {
@@ -340,11 +350,13 @@ public class SCCWebClient implements SCCClient {
         HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/virtualization_hosts");
         // Additional request headers
         addHeaders(request);
-        if (log.isDebugEnabled()) {
-            log.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
-        }
         request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
                 ContentType.APPLICATION_JSON));
+
+        if (log.isDebugEnabled()) {
+            log.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/virtualization_hosts");
+            log.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
+        }
 
         try {
             // Connect and parse the response on success
