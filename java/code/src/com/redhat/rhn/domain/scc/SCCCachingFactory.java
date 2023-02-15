@@ -579,7 +579,8 @@ public class SCCCachingFactory extends HibernateFactory {
                 "JOIN reg.server AS s " +
                 "JOIN s.serverInfo AS si " +
                 "WHERE reg.registrationErrorTime IS NULL " +
-                "AND reg.credentials = :cred")
+                "AND reg.credentials = :cred " +
+                "AND reg.sccId IS NOT NULL ")
                 .setParameter("cred", cred)
                 .list();
         for (Object[] row : rows) {
