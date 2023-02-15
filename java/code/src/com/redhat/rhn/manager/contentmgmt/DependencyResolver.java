@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModularPackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -144,14 +145,7 @@ public class DependencyResolver {
         List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
 
         // 1. Modular packages to be denied
-        Stream<PackageFilter> pkgDenyFilters;
-        try {
-            pkgDenyFilters = modulemdApi.getAllPackages(sources).stream()
-                    .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
-        }
-        catch (ModulemdApiException e) {
-            throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
-        }
+        PackageFilter pkgDenyFilter = new ModularPackageFilter();
 
         // 2. Non-modular packages to be denied by name
         Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream()
@@ -162,8 +156,8 @@ public class DependencyResolver {
                 .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.ALLOW));
 
         // Concatenate filter streams into the list
-        return new DependencyResolutionResult(Stream.of(pkgDenyFilters, providedRpmApiFilters, pkgAllowFilters)
-                .flatMap(s -> s).collect(toList()), resolvedModules);
+        return new DependencyResolutionResult(Stream.of(providedRpmApiFilters, pkgAllowFilters,
+                Stream.of(pkgDenyFilter)).flatMap(s -> s).collect(toList()), resolvedModules);
     }
 
     /**
@@ -173,6 +167,7 @@ public class DependencyResolver {
      */
     public static boolean isModulesDisabled(Collection<ContentFilter> filters) {
         return filters.stream()
+                .filter(f -> f instanceof ModuleFilter)
                 .anyMatch(f -> FilterCriteria.Matcher.MODULE_NONE.equals(f.getCriteria().getMatcher()));
     }
 

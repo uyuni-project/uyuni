@@ -1,3 +1,4 @@
+- Filter CLM modular packages using release strings (bsc#1207814)
 - Allow processing big state results (bsc#1210957)
 - Use glassfish-activation-api instead of gnu-jaf
 - fix session information leak CVE-2023-22644 (bsc#1210107)

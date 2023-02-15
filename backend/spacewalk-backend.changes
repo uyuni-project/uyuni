@@ -1,3 +1,4 @@
+- Filter CLM modular packages using release strings (bsc#1207814)
 - Add package details to reposync error logging
 
 -------------------------------------------------------------------
