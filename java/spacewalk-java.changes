@@ -1,3 +1,4 @@
+- Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
 - Add support to add optional channels via webUI
 - Add the create/update methods for kickstart to accepts kernel and kernel post options (jsc#suma-251)
 - fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
