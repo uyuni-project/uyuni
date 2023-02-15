@@ -180,6 +180,7 @@ install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/vhost-nossl.conf %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler

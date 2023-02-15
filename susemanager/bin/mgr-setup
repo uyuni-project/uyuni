@@ -448,17 +448,28 @@ scc-pass = $SCC_PASS
     elif [ -n "$ISS_PARENT" ]; then
         PARAM_CC="--disconnected"
     fi
-    if [ -n "$CA_CERT" -a -n "$SERVER_CERT" -a -n "$SERVER_KEY" ]; then
-        echo "ssl-use-existing-certs = Y
+
+    if [ "$NO_SSL" == "Y" ]; then
+        echo "no-ssl = Y
+" >>/root/spacewalk-answers
+        PARAM_CC="$PARAM_CC --skip-ssl-cert-generation"
+
+        sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
+        echo "server.no_ssl = 1" >>/etc/rhn/rhn.conf
+        sed '/<IfDefine SSL/,/<\/IfDefine SSL/d' -i /etc/apache2/listen.conf
+    else
+        if [ -n "$CA_CERT" -a -n "$SERVER_CERT" -a -n "$SERVER_KEY" ]; then
+            echo "ssl-use-existing-certs = Y
 ssl-ca-cert = $CA_CERT
 ssl-server-cert = $SERVER_CERT
 ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
-    else
-        echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
+        else
+            echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
 
-	# check if CA Cert and Key exists and try to use it to generate the server certs
-	if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
-            PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
+        # check if CA Cert and Key exists and try to use it to generate the server certs
+        if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
+                PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
+            fi
         fi
     fi
 
@@ -790,6 +801,7 @@ do_migration() {
 }
 
 do_setup() {
+    NO_SSL=
     if [ -f $SETUP_ENV ]; then
         . $SETUP_ENV
     else

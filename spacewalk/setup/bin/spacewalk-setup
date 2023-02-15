@@ -481,7 +481,9 @@ sub setup_mod_ssl {
     return;
   }
 
-  system('/usr/bin/spacewalk-setup-httpd');
+  my $no_ssl_arg = $answers->{"no-ssl"} =~ /^[Yy]/ ? ' --no-ssl' : '';
+
+  system(split / /, "/usr/bin/spacewalk-setup-httpd$no_ssl_arg");
 
 }
 
@@ -497,6 +499,12 @@ sub setup_tomcat {
 sub setup_ssl_certs {
   my $opts = shift;
   my $answers = shift;
+
+  if ($opts{"skip-ssl-cert-generation"} || $opts{"upgrade"}) {
+    print Spacewalk::Setup::loc("** Skipping SSL certificate generation.\n");
+    return;
+  }
+
   Spacewalk::Setup::ask(
     -noninteractive => $opts{"non-interactive"},
     -question => "Do you want to import exising certificates?",
@@ -507,11 +515,6 @@ sub setup_ssl_certs {
 
   my $use_own_certs = $answers->{'ssl-use-existing-certs'} &&
                       $answers->{'ssl-use-existing-certs'} =~ /^[Yy]/;
-
-  if ($opts{"skip-ssl-cert-generation"} || $opts{"upgrade"}) {
-    print Spacewalk::Setup::loc("** Skipping SSL certificate generation.\n");
-    return;
-  }
 
   if (!$use_own_certs) {
       my ($password_1, $password_2);
@@ -860,7 +863,7 @@ sub populate_initial_configs {
      report_db_host => $answers->{'report-db-host'},
      report_db_port => $answers->{'report-db-port'},
      report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
-     report_db_sslrootcert => $answers->{'report-db-ca-cert'}
+     report_db_sslrootcert => $answers->{'report-db-ca-cert'},
     );
 
     for ($config_opts{'db_password'}) {
@@ -938,6 +941,11 @@ sub populate_final_configs {
 
   Spacewalk::Setup::satcon_deploy(-tree => '/var/lib/rhn/rhn-satellite-prep/etc/rhn',
                 -dest => '/etc/rhn');
+  if($answers->{"no-ssl"} =~ /^[Yy]/) {
+      open(my $FILE, '>>', '/etc/rhn/rhn.conf');
+      print $FILE "server.no_ssl = 1";
+      close $FILE;
+  }
 
   return;
 }
