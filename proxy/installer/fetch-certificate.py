@@ -23,7 +23,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('destination', default='/etc/sysconfig/rhn/systemid')
     args = parser.parse_args()
-    opts = salt.config.minion_config('/etc/salt/minion', cache_minion_id=True)
+    if os.path.exists('/etc/venv-salt-minion/minion'):
+        opts = salt.config.minion_config('/etc/venv-salt-minion/minion', cache_minion_id=True)
+    else:
+        opts = salt.config.minion_config('/etc/salt/minion', cache_minion_id=True)
 
     if not os.path.isdir(os.path.dirname(args.destination)):
         print("There is a problem with the provided destination.")
