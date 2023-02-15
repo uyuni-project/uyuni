@@ -36,6 +36,22 @@ spec:
             name: etc-tls
           - name: tls-key
             mountPath: /etc/pki/spacewalk-tls
+      - name: init-var-cobbler
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/var/lib/cobbler /mnt;
+            chmod --reference=/var/lib/cobbler /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /var/lib/cobbler/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: var-cobbler
       - name: init-var-pgsql
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -388,6 +404,8 @@ spec:
             name: tmp
           - mountPath: /sys/fs/cgroup
             name: cgroup
+          - mountPath: /var/lib/cobbler
+            name: var-cobbler
           - mountPath: /var/lib/pgsql
             name: var-pgsql
           - mountPath: /var/cache
@@ -451,6 +469,9 @@ spec:
         hostPath:
           path: /sys/fs/cgroup
           type: Directory
+      - name: var-cobbler
+        persistentVolumeClaim:
+          claimName: var-cobbler
       - name: var-pgsql
         persistentVolumeClaim:
           claimName: var-pgsql
