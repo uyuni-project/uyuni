@@ -1,0 +1,11 @@
+
+## POC features BEGIN ###
+
+# IMMUTABLE ORDER
+- features/init_clients/poc_sle_ssh_minion.feature
+- features/init_clients/poc_sle_minion.feature
+# - features/init_clients/poc_min_rhlike_salt.feature
+# - features/init_clients/poc_min_deblike_salt.feature
+# - features/init_clients/poc_min_virthost.feature
+# - features/init_clients/poc_buildhost_bootstrap.feature
+## POC features END ###

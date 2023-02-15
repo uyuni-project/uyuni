@@ -11,10 +11,10 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
-    And I enter the hostname of "uyuni-opensuse-minion-test-1" as "hostname"
+    And I enter the hostname of "ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "uyuni-opensuse-minion-test-1", refreshing the page
+    And I wait until I see the name of "ssh_minion", refreshing the page
 
