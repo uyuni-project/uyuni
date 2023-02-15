@@ -1,3 +1,4 @@
+- Filter CLM modular packages using release strings (bsc#1207814)
 - fix repo sync for cloud payg connected repositories (bsc#1208772)
 - Fix issues with kickstart syncing on mirrorlist repositories
 - Do not sync .mirrorlist and other non needed files
