@@ -79,15 +79,17 @@ When(/^I remove kickstart profiles and distros$/) do
 end
 
 # cobbler reports
-When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
+When(/^I trigger cobbler system record$/) do
+  # not for SSH-push traditional client
   space = 'spacecmd -u admin -p admin'
-  system_name = get_system_name(host)
+  host = $client.full_hostname
   $server.run("#{space} clear_caches")
-  out, _code = $server.run("#{space} system_details #{system_name}")
+  out, _code = $server.run("#{space} system_details #{host}")
   unless out.include? 'ssh-push-tunnel'
+    # normal traditional client
     steps %(
       Given I am authorized as "testing" with password "testing"
-      And I am on the Systems overview page of this "#{host}"
+      And I am on the Systems overview page of this "sle_client"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
