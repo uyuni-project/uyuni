@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 
+@skip_if_container
 @proxy
 @private_net
 @pxeboot_minion

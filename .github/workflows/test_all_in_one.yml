@@ -80,5 +80,7 @@ jobs:
         run: docker exec sle_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
       - name: run_cucumber_clients
         run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh_minion && export MINION=sle_minion && cd /testsuite && rake cucumber:poc_init_clients"
+      - name: run_cucumber_secondary
+        run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh_minion && export MINION=sle_minion && cd /testsuite && rake cucumber:secondary"
       - name: last-step
         run: echo "bye bye!"

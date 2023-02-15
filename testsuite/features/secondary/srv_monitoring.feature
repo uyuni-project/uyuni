@@ -10,6 +10,7 @@
 # This feature depends on:
 # - sumaform: as it is configuring monitoring to be enabled after deployment
 
+@skip_if_container
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
 
