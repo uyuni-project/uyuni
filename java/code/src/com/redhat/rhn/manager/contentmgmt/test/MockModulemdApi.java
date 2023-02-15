@@ -208,8 +208,8 @@ public class MockModulemdApi extends ModulemdApi {
                 // Return multiple versions of the package. The different versions are represented as separate module
                 // entries in the metadata and they are merged in to a package list with multiple versions.
                 pkgList.addAll(asList(
-                        "perl-0:5.24.0-xxx.x86_64",
-                        "perl-0:5.24.1-yyy.x86_64"
+                        "perl-0:5.24.0-1.module_xxx.x86_64",
+                        "perl-0:5.24.1-1.module_yyy.x86_64"
                 ));
             }
             else {
