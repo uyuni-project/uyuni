@@ -543,11 +543,13 @@ When(/^I click the environment build button$/) do
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise 'Click on promote from Development failed' unless find_button('dev_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  promote_first = find_all(:xpath, "//button[contains(., 'Promote')]")[0]
+  raise 'Click on promote from Development failed' unless promote_first.click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise 'Click on promote from QA failed' unless find_button('qa_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  promote_second = find_all(:xpath, "//button[contains(., 'Promote')]")[1]
+  raise 'Click on promote from QA failed' unless promote_second.click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
