@@ -663,6 +663,7 @@ sub print_progress {
                 err_code => 1,
                 system_opts => 1,
         });
+        print "Running " . join(" ", @{$params{system_opts}}) . "\n";
 
         local *LOGFILE;
         open(LOGFILE, ">>", $params{log_file_name}) or do {
