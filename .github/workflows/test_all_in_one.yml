@@ -73,13 +73,25 @@ jobs:
       - name: run_cucumber_core
         run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && cd /testsuite && rake cucumber:poc_core"
       - name: sle-salt-minion
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name sle_minion -h sle_minion --env SALT_MASTER=uyuni-server-all-in-one-test-1 --env MACHINE_ID=23457890 ghcr.io/$UYUNI_PROJECT/uyuni/sle-minion:$UYUNI_VERSION bash -c "echo \"master: uyuni-server-all-in-one-test-1\" >> /etc/venv-salt-minion/minion && echo \"grains:\" >> /etc/venv-salt-minion/minion && echo \"  susemanager:\" >> /etc/venv-salt-minion/minion && echo \"    activation_key: '1-SUSE-KEY-x86_64'\" >> /etc/venv-salt-minion/minion && echo 987654321  > /etc/machine-id && /usr/bin/venv-salt-minion"
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name sle_minion -h sle_minion ghcr.io/$UYUNI_PROJECT/uyuni/sle-minion:$UYUNI_VERSION bash -c "echo \"master: uyuni-server-all-in-one-test-1\" >> /etc/venv-salt-minion/minion && echo \"grains:\" >> /etc/venv-salt-minion/minion && echo \"  susemanager:\" >> /etc/venv-salt-minion/minion && echo \"    activation_key: '1-SUSE-KEY-x86_64'\" >> /etc/venv-salt-minion/minion && echo 987654321  > /etc/machine-id && /usr/bin/venv-salt-minion"
       - name: start_sshd_in_sle_salt_minion
         run: docker exec sle_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
       - name: copy_ssh_to_sle_salt_minion
         run: docker exec sle_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: rhlike-minion
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name rhlike_minion -h rhlike_minion ghcr.io/$UYUNI_PROJECT/uyuni/rocky-minion:$UYUNI_VERSION bash -c "echo \"master: uyuni-server-all-in-one-test-1\" >> /etc/venv-salt-minion/minion && echo \"grains:\" >> /etc/venv-salt-minion/minion && echo \"  susemanager:\" >> /etc/venv-salt-minion/minion && echo \"    activation_key: '1-RH-LIKE-KEY'\" >> /etc/venv-salt-minion/minion && echo 34567890  > /etc/machine-id && /usr/bin/venv-salt-minion"
+      - name: start_sshd_in_rhlike_minion
+        run: docker exec rhlike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
+      - name: copy_ssh_to_rhlike_minion
+        run: docker exec rhlike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: deblike-minion
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name deblike_minion -h deblike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ubuntu-minion:$UYUNI_VERSION bash -c "echo \"master: uyuni-server-all-in-one-test-1\" >> /etc/venv-salt-minion/minion && echo \"grains:\" >> /etc/venv-salt-minion/minion && echo \"  susemanager:\" >> /etc/venv-salt-minion/minion && echo \"    activation_key: '1-DEBLIKE-KEY'\" >> /etc/venv-salt-minion/minion && echo 45678901  > /etc/machine-id && /usr/bin/venv-salt-minion"
+      - name: start_sshd_in_deblike_minion
+        run: docker exec deblike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
+      - name: copy_ssh_to_deblike_minion
+        run: docker exec deblike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
       - name: run_cucumber_clients
-        run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh_minion && export MINION=sle_minion && cd /testsuite && rake cucumber:poc_init_clients"
+        run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh_minion && export MINION=sle_minion && export RHLIKE_MINION=rhlike_minion && export DEBLIKE_MINION=deblike_minion && cd /testsuite && rake cucumber:poc_init_clients"
       - name: run_cucumber_secondary
         run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh_minion && export MINION=sle_minion && cd /testsuite && rake cucumber:secondary"
       - name: last-step
