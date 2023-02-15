@@ -30,7 +30,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 # FIXME hack to correct the report db script to work on containers
 RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
-RUN sed -i 's/-a "$PG_SOCKET"//g' /usr/bin/uyuni-setup-reportdb
 
 # LABELs
 ARG PRODUCT=Uyuni
