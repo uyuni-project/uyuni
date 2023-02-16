@@ -543,13 +543,21 @@ When(/^I click the environment build button$/) do
 end
 
 When(/^I click promote from Development to QA$/) do
-  promote_first = find_all(:xpath, "//button[contains(., 'Promote')]")[0]
-  raise 'Click on promote from Development failed' unless promote_first.click
+  begin
+    promote_first = first(:xpath, "//button[contains(., 'Promote')]")
+    promote_first.click
+  rescue Capybara::ElementNotFound => e
+    raise "Click on promote from Development failed: #{e}"
+  end
 end
 
 When(/^I click promote from QA to Production$/) do
-  promote_second = find_all(:xpath, "//button[contains(., 'Promote')]")[1]
-  raise 'Click on promote from QA failed' unless promote_second.click
+  begin
+    promote_second = find_all(:xpath, "//button[contains(., 'Promote')]", minimum: 2)[1]
+    promote_first.click
+  rescue Capybara::ElementNotFound => e
+    raise "Click on promote from QA failed: #{e}"
+  end
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
