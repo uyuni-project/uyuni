@@ -1213,6 +1213,14 @@ DATA = {
         'BASECHANNEL' : 'opensuse_microos-aarch64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
     },
+    'openSUSE-Leap-15.5-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_5-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },
+    'openSUSE-Leap-15.5-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_5-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },    
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
