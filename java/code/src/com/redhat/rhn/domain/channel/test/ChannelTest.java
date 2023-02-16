@@ -252,9 +252,11 @@ public class ChannelTest extends BaseTestCaseWithUser {
     @Test
     public void testIsModular() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
+        assertNull(c.getModules());
         assertFalse(c.isModular());
 
         c.addModules(new Modules("filename", new Date()));
+        assertNotNull(c.getModules());
         assertTrue(c.isModular());
     }
 
