@@ -1,0 +1,179 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pgsql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: pgsql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: var-cache
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-spacewalk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: var-spacewalk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-salt
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-salt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-rhn
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-rhn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-systemd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-systemd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-salt
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-salt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-tls
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-tls
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-log-rhn
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 2Gi
+  selector:
+    matchLabels:
+      data: var-log-rhn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: apache2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: apache2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: root
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: root
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tomcat 
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: tomcat
