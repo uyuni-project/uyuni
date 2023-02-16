@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
-import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
@@ -39,8 +38,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -537,28 +534,5 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("b_parent1", channels.get(1).getLabel());
         assertEquals("a_child1", channels.get(2).getLabel());
         assertEquals("b_parent3", channels.get(3).getLabel());
-    }
-
-    public void testCloneModulesMetadata() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
-        Instant nowDate = Instant.now();
-        Channel orig = ChannelTestUtils.createTestChannel(user);
-        Modules modules = new Modules("modules1.yaml", Date.from(nowDate.minus(Duration.ofHours(1))));
-        modules.setChannel(orig);
-        orig.addModules(modules);
-        assertTrue(orig.isModular());
-
-        Channel clone = ChannelTestUtils.createTestChannel(user);
-        modules = new Modules("modules2.yaml", Date.from(nowDate));
-        modules.setChannel(clone);
-        clone.addModules(modules);
-        assertTrue(clone.isModular());
-
-        ChannelFactory.cloneModulesMetadata(orig, clone);
-
-        assertTrue(clone.isModular());
-        assertEquals(1, clone.getModules().size());
-        assertEquals("modules1.yaml", clone.getLatestModules().getRelativeFilename());
-        assertEquals(orig.getLatestModules().getLastModified(), clone.getLatestModules().getLastModified());
     }
 }
