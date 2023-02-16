@@ -2,6 +2,7 @@
 - Fix current limitation on Action Chains for SLE Micro
 - Support SLE Micro migration (bsc#1205011)
 - Add data for openSUSE Leap Micro 5.3 and openSUSE MicroOS bootstrapping
+- Add openEuler 22.03 support 
 
 -------------------------------------------------------------------
 Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
