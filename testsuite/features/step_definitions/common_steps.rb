@@ -380,11 +380,21 @@ When(/^I click the environment build button$/) do
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise 'Click on promote from Development failed' unless find_button('dev_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  begin
+    promote_first = first(:xpath, "//button[contains(., 'Promote')]")
+    promote_first.click
+  rescue Capybara::ElementNotFound => e
+    raise "Click on promote from Development failed: #{e}"
+  end
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise 'Click on promote from QA failed' unless find_button('qa_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  begin
+    promote_second = find_all(:xpath, "//button[contains(., 'Promote')]", minimum: 2)[1]
+    promote_second.click
+  rescue Capybara::ElementNotFound => e
+    raise "Click on promote from QA failed: #{e}"
+  end
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
