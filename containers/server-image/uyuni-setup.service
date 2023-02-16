@@ -1,0 +1,16 @@
+[Unit]
+Description=Uyuni run setup
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+PassEnvironment=MANAGER_USER MANAGER_PASS MANAGER_ADMIN_EMAIL
+PassEnvironment=CERT_CNAMES CERT_O CERT_OU CERT_CITY CERT_STATE CERT_COUNTRY CERT_EMAIL CERT_PASS
+PassEnvironment=LOCAL_DB MANAGER_DB_NAME MANAGER_DB_HOST MANAGER_DB_PORT MANAGER_DB_CA_CERT MANAGER_DB_PROTOCOL
+PassEnvironment=MANAGER_ENABLE_TFTP EXTERNALDB_ADMIN_USER EXTERNALDB_ADMIN_PASS EXTERNALDB_PROVIDER
+PassEnvironment=SCC_USER SCC_PASS ISS_PARENT ACTIVATE_SLP MANAGER_MAIL_FROM NO_SSL UYUNI_FQDN
+PassEnvironment=REPORT_DB_NAME REPORT_DB_HOST REPORT_DB_PORT_USER REPORT_DB_PASS REPORT_DB_CA_CERT
+ExecStart=/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s -n
+ExecStartPost=systemctl disable --now uyuni-setup.service
+Type=oneshot
