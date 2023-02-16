@@ -14,7 +14,6 @@ Retrieve SUSE Manager pillar data for a minion_id.
 # Import python libs
 from __future__ import absolute_import
 from enum import Enum
-from contextlib import contextmanager
 import os
 import logging
 import yaml
@@ -87,8 +86,7 @@ def _is_salt_ssh(opts):
     return "__master_opts__" in opts
 
 
-@contextmanager
-def _get_cursor():
+def _get_cursor(func):
     def _connect_db():
         options = {
             "host": "localhost",
@@ -131,13 +129,28 @@ def _get_cursor():
         except psycopg2.OperationalError as err:
             log.error("Error on getting database pillar: %s", err.args)
             return
-    try:
-        yield cursor
-    except psycopg2.DatabaseError as err:
-        log.error("Error on getting database pillar: %s", err.args)
-    finally:
-        if _is_salt_ssh(__opts__):
-            cnx.close()
+    retry = 0
+    while True:
+        try:
+            if retry:
+                cnx = _connect_db()
+                log.debug("Reconnected to the DB")
+                if not _is_salt_ssh(__opts__):
+                    __context__["suma_minion_cnx"] = cnx
+                cursor = cnx.cursor()
+
+            func(cursor)
+            break
+        except psycopg2.DatabaseError as err:
+            retry += 1
+            if retry == 3:
+                log.error("Error on getting database pillar, giving up: %s", err.args)
+                break
+            else:
+                log.error("Error on getting database pillar, trying again: %s", err.args)
+        finally:
+            if _is_salt_ssh(__opts__):
+                cnx.close()
 
 
 def ext_pillar(minion_id, pillar, *args):
@@ -147,16 +160,23 @@ def ext_pillar(minion_id, pillar, *args):
 
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
     ret = {}
+    group_formulas = {}
+    system_formulas = {}
 
     # Load the pillar from the legacy files
     ret = load_static_pillars(ret)
 
     # Load the global pillar from DB
-    with _get_cursor() as cursor:
+    def _load_db_pillar(cursor):
+        nonlocal ret
+        nonlocal group_formulas
+        nonlocal system_formulas
         ret = load_global_pillars(cursor, ret)
         ret = load_org_pillars(minion_id, cursor, ret)
         group_formulas, ret = load_group_pillars(minion_id, cursor, ret)
         system_formulas, ret= load_system_pillars(minion_id, cursor, ret)
+
+    _get_cursor(_load_db_pillar)
 
     # Including formulas into pillar data
     try:
