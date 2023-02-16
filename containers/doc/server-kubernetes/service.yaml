@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: uyuni
+  name: uyuni-tcp
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: salt-publish
+    port: 4505
+    protocol: TCP
+    targetPort: 4505
+  - name: salt-request
+    port: 4506
+    protocol: TCP
+    targetPort: 4506
+  - name: cobbler
+    port: 25151
+    protocol: TCP
+    targetPort: 25151
+  - name: postgresql
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  - name: tomcat-debug
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  - name: tasko-debug
+    port: 8001
+    protocol: TCP
+    targetPort: 8001
+  selector:
+    app: uyuni
+  type: ClusterIP
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: uyuni
+  name: uyuni-udp
+spec:
+  ports:
+  - name: tftp
+    port: 69
+    protocol: UDP
+    targetPort: 69
+  selector:
+    app: uyuni
+  type: ClusterIP
+status:
+  loadBalancer: {}

@@ -1,0 +1,19 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-ingress-nginx
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    controller:
+      config:
+        hsts: "false"
+    tcp:
+      4505: "default/uyuni-tcp:4505"
+      4506: "default/uyuni-tcp:4506"
+      5432: "default/uyuni-tcp:5432"
+      8000: "default/uyuni-tcp:8000"
+      8001: "default/uyuni-tcp:8001"
+      25151: "default/uyuni-tcp:25151"
+    udp:
+      69: "default/uyuni-udp:69"

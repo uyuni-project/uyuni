@@ -1,0 +1,531 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+reclaimPolicy: Delete
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: var-pgsql
+  labels:
+    data: var-pgsql
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/var-pgsql
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: var-cache
+  labels:
+    data: var-cache
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/var-cache
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: var-spacewalk
+  labels:
+    data: var-spacewalk
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/var-spacewalk
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: var-log
+  labels:
+    data: var-log
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/var-log
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-salt
+  labels:
+    data: srv-salt
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-salt
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-www-pub
+  labels:
+    data: srv-www-pub
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-pub
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-www-cobbler
+  labels:
+    data: srv-www-cobbler
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-cobbler
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-www-osimages
+  labels:
+    data: srv-www-osimages
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-osimages
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-tftpboot
+  labels:
+    data: srv-tftpboot
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-tftpboot
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-formulametadata
+  labels:
+    data: srv-formulametadata
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-formulametadata
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-pillar
+  labels:
+    data: srv-pillar
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-pillar
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-susemanager
+  labels:
+    data: srv-susemanager
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-susemanager
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-spacewalk
+  labels:
+    data: srv-spacewalk
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-spacewalk
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: root
+  labels:
+    data: root
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/root
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-apache2
+  labels:
+    data: etc-apache2
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-apache2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-rhn
+  labels:
+    data: etc-rhn
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-rhn
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-systemd
+  labels:
+    data: etc-systemd
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-systemd
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-salt
+  labels:
+    data: etc-salt
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-salt
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-tomcat
+  labels:
+    data: etc-tomcat
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-tomcat
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-cobbler
+  labels:
+    data: etc-cobbler
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-cobbler
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-sysconfig
+  labels:
+    data: etc-sysconfig
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-sysconfig
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-tls
+  labels:
+    data: etc-tls
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-tls
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
