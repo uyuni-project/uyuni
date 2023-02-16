@@ -318,47 +318,52 @@ check_mksubvolume() {
 }
 
 check_btrfs_dirs() {
-DIR="/var/spacewalk"
-if [ ! -d $DIR ]; then
-    FSTYPE=`df -T \`dirname $DIR\` | tail -1 | awk '{print $2}'`
+ROOT_FSTYPE=`df -T / | tail -1 | awk '{print $2}'`
+if [ $ROOT_FSTYPE == "overlay" ]; then
+    echo "Skipping btrfs check in containers"
+else
+    DIR="/var/spacewalk"
+    if [ ! -d $DIR ]; then
+        FSTYPE=`df -T \`dirname $DIR\` | tail -1 | awk '{print $2}'`
+        echo -n "Filesystem type for $DIR is $FSTYPE - "
+        if [ $FSTYPE == "btrfs" ]; then
+            check_mksubvolume
+            echo "creating nCoW subvolume."
+            mksubvolume --nocow $DIR
+        else
+            echo "ok."
+        fi
+    else
+        echo "$DIR already exists. Leaving it untouched."
+    fi
+
+    DIR="/var/cache"
+    if [ ! -d $DIR ]; then
+        mkdir $DIR
+    fi
+    FSTYPE=`df -T $DIR | tail -1 | awk '{print $2}'`
     echo -n "Filesystem type for $DIR is $FSTYPE - "
     if [ $FSTYPE == "btrfs" ]; then
-        check_mksubvolume
-        echo "creating nCoW subvolume."
-        mksubvolume --nocow $DIR
+        TESTDIR=`basename $DIR`
+        btrfs subvolume list /var | grep "$TESTDIR" > /dev/null
+        if [ ! $? -eq 0 ]; then
+            check_mksubvolume
+            echo "creating subvolume."
+            mv $DIR ${DIR}.sav
+            mksubvolume $DIR
+            touch ${DIR}.sav/foobar.dummy
+            if [ ! -d $DIR ]; then
+                mkdir $DIR
+            fi
+            mv ${DIR}.sav/* $DIR
+            rmdir ${DIR}.sav
+            rm -f $DIR/foobar.dummy
+        else
+            echo "subvolume for $DIR already exists. Fine."
+        fi
     else
         echo "ok."
     fi
-else
-    echo "$DIR already exists. Leaving it untouched."
-fi
-
-DIR="/var/cache"
-if [ ! -d $DIR ]; then
-    mkdir $DIR
-fi
-FSTYPE=`df -T $DIR | tail -1 | awk '{print $2}'`
-echo -n "Filesystem type for $DIR is $FSTYPE - "
-if [ $FSTYPE == "btrfs" ]; then
-    TESTDIR=`basename $DIR`
-    btrfs subvolume list /var | grep "$TESTDIR" > /dev/null
-    if [ ! $? -eq 0 ]; then
-        check_mksubvolume
-        echo "creating subvolume."
-        mv $DIR ${DIR}.sav
-        mksubvolume $DIR
-        touch ${DIR}.sav/foobar.dummy
-        if [ ! -d $DIR ]; then
-            mkdir $DIR
-        fi
-        mv ${DIR}.sav/* $DIR
-        rmdir ${DIR}.sav
-        rm -f $DIR/foobar.dummy
-    else
-        echo "subvolume for $DIR already exists. Fine."
-    fi
-else
-    echo "ok."
 fi
 }
 
