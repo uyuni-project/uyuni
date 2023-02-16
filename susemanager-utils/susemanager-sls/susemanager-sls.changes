@@ -1,4 +1,8 @@
-- Fix dnf plugin path calculation when using Salt Bundle (bsc#1208335)
+-------------------------------------------------------------------
+Thu Feb 16 11:51:26 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.30-1
+  * Fix dnf plugin path calculation when using Salt Bundle (bsc#1208335)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:46:22 CET 2023 - jgonzalez@suse.com
