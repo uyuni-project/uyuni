@@ -554,7 +554,7 @@ end
 When(/^I click promote from QA to Production$/) do
   begin
     promote_second = find_all(:xpath, "//button[contains(., 'Promote')]", minimum: 2)[1]
-    promote_first.click
+    promote_second.click
   rescue Capybara::ElementNotFound => e
     raise "Click on promote from QA failed: #{e}"
   end
