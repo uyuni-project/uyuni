@@ -1,0 +1,193 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: uyuni
+  name: uyuni
+spec:
+  initContainers:
+  - name: dir-ownership-pgsql
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rf /var/lib/pgsql/* /mnt; chown --reference=/var/lib/pgsql /mnt; chmod --reference=/var/lib/pgsql /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: pgsql
+  - name: dir-init-tomcat
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/tomcat/* /mnt; chown --reference=/etc/tomcat /mnt; chmod --reference=/etc/tomcat /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: tomcat
+  - name: dir-init-apache2
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/apache2/* /mnt; chown --reference=/etc/apache2 /mnt; chmod --reference=/etc/apache2 /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: apache2
+  - name: dir-init-salt
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/salt/* /mnt; chown --reference=/etc/salt /mnt; chmod --reference=/etc/salt /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: etc-salt
+  - name: dir-init-rhn
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/rhn/* /mnt; chown --reference=/etc/rhn /mnt; chmod --reference=/etc/rhn /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: etc-rhn
+  - name: dir-init-tls
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then ln -s /etc/pki/spacewalk-tls/spacewalk.crt /etc/pki/tls/certs/spacewalk.crt; ln -s /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/spacewalk.key; cp /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/pg-spacewalk.key; chown postgres:postgres /etc/pki/tls/private/pg-spacewalk.key; cp -rp /etc/pki/tls/* /mnt; chown --reference=/etc/pki/tls /mnt; chmod --reference=/etc/pki/tls /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: etc-tls
+  - name: dir-init-systemd
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/systemd/system/multi-user.target.wants/* /mnt; chown --reference=/etc/systemd/system/multi-user.target.wants /mnt; chmod --reference=/etc/systemd/system/multi-user.target.wants /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: etc-systemd
+  - name: dir-init-log-rhn
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /var/log/rhn/* /mnt; chown --reference=/var/log/rhn /mnt; chmod --reference=/var/log/rhn /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: var-log-rhn
+  - name: dir-init-root
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /root/* /mnt; chown --reference=/root /mnt; chmod --reference=/root /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: root
+  - name: dir-init-cache
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /var/cache/* /mnt; chown --reference=/var/cache /mnt; chmod --reference=/var/cache /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: var-cache
+  - name: dir-srv-salt
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then chown --reference=/srv/salt /mnt; chmod --reference=/srv/salt /mnt; fi']
+    volumeMounts:
+      - mountPath: /mnt
+        name: srv-salt
+  containers:
+  - image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    securityContext:
+      capabilities:
+        add:
+          - SYS_ADMIN
+    name: uyuni
+    ports:
+      - containerPort: 443
+      - containerPort: 80
+      - containerPort: 4505
+      - containerPort: 4506
+      - containerPort: 69
+        protocol: UDP
+      - containerPort: 25151
+      - containerPort: 5432
+    resources: {}
+    volumeMounts:
+      - mountPath: /run
+        name: tmp
+      - mountPath: /sys/fs/cgroup
+        name: cgroup
+      - mountPath: /var/lib/pgsql
+        name: pgsql
+      - mountPath: /var/cache
+        name: var-cache
+      - mountPath: /var/spacewalk
+        name: var-spacewalk
+      - mountPath: /srv/salt
+        name: srv-salt
+      - mountPath: /etc/rhn
+        name: etc-rhn
+      - mountPath: /etc/systemd/system/multi-user.target.wants
+        name: etc-systemd
+      - mountPath: /var/log/rhn
+        name: var-log-rhn
+      - mountPath: /etc/salt
+        name: etc-salt
+      - mountPath: /etc/apache2
+        name: apache2
+      - mountPath: /root
+        name: root
+      - mountPath: /etc/tomcat
+        name: tomcat
+      - mountPath: /etc/pki/tls
+        name: etc-tls
+      - name: ca-cert
+        mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+        readOnly: true
+        subPath: ca.crt
+      - name: tls-key
+        mountPath: /etc/pki/spacewalk-tls
+      - name: uyuni-config
+        mountPath: /root/setup_env.sh
+        readOnly: true
+        subPath: setup_env.sh
+  volumes:
+  - name: tmp
+    emptyDir:
+      medium: Memory
+      sizeLimit: 256Mi
+  - name: cgroup
+    hostPath:
+      path: /sys/fs/cgroup
+      type: Directory
+  - name: pgsql
+    persistentVolumeClaim:
+      claimName: pgsql
+  - name: var-cache
+    persistentVolumeClaim:
+      claimName: var-cache
+  - name: var-spacewalk
+    persistentVolumeClaim:
+      claimName: var-spacewalk
+  - name: srv-salt
+    persistentVolumeClaim:
+      claimName: srv-salt
+  - name: etc-rhn
+    persistentVolumeClaim:
+      claimName: etc-rhn
+  - name: etc-systemd
+    persistentVolumeClaim:
+      claimName: etc-systemd
+  - name: etc-salt
+    persistentVolumeClaim:
+      claimName: etc-salt
+  - name: var-log-rhn
+    persistentVolumeClaim:
+      claimName: var-log-rhn
+  - name: apache2
+    persistentVolumeClaim:
+      claimName: apache2
+  - name: root
+    persistentVolumeClaim:
+      claimName: root
+  - name: tomcat
+    persistentVolumeClaim:
+      claimName: tomcat
+  - name: ca-cert
+    configMap:
+      name: uyuni-ca
+  - name: etc-tls
+    persistentVolumeClaim:
+      claimName: etc-tls
+  - name: tls-key
+    secret:
+      secretName: uyuni-cert
+      items:
+        - key: tls.crt
+          path: spacewalk.crt
+        - key: tls.key
+          path: spacewalk.key
+          mode: 0600
+  - name: uyuni-config
+    configMap:
+      name: uyuni-config
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always

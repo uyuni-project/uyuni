@@ -1,0 +1,83 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: uyuni-ingress-ssl
+spec:
+  tls:
+    - hosts:
+      - uyuni-dev.world-co.com
+      secretName: uyuni-dev-cert
+  rules:
+  - host: uyuni-dev.world-co.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: uyuni-ingress-nossl
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: uyuni-dev.world-co.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /pub
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/([^/])+/DownloadFile
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/rpc/api 
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/errors 
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/ty/TinyUrl
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/websocket
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /rhn/metrics
+        pathType: Prefix
