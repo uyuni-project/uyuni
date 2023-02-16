@@ -1,15 +1,27 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
 
 # Wrapper class for XML-RPC client library
 class XmlrpcClient
+  ##
+  # It creates an XMLRPC client object that will be used to communicate with the Spacewalk server
+  #
+  # Args:
+  #   host: The hostname of the Spacewalk server.
   def initialize(host)
     puts 'Activating XML-RPC API'
     @xmlrpc_client = XMLRPC::Client.new2('https://' + host + '/rpc/api', nil, DEFAULT_TIMEOUT)
   end
 
+  ##
+  # It calls a remote method with a list of parameters
+  #
+  # Args:
+  #   name: The name of the method to call.
+  #   params: A hash of parameters. The keys are the names of the parameters, and the values are the values of the
+  # parameters.
   def call(name, params)
     # TODO: What happens if params.nil?
     @xmlrpc_client.call(name, *params.values)
