@@ -13,6 +13,7 @@ RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Copy Uyuni setup script
 COPY setup_env.sh /root/setup_env.sh
+COPY uyuni-setup.service /usr/lib/systemd/system/
 
 # Main packages
 # TODO Remove vi and possibly python3-simplejson
@@ -27,6 +28,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 # FIXME hack to correct the report db script to work on containers
 RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
+
+RUN systemctl enable uyuni-setup
 
 # LABELs
 ARG PRODUCT=Uyuni
