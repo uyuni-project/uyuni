@@ -44,7 +44,6 @@ import com.redhat.rhn.testing.TestUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -126,8 +125,10 @@ public class MockModulemdApi extends ModulemdApi {
     public static Channel createModularTestChannel(User user) throws Exception {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, "channel-x86_64"));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
-        Modules modulemd = new Modules("/path/to/modulemd.yaml", new Date());
-        channel.addModules(modulemd);
+        Modules modulemd = new Modules();
+        modulemd.setChannel(channel);
+        modulemd.setRelativeFilename("/path/to/modulemd.yaml");
+        channel.setModules(modulemd);
 
         List<String> nevras = doGetAllPackages();
         // perl 5.26 is a special package which is included in the module definition even though it's not served as a
@@ -236,7 +237,7 @@ public class MockModulemdApi extends ModulemdApi {
         if (!channel.isModular()) {
             throw new RepositoryNotModularException();
         }
-        Modules metadata = channel.getLatestModules();
+        Modules metadata = channel.getModules();
         return new File(MOUNT_POINT_PATH, metadata.getRelativeFilename()).getAbsolutePath();
     }
 
