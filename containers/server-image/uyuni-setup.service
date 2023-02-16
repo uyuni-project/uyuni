@@ -1,0 +1,10 @@
+[Unit]
+Description=Uyuni run setup
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s
+ExecStartPost=systemctl disable --now uyuni-setup.service
+Type=oneshot
