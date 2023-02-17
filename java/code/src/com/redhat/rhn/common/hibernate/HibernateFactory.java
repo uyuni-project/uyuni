@@ -846,7 +846,7 @@ public abstract class HibernateFactory {
      * @param accumulator the operation for the result accumulator
      * @return an accumulated result of executing the query
      */
-    private static <E, T, R> T splitAndExecuteQuery(List<E> list, String parameterName,
+    protected static <E, T, R> T splitAndExecuteQuery(List<E> list, String parameterName,
             Query<R> query, Supplier<T> queryFunction, T identity, BinaryOperator<T> accumulator) {
         int size = list.size();
 

@@ -16,30 +16,49 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+
 import com.suse.manager.webui.services.SaltServerActionService;
+
+import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import org.apache.log4j.Logger;
-import org.quartz.JobExecutionContext;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
 
-    private static final Logger LOG = Logger.getLogger(MinionActionChainExecutor.class);
+    public static final int ACTION_DATABASE_GRACE_TIME = 10000;
+    public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+    public static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
-    private static final int ACTION_DATABASE_GRACE_TIME = 10000;
-    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
-    private final SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+    private final SaltServerActionService saltServerActionService;
 
+    /**
+     * Default constructor.
+     */
+    public MinionActionChainExecutor() {
+        this(GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE);
+    }
+
+    /**
+     * Constructs an instance specifying the {@link SaltServerActionService}. Meant to be used only for unit test.
+     * @param saltServerActionServiceIn the salt service
+     */
+    public MinionActionChainExecutor(SaltServerActionService saltServerActionServiceIn) {
+        saltServerActionService = saltServerActionServiceIn;
+    }
     @Override
     public String getConfigNamespace() {
         return "minion_actionchain_executor";
@@ -65,13 +84,13 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                 .orElse(null);
 
         if (actionChain == null) {
-            LOG.error("Action chain not found id=" + actionChainId);
+            log.error("Action chain not found id=" + actionChainId);
             return;
         }
 
         long serverActionsCount = countServerActions(actionChain);
         if (serverActionsCount == 0) {
-            LOG.warn("Waiting " + ACTION_DATABASE_GRACE_TIME + "ms for the Tomcat transaction to complete.");
+            log.warn("Waiting " + ACTION_DATABASE_GRACE_TIME + "ms for the Tomcat transaction to complete.");
             // give a second chance, just in case this was scheduled immediately
             // and the scheduling transaction did not have the time to commit
             try {
@@ -79,6 +98,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
             }
             catch (InterruptedException e) {
                 // never happens
+                Thread.currentThread().interrupt();
             }
             HibernateFactory.getSession().clear();
         }
@@ -92,6 +112,16 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
             log.warn("Scheduled action chain " + actionChain.getId() + " was scheduled to be executed more than " +
                     MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + " hours ago. Skipping it.");
+
+            List<Long> actionsId = actionChain.getEntries()
+                                              .stream()
+                                              .map(ActionChainEntry::getActionId)
+                                              .filter(Objects::nonNull)
+                                              .collect(Collectors.toList());
+
+            ActionFactory.rejectScheduledActions(actionsId,
+                LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
+
             return;
         }
 
@@ -106,9 +136,10 @@ public class MinionActionChainExecutor extends RhnJavaJob {
     }
 
     private long countServerActions(ActionChain actionChain) {
-        return actionChain.getEntries().stream()
-                .map(ActionChainEntry::getAction)
-                .flatMap(action -> action.getServerActions().stream())
-                .count();
+        return actionChain.getEntries()
+                          .stream()
+                          .map(ActionChainEntry::getAction)
+                          .mapToLong(action -> action.getServerActions().size())
+                          .sum();
     }
 }
