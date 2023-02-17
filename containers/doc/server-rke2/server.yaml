@@ -9,67 +9,67 @@ spec:
   initContainers:
   - name: dir-ownership-pgsql
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rf /var/lib/pgsql/* /mnt; chown --reference=/var/lib/pgsql /mnt; chmod --reference=/var/lib/pgsql /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rf /var/lib/pgsql/* /mnt; chown --reference=/var/lib/pgsql /mnt; chmod --reference=/var/lib/pgsql /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: pgsql
   - name: dir-init-tomcat
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/tomcat/* /mnt; chown --reference=/etc/tomcat /mnt; chmod --reference=/etc/tomcat /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/tomcat/* /mnt; chown --reference=/etc/tomcat /mnt; chmod --reference=/etc/tomcat /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: tomcat
   - name: dir-init-apache2
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/apache2/* /mnt; chown --reference=/etc/apache2 /mnt; chmod --reference=/etc/apache2 /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/apache2/* /mnt; chown --reference=/etc/apache2 /mnt; chmod --reference=/etc/apache2 /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: apache2
   - name: dir-init-salt
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/salt/* /mnt; chown --reference=/etc/salt /mnt; chmod --reference=/etc/salt /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/salt/* /mnt; chown --reference=/etc/salt /mnt; chmod --reference=/etc/salt /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: etc-salt
   - name: dir-init-rhn
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/rhn/* /mnt; chown --reference=/etc/rhn /mnt; chmod --reference=/etc/rhn /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/rhn/* /mnt; chown --reference=/etc/rhn /mnt; chmod --reference=/etc/rhn /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: etc-rhn
   - name: dir-init-tls
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then ln -s /etc/pki/spacewalk-tls/spacewalk.crt /etc/pki/tls/certs/spacewalk.crt; ln -s /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/spacewalk.key; cp /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/pg-spacewalk.key; chown postgres:postgres /etc/pki/tls/private/pg-spacewalk.key; cp -rp /etc/pki/tls/* /mnt; chown --reference=/etc/pki/tls /mnt; chmod --reference=/etc/pki/tls /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then ln -s /etc/pki/spacewalk-tls/spacewalk.crt /etc/pki/tls/certs/spacewalk.crt; ln -s /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/spacewalk.key; cp /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/pg-spacewalk.key; chown postgres:postgres /etc/pki/tls/private/pg-spacewalk.key; cp -rp /etc/pki/tls/* /mnt; chown --reference=/etc/pki/tls /mnt; chmod --reference=/etc/pki/tls /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: etc-tls
   - name: dir-init-systemd
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /etc/systemd/system/multi-user.target.wants/* /mnt; chown --reference=/etc/systemd/system/multi-user.target.wants /mnt; chmod --reference=/etc/systemd/system/multi-user.target.wants /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/systemd/system/multi-user.target.wants/* /mnt; chown --reference=/etc/systemd/system/multi-user.target.wants /mnt; chmod --reference=/etc/systemd/system/multi-user.target.wants /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: etc-systemd
   - name: dir-init-log-rhn
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /var/log/rhn/* /mnt; chown --reference=/var/log/rhn /mnt; chmod --reference=/var/log/rhn /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /var/log/rhn/* /mnt; chown --reference=/var/log/rhn /mnt; chmod --reference=/var/log/rhn /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: var-log-rhn
   - name: dir-init-root
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /root/* /mnt; chown --reference=/root /mnt; chmod --reference=/root /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /root/* /mnt; chown --reference=/root /mnt; chmod --reference=/root /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: root
   - name: dir-init-cache
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then cp -rp /var/cache/* /mnt; chown --reference=/var/cache /mnt; chmod --reference=/var/cache /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then cp -rp /var/cache/* /mnt; chown --reference=/var/cache /mnt; chmod --reference=/var/cache /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: var-cache
   - name: dir-srv-salt
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'if [ -z "$(/mnt)" ]; then chown --reference=/srv/salt /mnt; chmod --reference=/srv/salt /mnt; fi']
+    command: ['sh', '-c', 'if [ -z "$(ls -A /mnt)" ]; then chown --reference=/srv/salt /mnt; chmod --reference=/srv/salt /mnt; fi']
     volumeMounts:
       - mountPath: /mnt
         name: srv-salt
