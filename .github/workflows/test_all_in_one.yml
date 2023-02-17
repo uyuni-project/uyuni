@@ -100,6 +100,8 @@ jobs:
         run: docker exec deblike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
       - name: copy_ssh_to_deblike_minion
         run: docker exec deblike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: accept keys
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "salt-key -A"
       - name: run_cucumber_clients
         run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=ssh-minion && export MINION=sle_minion && export RHLIKE_MINION=rhlike_minion && export DEBLIKE_MINION=deblike_minion && cd /testsuite && rake cucumber:poc_init_clients"
       - name: run_cucumber_secondary
