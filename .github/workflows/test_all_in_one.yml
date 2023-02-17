@@ -77,7 +77,7 @@ jobs:
       - name: run_cucumber_core
         run: docker exec controller-test-1 bash -c "export CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c && export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && cd /testsuite && rake cucumber:poc_core"
       - name: sle-salt-minion
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name sle_minion -h sle_minion ghcr.io/$UYUNI_PROJECT/uyuni/sle-minion:$UYUNI_VERSION /salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-SUSE-KEY-x86_64
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name sle_minion -h sle_minion ghcr.io/$UYUNI_PROJECT/uyuni/sle-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-SUSE-KEY-x86_64"
       - name: wait_5_s
         run: sleep 5s
       - name: start_sshd_in_sle_salt_minion
@@ -85,7 +85,7 @@ jobs:
       - name: copy_ssh_to_sle_salt_minion
         run: docker exec sle_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
       - name: rhlike-minion
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name rhlike_minion -h rhlike_minion ghcr.io/$UYUNI_PROJECT/uyuni/rocky-minion:$UYUNI_VERSION /salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-RH-LIKE-KEY
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name rhlike_minion -h rhlike_minion ghcr.io/$UYUNI_PROJECT/uyuni/rocky-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-RH-LIKE-KEY"
       - name: wait_5_s
         run: sleep 5s
       - name: start_sshd_in_rhlike_minion
@@ -93,7 +93,7 @@ jobs:
       - name: copy_ssh_to_rhlike_minion
         run: docker exec rhlike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
       - name: deblike-minion
-        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name deblike_minion -h deblike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ubuntu-minion:$UYUNI_VERSION /salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-DEBLIKE-KEY
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp -v /home/runner/work/uyuni/uyuni/testsuite/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name deblike_minion -h deblike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ubuntu-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh uyuni-server-all-in-one-test-1 1-DEBLIKE-KEY"
       - name: wait_5_s
         run: sleep 5s
       - name: start_sshd_in_deblike_minion
