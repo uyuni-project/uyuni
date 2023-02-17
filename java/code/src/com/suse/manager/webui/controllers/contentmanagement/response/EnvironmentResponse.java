@@ -21,6 +21,7 @@ import java.util.Date;
  */
 public class EnvironmentResponse {
 
+    private long id;
     private String projectLabel;
     private String label;
     private String name;
@@ -29,6 +30,10 @@ public class EnvironmentResponse {
     private String status;
     private Date builtTime;
     private boolean hasProfiles;
+
+    public void setId(long idIn) {
+        id = idIn;
+    }
 
     public void setStatus(String statusIn) {
         this.status = statusIn;

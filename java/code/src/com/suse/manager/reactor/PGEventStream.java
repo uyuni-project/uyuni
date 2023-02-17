@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
@@ -141,11 +142,18 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                     }
                 }
                 catch (SQLException e) {
+                    // DB connection is probably broken
+                    // make sure that the callback does not use the old session
+                    HibernateFactory.closeSession();
                     cancel();
                     clearListeners(0, "Postgres notification connection was lost");
                 }
                 catch (Exception e) {
                     LOG.error("Unexpected exception:", e);
+                }
+                finally {
+                    // create new session for each run
+                    HibernateFactory.closeSession();
                 }
             }
         }, 0, 5_000);

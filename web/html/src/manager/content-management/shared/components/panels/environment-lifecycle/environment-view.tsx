@@ -46,7 +46,7 @@ const EnvironmentView = React.memo((props: Props) => {
         <dt className="col-xs-3">{t("Version")}:</dt>
         <dd className="col-xs-9">
           <BuildVersion
-            id={`${props.environment.version}_${props.environment.label}`}
+            id={`${props.environment.version}_${props.environment.id}`}
             text={getVersionMessageByNumber(props.environment.version, props.historyEntries) || t("not built")}
             collapsed={true}
           />

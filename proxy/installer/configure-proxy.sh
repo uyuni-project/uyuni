@@ -328,10 +328,14 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-systemctl status salt-minion > /dev/null 2>&1
+systemctl status salt-minion > /dev/null 2>&1 || systemctl status venv-salt-minion > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     /usr/sbin/fetch-certificate $SYSTEMID_PATH
-    PROPOSED_PARENT=$(grep ^[[:blank:]]*master /etc/salt/minion.d/susemanager.conf | sed -e "s/.*:[[:blank:]]*//")
+    MASTER_CONF=/etc/salt/minion.d/susemanager.conf
+    if [ -f /etc/venv-salt-minion/minion.d/susemanager.conf ]; then
+        MASTER_CONF=/etc/venv-salt-minion/minion.d/susemanager.conf
+    fi
+    PROPOSED_PARENT=$(grep ^[[:blank:]]*master $MASTER_CONF | sed -e "s/.*:[[:blank:]]*//")
 else
     PROPOSED_PARENT=$(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $UP2DATE_FILE)
 fi

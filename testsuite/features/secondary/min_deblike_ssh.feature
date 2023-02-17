@@ -69,7 +69,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "*ubuntu*"
+    And I enter target "deblike_minion"
     And I click on preview
     And I click on run
     Then I should see "deblike_minion" hostname

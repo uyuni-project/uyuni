@@ -1,3 +1,6 @@
+- Fix spacecmd not showing any output for softwarechannel_diff 
+  and softwarechannel_errata_diff (bsc#1207352)
+
 -------------------------------------------------------------------
 Thu Feb 09 09:22:45 CET 2023 - jgonzalez@suse.com
 

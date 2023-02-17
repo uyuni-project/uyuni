@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Feb 15 15:13:40 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.11-1
+  * Detect salt bundle when fetching certificate using salt event (bsc#1208306)
+
+-------------------------------------------------------------------
+Wed Feb 15 13:53:53 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.10-1
+  * Correctly detect salt-bundle (bsc#1208306)
+
+-------------------------------------------------------------------
+Wed Feb 15 13:41:05 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.9-1
+  * Prefer salt-bundle minion config if available (bsc#1198226, bsc#1208306)
+
+-------------------------------------------------------------------
 Thu Feb 09 09:44:47 CET 2023 - jgonzalez@suse.com
 
 - version 4.2.8-1

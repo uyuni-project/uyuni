@@ -2142,8 +2142,9 @@ def do_softwarechannel_diff(self, args):
     # therefore there is no need to use replace dicts
     source_data = self.dump_softwarechannel(source_channel, None)
     target_data = self.dump_softwarechannel(target_channel, None)
-
-    return diff(source_data, target_data, source_channel, target_channel)
+    for line in diff(source_data, target_data, source_channel, target_channel):
+        print(line)
+    
 
 ####################
 
@@ -2205,7 +2206,8 @@ def do_softwarechannel_errata_diff(self, args):
     # therefore there is no need to use replace dicts
     source_data = self.dump_softwarechannel_errata(source_channel)
     target_data = self.dump_softwarechannel_errata(target_channel)
-    return diff(source_data, target_data, source_channel, target_channel)
+    for line in diff(source_data, target_data, source_channel, target_channel):
+        print(line)
 
 ####################
 
