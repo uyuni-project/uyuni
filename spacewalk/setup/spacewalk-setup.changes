@@ -1,3 +1,4 @@
+- Move set tomcat user setup to uyuni-base spec file
 - Do not specify a cobbler version, as that is now centralized at the
   patterns
 

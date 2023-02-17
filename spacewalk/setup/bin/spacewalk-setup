@@ -116,9 +116,6 @@ setup_tomcat(\%opts, \%answers);
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
 
-print Spacewalk::Setup::loc("* Setting up users and groups.\n");
-setup_users_and_groups();
-
 setup_services();
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
@@ -1035,59 +1032,6 @@ sub is_suse_like {
   }
   close $fh;
   return;
-}
-
-sub setup_users_and_groups {
-  if(is_suse_like)
-  {
-    # Check to be sure the required users and groups exist.
-    my @required_groups = qw/www/;
-    Spacewalk::Setup::check_groups_exist(@required_groups);
-
-    # Need user tomcat in the apache group so the Java stack can read the same
-    # configuration files as the rest of the application.
-    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("www");
-    if (not defined $apache_group_id) {
-        print Spacewalk::Setup::loc("The group 'www' should exist.\n");
-    }
-    if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'www', '-a', 'tomcat'], 9,
-            'Could not add tomcat to the www group.');
-        # If you have for example NIS before passwd in nsswitch.conf, the usermod
-        # will not modify what the system uses. Let's check.
-        (undef, undef, undef, my $test_apache_group_members) = getgrnam("www");
-        if (not grep { $_ eq 'tomcat' } split /\s+/, $test_apache_group_members) {
-            print Spacewalk::Setup::loc("The usermod failed to add tomcat to www group.\n");
-            exit 87;
-        }
-    }
-  }
-  else
-  {
-    # Check to be sure the required users and groups exist.
-    my @required_groups = qw/apache/;
-    Spacewalk::Setup::check_groups_exist(@required_groups);
-
-    # Need user tomcat in the apache group so the Java stack can read the same
-    # configuration files as the rest of the application.
-    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("apache");
-    if (not defined $apache_group_id) {
-      print Spacewalk::Setup::loc("The group 'apache' should exist.\n");
-    }
-    if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'apache', '-a', 'tomcat'], 9,
-            'Could not add tomcat to the apache group.');
-        # If you have for example NIS before passwd in nsswitch.conf, the usermod
-        # will not modify what the system uses. Let's check.
-        (undef, undef, undef, my $test_apache_group_members) = getgrnam("apache");
-        if (not grep { $_ eq 'tomcat' } split /\s+/, $test_apache_group_members) {
-            print Spacewalk::Setup::loc("The usermod failed to add tomcat to apache group.\n");
-            exit 87;
-        }
-    }
-  }
-
-    return 1;
 }
 
 sub check_ca_key{

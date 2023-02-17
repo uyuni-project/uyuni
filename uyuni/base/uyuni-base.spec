@@ -107,7 +107,7 @@ mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 %pre server
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
-getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager tomcat
+getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager,%{apache_group} tomcat
 getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager %{apache_user}
 %endif
 
