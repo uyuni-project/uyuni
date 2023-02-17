@@ -1605,6 +1605,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return hasEntitlement(EntitlementManager.BOOTSTRAP);
     }
 
+    /**
+     * Return <code>true</code> if this is a foreign unmanaged system.
+     * @return <code>true</code> if this is a foreign unmanaged system.
+     */
+    public boolean isForeign() {
+        return hasEntitlement(EntitlementManager.FOREIGN);
+    }
 
     /**
      *

@@ -23,6 +23,7 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import java.util.List;
 
@@ -108,4 +109,14 @@ public interface SCCClient {
      * @throws SCCClientException
      */
     void deleteSystem(long id, String username, String password) throws SCCClientException;
+
+    /**
+     * Insert or update virtualization host data at SCC
+     * @param virtHostInfo list of all new or changed virtualization hosts
+     * @param username the username
+     * @param password the password
+     * @throws SCCClientException
+     */
+    void setVirtualizationHost(List<SCCVirtualizationHostJson> virtHostInfo, String username, String password)
+        throws SCCClientException;
 }

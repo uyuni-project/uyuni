@@ -1,3 +1,4 @@
+- add CPU sockets, threads and total number to standard CPU grains
 - Fix current limitation on Action Chains for SLE Micro
 - Support SLE Micro migration (bsc#1205011)
 - Do not pass server grains to minions (bsc#1207087)

@@ -1,3 +1,6 @@
+- enhance CPU table by core and thread information
+- add trigger on cpu and virtual instance to re-sending
+  virtualization information to SCC
 - Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 
 -------------------------------------------------------------------

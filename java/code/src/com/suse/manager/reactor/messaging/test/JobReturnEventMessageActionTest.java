@@ -1110,7 +1110,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server);
             assertNotNull(server.getCpu());
 
-            assertNull(server.getCpu().getNrsocket());
+            assertEquals(1, server.getCpu().getNrsocket());
             assertEquals(Long.valueOf(0), server.getCpu().getNrCPU());
             assertEquals("s390x", server.getCpu().getModel());
             assertEquals("0", server.getCpu().getMHz());
