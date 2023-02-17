@@ -170,9 +170,12 @@ def start(actionchain_id):
         inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
 
     if transactional_update and not inside_transaction:
-        ret = __salt__['transactional_update.sls'](target_sls, queue=True, activate_transaction=reboot_required)
+        ret = __salt__['transactional_update.sls'](target_sls, queue=True, activate_transaction=False)
     else:
         ret = __salt__['state.sls'](target_sls, queue=True)
+
+    if reboot_required :
+        __salt__['transactional_update.reboot']()
 
     if isinstance(ret, list):
         raise CommandExecutionError(ret)
@@ -244,9 +247,12 @@ def resume():
         inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
 
     if transactional_update and not inside_transaction:
-        ret = __salt__['transactional_update.sls'](next_chunk, queue=True, activate_transaction=reboot_required)
+        ret = __salt__['transactional_update.sls'](next_chunk, queue=True, activate_transaction=False)
     else:
         ret = __salt__['state.sls'](next_chunk, queue=True)
+
+    if reboot_required :
+        __salt__['transactional_update.reboot']()
 
     if isinstance(ret, list):
         raise CommandExecutionError(ret)

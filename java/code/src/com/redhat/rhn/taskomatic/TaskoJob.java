@@ -181,7 +181,7 @@ public class TaskoJob implements Job {
                                             " schedule.\n\n" + "Subtask " + task.getName();
                                     if (taskRun.getStatus() == TaskoRun.STATUS_FAILED) {
                                         email += " failed.\n\n" + "For more information check ";
-                                        email += taskRun.getStdErrorPath() + ".";
+                                        email += "taskomatic daemon logs.";
                                     }
                                     else {
                                         email += " finished successfully and is back to normal.";

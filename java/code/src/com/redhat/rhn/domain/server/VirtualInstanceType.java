@@ -38,6 +38,8 @@ public class VirtualInstanceType extends Label {
         switch(getLabel()) {
             case "azure": return Optional.of("Microsoft");
             case "aws": return Optional.of("Amazon");
+            case "aws_nitro": return Optional.of("Amazon");
+            case "aws_xen": return Optional.of("Amazon");
             case "gce": return Optional.of("Google");
             default: return Optional.empty();
         }
@@ -50,6 +52,9 @@ public class VirtualInstanceType extends Label {
         switch(getLabel()) {
             case "fully_virtualized": return Optional.of("Xen");
             case "para_virtualized": return Optional.of("Xen");
+            case "aws": return Optional.of("Xen");
+            case "aws_xen": return Optional.of("Xen");
+            case "aws_nitro": return Optional.of("Nitro");
             case "qemu": return Optional.of("KVM");
             case "vmware": return Optional.of("VMware");
             case "hyperv": return Optional.of("Hyper-V");

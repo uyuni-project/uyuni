@@ -1,3 +1,14 @@
+- Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
+- Mark as failed actions that cannot be scheduled because earliest
+  date is too old
+- Update earliest date when rescheduling failed actions (bsc#1206562)
+- send virtualization information to SCC
+- Prevent HTTP API restricted args from being logged (bsc#1208119)
+- Fix reconnection of postgres event stream
+- Add the create/update methods for kickstart to accepts kernel and kernel post options (jsc#suma-251)
+- Fix duplicate keys in suseImageFile and other tables (bsc#1207799)
+- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
+- fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix taskomatic logging (bsc#1207867)
 - Do not specify a cobbler version, as that is now centralized at the
   patterns
@@ -57,7 +68,7 @@ Wed Jan 11 12:47:55 CET 2023 - jgonzalez@suse.com
   * Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
   * Add vendor_advisory to errata.getDetails (bsc#1205207)
   * Fix ClassCastException
-  * disable cloned vendor channel auto selection by default (bsc#1204186) 
+  * disable cloned vendor channel auto selection by default (bsc#1204186)
   * Add SUSE Liberty Linux support for RHEL9 based clients
   * Removed contents of certificates from the web UI logs (bsc#1204715)
   * Fix kickstart for RHEL 9 to not add install command

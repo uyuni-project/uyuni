@@ -36,7 +36,12 @@ CREATE TABLE rhnCpu
     vendor       VARCHAR(32),
     nrcpu        NUMERIC
                      DEFAULT (1),
-    nrsocket     NUMERIC,
+    nrsocket     NUMERIC
+                     DEFAULT (1),
+    nrcore       NUMERIC
+                     DEFAULT (1),
+    nrthread     NUMERIC
+                     DEFAULT (1),
     acpiVersion  VARCHAR(64),
     apic         VARCHAR(32),
     apmVersion   VARCHAR(32),

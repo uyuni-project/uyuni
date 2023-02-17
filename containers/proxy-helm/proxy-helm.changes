@@ -1,3 +1,4 @@
+- Default log_level to 1
 - Allow using container images from different registry paths
 
 -------------------------------------------------------------------

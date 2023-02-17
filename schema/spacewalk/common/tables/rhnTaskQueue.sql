@@ -16,6 +16,8 @@
 
 CREATE TABLE rhnTaskQueue
 (
+    id         NUMERIC NOT NULL
+                   CONSTRAINT rhn_task_queue_id_pk PRIMARY KEY,
     org_id     NUMERIC NOT NULL
                    CONSTRAINT rhn_task_queue_org_id_fk
                        REFERENCES web_customer (id)
@@ -27,17 +29,12 @@ CREATE TABLE rhnTaskQueue
     earliest       TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-
-
 ;
 
 CREATE INDEX rhn_task_queue_org_task_idx
-    ON rhnTaskQueue (org_id, task_name)
-    
-    ;
+    ON rhnTaskQueue (org_id, task_name);
 
 CREATE INDEX rhn_task_queue_earliest
-    ON rhnTaskQueue (earliest)
-    
-    ;
+    ON rhnTaskQueue (earliest);
 
+CREATE SEQUENCE rhn_task_queue_id_seq START WITH 1;

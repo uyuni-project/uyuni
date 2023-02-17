@@ -1,3 +1,5 @@
+- Fix spacecmd not showing any output for softwarechannel_diff
+  and softwarechannel_errata_diff (bsc#1207352)
 - Prevent string api parameters to be parsed as dates if not in
   ISO-8601 format (bsc#1205759)
 

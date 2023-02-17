@@ -3,7 +3,7 @@
 Test software channel module.
 """
 
-from mock import MagicMock, patch
+from mock import Mock, MagicMock, patch
 import spacecmd.softwarechannel
 from helpers import shell, assert_expect, assert_list_args_expect
 import pytest
@@ -638,3 +638,65 @@ def test_listlatestpackages_channel_packages_as_data(shell):
     assert shell.client.channel.software.listAllPackages.called
 
     assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64', 'tiff-1.0-11:3.x86_64']
+
+def test_softwarechannel_diff(shell):
+    """
+    Test that do_softwarechannel_diff function prints correct output
+    :param shell: SpacewalkShell
+    :return: None
+    """
+
+    shell.dump_softwarechannel = Mock(
+        side_effect=[["hwdata-0.314-10.9.1.noarch"], ["koan-2.4.2-6.34.noarch"]]
+    )
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        out = spacecmd.softwarechannel.do_softwarechannel_diff(
+            shell, "source_channel target_channel"
+        )
+
+    assert out is None
+    assert_list_args_expect(
+        mprint.call_args_list,
+        [
+            "--- source_channel\n",
+            "+++ target_channel\n",
+            "@@ -1 +1 @@\n",
+            "-hwdata-0.314-10.9.1.noarch",
+            "+koan-2.4.2-6.34.noarch",
+        ],
+    )
+
+def test_softwarechannel_errata_diff(shell):
+    """
+    Test that do_softwarechannel_errata_diff function prints correct output
+    :param shell: SpacewalkShell
+    :return: None
+    """
+
+    shell.dump_softwarechannel_errata = Mock(
+        side_effect=[
+            ["SUSE-12-2021-607 important: Security update for python-Jinja2"],
+            ["SUSE-12-2021-3660 Recommended update for NetworkManager"],
+        ]
+    )
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        out = spacecmd.softwarechannel.do_softwarechannel_errata_diff(
+            shell, "source_channel target_channel"
+        )
+
+    assert out is None
+    assert_list_args_expect(
+        mprint.call_args_list,
+        [
+            "--- source_channel\n",
+            "+++ target_channel\n",
+            "@@ -1 +1 @@\n",
+            "-SUSE-12-2021-607 important: Security update for python-Jinja2",
+            "+SUSE-12-2021-3660 Recommended update for NetworkManager",
+        ],
+    )
+

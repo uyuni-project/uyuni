@@ -77,8 +77,9 @@ def add_to_repodata_queue_for_channel_package_subscription(affected_channels,
 def add_to_erratacache_queue(channel, priority=0):
     h = rhnSQL.prepare("""
     insert into rhnTaskQueue
-           (org_id, task_name, task_data, priority, earliest)
-           select coalesce(c.org_id, 1),
+           (id, org_id, task_name, task_data, priority, earliest)
+           select nextval('rhn_task_queue_id_seq'),
+                  coalesce(c.org_id, 1),
                   'update_errata_cache_by_channel',
                   c.id,
                   :priority,
