@@ -10990,6 +10990,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>
