@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -24,6 +23,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
@@ -38,7 +38,8 @@ import java.util.stream.Collectors;
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
 
-    public static final int ACTION_DATABASE_GRACE_TIME = 10000;
+    public static final int ACTION_DATABASE_GRACE_TIME = 600_000;
+    public static final int ACTION_DATABASE_POLL_TIME = 100;
     public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
     public static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
@@ -79,28 +80,28 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         long actionChainId = Long.parseLong((String)context.getJobDetail()
                 .getJobDataMap().get("actionchain_id"));
 
-        ActionChain actionChain = ActionChainFactory
-                .getActionChain(actionChainId)
-                .orElse(null);
+        ActionChain actionChain = ActionChainFactory.getActionChain(actionChainId).orElse(null);
+        int waitedTime = 0;
+        while (countQueuedServerActions(actionChain) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+            actionChain = ActionChainFactory.getActionChain(actionChainId).orElse(null);
+            try {
+                Thread.sleep(ACTION_DATABASE_POLL_TIME);
+            }
+            catch (InterruptedException e) {
+                // never happens
+                Thread.currentThread().interrupt();
+            }
+            waitedTime += ACTION_DATABASE_POLL_TIME;
+        }
 
         if (actionChain == null) {
             log.error("Action chain not found id=" + actionChainId);
             return;
         }
 
-        long serverActionsCount = countServerActions(actionChain);
-        if (serverActionsCount == 0) {
-            log.warn("Waiting " + ACTION_DATABASE_GRACE_TIME + "ms for the Tomcat transaction to complete.");
-            // give a second chance, just in case this was scheduled immediately
-            // and the scheduling transaction did not have the time to commit
-            try {
-                Thread.sleep(ACTION_DATABASE_GRACE_TIME);
-            }
-            catch (InterruptedException e) {
-                // never happens
-                Thread.currentThread().interrupt();
-            }
-            HibernateFactory.getSession().clear();
+        if (countQueuedServerActions(actionChain) == 0) {
+            log.error("Action chain with id=" + actionChainId + " has no server where an action is in status QUEUED");
+            return;
         }
 
         // calculate offset between scheduled time of
@@ -135,11 +136,17 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         }
     }
 
-    private long countServerActions(ActionChain actionChain) {
+    private long countQueuedServerActions(ActionChain actionChain) {
+        if (actionChain == null || CollectionUtils.isEmpty(actionChain.getEntries())) {
+            return 0;
+        }
+
         return actionChain.getEntries()
                           .stream()
                           .map(ActionChainEntry::getAction)
-                          .mapToLong(action -> action.getServerActions().size())
-                          .sum();
+                          .filter(action -> action != null && CollectionUtils.isNotEmpty(action.getServerActions()))
+                          .flatMap(action -> action.getServerActions().stream())
+                          .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                          .count();
     }
 }

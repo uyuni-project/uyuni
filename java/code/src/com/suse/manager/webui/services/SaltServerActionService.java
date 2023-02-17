@@ -514,6 +514,10 @@ public class SaltServerActionService {
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
+        if (CollectionUtils.isEmpty(allMinions)) {
+            LOG.warn("Unable to find any minion that have the action id=" + actionIn.getId() + " in status QUEUED");
+            return;
+        }
 
         // split minions into regular and salt-ssh
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = allMinions.stream()
