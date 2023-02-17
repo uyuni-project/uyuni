@@ -1,3 +1,4 @@
+- Move set tomcat user setup to uyuni-base spec file
 - Add option to disable SSL setup
 - Corrected requirement to install Tomcat before spacewalk-setup.
 - Automatically detect PostgreSQL service and data folder name.
