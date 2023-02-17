@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
@@ -509,7 +510,8 @@ public class SCCCachingFactory extends HibernateFactory {
         List<Server> newServer = getSession()
                 .getNamedQuery("SCCRegCache.newServersRequireRegistration")
                 .getResultList();
-        newServer.stream().forEach(s -> {
+        newServer.stream()
+                .forEach(s -> {
             SCCRegCacheItem rci = new SCCRegCacheItem(s);
             saveRegCacheItem(rci);
             log.debug("New RegCacheItem saved: {}", rci);
@@ -577,7 +579,8 @@ public class SCCCachingFactory extends HibernateFactory {
                 "JOIN reg.server AS s " +
                 "JOIN s.serverInfo AS si " +
                 "WHERE reg.registrationErrorTime IS NULL " +
-                "AND reg.credentials = :cred")
+                "AND reg.credentials = :cred " +
+                "AND reg.sccId IS NOT NULL ")
                 .setParameter("cred", cred)
                 .list();
         for (Object[] row : rows) {
@@ -620,5 +623,18 @@ public class SCCCachingFactory extends HibernateFactory {
                     item.setSccRegistrationRequired(rereg);
                     saveRegCacheItem(item);
                 });
+    }
+
+    /**
+     * @return a list of Virtualization Hosts which need to be send to SCC
+     */
+    public static List<SCCVirtualizationHostJson> listVirtualizationHosts() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession().createNamedQuery("SCCRegCache.hypervisorInfo", SCCVirtualizationHostJson.class)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .getResultList();
     }
 }
