@@ -16,14 +16,6 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Date;
 
 
@@ -32,15 +24,12 @@ import java.util.Date;
  */
 public class TaskoRun {
 
-    private static final Logger LOG = LogManager.getLogger(TaskoRun.class);
-
     public static final String STATUS_READY_TO_RUN = "READY";
     public static final String STATUS_RUNNING = "RUNNING";
     public static final String STATUS_FINISHED = "FINISHED";
     public static final String STATUS_FAILED = "FAILED";
     public static final String STATUS_SKIPPED = "SKIPPED";
     public static final String STATUS_INTERRUPTED = "INTERRUPTED";
-    private static final String STD_LOG_PREFIX = "/var/log/rhn/tasko/";
 
     private Long id;
     private Integer orgId;
@@ -48,8 +37,6 @@ public class TaskoRun {
     private Long scheduleId;
     private Date startTime;
     private Date endTime;
-    private String stdOutputPath = null;
-    private String stdErrorPath = null;
     private String status;
     private Date created;
     private Date modified;
@@ -71,12 +58,6 @@ public class TaskoRun {
         setOrgId(orgIdIn);
         setTemplate(templateIn);
         setScheduleId(scheduleIdIn);
-        File logDir = new File(getStdLogDirName());
-        if (!logDir.isDirectory()) {
-            if (!logDir.exists()) {
-                logDir.mkdirs();
-            }
-        }
         saveStatus(STATUS_READY_TO_RUN);
     }
 
@@ -85,10 +66,6 @@ public class TaskoRun {
      * has to be called right before job execution
      */
     public void start() {
-        setStdOutputPath(buildStdOutputLogPath());
-        setStdErrorPath(buildStdErrorLogPath());
-        deleteLogFileIfExists(stdOutputPath);
-        deleteLogFileIfExists(stdErrorPath);
         setStartTime(new Date());
         saveStatus(STATUS_RUNNING);
     }
@@ -99,18 +76,6 @@ public class TaskoRun {
      */
     public void finished() {
         setEndTime(new Date());
-        updateLogPaths();
-    }
-
-    private void updateLogPaths() {
-        if (!logPresent(stdOutputPath)) {
-            deleteLogFileIfExists(stdOutputPath);
-            stdOutputPath = null;
-        }
-        if (!logPresent(stdErrorPath)) {
-            deleteLogFileIfExists(stdErrorPath);
-            stdErrorPath = null;
-        }
     }
 
     /**
@@ -132,139 +97,12 @@ public class TaskoRun {
     }
 
     /**
-     * appends a string to output log
-     * usefull to log something if the run didn't start at all
-     * @param outputLog error message to append
-     */
-    public void appendToOutputLog(String outputLog) {
-        if (getStdOutputPath() == null) {
-            setStdOutputPath(buildStdOutputLogPath());
-        }
-        appendLogToFile(getStdOutputPath(), outputLog);
-    }
-
-    /**
-     * appends a string to error log
-     * usefull for exception logging when the run doesn't get executed at all
-     * @param errorLog error message to append
-     */
-    public void appendToErrorLog(String errorLog) {
-        if (getStdErrorPath() == null) {
-            setStdErrorPath(buildStdErrorLogPath());
-        }
-        appendLogToFile(getStdErrorPath(), errorLog);
-    }
-
-    /**
      * sets run status
      * @param statusIn status to set
      */
     public void saveStatus(String statusIn) {
         setStatus(statusIn);
         TaskoFactory.save(this);
-    }
-
-    /**
-     * returns last nBytes bytes of the std output log
-     * @param nBytes number of bytes
-     * @return last bytes of the output log
-     */
-    public String getTailOfStdOutput(Integer nBytes) {
-        return getTailOfFile(getStdOutputPath(), nBytes);
-    }
-
-    /**
-     * returns last nBytes bytes of the std error log
-     * @param nBytes number of bytes
-     * @return last bytes of the error log
-     */
-    public String getTailOfStdError(Integer nBytes) {
-        return getTailOfFile(getStdErrorPath(), nBytes);
-    }
-
-    private String getTailOfFile(String fileName, Integer nBytes) {
-        if (fileName != null) {
-            RandomAccessFile file;
-            try {
-                file = new RandomAccessFile(fileName, "r");
-                if (nBytes >= 0) {
-                    long seekAmount = file.length() - nBytes;
-                    if (seekAmount < 0) {
-                        seekAmount = 0;
-                    }
-                    file.seek(seekAmount);
-                }
-                String tail = "";
-                String line;
-                while ((line = file.readLine()) != null) {
-                    tail += line + "\n";
-                }
-                file.close();
-                return tail;
-            }
-            catch (IOException e) {
-                LOG.error("Can't tail {}: {}", fileName, e.toString());
-                // return "";
-            }
-        }
-        return "";
-    }
-
-    /**
-     * builds path to std output log file
-     * @return path
-     */
-    public String buildStdOutputLogPath() {
-        return getStdLogDirName() + getStdLogFileName() + "_out";
-    }
-
-    /**
-     * builds path to std error log file
-     * @return path
-     */
-    public String buildStdErrorLogPath() {
-        return getStdLogDirName() + getStdLogFileName() + "_err";
-    }
-
-    private String getStdLogDirName() {
-        String dirName = STD_LOG_PREFIX;
-        if (orgId == null) {
-            dirName += "sat";
-        }
-        else {
-            dirName += "org" + orgId;
-        }
-        dirName += "/" + template.getBunch().getName() + "/";
-        return dirName;
-    }
-
-    private String getStdLogFileName() {
-        return template.getTask().getName() + "_" + getId();
-    }
-
-    private void deleteLogFileIfExists(String fileName) {
-        if (fileName != null) {
-            new File(fileName).delete();
-        }
-    }
-
-    private boolean logPresent(String fileName) {
-        if (fileName == null) {
-            return false;
-        }
-        File logFile = new File(fileName);
-        return logFile.length() > 0;
-    }
-
-    private void appendLogToFile(String fileName, String logContent) {
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-            out.write(logContent);
-            out.close();
-        }
-        catch (IOException e) {
-            LOG.error("Unable to store log file to {}", fileName);
-        }
     }
 
     /**
@@ -323,34 +161,6 @@ public class TaskoRun {
      */
     public void setEndTime(Date endTimeIn) {
         this.endTime = endTimeIn;
-    }
-
-    /**
-     * @return Returns the stdOutputPath.
-     */
-    public String getStdOutputPath() {
-        return stdOutputPath;
-    }
-
-    /**
-     * @param stdOutputPathIn The stdOutputPath to set.
-     */
-    public void setStdOutputPath(String stdOutputPathIn) {
-        this.stdOutputPath = stdOutputPathIn;
-    }
-
-    /**
-     * @return Returns the stdErrorPath.
-     */
-    public String getStdErrorPath() {
-        return stdErrorPath;
-    }
-
-    /**
-     * @param stdErrorPathIn The stdErrorPath to set.
-     */
-    public void setStdErrorPath(String stdErrorPathIn) {
-        this.stdErrorPath = stdErrorPathIn;
     }
 
     /**

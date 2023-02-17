@@ -1,3 +1,4 @@
+- set new CPU core value for traditional registration
 - add logspec param in rhn.conf to set urlgrabber loglevel
 - Do not specify a cobbler version, as that is now centralized at the
   patterns

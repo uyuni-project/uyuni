@@ -1,3 +1,5 @@
+- Add support to add optional channels via webUI
+- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 - Added pages to install and remove ptf
 
 -------------------------------------------------------------------

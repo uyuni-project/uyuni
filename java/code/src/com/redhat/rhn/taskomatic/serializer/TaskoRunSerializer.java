@@ -55,8 +55,6 @@ public class TaskoRunSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("start_time", run.getStartTime());
         helper.add("end_time", run.getEndTime());
         helper.add("status", run.getStatus());
-        helper.add("stdOutputPath", run.getStdOutputPath() != null);
-        helper.add("stdErrorPath", run.getStdErrorPath() != null);
 
         helper.writeTo(output);
     }

@@ -148,7 +148,8 @@ public class SystemHardwareAction extends RhnAction {
             request.setAttribute("cpu_arch", server.getServerArch().getName());
             request.setAttribute("cpu_cache", cpu.getCache());
             request.setAttribute("cpu_sockets", cpu.getNrsocket());
-            request.setAttribute("cpu_cores", cpu.getNrCPU());
+            request.setAttribute("cpu_cores", cpu.getNrCore());
+            request.setAttribute("cpu_threads", cpu.getNrThread());
         }
 
 

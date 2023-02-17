@@ -183,7 +183,9 @@ public class HardwareMapper {
         CPUArch arch = ServerFactory.lookupCPUArchByName(cpuarch);
         cpu.setArch(arch);
 
-        cpu.setNrsocket(grains.getValueAsLong("cpusockets").orElse(null));
+        cpu.setNrsocket(grains.getValueAsLong("cpu_sockets").orElse(1L));
+        cpu.setNrCore(grains.getValueAsLong("cpu_cores").orElse(1L));
+        cpu.setNrThread(grains.getValueAsLong("cpu_threads").orElse(1L));
         // Use our custom grain. Salt has a 'num_cpus' grain but it gives
         // the number of active CPUs not the total num of CPUs in the system.
         // On s390x this number of active and actual CPUs can be different.
@@ -497,6 +499,8 @@ public class HardwareMapper {
                 hostcpu.setFamily(null);
                 hostcpu.setBogomips(null);
                 hostcpu.setNrsocket(totalIfls);
+                hostcpu.setNrCore(totalIfls);
+                hostcpu.setNrThread(1L);
                 hostcpu.setArch(ServerFactory.lookupCPUArchByName(cpuarch));
                 hostcpu.setFlags(null);
                 hostcpu.setStepping(null);

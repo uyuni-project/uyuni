@@ -30,7 +30,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -201,33 +200,7 @@ public class TaskoFactory extends HibernateFactory {
      * @param run run to delete
      */
     public static void deleteRun(TaskoRun run) {
-        TaskoFactory.deleteLogFiles(run);
         TaskoFactory.delete(run);
-    }
-
-    /**
-     * delete log files associated with given run
-     * @param run run to delete logs
-     */
-    public static void deleteLogFiles(TaskoRun run) {
-        String out = run.getStdOutputPath();
-        if ((out != null) && (!out.isEmpty())) {
-            deleteFile(out);
-            run.setStdOutputPath(null);
-        }
-        String err = run.getStdErrorPath();
-        if ((err != null) && (!err.isEmpty())) {
-            deleteFile(err);
-            run.setStdErrorPath(null);
-        }
-    }
-
-    private static boolean deleteFile(String fileName) {
-        File file = new File(fileName);
-        if (file.exists()) {
-            return file.delete();
-        }
-        return false;
     }
 
     /**

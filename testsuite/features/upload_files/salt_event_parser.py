@@ -22,7 +22,7 @@ for error in errors:
     try:
         j = json.loads("".join(error))
         if not "return" in j:
-            break
+            continue
     except ValueError as e:
         print("JSON cannot be parsed due to {0}".format(e))
         continue

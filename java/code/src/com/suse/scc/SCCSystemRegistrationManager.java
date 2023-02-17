@@ -33,6 +33,7 @@ import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -141,14 +142,19 @@ public class SCCSystemRegistrationManager {
         items.forEach(cacheItem -> {
             try {
                 Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                LOG.debug("Forward registration of {}", cacheItem);
-                SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
-                        getPayload(cacheItem),
-                        itemCredentials.getUsername(),
-                        itemCredentials.getPassword());
-                cacheItem.setSccId(systemCredentials.getId());
-                cacheItem.setSccLogin(systemCredentials.getLogin());
-                cacheItem.setSccPasswd(systemCredentials.getPassword());
+                if (cacheItem.getOptServer().filter(s -> s.isForeign()).isEmpty()) {
+                    LOG.debug("Forward registration of {}", cacheItem);
+                    SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
+                            getPayload(cacheItem),
+                            itemCredentials.getUsername(),
+                            itemCredentials.getPassword());
+                    cacheItem.setSccId(systemCredentials.getId());
+                    cacheItem.setSccLogin(systemCredentials.getLogin());
+                    cacheItem.setSccPasswd(systemCredentials.getPassword());
+                }
+                // Foreign systems will not be send to SCC
+                // but we need the entry in case it is a hypervisor and we need to send
+                // virtualization host data to SCC
                 cacheItem.setSccRegistrationRequired(false);
                 cacheItem.setRegistrationErrorTime(null);
                 cacheItem.setCredentials(itemCredentials);
@@ -207,5 +213,30 @@ public class SCCSystemRegistrationManager {
 
         return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products,
                 srv.getServerInfo().getCheckin());
+    }
+
+    /**
+     * Insert or Update virtualization host data at SCC
+     * @param virtHosts the virtual host data
+     * @param primaryCredential primary credential
+     */
+    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, Credentials primaryCredential) {
+        ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
+                IntStream.range(0, virtHosts.size()).boxed().collect(
+                        Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),
+                                Collectors.mapping(e -> virtHosts.get(e), Collectors.toList())
+                        )).values());
+        for (List<SCCVirtualizationHostJson> batch: batches) {
+            try {
+                sccClient.setVirtualizationHost(batch, primaryCredential.getUsername(),
+                        primaryCredential.getPassword());
+            }
+            catch (SCCClientException e) {
+                LOG.error("SCC error while updating virtualization hosts", e);
+            }
+            catch (Exception e) {
+                LOG.error("Error updating virtualization hosts", e);
+            }
+        }
     }
 }

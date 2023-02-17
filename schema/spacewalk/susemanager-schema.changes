@@ -1,3 +1,8 @@
+- enhance CPU table by core and thread information
+- add trigger on cpu and virtual instance to re-sending
+  virtualization information to SCC
+- Remove rhnTaskoRun log paths
+
 -------------------------------------------------------------------
 Mon Jan 23 08:25:41 CET 2023 - jgonzalez@suse.com
 
