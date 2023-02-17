@@ -1673,12 +1673,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Server ptfSupportNoUninstall = createTestServer(user);
         ptfSupportNoUninstall.setOs(ServerConstants.SLES);
-        ptfSupportNoUninstall.setRelease("15");
+        ptfSupportNoUninstall.setRelease("15.3");
         PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), ptfSupportNoUninstall);
 
         Server ptfFullSupport = createTestServer(user);
         ptfFullSupport.setOs(ServerConstants.SLES);
-        ptfFullSupport.setRelease("15");
+        ptfFullSupport.setRelease("15.3");
         PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), ptfFullSupport);
 
         noPtfSupport = TestUtils.reload(noPtfSupport);

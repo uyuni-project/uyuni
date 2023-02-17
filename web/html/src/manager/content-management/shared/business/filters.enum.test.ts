@@ -218,7 +218,7 @@ describe("Testing filters enum and descriptions", () => {
     };
 
     expect(getClmFilterDescription(filter)).toEqual(
-      "filter all ptf: deny ptf all product temporary fixes ALL (ptf_all)"
+      "filter all ptf: deny ptf all program temporary fixes ALL (ptf_all)"
     );
   });
 

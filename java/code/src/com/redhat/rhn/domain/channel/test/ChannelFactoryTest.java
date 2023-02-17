@@ -393,14 +393,20 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * @return a test cloned channel
      */
     public static Channel createTestClonedChannel(Channel original, User user) {
+        return createTestClonedChannel(original, user, "clone-", "",
+                "Clone of ", "", null);
+    }
+
+    public static Channel createTestClonedChannel(Channel original, User user, String labelPrefix, String labelSuffix,
+                                                  String namePrefix, String nameSuffix, Channel parent) {
         Org org = user.getOrg();
         ClonedChannel clone = new ClonedChannel();
         ChannelFamily cfam = ChannelFamilyFactory.lookupOrCreatePrivateFamily(org);
 
         clone.setOrg(org);
-        clone.setLabel("clone-" + original.getLabel());
+        clone.setLabel(labelPrefix + original.getLabel() + labelSuffix);
         clone.setBaseDir(original.getBaseDir());
-        clone.setName("Clone of " + original.getName());
+        clone.setName(namePrefix + original.getName() + nameSuffix);
         clone.setSummary(original.getSummary());
         clone.setDescription(original.getDescription());
         clone.setLastModified(new Date());
@@ -416,6 +422,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         /* clone specific calls */
         clone.setOriginal(original);
+        clone.setParentChannel(parent);
 
         ChannelFactory.save(clone);
 
@@ -425,6 +432,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         return clone;
     }
+
     @Test
     public void testAccessibleChildChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",

@@ -34,3 +34,32 @@ rhn_virtinst_mod_trig
 before insert or update on rhnVirtualInstance
 for each row
 execute procedure rhn_virtinst_mod_trig_fun();
+
+create or replace function rhn_virtinst_iud_trig_fun() returns trigger
+as
+$$
+begin
+        if tg_op='INSERT' or tg_op='UPDATE' then
+                if new.host_system_id is not null and new.virtual_system_id is not null then
+                        update suseSCCRegCache
+                           set scc_reg_required = 'Y'
+                         where server_id = new.host_system_id;
+                end if;
+                return new;
+        end if;
+        if tg_op='DELETE' then
+                if old.host_system_id is not null and old.virtual_system_id is not null then
+                        update suseSCCRegCache
+                           set scc_reg_required = 'Y'
+                         where server_id = old.host_system_id;
+                end if;
+                return old;
+        end if;
+end;
+$$ language plpgsql;
+
+
+create trigger
+rhn_virtinst_iud_trig
+after insert or update or delete on rhnVirtualInstance
+execute procedure rhn_virtinst_iud_trig_fun();

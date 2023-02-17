@@ -9,7 +9,6 @@ from ..modules import mgrnet
 
 
 mgrnet.__salt__ = {}
-mgrnet.__utils__ = {}
 
 
 def test_mgrnet_virtual():
@@ -18,9 +17,8 @@ def test_mgrnet_virtual():
     when either 'host' or 'nslookup' is available or none of them
     """
 
-    with patch.dict(
-        mgrnet.__utils__,
-        {"path.which": MagicMock(side_effect=[True, False, True, False, False])},
+    with patch.object(
+        mgrnet, "_which", MagicMock(side_effect=[True, False, True, False, False]),
     ):
         ret = mgrnet.__virtual__()
         assert ret is True
@@ -79,9 +77,8 @@ def test_mgrnet_dns_fqdns():
 
     with patch.dict(
         mgrnet.__salt__, {"cmd.run_all": _cmd_run_host_nslookup}
-    ), patch.dict(
-        mgrnet.__utils__,
-        {"path.which": MagicMock(side_effect=[True, False, True, False, False])},
+    ), patch.object(
+        mgrnet, "_which", MagicMock(side_effect=[True, False, True, False, False]),
     ), patch.object(
         mgrnet.salt.utils.network,
         "ip_addrs",

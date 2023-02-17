@@ -38,6 +38,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1043,6 +1045,35 @@ public class ChannelFactory extends HibernateFactory {
             return null;
         }
         return pkgs.get(0);
+    }
+
+    /**
+     * Lookup packages base on channel, package name, EVR and arch label
+     *
+     * @param channel the channel to match
+     * @param name the package name
+     * @param archLabel the architecture label
+     * @param version the package version
+     * @param release the package release
+     * @param epoch the package epoch (can be null)
+     * @param evrType the EVR type
+     *
+     * @return the list of matching packages
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Package> lookupPackagesByNevra(Channel channel, String name, String archLabel,
+                                                      String version, String release, String epoch,
+                                                      String evrType) {
+        return HibernateFactory.getSession()
+                .getNamedQuery("Channel.packageByNevra")
+                .setParameter("name", name, StringType.INSTANCE)
+                .setParameter("channel_id", channel.getId(), LongType.INSTANCE)
+                .setParameter("arch", archLabel, StringType.INSTANCE)
+                .setParameter("version", version, StringType.INSTANCE)
+                .setParameter("release", release, StringType.INSTANCE)
+                .setParameter("epoch", epoch, StringType.INSTANCE)
+                .setParameter("type", evrType, StringType.INSTANCE)
+                .list();
     }
 
     /**

@@ -149,6 +149,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -487,6 +488,10 @@ public class SaltServerActionService {
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
+        if (CollectionUtils.isEmpty(allMinions)) {
+            LOG.warn("Unable to find any minion that have the action id={} in status QUEUED", actionIn.getId());
+            return;
+        }
 
         // split minions into regular and salt-ssh
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = allMinions.stream()
@@ -764,13 +769,12 @@ public class SaltServerActionService {
                         }
                     }
                 }
+                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
-                    MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+                    minionServer.ifPresent(minion -> {
                         LOG.info("Scheduling a package profile update for minion {}", minionId);
                         try {
-                            Action pkgList = ActionManager
-                                    .schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
+                            ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
                         }
                         catch (TaskomaticApiException e) {
                             LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
@@ -778,7 +782,7 @@ public class SaltServerActionService {
                     });
                 }
                 // update minion last checkin
-                MinionServerFactory.findByMinionId(minionId).ifPresent(Server::updateServerInfo);
+                minionServer.ifPresent(Server::updateServerInfo);
             }
             else {
                 LOG.error("'state.apply mgractionchains.startssh' was successful " +
@@ -1267,21 +1271,10 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
         return minionSummaries.stream().collect(
             Collectors.groupingBy(
-                m -> m.isTransactionalUpdate() ? transactionalReboot() :
+                m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
                         com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(3))
             )
         );
-    }
-
-    /**
-     * @deprecated this method is temporarily here until a new version of salt-netapi-client that contains it
-     * is released.
-     */
-    @Deprecated
-    private static LocalCall<String> transactionalReboot() {
-        return new LocalCall<>("transactional_update.reboot", Optional.empty(), Optional.empty(),
-                new TypeToken<>() {
-                });
     }
 
     /**
@@ -2521,10 +2514,8 @@ public class SaltServerActionService {
                                 Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
                             LOG.info("Scheduling a package profile update");
 
-                            Action pkgList;
                             try {
-                                pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                                executeSSHAction(pkgList, minion);
+                                ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId());

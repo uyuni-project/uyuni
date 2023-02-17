@@ -26,6 +26,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
@@ -34,12 +35,15 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.manager.model.products.ChannelJson;
@@ -53,6 +57,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -96,6 +101,8 @@ public class ProductsController {
         post("/manager/api/admin/mandatoryChannels", withUser(ProductsController::getMandatoryChannels));
         post("/manager/admin/setup/products",
                 withProductAdmin(ProductsController::addProduct));
+        post("/manager/admin/setup/channels/optional",
+                withProductAdmin(ProductsController::addOptionalChannels));
         post("/manager/admin/setup/sync/products",
                 withProductAdmin(ProductsController::synchronizeProducts));
         post("/manager/admin/setup/sync/channelfamilies",
@@ -138,9 +145,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeProducts(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -163,9 +167,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -188,9 +189,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeRepositories(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -236,9 +234,6 @@ public class ProductsController {
      */
     public static String addProduct(Request request, Response response, User user) {
         List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
             log.fatal("addProduct failed: Product Data refresh needed");
@@ -259,6 +254,51 @@ public class ProductsController {
             error.ifPresent(ex -> log.fatal("addProduct() failed for {}", product, ex));
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
+
+        return json(response, resultMap);
+    }
+
+    /**
+     * Add optional channels to be synced in the SUSE Manager Server
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the map of requested channels with a success/failed flag in a JSON format
+     */
+    public static String addOptionalChannels(Request request, Response response, User user) {
+        List<String> channels = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(null)) {
+            log.fatal("addOptionalChannels failed: Product Data refresh needed");
+            return json(response, channels.stream().collect(Collectors.toMap(
+                    Function.identity(),
+                    ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
+            )));
+        }
+
+        log.debug("Add/Sync channels: {}", channels);
+
+        List<Channel> channelsToSync = new ArrayList<>();
+        Map<String, String> resultMap = new HashMap<>();
+        for (String channel : channels) {
+            try {
+                csm.addChannel(channel, null);
+                channelsToSync.add(ChannelManager.lookupByLabelAndUser(channel, user));
+            }
+            catch (ContentSyncException | LookupException e) {
+                log.error("addChannel() failed for {}", channel, e);
+                resultMap.put(channel, e.getMessage());
+            }
+        }
+
+        try {
+            TaskomaticApi tapi = new TaskomaticApi();
+            tapi.scheduleSingleRepoSync(channelsToSync);
+        }
+        catch (TaskomaticApiException e) {
+            log.error(e.getMessage());
+        }
 
         return json(response, resultMap);
     }

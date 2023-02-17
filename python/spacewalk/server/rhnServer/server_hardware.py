@@ -396,6 +396,8 @@ class CPUDevice(Device):
                 self.data["nrcpu"] = 1
             if self.data["nrcpu"] == 0:
                 self.data["nrcpu"] = 1
+            # set total number of cpus also for cores as we do not get threads
+            self.data["nrcore"] = self.data["nrcpu"]
 
 class NetIfaceInformation(Device):
     key_mapping = {

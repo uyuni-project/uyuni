@@ -18,17 +18,24 @@ class AceEditor extends React.Component<Props> {
     const component = this;
 
     const node = ReactDOM.findDOMNode(component.refs.editor);
-    const editor = ace.edit(node);
-    editor.setTheme("ace/theme/xcode");
-    editor.getSession().setMode("ace/mode/" + component.props.mode);
-    editor.setShowPrintMargin(false);
-    editor.setOptions({ minLines: component.props.minLines });
-    editor.setOptions({ maxLines: component.props.maxLines });
-    editor.setReadOnly(component.props.readOnly);
+    try {
+      const editor = ace.edit(node);
+      editor.setTheme("ace/theme/xcode");
+      editor.getSession().setMode("ace/mode/" + component.props.mode);
+      editor.setShowPrintMargin(false);
+      editor.setOptions({ minLines: component.props.minLines });
+      editor.setOptions({ maxLines: component.props.maxLines });
+      editor.setReadOnly(component.props.readOnly);
 
-    editor.getSession().on("change", function () {
-      component.props.onChange?.(editor.getSession().getValue());
-    });
+      editor.getSession().on("change", function () {
+        component.props.onChange?.(editor.getSession().getValue());
+      });
+    } catch (error) {
+      Loggerhead.error(
+        "Failed to initialize AceEditor, please check if `ace-editor/ace.js` and related dependencies have been imported in your Jade/JSP template"
+      );
+      Loggerhead.error(error);
+    }
   }
 
   render() {

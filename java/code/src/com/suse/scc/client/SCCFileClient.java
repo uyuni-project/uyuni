@@ -24,6 +24,7 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -112,6 +113,11 @@ public class SCCFileClient implements SCCClient {
 
     @Override
     public void deleteSystem(long id, String username, String password) {
+        // Not handled
+    }
+
+    @Override
+    public void setVirtualizationHost(List<SCCVirtualizationHostJson> virtHostInfo, String username, String password) {
         // Not handled
     }
 

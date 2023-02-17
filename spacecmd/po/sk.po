@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 14:59+0100\n"
+"POT-Creation-Date: 2023-02-17 14:28+0100\n"
 "PO-Revision-Date: 2022-11-28 20:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
@@ -5223,7 +5223,7 @@ msgstr ""
 "kanálov potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:178
-#: ../src/spacecmd/softwarechannel.py:2723
+#: ../src/spacecmd/softwarechannel.py:2724
 msgid "usage:"
 msgstr "použitie:"
 
@@ -5981,9 +5981,9 @@ msgstr "Formát dátumu : RRRRMMDD"
 
 #: ../src/spacecmd/softwarechannel.py:1579
 #: ../src/spacecmd/softwarechannel.py:1714
-#: ../src/spacecmd/softwarechannel.py:2608
-#: ../src/spacecmd/softwarechannel.py:2651
-#: ../src/spacecmd/softwarechannel.py:2871
+#: ../src/spacecmd/softwarechannel.py:2609
+#: ../src/spacecmd/softwarechannel.py:2652
+#: ../src/spacecmd/softwarechannel.py:2872
 msgid "Options:"
 msgstr "Voľby:"
 
@@ -6224,15 +6224,15 @@ msgstr "softwarechannel_errata_diff: porovnať súbory softvérových kanálov"
 msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "použitie: softwarechannel_errata_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
-#: ../src/spacecmd/softwarechannel.py:2236
+#: ../src/spacecmd/softwarechannel.py:2237
 msgid "softwarechannel_sync: "
 msgstr "softwarechannel_sync: "
 
-#: ../src/spacecmd/softwarechannel.py:2237
+#: ../src/spacecmd/softwarechannel.py:2238
 msgid "sync the packages of two software channels"
 msgstr "synchronizovať balíky dvoch softvérových kanálov"
 
-#: ../src/spacecmd/softwarechannel.py:2239
+#: ../src/spacecmd/softwarechannel.py:2240
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
 "    -q,--quiet : quiet mode (omits the output of common packages in both "
@@ -6242,127 +6242,127 @@ msgstr ""
 "    -q,--quiet : tichý režim (vynechá výstup spoločných balíkov v oboch "
 "kanáloch)"
 
-#: ../src/spacecmd/softwarechannel.py:2281
+#: ../src/spacecmd/softwarechannel.py:2282
 #, python-format
 msgid "%s packages from softwarechannel %s to %s"
 msgstr "%s balíkov zo softvérového kanála %s do %s"
 
-#: ../src/spacecmd/softwarechannel.py:2300
-#: ../src/spacecmd/softwarechannel.py:2308
-#: ../src/spacecmd/softwarechannel.py:2422
-#: ../src/spacecmd/softwarechannel.py:2430
-#: ../src/spacecmd/softwarechannel.py:2562
-#: ../src/spacecmd/softwarechannel.py:2570
+#: ../src/spacecmd/softwarechannel.py:2301
+#: ../src/spacecmd/softwarechannel.py:2309
+#: ../src/spacecmd/softwarechannel.py:2423
+#: ../src/spacecmd/softwarechannel.py:2431
+#: ../src/spacecmd/softwarechannel.py:2563
+#: ../src/spacecmd/softwarechannel.py:2571
 msgid "failed to read key id"
 msgstr "nepodarilo sa prečítať id kľúča"
 
-#: ../src/spacecmd/softwarechannel.py:2311
+#: ../src/spacecmd/softwarechannel.py:2312
 msgid "packages common in both channels:"
 msgstr "balíky spoločné pre oba kanály:"
 
-#: ../src/spacecmd/softwarechannel.py:2316
+#: ../src/spacecmd/softwarechannel.py:2317
 msgid "Omitting common packages in both specified channels"
 msgstr "Vynechanie spoločných balíkov v oboch uvedených kanáloch"
 
-#: ../src/spacecmd/softwarechannel.py:2321
+#: ../src/spacecmd/softwarechannel.py:2322
 msgid "packages to add to channel \""
 msgstr "balíky na pridanie do kanála \""
 
-#: ../src/spacecmd/softwarechannel.py:2329
+#: ../src/spacecmd/softwarechannel.py:2330
 msgid "packages to remove from channel \""
 msgstr "balíky na odstránenie z kanála \""
 
-#: ../src/spacecmd/softwarechannel.py:2335
-#: ../src/spacecmd/softwarechannel.py:2457
-#: ../src/spacecmd/softwarechannel.py:2587
+#: ../src/spacecmd/softwarechannel.py:2336
+#: ../src/spacecmd/softwarechannel.py:2458
+#: ../src/spacecmd/softwarechannel.py:2588
 msgid "summary:"
 msgstr "súhrn:"
 
-#: ../src/spacecmd/softwarechannel.py:2336
 #: ../src/spacecmd/softwarechannel.py:2337
+#: ../src/spacecmd/softwarechannel.py:2338
 msgid " packages"
 msgstr " balíky"
 
-#: ../src/spacecmd/softwarechannel.py:2338
+#: ../src/spacecmd/softwarechannel.py:2339
 msgid "    add    "
 msgstr "    pridať    "
 
-#: ../src/spacecmd/softwarechannel.py:2339
+#: ../src/spacecmd/softwarechannel.py:2340
 msgid " packages to   "
 msgstr " balíky do   "
 
-#: ../src/spacecmd/softwarechannel.py:2342
+#: ../src/spacecmd/softwarechannel.py:2343
 msgid "    remove "
 msgstr "    odstrániť "
 
-#: ../src/spacecmd/softwarechannel.py:2343
+#: ../src/spacecmd/softwarechannel.py:2344
 msgid " packages from "
 msgstr " balíky z "
 
-#: ../src/spacecmd/softwarechannel.py:2345
-#: ../src/spacecmd/softwarechannel.py:2465
+#: ../src/spacecmd/softwarechannel.py:2346
+#: ../src/spacecmd/softwarechannel.py:2466
 msgid "Perform these changes to channel "
 msgstr "Vykonať tieto zmeny v kanáli "
 
-#: ../src/spacecmd/softwarechannel.py:2366
+#: ../src/spacecmd/softwarechannel.py:2367
 msgid "softwarechannel_errata_sync: "
 msgstr "softwarechannel_errata_sync: "
 
-#: ../src/spacecmd/softwarechannel.py:2367
+#: ../src/spacecmd/softwarechannel.py:2368
 msgid "sync errata of two software channels"
 msgstr "synchronizovať opravy chýb dvoch softvérových kanálov"
 
-#: ../src/spacecmd/softwarechannel.py:2369
+#: ../src/spacecmd/softwarechannel.py:2370
 msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "použitie: softwarechannel_errata_sync ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
-#: ../src/spacecmd/softwarechannel.py:2408
+#: ../src/spacecmd/softwarechannel.py:2409
 msgid "syncing errata from softwarechannel "
 msgstr "synchronizovanie opráv chýb zo softvérového kanála "
 
-#: ../src/spacecmd/softwarechannel.py:2409
-#: ../src/spacecmd/softwarechannel.py:2541
+#: ../src/spacecmd/softwarechannel.py:2410
+#: ../src/spacecmd/softwarechannel.py:2542
 msgid " to "
 msgstr " do "
 
-#: ../src/spacecmd/softwarechannel.py:2433
+#: ../src/spacecmd/softwarechannel.py:2434
 msgid "errata common in both channels:"
 msgstr "opravy chýb spoločné pre oba kanály:"
 
-#: ../src/spacecmd/softwarechannel.py:2442
+#: ../src/spacecmd/softwarechannel.py:2443
 msgid "errata to add to channel \""
 msgstr "opravy chýb na pridanie do kanála \""
 
-#: ../src/spacecmd/softwarechannel.py:2451
+#: ../src/spacecmd/softwarechannel.py:2452
 msgid "errata to remove from channel \""
 msgstr "opravy chýb na odstránenie z kanála \""
 
-#: ../src/spacecmd/softwarechannel.py:2460
-#: ../src/spacecmd/softwarechannel.py:2590
+#: ../src/spacecmd/softwarechannel.py:2461
+#: ../src/spacecmd/softwarechannel.py:2591
 msgid "    add   "
 msgstr "    pridať   "
 
-#: ../src/spacecmd/softwarechannel.py:2461
+#: ../src/spacecmd/softwarechannel.py:2462
 msgid "errata to  "
 msgstr "opravy chýb do  "
 
-#: ../src/spacecmd/softwarechannel.py:2462
+#: ../src/spacecmd/softwarechannel.py:2463
 msgid "    remove"
 msgstr "    odstrániť"
 
-#: ../src/spacecmd/softwarechannel.py:2463
+#: ../src/spacecmd/softwarechannel.py:2464
 msgid "errata from"
 msgstr "opravy chýb z"
 
-#: ../src/spacecmd/softwarechannel.py:2488
+#: ../src/spacecmd/softwarechannel.py:2489
 msgid "softwarechannel_errata_merge: "
 msgstr "softwarechannel_errata_merge: "
 
-#: ../src/spacecmd/softwarechannel.py:2489
+#: ../src/spacecmd/softwarechannel.py:2490
 msgid "merge errata of one software channel into another"
 msgstr "zlúčiť opravy chýb jedného softvérového kanála do druhého"
 
-#: ../src/spacecmd/softwarechannel.py:2491
+#: ../src/spacecmd/softwarechannel.py:2492
 msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
@@ -6370,115 +6370,115 @@ msgstr ""
 "použitie:   softwarechannel_errata_merge ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL "
 "[OD_DÁTUMU] [DO_DÁTUMU]"
 
-#: ../src/spacecmd/softwarechannel.py:2492
+#: ../src/spacecmd/softwarechannel.py:2493
 msgid ""
 "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
 "2018-01-01"
 msgstr ""
 "príklad: softwarechannel_errata_merge StarýSoftKanál NovýSoftKanál 2018-01-01"
 
-#: ../src/spacecmd/softwarechannel.py:2493
+#: ../src/spacecmd/softwarechannel.py:2494
 msgid ""
 "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr ""
 "poznámka:    Pri zadaní iba OD_DÁTUMU sa zlúčia všetky opravy chýb od tohto "
 "dátumu."
 
-#: ../src/spacecmd/softwarechannel.py:2494
+#: ../src/spacecmd/softwarechannel.py:2495
 msgid "note:    When no date is provided, all errata will be merged."
 msgstr ""
 "poznámka:    Ak nie je uvedený žiadny dátum, zlúčia sa všetky opravy chýb."
 
-#: ../src/spacecmd/softwarechannel.py:2524
-#: ../src/spacecmd/softwarechannel.py:2531
+#: ../src/spacecmd/softwarechannel.py:2525
+#: ../src/spacecmd/softwarechannel.py:2532
 msgid "wrong dateformat: "
 msgstr "nesprávny formát dátumu: "
 
-#: ../src/spacecmd/softwarechannel.py:2524
-#: ../src/spacecmd/softwarechannel.py:2531
+#: ../src/spacecmd/softwarechannel.py:2525
+#: ../src/spacecmd/softwarechannel.py:2532
 msgid " please specify as: YYYY-MM-DD"
 msgstr " zadajte, prosím, ako: RRRR-MM-DD"
 
-#: ../src/spacecmd/softwarechannel.py:2540
+#: ../src/spacecmd/softwarechannel.py:2541
 msgid "merging errata from softwarechannel "
 msgstr "zlúčenie opráv chýb zo softvérového kanála "
 
 #. pylint: disable=len-as-condition
-#: ../src/spacecmd/softwarechannel.py:2577
+#: ../src/spacecmd/softwarechannel.py:2578
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} neobsahuje žiadne opravy chýb, ktoré nie sú už prítomné v {}"
 
-#: ../src/spacecmd/softwarechannel.py:2582
+#: ../src/spacecmd/softwarechannel.py:2583
 msgid "errata to add to channel {}: "
 msgstr "opravy chýb na pridanie do kanála {}: "
 
-#: ../src/spacecmd/softwarechannel.py:2588
 #: ../src/spacecmd/softwarechannel.py:2589
+#: ../src/spacecmd/softwarechannel.py:2590
 msgid " errata"
 msgstr " opravy chýb"
 
-#: ../src/spacecmd/softwarechannel.py:2591
+#: ../src/spacecmd/softwarechannel.py:2592
 msgid " errata to  "
 msgstr " opravy chýb do  "
 
-#: ../src/spacecmd/softwarechannel.py:2593
+#: ../src/spacecmd/softwarechannel.py:2594
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "Vykonať tieto zmeny v kanáli {} [a/N]:"
 
-#: ../src/spacecmd/softwarechannel.py:2604
+#: ../src/spacecmd/softwarechannel.py:2605
 msgid "softwarechannel_syncrepos: "
 msgstr "softwarechannel_syncrepos: "
 
-#: ../src/spacecmd/softwarechannel.py:2605
+#: ../src/spacecmd/softwarechannel.py:2606
 msgid "Sync users repos for a software channel"
 msgstr "Synchronizovať používateľské repozitáre pre softvérový kanál"
 
-#: ../src/spacecmd/softwarechannel.py:2607
+#: ../src/spacecmd/softwarechannel.py:2608
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
 msgstr "použitie: softwarechannel_syncrepos <KANÁL ...>"
 
-#: ../src/spacecmd/softwarechannel.py:2609
-#: ../src/spacecmd/softwarechannel.py:2652
+#: ../src/spacecmd/softwarechannel.py:2610
+#: ../src/spacecmd/softwarechannel.py:2653
 msgid "    -e/--no-errata : Do not sync errata"
 msgstr "    -e/--no-errata : Nesynchronizovať opravy chýb"
 
-#: ../src/spacecmd/softwarechannel.py:2610
-#: ../src/spacecmd/softwarechannel.py:2653
+#: ../src/spacecmd/softwarechannel.py:2611
+#: ../src/spacecmd/softwarechannel.py:2654
 msgid "    -f/--fail : Terminate upon any error"
 msgstr "    -f/--fail : Ukončiť pri akejkoľvek chybe"
 
-#: ../src/spacecmd/softwarechannel.py:2611
-#: ../src/spacecmd/softwarechannel.py:2654
+#: ../src/spacecmd/softwarechannel.py:2612
+#: ../src/spacecmd/softwarechannel.py:2655
 msgid "    -k/--sync-kickstart : Create kickstartable tree"
 msgstr "    -k/--sync-kickstart : Vytvoriť strom schopných kickstart"
 
-#: ../src/spacecmd/softwarechannel.py:2612
-#: ../src/spacecmd/softwarechannel.py:2655
+#: ../src/spacecmd/softwarechannel.py:2613
+#: ../src/spacecmd/softwarechannel.py:2656
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr ""
 "    -l/--latest : Pri synchronizácii repozitára sťahovať iba najnovšie "
 "verzie balíkov"
 
-#: ../src/spacecmd/softwarechannel.py:2647
+#: ../src/spacecmd/softwarechannel.py:2648
 msgid "softwarechannel_setsyncschedule: "
 msgstr "softwarechannel_setsyncschedule: "
 
-#: ../src/spacecmd/softwarechannel.py:2648
+#: ../src/spacecmd/softwarechannel.py:2649
 msgid "Sets the repo sync schedule for a software channel"
 msgstr "Nastaví plán synchronizácie repozitára pre softvérový kanál"
 
-#: ../src/spacecmd/softwarechannel.py:2650
+#: ../src/spacecmd/softwarechannel.py:2651
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr "použitie: softwarechannel_setsyncschedule <KANÁL> <PLÁN>"
 
-#: ../src/spacecmd/softwarechannel.py:2657
+#: ../src/spacecmd/softwarechannel.py:2658
 msgid ""
 "The schedule is specified in Quartz CronTrigger format without enclosing "
 "quotes."
 msgstr ""
 "Plán sa zadáva vo formáte Quartz CronTrigger bez uzatváracích úvodzoviek."
 
-#: ../src/spacecmd/softwarechannel.py:2658
+#: ../src/spacecmd/softwarechannel.py:2659
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
@@ -6486,23 +6486,23 @@ msgstr ""
 "Ak chcete napríklad nastaviť plán na každý deň o 1 hodine ráno, <PLÁN> by "
 "bol 0 0 1 * * ?"
 
-#: ../src/spacecmd/softwarechannel.py:2659
+#: ../src/spacecmd/softwarechannel.py:2660
 msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "Ak <PLÁN> zostane prázdny, bude zakázaný."
 
-#: ../src/spacecmd/softwarechannel.py:2694
+#: ../src/spacecmd/softwarechannel.py:2695
 msgid "softwarechannel_removesyncschedule: "
 msgstr "softwarechannel_removesyncschedule: "
 
-#: ../src/spacecmd/softwarechannel.py:2695
+#: ../src/spacecmd/softwarechannel.py:2696
 msgid "Removes the repo sync schedule for a software channel"
 msgstr "Odstráni plán synchronizácie repozitára pre softvérový kanál"
 
-#: ../src/spacecmd/softwarechannel.py:2697
+#: ../src/spacecmd/softwarechannel.py:2698
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr "použitie: softwarechannel_removesyncschedule <KANÁL>"
 
-#: ../src/spacecmd/softwarechannel.py:2722
+#: ../src/spacecmd/softwarechannel.py:2723
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
@@ -6510,77 +6510,77 @@ msgstr ""
 "softwarechannel_listsyncschedule: Vypísať zoznam plánov synchronizácie pre "
 "všetky softvérové kanály"
 
-#: ../src/spacecmd/softwarechannel.py:2724
+#: ../src/spacecmd/softwarechannel.py:2725
 msgid "softwarechannel_listsyncschedule : List all channels"
 msgstr "softwarechannel_listsyncschedule : Vypísať zoznam všetkých kanálov"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "key"
 msgstr "kľúč"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "Channel Name"
 msgstr "Názov kanála"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "Update Schedule"
 msgstr "Plán aktualizácií"
 
-#: ../src/spacecmd/softwarechannel.py:2759
+#: ../src/spacecmd/softwarechannel.py:2760
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
 msgstr "softwarechannel_addrepo: Pridať repozitár do softvérového kanála"
 
-#: ../src/spacecmd/softwarechannel.py:2760
+#: ../src/spacecmd/softwarechannel.py:2761
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
 msgstr "použitie: softwarechannel_addrepo KANÁL REPOZITÁR"
 
-#: ../src/spacecmd/softwarechannel.py:2795
+#: ../src/spacecmd/softwarechannel.py:2796
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
 msgstr "softwarechannel_removerepo: Odstrániť repozitár zo softvérového kanála"
 
-#: ../src/spacecmd/softwarechannel.py:2796
+#: ../src/spacecmd/softwarechannel.py:2797
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
 msgstr "použitie: softwarechannel_removerepo KANÁL REPOZITÁR"
 
-#: ../src/spacecmd/softwarechannel.py:2838
+#: ../src/spacecmd/softwarechannel.py:2839
 msgid "softwarechannel_listrepos: List the repos for a software channel"
 msgstr ""
 "softwarechannel_listrepos: Vypísať zoznam repozitárov pre softvérový kanál"
 
-#: ../src/spacecmd/softwarechannel.py:2839
+#: ../src/spacecmd/softwarechannel.py:2840
 msgid "usage: softwarechannel_listrepos CHANNEL"
 msgstr "použitie: softwarechannel_listrepos KANÁL"
 
-#: ../src/spacecmd/softwarechannel.py:2862
+#: ../src/spacecmd/softwarechannel.py:2863
 msgid "No repos have been found for this channel."
 msgstr "Pre tento kanál neboli nájdené žiadne repozitáre."
 
-#: ../src/spacecmd/softwarechannel.py:2869
+#: ../src/spacecmd/softwarechannel.py:2870
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
 msgstr "softwarechannel_mirrorpackages: Stiahnuť balíky daného kanála"
 
-#: ../src/spacecmd/softwarechannel.py:2870
+#: ../src/spacecmd/softwarechannel.py:2871
 msgid "usage: softwarechannel_mirrorpackages CHANNEL"
 msgstr "použitie: softwarechannel_mirrorpackages KANÁL"
 
-#: ../src/spacecmd/softwarechannel.py:2872
+#: ../src/spacecmd/softwarechannel.py:2873
 msgid "    -l/--latest : Only mirror latest package version"
 msgstr "    -l/--latest : Iba zrkadlenie najnovšej verzie balíka"
 
-#: ../src/spacecmd/softwarechannel.py:2903
+#: ../src/spacecmd/softwarechannel.py:2904
 msgid "Skipping"
 msgstr "Preskočenie"
 
-#: ../src/spacecmd/softwarechannel.py:2905
+#: ../src/spacecmd/softwarechannel.py:2906
 msgid "Fetching package"
 msgstr "Načítanie balíka"
 
-#: ../src/spacecmd/softwarechannel.py:2910
+#: ../src/spacecmd/softwarechannel.py:2911
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
 msgstr "Prijatý balík %s z kanála %s je poškodený. Obsah je príliš krátky"
 
-#: ../src/spacecmd/softwarechannel.py:2914
+#: ../src/spacecmd/softwarechannel.py:2915
 #, python-format
 msgid "Could not fetch package %s from channel %s"
 msgstr "Nepodarilo sa načítať balík %s z kanála %s"
