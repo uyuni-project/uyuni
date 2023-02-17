@@ -24544,11 +24544,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target state="translated">插槽：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
-        <source>Cores:</source>
+        <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">核心：</target>
+        <target state="needs-adaptation">核心：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -29794,6 +29794,31 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+        <source>CPUs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <source>Threads per Core:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <source>Schedule System Profile refresh on all managed systems</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
