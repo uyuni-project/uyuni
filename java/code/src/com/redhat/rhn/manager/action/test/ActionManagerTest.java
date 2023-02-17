@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -812,13 +813,18 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateErrataAction() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+
         Action a = ActionManager.createErrataAction(user.getOrg(), errata);
         assertNotNull(a);
-        assertNotNull(a.getOrg());
+        assertNull(a.getSchedulerUser());
+        assertEquals(user.getOrg(), a.getOrg());
+        assertEquals(a.getActionType(), ActionFactory.TYPE_ERRATA);
+
         a = ActionManager.createErrataAction(user, errata);
         assertNotNull(a);
-        assertNotNull(a.getOrg());
-        assertTrue(a.getActionType().equals(ActionFactory.TYPE_ERRATA));
+        assertEquals(user, a.getSchedulerUser());
+        assertEquals(user.getOrg(), a.getOrg());
+        assertEquals(a.getActionType(), ActionFactory.TYPE_ERRATA);
     }
 
     @Test

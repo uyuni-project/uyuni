@@ -1,3 +1,5 @@
+- Save scheduler user when creating Patch actions manually (bsc#1208321)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:48:01 CET 2023 - jgonzalez@suse.com
 
