@@ -474,7 +474,7 @@ pg_hba_remove() {
 }
 
 postgresql_service() {
-    POSTGRESQL=$(systemctl list-unit-files | grep postgresql | cut -f1 -d.)
+    POSTGRESQL=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
     case $1 in
         initdb)
             if isSUSE ; then
