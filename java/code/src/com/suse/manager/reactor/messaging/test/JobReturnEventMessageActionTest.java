@@ -490,6 +490,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testPackagesProfileUpdateLivePatching() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        minion.setLastBoot(0L);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -507,6 +508,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Verify no live patching version is returned
         assertNull(minion.getKernelLiveVersion());
 
+        // Verify no Uptime is set
+        assertEquals(0L, minion.getLastBoot());
+
         //Switch to live patching
         message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.livepatching.json",
@@ -517,6 +521,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Verify live patching version
         assertEquals("livepatch_2_2_1", minion.getKernelLiveVersion());
 
+        // Verify Uptime is set
+        Date bootTime = new Date(System.currentTimeMillis() - (600 * 1000));
+        assertTrue(minion.getLastBoot() == (bootTime.getTime() / 1000));
+
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.json",
@@ -526,6 +534,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Verify no live patching version is returned again
         assertNull(minion.getKernelLiveVersion());
+
     }
 
     /**
