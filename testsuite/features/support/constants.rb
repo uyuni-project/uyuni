@@ -199,7 +199,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'SLES15-SP3-Pool' => 'SLE-15-SP3-x86_64',
                                     'SLES15-SP4-Pool' => 'SLE-15-SP4-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
-                                    'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
+                                    'RHEL8-Pool for x86_64' => 'RHEL8-x86_64',
                                     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
                                     'almalinux9 for x86_64' => 'almalinux-9-x86_64',
                                     'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
