@@ -1435,6 +1435,12 @@ public class SaltUtils {
             }
         }
 
+        // Update last boot time
+        handleUptimeUpdate(server, result.getUpTime()
+                .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
+                .map(n -> n.longValue())
+                .orElse(null));
+
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
@@ -1942,6 +1948,9 @@ public class SaltUtils {
      * @param uptimeSeconds uptime time in seconds
      */
     public static void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+        if (uptimeSeconds == null) {
+            return;
+        }
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
         LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
