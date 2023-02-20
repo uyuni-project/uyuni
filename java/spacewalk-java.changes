@@ -1,3 +1,4 @@
+- set uptime at package profile update
 - Install the reboot info beacon using a conf file instead of using pillars
 - Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
 - Mark as failed actions that cannot be scheduled because earliest
