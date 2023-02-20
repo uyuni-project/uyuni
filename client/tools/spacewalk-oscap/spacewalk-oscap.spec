@@ -43,6 +43,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 BuildRequires:  libxslt
+BuildRequires:  make
 %if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
 Requires:       openscap-utils
 %else

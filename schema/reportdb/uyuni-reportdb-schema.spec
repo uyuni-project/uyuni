@@ -33,6 +33,7 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+BuildRequires:  make
 BuildRequires:  susemanager-schema-sanity
 %if 0%{?suse_version}
 BuildRequires:  fdupes

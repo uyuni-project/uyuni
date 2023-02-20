@@ -89,6 +89,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 BuildRequires:  docbook-utils
+BuildRequires:  make
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 
 %if "%{_vendor}" != "debbuild"
