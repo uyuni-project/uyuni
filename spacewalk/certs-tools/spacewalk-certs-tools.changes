@@ -1,5 +1,4 @@
-- Add make as a BuildRequire for those operating systems that do
-  not have it installed by default
+- Ensure installation of make for building
 
 -------------------------------------------------------------------
 Mon Jan 23 08:27:21 CET 2023 - jgonzalez@suse.com
