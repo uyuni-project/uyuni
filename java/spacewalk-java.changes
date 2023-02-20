@@ -1,3 +1,4 @@
+- send subscription warning notifications only on monday
 - set uptime at package profile update
 - Install the reboot info beacon using a conf file instead of using pillars
 - Handle taskomatic failures during action creation
