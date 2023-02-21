@@ -7,6 +7,13 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Update the SLESS activation key
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "SUSE Test Key x86_64" in the content area
+    And I check "container_build_host"
+    And I check "osimage_build_host"
+    And I click on "Update Activation Key"
+
   Scenario: Bootstrap a SLES build host
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -44,38 +51,7 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Detect latest Salt changes on the SLES build host
     When I query latest Salt changes on "build_host"
 
-  Scenario: Turn the SLES build host into a container build host
-    Given I am on the Systems overview page of this "build_host"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "container_build_host"
-    And I click on "Update Properties"
-    Then I should see a "Container Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Turn the SLES build host into an OS image build host
-    Given I am on the Systems overview page of this "build_host"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Apply the highstate to the build host
-    Given I am on the Systems overview page of this "build_host"
-    When I wait until no Salt job is running on "build_host"
-    And I apply highstate on "build_host"
-    And I wait until "docker" service is active on "build_host"
-    # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
-    And I install the needed packages for highstate in build host
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "build_host"
-
-  Scenario: Check that the build host is now a build host
+  Scenario: Check that the build host is a build host
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
@@ -83,3 +59,10 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Check events history for failures on SLES build host
     Given I am on the Systems overview page of this "build_host"
     Then I check for failed events on history event page
+
+  Scenario: Cleanup: Restore the SLES activation key to its original state
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "SUSE Test Key x86_64" in the content area
+    And I uncheck "container_build_host"
+    And I uncheck "osimage_build_host"
+    And I click on "Update Activation Key"
