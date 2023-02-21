@@ -1,4 +1,8 @@
-- Default log_level to 1
+-------------------------------------------------------------------
+Tue Feb 21 13:14:10 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2023.02
+  * Default log_level to 1
 
 -------------------------------------------------------------------
 Mon Jan 23 07:33:12 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
