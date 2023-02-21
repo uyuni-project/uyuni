@@ -353,6 +353,26 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     }
 
     /**
+     * When passed a single value, query string parameters are always interpreted as primitives rather than arrays.
+     * This case tests if a single value is correctly passed to a handler method that expects a {@link List} as the
+     * parameter.
+     *
+     * @see <a href="https://bugzilla.suse.com/show_bug.cgi?id=1207297">bsc#1207297</a>
+     */
+    @Test
+    public void testOneElementListInQueryString() throws Exception {
+        Method sortIntegerList = handler.getClass().getMethod("sortIntegerList", List.class);
+        Route route = routeFactory.createRoute(sortIntegerList, handler);
+
+        Map<String, String> queryParams = Collections.singletonMap("myList", "42");
+        Request req = createRequest("/manager/api/test/sortIntegerList", queryParams);
+        Response res = createResponse();
+        List<Integer> result = getResult((String) route.handle(req, res), List.class);
+
+        assertEquals(List.of(42), result);
+    }
+
+    /**
      * Tests handling of a string array in the request body
      */
     @Test
