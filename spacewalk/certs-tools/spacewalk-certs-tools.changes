@@ -1,4 +1,8 @@
-- Ensure installation of make for building
+-------------------------------------------------------------------
+Tue Feb 21 14:03:19 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Ensure installation of make for building
 
 -------------------------------------------------------------------
 Mon Jan 23 08:27:21 CET 2023 - jgonzalez@suse.com
