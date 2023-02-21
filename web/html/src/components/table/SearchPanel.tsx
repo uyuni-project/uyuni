@@ -41,7 +41,7 @@ export function SearchPanel(props: SearchPanelProps) {
       {React.Children.toArray(props.children).map((child) =>
         cloneReactElement(child, { criteria: props.criteria, onSearch: props.onSearch })
       )}
-      <div className="d-inline-block">
+      <div className="d-inline-block table-search-select-all">
         <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
         {props.selectable && props.selectedCount > 0 && (
           <span>

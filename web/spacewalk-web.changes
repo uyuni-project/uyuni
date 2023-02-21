@@ -1,3 +1,5 @@
+- Fix UI inconsistencies in susemanager-light and susemanager-dark
+  theme
 - Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 - Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 

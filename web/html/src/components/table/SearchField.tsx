@@ -25,14 +25,16 @@ export class SearchField extends React.Component<SearchFieldProps> {
   render() {
     const props = this.props;
     return (
-      <input
-        className="form-control table-input-search"
-        value={props.criteria || ""}
-        placeholder={props.placeholder}
-        type="text"
-        onChange={(e) => props.onSearch?.(e.target.value)}
-        name={props.name}
-      />
+      <div className="form-group">
+        <input
+          className="form-control table-input-search"
+          value={props.criteria || ""}
+          placeholder={props.placeholder}
+          type="text"
+          onChange={(e) => props.onSearch?.(e.target.value)}
+          name={props.name}
+        />
+      </div>
     );
   }
 }
