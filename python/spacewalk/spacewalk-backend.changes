@@ -1,7 +1,11 @@
-- set new CPU core value for traditional registration
-- add logspec param in rhn.conf to set urlgrabber loglevel
-- Do not specify a cobbler version, as that is now centralized at the
-  patterns
+-------------------------------------------------------------------
+Tue Feb 21 14:05:08 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.8-1
+  * set new CPU core value for traditional registration
+  * add logspec param in rhn.conf to set urlgrabber loglevel
+  * Do not specify a cobbler version, as that is now centralized at the
+    patterns
 
 -------------------------------------------------------------------
 Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
