@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -299,7 +300,8 @@ public class SUSEProductFactory extends HibernateFactory {
                                 .flatMap(c -> {
                                     return c.allClonedChannels().filter(clone -> {
                                         List<String> cloneParts = List.of(clone.getLabel().split("-"));
-                                        return cloneParts.containsAll(uniqueParts);
+                                        return cloneParts.containsAll(uniqueParts) &&
+                                                Objects.equals(clone.getOrg(), channel.getOrg());
                                     });
                                 })
                                 .map(c -> (Channel) c);
