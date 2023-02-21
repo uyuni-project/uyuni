@@ -11288,28 +11288,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">ベースチャンネルが選択されていません。</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
         <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">モジュール化は現在無効になっています。モジュールを有効にするには、［すべてのモジュールの無効化］フィルタを解除してください。</target>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
         <source>Modularity is disabled. No modules will be included in the target repositories.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">モジュール化は無効になっています。ターゲットリポジトリに含まれるモジュールはありません。</target>
+      </trans-unit>
       <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">削除できません。この環境によって構築されたチャンネルに属さないカスタムチャンネルがあります。まずそれらのチャンネルを削除してください: {0}</target>
+      </trans-unit>
       <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">ターゲットは自動インストールプロファイルで使用されています。削除できません。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
