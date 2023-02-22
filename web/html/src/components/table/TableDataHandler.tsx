@@ -87,6 +87,9 @@ type Props = {
 
   /** Other filter fields */
   additionalFilters?: Array<React.ReactNode>;
+
+  /** Title buttons to add next to the items per page selection */
+  titleButtons?: Array<React.ReactNode>;
 };
 
 type State = {
@@ -378,6 +381,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                     onChange={this.onItemsPerPageChange}
                   />{" "}
                   {t("items per page")}
+                  {this.props.titleButtons}
                 </div>
               </div>
             </div>
