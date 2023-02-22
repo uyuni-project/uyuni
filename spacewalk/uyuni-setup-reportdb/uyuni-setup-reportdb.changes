@@ -1,5 +1,9 @@
-- improve postgres user check
-- uyuni-setup-reportdb: Test postgres user (bsc#1205088)
+-------------------------------------------------------------------
+Wed Feb 22 14:46:12 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * improve postgres user check
+  * uyuni-setup-reportdb: Test postgres user (bsc#1205088)
 
 -------------------------------------------------------------------
 Wed Jan 11 12:43:31 CET 2023 - jgonzalez@suse.com
