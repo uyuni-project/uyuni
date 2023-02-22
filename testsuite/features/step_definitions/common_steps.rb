@@ -713,14 +713,16 @@ When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
-  step %(Given I am on the Systems overview page of this "#{host}")
-  step %(When I follow first "Schedule System Reboot")
-  step %(Then I should see a "System Reboot Confirmation" text")
-  step %(And I should see a "Reboot system" button")
-  step %(When I click on "Reboot system")
-  step %(Then I should see a "Reboot scheduled for system" text")
-  step %(And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed")
-  step %(Then I should see a "This action's status is: Completed" text")
+  steps %(
+    Given I am on the Systems overview page of this "#{host}"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "This action's status is: Completed" text
+         )
 end
 
 When(/^I change the server's short hostname from hosts and hostname files$/) do
