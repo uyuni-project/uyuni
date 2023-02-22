@@ -1,3 +1,4 @@
+- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - support multiple gpgkey urls for a channel (bsc#1208540)
 - Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
 - Filter CLM modular packages using release strings (bsc#1207814)
