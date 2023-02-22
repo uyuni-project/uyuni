@@ -4056,8 +4056,13 @@ public class SystemHandler extends BaseHandler {
             Date earliestOccurrence, ActionType acT) {
         HashSet<Long> lsids = new HashSet<>();
         for (Integer sid : sids) {
-            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
-                    loggedInUser);
+            Server server;
+            try {
+                server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+            }
+            catch (LookupException e) {
+                throw new NoSuchSystemException(e.getMessage());
+            }
 
             // Would be nice to do this check at the Manager layer but upset many tests,
             // some of which were not cooperative when being fixed. Placing here for now.
@@ -4247,7 +4252,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Schedule full package update for several systems.
      * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "serverId")
+     * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param("int", "actionId")
      */

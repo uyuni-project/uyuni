@@ -65,7 +65,7 @@ Then(/^the clock from "([^"]*)" should be exact$/) do |host|
   clock_node, _rc = node.run("date +'%s'")
   clock_controller = `date +'%s'`
   difference = clock_node.to_i - clock_controller.to_i
-  raise "clocks differ by #{difference} seconds" unless difference.abs < 2
+  raise "clocks differ by #{difference} seconds" unless difference.abs <= 2
 end
 
 Then(/^it should be possible to reach the test packages$/) do

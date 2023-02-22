@@ -89,6 +89,7 @@
     "prop-types": "^15.7.2",
     "pwstrength-bootstrap": "1.2.6",
     "react": "^16.14.0",
+    "react-datepicker": "4.5.0",
     "react-dom": "^16.14.0",
     "react-hot-loader": "^4.13.0",
     "react-modal": "^3.13.1",

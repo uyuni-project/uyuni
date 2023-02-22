@@ -88,12 +88,12 @@ if $build_validation
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
-  $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion,
-             $sle12sp5_minion, $sle12sp5_ssh_minion,
-             $sle15sp1_minion, $sle15sp1_ssh_minion,
-             $sle15sp2_minion, $sle15sp2_ssh_minion,
-             $sle15sp3_minion, $sle15sp3_ssh_minion,
-             $sle15sp4_minion, $sle15sp4_ssh_minion,
+  $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion, $sle12sp4_client,
+             $sle12sp5_minion, $sle12sp5_ssh_minion, $sle12sp5_client,
+             $sle15sp1_minion, $sle15sp1_ssh_minion, $sle15sp1_client,
+             $sle15sp2_minion, $sle15sp2_ssh_minion, $sle15sp2_client,
+             $sle15sp3_minion, $sle15sp3_ssh_minion, $sle15sp3_client,
+             $sle15sp4_minion, $sle15sp4_ssh_minion, $sle15sp4_client,
              $slemicro52_minion, $slemicro52_ssh_minion,
              $slemicro53_minion, $slemicro53_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
