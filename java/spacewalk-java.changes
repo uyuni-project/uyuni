@@ -1,3 +1,5 @@
+- Use uyuni roster salt module instead of flat roster files
+
 -------------------------------------------------------------------
 Fri Feb 10 13:35:38 CET 2023 - jgonzalez@suse.com
 

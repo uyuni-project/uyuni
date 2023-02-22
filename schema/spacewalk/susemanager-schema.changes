@@ -1,3 +1,6 @@
+- Add created and modified fields to suseMinionInfo to make
+  uyuni roster module cache validation more accurate
+
 -------------------------------------------------------------------
 Thu Feb 09 09:24:24 CET 2023 - jgonzalez@suse.com
 
