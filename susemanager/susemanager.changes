@@ -1,7 +1,11 @@
-- Create repostories with sha256 instead of sha1.
-- fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
-- show RHEL target for bootstrap repo creation only if it is
-  really connected to the CDN (bsc#1206861)
+-------------------------------------------------------------------
+Wed Feb 22 14:47:43 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.24-1
+  * Create repostories with sha256 instead of sha1.
+  * fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
+  * show RHEL target for bootstrap repo creation only if it is
+    really connected to the CDN (bsc#1206861)
 
 -------------------------------------------------------------------
 Mon Jan 16 09:26:34 CET 2023 - jgonzalez@suse.com
