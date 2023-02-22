@@ -1,5 +1,9 @@
-- Default log_level to 1
-- Allow using container images from different registry paths
+-------------------------------------------------------------------
+Wed Feb 22 13:49:08 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 4.3.5:
+  * Default log_level to 1
+  * Allow using container images from different registry paths
 
 -------------------------------------------------------------------
 Wed Jan 11 11:54:50 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
