@@ -20,12 +20,18 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
 
 /**
  * PackageOverview
  */
-public class PackageOverview extends BaseDto {
+public class PackageOverview extends BaseTupleDto {
 
     private Long id;
     private String packageName;
@@ -41,6 +47,28 @@ public class PackageOverview extends BaseDto {
     private String release;
     private Boolean retracted;
 
+
+    /**
+     * Default constructor for hibernate
+     */
+    public PackageOverview() {
+    }
+
+    /**
+     * Constructor using a tuple for paged SQL queries
+     * @param tuple the tuple from hibernate
+     */
+    public PackageOverview(Tuple tuple) {
+        id = getTupleValue(tuple, "id", Number.class).map(Number::longValue).orElse(null);
+        nvrea = getTupleValue(tuple, "nvrea", String.class).orElse(null);
+        provider = getTupleValue(tuple, "provider", String.class).orElse(null);
+        packageChannels = getTupleValue(tuple, "channels", String.class)
+                .map(value ->
+                        Arrays.stream(value.split(","))
+                                .map(c -> new Row(Map.of("name", c)))
+                                .collect(Collectors.toList()))
+                .orElse(new ArrayList<>());
+    }
 
     /**
      * @return Returns the packageChannels.

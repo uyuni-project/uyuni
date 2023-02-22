@@ -152,15 +152,6 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         }
     }
 
-    protected static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
-        try {
-            return Optional.ofNullable(tuple.get(name, clazz));
-        }
-        catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
-    }
-
     /**
      * Compute the system status and update the corresponding field.
      *
