@@ -21,7 +21,6 @@ export function DateTime(props: Props) {
           setValue(props.name, value);
         };
         const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || undefined;
-        // TODO: Double-check what's reasonable here
         const isValid = fieldValue?.isValid?.() ?? true;
         if (fieldValue && isValid) {
           return <DateTimePicker onChange={onChange} value={localizedMoment(fieldValue)} />;
