@@ -1,14 +1,18 @@
-- get uptime with package profile update
-- Fix missing module when bootstraping transactional systems (bsc#1207792)
-- Install the reboot info beacon using a conf file instead of using pillars
-- add CPU sockets, threads and total number to standard CPU grains
-- Fix current limitation on Action Chains for SLE Micro
-- Support SLE Micro migration (bsc#1205011)
-- Do not pass server grains to minions (bsc#1207087)
-- Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
-- Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
-- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
-- filter out libvirt engine events (bsc#1206146)
+-------------------------------------------------------------------
+Wed Feb 22 14:47:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.30-1
+  * get uptime with package profile update
+  * Fix missing module when bootstraping transactional systems (bsc#1207792)
+  * Install the reboot info beacon using a conf file instead of using pillars
+  * add CPU sockets, threads and total number to standard CPU grains
+  * Fix current limitation on Action Chains for SLE Micro
+  * Support SLE Micro migration (bsc#1205011)
+  * Do not pass server grains to minions (bsc#1207087)
+  * Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+  * Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
+  * Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+  * filter out libvirt engine events (bsc#1206146)
 
 -------------------------------------------------------------------
 Thu Jan 26 12:28:58 CET 2023 - jgonzalez@suse.com
