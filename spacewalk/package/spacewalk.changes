@@ -1,5 +1,9 @@
-- Do not specify a cobbler version, as that is now centralized at the
-  patterns
+-------------------------------------------------------------------
+Wed Feb 22 14:46:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Do not specify a cobbler version, as that is now centralized at the
+    patterns
 
 -------------------------------------------------------------------
 Wed Jul 27 14:14:38 CEST 2022 - jgonzalez@suse.com
