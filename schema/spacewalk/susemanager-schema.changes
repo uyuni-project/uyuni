@@ -1,8 +1,12 @@
-- Remove rhnTaskoRun log paths
-- enhance CPU table by core and thread information
-- add trigger on cpu and virtual instance to re-sending
-  virtualization information to SCC
-- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+-------------------------------------------------------------------
+Wed Feb 22 14:44:44 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Remove rhnTaskoRun log paths
+  * enhance CPU table by core and thread information
+  * add trigger on cpu and virtual instance to re-sending
+    virtualization information to SCC
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 
 -------------------------------------------------------------------
 Wed Jan 11 12:42:25 CET 2023 - jgonzalez@suse.com
