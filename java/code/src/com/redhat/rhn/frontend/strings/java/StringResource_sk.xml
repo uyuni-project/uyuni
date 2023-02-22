@@ -11310,11 +11310,12 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
         <target state="translated">Cieľ sa používa v profile automatickej inštalácie. Nemožno odstrániť.</target>
       </trans-unit>
-    <trans-unit id="task.action.rejection.reason" xml:space="preserve">
+      <trans-unit id="task.action.rejection.reason" xml:space="preserve">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Táto akcia nebola vykonaná, pretože jej najskorší dátum vykonania bol príliš starý. Ak medzi naplánovaním a prevzatím uplynie viac ako {0} hodín, akcia sa vyradí, pretože sa už nepovažuje za relevantnú.
+          Ak naozaj chcete, aby sa táto akcia vykonala, prosím, presuňte ju na iný termín.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
