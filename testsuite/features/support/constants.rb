@@ -283,74 +283,74 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'opensuse154arm_ssh_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
-                        # 'default' is required for auto-installation tests.
-                        'default' =>
-                        %w[
-                          sle-product-sles15-sp4-pool-x86_64
-                          sle-manager-tools15-pool-x86_64-sp4
-                          sle-manager-tools15-pool-x86_64-sled-sp4
-                          sle-manager-tools15-beta-pool-x86_64-sp4
-                          sle-module-containers15-sp4-pool-x86_64
-                          sle-module-basesystem15-sp4-pool-x86_64
-                          sle-module-server-applications15-sp4-pool-x86_64
-                          sle-product-sles15-sp4-updates-x86_64
-                          sle-manager-tools15-updates-x86_64-sp4
-                          sle-manager-tools15-updates-x86_64-sled-sp4
-                          sle-manager-tools15-beta-updates-x86_64-sp4
-                          sle-module-containers15-sp4-updates-x86_64
-                          sle-module-basesystem15-sp4-updates-x86_64
-                          sle-module-server-applications15-sp4-updates-x86_64
-                          sle15-sp4-installer-updates-x86_64
-                          sle-module-desktop-applications15-sp4-pool-x86_64
-                          sle-module-desktop-applications15-sp4-updates-x86_64
-                          sle-module-devtools15-sp4-pool-x86_64
-                          sle-module-devtools15-sp4-updates-x86_64
-                          sle-module-containers15-sp4-pool-x86_64
-                          sle-module-containers15-sp4-updates-x86_64
-                        ],
-                        '15-SP3' =>
-                        %w[
-                          sle-product-sles15-sp3-pool-x86_64
-                          sle-manager-tools15-pool-x86_64-sp3
-                          sle-manager-tools15-pool-x86_64-sled-sp3
-                          sle-manager-tools15-beta-pool-x86_64-sp3
-                          sle-module-containers15-sp3-pool-x86_64
-                          sle-module-basesystem15-sp3-pool-x86_64
-                          sle-module-server-applications15-sp3-pool-x86_64
-                          sle-product-sles15-sp3-updates-x86_64
-                          sle-manager-tools15-updates-x86_64-sp3
-                          sle-manager-tools15-updates-x86_64-sled-sp3
-                          sle-manager-tools15-beta-updates-x86_64-sp3
-                          sle-module-containers15-sp3-updates-x86_64
-                          sle-module-basesystem15-sp3-updates-x86_64
-                          sle-module-server-applications15-sp3-updates-x86_64
-                        ],
-                        '15-SP4' =>
-                        %w[
-                          sle-product-sles15-sp4-pool-x86_64
-                          sle-manager-tools15-pool-x86_64-sp4
-                          sle-manager-tools15-pool-x86_64-sled-sp4
-                          sle-manager-tools15-beta-pool-x86_64-sp4
-                          sle-module-containers15-sp4-pool-x86_64
-                          sle-module-basesystem15-sp4-pool-x86_64
-                          sle-module-server-applications15-sp4-pool-x86_64
-                          sle-product-sles15-sp4-updates-x86_64
-                          sle-manager-tools15-updates-x86_64-sp4
-                          sle-manager-tools15-updates-x86_64-sled-sp4
-                          sle-manager-tools15-beta-updates-x86_64-sp4
-                          sle-module-containers15-sp4-updates-x86_64
-                          sle-module-basesystem15-sp4-updates-x86_64
-                          sle-module-server-applications15-sp4-updates-x86_64
-                          sle-module-containers15-sp4-pool-x86_64
-                          sle-module-containers15-sp4-updates-x86_64
-                        ],
-                        '8' =>
-                        %w[
-                          res8-manager-tools-pool-x86_64
-                          res8-manager-tools-updates-x86_64
-                          sll8-uyuni-client-x86_64
-                        ]
-                      }.freeze
+  # 'default' is required for auto-installation tests.
+  'default' =>
+  %w[
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-pool-x86_64-sled-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-updates-x86_64-sled-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
+    sle15-sp4-installer-updates-x86_64
+    sle-module-desktop-applications15-sp4-pool-x86_64
+    sle-module-desktop-applications15-sp4-updates-x86_64
+    sle-module-devtools15-sp4-pool-x86_64
+    sle-module-devtools15-sp4-updates-x86_64
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-containers15-sp4-updates-x86_64
+  ],
+  '15-SP3' =>
+  %w[
+    sle-product-sles15-sp3-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp3
+    sle-manager-tools15-pool-x86_64-sled-sp3
+    sle-manager-tools15-beta-pool-x86_64-sp3
+    sle-module-containers15-sp3-pool-x86_64
+    sle-module-basesystem15-sp3-pool-x86_64
+    sle-module-server-applications15-sp3-pool-x86_64
+    sle-product-sles15-sp3-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp3
+    sle-manager-tools15-updates-x86_64-sled-sp3
+    sle-manager-tools15-beta-updates-x86_64-sp3
+    sle-module-containers15-sp3-updates-x86_64
+    sle-module-basesystem15-sp3-updates-x86_64
+    sle-module-server-applications15-sp3-updates-x86_64
+  ],
+  '15-SP4' =>
+  %w[
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-pool-x86_64-sled-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-updates-x86_64-sled-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-containers15-sp4-updates-x86_64
+  ],
+  '8' =>
+  %w[
+    res8-manager-tools-pool-x86_64
+    res8-manager-tools-updates-x86_64
+    sll8-uyuni-client-x86_64
+  ]
+}.freeze
 
 MIGRATE_SSH_MINION_FROM = '15-SP3'.freeze
 MIGRATE_SSH_MINION_TO = '15-SP4'.freeze
