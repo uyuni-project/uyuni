@@ -183,8 +183,8 @@ public class ServerGroupHandler extends BaseHandler {
      *          $SystemOverviewSerializer
      *      #array_end()
      */
-    @ReadOnly
-    public List<SystemOverview> listSystemsMinimal(User loggedInUser, String systemGroupName) {
+    public List<SystemOverview>
+            listSystemsMinimal(User loggedInUser, String systemGroupName) {
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return SystemManager.systemsInGroupShort(group.getId());
     }
