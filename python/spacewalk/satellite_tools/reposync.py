@@ -146,7 +146,7 @@ class KSDirHtmlParser(KSDirParser):
 
         for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html.decode())):
             if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or
-                    re.search(r'\.rpm$', s)):
+                    s.endswith('.rpm') or s.endswith('.mirrorlist') or s == '#'):
                 if re.search(r'/$', s):
                     file_type = 'DIR'
                 else:
