@@ -1,4 +1,4 @@
-- Add mgr-salt-ssh wrapper to use with uyuni roster Salt module
+- Add mgr-salt-ssh wrapper to use with uyuni roster Salt module (bsc#1200096)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:48:46 CET 2023 - jgonzalez@suse.com

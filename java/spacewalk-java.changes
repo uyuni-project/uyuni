@@ -1,4 +1,4 @@
-- Use uyuni roster salt module instead of flat roster files
+- Use uyuni roster salt module instead of flat roster files (bsc#1200096)
 
 -------------------------------------------------------------------
 Fri Feb 10 13:35:38 CET 2023 - jgonzalez@suse.com

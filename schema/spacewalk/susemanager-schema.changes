@@ -1,5 +1,5 @@
 - Add created and modified fields to suseMinionInfo to make
-  uyuni roster module cache validation more accurate
+  uyuni roster module cache validation more accurate (bsc#1200096)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:24:24 CET 2023 - jgonzalez@suse.com
