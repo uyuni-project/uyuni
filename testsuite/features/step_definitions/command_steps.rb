@@ -337,6 +337,44 @@ When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   end
 end
 
+# This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
+# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
+  do_not_kill = compute_channels_to_leave_running
+  reposync_not_running_streak = 0
+  reposync_left_running_streak = 0
+  while reposync_not_running_streak <= 60
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      reposync_left_running_streak = 0
+      sleep 1
+      next
+    end
+    reposync_not_running_streak = 0
+
+    process = command_output.split("\n")[0]
+    channel = process.split(' ')[5]
+    if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
+      log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+      reposync_left_running_streak += 1
+      sleep 1
+      next
+    end
+    reposync_left_running_streak = 0
+
+    pid = process.split(' ')[0]
+    $server.run("kill #{pid}", check_errors: false)
+    log "Reposync of channel #{channel} killed"
+
+    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
+  end
+end
+
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?

@@ -13,6 +13,9 @@ Feature: Wait for reposync activity to finish in CI context
     And I click on "Update Schedule"
     And I click on "Delete Schedule"
 
+  Scenario: Kill running reposyncs or wait for them to finish
+    When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
+
   Scenario: Wait until all synchronized channels have finished
     When I wait until all synchronized channels have finished
     And I wait until all spacewalk-repo-sync finished
