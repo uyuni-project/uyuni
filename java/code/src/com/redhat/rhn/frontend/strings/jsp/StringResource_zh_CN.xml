@@ -22977,7 +22977,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
         <target state="translated">
- &lt;strong&gt;在所选的基础频道中未找到适用的安装程序代系。&lt;/strong&gt;
+ &lt;strong&gt;在所选的基础通道中未找到适用的安装程序代系。&lt;/strong&gt;
 </target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.header" xml:space="preserve">
@@ -28900,7 +28900,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.mandatory-channels" xml:space="preserve">
         <source>Mandatory Child Channels:</source>
-        <target>必需的子频道：</target>
+        <target>必需的子通道：</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.optional-channels" xml:space="preserve">
         <source>Optional Child Channels:</source>
