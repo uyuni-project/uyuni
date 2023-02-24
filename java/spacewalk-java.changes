@@ -9,6 +9,12 @@
 - Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 
 -------------------------------------------------------------------
+Fri Feb 24 10:06:53 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.47-1
+  * Use uyuni roster salt module instead of flat roster files (bsc#1200096)
+
+-------------------------------------------------------------------
 Fri Feb 10 13:35:38 CET 2023 - jgonzalez@suse.com
 
 - version 4.2.46-1
