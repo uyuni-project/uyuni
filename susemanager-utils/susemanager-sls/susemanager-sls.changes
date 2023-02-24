@@ -1,5 +1,9 @@
-- Flush uyuni roster cache if the config has changed
-- Implement uyuni roster module for Salt (bsc#1200096)
+-------------------------------------------------------------------
+Fri Feb 24 10:05:50 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.31-1
+  * Flush uyuni roster cache if the config has changed
+  * Implement uyuni roster module for Salt (bsc#1200096)
 
 -------------------------------------------------------------------
 Thu Feb 16 11:51:26 CET 2023 - jgonzalez@suse.com
