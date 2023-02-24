@@ -420,6 +420,16 @@ When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do
   end
 end
 
+When(/^I wait until "([^"]*)" has been checked$/) do |text|
+  unless has_checked_field?(text)
+    repeat_until_timeout(message: "Couldn't find checked #{text}", timeout: 5) do
+      break if has_checked_field?(text)
+
+      sleep(1)
+    end
+  end
+end
+
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
     log "There are no notification messages, nothing to do then"
