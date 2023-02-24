@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -850,6 +851,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleFailedActions")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -864,6 +866,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleAllActions")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -889,6 +892,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleSingleServerAction(Action action, Long tries,
             Long server) {
+        updateActionEarliestDate(action);
         HibernateFactory.getSession().getNamedQuery("Action.rescheduleSingleServerAction")
         .setParameter("action", action)
         .setParameter("tries", tries)
@@ -919,6 +923,11 @@ public class ActionFactory extends HibernateFactory {
             .setParameter("queued", ActionFactory.STATUS_QUEUED)
             .executeUpdate();
         }
+    }
+
+    private static void updateActionEarliestDate(Action action) {
+        action.setEarliestAction(new Date());
+        HibernateFactory.getSession().save(action);
     }
 
     /**
@@ -955,6 +964,21 @@ public class ActionFactory extends HibernateFactory {
         parameters.put("status", status.getId());
 
         udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
+    }
+
+    /**
+     * Mark queue server actions as failed because the execution has been rejected
+     * @param actionsId list of ids of the action to reject
+     * @param rejectionReason the reason why the scheduled action was not picked up
+     */
+    public static void rejectScheduledActions(List<Long> actionsId, String rejectionReason) {
+        Query<Long> query = getSession().createNamedQuery("Action.rejectAction", Long.class)
+                                        .setParameter("rejection_reason", rejectionReason)
+                                        .setParameter("completion_time", new Date());
+
+        HibernateFactory.<Long, List<Long>, Long>splitAndExecuteQuery(
+            actionsId, "action_ids", query, query::list, new ArrayList<>(), ListUtils::union
+        );
     }
 
     /**

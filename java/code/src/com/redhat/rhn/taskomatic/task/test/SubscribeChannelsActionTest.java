@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.taskomatic.task.test;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -32,7 +34,9 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.MinionActionExecutor;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.services.SaltServerActionService;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.quartz.JobDataMap;
@@ -43,8 +47,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
 /**
  * Test for SubscribeChannelsAction.
@@ -99,8 +101,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(dataMap));
             }});
 
-            MinionActionExecutor executor = new MinionActionExecutor();
-            executor.setSaltServerActionService(saltServerActionService);
+            MinionActionExecutor executor = new MinionActionExecutor(saltServerActionService);
             executor.execute(ctx);
 
             HibernateFactory.getSession().flush();

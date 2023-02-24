@@ -115,6 +115,7 @@ import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -514,6 +515,10 @@ public class SaltServerActionService {
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
+        if (CollectionUtils.isEmpty(allMinions)) {
+            LOG.warn("Unable to find any minion that have the action id=" + actionIn.getId() + " in status QUEUED");
+            return;
+        }
 
         // split minions into regular and salt-ssh
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = allMinions.stream()
@@ -809,23 +814,20 @@ public class SaltServerActionService {
                         }
                     }
                 }
+                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
-                    MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+                    minionServer.ifPresent(minion -> {
                         LOG.info("Scheduling a package profile update for minion " + minionId);
                         try {
-                            Action pkgList = ActionManager
-                                    .schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
+                            ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                    minion.getMinionId(), e);
+                            LOG.error("Could not schedule package refresh for minion: " + minion.getMinionId(), e);
                         }
                     });
                 }
                 // update minion last checkin
-                MinionServerFactory.findByMinionId(minionId).ifPresent(minion ->
-                        minion.updateServerInfo());
+                minionServer.ifPresent(Server::updateServerInfo);
             }
             else {
                 LOG.error("'state.apply mgractionchains.startssh' was successful " +
@@ -2605,10 +2607,8 @@ public class SaltServerActionService {
                                 Optional.of(jsonResult))) {
                             LOG.info("Scheduling a package profile update");
 
-                            Action pkgList;
                             try {
-                                pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                                executeSSHAction(pkgList, minion);
+                                ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Could not schedule package refresh for minion: " +

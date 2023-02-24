@@ -15,17 +15,19 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
@@ -40,11 +42,27 @@ import java.util.Optional;
  */
 public class MinionActionExecutor extends RhnJavaJob {
 
-    private static final int ACTION_DATABASE_GRACE_TIME = 600_000;
-    private static final int ACTION_DATABASE_POLL_TIME = 100;
-    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+    public static final int ACTION_DATABASE_GRACE_TIME = 600_000;
+    public static final int ACTION_DATABASE_POLL_TIME = 100;
+    public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
-    private SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+    private final SaltServerActionService saltServerActionService;
+
+    /**
+     * Default constructor.
+     */
+    public MinionActionExecutor() {
+        this(GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE);
+    }
+
+    /**
+     * Constructs an instance specifying the {@link SaltServerActionService}. Meant to be used only for unit test.
+     * @param saltServerActionServiceIn the salt service
+     */
+    public MinionActionExecutor(SaltServerActionService saltServerActionServiceIn) {
+        this.saltServerActionService = saltServerActionServiceIn;
+    }
 
     @Override
     public int getDefaultRescheduleTime() {
@@ -93,13 +111,14 @@ public class MinionActionExecutor extends RhnJavaJob {
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. Wait for some minutes checking if it appears
         int waitedTime = 0;
-        while (action == null && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
             action = ActionFactory.lookupById(actionId);
             try {
                 Thread.sleep(ACTION_DATABASE_POLL_TIME);
             }
             catch (InterruptedException e) {
                 // never happens
+                Thread.currentThread().interrupt();
             }
             waitedTime += ACTION_DATABASE_POLL_TIME;
         }
@@ -108,21 +127,27 @@ public class MinionActionExecutor extends RhnJavaJob {
             log.error("Action not found: " + actionId);
             return;
         }
-        else {
-            log.debug("Action " + actionId + " found after: " + waitedTime + "ms");
+
+        if (countQueuedServerActions(action) == 0) {
+            log.error("Action with id=" + actionId + " has no server with status QUEUED");
+            return;
         }
+
+        log.debug("Action " + actionId + " found after: " + waitedTime + "ms");
 
         // calculate offset between scheduled time of
         // actions and (now)
-        long timeDelta = Duration
-                .between(ZonedDateTime.ofInstant(action.getEarliestAction().toInstant(),
-                        ZoneId.systemDefault()), ZonedDateTime.now())
-                .toHours();
+        ZonedDateTime earliestInstant = ZonedDateTime.ofInstant(action.getEarliestAction().toInstant(),
+            ZoneId.systemDefault());
+
+        long timeDelta = Duration.between(earliestInstant, ZonedDateTime.now()).toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
-            log.warn("Scheduled action " + action.getId() +
-                    " was scheduled to be executed more than " +
-                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS +
-                    " hours ago. Skipping it.");
+            log.warn("Scheduled action " + action.getId() + " was scheduled to be executed more than " +
+                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS + "hours ago.Skipping it.");
+
+            ActionFactory.rejectScheduledActions(List.of(actionId),
+                LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
+
             return;
         }
 
@@ -157,11 +182,14 @@ public class MinionActionExecutor extends RhnJavaJob {
         });
     }
 
-    /**
-     * Needed only for unit tests.
-     * @param saltServerActionServiceIn to set
-     */
-    public void setSaltServerActionService(SaltServerActionService saltServerActionServiceIn) {
-        this.saltServerActionService = saltServerActionServiceIn;
+    private long countQueuedServerActions(Action action) {
+        if (action == null || CollectionUtils.isEmpty(action.getServerActions())) {
+            return 0;
+        }
+
+        return action.getServerActions()
+                     .stream()
+                     .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                     .count();
     }
 }
