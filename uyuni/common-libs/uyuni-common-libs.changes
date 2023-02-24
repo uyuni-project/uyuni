@@ -1,5 +1,9 @@
-- Fix crash due missing "context_manager" when running
-  salt-secrets-config service (bsc#1200096)
+-------------------------------------------------------------------
+Fri Feb 24 13:03:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.2.9-1
+  * Fix crash due missing "context_manager" when running
+    salt-secrets-config service (bsc#1200096)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:44:02 CET 2023 - jgonzalez@suse.com
