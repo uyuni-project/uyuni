@@ -72,6 +72,12 @@ Feature: PXE boot a terminal with Cobbler
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-TFTP" text
 
+  Scenario: Migration of cobbler settings
+    Given cobbler is running
+    And cobbler settings are successfully migrated
+    When I restart cobbler on the server
+    Then service "cobblerd" is active on "server"
+
   Scenario: Set up tftp installation
     When I configure tftp on the "server"
     And I start tftp on the proxy
