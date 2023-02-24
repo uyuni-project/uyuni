@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-ruby@v1
       - id: files
-        uses: Ana06/get-changed-files@v2.1.0
+        uses: Ana06/get-changed-files@v2.2.0
         with:
           filter: '*.sql'
       - name: Run json generator
