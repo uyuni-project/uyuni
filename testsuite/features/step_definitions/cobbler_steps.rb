@@ -192,7 +192,7 @@ end
 
 # cobbler settings
 Given(/^cobbler settings are successfully migrated$/) do
-  out, code = $server.run("cobbler-settings migrate -t /etc/cobbler/settings.yaml")
+  out, code = $server.run('cobbler-settings migrate -t /etc/cobbler/settings.yaml')
   raise "error when running cobbler-settings to migrate current settings.\nLogs:\n#{out}" if code.nonzero?
 end
 
