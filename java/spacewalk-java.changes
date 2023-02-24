@@ -1,3 +1,6 @@
+- Rollback changes to reduce taskomatic memory consumption while processing
+  Ubuntu Erratas
+
 -------------------------------------------------------------------
 Tue Feb 21 14:12:10 CET 2023 - jgonzalez@suse.com
 
