@@ -42,7 +42,7 @@ done
 
 cp /etc/cobbler/settings.yaml /etc/cobbler/settings.yaml.bak
 # remove proxies section from conf
-cat /etc/cobbler/settings.yaml.bak | awk '{if(/^proxies:/) x=1; else if (x == 1 && /^[[:space:]]*-/) x=1; else print }' > /etc/cobbler/settings.yaml
+cat /etc/cobbler/settings.yaml.bak | awk '{if(/^proxies:/) x=1; else if (x == 1 && /^[[:space:]]*-/) x=1; else if (x == 1 && ! /^[[:space:]]*-/) {x=0; print;} else print }' > /etc/cobbler/settings.yaml
 
 # create new proxies section
 echo "proxies:" >> /etc/cobbler/settings.yaml
