@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
@@ -258,6 +259,21 @@ public class PackageFactory extends HibernateFactory {
         return session.getNamedQuery("Package.findByPackageName").setParameter("packageName",
                 pn).list();
 
+    }
+
+    /**
+     * List package names of a channel
+     * @param channel the channel
+     * @return list of package names in the given channel
+     */
+    public static Set<String> listPackageNamesInChannel(Channel channel) {
+        return Set.copyOf(getSession().createQuery(
+                "select p.packageName.name " +
+                   " from com.redhat.rhn.domain.rhnpackage.Package as p " +
+                   " join p.channels c " +
+                   "where c.id = :cid", String.class)
+                .setParameter("cid", channel.getId())
+                .list());
     }
 
     /**

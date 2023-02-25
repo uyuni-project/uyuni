@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -222,6 +223,12 @@ public class UbuntuErrataManager {
                 .filter(c -> c.isTypeDeb() && !c.isCloned())
                 .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getOrg()), Collectors.toSet()));
 
+        Map<Channel, Set<String>> channelPackageNames = TimeUtils.logTime(LOG, "prepare package name list for channels",
+                () -> orgDebChannels.entrySet().stream()
+                        .flatMap(e -> e.getValue().stream())
+                        .map(c -> Map.entry(c, PackageFactory.listPackageNamesInChannel(c)))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+
         List<String> uniqueCVEs = ubuntuErrataInfo.stream()
                 .flatMap(e -> e.getCves().stream().filter(c -> c.startsWith("CVE-")))
                 .distinct()
@@ -238,20 +245,32 @@ public class UbuntuErrataManager {
                     Map<Channel, Set<Package>> channelPackages = orgChannels.getValue().stream()
                         .collect(Collectors.toMap(
                             c -> c,
-                            c -> entry.getPackages().stream().flatMap(e -> {
-                                PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
-                                return e.getC().stream()
-                                        .flatMap(arch ->
-                                                ChannelFactory.lookupPackagesByNevra(c,
-                                                        e.getA(),
-                                                        archToPackageArchLabel(arch).orElse(""),
-                                                        packageEvr.getVersion(),
-                                                        packageEvr.getRelease(),
-                                                        packageEvr.getEpoch(),
-                                                        packageEvr.getType()).stream()
-                                        );
-                            }).collect(Collectors.toSet())
-                        ));
+                            c -> entry.getPackages().stream()
+                                    .filter(e -> channelPackageNames.get(c).contains(e.getA()))
+                                    .flatMap(e -> {
+                                        PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
+                                        return e.getC().stream()
+                                                .flatMap(arch ->
+                                                        ChannelFactory.lookupPackagesByNevra(c,
+                                                                e.getA(),
+                                                                archToPackageArchLabel(arch).orElse(""),
+                                                                packageEvr.getVersion(),
+                                                                packageEvr.getRelease(),
+                                                                packageEvr.getEpoch(),
+                                                                packageEvr.getType()).stream()
+                                                );
+                                    }).collect(Collectors.toSet())
+                        ))
+                        .entrySet().stream()
+                        .filter(e -> !e.getValue().isEmpty())
+                        .collect(Collectors.toMap(
+                                e -> e.getKey(), e -> e.getValue())
+                        );
+                    if (channelPackages.isEmpty()) {
+                        LOG.debug("no packages found - skip errata");
+                        return Stream.empty();
+                    }
+                    LOG.debug("create or update errata: {}", entry.getId());
 
                     Errata errata = Optional.ofNullable(ErrataFactory.lookupByAdvisoryAndOrg(
                             entry.getId(), orgChannels.getKey().orElse(null)
@@ -315,6 +334,7 @@ public class UbuntuErrataManager {
                     return Stream.of(errata);
                 })).forEach(ErrataFactory::save));
 
+        LOG.debug("Insert changed errata to cache task");
         // add changed errata to notification queue
         Map<Long, List<Long>> errataToChannels = changedErrata.stream().collect(
                 Collectors.toMap(
@@ -327,6 +347,7 @@ public class UbuntuErrataManager {
                 LOG.debug("Update NeededCache for Channel: {}", channel.getLabel());
                 ErrataManager.insertErrataCacheTask(channel);
         });
+        LOG.debug("send errata notification");
         ErrataManager.bulkErrataNotification(errataToChannels, new Date());
     }
 }
