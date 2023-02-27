@@ -137,6 +137,8 @@ spec:
         protocol: UDP
       - containerPort: 25151
       - containerPort: 5432
+      - containerPort: 8000
+      - containerPort: 8001
     resources: {}
     volumeMounts:
       - mountPath: /run

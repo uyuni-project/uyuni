@@ -384,6 +384,41 @@
 
   <target name="deploy-restart-kube" depends="deploy-kube, restart-tomcat-kube, restart-taskomatic-kube" />
 
+  <target name="check-tomcat-has-opts">
+    <exec executable="kubectl" resultproperty="tomcat.has_opts_result" failonerror="false">
+      <arg line="exec ${kubectl.args} -- grep JAVA_OPTS /etc/sysconfig/tomcat"/>
+    </exec>
+    <condition property="tomcat.has_opts">
+      <equals arg1="${tomcat.has_opts_result}" arg2="0"/>
+    </condition>
+  </target>
+
+  <target name="append-tomcat-debug-kube" depends="check-tomcat-has-opts" unless="tomcat.has_opts">
+    <exec executable="kubectl">
+        <arg value="exec"/>
+        <arg value="-n"/>
+        <arg value="${deploy.namespace}"/>
+        <arg value="${deploy.pod}"/>
+        <arg value="--"/>
+        <arg value="sh"/>
+        <arg value="-c"/>
+        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
+    </exec>
+  </target>
+
+  <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
+    <exec executable="kubectl">
+        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
+    </exec>
+  </target>
+
+  <target name="enable-java-debug-kube" depends="warn-if-kubectl-not-installed, append-tomcat-debug-kube, replace-tomcat-debug-kube" description="Add tomcat and taskomatic options to connect a Java debugger">
+    <exec executable="kubectl">
+      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
+    </exec>
+    <echo message="Restart taskomatic and tomcat at your convenience to debug"/>
+  </target>
+
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
       <fileset dir="${tests.results.dir}">
