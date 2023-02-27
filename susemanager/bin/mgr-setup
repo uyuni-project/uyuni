@@ -443,6 +443,7 @@ report-db-port=$REPORT_DB_PORT
 report-db-user=$REPORT_DB_USER
 report-db-password=$REPORT_DB_PASS
 enable-tftp=$MANAGER_ENABLE_TFTP
+hostname=$HOSTNAME
 " > /root/spacewalk-answers
 
     if [ -n "$SCC_USER" ]; then
