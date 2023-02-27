@@ -29,7 +29,7 @@ except ImportError:
     from StringIO import StringIO
 from collections import namedtuple
 
-from mock import Mock, MagicMock, patch
+from mock import Mock, MagicMock, patch, mock_open
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
@@ -171,10 +171,12 @@ class YumSrcTest(unittest.TestCase):
         CFG.PREPENDED_DIR = ''
         CFG.http_proxy = False
 
-        grabber_spy = Mock()
+        urlgrabber_spy = Mock()
+        urlgrabber_spy.urlread = Mock()
+        mirror_group_mock = Mock(return_value=urlgrabber_spy)
 
         with patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlread", grabber_spy
+            "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup", mirror_group_mock
         ), patch("uyuni.common.context_managers.CFG", CFG), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
             Mock(return_value=False),
@@ -182,8 +184,60 @@ class YumSrcTest(unittest.TestCase):
             cs = yum_src.ContentSource("http://example.com/foo/", "test_repo", org="")
             cs.get_file("bar")
 
-            self.assertEqual(grabber_spy.call_args[1]["timeout"],  42)
-            self.assertEqual(grabber_spy.call_args[1]["minrate"],  42)
+            self.assertEqual(urlgrabber_spy.urlread.call_args[1]["timeout"],  42)
+            self.assertEqual(urlgrabber_spy.urlread.call_args[1]["minrate"],  42)
+
+    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    def test_get_file_with_mirrorlist_repo(self):
+        cs = self._make_dummy_cs()
+        cs.url = "http://example.com/url_with_mirrorlist/"
+
+        urlgrabber_spy = Mock()
+        urlgrabber_spy.urlread = Mock()
+        mirror_group_mock = Mock(return_value=urlgrabber_spy)
+        subprocess_mock = Mock()
+        subprocess_mock.returncode = 0
+        subprocess_mock.stderr = False
+
+        MIRROR_LIST = [
+            "http://example/base/arch1/os/",
+            "http://example/",
+            "http://example.com/",
+            "https://example.org/repo/path/?token",
+        ]
+
+        with patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup",
+            mirror_group_mock
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
+            Mock(return_value=False),
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.ZyppoSync._init_root",
+            MagicMock()
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.ContentSource._get_mirror_list",
+            MagicMock(return_value=MIRROR_LIST)
+        ), patch.object(
+            yum_src.ZyppoSync, "_ZyppoSync__synchronize_gpg_keys",
+            MagicMock()
+        ), patch(
+            "builtins.open", mock_open()
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.subprocess.run",
+            MagicMock(return_value=subprocess_mock)
+        ):
+               repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com/url_with_mirrorlist/", "1")
+               cs.repo = repo
+               cs.setup_repo(repo)
+               cs.get_file("foobar")
+               self.assertEqual(urlgrabber_spy.urlread.call_args[0][0], "foobar")
+               self.assertEqual(urlgrabber_spy.urlread.call_args.kwargs['urls'], MIRROR_LIST)
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.ZYPP_RAW_CACHE_PATH", "./")
     def test_get_comps_and_modules(self):
