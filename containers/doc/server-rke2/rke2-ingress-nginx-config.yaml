@@ -5,6 +5,9 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    controller:
+      config:
+        hsts: "false"
     tcp:
       4505: "default/uyuni-tcp:4505"
       4506: "default/uyuni-tcp:4506"
