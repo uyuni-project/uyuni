@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pgsql
+  name: var-pgsql
 spec:
   accessModes:
     - ReadWriteOnce
@@ -11,7 +11,7 @@ spec:
       storage: 100Gi
   selector:
     matchLabels:
-      data: pgsql
+      data: var-pgsql
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -42,6 +42,21 @@ spec:
   selector:
     matchLabels:
       data: var-spacewalk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-log
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 2Gi
+  selector:
+    matchLabels:
+      data: var-log
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -181,6 +196,36 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: root
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: root
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-apache2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-apache2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: etc-rhn
 spec:
   accessModes:
@@ -226,6 +271,36 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: etc-tomcat 
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-tomcat
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-cobbler 
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-cobbler
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: etc-tls
 spec:
   accessModes:
@@ -237,63 +312,3 @@ spec:
   selector:
     matchLabels:
       data: etc-tls
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: var-log-rhn
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-storage
-  resources:
-    requests:
-      storage: 2Gi
-  selector:
-    matchLabels:
-      data: var-log-rhn
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: apache2
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-storage
-  resources:
-    requests:
-      storage: 10Mi
-  selector:
-    matchLabels:
-      data: apache2
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: root
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-storage
-  resources:
-    requests:
-      storage: 10Mi
-  selector:
-    matchLabels:
-      data: root
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tomcat 
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-storage
-  resources:
-    requests:
-      storage: 10Mi
-  selector:
-    matchLabels:
-      data: tomcat
