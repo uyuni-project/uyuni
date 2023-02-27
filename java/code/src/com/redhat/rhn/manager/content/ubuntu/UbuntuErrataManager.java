@@ -194,11 +194,16 @@ public class UbuntuErrataManager {
      * @throws IOException in case of download issues
      */
     public static void sync(Set<Long> channelIds) throws IOException {
-        LOG.debug("sync started - get and parse errata");
-        List<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
-        LOG.debug("get and parse errata finished - process Ubuntu Errata By Id");
-        processUbuntuErrataByIds(channelIds, ubuntuErrataInfo);
-        LOG.debug("process Ubuntu Errata By Id finished");
+        LOG.debug("sync Ubuntu Errata started");
+        Set<Channel> channels = channelIds.stream().map(ChannelFactory::lookupById).collect(Collectors.toSet());
+        if (channels.stream()
+                .filter(c -> c.isTypeDeb() && !c.isCloned())
+                .findFirst().isPresent()) {
+            List<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
+            LOG.debug("get and parse errata finished - process Ubuntu Errata By Id");
+            processUbuntuErrata(channels, ubuntuErrataInfo);
+        }
+        LOG.debug("sync Ubuntu Errata finished");
     }
 
     /**
