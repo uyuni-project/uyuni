@@ -445,6 +445,7 @@ report-db-user=$REPORT_DB_USER
 report-db-password=$REPORT_DB_PASS
 enable-tftp=$MANAGER_ENABLE_TFTP
 product_name=$PRODUCT_NAME
+hostname=$HOSTNAME
 " > /root/spacewalk-answers
 
     if [ -n "$SCC_USER" ]; then
