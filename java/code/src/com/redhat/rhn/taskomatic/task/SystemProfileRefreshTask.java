@@ -92,7 +92,7 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
             cnt++;
             try {
                 if (cnt < actionsToSchedule.size()) {
-                    Thread.sleep(2 * 60 * 1000); // sleep 2 minutes before schedule next org
+                    Thread.sleep(2 * 60 * 1000L); // sleep 2 minutes before schedule next org
                 }
             }
             catch (InterruptedException e) {
