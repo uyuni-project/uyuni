@@ -26,6 +26,7 @@ data:
     #REPORT_DB_PASS="pythia_susemanager"
     NO_SSL="Y"
     MANAGER_MAIL_FROM="notifications@uyuni-dev.world-co.com"
+    HOSTNAME="uyuni-dev.world-co.com"
 kind: ConfigMap
 metadata:
   creationTimestamp: null
