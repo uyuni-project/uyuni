@@ -1,3 +1,5 @@
+- Remove spacewalk-clone-by-date dependency on python3-simplejson
+
 -------------------------------------------------------------------
 Tue Feb 21 12:31:34 CET 2023 - jgonzalez@suse.com
 
