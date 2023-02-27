@@ -104,6 +104,222 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: srv-www-pub
+  labels:
+    data: srv-www-pub
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-pub
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-www-cobbler
+  labels:
+    data: srv-www-cobbler
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-cobbler
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-www-osimages
+  labels:
+    data: srv-www-osimages
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-www-osimages
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-tftpboot
+  labels:
+    data: srv-tftpboot
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-tftpboot
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-formulametadata
+  labels:
+    data: srv-formulametadata
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-formulametadata
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-pillar
+  labels:
+    data: srv-pillar
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-pillar
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-susemanage
+  labels:
+    data: srv-susemanage
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-susemanage
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-susemanager
+  labels:
+    data: srv-susemanager
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-susemanager
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-spacewalk
+  labels:
+    data: srv-spacewalk
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/srv-spacewalk
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: etc-rhn
   labels:
     data: etc-rhn

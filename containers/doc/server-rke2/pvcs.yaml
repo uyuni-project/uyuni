@@ -61,6 +61,126 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: srv-www-pub
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-pub
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-www-cobbler
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-cobbler
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-www-osimages
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-osimages
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-tftpboot
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-tftpboot
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-formulametadata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-formulametadata
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-pillar
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-pillar
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-susemanager
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-susemanager
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-spacewalk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-spacewalk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: etc-rhn
 spec:
   accessModes:

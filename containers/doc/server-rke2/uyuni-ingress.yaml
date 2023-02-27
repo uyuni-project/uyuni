@@ -7,7 +7,7 @@ spec:
   tls:
     - hosts:
       - uyuni-dev.world-co.com
-      secretName: uyuni-dev-cert
+      secretName: uyuni-cert
   rules:
   - host: uyuni-dev.world-co.com
     http:
