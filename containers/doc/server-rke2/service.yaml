@@ -27,6 +27,14 @@ spec:
     port: 5432
     protocol: TCP
     targetPort: 5432
+  - name: tomcat-debug
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  - name: tasko-debug
+    port: 8001
+    protocol: TCP
+    targetPort: 8001
   selector:
     app: uyuni
   type: ClusterIP
