@@ -18,7 +18,6 @@ General template for new joiners of the SUSE Manager team.
 - [ ] Confluence
   - [ ] Add to [SUMA squads](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) page
   - [ ] Add to [Confluence overview page](https://confluence.suse.com/display/SUSEMANAGER/SUSE+Manager) of the team
-- [ ] Add to Slack @susemanager-xx user group (open a ticket on https://sd.suse.com)
 - [ ] Mailing lists
   - [ ] [SUSE](https://mailman.suse.de)
     - [ ] galaxy-team
@@ -31,7 +30,9 @@ General template for new joiners of the SUSE Manager team.
   - [ ] SUSE Manager Team Review
   - [ ] Priorities, Help and Planning (PHP)
   - [ ] SUSE Manager Team Retrospective
-  - [ ] Daily Standup
+- [ ] Slack
+  - [ ] Update workflows (daily standup, meetings, etc.)
+  - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
 - [ ] Outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available)
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
 - [ ] Provide default passwords if applicable (testsuite VMs, SCC credentials, maybe https://gitlab.suse.de/galaxy/credentials)

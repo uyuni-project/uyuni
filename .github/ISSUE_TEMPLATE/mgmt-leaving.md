@@ -19,7 +19,6 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from [Confluence overview page](https://confluence.suse.com/display/SUSEMANAGER/SUSE+Manager) of the team
   - [ ] Remove from [SUMA squads](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) page
   - [ ] Clean up the [Ownership of topics and features](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) if applicable
-- [ ] Remove from Slack @susemanager-xx user group (open a ticket on https://sd.suse.com)
 - [ ] Mailing lists
   - [ ] [SUSE](https://mailman.suse.de)
     - [ ] galaxy-team
@@ -30,7 +29,9 @@ General template for leavers of the SUSE Manager team.
   - [ ] SUSE Manager Team Review
   - [ ] Priorities, Help and Planning (PHP)
   - [ ] SUSE Manager Team Retrospective
-  - [ ] Daily Standup
+- [ ] Slack
+  - [ ] Update workflows (daily standup, meetings, etc.)
+  - [ ] Remove from user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
 - [ ] Remove from outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available)
 - [ ] Remove from outlook group of the [DCM department](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/dcm)
 - [ ] Hardware
