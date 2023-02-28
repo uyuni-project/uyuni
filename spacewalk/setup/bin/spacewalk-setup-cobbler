@@ -24,6 +24,7 @@ parser.add_argument('--cobbler-config-directory', '-c', dest='cobbler_config_dir
                     help='The directory where "settings" and "modules.conf" are in.')
 parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/apache2/conf.d",
                     help='The directory where the Apache config file "cobbler.conf" is in.')
+parser.add_argument('--fqdn', '-f', dest='fqdn', default=None)
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
 COBBLER_CONFIG_FILES = ["modules.conf", "settings.yaml"]
@@ -41,20 +42,21 @@ def backup_file(file_path: str):
     copyfile(file_path, "%s.backup" % file_path)
 
 
-def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
+def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
     """
     Manipulate the main Cobbler configuration file which is in YAML format. This function backs the original
     configuration up and writes a new one with the required changes to the disk.
     
     :param config_dir: The directory of Cobbler where the config files are.
     :param settings_yaml: The name of the main YAML file of Cobbler.
+    :param fqdn: The FQDN of the server. If None (default), the FQDN is resolved from the system
     """
     full_path = os.path.join(config_dir, settings_yaml)
     backup_file(full_path)
     with open(full_path) as settings_file:
         filecontent = yaml.safe_load(settings_file.read())
 
-    filecontent["server"] = socket.getfqdn()
+    filecontent["server"] = fqdn or socket.getfqdn()
 
     # In case of failing DNS resolution, we get a OSError (socket.gaierror)
     try:
@@ -72,7 +74,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
         exit(1)
 
     filecontent["pxe_just_once"] = True
-    filecontent["redhat_management_server"] = socket.getfqdn()
+    filecontent["redhat_management_server"] = fqdn or socket.getfqdn()
     yaml_dump = yaml.safe_dump(filecontent)
     with open(full_path, "w") as settings_file:
         settings_file.write(yaml_dump)
@@ -128,7 +130,7 @@ def main():
     """
     args = parser.parse_args()
     sanitize_args(args)
-    manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1])
+    manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1], args.fqdn)
     manipulate_cobbler_modules(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[0])
     remove_virtual_host(HTTPD_CONFIG_DIRECTORY, COBBLER_HTTP_CONFIG)
 
