@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 28 15:24:35 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.25-1
+  * Tune the dabase after copying the old configuration (bsc#1208611)
+
+-------------------------------------------------------------------
 Wed Feb 22 14:47:43 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.24-1
