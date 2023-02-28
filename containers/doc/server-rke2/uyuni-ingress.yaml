@@ -51,7 +51,7 @@ spec:
             name: uyuni-tcp
             port:
               number: 80
-        path: /rhn/rpc/api 
+        path: /(rhn/)?rpc/api
         pathType: Prefix
       - backend:
           service:
@@ -80,4 +80,60 @@ spec:
             port:
               number: 80
         path: /rhn/metrics
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /cobbler_api
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /cblr
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /httpboot
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /images
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /cobbler
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /os-images
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /tftp
+        pathType: Prefix
+      - backend:
+          service:
+            name: uyuni-tcp
+            port:
+              number: 80
+        path: /docs
         pathType: Prefix
