@@ -1,9 +1,6 @@
 name: 'Suggested tests to cover this Pull Request'
 
 on:
-  pull_request:
-    paths:
-      - '**.java'
   pull_request_target:
     paths:
       - '**.java'
