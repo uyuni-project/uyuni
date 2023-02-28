@@ -1,4 +1,4 @@
-- Remove spacewalk-clone-by-date dependency on python3-simplejson
+- Use json instead of simplejson for spacewalk-clone-by-date 
 
 -------------------------------------------------------------------
 Tue Feb 21 12:31:34 CET 2023 - jgonzalez@suse.com

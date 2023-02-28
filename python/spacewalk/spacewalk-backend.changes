@@ -1,4 +1,4 @@
-- Remove python3-simplejson use in spacewalk-repo-sync
+- Use json instead of simplejson for spacewalk-repo-sync
 
 -------------------------------------------------------------------
 Tue Feb 21 14:05:08 CET 2023 - jgonzalez@suse.com
