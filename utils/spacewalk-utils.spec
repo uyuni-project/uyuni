@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-utils
-Version:        4.4.5
+Version:        4.4.6
 Release:        1
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later

@@ -1,4 +1,8 @@
-- Use json instead of simplejson for spacewalk-clone-by-date 
+-------------------------------------------------------------------
+Tue Feb 28 11:54:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Use json instead of simplejson for spacewalk-clone-by-date 
 
 -------------------------------------------------------------------
 Tue Feb 21 12:31:34 CET 2023 - jgonzalez@suse.com
