@@ -152,16 +152,6 @@ When(/^I click the Add Product button$/) do
   raise "xpath: button#addProducts not found" unless find('button#addProducts').click
 end
 
-Then(/^the SLE12 SP5 product should be added$/) do
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
-  STDOUT.puts "Products list:\n#{output}"
-  raise unless output.include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
-  if $product != 'Uyuni'
-    raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
-  end
-  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP5 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
-end
-
 Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
   output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   STDOUT.puts "Products list:\n#{output}"
