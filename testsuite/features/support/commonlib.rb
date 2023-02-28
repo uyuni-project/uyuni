@@ -188,7 +188,7 @@ def slemicro_host?(name)
 end
 
 def rh_host?(name)
-  (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
+  (name.include? 'rhlike') || (name.include? 'alma') || (name.include? 'centos') || (name.include? 'liberty') || (name.include? 'oracle') || (name.include? 'rocky')
 end
 
 def deb_host?(name)

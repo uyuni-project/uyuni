@@ -1,8 +1,8 @@
-# Copyright 2021-2022 SUSE LLC
+# Copyright 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Add common channels and schedule their synchronization
-  In order to use external repositories that are not in SCC
+Feature: Add Ubuntu common channels and schedule their synchronization
+  In order to use external repositories for Ubuntu that are not in SCC
   As an authorized user
   I want to declare channels with these repositories and synchronize them
 

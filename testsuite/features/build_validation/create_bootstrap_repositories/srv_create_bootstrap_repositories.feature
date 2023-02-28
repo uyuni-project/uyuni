@@ -78,6 +78,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLE Micro 5.3 SSH minion
     When I create the bootstrap repository for "slemicro53_ssh_minion" on the server
 
+@alma9_minion
+  Scenario: Create the bootstrap repository for a Alma 9 Salt minion
+    When I create the bootstrap repository for "alma9_minion" on the server
+
 @centos7_client
   Scenario: Create the bootstrap repository for a CentOS 7 traditional client
     When I create the bootstrap repository for "centos7_client" on the server
@@ -86,17 +90,9 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a CentOS 7 Salt minion
     When I create the bootstrap repository for "centos7_minion" on the server
 
-@rocky8_minion
-  Scenario: Create the bootstrap repository for a Rocky 8 Salt minion
-    When I create the bootstrap repository for "rocky8_minion" on the server
-
-@rocky9_minion
-  Scenario: Create the bootstrap repository for a Rocky 9 Salt minion
-    When I create the bootstrap repository for "rocky9_minion" on the server
-
-@alma9_minion
-  Scenario: Create the bootstrap repository for a Alma 9 Salt minion
-    When I create the bootstrap repository for "alma9_minion" on the server
+@liberty9_minion
+  Scenario: Create the bootstrap repository for a Liberty 9 Salt minion
+    When I create the bootstrap repository for "liberty9_minion" on the server
 
 @oracle9_minion
   Scenario: Create the bootstrap repository for a Oracle 9 Salt minion
@@ -105,6 +101,14 @@ Feature: Create bootstrap repositories
 @rhel9_minion
   Scenario: Create the bootstrap repository for a Rhel 9 Salt minion
     When I create the bootstrap repository for "rhel9_minion" on the server
+
+@rocky8_minion
+  Scenario: Create the bootstrap repository for a Rocky 8 Salt minion
+    When I create the bootstrap repository for "rocky8_minion" on the server
+
+@rocky9_minion
+  Scenario: Create the bootstrap repository for a Rocky 9 Salt minion
+    When I create the bootstrap repository for "rocky9_minion" on the server
 
 @ubuntu1804_minion
   Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt minion
