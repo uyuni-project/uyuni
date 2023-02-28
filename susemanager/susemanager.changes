@@ -1,3 +1,5 @@
+- Tune the dabase after copying the old configuration (bsc#1208611)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:47:43 CET 2023 - jgonzalez@suse.com
 
