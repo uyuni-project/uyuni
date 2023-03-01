@@ -7,7 +7,7 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Update the SLESS activation key
+  Scenario: Update the SLES activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I check "container_build_host"

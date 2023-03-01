@@ -233,8 +233,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   is_ssh_minion = client.include? 'ssh_minion'
   $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
-  entitlements = ''
-  entitlements = ['osimage_build_host'] if client.include? 'buildhost'
+  entitlements = (client.include? 'buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
