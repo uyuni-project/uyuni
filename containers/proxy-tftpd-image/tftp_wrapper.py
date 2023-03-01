@@ -38,10 +38,13 @@ class HttpResponseData(ResponseData):
         self._request.raise_for_status()
         self._stream = self._request.iter_content(chunk_size=1024)
         self._content = b''
+        self._size = int(self._request.headers['content-length'])
     def read(self, requested):
         data = self._content
         read = len(self._content)
         while read < requested:
+           if self._stream is None:
+              break
            try:
               d = next(self._stream)
               data += d
@@ -55,20 +58,92 @@ class HttpResponseData(ResponseData):
            self._content = b''
         return data
     def size(self):
-        return int(self._request.headers['content-length'])
+        return self._size
     def close(self):
         self._request.close()
 
+class HttpResponseDataFiltered(HttpResponseData):
+    def __init__(self, url, capath, fqdn):
+        # request file by url and store it
+        self._fqdn = fqdn
+        self._request = requests.get(url, stream=True, verify=capath)
+        if self._request.status_code == 404:
+            raise FileNotFoundError()
+        self._request.raise_for_status()
+
+        self._stream = None
+        self._content = self._request.content
+        self.contentFilter()
+        self._size = len(self._content)
+
+    def contentFilter(self):
+        raise NotImplementedError()
+
+
+class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
+    def contentFilter(self):
+        new_content = ''
+        have_entry = False
+        entry = ''
+        in_entry = False
+        for line in self._content.decode('utf-8').splitlines():
+            if in_entry:
+                 if line.startswith(' ') or line.startswith('\t'):
+                     entry += line + '\n'
+                 else:
+                    in_entry = False
+                    # detect Saltboot entries
+                    if " MASTER=" + self._fqdn in entry and "MINION_ID_PREFIX" in entry:
+                        have_entry = True
+                        new_content += entry
+                    entry = ''
+            if not in_entry:
+                if line.startswith('LABEL'):
+                    entry = line + '\n'
+                    in_entry = True
+                else:
+                    if not line.startswith('ONTIMEOUT'): #ONTIMEOUT points to deleted entry
+                        new_content += line + '\n'
+        if not have_entry:
+            return # there are no specific Saltboot entries, keep the content unchanged
+        self._content = new_content.encode('utf-8')
+
+class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
+    def contentFilter(self):
+        new_content = ''
+        have_entry = False
+        entry = ''
+        in_entry = False
+        for line in self._content.decode('utf-8').splitlines():
+            if in_entry:
+                 entry += line + '\n'
+                 if line.rstrip().endswith('}'):
+                    in_entry = False
+                    # detect Saltboot entries
+                    if " MASTER=" + self._fqdn in entry and "MINION_ID_PREFIX" in entry:
+                        have_entry = True
+                        new_content += entry
+                    entry = ''
+            if not in_entry:
+                if line.startswith('menuentry'):
+                    entry = line + '\n'
+                    in_entry = True
+                else:
+                    new_content += line + '\n'
+        if not have_entry:
+            return # there are no specific Saltboot entries, keep the content unchanged
+        self._content = new_content.encode('utf-8')
+
 class TFTPHandler(BaseHandler):
-    def __init__(self, server_addr, peer, path, options, root, url, capath):
+    def __init__(self, server_addr, peer, path, options, root, httpHost, capath):
         self._root = root
-        self._url = url
+        self._httpHost = httpHost
         self._capath = capath
         super().__init__(server_addr, peer, path, options, stats)
 
     def get_response_data(self):
         capath = self._capath
-        target = self._url
+        target = self._httpHost
         path = self._path
         if self._path[0] == '/':
             path = self._path[1:]
@@ -80,26 +155,29 @@ class TFTPHandler(BaseHandler):
             return HttpResponseData(f"https://{target}/tftp/{path}", capath)
         elif path.startswith("pxelinux.cfg/default"):
             # server local default
-            logging.debug(f"Got request for {path}, forwarding to HTTP")
-            return HttpResponseData(f"https://{target}/tftp/{path}", capath)
+            logging.debug(f"Got request for {path}, filtering HTTP")
+            return HttpResponseDataFilteredPXE(f"https://{target}/tftp/{path}", capath, target)
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
             logging.debug(f"Got request for {path}, ignoring")
             raise FileNotFoundError()
+        elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
+            logging.debug(f"Got request for {path}, filtering HTTP")
+            return HttpResponseDataFilteredGrub(f"https://{target}/tftp/{path}", capath, target)
         # The rest get from http
         logging.debug(f"Got request for {path}, forwarding to HTTP")
         return HttpResponseData(f"https://{target}/tftp/{path}", capath)
 
 class TFTPServer(BaseServer):
-    def __init__(self, address, port, retries, timeout, root, url, capath):
+    def __init__(self, address, port, retries, timeout, root, httpHost, capath):
         self._root = root
-        self._url = url
+        self._httpHost = httpHost
         self._capath = capath
         super().__init__(address, port, retries, timeout, None)
 
     def get_handler(self, server_addr, peer, path, options):
         return TFTPHandler(
-            server_addr, peer, path, options, self._root, self._url, self._capath
+            server_addr, peer, path, options, self._root, self._httpHost, self._capath
         )
 
 def get_arguments():
@@ -142,7 +220,7 @@ def main():
         logging.warning(f"Configuration file reading error {err}, ignoring")
     except KeyError as err:
         logging.warning(f"Invalid configuration file passed, missing {err}")
-    
+
     server = TFTPServer(
         args.ip,
         args.port,
