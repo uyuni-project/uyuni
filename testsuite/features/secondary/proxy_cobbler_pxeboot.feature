@@ -73,7 +73,7 @@ Feature: PXE boot a terminal with Cobbler
     Then I should see a "SLE-15-SP4-TFTP" text
 
   Scenario: Migration of cobbler settings
-    Given cobbler is running
+    Given cobblerd is running
     And cobbler settings are successfully migrated
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
