@@ -209,6 +209,7 @@ Feature: Smoke tests for <client>
   Scenario: Reboot the <client> and wait until reboot is completed
     And I reboot the "<client>" minion through the web UI
 
+@skip_for_traditional
   Scenario: Test <client> on Grafana
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
