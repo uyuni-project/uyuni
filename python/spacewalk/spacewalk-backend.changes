@@ -1,3 +1,5 @@
+- Fix the mgr-inter-sync not creating valid repository metadata when dealing with empty channels
+
 -------------------------------------------------------------------
 Tue Feb 28 11:55:00 CET 2023 - jgonzalez@suse.com
 
