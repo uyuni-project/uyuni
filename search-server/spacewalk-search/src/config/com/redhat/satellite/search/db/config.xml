@@ -21,6 +21,7 @@
                                                 <property name="maxIdleTimeExcessConnections" value="${search.connection.max_idle_time_excess_connections}"/>
                                                 <property name="user" value="${db_user}"/>
                                                 <property name="password" value="${db_password}"/>
+                                                <property name="maxPoolSize" value="${search.connection.maxPoolSize}"/>
                                         </dataSource>
                                 </environment>
                 </environments>
