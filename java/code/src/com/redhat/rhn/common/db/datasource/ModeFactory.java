@@ -86,7 +86,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static Mode getModeInternal(Session session, String name, String mode) {
-        Map modes = (Map)factory.getObject(name);
+        Map<String, Object> modes = (Map<String, Object>)factory.getObject(name);
         ParsedMode pm = (ParsedMode)modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -111,7 +111,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static SelectMode getSelectMode(Session session, String name, String mode) {
-        Map modes = (Map) factory.getObject(name);
+        Map<String, Object> modes = (Map<String, Object>) factory.getObject(name);
         ParsedMode pm = (ParsedMode) modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -152,7 +152,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * @param clazz The class you would like the returned objects to be.
      * @return The requested mode
      */
-    public static SelectMode getMode(String name, String mode, Class clazz) {
+    public static SelectMode getMode(String name, String mode, Class<String> clazz) {
         SelectMode ret = getSelectMode(name, mode);
         ret.setClassString(clazz.getName());
         return ret;
@@ -167,7 +167,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * @param clazz The class you would like the returned objects to be.
      * @return The requested mode
      */
-    public static SelectMode getMode(Session session, String name, String mode, Class clazz) {
+    public static SelectMode getMode(Session session, String name, String mode, Class<String> clazz) {
         SelectMode ret = getSelectMode(session, name, mode);
         ret.setClassString(clazz.getName());
         return ret;
@@ -235,7 +235,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * This function really shouldn't be here, but I need it for the
      * unit tests.
      */
-    public static Collection getKeys() {
+    public static Collection<String> getKeys() {
         return factory.getKeys();
     }
 
@@ -246,8 +246,8 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * This function really shouldn't be here, but I need it for the
      * unit tests.
      */
-    public static Map getFileKeys(String name) {
-        return (Map)factory.getObject(name);
+    public static Map<String, Object> getFileKeys(String name) {
+        return (Map<String, Object>)factory.getObject(name);
     }
 }
 
