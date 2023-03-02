@@ -33,6 +33,5 @@ jobs:
         uses: actions-cool/maintain-one-comment@v3
         with:
           body: |
-            #### :mag_right: Suggested tests to cover this Pull Request
             ${{ steps.tests_covering_pr.outputs.result }}
-          body-include: ':mag_right:'
+          body-include: '<suggested_tests>'
