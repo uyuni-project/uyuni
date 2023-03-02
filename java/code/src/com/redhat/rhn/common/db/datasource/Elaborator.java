@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Elaboratable
  */
-public interface Elaborator<T> {
+public interface Elaborator {
 
     /**
      * Returns an elaborated list for the given List of objects
