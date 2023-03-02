@@ -24,7 +24,7 @@ const main = async () => {
         });
     }
 
-    console.log('<html><ul><li>%s</ul></html>', Array.from(tests).join('<li>'));
+    console.log('<details><summary>Suggested tests to cover this Pull Request</summary><ul><li>%s</ul></details><suggested_tests>', Array.from(tests).join('<li>'));
     process.exit(0);
 }
 main();
