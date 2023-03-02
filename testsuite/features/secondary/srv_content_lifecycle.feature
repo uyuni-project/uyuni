@@ -160,7 +160,7 @@ Feature: Content lifecycle
     Then I should not see a "clp_name" text
 
 @uyuni
-  Scenario: Cleanup: remove the created channels for Uyni
+  Scenario: Cleanup: remove the created channels for Uyuni
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
       |clp_label-prod_label-sle-product-sles15-sp4-updates-x86_64|
