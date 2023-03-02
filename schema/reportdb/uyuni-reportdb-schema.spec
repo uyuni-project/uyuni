@@ -33,6 +33,10 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+%if 0%{?rhel}
+BuildRequires:  perl-File-Find
+%endif
+
 BuildRequires:  make
 BuildRequires:  susemanager-schema-sanity
 %if 0%{?suse_version}
