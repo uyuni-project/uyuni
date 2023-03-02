@@ -35,7 +35,9 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
 - [ ] Outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available)
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
-- [ ] Provide default passwords if applicable (testsuite VMs, SCC credentials, maybe https://gitlab.suse.de/galaxy/credentials)
+- [ ] Provide default passwords if applicable (testsuite VMs, maybe https://gitlab.suse.de/galaxy/credentials)
+- [ ] Add user to SCC organization `SUSE Manager Team Playground` for SCC mirror credentials
 - [ ] Add to groups in IBS if applicable (e.g. `qam-manager` for QE)
 - [ ] Add the new employee to our [GitLab group](https://gitlab.suse.de/galaxy)
 - [ ] Schedule new joiner meetups with at least one [member from each squad](https://confluence.suse.com/x/OIGAOQ)
+- [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn) and [ION squad finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/salt.edn)

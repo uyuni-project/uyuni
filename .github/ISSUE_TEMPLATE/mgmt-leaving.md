@@ -42,6 +42,7 @@ General template for leavers of the SUSE Manager team.
 - [ ] Internal
   - [ ] Remove from groups in IBS if applicable (e.g. `qam-manager` for QE)
   - [ ] Remove SSH public key from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
+  - [ ] Remove user from SCC organization `SUSE Manager Team Playground` for SCC mirror credentials
   - [ ] Remove SUMA account on [manager.mgr.suse.de](https://manager.mgr.suse.de)
   - [ ] Buildservice - Bugowner: is the person the bug owner of some packages? Find a new one and remove the mail address for maintainers and bug owners. Also projects where this person is the only maintainer needs to be transferred.
   - [ ] Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
@@ -50,4 +51,5 @@ General template for leavers of the SUSE Manager team.
   - [ ] Consider any credentials known only to that person (e.g. for mailing lists) and share
   - [ ] Transfer mailing list administration to someone else
   - [ ] Consider any content in e.g. w3.suse.de or o365 and maybe share it permanently (e.g. recordings, slides)
-  - [ ] Update the finglonger config, it needs to know who is on our team (even more important for joiners)
+  - [ ] Remove the person from our [GitLab group](https://gitlab.suse.de/galaxy)
+  - [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn) and [ION squad finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/salt.edn)
