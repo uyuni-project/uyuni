@@ -21,6 +21,7 @@ import solv
 import unittest
 import pytest
 from urllib.parse import quote
+from urlgrabber.grabber import URLGrabError
 try:
     from io import StringIO
 except ImportError:
@@ -255,6 +256,20 @@ class YumSrcTest(unittest.TestCase):
                     "http://host3/base/arch1/os/",
                     ])
 
+
+    def test_get_mediaproduct_no_logging_when_local_file_not_found(self):
+        cs = self._make_dummy_cs()
+        urlgrab_exc = URLGrabError()
+        urlgrab_exc.errno = 2
+        grabber_mock = Mock(side_effect=urlgrab_exc)
+        log_mock = Mock()
+        with patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.log", log_mock
+        ):
+            assert not cs.get_mediaproducts()
+            log_mock.assert_not_called()
 
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
