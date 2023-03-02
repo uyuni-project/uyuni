@@ -9,16 +9,6 @@ require 'date'
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
 
-def days_find(picker_days, day)
-  day_xpath = <<-eos
-   //*[contains(concat(" ", normalize-space(@class), " "), " day ")
-    and not (contains(concat(" ", normalize-space(@class), " "), " new "))
-    and not(contains(concat(" ", normalize-space(@class), " "), " old "))
-    and normalize-space(text())="#{day}"]
-   eos
-  picker_days.find(:xpath, day_xpath).click
-end
-
 def get_future_time(minutes_to_add)
   now = Time.new
   future_time = now + 60 * minutes_to_add.to_i
