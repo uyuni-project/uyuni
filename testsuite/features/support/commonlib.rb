@@ -37,7 +37,7 @@ def compute_channels_to_leave_running
     os_family = node.os_family
     next unless ['sles', 'rocky'].include?(os_family)
     os_version = os_version.split('.')[0] if os_family == 'rocky'
-    log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP5 8].include? os_version
+    log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP4 8].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
