@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
@@ -303,6 +304,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
+        // Make sure action type is persisted when running the test
+        HibernateFactory.getSession().save(recurringAction.getActionType());
         RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         assertEquals(List.of(recurringAction), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));

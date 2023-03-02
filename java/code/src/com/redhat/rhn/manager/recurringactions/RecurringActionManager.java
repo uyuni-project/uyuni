@@ -100,7 +100,7 @@ public class RecurringActionManager {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
         MinionRecurringAction action = new MinionRecurringAction(
-                new RecurringHighstateType(false), false, true, minion, user
+            new RecurringHighstateType(false), true, minion, user
         );
         return action;
     }
@@ -117,7 +117,7 @@ public class RecurringActionManager {
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
         }
-        GroupRecurringAction action = new GroupRecurringAction(false, true, group, user);
+        GroupRecurringAction action = new GroupRecurringAction(new RecurringHighstateType(false), true, group, user);
         return action;
     }
 
@@ -133,7 +133,7 @@ public class RecurringActionManager {
         if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
         }
-        return new OrgRecurringAction(false, true, org, user);
+        return new OrgRecurringAction(new RecurringHighstateType(false), true, org, user);
     }
 
     /**

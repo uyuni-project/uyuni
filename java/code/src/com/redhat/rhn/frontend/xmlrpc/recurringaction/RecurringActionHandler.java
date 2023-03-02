@@ -19,6 +19,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
@@ -161,7 +162,9 @@ public class RecurringActionHandler extends BaseHandler {
         action.setName((String) actionProps.get("name"));
         action.setCronExpr((String) actionProps.get("cron_expr"));
         if (actionProps.containsKey("test")) {
-            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+            // TODO: Set values depending on action type
+            ((RecurringHighstateType) action.getActionType()).setTestMode(
+                    Boolean.parseBoolean(actionProps.get("test").toString()));
         }
         return action;
     }
@@ -206,7 +209,9 @@ public class RecurringActionHandler extends BaseHandler {
             action.setCronExpr((String) actionProps.get("cron_expr"));
         }
         if (actionProps.containsKey("test")) {
-            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+            // TODO: Set values depending on action type
+            ((RecurringHighstateType) action.getActionType()).setTestMode(
+                    Boolean.parseBoolean(actionProps.get("test").toString()));
         }
         if (actionProps.containsKey("active")) {
             action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
