@@ -26,28 +26,19 @@ def get_future_time(minutes_to_add)
 end
 
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
-  STDOUT.puts "picking date: #{desired_date}"
   value = Date.parse(desired_date)
-  STDOUT.puts "formatted: #{value.strftime('%Y-%m-%d')}"
   date_input = find('input[data-testid="date-picker"]')
   date_input.click
-  STDOUT.puts "input value before: #{date_input.value}"
   # TODO: Switch this over to .clear once we update Selenium
-  # See https://www.rubydoc.info/gems/selenium-webdriver/3.142.3/Selenium/WebDriver/Keys
   date_input.send_keys [:control, 'a'], :backspace, value.strftime('%Y-%m-%d'), :enter
-  STDOUT.puts "input value after: #{date_input.value}"
 end
 
 Then(/^the date field should be set to "([^"]*)"$/) do |expected_date|
   value = Date.parse(expected_date)
-  STDOUT.puts "expected value: #{value}"
   # the fields that give backwards compatibility
   day_compat = find('input#date_day', visible: false)
   month_compat = find('input#date_month', visible: false)
   year_compat = find('input#date_year', visible: false)
-  STDOUT.puts "day_compat: #{day_compat.value.to_i}"
-  STDOUT.puts "month_compat: #{month_compat.value.to_i}"
-  STDOUT.puts "year_compat: #{year_compat.value.to_i}"
 
   raise if day_compat.value.to_i != value.day
   # month field is 0-11, ruby 1-12
@@ -74,17 +65,18 @@ Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
   raise unless switch.has_content?(arg1)
 end
 
-# TODO: Rename arg1 to desired_time
 Given(/^I pick "([^"]*)" as time$/) do |desired_time|
-  time_input = find('input[data-testid="time-picker"]')
-  time_input.click
-  time_input.send_keys [:control, 'a'], :backspace, desired_time, :enter
+  find('input[data-testid="time-picker"]').click
+  timepicker = find('ul.react-datepicker__time-list', match: :first)
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{desired_time}']")
+  time.click
 end
 
 When(/^I pick "([^"]*)" as time from "([^"]*)"$/) do |desired_time, element_id|
-  time_input = find('input[data-testid="time-picker"]', id: element_id)
-  time_input.click
-  time_input.send_keys [:control, 'a'], :backspace, desired_time, :enter
+  find('input[data-testid="time-picker"]', id: element_id).click
+  timepicker = find('ul.react-datepicker__time-list', match: :first)
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{desired_time}']")
+  time.click
 end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|

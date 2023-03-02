@@ -61,7 +61,11 @@ export const DateTimePicker = (props: Props) => {
     timePickerRef.current?.setOpen(true);
   };
 
-  const onChange = (newDateValue: Date) => {
+  const onChange = (newDateValue: Date | null) => {
+    // Currently we don't support propagating null values, we might want to do this in the future
+    if (newDateValue === null) {
+      return;
+    }
     const newValue = localizedMoment(newDateValue).tz(timeZone);
     if (props.value.valueOf() !== newValue.valueOf()) {
       props.onChange(newValue);
