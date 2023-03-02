@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class ModeElaborator implements Elaborator, Serializable {
     private SelectMode mode;
-    private Map params;
+    private Map<?, ?> params;
 
     // increase this number on any data change
     private static final long serialVersionUID = 1L;
@@ -36,7 +36,7 @@ public class ModeElaborator implements Elaborator, Serializable {
      * @param select Select mode
      * @param elabParams elaborator params
      */
-    public ModeElaborator(SelectMode select, Map elabParams) {
+    public ModeElaborator(SelectMode select, Map<?, ?> elabParams) {
         mode = select;
         params = elabParams;
     }
