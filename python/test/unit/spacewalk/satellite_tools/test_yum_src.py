@@ -54,7 +54,7 @@ class YumSrcTest(unittest.TestCase):
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com", "test_repo", org='')
+        cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org='')
         mockReturnPackages = MagicMock()
         mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
         mockReturnPackages.returnPackages.return_value = []
@@ -74,7 +74,7 @@ class YumSrcTest(unittest.TestCase):
 
     def setUp(self):
         patch('spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs').start()
-        self.repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com", "1")
+        self.repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com/fake_path/", "1")
 
     def tearDown(self):
         shutil.rmtree(self.repo.root)
