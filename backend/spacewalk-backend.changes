@@ -1,3 +1,5 @@
+- reposync: catch local file not found urlgrabber error properly (bsc#1208288)
+
 -------------------------------------------------------------------
 Thu Feb 09 09:46:05 CET 2023 - jgonzalez@suse.com
 
