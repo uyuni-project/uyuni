@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -168,7 +169,8 @@ public class RecurringActionController {
         json.setType(picker.getStatus());
         json.setCronTimes(cronTimes);
         json.setActive(a.isActive());
-        json.setTest(a.isTestMode());
+        // TODO: Set values depending on action type
+        json.setTest(((RecurringHighstateType) a.getActionType()).isTestMode());
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
@@ -251,7 +253,11 @@ public class RecurringActionController {
     private static void mapJsonToAction(RecurringStateScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
-        action.setTestMode(json.isTest());
+
+        // TODO: Get action type and set paramenter depending on it
+        if (action.getActionType() instanceof RecurringHighstateType) {
+            ((RecurringHighstateType) action.getActionType()).setTestMode(json.isTest());
+        }
 
         String cron = json.getCron();
         if (StringUtils.isBlank(cron)) {

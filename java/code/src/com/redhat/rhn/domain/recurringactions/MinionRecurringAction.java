@@ -50,31 +50,16 @@ public class MinionRecurringAction extends RecurringAction {
     /**
      * Constructor
      *
-     * @param testMode if action is in test mode
-     * @param active if action is active
-     * @param minionServer minion affiliated with the action
-     * @param creator the creator User
-     */
-    public MinionRecurringAction(boolean testMode, boolean active, MinionServer minionServer, User creator) {
-        super(testMode, active, creator);
-        this.minion = minionServer;
-    }
-
-    /**
-     * Constructor
-     *
      * @param actionType the recurring action type
-     * @param testMode if action is in test mode
      * @param active if action is active
      * @param minionServer minion affiliated with the action
      * @param creator the creator User
      */
     public MinionRecurringAction(RecurringActionType actionType,
-                                 boolean testMode,
                                  boolean active,
                                  MinionServer minionServer,
                                  User creator) {
-        super(actionType, testMode, active, creator);
+        super(actionType, active, creator);
         this.minion = minionServer;
     }
 

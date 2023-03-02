@@ -16,6 +16,8 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -68,8 +70,11 @@ public class RecurringStateApplyJob extends RhnJavaJob {
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         try {
-            ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
-                    Optional.of(action.isTestMode()), context.getFireTime(), null);
+            RecurringActionType actionType = action.getActionType();
+            if (actionType instanceof RecurringHighstateType) {
+                ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
+                        Optional.of(((RecurringHighstateType) actionType).isTestMode()), context.getFireTime(), null);
+            }
         }
         catch (TaskomaticApiException e) {
             log.error("Error scheduling states application for recurring action {}", action, e);

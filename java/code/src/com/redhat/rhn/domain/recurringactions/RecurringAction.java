@@ -56,7 +56,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private Long id;
     private String name;
     private String cronExpr;
-    private boolean testMode;
     private boolean active;
     private User creator;
     private RecurringActionType actionType;
@@ -80,26 +79,11 @@ public abstract class RecurringAction extends BaseDomainHelper {
     /**
      * Constructor
      *
-     * @param test if action is in testMode
-     * @param isActive if action is active
-     * @param creatorIn the creator User
-     */
-    protected RecurringAction(boolean test, boolean isActive, User creatorIn) {
-        this.testMode = test;
-        this.active = isActive;
-        this.creator = creatorIn;
-    }
-
-    /**
-     * Constructor
-     *
      * @param actionTypeIn the recurring action type
-     * @param test if action is in testMode
      * @param isActive if action is active
      * @param creatorIn the creator User
      */
-    protected RecurringAction(RecurringActionType actionTypeIn, boolean test, boolean isActive, User creatorIn) {
-        this.testMode = test;
+    protected RecurringAction(RecurringActionType actionTypeIn, boolean isActive, User creatorIn) {
         this.active = isActive;
         this.creator = creatorIn;
 
@@ -208,26 +192,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     public void setCronExpr(String cronExprIn) {
         cronExpr = cronExprIn;
-    }
-
-    /**
-     * Gets if action is testMode.
-     *
-     * @return testMode - if action is testMode
-     */
-    @Column(name = "test_mode")
-    @org.hibernate.annotations.Type(type = "yes_no")
-    public boolean isTestMode() {
-        return testMode;
-    }
-
-    /**
-     * Sets testMode.
-     *
-     * @param test - testMode
-     */
-    public void setTestMode(boolean test) {
-        this.testMode = test;
     }
 
     /**
