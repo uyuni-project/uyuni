@@ -37,7 +37,6 @@ CREATE TABLE suseRecurringAction
                       REFERENCES web_contact(id)
                       ON DELETE CASCADE,
   active            CHAR(1) DEFAULT ('Y') NOT NULL,
-  test_mode         CHAR(1) DEFAULT ('Y') NOT NULL,
   created           TIMESTAMP WITH TIME ZONE
                       DEFAULT (current_timestamp)
                       NOT NULL,
