@@ -55,8 +55,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private static Logger log = LogManager.getLogger(CobblerSystemCreateCommand.class);
     private Action scheduledAction;
     private final Server server;
-    private String serverName;
-    private Long orgId;
+    private final String serverName;
+    private final Long orgId;
     private String mediaPath;
     private String profileName;
     private String activationKeys;
@@ -77,6 +77,144 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String bridgeGateway;
     private boolean isBridgeDhcp;
     private KickstartData ksData;
+
+    /**
+     * Private base constructor that contains shared logic between the different constructors.
+     *
+     * @param userIn The user that requests the installation.
+     * @param serverIn The server that is requested to be created inside Cobbler.
+     * @param serverNameIn The name of the server.
+     * @param orgIdIn TODO
+     * @param cobblerProfileNameIn TODO
+     */
+    private CobblerSystemCreateCommand(
+            User userIn,
+            Server serverIn,
+            String serverNameIn,
+            Long orgIdIn,
+            String cobblerProfileNameIn
+    ) {
+        super(userIn);
+        this.serverName = serverNameIn;
+        this.orgId = orgIdIn;
+        this.server = serverIn;
+        this.profileName = cobblerProfileNameIn;
+    }
+
+    /**
+     * Constructor that persists the Cobbler ID in the database after creating it via {@link #store()}.
+     *
+     * @param userIn The user that creates the system.
+     * @param ksDataIn The Kickstart data that should be used for creating the Cobbler System.
+     * @param serverIn The Server that should be installed.
+     */
+    public CobblerSystemCreateCommand(User userIn, KickstartData ksDataIn, Server serverIn) {
+        this(
+            userIn,
+            serverIn,
+            serverIn.getName(),
+            userIn.getOrg().getId(),
+            ksDataIn.getCobblerObject(userIn).getName()
+        );
+        this.ksData = ksDataIn;
+    }
+
+    /**
+     * Constructor
+     * @param userIn who is requesting the sync
+     * @param serverIn profile we want to create in cobbler
+     * @param ksDataIn profile to associate with the server.
+     * @param mediaPathIn mediaPath to override in the server profile.
+     * @param activationKeysIn to add to the system record.  Used when the system
+     * re-registers to Spacewalk
+     */
+    public CobblerSystemCreateCommand(User userIn, Server serverIn,
+                                      KickstartData ksDataIn, String mediaPathIn, String activationKeysIn) {
+        this(userIn, serverIn, serverIn.getName(), serverIn.getOrgId(), "");
+        this.mediaPath = mediaPathIn;
+        if (ksDataIn == null) {
+            throw new NullPointerException("ksDataIn cant be null");
+        }
+        this.profileName = ksDataIn.getCobblerObject(user).getName();
+        this.activationKeys = activationKeysIn;
+        this.ksData = ksDataIn;
+    }
+
+    /**
+     * Constructor to be used for a system outside the context
+     * of actually kickstarting it to a specific profile.
+     *
+     * @param userIn             the user creating the system
+     * @param serverIn           profile we want to create in cobbler
+     * @param cobblerProfileName the name of the cobbler profile
+     *                           to associate with system
+     * @param ksDataIn           the kickstart data to associate the system with
+     */
+    public CobblerSystemCreateCommand(User userIn, Server serverIn, String cobblerProfileName,
+                                      KickstartData ksDataIn) {
+        this(userIn, serverIn, serverIn.getName(), serverIn.getOrgId(), cobblerProfileName);
+        this.mediaPath = null;
+        StringBuilder keys = new StringBuilder();
+        String note = "Reactivation key for " + serverName + ".";
+        ActivationKey key = ActivationKeyManager.getInstance().
+                createNewReActivationKey(UserFactory.findRandomOrgAdmin(
+                        serverIn.getOrg()), serverIn, note);
+        key.setUsageLimit(1L);
+        log.debug("created reactivation key: {}", key.getKey());
+        keys = new StringBuilder(key.getKey());
+        this.ksData = ksDataIn;
+        if (this.ksData != null) {
+            for (Token token : this.ksData.getDefaultRegTokens()) {
+                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
+                if (keyTmp != null) {
+                    keys.append(",").append(keyTmp.getKey());
+                }
+            }
+        }
+        this.activationKeys = keys.toString();
+    }
+
+    /**
+     * Constructor to be used to create a new system with a cobbler profile.
+     *
+     * @param userIn the user creating the system
+     * @param cobblerProfileName the name of the cobbler profile
+     * to associate with system
+     * @param ksDataIn the kickstart data to associate the system with
+     * @param serverNameIn the name of the system to create
+     * @param orgIdIn the organization ID the system will belong to
+     */
+    public CobblerSystemCreateCommand(User userIn, String cobblerProfileName, KickstartData ksDataIn,
+                                      String serverNameIn, Long orgIdIn) {
+        this(userIn, null, serverNameIn, orgIdIn, cobblerProfileName);
+        this.mediaPath = null;
+        StringBuilder keys = new StringBuilder();
+        this.ksData = ksDataIn;
+        if (this.ksData != null) {
+            for (Token token : this.ksData.getDefaultRegTokens()) {
+                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
+                if (keyTmp != null) {
+                    if (!keys.toString().isBlank()) {
+                        keys.append(",");
+                    }
+                    keys.append(keyTmp.getKey());
+                }
+            }
+        }
+        this.activationKeys = keys.toString();
+    }
+
+
+    /**
+     * Constructor
+     * @param userIn who is requesting the sync
+     * @param serverIn profile we want to create in cobbler
+     * @param nameIn profile name to associate with server.
+     */
+    public CobblerSystemCreateCommand(User userIn, Server serverIn,
+                                      String nameIn) {
+        this(userIn, serverIn, serverIn.getName(), serverIn.getOrgId(), nameIn);
+    }
 
     /**
      * @param dhcp true if the network type is dhcp
@@ -113,120 +251,6 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         bridgeAddress = address;
         bridgeNetmask = netmask;
         bridgeGateway = gateway;
-    }
-
-    /**
-     * Constructor
-     * @param userIn who is requesting the sync
-     * @param serverIn profile we want to create in cobbler
-     * @param ksDataIn profile to associate with with server.
-     * @param mediaPathIn mediaPath to override in the server profile.
-     * @param activationKeysIn to add to the system record.  Used when the system
-     * re-registers to Spacewalk
-     */
-    public CobblerSystemCreateCommand(User userIn, Server serverIn,
-            KickstartData ksDataIn, String mediaPathIn, String activationKeysIn) {
-        super(userIn);
-        this.server = serverIn;
-        this.serverName = serverIn.getName();
-        this.orgId = serverIn.getOrgId();
-        this.mediaPath = mediaPathIn;
-        if (ksDataIn != null) {
-            profileName = ksDataIn.getCobblerObject(user).getName();
-        }
-        else {
-            throw new NullPointerException("ksDataIn cant be null");
-        }
-        this.activationKeys = activationKeysIn;
-        this.ksData = ksDataIn;
-    }
-
-    /**
-     * Constructor to be used for a system outside tthe context
-     * of actually kickstarting it to a specific profile.
-     *
-     * @param userIn             who is requesting the sync
-     * @param serverIn           profile we want to create in cobbler
-     * @param cobblerProfileName the name of the cobbler profile
-     *                           to associate with system
-     * @param ksDataIn           the kickstart data to associate the system with
-     */
-    public CobblerSystemCreateCommand(User userIn, Server serverIn, String cobblerProfileName,
-                                      KickstartData ksDataIn) {
-        super(userIn);
-        this.server = serverIn;
-        this.serverName = serverIn.getName();
-        this.orgId = serverIn.getOrgId();
-        this.mediaPath = null;
-        this.profileName = cobblerProfileName;
-        String keys = "";
-        String note = "Reactivation key for " + serverName + ".";
-        ActivationKey key = ActivationKeyManager.getInstance().
-                createNewReActivationKey(UserFactory.findRandomOrgAdmin(
-                        server.getOrg()), server, note);
-        key.setUsageLimit(1L);
-        log.debug("created reactivation key: {}", key.getKey());
-        keys = key.getKey();
-        this.ksData = ksDataIn;
-        if (this.ksData != null) {
-            for (Token token : this.ksData.getDefaultRegTokens()) {
-                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
-                if (keyTmp != null) {
-                    keys += "," + keyTmp.getKey();
-                }
-            }
-        }
-        this.activationKeys = keys;
-    }
-
-    /**
-     * Constructor to be used to create a new system with a cobbler profile.
-     *
-     * @param userIn the user creating the system
-     * @param cobblerProfileName the name of the cobbler profile
-     * to associate with system
-     * @param ksDataIn the kickstart data to associate the system with
-     * @param serverNameIn the name of the system to create
-     * @param orgIdIn the organization ID the system will belong to
-     */
-    public CobblerSystemCreateCommand(User userIn, String cobblerProfileName, KickstartData ksDataIn,
-            String serverNameIn, Long orgIdIn) {
-        super(userIn);
-        this.server = null;
-        this.serverName = serverNameIn;
-        this.orgId = orgIdIn;
-        this.mediaPath = null;
-        this.profileName = cobblerProfileName;
-        String keys = "";
-        this.ksData = ksDataIn;
-        if (this.ksData != null) {
-            for (Token token : this.ksData.getDefaultRegTokens()) {
-                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
-                if (keyTmp != null) {
-                    if (!keys.isBlank()) {
-                        keys += ",";
-                    }
-                    keys += keyTmp.getKey();
-                }
-            }
-        }
-        this.activationKeys = keys;
-    }
-
-
-    /**
-     * Constructor
-     * @param userIn who is requesting the sync
-     * @param serverIn profile we want to create in cobbler
-     * @param nameIn profile name to associate with with server.
-     */
-    public CobblerSystemCreateCommand(User userIn, Server serverIn,
-            String nameIn) {
-        super(userIn);
-        this.server = serverIn;
-        this.serverName = serverIn.getName();
-        this.orgId = serverIn.getOrgId();
-        profileName = nameIn;
     }
 
     /**
