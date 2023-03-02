@@ -173,7 +173,7 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy')
+      next if minion.include?('proxy') or minion.include?('monitoring')
       Rake::Task['jenkins:generate_rake_run_step'].invoke('',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/init_clients',
@@ -211,7 +211,7 @@ namespace :jenkins do
   task :generate_rake_files_smoke_tests, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy')
+      next if minion.include?('proxy') or minion.include?('monitoring')
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_smoke_tests',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/smoke_tests',
@@ -223,7 +223,7 @@ namespace :jenkins do
   desc 'Generate all the Rakefiles needed for Build Validation'
   task :generate_rake_files_build_validation do
     instances = []
-    ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') }.each do |key, _value|
+    ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') || k.include?('MONITORING') }.each do |key, _value|
       # Convert ENV variables into testsuite variables
       instance = "#{key}".downcase
       instances << instance.gsub('sshminion', 'ssh_minion')
