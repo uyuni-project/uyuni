@@ -22,14 +22,6 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     And I accept "sle15sp4_buildhost" key in the Salt master
     And I wait until onboarding is completed for "sle15sp4_buildhost"
 
-  Scenario: Turn the SLES 15 SP4 build host into an OS image build host
-    Given I am on the Systems overview page of this "sle15sp4_buildhost"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-
   Scenario: Apply the highstate to the SLES 15 SP4 build host
     Given I am on the Systems overview page of this "sle15sp4_buildhost"
     When I wait until no Salt job is running on "sle15sp4_buildhost"
