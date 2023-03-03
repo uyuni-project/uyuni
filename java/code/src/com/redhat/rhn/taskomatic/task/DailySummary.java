@@ -41,7 +41,10 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -123,6 +126,10 @@ public class DailySummary extends RhnJavaJob {
     }
 
     private void  processSubscriptionWarningNotification() {
+        if (Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.MONDAY) {
+            // we want to show this notification only on Mondays
+            return;
+        }
         SubscriptionWarning sw = new SubscriptionWarning();
         if (sw.expiresSoon()) {
             NotificationMessage notificationMessage =

@@ -1,6 +1,16 @@
-- Add openSUSE Leap Micro 5.3 and openSUSE MicroOS repositories 
-- Add SLES 15 SP5 client tools repositories to spacewalk-common-channels
-- Add openSUSE Leap 15.5 repositories to spacewalk-common-channels
+-------------------------------------------------------------------
+Tue Feb 28 11:54:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Use json instead of simplejson for spacewalk-clone-by-date 
+
+-------------------------------------------------------------------
+Tue Feb 21 12:31:34 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Add openSUSE Leap Micro 5.3 and openSUSE MicroOS repositories 
+  * Add SLES 15 SP5 client tools repositories to spacewalk-common-channels
+  * Add openSUSE Leap 15.5 repositories to spacewalk-common-channels
 
 -------------------------------------------------------------------
 Mon Jan 23 08:24:57 CET 2023 - jgonzalez@suse.com

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 21 12:31:10 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Ensure installation of make for building
+
+-------------------------------------------------------------------
 Wed Sep 28 10:45:48 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

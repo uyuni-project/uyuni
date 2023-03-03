@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 21 12:39:12 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Readded httpd variant for Enterprise Linux.
+
+-------------------------------------------------------------------
 Wed Dec 14 14:12:08 CET 2022 - jgonzalez@suse.com
 
 - version 4.4.3-1

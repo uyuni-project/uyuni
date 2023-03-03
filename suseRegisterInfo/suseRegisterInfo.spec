@@ -30,7 +30,7 @@
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0-only
@@ -41,6 +41,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
+BuildRequires:  make
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       perl-base

@@ -14,12 +14,20 @@ require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 require 'set'
+require_relative 'code_coverage'
 
 ## code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']
-$debug_mode = true if ENV['DEBUG']
+if ENV['DEBUG']
+  $debug_mode = true
+  STDOUT.puts('DEBUG MODE ENABLED.')
+end
+if ENV['REDIS_HOST']
+  $code_coverage_mode = true
+  STDOUT.puts('CODE COVERAGE MODE ENABLED.')
+end
 
 # Channels triggered by our tests to be synchronized
 $channels_synchronized = Set[]
@@ -89,6 +97,9 @@ STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 # enable minitest assertions in steps
 enable_assertions
 
+# Init CodeCoverage Handler
+$code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
+
 # embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
@@ -112,6 +123,31 @@ After do |scenario|
     end
   end
   page.instance_variable_set(:@touched, false)
+end
+
+# Process the code coverage for each feature when it ends
+def process_code_coverage
+  return if $feature_path.nil?
+
+  feature_filename = $feature_path.split(%r{(\.feature|\/)})[-2]
+  $code_coverage.jacoco_dump(feature_filename)
+  $code_coverage.push_feature_coverage(feature_filename)
+end
+
+# Dump feature code coverage into a Redis DB
+After do |scenario|
+  next unless $code_coverage_mode
+  next unless $feature_path != scenario.location.file
+
+  process_code_coverage
+  $feature_path = scenario.location.file
+end
+
+# Dump feature code coverage into a Redis DB, for the last feature
+AfterAll do
+  next unless $code_coverage_mode
+
+  process_code_coverage
 end
 
 # get the Cobbler log output when it fails
@@ -242,14 +278,6 @@ end
 
 Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless $ubuntu2204_ssh_minion
-end
-
-Before('@debian9_minion') do
-  skip_this_scenario unless $debian9_minion
-end
-
-Before('@debian9_ssh_minion') do
-  skip_this_scenario unless $debian9_ssh_minion
 end
 
 Before('@debian10_minion') do

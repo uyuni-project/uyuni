@@ -1,4 +1,8 @@
-- Adapt to log_level default value being 1
+-------------------------------------------------------------------
+Tue Feb 21 13:16:11 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.03:
+  * Adapt to log_level default value being 1
 
 -------------------------------------------------------------------
 Mon Jan 23 07:34:24 UTC 2023 - Julio González Gil <jgonzalez@suse.com>

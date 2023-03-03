@@ -55,14 +55,14 @@ Feature: Update activation keys
     And I check "Fake-RPM-SLES-Channel"
 
   Scenario: Check that sub-channels are automatically selected
-    Then I should see "SLE-Module-Basesystem15-SP4-Pool for x86_64" as checked
-    And I should see "SLE-Module-Basesystem15-SP4-Updates for x86_64" as checked
-    And I should see "SLE-Module-Server-Applications15-SP4-Pool for x86_64" as checked
-    And I should see "SLE-Module-Server-Applications15-SP4-Updates for x86_64" as checked
-    And I should see "SLE-Module-DevTools15-SP4-Updates for x86_64" as checked
-    And I should see "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" as checked
-    And I should see "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" as checked
-    And I should see "SLE-Module-Containers15-SP4-Updates for x86_64" as checked
+    When I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
     When I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
