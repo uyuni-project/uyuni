@@ -8,53 +8,54 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-30 12:02+0200\n"
-"PO-Revision-Date: 2011-03-04 16:04+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Persian (http://www.transifex.com/projects/p/fedora/language/"
-"fa/)\n"
+"POT-Creation-Date: 2023-03-03 14:40+0100\n"
+"PO-Revision-Date: 2023-03-03 13:14+0000\n"
+"Last-Translator: Mohammad Rezaei Seresht <m.networking@gmail.com>\n"
+"Language-Team: Persian <https://l10n.opensuse.org/projects/uyuni/mgr-"
+"daemon-4-2/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
-msgstr ""
+msgstr "MINS"
 
 #: ../rhnsd.c:55
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr ""
+msgstr "هر MINS دقیقه به Spacewalk متصل شوید"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
-msgstr ""
+msgstr "اجرا در پیش زمینه"
 
 #. Short description of program.
 #: ../rhnsd.c:62
 msgid "Spacewalk Services Daemon"
-msgstr ""
+msgstr "دیمون سرویس‌های Spacewalk"
 
 #: ../rhnsd.c:115
 #, c-format
 msgid "Only root can run this program\n"
-msgstr ""
+msgstr "فقط root می تواند این برنامه را اجرا کند\n"
 
 #: ../rhnsd.c:135
 msgid "wrong number of arguments"
-msgstr ""
+msgstr "تعداد آرگومان های اشتباه"
 
 #: ../rhnsd.c:142
 msgid "already running"
-msgstr ""
+msgstr "در حال اجرا"
 
 #: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
-msgstr ""
+msgstr "حق نشر (C) %s Red Hat, Inc.\n"
 
 #: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
-msgstr ""
+msgstr "نوشته شده توسط %s.\n"
