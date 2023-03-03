@@ -1248,6 +1248,21 @@
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+
+
+ 
       <trans-unit id="preferences.recently-registered-systems.name" xml:space="preserve">
         <source>Recently Registered Systems</source>
         <context-group name="ctx">
