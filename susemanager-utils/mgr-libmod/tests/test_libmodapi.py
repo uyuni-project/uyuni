@@ -313,3 +313,27 @@ class TestLibmodProc:
             # LL9 doesn't define any defaults
             assert value['default'] == None
             assert len(value['streams']) > 0
+
+    def test_module_packages_liberty(self):
+        request = {
+            "function": "module_packages",
+            "paths": ["tests/data/sample-modules-liberty.yaml.gz"],
+            "streams": [
+                {
+                    "name": "nodejs",
+                    "stream": "18"
+                }
+            ]
+        }
+
+        self.libmodapi.set_repodata(json.dumps(request)).run()
+        result = self.libmodapi._result['module_packages']
+
+        assert 'selected' in result
+        assert 2 == len(result['selected'])
+        # 2 different versions must be selected
+        assert result['selected'][0]['version'] != result['selected'][1]['version']
+
+        for selection in result['selected']:
+            assert 'nodejs' == selection['name']
+            assert '18' == selection['stream']
