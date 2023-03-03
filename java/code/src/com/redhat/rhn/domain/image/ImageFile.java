@@ -53,7 +53,7 @@ public class ImageFile extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgfile_seq")
     @SequenceGenerator(name = "imgfile_seq",
-            sequenceName = "suse_image_file_id_seq")
+            sequenceName = "suse_image_file_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

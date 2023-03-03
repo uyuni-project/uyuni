@@ -16,9 +16,6 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 
 /**
  * ErrataCacheTask
@@ -26,19 +23,10 @@ import org.apache.logging.log4j.Logger;
 public class ErrataCacheTask extends RhnQueueJob<ErrataCacheDriver> {
 
     public static final String DISPLAY_NAME = "errata_cache";
-    private static Logger log = null;
 
     @Override
     public String getConfigNamespace() {
         return "errata_cache";
-    }
-
-    @Override
-    protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ErrataCacheTask.class);
-        }
-        return log;
     }
 
     @Override

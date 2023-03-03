@@ -24,16 +24,16 @@ export const renderer = (id) =>
       listDataAPI={`/rhn/manager/api/systems/${window.serverId}/details/ptf/available`}
       scheduleActionAPI={`/rhn/manager/api/systems/${window.serverId}/details/ptf/scheduleAction`}
       actionType="packages.update"
-      listTitle={t("Install Product Temporary Fixes")}
+      listTitle={t("Install Program Temporary Fixes (PTFs)")}
       listSummary={t(
-        "The following Product Temporary Fixes (PTF) are available for installation on this system. " +
+        "The following Program Temporary Fixes (PTFs) are available for installation on this system. " +
           "These packages are only meant to address a specific open issue. " +
           "Please follow the instructions from customer support before proceeding with the installation."
       )}
-      listEmptyText={t("No Product Temporary Fixes available.")}
-      listActionLabel={t("Install PTF")}
+      listEmptyText={t("No Program Temporary Fixes (PTFs) available.")}
+      listActionLabel={t("Install PTFs")}
       listColumns={[PTF_COLUMN_SUMMARY, PTF_COLUMN_ARCH]}
-      confirmTitle={t("Confirm Product Temporary Fixes Installation")}
+      confirmTitle={t("Confirm Program Temporary Fixes (PTFs) Installation")}
     />,
     document.getElementById(id)
   );

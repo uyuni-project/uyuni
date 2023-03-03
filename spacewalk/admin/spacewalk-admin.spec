@@ -28,7 +28,7 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.3
+Version:        4.4.4
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -37,10 +37,9 @@ Requires:       lsof
 Requires:       procps
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
+BuildRequires:  make
 BuildRequires:  /usr/bin/pod2man
-%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 BuildRequires:  systemd
-%endif
 Obsoletes:      satellite-utils < 5.3.0
 Provides:       satellite-utils = 5.3.0
 Obsoletes:      rhn-satellite-admin < 5.3.0
@@ -63,6 +62,13 @@ Various utility scripts and data files for Spacewalk installations.
 %build
 
 %install
+
+%if 0%{?rhel}
+sed -i 's/apache2.service/httpd.service/g' spacewalk.target
+sed -i 's/apache2.service/httpd.service/g' spacewalk-wait-for-tomcat.service
+sed -i 's/apache2.service/httpd.service/g' uyuni-check-database.service
+%endif
+
 
 make -f Makefile.admin install PREFIX=$RPM_BUILD_ROOT
 

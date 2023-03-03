@@ -29,7 +29,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-oscap
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Summary:        OpenSCAP plug-in for rhn-check
 License:        GPL-2.0-only
@@ -43,6 +43,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 BuildRequires:  libxslt
+BuildRequires:  make
 %if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
 Requires:       openscap-utils
 %else

@@ -342,7 +342,6 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
@@ -375,10 +374,9 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
+  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
 end
 
@@ -387,7 +385,7 @@ Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
   logfiles.each do |logs|
     _result, code = $server.run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
     if code.zero?
-      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: true)
+      result, code = $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: false)
       raise "Errors during #{logs} reposync:\n#{result}" if code.zero?
     end
   end
@@ -472,10 +470,6 @@ end
 Then(/^the log messages should not contain out of memory errors$/) do
   output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
   raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
-end
-
-When(/^I restart cobbler on the server$/) do
-  $server.run('systemctl restart cobblerd.service')
 end
 
 When(/^I restart the spacewalk service$/) do
@@ -606,17 +600,6 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
-  node = get_target(host)
-  output, _code = $server.run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
-end
-
-Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
-  output, _code = $server.run("cobbler system report --name #{name}", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
-end
-
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
   raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
@@ -631,11 +614,6 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
   else
     log "Host #{host} not supported"
   end
-end
-
-When(/^I synchronize the tftp configuration on the proxy with the server$/) do
-  out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
@@ -800,7 +778,6 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   os_family = node.os_family
@@ -832,7 +809,6 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   end
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
-# rubocop:enable Metrics/BlockLength
 
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
@@ -890,6 +866,10 @@ When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
+  elsif slemicro_host?(host)
+    cmd = "transactional-update pkg install -n #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   else
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
@@ -1505,20 +1485,6 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
-When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
-  $server.run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/var/autoinstall/"
-  return_codes = []
-  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
-  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
-  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
-  raise 'File injection failed' unless return_codes.all?(&:zero?)
-end
-
 When(/^I copy unset package file on server$/) do
   base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
   return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
@@ -1718,4 +1684,102 @@ end
 When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
   node = get_target(host)
   node.run_until_ok("lsof  -i:#{port}")
+end
+
+Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
+  _output, code = $server.run("ss --listening --numeric | grep :#{port}", check_errors: false, verbose: true)
+  port_opened = code.zero?
+  if selection == 'closed'
+    raise "Port '#{port}' open although it should not be!" if port_opened
+  else
+    raise "Port '#{port}' not open although it should be!" unless port_opened
+  end
+end
+
+# rebooting via SSH
+When(/^I reboot the server through SSH$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run('reboot > /dev/null 2> /dev/null &')
+  default_timeout = 300
+
+  check_shutdown($server.public_ip, default_timeout)
+  check_restart($server.public_ip, temp_server, default_timeout)
+
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot > /dev/null 2> /dev/null &')
+  reboot_timeout = 120
+  check_shutdown($node.public_ip, reboot_timeout)
+  check_restart($server.public_ip, node, reboot_timeout)
+end
+
+When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
+  steps %(
+    Given I am on the Systems overview page of this "#{host}"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "This action's status is: Completed" text
+  )
+end
+
+When(/^I change the server's short hostname from hosts and hostname files$/) do
+  old_hostname = $server.hostname
+  new_hostname = old_hostname + '2'
+  log "New short hostname: #{new_hostname}"
+
+  $server.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{$server.public_ip} #{new_hostname}#{$server.full_hostname.delete_prefix($server.hostname)} #{new_hostname}' >> /etc/hosts")
+end
+
+# changing hostname
+When(/^I run spacewalk-hostname-rename command on the server$/) do
+  temp_server = twopence_init("ssh:#{$server.public_ip}")
+  temp_server.extend(LavandaBasic)
+  command = "spacewalk-hostname-rename #{$server.public_ip}
+            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
+            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
+            --ssl-ca-password=spacewalk -u admin -p admin"
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  log "#{out_spacewalk}"
+
+  default_timeout = 300
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server: spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
+  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+end
+
+When(/^I change back the server's hostname$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
+end
+
+When(/^I clean up the server's hosts file$/) do
+  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
+  $server.run(command)
 end

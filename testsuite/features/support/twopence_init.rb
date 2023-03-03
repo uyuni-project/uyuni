@@ -48,6 +48,10 @@ if $build_validation
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $slemicro52_minion = twopence_init("ssh:#{ENV['SLEMICRO52_MINION']}") if ENV['SLEMICRO52_MINION']
+  $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
+  $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
+  $slemicro53_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO53_SSHMINION']}") if ENV['SLEMICRO53_SSHMINION']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
@@ -66,8 +70,6 @@ if $build_validation
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
   $ubuntu2204_minion = twopence_init("ssh:#{ENV['UBUNTU2204_MINION']}") if ENV['UBUNTU2204_MINION']
   $ubuntu2204_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2204_SSHMINION']}") if ENV['UBUNTU2204_SSHMINION']
-  $debian9_minion = twopence_init("ssh:#{ENV['DEBIAN9_MINION']}") if ENV['DEBIAN9_MINION']
-  $debian9_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN9_SSHMINION']}") if ENV['DEBIAN9_SSHMINION']
   $debian10_minion = twopence_init("ssh:#{ENV['DEBIAN10_MINION']}") if ENV['DEBIAN10_MINION']
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
@@ -83,6 +85,8 @@ if $build_validation
              $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $slemicro52_minion, $slemicro52_ssh_minion,
+             $slemicro53_minion, $slemicro53_ssh_minion,
              $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $rocky9_minion, $rocky9_ssh_minion,
@@ -92,7 +96,6 @@ if $build_validation
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $ubuntu2204_minion, $ubuntu2204_ssh_minion,
-             $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
@@ -148,7 +151,6 @@ end
 # * for the usual clients, it is the full hostname, e.g. suma-41-min-sle15.tf.local
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
-# rubocop:disable Metrics/MethodLength
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
@@ -184,7 +186,6 @@ def get_system_name(host)
   end
   system_name
 end
-# rubocop:enable Metrics/MethodLength
 
 # Get MAC address of system
 def get_mac_address(host)
@@ -280,6 +281,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'slemicro52_minion'         => $slemicro52_minion,
+                  'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
+                  'slemicro53_minion'         => $slemicro53_minion,
+                  'slemicro53_ssh_minion'     => $slemicro53_ssh_minion,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
                   'rocky8_minion'             => $rocky8_minion,
@@ -298,8 +303,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'ubuntu2004_ssh_minion'     => $ubuntu2004_ssh_minion,
                   'ubuntu2204_minion'         => $ubuntu2204_minion,
                   'ubuntu2204_ssh_minion'     => $ubuntu2204_ssh_minion,
-                  'debian9_minion'            => $debian9_minion,
-                  'debian9_ssh_minion'        => $debian9_ssh_minion,
                   'debian10_minion'           => $debian10_minion,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,
@@ -333,7 +336,7 @@ def client_public_ip(host)
       return output.split[1].split('/')[0]
     end
   end
-  raise 'Cannot resolve public ip'
+  raise "Cannot resolve public ip of #{host}"
 end
 
 # Initialize IP address or domain name

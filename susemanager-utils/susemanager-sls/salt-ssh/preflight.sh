@@ -141,6 +141,8 @@ function getZ_CLIENT_CODE_BASE() {
         grep -q 'Micro' /etc/os-release && BASE="${BASE}micro"
         VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
         PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
+        # openSUSE MicroOS, could be useful for Tumbleweed in the future
+        grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
     fi
     Z_CLIENT_CODE_BASE="${BASE:-unknown}"
     Z_CLIENT_CODE_VERSION="${VERSION:-unknown}"

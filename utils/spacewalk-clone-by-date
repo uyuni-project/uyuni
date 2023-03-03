@@ -23,7 +23,7 @@ import datetime
 import getpass
 import os
 from optparse import OptionParser
-import simplejson as json
+import json
 import socket
 
 try:

@@ -37,5 +37,5 @@ jobs:
           cd $GITHUB_WORKSPACE/susemanager-utils/susemanager-sls/src/
           # Exclude tests and uyuni_config.py modules (which are for server and not included in susemanager-sls)
           TESTS_LIST=$(find .|grep py$ | grep -v "^./tests" | grep -v "uyuni_config.py")
-          for i in $TESTS_LIST; do echo "Testing $i .... "; (python $i && echo "OK") || IS_FAILED=1; echo; done
+          for i in $TESTS_LIST; do echo "Testing $i .... "; (python -m py_compile $i && echo "OK") || IS_FAILED=1; echo; done
           exit $IS_FAILED

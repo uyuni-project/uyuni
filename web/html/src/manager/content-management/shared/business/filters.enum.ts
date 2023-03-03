@@ -128,7 +128,7 @@ const filterMatchers: FilterMatcherEnumType = {
   PTF_ALL: {
     key: "ptf_all",
     text: t("all"),
-    longDescription: t("all product temporary fixes"),
+    longDescription: t("all program temporary fixes"),
   },
 };
 

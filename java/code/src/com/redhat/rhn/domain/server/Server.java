@@ -1605,6 +1605,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return hasEntitlement(EntitlementManager.BOOTSTRAP);
     }
 
+    /**
+     * Return <code>true</code> if this is a foreign unmanaged system.
+     * @return <code>true</code> if this is a foreign unmanaged system.
+     */
+    public boolean isForeign() {
+        return hasEntitlement(EntitlementManager.FOREIGN);
+    }
 
     /**
      *
@@ -2302,7 +2309,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports Transactional Update
      */
     public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro();
+        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
     }
 
     /**
@@ -2318,7 +2325,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Return <code>true</code> if OS supports Product Temporary Fixes (PTF)
+     * Return <code>true</code> if OS supports Program Temporary Fixes (PTFs)
      *
      * @return <code>true</code> if OS supports PTF uninstallation
      */
@@ -2363,6 +2370,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+
+    /**
+     * @return true if the installer type is of openSUSE Leap Micro
+     */
+    boolean isLeapMicro() {
+        return ServerConstants.LEAPMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of openSUSE MicroOS
+     */
+    boolean isopenSUSEMicroOS() {
+        return ServerConstants.OPENSUSEMICROOS.equals(getOs());
     }
 
     boolean isUbuntu1804() {

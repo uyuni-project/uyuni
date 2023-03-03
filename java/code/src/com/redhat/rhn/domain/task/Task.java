@@ -24,10 +24,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -35,47 +37,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnTaskQueue")
-@IdClass(Task.TaskId.class)
 public class Task implements Serializable {
 
-    public static class TaskId implements Serializable {
-        private String name;
-        private Long data;
-        private Date earliest;
-        private Org org;
-
-        @Override
-        public boolean equals(Object oIn) {
-            if (this == oIn) {
-                return true;
-            }
-
-            if (oIn == null || getClass() != oIn.getClass()) {
-                return false;
-            }
-
-            TaskId taskId = (TaskId) oIn;
-
-            return new EqualsBuilder()
-                    .append(name, taskId.name)
-                    .append(data, taskId.data)
-                    .append(earliest, taskId.earliest)
-                    .append(org, taskId.org)
-                    .isEquals();
-        }
-
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder(17, 37)
-                    .append(name)
-                    .append(data)
-                    .append(earliest)
-                    .append(org)
-                    .toHashCode();
-        }
-    }
-
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_queue_seq")
+    @SequenceGenerator(name = "task_queue_seq", sequenceName = "rhn_task_queue_id_seq", allocationSize = 1)
+    private Long id;
 
     @Id
     @Column(name = "task_name", nullable = false, length = 64)
@@ -97,6 +66,20 @@ public class Task implements Serializable {
     @JoinColumn(name = "org_id")
     private Org org;
 
+    /**
+     * @return Returns the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn - the id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the data.

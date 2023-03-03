@@ -39,7 +39,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.2
+Version:        4.4.3
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
@@ -52,6 +52,7 @@ BuildArch:      noarch
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 BuildRequires:  docbook-utils
 BuildRequires:  gettext
+BuildRequires:  make
 %if 0%{?pylint_check}
 %if 0%{?build_py2}
 BuildRequires:  spacewalk-python2-pylint

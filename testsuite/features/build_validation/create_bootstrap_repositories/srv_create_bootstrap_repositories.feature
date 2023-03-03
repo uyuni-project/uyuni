@@ -38,6 +38,22 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for the monitoring server
     When I create the bootstrap repository for "monitoring_server" on the server
 
+@slemicro52_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.2 minion
+    When I create the bootstrap repository for "slemicro52_minion" on the server
+
+@slemicro52_ssh_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.2 SSH minion
+    When I create the bootstrap repository for "slemicro52_ssh_minion" on the server
+
+@slemicro53_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.3 minion
+    When I create the bootstrap repository for "slemicro53_minion" on the server
+
+@slemicro53_ssh_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.3 SSH minion
+    When I create the bootstrap repository for "slemicro53_ssh_minion" on the server
+
 @centos7_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt minion
     When I create the bootstrap repository for "centos7_minion" on the server
@@ -73,10 +89,6 @@ Scenario: Create the bootstrap repository for a Rhel 9 Salt minion
 @ubuntu2204_minion
   Scenario: Create the bootstrap repository for a Ubuntu 22.04 minion
     When I create the bootstrap repository for "ubuntu2204_minion" on the server
-
-@debian9_minion
-  Scenario: Create the bootstrap repository for a Debian 9 minion
-    When I create the bootstrap repository for "debian9_minion" on the server
 
 @debian10_minion
   Scenario: Create the bootstrap repository for a Debian 10 minion

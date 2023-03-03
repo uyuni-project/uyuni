@@ -37,10 +37,18 @@ no_ssh_push_key_authorized:
     {% set osrelease_minor = grains['osrelease_info'][1] %}
   {%- endif %}
   {%- if transactional %}
-    {% set os_base = os_base|string + 'micro' %}
+    {%- if "microos" in grains['oscodename']|lower %}
+        {% set os_base = 'opensusemicroos' %}
+    {%- else %}
+        {% set os_base = os_base|string + 'micro' %}
+    {%- endif %}
   {%- endif %}
   #end of expections
-  {% set osrelease = osrelease_major|string + '/' + osrelease_minor|string %}
+  {%- if os_base == 'opensusemicroos' %}
+      {% set osrelease = 'latest' %}
+  {%- else %}
+      {% set osrelease = osrelease_major|string + '/' + osrelease_minor|string %}
+  {%- endif %}
 {%- endif %}
 
 # Debian OS Family
@@ -222,6 +230,9 @@ salt-install-contextvars:
 
 {%- if not transactional %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
+{% else %}
+include:
+  - util.syncstates
 {%- endif %}
 
 # Manage minion key files in case they are provided in the pillar

@@ -21,12 +21,8 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -42,7 +38,10 @@ import org.quartz.JobExecutionException;
 public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
 
     private TaskoRun jobRun = null;
-    protected abstract Logger getLogger();
+    protected Logger log = LogManager.getLogger(getClass().getName());
+    protected Logger getLogger() {
+        return log;
+    }
 
     /**
      * {@inheritDoc}
@@ -50,33 +49,6 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
     @Override
     public void appendExceptionToLogError(Exception e) {
         getLogger().error(e.getMessage(), e);
-    }
-
-    private void logToNewFile() {
-
-        var loggerName = this.getClass().getName();
-        final var config = ((LoggerContext) LogManager.getContext(false)).getConfiguration();
-        for (var appender : config.getLoggerConfig(loggerName).getAppenders().values()) {
-            appender.stop();
-            config.getLoggerConfig(loggerName).removeAppender(appender.getName());
-        }
-        Configurator.reconfigure(config);
-
-        var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-
-        var layoutBuilder = builder
-                .newLayout("PatternLayout")
-                .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = loggerName + "fileAppender";
-        var appenderBuilder = builder
-                .newAppender(appenderName, "File")
-                .addAttribute("fileName", jobRun.buildStdOutputLogPath())
-                .add(layoutBuilder);
-        builder.add(appenderBuilder);
-
-        var logger = builder.newLogger(loggerName, Level.INFO);
-        builder.add(logger.add(builder.newAppenderRef(appenderName)));
-        Configurator.reconfigure(builder.build());
     }
 
     /**
@@ -112,13 +84,12 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
             jobRun.start();
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
-            logToNewFile();
             getLogger().debug("Starting run {}", jobRun.getId());
         }
         else {
             // close current run
             TaskoRun run = HibernateFactory.reload(jobRun);
-            run.appendToOutputLog("Run with id " + queue.getQueueRun().getId() + " handles the whole task queue.");
+            log.debug("Run with id {} handles the whole task queue.", queue.getQueueRun().getId());
             run.skipped();
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();

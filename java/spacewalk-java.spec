@@ -59,7 +59,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.11
+Version:        4.4.13
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -177,7 +177,7 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-jaxb-runtime
@@ -355,7 +355,7 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client

@@ -11252,12 +11252,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
-        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
-        <target state="new"/>
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
-        <source>Product Temporary Fixes packages (PTF): {0}</source>
-        <target state="new"/>
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
@@ -11280,6 +11280,26 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>

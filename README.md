@@ -1,3 +1,5 @@
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6593/badge)](https://bestpractices.coreinfrastructure.org/projects/6593)
+
 Uyuni
 =====
 

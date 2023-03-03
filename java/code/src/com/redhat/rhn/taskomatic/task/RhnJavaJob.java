@@ -18,17 +18,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 
 
@@ -37,45 +31,10 @@ import java.util.Arrays;
  */
 public abstract class RhnJavaJob implements RhnJob {
 
-    protected static String defaultPluginName = "File";
     protected Logger log = LogManager.getLogger(getClass());
 
     protected Logger getLogger() {
         return log;
-    }
-
-    protected void enableLogging(TaskoRun run) {
-
-        var loggerName = this.getClass().getName();
-        cleanLogging();
-
-        var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-
-        var layoutBuilder = builder
-                .newLayout("PatternLayout")
-                .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = loggerName + "fileAppender";
-        var appenderBuilder = builder
-                .newAppender(appenderName, defaultPluginName)
-                .addAttribute("fileName", run.buildStdOutputLogPath())
-                .add(layoutBuilder);
-        builder.add(appenderBuilder);
-
-        var out = builder.newLogger(loggerName, Level.INFO);
-        var err = builder.newLogger(loggerName, Level.ERROR);
-        builder.add(out.add(builder.newAppenderRef(appenderName)));
-        builder.add(err.add(builder.newAppenderRef(appenderName)));
-        Configurator.reconfigure(builder.build());
-    }
-
-    private void cleanLogging() {
-        var loggerName = this.getClass().getName();
-        final var config = ((LoggerContext) LogManager.getContext(false)).getConfiguration();
-        for (var appender : config.getLoggerConfig(loggerName).getAppenders().values()) {
-            appender.stop();
-            config.getLoggerConfig(loggerName).removeAppender(appender.getName());
-        }
-        Configurator.reconfigure(config);
     }
 
     /**
@@ -83,23 +42,15 @@ public abstract class RhnJavaJob implements RhnJob {
      */
     @Override
     public void appendExceptionToLogError(Exception e) {
-        log.error("Executing a task threw an exception: {}", e.getClass().getName());
-        log.error("Message: {}", e.getMessage());
-        log.error("Cause:", e.getCause());
-
-        StringWriter errors = new StringWriter();
-        e.printStackTrace(new PrintWriter(errors));
-        log.error("Stack trace:{}", errors);
+        getLogger().error("Executing a task threw an exception: {}", e.getClass().getName(), e);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context, TaskoRun run)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext context, TaskoRun run) throws JobExecutionException {
         run.start();
-        enableLogging(run);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
         execute(context);
@@ -110,7 +61,6 @@ public abstract class RhnJavaJob implements RhnJob {
         finishJob();
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
-        cleanLogging();
     }
 
     /**

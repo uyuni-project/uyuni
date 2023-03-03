@@ -98,6 +98,34 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
 
+@slemicro52_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.2
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.2 x86_64" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.2 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.2 x86_64"
+    And I select "SUSE Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.2 x86_64" product has been added
+
+@slemicro53_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.3
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.3 x86_64" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.3 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.3 x86_64"
+    And I select "SUSE Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.3 x86_64" product has been added
+
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -201,16 +229,6 @@ Scenario: Add RHEL and Liberty 9
     Then I should see the "Ubuntu 22.04" selected
     When I click the Add Product button
     And I wait until I see "Ubuntu 22.04" product has been added
-
-@debian9_minion
-  Scenario: Add Debian 9
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "Debian 9" as the filtered product description
-    And I select "Debian 9" as a product
-    Then I should see the "Debian 9" selected
-    When I click the Add Product button
-    And I wait until I see "Debian 9" product has been added
 
 @debian10_minion
   Scenario: Add Debian 10

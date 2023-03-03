@@ -51,7 +51,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.4.7
+Version:        4.4.9
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -253,7 +253,7 @@ Requires:       mod_ssl
 %endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 

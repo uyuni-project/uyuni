@@ -123,9 +123,42 @@ public class KickstartTreeHandler extends BaseHandler {
      * KickstartInstallType (rhel_6, rhel_7, rhel_8, rhel_9, fedora_9).")
      * @apidoc.returntype #return_int_success()
      */
+    public int create(User loggedInUser, String treeLabel, String basePath, String channelLabel, String installType) {
+
+        return create(loggedInUser, treeLabel, basePath, channelLabel, installType, "", "");
+    }
+
+    /**
+     * Create a Kickstart Tree (Distribution).
+     *
+     * @param loggedInUser The current user
+     * @param treeLabel Label for the new kickstart tree
+     * @param basePath path to the base/root of the kickstart tree.
+     * @param channelLabel label of channel to associate with ks tree.
+     * @param installType String label for KickstartInstallType (rhel_2.1,
+     * rhel_3, rhel_4, rhel_5, fedora_9)
+     * @param kernelOptions options to be passed to the kernel when booting for the installation
+     * @param postKernelOptions options to be passed to the kernel after installation
+     * @return 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Create a Kickstart Tree (Distribution) in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "The new kickstart tree label.")
+     * @apidoc.param #param_desc("string", "basePath", "Path to the base or
+     * root of the kickstart tree.")
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of channel to
+     * associate with the kickstart tree. ")
+     * @apidoc.param #param_desc("string", "installType", "Label for
+     * KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).")
+     * @apidoc.param #param_desc("string", "kernelOptions", "Options to be passed to the kernel
+     * when booting for the installation. ")
+     * @apidoc.param #param_desc("string", "postKernelOptions", "Options to be passed to the kernel
+     * when booting for the installation. ")
+     * @apidoc.returntype #return_int_success()
+     */
     public int create(User loggedInUser, String treeLabel,
             String basePath, String channelLabel,
-            String installType) {
+            String installType, String kernelOptions, String postKernelOptions) {
 
         ensureConfigAdmin(loggedInUser);
 
@@ -135,6 +168,8 @@ public class KickstartTreeHandler extends BaseHandler {
         create.setInstallType(getInstallType(installType));
         create.setLabel(treeLabel);
         create.setServerName(RhnXmlRpcServer.getServerName());
+        create.setKernelOptions(kernelOptions);
+        create.setKernelOptionsPost(postKernelOptions);
 
         ValidatorError ve = create.store();
         if (ve != null) {
@@ -142,7 +177,6 @@ public class KickstartTreeHandler extends BaseHandler {
         }
         return 1;
     }
-
 
     /**
      * Delete a Kickstart Tree (Distribution).
@@ -231,8 +265,46 @@ public class KickstartTreeHandler extends BaseHandler {
      *
      * @apidoc.returntype #return_int_success()
      */
+    public int update(User loggedInUser, String treeLabel, String basePath, String channelLabel, String installType) {
+
+     return update(loggedInUser, treeLabel, basePath, channelLabel, installType, "", "");
+    }
+
+    /**
+     * Edit a kickstarttree.  This method will not edit the label of the tree, see
+     * renameTree().
+     *
+     * @param loggedInUser The current user
+     * @param treeLabel Label for the existing kickstart tree
+     * @param basePath New basepath for tree.
+     * rhn-kickstart.
+     * @param channelLabel New channel label to lookup and assign to
+     * the kickstart tree.
+     * @param installType String label for KickstartInstallType (rhel_2.1,
+     * rhel_3, rhel_4, rhel_5, fedora_9)
+     * @param kernelOptions Options to be passed to the kernel when booting for the installation
+     * @param postKernelOptions Options to be passed to the kernel after installation
+     *
+     * @return 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Edit a Kickstart Tree (Distribution) in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "Label for the kickstart tree.")
+     * @apidoc.param #param_desc("string", "basePath", "Path to the base or
+     * root of the kickstart tree.")
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of channel to
+     * associate with kickstart tree.")
+     * @apidoc.param #param_desc("string", "installType", "Label for
+     * KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).")
+     * @apidoc.param #param_desc("string", "kernelOptions", "Options to be passed to the kernel
+     * when booting for the installation. ")
+     * @apidoc.param #param_desc("string", "postKernelOptions", "Options to be passed to the kernel
+     * when booting for the installation. ")
+     *
+     * @apidoc.returntype #return_int_success()
+     */
     public int update(User loggedInUser, String treeLabel, String basePath,
-                 String channelLabel, String installType) {
+                      String channelLabel, String installType, String kernelOptions, String postKernelOptions) {
 
         ensureConfigAdmin(loggedInUser);
 
@@ -243,6 +315,8 @@ public class KickstartTreeHandler extends BaseHandler {
         op.setBasePath(basePath);
         op.setChannel(getChannel(channelLabel, loggedInUser));
         op.setInstallType(getInstallType(installType));
+        op.setKernelOptions(kernelOptions);
+        op.setKernelOptionsPost(postKernelOptions);
 
         ValidatorError ve = op.store();
         if (ve != null) {

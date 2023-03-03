@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Feb 21 12:32:15 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * enhance CPU table by core and thread information
+  * add trigger on cpu and virtual instance to re-sending
+    virtualization information to SCC
+  * Remove rhnTaskoRun log paths
+
+-------------------------------------------------------------------
 Mon Jan 23 08:25:41 CET 2023 - jgonzalez@suse.com
 
 - version 4.4.4-1

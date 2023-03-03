@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.4.2
+Version:        4.4.3
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -84,7 +84,7 @@ Requires:       susemanager-sls
 
 Obsoletes:      spacewalk-monitoring < 2.3
 
-Requires:       cobbler >= 3
+Requires:       cobbler
 Requires:       susemanager-jsp_en
 
 # weakremover used on SUSE to get rid of orphan packages which are

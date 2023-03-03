@@ -159,3 +159,6 @@ java.message_queue_thread_pool_size = 5
 
 # Leave token checking enabled
 java.salt_check_download_tokens = true
+
+# for scc registration tests
+server.susemanager.scc_backup_srv_usr = 52156f60-8aa2-4165-8645-367efdc2a510
