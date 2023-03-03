@@ -301,60 +301,6 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
   ],
-  '12-SP4' =>
-  %w[
-    sles12-sp4-pool-x86_64
-    sle-manager-tools12-pool-x86_64-sp4
-    sle-manager-tools12-pool-x86_64-sled-sp4
-    sle-module-containers12-pool-x86_64-sp4
-    sles12-sp4-updates-x86_64
-    sle-manager-tools12-updates-x86_64-sp4
-    sle-manager-tools12-updates-x86_64-sled-sp4
-    sle-module-containers12-updates-x86_64-sp4
-  ],
-  '12-SP5' =>
-  %w[
-    sles12-sp5-pool-x86_64
-    sle-manager-tools12-pool-x86_64-sp5
-    sle-manager-tools12-pool-x86_64-sled-sp5
-    sle-module-containers12-pool-x86_64-sp5
-    sles12-sp5-updates-x86_64
-    sle-manager-tools12-updates-x86_64-sp5
-    sle-manager-tools12-updates-x86_64-sled-sp5
-    sle-module-containers12-updates-x86_64-sp5
-  ],
-  '15-SP1' =>
-  %w[
-    sle-product-sles15-sp1-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp1
-    sle-manager-tools15-pool-x86_64-sled-sp1
-    sle-module-containers15-sp1-pool-x86_64
-    sle-module-basesystem15-sp1-pool-x86_64
-    sle-module-server-applications15-sp1-pool-x86_64
-    sle-product-sles15-sp1-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp1
-    sle-manager-tools15-updates-x86_64-sled-sp1
-    sle-module-containers15-sp1-updates-x86_64
-    sle-module-basesystem15-sp1-updates-x86_64
-    sle-module-server-applications15-sp1-updates-x86_64
-  ],
-  '15-SP2' =>
-  %w[
-    sle-product-sles15-sp2-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp2
-    sle-manager-tools15-pool-x86_64-sled-sp2
-    sle-manager-tools15-beta-pool-x86_64-sp2
-    sle-module-containers15-sp2-pool-x86_64
-    sle-module-basesystem15-sp2-pool-x86_64
-    sle-module-server-applications15-sp2-pool-x86_64
-    sle-product-sles15-sp2-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp2
-    sle-manager-tools15-updates-x86_64-sled-sp2
-    sle-manager-tools15-beta-updates-x86_64-sp2
-    sle-module-containers15-sp2-updates-x86_64
-    sle-module-basesystem15-sp2-updates-x86_64
-    sle-module-server-applications15-sp2-updates-x86_64
-  ],
   '15-SP3' =>
   %w[
     sle-product-sles15-sp3-pool-x86_64
