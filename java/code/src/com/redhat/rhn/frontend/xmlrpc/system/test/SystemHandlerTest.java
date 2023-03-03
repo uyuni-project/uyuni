@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockConstruction;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
@@ -178,6 +180,7 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cobbler.CobblerConnection;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -187,6 +190,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.MockedConstruction;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -3195,19 +3199,84 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
+    public void testCreateSystemRecordRegistered() throws Exception {
+        // Arrange
+        try (MockedConstruction<CobblerConnection> clientMock = mockConstruction(
+                CobblerConnection.class,
+                (mock, context) -> {
+                    HashMap<String, Object> criteria = new HashMap<>();
+                    criteria.put("uid", "my_uid");
+                    HashMap<String, Object> resultProfile = new HashMap<>();
+                    resultProfile.put("uid", "my_uid");
+                    resultProfile.put("name", "testprofile");
+                    given(mock.invokeMethod(
+                            "find_profile",
+                            criteria,
+                            false,
+                            "token"
+                    )).willReturn(resultProfile);
+                })) {
+            SystemHandler mockedHandler = getMockedHandler();
+            KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
+            k.setCobblerId("my_uid");
+            int systemId = mockedHandler.createSystemProfile(
+                admin,
+                "test system",
+                Collections.singletonMap("hwAddress", "aa:bb:cc:dd:ee:01")
+            );
+
+            // Act
+            int result = mockedHandler.createSystemRecord(admin, systemId, k.getLabel());
+
+            // Assert
+            assertEquals(1, result);
+        }
+    }
+
+    @Test
+    public void testCreateSystemRecordUnregistered() throws Exception {
+        // Arrange
+        SystemHandler mockedHandler = getMockedHandler();
+        String systemName = "test system";
+        mockedHandler.createSystemProfile(
+            admin,
+            systemName,
+            Collections.singletonMap("hwAddress", "aa:bb:cc:dd:ee:02")
+        );
+        KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
+
+        // Act
+        int result = mockedHandler.createSystemRecord(
+            admin,
+            systemName,
+            k.getLabel(),
+            "",
+            "",
+            new LinkedList<>()
+        );
+
+        // Assert
+        assertEquals(1, result);
+    }
+
     /**
      * Tests creating a system profile.
      * @throws Exception if anything goes wrong
      */
     @Test
     public void testCreateSystemProfile() throws Exception {
+        // Arrange
         String hwAddress = "aa:bb:cc:dd:ee:00";
+
+        // Act
         int result = getMockedHandler().createSystemProfile(admin, "test system",
                 Collections.singletonMap("hwAddress", hwAddress));
+
+        // Assert
         List<NetworkInterface> nics = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
                 .collect(Collectors.toList());
-
         assertEquals(1, nics.size());
         Server server = nics.get(0).getServer();
         assertEquals("test system", server.getName());
