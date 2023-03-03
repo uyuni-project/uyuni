@@ -27,6 +27,7 @@ import com.suse.manager.webui.utils.SparkApplicationHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import org.apache.http.HttpStatus;
@@ -223,9 +224,18 @@ public class RouteFactory {
                             args.add(sessionKey);
                         }
                         else {
+                            JsonElement jsonArg = jsonArgs.get(param.getName());
+
+                            // If the method expects a List, try to wrap the value in a JSON array
+                            if (List.class.isAssignableFrom(param.getType()) && !jsonArg.isJsonArray()) {
+                                JsonArray arr = new JsonArray(1);
+                                arr.add(jsonArg);
+                                jsonArg = arr;
+                            }
+
                             try {
                                 // Parse each value and add to the argument list
-                                args.add(requestParser.parseValue(jsonArgs.get(param.getName()), param.getType()));
+                                args.add(requestParser.parseValue(jsonArg, param.getType()));
                             }
                             catch (ParseException e) {
                                 // Type mismatch, skip the method
