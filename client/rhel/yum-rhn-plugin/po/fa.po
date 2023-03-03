@@ -9,69 +9,68 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2020-07-28 15:29+0000\n"
-"Last-Translator: hayyan rostami <hayyan71@yahoo.com>\n"
+"POT-Creation-Date: 2023-03-03 14:42+0100\n"
+"PO-Revision-Date: 2023-03-03 13:14+0000\n"
+"Last-Translator: Mohammad Rezaei Seresht <m.networking@gmail.com>\n"
 "Language-Team: Persian <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
-"plugin/fa/>\n"
+"plugin-4-3/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "در ارتباط با شبکه ردهت خطایی وجود دارد."
+msgstr "در برقراری ارتباط با {PRODUCT_NAME} خطایی روی داد."
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "پشتیبانی کانال شبکه ردهت غیر فعال خواهد شد."
+msgstr "پشتیبانی {PRODUCT_NAME} یا RHN Classic غیرفعال خواهد شد."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
-#, fuzzy
 msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
 msgstr ""
-"*توجه* مخازن شبکه ردهت در زیر نیامده‌اند. شما باید این دستور را توسطکاربر "
-"ریشه اجرا کنید تا به مخازن شبکه ردهت دسترسی پیدا کنید."
+"*توجه* مخازن Spacewalk در زیر فهرست نشده اند. برای دسترسی به مخازن Spacewalk "
+"باید این دستور را با دسترسی root اجرا کنید."
 
 #: ../rhnplugin.py:87
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
-msgstr "در تجزیه تنظیمات پروکسی شبکه ردهت مشکلی وجود دارد."
+msgstr "هنگام تجزیه تنظیمات پروکسی {PRODUCT_NAME} خطایی روی داد."
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
-msgstr ""
+msgstr "یا --version، --help یا هیچ دستوری وارد نشده است"
 
 #: ../rhnplugin.py:104
 msgid "Cleaning"
-msgstr ""
+msgstr "درحال تمیزکردن"
 
 #: ../rhnplugin.py:113
 #, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr ""
+msgstr "استفاده از فهرست مخازن {PRODUCT_NAME} از حافظه پنهان"
 
 #: ../rhnplugin.py:129
 #, python-brace-format
 msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
-msgstr ""
+msgstr "این سیستم با RHN Classic یا {PRODUCT_NAME} ثبت نشده است."
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "برای ثبت نام می توانید از rhn_register استفاده کنید."
 
 #: ../rhnplugin.py:136
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} channel support will be disabled."
-msgstr "پشتیبانی کانال شبکه ردهت غیر فعال خواهد شد."
+msgstr "پشتیبانی کانال {PRODUCT_NAME} غیرفعال خواهد شد."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
@@ -83,11 +82,14 @@ msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
+"این سیستم ممکن است در RHN Classic یا {PRODUCT_NAME} ثبت نشده باشد. SystemId "
+"را نمی توان به دست آورد."
 
 #: ../rhnplugin.py:158
 #, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
 msgstr ""
+"این سیستم به‌روزرسانی‌هایی را از RHN Classic یا {PRODUCT_NAME} دریافت می‌کند."
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
@@ -102,6 +104,6 @@ msgid "Please run rhn_register as root on this client"
 msgstr "لطفا rhn_register را به عنوان ریشه بر روی این مشتری اجرا کنید"
 
 #: ../rhnplugin.py:356
-#, fuzzy, python-format, python-brace-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
-msgstr "اطلاعات موردنیاز برای ورود به شبکه ردهت ناقص است %s"
+msgstr "اطلاعات لازم برای ورود به سیستم برای {PRODUCT_NAME} وجود ندارد: %s"
