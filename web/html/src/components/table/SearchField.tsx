@@ -50,21 +50,22 @@ export function SearchField(props: SearchFieldProps) {
       {props.options != null && (
         <Select
           name="filter"
-          className="col-md-2"
           placeholder={t("Select a filter")}
           defaultValue={props.field}
           options={props.options}
           onChange={(name: string | undefined, value: string) => props.onSearchField?.(value)}
         />
       )}
-      <input
-        className="form-control table-input-search"
-        value={props.criteria || ""}
-        placeholder={props.placeholder}
-        type="text"
-        onChange={(e) => props.onSearch?.(e.target.value)}
-        name={props.name}
-      />
+      <div className="form-group">
+        <input
+          className="form-control table-input-search"
+          value={props.criteria || ""}
+          placeholder={props.placeholder}
+          type="text"
+          onChange={(e) => props.onSearch?.(e.target.value)}
+          name={props.name}
+        />
+      </div>
     </Form>
   );
 }

@@ -1,3 +1,5 @@
+- Fix UI inconsistencies in susemanager-light and susemanager-dark
+  theme
 - Deprecate jQuery datepicker, integrate React datepicker
 
 -------------------------------------------------------------------
