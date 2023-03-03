@@ -1,3 +1,4 @@
+- Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
 - Allow single-value lists in query strings in HTTP API (bsc#1207297)
 - Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
 
