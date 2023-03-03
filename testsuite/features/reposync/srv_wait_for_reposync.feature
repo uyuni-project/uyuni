@@ -18,3 +18,4 @@ Feature: Wait for reposync activity to finish in CI context
 
   Scenario: Wait until all synchronized channels have finished
     When I wait until all synchronized channels have finished
+    And I wait until all spacewalk-repo-sync finished

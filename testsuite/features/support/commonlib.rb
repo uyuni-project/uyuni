@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2022 SUSE LLC.
+# Copyright (c) 2013-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -29,12 +29,12 @@ end
 def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
   do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
-  [$minion, $build_host, $sshminion].each do |node|
+  [$minion, $build_host, $ssh_minion].each do |node|
     next unless node
     os_version = node.os_version
     os_family = node.os_family
     next unless os_family == 'sles'
-    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP2', '15-SP3'].include? os_version
+    log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP4].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
