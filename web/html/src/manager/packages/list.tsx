@@ -67,6 +67,7 @@ export function PackageList(props: Props) {
 
   const deleteButton = [
     <AsyncButton
+      key="delete-btn"
       defaultType="btn-warning"
       text={t("Delete")}
       icon="fa-trash"
