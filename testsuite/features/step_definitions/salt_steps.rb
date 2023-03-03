@@ -395,6 +395,24 @@ When(/^I click save$/) do
   find('button#save').click
 end
 
+# salt failures log check
+Then(/^the salt event log on server should contain no failures$/) do
+  # upload salt event parser log
+  file = 'salt_event_parser.py'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # print failures from salt event log
+  output, _code = $server.run("python3 /tmp/#{file}")
+  count_failures = output.to_s.scan(/false/).length
+  output = output.join.to_s if output.respond_to?(:join)
+  # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
+  ignore_error = false
+  ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
+  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+end
+
 # salt-ssh steps
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)

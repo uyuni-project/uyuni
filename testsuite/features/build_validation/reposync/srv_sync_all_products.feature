@@ -152,16 +152,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Ubuntu 20.04" product has been added
 
-@debian9_minion
-  Scenario: Add Debian 9
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "Debian 9" as the filtered product description
-    And I select "Debian 9" as a product
-    Then I should see the "Debian 9" selected
-    When I click the Add Product button
-    And I wait until I see "Debian 9" product has been added
-
 @debian10_minion
   Scenario: Add Debian 10
     When I follow the left menu "Admin > Setup Wizard > Products"
