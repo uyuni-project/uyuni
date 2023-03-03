@@ -50,21 +50,19 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP3-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
+    And I wait until "SLE-Module-Basesystem15-SP3-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP3-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP3-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP3-Updates for x86_64" has been checked
+    And I wait until "SLE-Manager-Tools15-Pool for x86_64 SP3" has been checked
+    And I wait until "SLE-Manager-Tools15-Updates for x86_64 SP3" has been checked
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP3-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP3-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP3-Updates for x86_64" has been checked
     And I check "SLE-Module-Containers15-SP3-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP3-Updates for x86_64" has been checked
     And I check "Fake-RPM-SLES-Channel"
-
-  Scenario: Check that sub-channels are automatically selected
-    Then I should see "SLE-Module-Basesystem15-SP3-Pool for x86_64" as checked
-    And I should see "SLE-Module-Basesystem15-SP3-Updates for x86_64" as checked
-    And I should see "SLE-Module-Server-Applications15-SP3-Pool for x86_64" as checked
-    And I should see "SLE-Module-Server-Applications15-SP3-Updates for x86_64" as checked
-    And I should see "SLE-Manager-Tools15-Pool for x86_64 SP3" as checked
-    And I should see "SLE-Manager-Tools15-Updates for x86_64 SP3" as checked
-    And I should see "SLE-Module-DevTools15-SP3-Updates for x86_64" as checked
-    And I should see "SLE-Module-Desktop-Applications15-SP3-Pool for x86_64" as checked
-    And I should see "SLE-Module-Desktop-Applications15-SP3-Updates for x86_64" as checked
-    And I should see "SLE-Module-Containers15-SP3-Updates for x86_64" as checked
     When I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
