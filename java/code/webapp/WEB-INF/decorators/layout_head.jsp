@@ -34,7 +34,16 @@
 
     <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    <c:choose>
+      <c:when test="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}">
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" disabled="disabled"/>
+        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme"/>
+      </c:when>
+      <c:otherwise>
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme"/>
+        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" disabled="disabled"/>
+      </c:otherwise>
+    </c:choose>
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>

@@ -120,8 +120,6 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'ubuntu2004_ssh_minion' => 'bison',
                       'ubuntu2204_minion' => 'bison',
                       'ubuntu2204_ssh_minion' => 'bison',
-                      'debian9_minion' => 'bison',
-                      'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
                       'debian10_ssh_minion' => 'bison',
                       'debian11_minion' => 'bison',
@@ -181,8 +179,6 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main',
                            'ubuntu2204_minion' => 'ubuntu-2204-amd64-main',
                            'ubuntu2204_ssh_minion' => 'ubuntu-2204-amd64-main',
-                           'debian9_minion' => 'debian-9-pool',
-                           'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
                            'debian11_minion' => 'debian-11-pool',
@@ -227,7 +223,6 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'ubuntu-2204-amd64-main' => 'ubuntu-22.04-amd64',
-                                    'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
                                     'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64' }.freeze
@@ -300,8 +295,6 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'ubuntu2004_ssh_minion' => 'amd64',
                       'ubuntu2204_minion' => 'amd64',
                       'ubuntu2204_ssh_minion' => 'amd64',
-                      'debian9_minion' => 'amd64',
-                      'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
                       'debian10_ssh_minion' => 'amd64',
                       'debian11_minion' => 'amd64',
@@ -312,84 +305,6 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
   'default' =>
-  %w[
-    sle-product-sles15-sp4-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp4
-    sle-manager-tools15-pool-x86_64-sled-sp4
-    sle-manager-tools15-beta-pool-x86_64-sp4
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-basesystem15-sp4-pool-x86_64
-    sle-module-server-applications15-sp4-pool-x86_64
-    sle-product-sles15-sp4-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp4
-    sle-manager-tools15-updates-x86_64-sled-sp4
-    sle-manager-tools15-beta-updates-x86_64-sp4
-    sle-module-containers15-sp4-updates-x86_64
-    sle-module-basesystem15-sp4-updates-x86_64
-    sle-module-server-applications15-sp4-updates-x86_64
-    sle15-sp4-installer-updates-x86_64
-    sle-module-desktop-applications15-sp4-pool-x86_64
-    sle-module-desktop-applications15-sp4-updates-x86_64
-    sle-module-devtools15-sp4-pool-x86_64
-    sle-module-devtools15-sp4-updates-x86_64
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-containers15-sp4-updates-x86_64
-  ],
-  '12-SP4' =>
-  %w[
-    sles12-sp4-pool-x86_64
-    sle-manager-tools12-pool-x86_64-sp4
-    sle-manager-tools12-pool-x86_64-sled-sp4
-    sle-module-containers12-pool-x86_64-sp4
-    sles12-sp4-updates-x86_64
-    sle-manager-tools12-updates-x86_64-sp4
-    sle-manager-tools12-updates-x86_64-sled-sp4
-    sle-module-containers12-updates-x86_64-sp4
-  ],
-  '12-SP5' =>
-  %w[
-    sles12-sp5-pool-x86_64
-    sle-manager-tools12-pool-x86_64-sp5
-    sle-manager-tools12-pool-x86_64-sled-sp5
-    sle-module-containers12-pool-x86_64-sp5
-    sles12-sp5-updates-x86_64
-    sle-manager-tools12-updates-x86_64-sp5
-    sle-manager-tools12-updates-x86_64-sled-sp5
-    sle-module-containers12-updates-x86_64-sp5
-  ],
-  '15-SP1' =>
-  %w[
-    sle-product-sles15-sp1-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp1
-    sle-manager-tools15-pool-x86_64-sled-sp1
-    sle-module-containers15-sp1-pool-x86_64
-    sle-module-basesystem15-sp1-pool-x86_64
-    sle-module-server-applications15-sp1-pool-x86_64
-    sle-product-sles15-sp1-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp1
-    sle-manager-tools15-updates-x86_64-sled-sp1
-    sle-module-containers15-sp1-updates-x86_64
-    sle-module-basesystem15-sp1-updates-x86_64
-    sle-module-server-applications15-sp1-updates-x86_64
-  ],
-  '15-SP2' =>
-  %w[
-    sle-product-sles15-sp2-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp2
-    sle-manager-tools15-pool-x86_64-sled-sp2
-    sle-manager-tools15-beta-pool-x86_64-sp2
-    sle-module-containers15-sp2-pool-x86_64
-    sle-module-basesystem15-sp2-pool-x86_64
-    sle-module-server-applications15-sp2-pool-x86_64
-    sle-product-sles15-sp2-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp2
-    sle-manager-tools15-updates-x86_64-sled-sp2
-    sle-manager-tools15-beta-updates-x86_64-sp2
-    sle-module-containers15-sp2-updates-x86_64
-    sle-module-basesystem15-sp2-updates-x86_64
-    sle-module-server-applications15-sp2-updates-x86_64
-  ],
-  '15-SP3' =>
   %w[
     sle-product-sles15-sp3-pool-x86_64
     sle-manager-tools15-pool-x86_64-sp3
@@ -402,6 +317,28 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-manager-tools15-updates-x86_64-sp3
     sle-manager-tools15-updates-x86_64-sled-sp3
     sle-manager-tools15-beta-updates-x86_64-sp3
+    sle-module-containers15-sp3-updates-x86_64
+    sle-module-basesystem15-sp3-updates-x86_64
+    sle-module-server-applications15-sp3-updates-x86_64
+    sle15-sp3-installer-updates-x86_64
+    sle-module-desktop-applications15-sp3-pool-x86_64
+    sle-module-desktop-applications15-sp3-updates-x86_64
+    sle-module-devtools15-sp3-pool-x86_64
+    sle-module-devtools15-sp3-updates-x86_64
+    sle-module-containers15-sp3-pool-x86_64
+    sle-module-containers15-sp3-updates-x86_64
+  ],
+  '15-SP3' =>
+  %w[
+    sle-product-sles15-sp3-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp3
+    sle-manager-tools15-pool-x86_64-sled-sp3
+    sle-module-containers15-sp3-pool-x86_64
+    sle-module-basesystem15-sp3-pool-x86_64
+    sle-module-server-applications15-sp3-pool-x86_64
+    sle-product-sles15-sp3-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp3
+    sle-manager-tools15-updates-x86_64-sled-sp3
     sle-module-containers15-sp3-updates-x86_64
     sle-module-basesystem15-sp3-updates-x86_64
     sle-module-server-applications15-sp3-updates-x86_64

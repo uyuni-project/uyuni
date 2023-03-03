@@ -22,14 +22,6 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     And I accept "sle12sp5_buildhost" key in the Salt master
     And I wait until onboarding is completed for "sle12sp5_buildhost"
 
-  Scenario: Turn the SLES 12 SP5 build host into an OS image build host
-    Given I am on the Systems overview page of this "sle12sp5_buildhost"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-
   Scenario: Apply the highstate to the SLES 12 SP5 build host
     Given I am on the Systems overview page of this "sle12sp5_buildhost"
     When I wait until no Salt job is running on "sle12sp5_buildhost"
