@@ -327,6 +327,8 @@ sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefau
 
 sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_GROUP#|%{apache_group}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_USER#|%{apache_user}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
