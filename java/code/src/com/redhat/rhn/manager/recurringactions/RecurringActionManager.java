@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -99,7 +100,9 @@ public class RecurringActionManager {
     private static MinionRecurringAction createMinionRecurringAction(long minionId, User user) {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
-        MinionRecurringAction action = new MinionRecurringAction(false, true, minion, user);
+        MinionRecurringAction action = new MinionRecurringAction(
+                new RecurringHighstateType(false), false, true, minion, user
+        );
         return action;
     }
 
