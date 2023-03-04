@@ -63,7 +63,6 @@ utils/systemSnapshot.py
 utils/taskotop
 spacewalk/certs-tools/
 spacewalk/setup/share/embedded_diskspace_check.py
-suseRegisterInfo/suseRegister/
 
 client/debian/apt-spacewalk/packages.py
 client/debian/apt-spacewalk/post_invoke.py
