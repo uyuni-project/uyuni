@@ -1,4 +1,2 @@
 enable rhnsd.timer
 enable spacewalk-update-status.service
-enable osad.service
-enable rhn-virtualization-host.service
