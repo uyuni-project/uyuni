@@ -166,8 +166,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
         catch (AssertionError e) {
-            verifyActionMessages(new String[] {"kickstart.schedule.noprofiles",
-                    "system.virtualization.help"});
+            verifyActionMessages(new String[] {"kickstart.schedule.noprofiles"});
         }
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
         clearRequestParameters();
