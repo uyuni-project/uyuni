@@ -218,7 +218,6 @@ Requires:       python-newt
 Requires:       dbus-python
 %endif # 0{?suse_version}
 Requires:       logrotate
-Requires:       suseRegisterInfo
 
 %if %{with test} && 0%{?rhel} != 6
 # The following BuildRequires are for check only
@@ -386,7 +385,6 @@ Requires:       usermode-consoleonly >= 1.36
 %endif
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{rhnsd}
-Requires:       suseRegisterInfo
 
 %description -n spacewalk-client-setup
 spacewalk-client-setup contains programs and utilities to configure a system to use
