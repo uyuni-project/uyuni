@@ -141,7 +141,7 @@ susemanager-utils/susemanager-sls/src/
 "
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
+PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/susemanager-utils/testing/automation/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PGSQL_CONTAINER
