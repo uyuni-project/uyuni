@@ -90,10 +90,6 @@ client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_register.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_review_gui.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_start_gui.py
 client/rhel/spacewalk-client-tools/src/up2date_client/
-client/tools/spacewalk-abrt/src/spacewalk_abrt/
-client/tools/spacewalk-koan/actions/kickstart.py
-client/tools/spacewalk-koan/actions/kickstart_guest.py
-client/tools/spacewalk-koan/spacewalkkoan/
 client/tools/spacewalk-client-cert/clientcert.py
 client/tools/spacewalk-oscap/scap.py
 client/tools/mgr-cfg/actions/
