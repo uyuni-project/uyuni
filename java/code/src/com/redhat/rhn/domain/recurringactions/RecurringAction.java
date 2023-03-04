@@ -59,9 +59,9 @@ public abstract class RecurringAction extends BaseDomainHelper {
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
     /**
-     * Recurring action types
+     * Recurring action target types
      */
-    public enum Type {
+    public enum TargetType {
         MINION,
         GROUP,
         ORG
@@ -114,7 +114,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return the type of the entitiy
      */
     @Transient
-    public abstract Type getType();
+    public abstract TargetType getTargetType();
 
     /**
      * Gets the name of the TaskoSchedule entry based on the entity id.

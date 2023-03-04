@@ -92,8 +92,8 @@ public class OrgRecurringAction extends RecurringAction {
 
     @Override
     @Transient
-    public Type getType() {
-        return Type.ORG;
+    public TargetType getTargetType() {
+        return TargetType.ORG;
     }
 
     /**

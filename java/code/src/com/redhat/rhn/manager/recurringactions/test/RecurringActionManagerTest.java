@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.manager.recurringactions.test;
 
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.GROUP;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.MINION;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.ORG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;

@@ -93,7 +93,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         var dbAction = RecurringActionFactory.lookupById(actionId).get();
 
         assertEquals(dbAction, createdAction);
-        assertEquals(RecurringAction.Type.ORG, createdAction.getType());
+        assertEquals(RecurringAction.TargetType.ORG, createdAction.getTargetType());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         var dbAction = RecurringActionFactory.lookupById(actionId).get();
 
         assertEquals(dbAction, createdAction);
-        assertEquals(RecurringAction.Type.MINION, createdAction.getType());
+        assertEquals(RecurringAction.TargetType.MINION, createdAction.getTargetType());
     }
 
     @Test

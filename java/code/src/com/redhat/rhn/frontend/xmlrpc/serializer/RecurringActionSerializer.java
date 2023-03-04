@@ -50,7 +50,7 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
                 .add("id", src.getId())
                 .add("name", src.getName())
                 .add("entity_id", src.getEntityId())
-                .add("entity_type", src.getType().toString())
+                .add("entity_type", src.getTargetType().toString())
                 .add("cron_expr", src.getCronExpr())
                 .add("created", src.getCreated())
                 .add("creator", src.getCreator().getLogin())
