@@ -1,3 +1,5 @@
+- remove pylint check at build time
+
 -------------------------------------------------------------------
 Tue Feb 21 14:12:58 CET 2023 - jgonzalez@suse.com
 
