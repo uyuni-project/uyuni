@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -35,6 +37,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -55,6 +59,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private boolean testMode;
     private boolean active;
     private User creator;
+    private RecurringActionType actionType;
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
@@ -83,6 +88,23 @@ public abstract class RecurringAction extends BaseDomainHelper {
         this.testMode = test;
         this.active = isActive;
         this.creator = creatorIn;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param actionTypeIn the recurring action type
+     * @param test if action is in testMode
+     * @param isActive if action is active
+     * @param creatorIn the creator User
+     */
+    protected RecurringAction(RecurringActionType actionTypeIn, boolean test, boolean isActive, User creatorIn) {
+        this.testMode = test;
+        this.active = isActive;
+        this.creator = creatorIn;
+
+        this.actionType = actionTypeIn;
+        this.actionType.setRecurringAction(this);
     }
 
     /**
@@ -246,6 +268,26 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     public void setCreator(User creatorIn) {
         creator = creatorIn;
+    }
+
+    /**
+     * Gets the RecurringActionType object
+     *
+     * @return the RecurringActionType
+     */
+    @OneToOne(mappedBy = "recurringAction", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public RecurringActionType getActionType() {
+        return actionType;
+    }
+
+    /**
+     * Sets the RecurringActionType
+     *
+     * @param actionTypeIn the recurring action type
+     */
+    public void setActionType(RecurringActionType actionTypeIn) {
+        this.actionType = actionTypeIn;
     }
 
     @Override
