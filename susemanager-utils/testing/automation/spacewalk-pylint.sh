@@ -100,9 +100,6 @@ client/tools/mgr-cfg/actions/
 client/tools/mgr-cfg/config_client/
 client/tools/mgr-cfg/config_common/
 client/tools/mgr-cfg/config_management/
-client/tools/mgr-custom-info/rhn-custom-info.py
-client/tools/mgr-osad/invocation.py
-client/tools/mgr-osad/src/
 client/tools/mgr-push/
 client/tools/mgr-virtualization/actions/image.py
 client/tools/mgr-virtualization/actions/virt.py
