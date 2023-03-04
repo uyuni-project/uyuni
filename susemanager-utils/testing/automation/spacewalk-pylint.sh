@@ -97,9 +97,6 @@ client/tools/mgr-cfg/config_client/
 client/tools/mgr-cfg/config_common/
 client/tools/mgr-cfg/config_management/
 client/tools/mgr-push/
-client/tools/mgr-virtualization/actions/image.py
-client/tools/mgr-virtualization/actions/virt.py
-client/tools/mgr-virtualization/virtualization/
 
 scripts/clone-errata/rhn-clone-errata.py
 scripts/datasource-query-usage.py
