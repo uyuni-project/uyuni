@@ -159,7 +159,7 @@ public class RecurringActionFactory extends HibernateFactory {
 
         // 2. then we filter out the entity of given type
         List<RecurringAction> matches = stream
-                .filter(entity -> entity.getType() == action.getType())
+                .filter(entity -> entity.getTargetType() == action.getTargetType())
                 .collect(Collectors.toList());
 
         // we can only have either 0 or 1 matches

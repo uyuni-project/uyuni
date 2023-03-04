@@ -43,12 +43,12 @@ import java.util.Map;
 public class RecurringActionHandler extends BaseHandler {
 
     /* helper method */
-    private RecurringAction.Type getEntityType(String entityType) {
+    private RecurringAction.TargetType getEntityType(String entityType) {
         try {
-            return RecurringAction.Type.valueOf(entityType.toUpperCase());
+            return RecurringAction.TargetType.valueOf(entityType.toUpperCase());
         }
         catch (IllegalArgumentException e) {
-            throw new InvalidArgsException("Type \"" + entityType + "\" does not exist");
+            throw new InvalidArgsException("TargetType \"" + entityType + "\" does not exist");
         }
     }
 

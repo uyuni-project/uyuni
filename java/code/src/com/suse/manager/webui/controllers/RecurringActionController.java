@@ -31,7 +31,7 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
-import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
+import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
@@ -123,7 +123,7 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listByEntity(Request request, Response response, User user) {
-        Type type = Type.valueOf(request.params("type"));
+        TargetType type = TargetType.valueOf(request.params("type"));
         long id = Long.parseLong(request.params("id"));
 
         List<? extends RecurringAction> schedules;
@@ -147,11 +147,11 @@ public class RecurringActionController {
     private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
         return actions
                 .stream()
-                .map(a -> actionToJson(a, a.getType()))
+                .map(a -> actionToJson(a, a.getTargetType()))
                 .collect(Collectors.toList());
     }
 
-    private static RecurringStateScheduleJson actionToJson(RecurringAction a, Type targetType) {
+    private static RecurringStateScheduleJson actionToJson(RecurringAction a, TargetType targetType) {
         RecurringStateScheduleJson json = new RecurringStateScheduleJson();
         json.setRecurringActionId(a.getId());
         json.setScheduleName(a.getName());
@@ -214,7 +214,7 @@ public class RecurringActionController {
 
     private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
         if (json.getRecurringActionId() == null) {
-            Type type = Type.valueOf(json.getTargetType().toUpperCase());
+            RecurringAction.TargetType type = RecurringAction.TargetType.valueOf(json.getTargetType().toUpperCase());
             return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
         }
         else {
