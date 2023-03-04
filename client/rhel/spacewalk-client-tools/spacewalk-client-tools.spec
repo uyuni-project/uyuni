@@ -125,7 +125,6 @@ BuildRequires:  rpm
 Conflicts:      rhn-kickstart < 5.4.3-1
 Conflicts:      rhn-virtualization-host < 5.4.36-2
 Conflicts:      rhncfg < 5.9.23-1
-Conflicts:      spacewalk-koan < 0.2.7-1
 Conflicts:      up2date < 5.0.0
 Conflicts:      yum-rhn-plugin < 1.6.4-1
 
