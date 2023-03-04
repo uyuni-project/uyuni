@@ -1,3 +1,4 @@
+- remove pylint check at build time
 - Display activation key details after executing the corresponding command (bsc#1208719)
 - Show targetted packages before actually removing them (bsc#1207830)
 
