@@ -1,3 +1,5 @@
+- remove dependency to suseRegisterInfo
+
 -------------------------------------------------------------------
 Tue Feb 21 12:32:57 CET 2023 - jgonzalez@suse.com
 
