@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -36,7 +35,6 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.RegistrationType;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -52,7 +50,6 @@ import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.CobblerProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -69,11 +66,9 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1044,102 +1039,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
     /**
-     * Get the id of the Package installed for this KS.  Here we'll verify that the
-     * kickstart package exists in the host server's tools channel.  The host server will
-     * need it to perform necessary actions on either itself or the target system (if
-     * different).
-     * @return Long id of Package used for this KS.
+     * Validate if packages for autoinstallation are installed
+     * @return ValidatorError when packages are missing; null otherwise
      */
     public ValidatorError validateKickstartPackage() {
-        if (cobblerOnly || server.asMinionServer().isPresent()) {
-            // cobbler only and minions do not need spacewalk-koan
-            return null;
-        }
-
-        Server hostServer = getHostServer();
-        Set<Long> serverChannelIds = new HashSet<>();
-        for (Channel c : hostServer.getChannels()) {
-            serverChannelIds.add(c.getId());
-        }
-
-        // check for package among channels the server is subscribed to.
-        // If one is found, return
-        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(serverChannelIds);
-        if (pkgToInstall != null) {
-            this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: {}", packagesToInstall);
-            return null;
-        }
-
-        // otherwise search in channels that can be subscribed.
-        // If one is found, subscribe channel and return
-        Set<Long> subscribableChannelIds = SystemManager.subscribableChannelIds(
-                hostServer.getId(), this.user.getId(), hostServer.getBaseChannel().getId());
-        pkgToInstall = findKickstartPackageToInstall(subscribableChannelIds);
-
-        if (pkgToInstall != null) {
-            this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: {}", packagesToInstall);
-            Long cid = pkgToInstall.get("channel_id");
-            log.debug("    Subscribing to: {}", cid);
-            Channel c = ChannelFactory.lookupById(cid);
-            try {
-                SystemManager.subscribeServerToChannel(this.user, server, c);
-                log.debug("    Subscribed: {}", cid);
-            }
-            catch (PermissionException pe) {
-                return new ValidatorError("kickstart.schedule.cantsubscribe");
-            }
-            catch (Exception e) {
-                return new ValidatorError("kickstart.schedule.cantsubscribe.channel",
-                        c.getName(), server.getName());
-            }
-            return null;
-        }
-
-        return new ValidatorError("kickstart.schedule.nopackage",
-                this.getKsdata().getChannel().getName());
-    }
-
-    /**
-     * Looks for the kickstart package name for the traditional system ('management' entitlement) among the
-     * specified channels and, if it is found, it returns the highest available version in Map form.
-     * @param channelIds channels the server could be subscribed to
-     * @return a ValidationError or null
-     */
-    public Map<String, Long> findKickstartPackageToInstall(Collection<Long> channelIds) {
-        List<Map<String, Long>> results = new LinkedList<>();
-
-        for (Long chnnelId : channelIds) {
-            log.debug("    Checking on:{} for: {}", chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
-            List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
-                    chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
-            log.debug("    size: {}", packages.size());
-
-            for (Map<String, Object> aPackage : packages) {
-                log.debug("    Found the package: {}", aPackage);
-                Map<String, Long> result = new HashMap<>();
-                result.put("name_id", (Long)aPackage.get("name_id"));
-                result.put("evr_id", (Long)aPackage.get("evr_id"));
-                result.put("arch_id", (Long)aPackage.get("package_arch_id"));
-                result.put("channel_id", chnnelId);
-
-                results.add(result);
-            }
-        }
-
-        if (!results.isEmpty()) {
-            return Collections.max(results, (o1In, o2In) -> {
-                PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
-                        o1In.get("evr_id"));
-                PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
-                        o2In.get("evr_id"));
-                return evr1.compareTo(evr2);
-            });
-        }
-        else {
-            return null;
-        }
+        // traditional client is not supported anymore and cobblerOnly
+        // and minions do not need special packages for kickstart/autoinstallation
+        return null;
     }
 
     /**
