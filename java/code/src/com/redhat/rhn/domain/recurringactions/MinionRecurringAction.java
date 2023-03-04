@@ -85,8 +85,8 @@ public class MinionRecurringAction extends RecurringAction {
 
     @Override
     @Transient
-    public Type getType() {
-        return Type.MINION;
+    public TargetType getTargetType() {
+        return TargetType.MINION;
     }
 
     /**

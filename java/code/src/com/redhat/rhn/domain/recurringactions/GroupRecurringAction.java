@@ -105,8 +105,8 @@ public class GroupRecurringAction extends RecurringAction {
 
     @Override
     @Transient
-    public Type getType() {
-        return Type.GROUP;
+    public TargetType getTargetType() {
+        return TargetType.GROUP;
     }
 
     /**
