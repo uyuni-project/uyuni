@@ -28,12 +28,12 @@ public interface Elaborator {
      * Returns an elaborated list for the given List of objects
      * @param objectsToElaborate the list of objects to elaborate
      */
-    void elaborate(List<T> objectsToElaborate);
+    void elaborate(List<object> objectsToElaborate);
 
     /**
      * Returns an elaborated list for the given List of objects with an updated session
      * @param objectsToElaborate the list of objects to elaborate
      * @param session session to use
      */
-    void elaborate(List<T> objectsToElaborate, Session session);
+    void elaborate(List<object> objectsToElaborate, Session session);
 }
