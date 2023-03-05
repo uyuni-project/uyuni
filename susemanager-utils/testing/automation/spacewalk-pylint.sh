@@ -67,9 +67,6 @@ spacewalk/setup/share/embedded_diskspace_check.py
 client/debian/apt-spacewalk/packages.py
 client/debian/apt-spacewalk/post_invoke.py
 client/debian/apt-spacewalk/pre_invoke.py
-client/rhel/yum-rhn-plugin/actions/errata.py
-client/rhel/yum-rhn-plugin/actions/packages.py
-client/rhel/yum-rhn-plugin/rhnplugin.py
 client/rhel/spacewalk-client-tools/src/actions/
 client/rhel/spacewalk-client-tools/src/bin/rhn-profile-sync.py
 client/rhel/spacewalk-client-tools/src/bin/rhn_check.py
