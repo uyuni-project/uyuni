@@ -134,10 +134,10 @@ public class SelectMode extends BaseMode implements Serializable {
      * results.
      * @param parameters named query parameters for elaborators.
      */
-    public void elaborate(List resultList, Map<String, ?> parameters) {
+    public void elaborate(List<?> resultList, Map<String, ?> parameters) {
         // find the requested elaborator.
         for (CachedStatement cs : elaborators) {
-            Collection elaborated = cs.executeElaborator(resultList, this, parameters);
+            Collection<?> elaborated = cs.executeElaborator(resultList, this, parameters);
             resultList.clear();
             resultList.addAll(elaborated);
         }
