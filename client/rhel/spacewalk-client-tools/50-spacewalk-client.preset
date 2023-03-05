@@ -1,2 +1,1 @@
-enable rhnsd.timer
 enable spacewalk-update-status.service

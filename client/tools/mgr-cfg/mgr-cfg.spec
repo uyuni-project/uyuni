@@ -21,7 +21,6 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 mgr-daemon
 # Old name and version+1 before renaming to mgr-cfg
 %define oldname          rhncfg
 %define oldversion       5.10.123
