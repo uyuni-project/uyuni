@@ -280,14 +280,6 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless $ubuntu2204_ssh_minion
 end
 
-Before('@debian9_minion') do
-  skip_this_scenario unless $debian9_minion
-end
-
-Before('@debian9_ssh_minion') do
-  skip_this_scenario unless $debian9_ssh_minion
-end
-
 Before('@debian10_minion') do
   skip_this_scenario unless $debian10_minion
 end

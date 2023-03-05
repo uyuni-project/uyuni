@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-17 14:28+0100\n"
-"PO-Revision-Date: 2023-01-07 15:13+0000\n"
+"PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2320,9 +2320,8 @@ msgstr "指定した名前が等しいもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
-#, fuzzy
 msgid "none (disable modularity)"
-msgstr "(なし、サービスを無効にする)"
+msgstr "なし (モジュール化を無効にする)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
@@ -2375,9 +2374,8 @@ msgid "enable module"
 msgstr "モジュールの有効化"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
-#, fuzzy
 msgid "disable all modules"
-msgstr "モジュールの有効化"
+msgstr "すべてのモジュールの無効化"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
 msgid "Build ({0})"

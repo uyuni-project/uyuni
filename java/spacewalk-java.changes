@@ -1,3 +1,8 @@
+- Hide install option for RHEL9+ kickstarts
+- Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
+- Allow single-value lists in query strings in HTTP API (bsc#1207297)
+- Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+
 -------------------------------------------------------------------
 Tue Feb 28 11:55:21 CET 2023 - jgonzalez@suse.com
 
