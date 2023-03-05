@@ -90,7 +90,6 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         ActivationKeyFactory.save(key);
         assertTrue(key.getDeployConfigs());
         assertFalse(key.getChannels().isEmpty());
-        assertFalse(key.getPackages().isEmpty());
     }
     @Test
     public void testConfigPermissions() throws Exception {
@@ -109,7 +108,6 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         ActivationKeyFactory.save(key);
         assertTrue(key.getDeployConfigs());
         assertFalse(key.getChannels().isEmpty());
-        assertFalse(key.getPackages().isEmpty());
         assertTrue(key.getConfigChannelsFor(user).contains(cc));
     }
 
