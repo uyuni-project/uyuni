@@ -1,3 +1,4 @@
+- Use context manager for mgr-create-bootstrap-repo.
 - Replace apache group to root for RHEL.
 
 -------------------------------------------------------------------
