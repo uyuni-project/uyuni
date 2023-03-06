@@ -51,7 +51,7 @@ defaultdict = {
     "oracle9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
     "slemicro52_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
                           "/SUSE_Updates_SUSE-MicroOS_5.2_x86_64/"],
-    "slemiro53_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
+    "slemicro53_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
                           "/SUSE_Updates_SUSE-MicroOS_5.3_x86_64/"],
     }
 
