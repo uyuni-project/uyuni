@@ -41,5 +41,6 @@ Add more tasks if needed.
 - [ ] Make sure everything is still building.
 - [ ] Promote.
 - [ ] Merge the PRs for the site, the main doc and ReportDB, and the API doc.
+- [ ] Review that the [site](https://github.com/uyuni-project/uyuni-project.github.io/actions/workflows/pages/pages-build-deployment), [main doc and ReportDB](https://github.com/uyuni-project/uyuni-docs/actions/workflows/pages/pages-build-deployment), and the [API doc](https://github.com/uyuni-project/uyuni-docs-api/actions/workflows/pages/pages-build-deployment) were published
 - [ ] Create a git tag.
 - [ ] Announce: Mailing lists, twitter and Gitter.
