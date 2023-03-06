@@ -227,14 +227,14 @@ Feature: Sanity checks
     And the clock from "centos7_ssh_minion" should be exact
 
 @liberty9_minion
-  Scenario: The Oracle 9 Salt minion is healthy
+  Scenario: The Liberty 9 Salt minion is healthy
     Then "liberty9_minion" should have a FQDN
     And reverse resolution should work for "liberty9_minion"
     And "liberty9_minion" should communicate with the server using public interface
     And the clock from "liberty9_minion" should be exact
 
 @liberty9_ssh_minion
-  Scenario: The Oracle 9 Salt SSH minion is healthy
+  Scenario: The Liberty 9 Salt SSH minion is healthy
     Then "liberty9_ssh_minion" should have a FQDN
     And reverse resolution should work for "liberty9_ssh_minion"
     And "liberty9_ssh_minion" should communicate with the server using public interface
