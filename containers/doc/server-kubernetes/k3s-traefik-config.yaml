@@ -1,0 +1,48 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    logs:
+      general:
+        level: DEBUG
+      access:
+        enabled: true
+    ports:
+      postgres:
+        port: 5432
+        expose: true
+        exposedPort: 5432
+        protocol: TCP
+      salt-publish:
+        port: 4505
+        expose: true
+        exposedPort: 4505
+        protocol: TCP
+      salt-request:
+        port: 4506
+        expose: true
+        exposedPort: 4506
+        protocol: TCP
+      cobbler:
+        port: 25151
+        expose: true
+        exposedPort: 25151
+        protocol: TCP
+      tomcat-debug:
+        port: 8080
+        expose: true
+        exposedPort: 8000
+        protocol: TCP
+      tasko-debug:
+        port: 8081
+        expose: true
+        exposedPort: 8001
+        protocol: TCP
+      tftp:
+        port: 69
+        expose: true
+        exposedPort: 69
+        protocol: UDP

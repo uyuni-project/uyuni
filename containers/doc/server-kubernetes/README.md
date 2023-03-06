@@ -1,15 +1,69 @@
-# Running the server-image on rke2
+# Running the server-image on kubernetes
 
 ## Prerequisites
 
-The following assumes you have a single-node rke2 cluster ready with enough resources for the Uyuni server.
-It also assumes that `kubectl` is installed on your machine and configured to connect to the rke2 cluster.
+The following assumes you have a single-node rke2 or k3s cluster ready with enough resources for the Uyuni server.
+It also assumes that `kubectl` is installed on your machine and configured to connect to the cluster.
 
 ** HACK ** For now I used the SSL certificates and CA generated in one of my installation attempts.
 I will assume you already have SSL certificates matching the FQDN of the cluster node.
 Instructions or tools on how to generate those will come later.
 
 ## Setting up the resources
+
+### RKE2 specific setup
+
+Copy the `rke2-ingress-nginx-config.yaml` file to `/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml` on your rke2 node.
+Wait for the ingress controller to restart.
+Run this command to watch it restart:
+
+```
+watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=rke2-ingress-nginx
+```
+
+Set the shell variable `INGRESS=nginx` to be used in the next steps.
+
+### K3s specific setup
+
+
+Copy the `k3s-traefik-config.yaml` file to `/var/lib/rancher/k3s/server/manifests/` on your k3s node.
+Wait for trafik to restart.
+Run this commant to watch it restart:
+
+```
+watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=traefik
+```
+
+Set the shell variable `INGRESS=traefik` to be used in the next steps.
+
+***Offline installation:*** with k3s it is possible to preload the container images and avoid it to be fetched from a registry.
+For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
+For example:
+
+```
+podman pull registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+podman save --output server-image.tar registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+```
+
+or
+
+```
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+```
+
+Transfer the resulting `server-image.tar` to the k3s node and load it using the following command:
+
+```
+k3s ctr images import server-image.tar
+```
+
+In order to tell k3s to not pull the image, add `imagePullPolicy: Never` to all `initContainer`s and `container` in the `server.yaml` file:
+
+```
+sed 's/^\( \+\)image:\(.*\)$/\1image: \2\n\1imagePullPolicy: Never/' -i server.yaml
+```
+
+### Deploy the pod and its resources
 
 Create the TLS secret holding the server SSL certificates:
 
@@ -33,18 +87,10 @@ mkdir -p `kubectl get pv -o jsonpath='{.items[*].spec.local.path}'`
 In my setup, the cluster node is named `uyuni-dev` and its FQDN is `uyuni-dev.world-co.com`.
 You will need to replace those values in the yaml files.
 
-Copy the `rke2-ingress-nginx-config.yaml` file to `/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml` on your rke2 node.
-Wait for the ingress controller to restart.
-Run this command to watch it restart:
-
-```
-watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=rke2-ingress-nginx
-```
-
 Once done, run the following commands:
 
 ```
-for YAML in pvcs service uyuni-config server uyuni-ingress; do
+for YAML in pvcs service uyuni-config server $INGRESS-uyuni-ingress; do
     kubectl apply -f $YAML.yaml
 done
 ```
