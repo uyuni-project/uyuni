@@ -718,7 +718,7 @@ public class ReportDbHibernateFactory {
         return connectionManager.isInitialized();
     }
 
-    protected DataResult executeSelectMode(String name, String mode, Map params) {
+    protected DataResult executeSelectMode(String name, String mode, Map<String, Object> params) {
         SelectMode m = ModeFactory.getMode(name, mode);
         return m.execute(params);
     }
