@@ -23,13 +23,11 @@ Create a `ConfigMap` with the CA certificate:
 kubectl create configmap uyuni-ca --from-file=ca.crt=<pathto>/RHN-ORG-TRUSTED-SSL-CERT
 ```
 
-The volumes are folders on the cluster node.
-They need to be manually created:
+Define the persistent volumes by running `kubectl apply -f pvs.yaml`.
+The volumes are folders on the cluster node and need to be manually created:
 
 ```
-for VOLUME in apache2 etc-rhn etc-salt etc-systemd etc-tls pgsql root srv-salt tomcat var-cache var-log-rhn var-spacewalk; do
-    mkdir /var/uyuni/$VOLUME
-done
+mkdir -p `kubectl get pv -o jsonpath='{.items[*].spec.local.path}'`
 ```
 
 In my setup, the cluster node is named `uyuni-dev` and its FQDN is `uyuni-dev.world-co.com`.
@@ -46,7 +44,7 @@ watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=rke2-ingress-nginx
 Once done, run the following commands:
 
 ```
-for YAML in pvs pvcs service uyuni-config server uyuni-ingress; do
+for YAML in pvcs service uyuni-config server uyuni-ingress; do
     kubectl apply -f $YAML.yaml
 done
 ```
