@@ -88,7 +88,7 @@ def parse_args():
     parser.add_argument("-v", "--version", dest="version",
                         help="Version of SUMA you want to run this script for, options are 42 for 4.2 or 43 for 4.3",
                         default="43", action='store')
-    parser.add_argument("-i", "--rrids", dest="rrids", help="RR IDs", default=None, action='store')
+    parser.add_argument("-i", "--mis", dest="mis", help="MI IDs", default=None, action='store')
 
     args = parser.parse_args()
     return args
@@ -106,18 +106,18 @@ def read_requests():
         print("The ibs command failed for some reason")
     output = result.stdout.decode('utf-8')
     lines = output.splitlines()
-    # Create empty list to add the rrids from the output
-    rrids = []
+    # Create empty list to add the maintenance incidents from the output
+    mis = []
     for line in lines:
         if "ReviewRequest" in line:
             line1 = line.rstrip()
             line2 = line1.split(sep=":")
-            rrid = line2[3]
-            rrids.append(rrid)
-    return rrids
+            mi = line2[3]
+            mis.append(mi)
+    return mis
 
 
-def find_valid_repos(rrids, version):
+def find_valid_repos(mis, version):
     if version == '42':
         dict_version = nodesdict42
     elif version == '43':
@@ -128,42 +128,42 @@ def find_valid_repos(rrids, version):
 
     finaldict = {}
     for node, suffixraw in dict_version.items():
-        for rrid in rrids:
+        for mi in mis:
             if isinstance(suffixraw, str):
                 suffix = suffixraw
-                repo = create_url(rrid, suffix)
+                repo = create_url(mi, suffix)
                 if repo is not None:
                     if node in finaldict:
-                        # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server
+                        # This is needed for mis that have multiple repos for each node, e.g. basesystem and server
                         # apps for server
-                        if rrid in finaldict[node]:
+                        if mi in finaldict[node]:
                             for i in range(1, 100):
-                                if str(rrid) + '-' + str(i) not in finaldict[node]:
-                                    finaldict[node][str(rrid) + '-' + str(i)] = repo
+                                if str(mi) + '-' + str(i) not in finaldict[node]:
+                                    finaldict[node][str(mi) + '-' + str(i)] = repo
                                     break
                         else:
-                            finaldict[node][rrid] = repo
+                            finaldict[node][mi] = repo
                     else:
-                        # for each rrid we have multiple repos sometimes for each node
-                        finaldict[node] = {rrid: repo}
+                        # for each mi we have multiple repos sometimes for each node
+                        finaldict[node] = {mi: repo}
             elif isinstance(suffixraw, list):
                 for suffix in suffixraw:
-                    repo = create_url(rrid, suffix)
+                    repo = create_url(mi, suffix)
                     if repo is not None:
                         if node in finaldict:
-                            # This is needed for rrids that have multiple repos for each node, e.g. basesystem and
+                            # This is needed for mis that have multiple repos for each node, e.g. basesystem and
                             # server apps for server
-                            if rrid in finaldict[node]:
+                            if mi in finaldict[node]:
                                 for i in range(1, 100):
-                                    if str(rrid) + '-' + str(i) not in finaldict[node]:
-                                        finaldict[node][str(rrid) + '-' + str(i)] = repo
+                                    if str(mi) + '-' + str(i) not in finaldict[node]:
+                                        finaldict[node][str(mi) + '-' + str(i)] = repo
                                         break
                             else:
-                                # for each rrid we have multiple repos sometimes for each node
-                                finaldict[node][rrid] = repo
+                                # for each mi we have multiple repos sometimes for each node
+                                finaldict[node][mi] = repo
                         else:
-                            # for each rrid we have multiple repos sometimes for each node
-                            finaldict[node] = {rrid: repo}
+                            # for each mi we have multiple repos sometimes for each node
+                            finaldict[node] = {mi: repo}
 
     # Format into json and print
     # Check that it's not empty and save to file
@@ -175,10 +175,10 @@ def find_valid_repos(rrids, version):
         sys.exit(1)
 
 
-def create_url(rrid, suffix):
-    link = ["http://download.suse.de/ibs/SUSE:/Maintenance:/", str(rrid)]
+def create_url(mi, suffix):
+    link = ["http://download.suse.de/ibs/SUSE:/Maintenance:/", str(mi)]
 
-    if link[:-1] == str(rrid):
+    if link[:-1] == str(mi):
         link.append(suffix)
         url = ''.join(link)
     else:
@@ -191,11 +191,11 @@ def create_url(rrid, suffix):
 
 def main():
     args = parse_args()
-    if args.rrids is not None:
-        rrids = args.rrids.split(",")
+    if args.mis is not None:
+        mis = args.mis.split(",")
     else:
-        rrids = read_requests()
-    find_valid_repos(rrids, args.version)
+        mis = read_requests()
+    find_valid_repos(mis, args.version)
 
 
 if __name__ == '__main__':
