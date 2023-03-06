@@ -1,3 +1,4 @@
+- Added context manager usage for more files.
 - OS specific httpd user for logrotate config.
 
 -------------------------------------------------------------------

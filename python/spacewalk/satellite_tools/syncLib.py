@@ -29,8 +29,8 @@ except ImportError:
 # rhn imports:
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhnLib
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_time, log_clean
+from uyuni.common.context_managers import cfg_component
 from uyuni.common.fileutils import createPath, setPermsPath
 
 from . import messages
@@ -124,10 +124,11 @@ def log2stream(level, msg, cleanYN, notimeYN, stream):
     """
     if not isinstance(msg, type([])):
         msg = [msg]
-    if CFG.DEBUG >= level:
-        for m in msg:
-            stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + '\n')
-        stream.flush()
+    with cfg_component(component=None) as CFG:
+        if CFG.DEBUG >= level:
+            for m in msg:
+                stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + '\n')
+            stream.flush()
 
 
 def log2email(level, msg, cleanYN=0, notimeYN=0):
@@ -194,8 +195,9 @@ class FileManip:
         self.relative_path = relative_path
         self.timestamp = rhnLib.timestamp(timestamp)
         self.file_size = file_size
-        self.full_path = os.path.join(CFG.MOUNT_POINT, self.relative_path)
-        self.buffer_size = CFG.BUFFER_SIZE
+        with cfg_component(component=None) as CFG:
+            self.full_path = os.path.join(CFG.MOUNT_POINT, self.relative_path)
+            self.buffer_size = CFG.BUFFER_SIZE
 
     def write_file(self, stream_in):
         """Writes the contents of stream_in to the filesystem
