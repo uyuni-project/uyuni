@@ -2,20 +2,6 @@
 
 ## Init clients BEGIN ###
 
-- features/build_validation/init_clients/centos7_minion.feature
-- features/build_validation/init_clients/centos7_ssh_minion.feature
-- features/build_validation/init_clients/rocky8_minion.feature
-- features/build_validation/init_clients/rocky8_ssh_minion.feature
-- features/build_validation/init_clients/rocky9_minion.feature
-- features/build_validation/init_clients/rocky9_ssh_minion.feature
-- features/build_validation/init_clients/rhel9_minion.feature
-- features/build_validation/init_clients/rhel9_ssh_minion.feature
-
-- features/build_validation/init_clients/alma9_minion.feature
-- features/build_validation/init_clients/alma9_ssh_minion.feature
-- features/build_validation/init_clients/oracle9_minion.feature
-- features/build_validation/init_clients/oracle9_ssh_minion.feature
-
 - features/build_validation/init_clients/sle12sp4_minion.feature
 - features/build_validation/init_clients/sle12sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle12sp5_minion.feature
@@ -28,6 +14,22 @@
 - features/build_validation/init_clients/sle15sp3_ssh_minion.feature
 - features/build_validation/init_clients/sle15sp4_minion.feature
 - features/build_validation/init_clients/sle15sp4_ssh_minion.feature
+
+- features/build_validation/init_clients/alma9_minion.feature
+- features/build_validation/init_clients/alma9_ssh_minion.feature
+- features/build_validation/init_clients/centos7_client.feature
+- features/build_validation/init_clients/centos7_minion.feature
+- features/build_validation/init_clients/centos7_ssh_minion.feature
+- features/build_validation/init_clients/liberty9_minion.feature
+- features/build_validation/init_clients/liberty9_ssh_minion.feature
+- features/build_validation/init_clients/oracle9_minion.feature
+- features/build_validation/init_clients/oracle9_ssh_minion.feature
+- features/build_validation/init_clients/rhel9_minion.feature
+- features/build_validation/init_clients/rhel9_ssh_minion.feature
+- features/build_validation/init_clients/rocky8_minion.feature
+- features/build_validation/init_clients/rocky8_ssh_minion.feature
+- features/build_validation/init_clients/rocky9_minion.feature
+- features/build_validation/init_clients/rocky9_ssh_minion.feature
 
 - features/build_validation/init_clients/ubuntu1804_minion.feature
 - features/build_validation/init_clients/ubuntu1804_ssh_minion.feature
