@@ -1,5 +1,5 @@
-- Allow default component for context manager.
 - fileutils.py uses context manager for apache users.
+- Allow default component for context manager.
 
 -------------------------------------------------------------------
 Wed Dec 14 14:13:10 CET 2022 - jgonzalez@suse.com

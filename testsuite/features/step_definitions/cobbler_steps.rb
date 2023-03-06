@@ -190,6 +190,12 @@ When(/^I cleanup xorriso temp files$/) do
   $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
 end
 
+# cobbler settings
+Given(/^cobbler settings are successfully migrated$/) do
+  out, code = $server.run('cobbler-settings migrate -t /etc/cobbler/settings.yaml')
+  raise "error when running cobbler-settings to migrate current settings.\nLogs:\n#{out}" if code.nonzero?
+end
+
 # cobbler parameters
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
