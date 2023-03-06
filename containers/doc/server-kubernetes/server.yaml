@@ -128,12 +128,12 @@ spec:
       - mountPath: /mnt
         name: etc-tls
   containers:
-  - image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+  - name: uyuni
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
     securityContext:
       capabilities:
         add:
           - SYS_ADMIN
-    name: uyuni
     ports:
       - containerPort: 443
       - containerPort: 80
