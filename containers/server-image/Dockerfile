@@ -49,27 +49,5 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
-EXPOSE 443/tcp
-EXPOSE 80/tcp
-EXPOSE 4505/tcp
-EXPOSE 4506/tcp
-
-VOLUME [ \
-# DATA
-"/var/lib/pgsql", "/var/spacewalk", "/var/cache", "/etc/salt", \
-# salt
-"/usr/share/susemanager/", \
-"/usr/share/salt-formulas/", \
-"/srv/susemanager/salt", \
-"/srv/salt",  \
-# home(s)
-"/root/", \
-"/home/", \
-# Logs
-"/var/log/rhn/", \
-# configurations
-"/etc/rhn", "/etc/pki/", "/etc/apache2/", "/etc/tomcat/" \
-]
-
 CMD ["/usr/lib/systemd/systemd"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
