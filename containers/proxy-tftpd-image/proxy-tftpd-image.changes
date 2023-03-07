@@ -1,3 +1,5 @@
+- Fix handling of http 404 (bsc#1208624)
+
 -------------------------------------------------------------------
 Wed Feb 22 13:50:19 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
