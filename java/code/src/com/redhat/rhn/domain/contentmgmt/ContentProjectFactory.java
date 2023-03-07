@@ -61,7 +61,7 @@ public class ContentProjectFactory extends HibernateFactory {
      *
      * @param contentFilter the content filter
      */
-    public static void save(ContentFilter contentFilter) {
+    public static void save(ContentFilter<T> contentFilter) {
         INSTANCE.saveObject(contentFilter);
     }
 
@@ -509,10 +509,10 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param user the user
      * @return the filters
      */
-    public static List<ContentFilter> listFilters(User user) {
+    public static List<ContentFilter<T>> listFilters(User user) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
-        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        CriteriaQuery<ContentFilter<T>> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter<T>> root = criteria.from(ContentFilter.class);
         criteria.where(builder.equal(root.get("org"), user.getOrg()));
         return getSession().createQuery(criteria).list();
     }
@@ -523,10 +523,10 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param id the id
      * @return the matching filter
      */
-    public static Optional<ContentFilter> lookupFilterById(Long id) {
+    public static Optional<ContentFilter<T>> lookupFilterById(Long id) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
-        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        CriteriaQuery<ContentFilter<T>> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter<T>> root = criteria.from(ContentFilter.class);
         criteria.where(builder.equal(root.get("id"), id));
         return getSession().createQuery(criteria).uniqueResultOptional();
     }
@@ -538,10 +538,10 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param org the org
      * @return Optional with ContentProject with given label
      */
-    public static Optional<ContentFilter> lookupFilterByNameAndOrg(String name, Org org) {
+    public static Optional<ContentFilter<T>> lookupFilterByNameAndOrg(String name, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ContentFilter> criteria = builder.createQuery(ContentFilter.class);
-        Root<ContentFilter> root = criteria.from(ContentFilter.class);
+        CriteriaQuery<ContentFilter<T>> criteria = builder.createQuery(ContentFilter.class);
+        Root<ContentFilter<T>> root = criteria.from(ContentFilter.class);
         criteria.where(builder.and(
                 builder.equal(root.get("name"), name),
                 builder.equal(root.get("org"), org)));
@@ -558,9 +558,9 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param user the User
      * @return the created filter
      */
-    public static ContentFilter createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
+    public static ContentFilter<T> createFilter(String name, ContentFilter.Rule rule, ContentFilter.EntityType entityType,
             FilterCriteria criteria, User user) {
-        ContentFilter filter;
+        ContentFilter<T> filter;
         switch (entityType) {
             case PACKAGE:
                 filter = new PackageFilter();
@@ -595,7 +595,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param criteria optional with {@link FilterCriteria} to update
      * @return the updated filter
      */
-    public static ContentFilter updateFilter(ContentFilter filter, Optional<String> name,
+    public static ContentFilter<T> updateFilter(ContentFilter<T> filter, Optional<String> name,
             Optional<ContentFilter.Rule> rule, Optional<FilterCriteria> criteria) {
         name.ifPresent(filter::setName);
         rule.ifPresent(filter::setRule);
@@ -612,7 +612,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param filter the filter
      * @return true if removed
      */
-    public static boolean remove(ContentFilter filter) {
+    public static boolean remove(ContentFilter<T> filter) {
         return INSTANCE.removeObject(filter) != 0;
     }
 
@@ -622,7 +622,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param filter the Filter
      * @return list of Projects
      */
-    public static List<ContentProject> listFilterProjects(ContentFilter filter) {
+    public static List<ContentProject> listFilterProjects(ContentFilter<T> filter) {
         return HibernateFactory.getSession()
                 .createQuery("SELECT cp FROM ContentProject cp " +
                         "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
@@ -637,7 +637,7 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param filter the Filter
      * @return list of Projects
      */
-    public static List<ContentProjectFilter> listFilterProjectsRelation(ContentFilter filter) {
+    public static List<ContentProjectFilter> listFilterProjectsRelation(ContentFilter<T> filter) {
         return HibernateFactory.getSession()
                 .createQuery("SELECT cpf FROM ContentProjectFilter cpf " +
                         "WHERE cpf.filter.id = :fid")
