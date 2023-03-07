@@ -110,6 +110,8 @@ Run `kubectl cp --help` for more details on how to use it.
 
 ## Developping with the pod
 
+###  Deploying code
+
 To deploy java code on the pod change to the `java` directory and run:
 
 ```
@@ -120,6 +122,21 @@ In case you changed the pod name and namespace while deploying it, pass the corr
 
 **Note** To deploy TSX or Salt code, use the `deploy-static-resources-kube` and `deploy-salt-files-kube` tasks of the ant file.
 
+### Attaching a java debugger
+
+First enable the JDWP options in both tomcat and taskomatic using the following command:
+
+```
+ant -f manager-build.xml enable-java-debug-kube
+```
+
+Then restart tomcat and taskomatic using ant too:
+
+```
+ant -f manager-build.xml restart-tomcat-kube restart-taskomatic-kube
+```
+
+The debugger can now be attached to the usual ports (8000 for tomcat and 8001 for taskomatic) on the host FQDN.
 
 ## Throwing everything away
 
