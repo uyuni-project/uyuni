@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @rocky8_minion
@@ -61,30 +61,10 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: The custom channel for Rocky 8 has been synced
     When I wait until the channel "rocky-8-iso" has been synced
 
-  Scenario: Create CLM filters to remove AppStream metadata from Rocky 8
-    Given I am authorized for the "Admin" section
+  Scenario: Verify the CLM filters we need for Rocky 8 exist
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click on "Create Filter"
-    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    And I enter "ruby-2.7" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "ruby" as "moduleName"
-    And I enter "2.7" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
     Then I should see a "ruby-2.7" text
-    When I click on "Create Filter"
-    Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    # 3.6 is the version needed by our spacecmd
-    When I enter "python-3.6" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "python36" as "moduleName"
-    And I enter "3.6" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
-    Then I should see a "python-3.6" text
+    And I should see a "python-3.6" text
 
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 8
     When I follow the left menu "Content Lifecycle > Projects"
