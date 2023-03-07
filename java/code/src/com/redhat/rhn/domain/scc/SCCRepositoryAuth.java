@@ -186,6 +186,13 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     }
 
     /**
+     * @return {@link Optional} {@link SCCRepositoryCloudRmtAuth}
+     */
+    public Optional<SCCRepositoryCloudRmtAuth> cloudRmtAuth() {
+        return fold(b -> Optional.empty(), n -> Optional.empty(), t -> Optional.empty(), Optional::of);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
