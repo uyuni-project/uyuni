@@ -57,7 +57,7 @@ public class ChannelDetailsAction extends RhnAction {
         DynaActionForm form = (DynaActionForm)formIn;
         RequestContext ctx = new RequestContext(request);
         User user =  ctx.getCurrentUser();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         String fwd = RhnHelper.DEFAULT_FORWARD;
 
         long cid = ctx.getRequiredParam("cid");
