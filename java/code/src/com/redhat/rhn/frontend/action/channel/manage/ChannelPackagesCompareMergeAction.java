@@ -91,7 +91,7 @@ public class ChannelPackagesCompareMergeAction extends ChannelPackagesCompareAct
                                  mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
         }
 
-        DataResult result = PackageManager.comparePackagesBetweenChannelsPreview(
+        DataResult<T> result = PackageManager.comparePackagesBetweenChannelsPreview(
                                             cid, scid, syncType);
 
 
