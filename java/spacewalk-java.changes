@@ -1,3 +1,4 @@
+- Fix cobbler system entries for retail terminals (bsc#1208661)
 - Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
 - Add missing text for user preferenaces page
 - Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
