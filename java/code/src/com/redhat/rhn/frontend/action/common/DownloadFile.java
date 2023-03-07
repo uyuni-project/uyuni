@@ -378,7 +378,7 @@ public class DownloadFile extends DownloadAction {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String path = "";
-        Map params = (Map) request.getAttribute(PARAMS);
+        Map<String, Object> params = (Map<String, Object>) request.getAttribute(PARAMS);
         String type = (String) params.get(TYPE);
         User currentUser = new RequestContext(request).getCurrentUser();
         if (type.equals(DownloadManager.DOWNLOAD_TYPE_KICKSTART)) {
@@ -517,7 +517,7 @@ public class DownloadFile extends DownloadAction {
             HttpServletRequest request, HttpServletResponse response,
                 String path) throws Exception {
 
-        Map params = (Map) request.getAttribute(PARAMS);
+        Map<String, Object> params = (Map<String, Object>) request.getAttribute(PARAMS);
         path = (String) params.get(FILENAME);
         if (log.isDebugEnabled()) {
             log.debug("getStreamInfo KICKSTART type, path: {}", path);
@@ -687,7 +687,7 @@ public class DownloadFile extends DownloadAction {
             log.debug("Final path before returning getStreamForPath(): {}", diskPath);
         }
         if (log.isDebugEnabled()) {
-            Enumeration e = request.getHeaderNames();
+            Enumeration<E> e = request.getHeaderNames();
             while (e.hasMoreElements()) {
                 String name = (String) e.nextElement();
                 log.debug("header: [{}]: {}", name, request.getHeader(name));
