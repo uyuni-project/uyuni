@@ -75,7 +75,7 @@ public class ChannelPackagesAction extends RhnAction {
 
 
 
-        DataResult result = PackageManager.listPackagesInChannelForList(cid);
+        DataResult<T> result = PackageManager.listPackagesInChannelForList(cid);
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set =  RhnSetDecl.PACKAGES_TO_REMOVE.get(user);
