@@ -489,7 +489,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
     }
 
     // Create the container for the "No Base Channel Currently" 'row' in our UI
-    protected SystemsPerChannelDto createNoneRow(DataResult noBase) {
+    protected SystemsPerChannelDto createNoneRow(DataResult<T> noBase) {
         SystemsPerChannelDto rslt;
         String none = localizationInstance.getMessage("none");
         rslt = new SystemsPerChannelDto();
