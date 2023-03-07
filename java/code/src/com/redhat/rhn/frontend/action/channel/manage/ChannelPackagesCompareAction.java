@@ -106,7 +106,7 @@ public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
         //Add Red Hat Base Channels, and custom base channels to the list, and if one
         //      is selected, select it
         List<SelectableChannel> chanList = findChannels(user, scid);
-        DataResult result = null;
+        DataResult<T> result = null;
 
 
         if (scid != 0) {
