@@ -120,7 +120,7 @@ public class AuditSearchAction extends RhnAction {
         return dpresults;
     }
 
-    private List prepareAuditTypes() {
+    private List<String> prepareAuditTypes() {
         BufferedReader brdr;
         LinkedList<String> typelist;
         Process proc;
@@ -167,7 +167,7 @@ public class AuditSearchAction extends RhnAction {
         DynaActionForm dform = (DynaActionForm)form;
         HttpSession session = request.getSession(true);
         JSONWriter jsonwr = new JSONWriter();
-        List result = null;
+        List<T> result = null;
         Long start, end, seqno, cacheSeqno;
         Map<String, String[]> typemap;
         RequestContext requestContext = new RequestContext(request);
