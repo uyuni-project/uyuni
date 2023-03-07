@@ -205,8 +205,14 @@ class ContentSource(zypper_ContentSource):
         self.repoid = repo.id
         try:
             self.dnfbase.repos[self.repoid].load()
-            # Don't use mirrors if there are none.
-            if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
+            # Don't use mirrors if there are none or if the mirror list is invalid.
+            try:
+                if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
+                    no_mirrors = True
+                    # Reload repo just in case.
+                    repo.mirrorlist = ""
+                    self.dnfbase.repos[self.repoid].load()
+            except:
                 no_mirrors = True
                 # Reload repo just in case.
                 repo.mirrorlist = ""
