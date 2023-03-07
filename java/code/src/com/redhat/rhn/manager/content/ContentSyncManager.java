@@ -741,12 +741,14 @@ public class ContentSyncManager {
             // cleanup if we come from scc
             allRepoAuths.stream()
                 .filter(a -> a.getOptionalCredentials().isPresent())
+                .filter(a -> a.cloudRmtAuth().isEmpty())
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
         }
         else {
             // cleanup if we come from "fromdir"
             allRepoAuths.stream()
                 .filter(a -> !a.getOptionalCredentials().isPresent())
+                .filter(a -> a.cloudRmtAuth().isEmpty())
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
         }
         allRepoAuths = null;
