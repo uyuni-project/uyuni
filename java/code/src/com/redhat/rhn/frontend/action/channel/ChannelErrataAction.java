@@ -54,7 +54,7 @@ public class ChannelErrataAction extends RhnAction {
 
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
 
-        DataResult result = ErrataManager.errataInChannel(cid);
+        DataResult<T> result = ErrataManager.errataInChannel(cid);
         TagHelper.bindElaboratorTo(LIST_NAME, result.getElaborator(), request);
 
         request.setAttribute("channel_name", chan.getName());
