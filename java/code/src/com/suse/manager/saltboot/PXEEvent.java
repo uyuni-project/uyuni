@@ -16,14 +16,10 @@
 package com.suse.manager.saltboot;
 
 import com.suse.salt.netapi.datatypes.Event;
-import com.suse.salt.netapi.parser.JsonParser;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -33,9 +29,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PXEEvent {
+    private static final Logger LOG = LogManager.getLogger(PXEEvent.class);
     private static final Pattern PATTERN = Pattern.compile("^suse/manager/pxe_update");
-
-    private static final Gson GSON = JsonParser.GSON;
 
     private final String minionId;
     private final Map<String, Object> data;
@@ -99,7 +94,7 @@ public class PXEEvent {
      * @return List of string of MAC addresses
      */
     public List<String> getHwAddresses() {
-        LinkedTreeMap<String, Object> macGrains = (LinkedTreeMap<String, Object>)data.get("hwaddr_interfaces");
+        Map<String, Object> macGrains = (Map<String, Object>)data.get("hwaddr_interfaces");
         return macGrains.entrySet().stream()
                 .filter(e -> !e.getKey().equals("lo"))
                 .map(e -> (String)e.getValue())
@@ -114,19 +109,20 @@ public class PXEEvent {
     public static Optional<PXEEvent> parse(Event event) {
         Matcher matcher = PATTERN.matcher(event.getTag());
         if (matcher.matches()) {
-            TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() {
-            };
             Map<String, Object> data;
 
             // Validate input data are not empty and correct format
             try {
-                data = GSON.fromJson((JsonObject) event.getData().get("data"), typeToken.getType());
+                data = (Map<String, Object>) event.getData().get("data");
             }
             catch (ClassCastException e) {
+                LOG.error("Parsing failed", e);
                 return Optional.empty();
             }
+            LOG.debug("Data: {}", data);
 
             if (data.isEmpty()) {
+                LOG.error("Empty data");
                 return Optional.empty();
             }
 
@@ -142,10 +138,12 @@ public class PXEEvent {
                     result.getMinionId().isEmpty() ||
                     result.getHwAddresses().isEmpty() ||
                     result.getBootImage().isEmpty()) {
+                    LOG.error("Missing required data: {}", data);
                     return Optional.empty();
                 }
             }
             catch (NullPointerException e) {
+                LOG.error("Parsing failed", e);
                 return Optional.empty();
             }
             return Optional.of(result);
