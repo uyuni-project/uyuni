@@ -68,7 +68,7 @@ public abstract class ProjectSource {
         /* the label for converting from string */
         private final String label;
         /* the source class for Hibernate Queries */
-        private final Class sourceClass;
+        private final Class<T> sourceClass;
 
         /**
          * Constructor
@@ -76,7 +76,7 @@ public abstract class ProjectSource {
          * @param labelIn the label
          * @param sourceClassIn the source class
          */
-        Type(String labelIn, Class sourceClassIn) {
+        Type(String labelIn, Class<T>sourceClassIn) {
             this.label = labelIn;
             this.sourceClass = sourceClassIn;
         }
@@ -95,7 +95,7 @@ public abstract class ProjectSource {
          *
          * @return the source class
          */
-        public Class getSourceClass() {
+        public Class<T> getSourceClass() {
             return sourceClass;
         }
 
@@ -122,7 +122,7 @@ public abstract class ProjectSource {
          * @throws java.lang.IllegalArgumentException if no matching type is found
          * @return the matching type
          */
-        public static Type lookupBySourceClass(Class sourceClass) {
+        public static Type lookupBySourceClass(Class<T> sourceClass) {
             for (Type value : values()) {
                 if (value.sourceClass.equals(sourceClass)) {
                     return value;

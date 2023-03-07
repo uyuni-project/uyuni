@@ -109,7 +109,7 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
         msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.xccdfeval.ssm"));
         strutsDelegate.saveMessages(request, msgs);
 
-        Map paramMap = makeParamMap(request);
+        Map<String, Object> paramMap = makeParamMap(request);
         paramMap.put("aid", scapAction.getId());
         return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 paramMap);

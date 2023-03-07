@@ -68,7 +68,7 @@ public class ManagersSetupAction extends RhnAction implements Listable<UserOverv
         request.setAttribute("is_custom", currentChan.isCustom());
         request.setAttribute(RequestContext.CID, cid);
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.CID, cid);
 
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);

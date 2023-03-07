@@ -85,7 +85,7 @@ public class PackageSearchHelper {
         args.add("package");
         args.add(preprocessSearchString(searchString, mode, pkgArchLabels));
         args.add(fineGrained);
-        List results = (List)client.invoke("index.search", args);
+        List<Object> results = (List<Object>)client.invoke("index.search", args);
 
         if (log.isDebugEnabled()) {
             log.debug("results = [{}]", results);
@@ -102,7 +102,7 @@ public class PackageSearchHelper {
         List<Long> pids = new ArrayList<>();
         Set<String> names = new HashSet<>();
         for (Object itemObject : results) {
-            Map item = (Map) itemObject;
+            Map<String, Object> item = (Map<String, Object>) itemObject;
             names.add((String) item.get("name"));
             Long pid = Long.valueOf((String)item.get("id"));
             pids.add(pid);
@@ -147,7 +147,7 @@ public class PackageSearchHelper {
         // Iterate through in the order that the search server returned, add packages
         // to the return list in the order they appear in the search results.
         for (Object resultObject : results) {
-            Map result = (Map) resultObject;
+            Map<String, Object> result = (Map<String, Object>) resultObject;
             Long pid = Long.valueOf((String)result.get("id"));
             if (pidToPackageMap.get(pid) != null) {
                 ordered.add(pidToPackageMap.get(pid));

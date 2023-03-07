@@ -56,26 +56,26 @@ public class XccdfSearchHelper extends RhnAction {
      * @throws XmlRpcException in the case of a serialization failure
      * @throws XmlRpcFault bad communication with search server
      */
-    public static DataResult performSearch(String searchString, String whereToSearch,
+    public static DataResult<T> performSearch(String searchString, String whereToSearch,
             Date startDate, Date endDate, String ruleResult, boolean returnTestResults,
             RequestContext context)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
-        ArrayList args = new ArrayList<>();
+        ArrayList<String> args = new ArrayList<>();
         args.add(context.getWebSession().getId().toString());
         args.add(IDENT_INDEX);
         args.add(preprocessSearchString(searchString));
         args.add(true); //fine grained
-        List searchResult = invokeSearchServer(INDEX_SEARCH, args);
+        List<String> searchResult = invokeSearchServer(INDEX_SEARCH, args);
         // searchResult contains id to rhnXccdfIdent relation,
         // while we want to return RuleResults
         List<Long> identIds = new ArrayList<>();
         for (int x = searchResult.size() - 1; x >= 0; x--) {
-            Map item = (Map) searchResult.get(x);
+            Map<String, Object> item = (Map) searchResult.get(x);
             Long id = Long.valueOf((String)item.get("id"));
             identIds.add(id);
         }
 
-        Map params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", context.getCurrentUser().getId());
         if (SYSTEM_LIST.equals(whereToSearch)) {
             params.put("slabel", SYSTEM_LIST);
@@ -108,7 +108,7 @@ public class XccdfSearchHelper extends RhnAction {
         return buf.toString().trim();
     }
 
-    private static List invokeSearchServer(String path, List args)
+    private static List<String> invokeSearchServer(String path, List<String> args)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);

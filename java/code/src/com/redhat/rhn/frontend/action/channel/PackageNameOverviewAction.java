@@ -54,7 +54,7 @@ public class PackageNameOverviewAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
 
-        List dr = Collections.emptyList();
+        List<T> dr = Collections.emptyList();
         if (StringUtils.equals(subscribedChannels, "yes")) {
             dr = PackageManager.lookupPackageNameOverview(
                     user.getOrg(), pkgName);

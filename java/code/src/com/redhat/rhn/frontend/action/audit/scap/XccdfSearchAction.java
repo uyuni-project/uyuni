@@ -64,7 +64,7 @@ public class XccdfSearchAction extends BaseSearchAction {
 
         if (!StringUtils.isBlank(searchString)) {
             picker.processDatePickers(getOptionScanDateSearch(request), false);
-            DataResult results = XccdfSearchHelper.performSearch(searchString,
+            DataResult<T> results = XccdfSearchHelper.performSearch(searchString,
                 whereToSearch, getPickerDate(request, "start"),
                 getPickerDate(request, "end"), getRuleResultLabel(form),
                 isTestestResultRequested(form), context);
@@ -151,7 +151,7 @@ public class XccdfSearchAction extends BaseSearchAction {
                 "system_list".equals(whereToSearch) ? whereToSearch : "all");
         setupRuleResultLabelOptions(request);
         setupShowAsOption(form);
-        Map m = form.getMap();
+        Map<K, V> m = form.getMap();
         Set<String> keys = m.keySet();
         for (String key : keys) {
             Object vObj = m.get(key);
