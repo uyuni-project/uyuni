@@ -26,8 +26,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.saltboot.PXEEvent;
 import com.suse.salt.netapi.datatypes.Event;
 
-import com.google.gson.JsonObject;
-
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,31 +47,31 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     private Map<String, Object> createTestData(String minionId, String saltbootGroup, String root, String saltDevice,
                                   String bootImage, String kernelOptions, boolean includeMACs) {
         Map<String, Object> data = new HashMap<>();
-        JsonObject jsonData = new JsonObject();
+        Map<String, Object> innerData = new HashMap<>();
         if (!saltbootGroup.isEmpty()) {
-            jsonData.addProperty("minion_id_prefix", saltbootGroup);
+            innerData.put("minion_id_prefix", saltbootGroup);
         }
         if (!root.isEmpty()) {
-            jsonData.addProperty("root", root);
+            innerData.put("root", root);
         }
         if (!saltDevice.isEmpty()) {
-            jsonData.addProperty("salt_device", saltDevice);
+            innerData.put("salt_device", saltDevice);
         }
         if (!bootImage.isEmpty()) {
-            jsonData.addProperty("boot_image", bootImage);
+            innerData.put("boot_image", bootImage);
         }
         if (!kernelOptions.isEmpty()) {
-            jsonData.addProperty("terminal_kernel_parameters", kernelOptions);
+            innerData.put("terminal_kernel_parameters", kernelOptions);
         }
         if (includeMACs) {
-            JsonObject hwAddrs = new JsonObject();
-            hwAddrs.addProperty("eth1", "00:11:22:33:44:55");
-            hwAddrs.addProperty("lo", "00:00:00:00:00:00");
-            jsonData.add("hwaddr_interfaces", hwAddrs);
+            Map<String, Object> hwAddrs = new HashMap<>();
+            hwAddrs.put("eth1", "00:11:22:33:44:55");
+            hwAddrs.put("lo", "00:00:00:00:00:00");
+            innerData.put("hwaddr_interfaces", hwAddrs);
         }
 
         data.put("id", minionId);
-        data.put("data", jsonData);
+        data.put("data", innerData);
 
         return data;
     }
