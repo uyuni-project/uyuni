@@ -1,3 +1,7 @@
+- Fix possible "NullPointerException" when clicking on
+  the "Create PXE installation configuration" button from Provising page
+- Fix possible "NullPointerException" issues when running cobbler-sync-bunch
+- Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 - Fix cobbler system entries for retail terminals (bsc#1208661)
 - Add missing text for user preferenaces page
