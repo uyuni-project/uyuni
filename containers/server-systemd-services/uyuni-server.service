@@ -30,9 +30,6 @@ ExecStart=/usr/bin/podman run \
 	-p 69:69 \
 	-p 25151:25151 \
 	-p 5432:5432 \
-#TODO these ports will be required in debug mode
-#	-p 8000:8000 \
-#	-p 8001:8001 \
 	-v cgroup:/sys/fs/cgroup:rw \
 	-v pgsql:/var/lib/pgsql \
 	-v var-cache:/var/cache \
