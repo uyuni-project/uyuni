@@ -49,26 +49,5 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:%PKG_VERSION%.%RELEASE%"
 # endlabelprefix
 
-EXPOSE 443/tcp
-EXPOSE 80/tcp
-# Salt
-EXPOSE 4505/tcp
-EXPOSE 4506/tcp
-# PXE server
-EXPOSE 69/udp
-# Cobbler
-EXPOSE 25151/tcp
-# Postgres for report db
-EXPOSE 5432/tcp
-# HTTP ssh tunnel
-#EXPOSE 1232/tcp
-# HTTPS ssh tunnel
-#EXPOSE 1233/tcp
-#TODO these ports should be exposed in debug mode
-# Tomcat remote debug
-#EXPOSE 8000/tcp
-# Taskomatic remote debug
-#EXPOSE 8001/tcp
-
 CMD ["/usr/lib/systemd/systemd"]
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
