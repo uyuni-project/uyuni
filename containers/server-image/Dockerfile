@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/server:latest uyuni/server:4.4.0-1 uyuni/server:4.4.0-1.%RELEASE%
+#!BuildTag: uyuni/server:latest uyuni/server:%PKG_VERSION% uyuni/server:%PKG_VERSION%.%RELEASE%
 
 ARG INIT_BASE=registry.suse.com/bci/bci-base:15.4
 FROM $INIT_BASE
@@ -16,18 +16,17 @@ COPY setup_env.sh /root/setup_env.sh
 COPY uyuni-setup.service /usr/lib/systemd/system/
 
 # Main packages
+COPY remove_unused.sh .  
+RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # TODO Remove vi and possibly python3-simplejson
 RUN zypper ref
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${PRODUCT_PATTERN} \
     javamail \
     libyui-ncurses-pkg16 \
     vim \
     python3-simplejson
 
-
-# FIXME hack to correct the report db script to work on containers
-RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN systemctl enable uyuni-setup
