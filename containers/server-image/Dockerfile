@@ -9,7 +9,7 @@ ARG PRODUCT_PATTERN="patterns-uyuni_server"
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
-RUN sh add_repos.sh
+RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Copy Uyuni setup script
 COPY setup_env.sh /root/setup_env.sh
