@@ -873,7 +873,16 @@ public class FormulaFactory {
                 return Collections.emptyMap();
             }
         }
+        catch (YAMLException e) {
+            LOG.error("Unable to parse metadata file: " + name, e);
+            return Collections.emptyMap();
+        }
         catch (IOException e) {
+            LOG.error("IO Error at metadata file: " + name, e);
+            return Collections.emptyMap();
+        }
+        catch (Exception e) {
+            LOG.error("Error in metadata file: " + name, e);
             return Collections.emptyMap();
         }
     }
