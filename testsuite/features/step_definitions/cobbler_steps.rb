@@ -232,7 +232,11 @@ When(/^I copy autoinstall mocked files on server$/) do
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
-When(/^I synchronize the tftp configuration on the proxy with the server$/) do
+When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
+  if checking == 'with'
   out, _code = $server.run('cobbler sync')
   raise 'cobbler sync failed' if out.include? 'Push failed'
+  else
+    _out, _code = $server.run('cobbler sync')
+  end
 end

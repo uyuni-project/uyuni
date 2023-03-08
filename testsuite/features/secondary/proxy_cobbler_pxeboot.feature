@@ -1,6 +1,5 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
 
 @proxy
 @private_net
@@ -78,11 +77,11 @@ Feature: PXE boot a terminal with Cobbler
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
-  Scenario: Set up tftp installation
+  Scenario: Set up tftp installation and synchronize it
     When I configure tftp on the "server"
     And I start tftp on the proxy
     And I configure tftp on the "proxy"
-    And I synchronize the tftp configuration on the proxy with the server
+    And I run Cobbler sync with error checking
 
   Scenario: Restart squid so proxy.example.org is recognized
     When I restart squid service on the proxy
