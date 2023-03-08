@@ -103,6 +103,10 @@ When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   $server.run("salt-key -y --accept=#{system_name}*")
 end
 
+When(/^I list all Salt keys shown on the Salt master$/) do
+  $server.run("salt-key --list-all", check_errors: false, verbose: true)
+end
+
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   system_name = get_system_name(host)
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
@@ -157,6 +161,10 @@ end
 # user salt steps
 When(/^I click on preview$/) do
   find('button#preview').click
+end
+
+When(/^I click on stop waiting$/) do
+  find('button#stop').click
 end
 
 When(/^I click on run$/) do
@@ -516,4 +524,18 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
+end
+
+When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
+  node = get_target(host)
+  system_name = node.full_hostname
+  migrate = "salt #{system_name} state.apply util.mgr_switch_to_venv_minion"
+  $server.run(migrate, check_errors: true, verbose: true)
+end
+
+When(/^I purge salt-minion on "([^"]*)" after a migration$/) do |host|
+  node = get_target(host)
+  system_name = node.full_hostname
+  cleanup = %(salt #{system_name} state.apply util.mgr_switch_to_venv_minion pillar='{"mgr_purge_non_venv_salt_files": True, "mgr_purge_non_venv_salt": True}')
+  $server.run(cleanup, check_errors: true, verbose: true)
 end
