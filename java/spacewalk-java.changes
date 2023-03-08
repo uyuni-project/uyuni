@@ -1,3 +1,4 @@
+- Save scheduler user when creating Patch actions manually (bsc#1208321)
 - Fix cobbler system entries for retail terminals (bsc#1208661)
 - Add missing text for user preferenaces page
 - Hide install option for RHEL9+ kickstarts
