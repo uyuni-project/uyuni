@@ -128,7 +128,7 @@ class NamespaceSystem
   end
 
   ##
-  # Creates a system record in the Satellite 6 server.
+  # Creates a system record on the Spacewalk server.
   #
   # Args:
   #   name: The name of the system record.
@@ -165,6 +165,17 @@ class NamespaceSystem
   #   server: The server ID of the server you want to reactivate.
   def obtain_reactivation_key(server)
     @test.call('system.obtainReactivationKey', sessionKey: @test.token, sid: server)
+  end
+
+  ##
+  # Sets a list of kickstart variables in the Cobbler system record for the specified server.
+  #
+  # Args:
+  #   server: The server ID of the server you want to reactivate
+  #   netboot: Enabled by default here
+  #   variables: A list of system kickstart variables to set
+  def set_variables(server, variables)
+    @test.call('system.setVariables', sessionKey: @test.token, sid: server, netboot: true, variables: variables)
   end
 end
 

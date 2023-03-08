@@ -54,6 +54,18 @@ When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct.system_remove(system)
 end
 
+When(/^I remove profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = ::CobblerTest.new
+  ct.login(user, pwd)
+  ct.profile_remove(system)
+end
+
+When(/^I remove distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = ::CobblerTest.new
+  ct.login(user, pwd)
+  ct.distro_remove(system)
+end
+
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
   # -------------------------------
@@ -234,8 +246,8 @@ end
 
 When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
   if checking == 'with'
-  out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failed' if out.include? 'Push failed'
+    out, _code = $server.run('cobbler sync')
+    raise 'cobbler sync failed' if out.include? 'Push failed'
   else
     _out, _code = $server.run('cobbler sync')
   end

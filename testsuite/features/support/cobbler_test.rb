@@ -237,4 +237,173 @@ class CobblerTest
     end
     result
   end
+
+  ##
+  # Modifies a profile and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-profile
+  # Args:
+  #   name: The name of the profile
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def profile_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
+      profile = @server.call('get_profile_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Profile with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_profile', profile, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying profile failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_profile', profile, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving profile failed. #{$ERROR_INFO}")
+    end
+    profile
+  end
+
+  ##
+  # Modifies a distribution and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-distro
+  # Args:
+  #   name: The name of the distribution
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def distro_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
+      distro = @server.call('get_distro_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Distribution with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_distro', distro, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying distribution failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_distro', distro, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving distribution failed. #{$ERROR_INFO}")
+    end
+    distro
+  end
+
+  ##
+  # Modifies a system and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-system
+  # Args:
+  #   name: The name of the system
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def system_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
+      system = @server.call('get_system_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "System with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_system', system, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying system failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_system', system, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving system failed. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Removes a distribution from the Spacewalk server.
+  #
+  # The first thing this function does is check to see if the distribution exists. If it doesn't, it raises an error.
+  # If it does, it calls the remove_distro function on the Spacewalk server. If that fails, it raises an error.
+  #
+  # Args:
+  #   name: The name of the distribution to be removed.
+  def distro_remove(name)
+    raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless distro_exists(name)
+    begin
+      @server.call('remove_distro', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Deleting distribution failed. #{$ERROR_INFO}")
+    end
+  end
+
+  ##
+  # Removes a profile from the Spacewalk server.
+  #
+  # The first thing this function does is check to see if the profile exists. If it doesn't, it raises an error. If it
+  # does, it calls the remove_profile function on the Spacewalk server. If that fails, it raises an error.
+  #
+  # Args:
+  #   name: The name of the profile to be removed.
+  def profile_remove(name)
+    raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless profile_exists(name)
+    begin
+      @server.call('remove_profile', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Deleting profile failed. #{$ERROR_INFO}")
+    end
+  end
+
+  ##
+  # Get a handle for a system.
+  #
+  # Get a handle for a system which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the system to get the ID of
+  def get_system_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
+      system = @server.call('get_system_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "System with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Get a handle for a profile.
+  #
+  # Get a handle for a profile which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the profile to get the ID of
+  def get_profile_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
+      system = @server.call('get_profile_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Profile with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Get a handle for a distribution.
+  #
+  # Get a handle for a distribution which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the distribution to get the ID of
+  def get_distro_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
+      system = @server.call('get_distro_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Distribution with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
+  end
 end

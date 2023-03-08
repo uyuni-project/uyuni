@@ -67,6 +67,11 @@ When(/^I create a system record$/) do
   $api_test.system.create_system_record('testserver', 'fedora_kickstart_profile_upload', '', 'my test server', [dev])
 end
 
+When(/^I create a system record with name "([^"]*)" and kickstart label "([^"]*)"$/) do |name, label|
+  dev = { 'name' => 'eth0', 'ip' => '1.1.1.2', 'mac' => '00:22:22:77:EE:DD', 'dnsname' => 'testserver.example.com' }
+  $api_test.system.create_system_record(name, label, '', 'my test server', [dev])
+end
+
 When(/^I wait for the OpenSCAP audit to finish$/) do
   @sle_id = $api_test.system.retrieve_server_id($minion.full_hostname)
   begin
@@ -606,4 +611,12 @@ end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
   assert($output.select { |p| p['name'] == profile_name }.count == 1)
+end
+
+When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)" via XML-RPC$/) do |name, hostname, values|
+  system_id = $api_test.system.create_system_profile(name, 'hostname' => hostname)
+  STDOUT.puts "system_id: #{system_id}"
+  # this works only with a 2 column table where the key is in the left column
+  variables = values.rows_hash
+  _command = $api_test.system.set_variables(system_id, variables)
 end
