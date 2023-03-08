@@ -72,6 +72,14 @@ spacewalk-service stop
 systemctl stop postgresql
 ```
 
+Create a password-less SSH key and create a kubernetes secret with it:
+
+```
+ssh-keygen
+kubectl create secret generic migration-ssh-key --from-file=id_rsa=$HOME/.ssh/id_rsa --from-file=id_rsa.pub=$HOME/.ssh/id_rsa.pub
+```
+Add the generated public key to the server to migrate authorized keys.
+
 Run the migration job:
 
 ```
