@@ -1,6 +1,7 @@
 # Copyright 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@ubuntu1804_minion
 Feature: Add Ubuntu common channels and schedule their synchronization
   In order to use external repositories for Ubuntu that are not in SCC
   As an authorized user

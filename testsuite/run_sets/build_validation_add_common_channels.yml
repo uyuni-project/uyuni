@@ -3,7 +3,6 @@
 ## Add common channels and special repositories BEGIN ###
 
 - features/build_validation/add_custom_repositories/add_ubuntu_repositories.feature
-- features/build_validation/add_custom_repositories/srv_prepare_clm_filters.feature
 - features/build_validation/add_custom_repositories/add_alma9_repositories.feature
 - features/build_validation/add_custom_repositories/add_centos7_repositories.feature
 - features/build_validation/add_custom_repositories/add_liberty9_repositories.feature

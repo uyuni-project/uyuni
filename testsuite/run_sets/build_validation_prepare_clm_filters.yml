@@ -1,0 +1,7 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## Add clm for rhel BEGIN ###
+
+- features/build_validation/add_custom_repositories/srv_prepare_clm_filters.feature
+
+## Add clm for rhel END ###
