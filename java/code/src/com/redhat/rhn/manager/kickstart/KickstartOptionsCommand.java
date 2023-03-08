@@ -73,6 +73,10 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
             log.debug("avail commandname: {}", cn.getName());
 
             String name = cn.getName();
+            if (getKickstartData().getInstallType().isRhel9OrGreater() && name.equals("install")) {
+                log.debug("install is not supported on RHEL 9 or greater, don't show it");
+                continue;
+            }
             boolean added = false;
             for (KickstartCommand c : options) {
                 if (c.getCommandName().getName().equals(name)) {

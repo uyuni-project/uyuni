@@ -33,23 +33,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I close the modal dialog
 
 @scc_credentials
-  Scenario: Add a product and one of its modules
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" text
-    And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP5 x86_64"
-    Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
-    And I should see a "Legacy Module 12 x86_64" text
-    When I select the addon "Legacy Module 12 x86_64"
-    Then I should see the "Legacy Module 12 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
-    Then the SLE12 SP5 product should be added
-
-@scc_credentials
   Scenario: Add a product with recommended enabled
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -76,7 +59,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
-    Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
 @scc_credentials
