@@ -1,3 +1,7 @@
+- Fix possible "NullPointerException" when clicking on
+  the "Create PXE installation configuration" button from Provising page
+- Fix possible "NullPointerException" issues when running cobbler-sync-bunch
+- Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
 - Set jasper development mode to false (bsc#1206191)
 - Fixed select all for ptf packages list
 - Added SLES 12 support for ptf removal
