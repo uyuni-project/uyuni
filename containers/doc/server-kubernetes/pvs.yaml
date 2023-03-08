@@ -32,7 +32,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: var-cache 
+  name: var-cache
   labels:
     data: var-cache
 spec:
@@ -56,7 +56,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: var-spacewalk 
+  name: var-spacewalk
   labels:
     data: var-spacewalk
 spec:
@@ -344,7 +344,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: etc-apache2 
+  name: etc-apache2
   labels:
     data: etc-apache2
 spec:
@@ -474,6 +474,29 @@ spec:
   storageClassName: local-storage
   local:
     path: /var/uyuni/etc-cobbler
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-sysconfig
+  labels:
+    data: etc-sysconfig
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-sysconfig
   nodeAffinity:
     required:
       nodeSelectorTerms:

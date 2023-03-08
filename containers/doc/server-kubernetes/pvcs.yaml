@@ -271,7 +271,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: etc-tomcat 
+  name: etc-tomcat
 spec:
   accessModes:
     - ReadWriteOnce
@@ -286,7 +286,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: etc-cobbler 
+  name: etc-cobbler
 spec:
   accessModes:
     - ReadWriteOnce
@@ -297,6 +297,21 @@ spec:
   selector:
     matchLabels:
       data: etc-cobbler
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-sysconfig
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-sysconfig
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

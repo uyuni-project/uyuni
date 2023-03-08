@@ -63,6 +63,35 @@ In order to tell k3s to not pull the image, add `imagePullPolicy: Never` to all 
 sed 's/^\( \+\)image:\(.*\)$/\1image: \2\n\1imagePullPolicy: Never/' -i server.yaml
 ```
 
+### Migrating from a regular server
+
+Stop the source services:
+
+```
+spacewalk-service stop
+systemctl stop postgresql
+```
+
+Run the migration job:
+
+```
+kubectl apply -f migration-job.yaml
+```
+
+To follow the progression of the process, check the generated container log:
+
+```
+kubectl logs (kubectl get pod -ljob-name=uyuni-migration -o custom-columns=NAME:.metadata.name --no-hea
+ders)
+```
+
+Once done, both the job and its pod will remain until the user deletes them to allow checking logs.
+
+Proceed with the next steps.
+
+***Hostname***: this procedure doesn't handle any hostname change.
+Certificates migration also needs to be documented, but that can be guessed for now with the instructions to setup a server from scratch.
+
 ### Deploy the pod and its resources
 
 Create the TLS secret holding the server SSL certificates:

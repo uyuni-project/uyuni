@@ -7,126 +7,322 @@ metadata:
   name: uyuni
 spec:
   initContainers:
+  - name: init-etc-tls
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/pki/tls /mnt;
+        chmod --reference=/etc/pki/tls /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/pki/tls/* /mnt;
+          ln -s /etc/pki/spacewalk-tls/spacewalk.crt /mnt/certs/spacewalk.crt;
+          ln -s /etc/pki/spacewalk-tls/spacewalk.key /mnt/private/spacewalk.key;
+          cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/private/pg-spacewalk.key;
+          chown postgres:postgres /mnt/private/pg-spacewalk.key;
+        fi
+    volumeMounts:
+      - mountPath: /mnt
+        name: etc-tls
+      - name: tls-key
+        mountPath: /etc/pki/spacewalk-tls
   - name: init-var-pgsql
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/var/lib/pgsql /mnt; chmod --reference=/var/lib/pgsql /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rf /var/lib/pgsql/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/var/lib/pgsql /mnt;
+        chmod --reference=/var/lib/pgsql /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /var/lib/pgsql)" ]; then
+          cp -rf /var/lib/pgsql/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: var-pgsql
   - name: init-var-cache
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/var/cache /mnt; chmod --reference=/var/cache /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /var/cache/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/var/cache /mnt;
+        chmod --reference=/var/cache /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /var/cache)" ]; then
+          cp -rp /var/cache/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: var-cache
   - name: init-var-log
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/var/log /mnt; chmod --reference=/var/log /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /var/log/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/var/log /mnt;
+        chmod --reference=/var/log /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /var/log)" ]; then
+          cp -rp /var/log/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: var-log
   - name: init-srv-salt
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/salt /mnt; chmod --reference=/srv/salt /mnt']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/salt /mnt;
+        chmod --reference=/srv/salt /mnt
     volumeMounts:
       - mountPath: /mnt
         name: srv-salt
   - name: init-srv-www-pub
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/www/htdocs/pub /mnt; chmod --reference=/srv/www/htdocs/pub /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/www/htdocs/pub/* /mnt; ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt/RHN-ORG-TRUSTED-SSL-CERT; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/www/htdocs/pub /mnt;
+        chmod --reference=/srv/www/htdocs/pub /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/www/htdocs/pub)" ]; then
+          cp -rp /srv/www/htdocs/pub/* /mnt;
+          ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt/RHN-ORG-TRUSTED-SSL-CERT;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-www-pub
   - name: init-srv-www-cobbler
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/www/cobbler /mnt; chmod --reference=/srv/www/cobbler /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/www/cobbler/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/www/cobbler /mnt;
+        chmod --reference=/srv/www/cobbler /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/www/cobbler)" ]; then
+          cp -rp /srv/www/cobbler/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-www-cobbler
   - name: init-srv-www-osimages
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/www/os-images /mnt; chmod --reference=/srv/www/os-images /mnt']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/www/os-images /mnt;
+        chmod --reference=/srv/www/os-images /mnt
     volumeMounts:
       - mountPath: /mnt
         name: srv-www-osimages
   - name: init-srv-tftpboot
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/tftpboot /mnt; chmod --reference=/srv/tftpboot /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/tftpboot/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/tftpboot /mnt;
+        chmod --reference=/srv/tftpboot /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/tftpboot)" ]; then
+          cp -rp /srv/tftpboot/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-tftpboot
   - name: init-srv-formulametadata
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/formula_metadata /mnt; chmod --reference=/srv/formula_metadata /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/formula_metadata/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/formula_metadata /mnt;
+        chmod --reference=/srv/formula_metadata /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/formula_metadata)" ]; then
+          cp -rp /srv/formula_metadata/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-formulametadata
   - name: init-srv-pillar
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/pillar /mnt; chmod --reference=/srv/pillar /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/pillar/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/pillar /mnt;
+        chmod --reference=/srv/pillar /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/pillar)" ]; then
+          cp -rp /srv/pillar/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-pillar
   - name: init-srv-susemanager
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/susemanager /mnt; chmod --reference=/srv/susemanager /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/susemanager/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/susemanager /mnt;
+        chmod --reference=/srv/susemanager /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/susemanager)" ]; then
+          cp -rp /srv/susemanager/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-susemanager
   - name: init-srv-spacewalk
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/srv/spacewalk /mnt; chmod --reference=/srv/spacewalk /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /srv/spacewalk/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/srv/spacewalk /mnt;
+        chmod --reference=/srv/spacewalk /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /srv/spacewalk)" ]; then
+          cp -rp /srv/spacewalk/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: srv-spacewalk
   - name: init-root
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/root /mnt; chmod --reference=/root /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /root/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/root /mnt;
+        chmod --reference=/root /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /root)" ]; then
+          cp -rp /root/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: root
   - name: init-etc-apache2
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/apache2 /mnt; chmod --reference=/etc/apache2 /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/apache2/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/apache2 /mnt;
+        chmod --reference=/etc/apache2 /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/apache2/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-apache2
   - name: init-etc-rhn
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/rhn /mnt; chmod --reference=/etc/rhn /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/rhn/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/rhn /mnt;
+        chmod --reference=/etc/rhn /mnt;
+        if [ -z "$(ls -A /mnt)" -a -n "$(ls -A /etc/rhn)" ]; then
+          cp -rp /etc/rhn/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-rhn
   - name: init-etc-systemd
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/systemd/system/multi-user.target.wants /mnt; chmod --reference=/etc/systemd/system/multi-user.target.wants /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/systemd/system/multi-user.target.wants/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/systemd/system/multi-user.target.wants /mnt;
+        chmod --reference=/etc/systemd/system/multi-user.target.wants /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/systemd/system/multi-user.target.wants/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-systemd
   - name: init-etc-salt
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/salt /mnt; chmod --reference=/etc/salt /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/salt/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/salt /mnt;
+        chmod --reference=/etc/salt /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/salt/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-salt
   - name: init-etc-tomcat
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/tomcat /mnt; chmod --reference=/etc/tomcat /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/tomcat/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/tomcat /mnt;
+        chmod --reference=/etc/tomcat /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/tomcat/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-tomcat
   - name: init-etc-cobbler
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/cobbler /mnt; chmod --reference=/etc/cobbler /mnt; if [ -z "$(ls -A /mnt)" ]; then cp -rp /etc/cobbler/* /mnt;fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/cobbler /mnt;
+        chmod --reference=/etc/cobbler /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/cobbler/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
         name: etc-cobbler
-  - name: dir-init-tls
+  - name: init-etc-sysconfig
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-    command: ['sh', '-c', 'chown --reference=/etc/pki/tls /mnt; chmod --reference=/etc/pki/tls /mnt; if [ -z "$(ls -A /mnt)" ]; then ln -s /etc/pki/spacewalk-tls/spacewalk.crt /etc/pki/tls/certs/spacewalk.crt; ln -s /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/spacewalk.key; cp /etc/pki/spacewalk-tls/spacewalk.key /etc/pki/tls/private/pg-spacewalk.key; chown postgres:postgres /etc/pki/tls/private/pg-spacewalk.key; cp -rp /etc/pki/tls/* /mnt; fi']
+    command:
+      - sh
+      - -x
+      - -c
+      - >
+        chown --reference=/etc/sysconfig /mnt;
+        chmod --reference=/etc/sysconfig /mnt;
+        if [ -z "$(ls -A /mnt)" ]; then
+          cp -rp /etc/sysconfig/* /mnt;
+        fi
     volumeMounts:
       - mountPath: /mnt
-        name: etc-tls
+        name: etc-sysconfig
   containers:
   - name: uyuni
     image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
@@ -191,6 +387,8 @@ spec:
         name: etc-tomcat
       - mountPath: /etc/cobbler
         name: etc-cobbler
+      - mountPath: /etc/sysconfig
+        name: etc-sysconfig
       - mountPath: /etc/pki/tls
         name: etc-tls
       - name: ca-cert
@@ -272,6 +470,9 @@ spec:
   - name: etc-cobbler
     persistentVolumeClaim:
       claimName: etc-cobbler
+  - name: etc-sysconfig
+    persistentVolumeClaim:
+      claimName: etc-sysconfig
   - name: ca-cert
     configMap:
       name: uyuni-ca
