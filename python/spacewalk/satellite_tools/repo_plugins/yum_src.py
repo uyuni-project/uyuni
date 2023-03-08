@@ -85,6 +85,9 @@ RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-f
 APACHE_USER = 'wwwrun'
 APACHE_GROUP = 'www'
 
+# possible urlgrabber errno
+NO_MORE_MIRRORS_TO_TRY = 256
+
 class ZyppoSync:
     """
     This class prepares a environment for running Zypper inside a dedicated reposync root
@@ -1092,7 +1095,7 @@ type=rpm-md
             mirror_group.urlgrab(url, media_products_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code") and exc.errno != 256:
+            if not hasattr(exc, "code") and exc.errno != NO_MORE_MIRRORS_TO_TRY:
                 msg = "ERROR: Media product file download failed: %s - %s" % (
                     url,
                     exc.strerror,
