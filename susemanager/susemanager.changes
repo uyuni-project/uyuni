@@ -1,3 +1,5 @@
+- Remove non-salt-bundle packages from repositories for SLE12,
+  CentOS7 and clones
 - Replace apache group to root for RHEL.
 
 -------------------------------------------------------------------
