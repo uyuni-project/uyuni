@@ -13,3 +13,7 @@ Restart the `uyuni-server` service is required to apply the change.
 
 You can get logs from the `journalctl -xeu uyuni-server.service` services using `journalctl`.
 You can also use `podman logs` using the same names.
+
+# Limitations
+- get rid of some mounts and include them into the image
+- hostname and REPORT_DB_HOST should be configurable by the user
