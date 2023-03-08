@@ -62,6 +62,7 @@ ExecStart=/usr/bin/podman run \
 	-v etc-cobbler:/etc/cobbler \
 	-v var-lib-cobbler:/var/lib/cobbler \
 	-v home:/home \
+        -v etc-sysconfig:/etc/sysconfig \
     --hostname uyuni-server \
 	--name uyuni-server ${NAMESPACE}/server:${TAG}
 ExecStop=/usr/bin/podman stop \
