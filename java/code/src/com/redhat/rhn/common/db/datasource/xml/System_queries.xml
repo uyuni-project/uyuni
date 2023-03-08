@@ -226,7 +226,7 @@ SELECT COUNT(S.id) AS count
   </query>
 </mode>
 
-<mode name="systems_subscribed_to_channel">
+<mode name="systems_subscribed_to_channel" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, cid, user_id">
 SELECT
        S.id as id,
