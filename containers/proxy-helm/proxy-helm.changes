@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Feb 21 13:14:10 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
-- Update the chart version to 2023.02
+- Update the chart version to 2023.03
   * Default log_level to 1
 
 -------------------------------------------------------------------

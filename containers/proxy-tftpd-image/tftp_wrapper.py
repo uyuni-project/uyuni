@@ -33,6 +33,9 @@ class HttpResponseData(ResponseData):
     def __init__(self, url, capath):
         # request file by url and store it
         self._request = requests.get(url, stream=True, verify=capath)
+        if self._request.status_code == 404:
+            raise FileNotFoundError()
+        self._request.raise_for_status()
         self._stream = self._request.iter_content(chunk_size=1024)
         self._content = b''
     def read(self, requested):
@@ -82,7 +85,7 @@ class TFTPHandler(BaseHandler):
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
             logging.debug(f"Got request for {path}, ignoring")
-            return StringResponseData("")
+            raise FileNotFoundError()
         # The rest get from http
         logging.debug(f"Got request for {path}, forwarding to HTTP")
         return HttpResponseData(f"https://{target}/tftp/{path}", capath)

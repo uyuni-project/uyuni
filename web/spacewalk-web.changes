@@ -1,3 +1,13 @@
+- Fix UI inconsistencies in susemanager-light and susemanager-dark
+  theme
+- Deprecate jQuery datepicker, integrate React datepicker
+
+-------------------------------------------------------------------
+Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.9-1
+  * Update the version for the WebUI
+
 -------------------------------------------------------------------
 Tue Feb 21 14:12:36 CET 2023 - jgonzalez@suse.com
 

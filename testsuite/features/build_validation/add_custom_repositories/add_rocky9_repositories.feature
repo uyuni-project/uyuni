@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @rocky9_minion
@@ -10,28 +10,10 @@ Feature: Add the Rocky 9 distribution custom repositories
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Create CLM filters to remove AppStream metadata from Rocky 9
+  Scenario: Verify the CLM filters we need for Rocky 9 exist
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click on "Create Filter"
-    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    And I enter "ruby-3.1" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "ruby" as "moduleName"
-    And I enter "3.1" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
     Then I should see a "ruby-3.1" text
-    When I click on "Create Filter"
-    Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    When I enter "php-8.1" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "php" as "moduleName"
-    And I enter "8.1" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
-    Then I should see a "php-8.1" text
+    And I should see a "php-8.1" text
 
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 9
     When I follow the left menu "Content Lifecycle > Projects"

@@ -1,4 +1,7 @@
 - Tune the dabase after copying the old configuration (bsc#1208611)
+- Remove non-salt-bundle packages from repositories for SLE12,
+  CentOS7 and clones
+- Replace apache group to root for RHEL.
 
 -------------------------------------------------------------------
 Tue Feb 21 14:10:57 CET 2023 - jgonzalez@suse.com
