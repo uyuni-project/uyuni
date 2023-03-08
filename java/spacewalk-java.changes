@@ -1,3 +1,4 @@
+- Fix systems subscribed to channel CSV download (bsc#1201063)
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 - Fix cobbler system entries for retail terminals (bsc#1208661)
 - Add missing text for user preferenaces page
