@@ -116,7 +116,6 @@ namespace :utils do
   task :generate_create_bootstrap_repositories_features do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'ssh'}
-    clients.reject! { |client| client.include? 'monitoring_server' }
     clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',

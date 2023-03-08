@@ -23,6 +23,8 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Network;
@@ -34,6 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SaltbootUtils {
+    private static final Logger LOG = LogManager.getLogger(SaltbootUtils.class);
     private SaltbootUtils() { }
 
     /**
@@ -190,7 +193,9 @@ public class SaltbootUtils {
         }
 
         // We need to append associated saltboot group settings, particularly MASTER
-        kernelParams += group.getKernelOptions();
+        kernelParams = kernelParams + group.getKernelOptions().map(opt -> group.convertOptionsMap(opt)).orElse("");
+
+        LOG.debug("Creating saltboot system entry, params: {}", kernelParams);
 
         String name = org.getId() + "-" + minionId;
         SystemRecord system = SystemRecord.lookupByName(con, name);
@@ -204,6 +209,7 @@ public class SaltbootUtils {
             return k;
         }).collect(Collectors.toList());
         system.setNetworkInterfaces(networks);
+        system.enableNetboot(true);
         system.save();
     }
 
