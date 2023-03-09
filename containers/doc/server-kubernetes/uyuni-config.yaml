@@ -1,33 +1,25 @@
 apiVersion: v1
 data:
-  setup_env.sh: |
-    MANAGER_USER="spacewalk"
-    MANAGER_PASS="spacewalk"
-    MANAGER_ADMIN_EMAIL="galaxy-noise@suse.de"
-    CERT_O="SUSE"
-    CERT_OU="SUSE"
-    CERT_CITY="Nuernberg"
-    CERT_STATE="Bayern"
-    CERT_COUNTRY="DE"
-    CERT_EMAIL="galaxy-noise@suse.de"
-    CERT_PASS="spacewalk"
-    USE_EXISTING_CERTS="N"
-    MANAGER_DB_NAME="susemanager"
-    MANAGER_DB_HOST="localhost"
-    MANAGER_DB_PORT="5432"
-    MANAGER_DB_PROTOCOL="TCP"
-    MANAGER_ENABLE_TFTP="Y"
-    SCC_USER=""
-    SCC_PASS=""
-    REPORT_DB_HOST="uyuni-dev.world-co.com"
-    #REPORT_DB_PORT="5432"
-    #REPORT_DB_NAME="reportdb"
-    #REPORT_DB_USER="pythia_susemanager"
-    #REPORT_DB_PASS="pythia_susemanager"
-    NO_SSL="Y"
-    MANAGER_MAIL_FROM="notifications@uyuni-dev.world-co.com"
-    HOSTNAME="uyuni-dev.world-co.com"
+  MANAGER_USER: "spacewalk"
+  MANAGER_ADMIN_EMAIL: "galaxy-noise@suse.de"
+  MANAGER_DB_NAME: susemanager
+  MANAGER_DB_HOST: localhost
+  MANAGER_DB_PORT: "5432"
+  MANAGER_DB_PROTOCOL: "TCP"
+  MANAGER_ENABLE_TFTP: "Y"
+  REPORT_DB_HOST: "uyuni-dev.world-co.com"
+  NO_SSL: "Y"
+  MANAGER_MAIL_FROM: "notifications@uyuni-dev.world-co.com"
+  HOSTNAME: "uyuni-dev.world-co.com"
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
   name: uyuni-config
+---
+apiVersion: v1
+data:
+  MANAGER_PASS: c3BhY2V3YWxr 
+  SCC_USER: ""
+  SCC_PASS: ""
+kind: Secret
+metadata:
+  name: uyuni-secret
