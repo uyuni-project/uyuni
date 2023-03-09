@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -34,26 +34,26 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I see "SLES12-SP5-Pool for x86_64" text
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I exclude the recommended child channels
     And I click on "Save"
-    And I wait until I see "SLES12-SP5-Pool for x86_64" text
+    And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @uyuni
   Scenario: Verify added sources for Uyuni
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "SLES12-SP5-Updates for x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
 
 @susemanager
   Scenario: Verify added sources for SUSE Manager
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
-    And I should see a "SLES12-SP5-Updates for x86_64" text
-    And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
+    Then I should see a "SLE-Manager-Tools15-Updates for x86_64 SP4" text
+    And I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
+    And I should see a "SLE-Manager-Tools15-Pool for x86_64 SP4" text
     And I should see a "Build (4)" text
 
   Scenario: Add environments to the project
@@ -129,6 +129,7 @@ Feature: Content lifecycle
     And I follow "clp_name"
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
+    And I uncheck "Vendors"
     And I add the "Fake Base Channel" channel to sources
     And I click on "Save"
     Then I wait until I see "Fake Base Channel" text
@@ -159,19 +160,19 @@ Feature: Content lifecycle
     Then I should not see a "clp_name" text
 
 @uyuni
-  Scenario: Cleanup: remove the created channels for Uyni
+  Scenario: Cleanup: remove the created channels for Uyuni
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
-      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-prod_label-sle-product-sles15-sp4-updates-x86_64|
       |clp_label-qa_label-fake_base_channel|
-      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-sle-product-sles15-sp4-updates-x86_64|
       |clp_label-dev_label-fake_base_channel|
-      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-sle-product-sles15-sp4-updates-x86_64|
     And I delete these channels with spacewalk-remove-channel:
-      |clp_label-prod_label-sles12-sp5-pool-x86_64|
-      |clp_label-qa_label-sles12-sp5-pool-x86_64|
-      |clp_label-dev_label-sles12-sp5-pool-x86_64|
-    When I list channels with spacewalk-remove-channel
+      |clp_label-prod_label-sle-product-sles15-sp4-pool-x86_64|
+      |clp_label-qa_label-sle-product-sles15-sp4-pool-x86_64|
+      |clp_label-dev_label-sle-product-sles15-sp4-pool-x86_64|
+    And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
 
 @susemanager

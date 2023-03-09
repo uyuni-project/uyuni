@@ -1,4 +1,5 @@
 - reposync: catch local file not found urlgrabber error properly (bsc#1208288)
+- OS specific httpd user for logrotate config.
 
 -------------------------------------------------------------------
 Tue Feb 28 11:55:00 CET 2023 - jgonzalez@suse.com

@@ -24543,12 +24543,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">插槽：</target>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.hardware.cores" xml:space="preserve">
         <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="needs-adaptation">核心：</target>
+        <target state="final">每个插槽的核心数：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -29817,34 +29817,34 @@ given channel.</source>
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
           <source>Some systems already have a reboot scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">已为某些系统安排了重引导。</target>
       </trans-unit>
-      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+      <trans-unit approved="yes" id="systemlist.jsp.rebootneeded" xml:space="preserve">
         <source>System requires reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">系统需要重引导</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.rebootaction" xml:space="preserve">
         <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">（&lt;a href="{0}"&gt;系统重引导操作&lt;/a&gt;）</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.rebootscheduled" xml:space="preserve">
         <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">已安排系统重引导</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
         <source>Summary</source>
@@ -29872,31 +29872,31 @@ given channel.</source>
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="final">为这些日程安排指定的系统没有处于 {0} 的维护时段</target>
       </trans-unit>
-    <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.hardware.cpus" xml:space="preserve">
         <source>CPUs:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <target state="final">CPU：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.hardware.threads" xml:space="preserve">
         <source>Threads per Core:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <target state="final">每个核心的线程数：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
         <source>Schedule System Profile refresh on all managed systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
+        <target state="final">在所有受管系统上安排系统配置文件刷新</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.system-profile-refresh" xml:space="preserve">
         <source>System Profile Refresh</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">系统配置文件刷新</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

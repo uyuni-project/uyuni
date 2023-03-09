@@ -10,7 +10,7 @@ Feature: Add the Oracle 9 distribution custom repositories
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Verify the filters we need exist from other CLM creation
+  Scenario: Verify the CLM filters we need for Oracle 9 exist
     When I follow the left menu "Content Lifecycle > Filters"
     Then I should see a "ruby-3.1" text
     And I should see a "php-8.1" text

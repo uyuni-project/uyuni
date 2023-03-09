@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-17 14:28+0100\n"
-"PO-Revision-Date: 2023-02-13 18:14+0000\n"
+"PO-Revision-Date: 2023-02-19 21:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1142,17 +1142,15 @@ msgstr ""
 "záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "Niektoré zmeny boli úspešne naplánované."
+msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
 msgstr ""
-"Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
-"záznamov."
+"Nasledujúce inštalácie kanálov pre '{0}' zlyhali. Skontrolujte, prosím, "
+"súbory záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1305,7 +1303,7 @@ msgstr "Kanály produktov - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "Vyberte voliteľné kanály, ktoré chcete pridať, a potvrďte."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
