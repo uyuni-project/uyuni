@@ -21,13 +21,13 @@ Feature: Bootstrap a SLE Micro 5.3 Salt minion
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I wait until onboarding is completed for "slemicro53_minion"
 
   Scenario: Reboot the SLE Micro 5.3 minion and wait until reboot is completed
     When I reboot the "slemicro53_minion" minion through SSH
 
   Scenario: Check the new bootstrapped SLE Micro 5.3 minion in System Overview page
-    When I follow the left menu "Salt > Keys"
+    When I wait until onboarding is completed for "slemicro53_minion"
+    And I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "slemicro53_minion"
 
