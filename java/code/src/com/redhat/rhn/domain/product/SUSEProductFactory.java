@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -659,6 +660,16 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
         return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+    /**
+     * @return a stream of products with channel family SLE-M-T (Tools Channel)
+     */
+    public static Stream<SUSEProduct> listAllSLEMTProducts() {
+        //TODO: replace with optimised query later
+        return findAllSUSEProducts().stream()
+                .filter(p -> p.getChannelFamily() != null)
+                .filter(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 
     /**

@@ -17,7 +17,9 @@ package com.redhat.rhn.taskomatic.task.payg;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
+import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 
@@ -34,6 +36,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PaygAuthDataExtractor {
 
@@ -52,6 +57,20 @@ public class PaygAuthDataExtractor {
             .serializeNulls()
             .create();
 
+    private PaygInstanceInfo processOutput(int exitStatus, String error, String output) {
+        if (exitStatus != 0 || error.length() > 0) {
+            LOG.error("Exit status: {}", exitStatus);
+            LOG.error("stderr:\n{}", error.toString());
+            throw new PaygDataExtractException(error.toString());
+        }
+        if (output.length() == 0) {
+            LOG.error("Exit status was success but no data retrieved");
+            throw new PaygDataExtractException("No data retrieved from the instance.");
+        }
+        return GSON.fromJson(output.toString(), PaygInstanceInfo.class);
+    }
+
+
     /**
      * This method will use the ssh connection data to open an ssh connection to the instance
      * and extract all authentication data and cryptographic material needed to connect to the cloud rmt servers.
@@ -60,7 +79,7 @@ public class PaygAuthDataExtractor {
      * @return Authentication data and cryptographic material to connect to cloud rmt host
      * @throws Exception
      */
-    public PaygInstanceInfo extractAuthData(PaygSshData instance) throws Exception {
+    private PaygInstanceInfo extractAuthDataSSH(PaygSshData instance) throws Exception {
         Session sessionsTarget = null, sessionBastion = null;
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
@@ -122,16 +141,7 @@ public class PaygAuthDataExtractor {
                 waitForChannelClosed(channel);
                 int exitStatus = channel.getExitStatus();
 
-                if (exitStatus != 0 || error.length() > 0) {
-                    LOG.error("Exit status: {}", exitStatus);
-                    LOG.error("stderr:\n{}", error.toString());
-                    throw new PaygDataExtractException(error.toString());
-                }
-                if (output.length() == 0) {
-                    LOG.error("Exit status was success but no data retrieved");
-                    throw new PaygDataExtractException("No data retrieved from the instance.");
-                }
-                return GSON.fromJson(output.toString(), PaygInstanceInfo.class);
+                return processOutput(exitStatus, error.toString(), output.toString());
             }
             finally {
                 if (channel != null) {
@@ -162,6 +172,60 @@ public class PaygAuthDataExtractor {
                     LOG.error("Error disconnection jsch session", e);
                 }
             }
+        }
+    }
+
+
+    private PaygInstanceInfo extractAuthDataLocal() {
+        String[] cmd = {"python3"};
+        InputStream programStream = PaygAuthDataExtractor.class
+                .getResourceAsStream("script/payg_extract_repo_data.py");
+        try {
+            Process p = new ProcessBuilder()
+                    .command(cmd)
+                    .start();
+
+            OutputStream stdin = p.getOutputStream();
+            InputStream stdout = p.getInputStream();
+            InputStream stderr = p.getErrorStream();
+            programStream.transferTo(stdin);
+            stdin.close();
+            programStream.close();
+
+            String output = getCommandOutput(stdout).toString();
+            String error = getCommandOutput(stderr).toString();
+
+            int exitStatus = p.waitFor();
+
+
+            //TODO: add additional product information
+            return processOutput(exitStatus, error, output);
+        }
+        catch (IOException | InterruptedException e) {
+            LOG.error(e);
+        }
+        return null;
+    }
+
+    /**
+     * This method will use the ssh connection data to open an ssh connection to the instance
+     * and extract all authentication data and cryptographic material needed to connect to the cloud rmt servers.
+     * To o that, a python script will be executed on the target instance.
+     * @param instance payg ssh data connection object
+     * @return Authentication data and cryptographic material to connect to cloud rmt host
+     * @throws Exception
+     */
+    public PaygInstanceInfo extractAuthData(PaygSshData instance) throws Exception {
+        if (instance.getHost().equals("localhost")) {
+            PaygInstanceInfo paygInstanceInfo = extractAuthDataLocal();
+            List<PaygProductInfo> slemtProductInfos = SUSEProductFactory.listAllSLEMTProducts()
+                    .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch().getLabel()))
+                    .collect(Collectors.toList());
+            paygInstanceInfo.getProducts().addAll(slemtProductInfos);
+            return paygInstanceInfo;
+        }
+        else {
+            return extractAuthDataSSH(instance);
         }
     }
 
