@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @liberty9_minion
-Feature: Add the Liberty Linux 9 distribution custom repositories
+Feature: Add the Liberty Linux 9 distribution common repositories
   In order to use Liberty Linux 9 channels with Appstream modules
   As a SUSE Manager administrator
   I want to filter them out to remove the modules information

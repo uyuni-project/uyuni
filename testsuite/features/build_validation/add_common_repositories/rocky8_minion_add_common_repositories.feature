@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @rocky8_minion
-Feature: Add the Rocky 8 distribution custom repositories
+Feature: Add the Rocky 8 distribution common repositories
   In order to use Rocky 8 channels with Red Hat "modules"
   As a SUSE Manager administrator
   I want to filter them out to remove the modules information
