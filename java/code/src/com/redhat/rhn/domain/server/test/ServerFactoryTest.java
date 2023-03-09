@@ -747,7 +747,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "2022.03", "0", s.getPackageType()));
             info.setReportDbName("reportdb");
             info.setReportDbCredentials(CredentialsFactory.createCredentials(
-                    "pythia", "secret", Credentials.TYPE_REPORT_CREDS, null));
+                    "pythia", "secret", Credentials.TYPE_REPORT_CREDS));
             info.setReportDbHost("localhost");
             info.setReportDbPort(5432);
             info.setServer(minionServer);
