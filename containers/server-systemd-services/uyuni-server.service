@@ -13,65 +13,66 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=-/etc/sysconfig/uyuni-server-systemd-services
 Restart=on-failure
 ExecStartPre=/bin/rm \
-	-f %t/uyuni-server.pid %t/%n.ctr-id
+    -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStart=/usr/bin/podman run \
         --conmon-pidfile %t/uyuni-server.pid \
-	--cidfile=%t/%n.ctr-id \
-	--cgroups=no-conmon \
-	--rm \
-	--sdnotify=conmon \
-	-d \
-	--replace \
-	--tmpfs /run \
-	-p 443:443 \
-	-p 80:80 \
-	-p 4505:4505 \
-	-p 4506:4506 \
-	-p 69:69 \
-	-p 25151:25151 \
-	-p 5432:5432 \
-	-v cgroup:/sys/fs/cgroup:rw \
-	-v pgsql:/var/lib/pgsql \
-	-v var-cache:/var/cache \
-	-v var-spacewalk:/var/spacewalk \
-	-v srv-salt:/srv/salt \
-	-v srv-www-pub:/srv/www/htdocs/pub \
-	-v srv-www-cobbler:/srv/www/cobbler \
-	-v srv-www-osimages:/srv/www/os-images \
-	-v srv-tftpboot:/srv/tftpboot \
-	-v srv-formulametadata:/srv/formula_metadata \
-	-v srv-pillar:/srv/pillar \
-	-v srv-susemanager:/srv/susemanager \
-	-v srv-susemanager-salt:/srv/susemanager/salt \
-	-v srv-spacewalk:/srv/spacewalk \
-	-v etc-rhn:/etc/rhn \
-	-v etc-systemd:/etc/systemd/system/multi-user.target.wants \
-	-v var-log-rhn:/var/log/rhn \
-	-v etc-salt:/etc/salt \
-	-v apache2:/etc/apache2 \
-	-v tomcat:/etc/tomcat \
-	-v etc-tls:/etc/pki/tls \
-	-v ca-cert:/etc/pki/trust/anchors/ \
-	-v tls-key:/etc/pki/spacewalk-tls \
-	-v uyuni-config:/root \
-	-v tomcat-monitoring:/usr/lib/systemd/system/tomcat.service.d \
-	-v taskomatic-monitoring:/usr/lib/systemd/system/taskomatic.service.d \
-	-v etc-cobbler:/etc/cobbler \
-	-v var-lib-cobbler:/var/lib/cobbler \
-	-v home:/home \
-        -v etc-sysconfig:/etc/sysconfig \
+    --cidfile=%t/%n.ctr-id \
+    --cgroups=no-conmon \
+    --rm \
+    --sdnotify=conmon \
+    -d \
+    --replace \
+    --tmpfs /run \
+    -p 443:443 \
+    -p 80:80 \
+    -p 4505:4505 \
+    -p 4506:4506 \
+    -p 69:69 \
+    -p 25151:25151 \
+    -p 5432:5432 \
+    -v cgroup:/sys/fs/cgroup:rw \
+    -v pgsql:/var/lib/pgsql \
+    -v var-cache:/var/cache \
+    -v var-spacewalk:/var/spacewalk \
+    -v srv-salt:/srv/salt \
+    -v srv-www-pub:/srv/www/htdocs/pub \
+    -v srv-www-cobbler:/srv/www/cobbler \
+    -v srv-www-osimages:/srv/www/os-images \
+    -v srv-tftpboot:/srv/tftpboot \
+    -v srv-formulametadata:/srv/formula_metadata \
+    -v srv-pillar:/srv/pillar \
+    -v srv-susemanager:/srv/susemanager \
+    -v srv-susemanager-salt:/srv/susemanager/salt \
+    -v srv-spacewalk:/srv/spacewalk \
+    -v etc-rhn:/etc/rhn \
+    -v etc-systemd:/etc/systemd/system/multi-user.target.wants \
+    -v var-log-rhn:/var/log/rhn \
+    -v etc-salt:/etc/salt \
+    -v apache2:/etc/apache2 \
+    -v tomcat:/etc/tomcat \
+    -v etc-tls:/etc/pki/tls \
+    -v ca-cert:/etc/pki/trust/anchors/ \
+    -v tls-key:/etc/pki/spacewalk-tls \
+    -v uyuni-config:/root \
+    -v tomcat-monitoring:/usr/lib/systemd/system/tomcat.service.d \
+    -v taskomatic-monitoring:/usr/lib/systemd/system/taskomatic.service.d \
+    -v etc-cobbler:/etc/cobbler \
+    -v var-lib-cobbler:/var/lib/cobbler \
+    -v home:/home \
+    -v etc-sysconfig:/etc/sysconfig \
     --hostname uyuni-server \
-	--name uyuni-server ${NAMESPACE}/server:${TAG}
+    --name uyuni-server ${NAMESPACE}/server:${TAG}
 ExecStop=/usr/bin/podman stop \
-	--ignore -t 10 \
-	--cidfile=%t/%n.ctr-id
+    --ignore -t 10 \
+    --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm \
-	-f \
-	--ignore -t 10 \
-	--cidfile=%t/%n.ctr-id
+    -f \
+    --ignore -t 10 \
+    --cidfile=%t/%n.ctr-id
 
 PIDFile=%t/uyuni-server.pid
-TimeoutStopSec=70
+TimeoutStopSec=180
+TimeoutStartSec=180
 Type=forking
 
 [Install]
