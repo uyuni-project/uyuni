@@ -16,4 +16,3 @@ You can also use `podman logs` using the same names.
 
 # Limitations
 - get rid of some mounts and include them into the image
-- hostname and REPORT_DB_HOST should be configurable by the user
