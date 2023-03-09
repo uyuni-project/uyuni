@@ -115,7 +115,7 @@ public class PaygAuthDataProcessor {
         final String username = paygData.getBasicAuth().get("username");
         final String password = paygData.getBasicAuth().get("password");
         Credentials credentials = Optional.ofNullable(instance.getCredentials()).orElseGet(() ->
-                CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT, null));
+                CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT));
 
         credentials.setUsername(username);
         credentials.setPassword(password);
