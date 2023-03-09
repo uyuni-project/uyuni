@@ -164,11 +164,9 @@ public class CredentialsFactory extends HibernateFactory {
      * @param username - the username
      * @param password - the password
      * @param credentialsType - credentials type
-     * @param params - optional paramaters
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(String username, String password,
-            String credentialsType, Map<String, String> params) {
+    public static Credentials createCredentials(String username, String password, String credentialsType) {
         if (StringUtils.isEmpty(username)) {
             return null;
         }

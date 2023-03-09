@@ -219,6 +219,6 @@ public class ImageStoreFactory extends HibernateFactory {
         else {
             return null;
         }
-        return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type, null);
+        return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type);
     }
 }
