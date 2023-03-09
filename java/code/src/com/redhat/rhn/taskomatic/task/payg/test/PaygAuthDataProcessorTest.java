@@ -91,7 +91,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     @Test
     public void testUpdateData() throws URISyntaxException {
-        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT, null);
+        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
         cred.setUrl("//my_url");
         cred.setPaygSshData(paygData);
         paygData.setCredentials(cred);
@@ -113,7 +113,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     @Test
     public void testUpdateRepos() throws URISyntaxException {
-        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT, null);
+        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
         cred.setUrl("//my_url");
         cred.setPaygSshData(paygData);
         paygData.setCredentials(cred);
