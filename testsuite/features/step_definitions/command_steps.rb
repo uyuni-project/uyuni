@@ -1783,6 +1783,12 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   )
 end
 
+When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
+  if slemicro_host?(host)
+    step %(I reboot the "#{host}" minion through SSH)
+  end
+end
+
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   old_hostname = $server.hostname
   new_hostname = old_hostname + '2'
