@@ -14,8 +14,6 @@
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_manage_activationkey.feature
 - features/secondary/srv_activationkey_api.feature
-- features/secondary/srv_cobbler_distro.feature
-- features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_user_api.feature
 - features/secondary/srv_salt_download_endpoint.feature
@@ -39,7 +37,6 @@
 - features/secondary/srv_reportdb.feature
 - features/secondary/srv_dist_channel_mapping.feature
 - features/secondary/srv_task_status_engine.feature
-- features/secondary/srv_cobbler_sync.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
