@@ -10,7 +10,7 @@ data:
   REPORT_DB_HOST: "uyuni-dev.world-co.com"
   NO_SSL: "Y"
   MANAGER_MAIL_FROM: "notifications@uyuni-dev.world-co.com"
-  HOSTNAME: "uyuni-dev.world-co.com"
+  UYUNI_CONFIG: "uyuni-dev.world-co.com"
 kind: ConfigMap
 metadata:
   name: uyuni-config
