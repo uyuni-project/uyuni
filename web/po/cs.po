@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-03-10 15:33+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -599,7 +599,7 @@ msgstr "Systém uzamčen"
 msgid "Filter"
 msgstr "Filtry"
 
-#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/SearchField.tsx:53
 #, fuzzy
 msgid "Select a filter"
 msgstr "Vybrat plán"
