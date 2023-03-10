@@ -1,3 +1,5 @@
+- fix repo sync for cloud payg connected repositories (bsc#1208772)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:46:56 CET 2023 - jgonzalez@suse.com
 
