@@ -1,3 +1,5 @@
+- fix db connection check tool (bsc#1208586)
+
 -------------------------------------------------------------------
 Mon Jan 23 08:29:01 CET 2023 - jgonzalez@suse.com
 

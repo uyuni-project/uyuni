@@ -1,8 +1,17 @@
-- Add openEuler 22.03 support 
-- Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
-- Fix current limitation on Action Chains for SLE Micro
-- Support SLE Micro migration (bsc#1205011)
-- Add data for openSUSE Leap Micro 5.3 and openSUSE MicroOS bootstrapping
+- Add openEuler 22.03 support
+
+-------------------------------------------------------------------
+Tue Feb 21 14:10:36 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * get uptime with package profile update
+  * Fix missing module when bootstraping transactional systems (bsc#1207792)
+  * Install the reboot info beacon using a conf file instead of using pillars
+  * add CPU sockets, threads and total number to standard CPU grains
+  * Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+  * Fix current limitation on Action Chains for SLE Micro
+  * Support SLE Micro migration (bsc#1205011)
+  * Add data for openSUSE Leap Micro 5.3 and openSUSE MicroOS bootstrapping
 
 -------------------------------------------------------------------
 Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com

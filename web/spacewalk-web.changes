@@ -1,6 +1,20 @@
-- Add support to add optional channels via webUI
-- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
-- Added pages to install and remove ptf
+- Fix UI inconsistencies in susemanager-light and susemanager-dark
+  theme
+- Deprecate jQuery datepicker, integrate React datepicker
+
+-------------------------------------------------------------------
+Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.9-1
+  * Update the version for the WebUI
+
+-------------------------------------------------------------------
+Tue Feb 21 14:12:36 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.8-1
+  * Add support to add optional channels via webUI
+  * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
+  * Added pages to install and remove ptf
 
 -------------------------------------------------------------------
 Mon Jan 23 08:32:14 CET 2023 - jgonzalez@suse.com

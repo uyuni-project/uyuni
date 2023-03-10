@@ -1,4 +1,8 @@
-- Avoid unnecessary debug messages from proxy backend (bsc#1207490)
+-------------------------------------------------------------------
+Tue Feb 21 12:30:07 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Avoid unnecessary debug messages from proxy backend (bsc#1207490)
 
 -------------------------------------------------------------------
 Mon Jan 23 08:24:37 CET 2023 - jgonzalez@suse.com

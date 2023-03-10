@@ -11268,35 +11268,41 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">未选择任何基础通道。</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+      <trans-unit approved="yes" id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
         <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <target state="final">目前已禁用模块化。要启用模块，请去除 "禁用所有模块" 过滤器。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.validation.nomodules" xml:space="preserve">
         <source>Modularity is disabled. No modules will be included in the target repositories.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">已禁用模块化。目标软件源中将不会包含任何模块。</target>
+      </trans-unit>
       <trans-unit id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <target state="final">无法去除。一些自定义通道不属于该环境所构建的通道。请先去除这些通道：{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">自动安装配置文件中正在使用该目标。无法去除。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+        <target state="final">未执行此操作，因为其最早执行日期已过去太久。如果从安排到选择进行处理相隔的时间超过 {0} 个小时，系统就会将该操作视为不再相关，因而会将其丢弃。
+          如果您确实希望系统执行此操作，请重新安排此操作。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

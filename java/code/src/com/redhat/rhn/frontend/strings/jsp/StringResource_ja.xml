@@ -24543,11 +24543,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ソケット:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
-        <source>Cores:</source>
+        <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target>コア:</target>
+        <target state="translated">ソケットあたりのコア数:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -29821,7 +29821,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">一部のシステムで既に再起動がスケジュールされています。</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
         <source>System requires reboot</source>
@@ -29829,21 +29829,21 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">システムの再起動が必要です</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
         <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">(&lt;a href="{0}"&gt;システムの再起動アクション&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
         <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">システムの再起動がスケジュールされています</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
         <source>Summary</source>
@@ -29870,6 +29870,31 @@ given channel.</source>
       <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="final">これらのスケジュールに割り当てられたシステムには、{0} のメンテナンス ウィンドウがありません</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+        <source>CPUs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="translated">CPU:</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <source>Threads per Core:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="translated">コアあたりのスレッド数:</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <source>Schedule System Profile refresh on all managed systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="translated">すべての管理対象システムでシステムプロファイルの更新をスケジュールします</target>
+      </trans-unit>
+      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+        <target state="translated">システムプロファイルの更新</target>
       </trans-unit>
     </body>
   </file>

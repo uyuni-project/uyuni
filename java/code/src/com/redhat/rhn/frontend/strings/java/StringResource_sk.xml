@@ -11255,11 +11255,11 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
-        <target state="needs-adaptation">Balíky sú súčasťou Product Temporary Fixes (PTF): {0}</target>
+        <target state="translated">Balíky sú súčasťou Program Temporary Fix (PTF): {0}</target>
       </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
-        <target state="needs-adaptation">Balíky Product Temporary Fixes (PTF): {0}</target>
+        <target state="translated">Balíky Program Temporary Fixes (PTFs): {0}</target>
       </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
@@ -11282,21 +11282,27 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         </context-group>
         <target state="translated">Modularita je zakázaná. Do cieľových repozitárov nebudú zahrnuté žiadne moduly.</target>
       </trans-unit>
-    <trans-unit id="PTF" xml:space="preserve">
+      <trans-unit id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">PTFs</target>
+      </trans-unit>
       <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nemožno odstrániť. Existujú vlastné kanály, ktoré nie sú súčasťou kanálov vytvorených prostredím. Najskôr, prosím, odstráňte tieto kanály: {0}</target>
+      </trans-unit>
       <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Cieľ sa používa v profile automatickej inštalácie. Nemožno odstrániť.</target>
+      </trans-unit>
+      <trans-unit id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+        <target state="translated">Táto akcia nebola vykonaná, pretože jej najskorší dátum vykonania bol príliš starý. Ak medzi naplánovaním a prevzatím uplynie viac ako {0} hodín, akcia sa vyradí, pretože sa už nepovažuje za relevantnú.
+          Ak naozaj chcete, aby sa táto akcia vykonala, prosím, presuňte ju na iný termín.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

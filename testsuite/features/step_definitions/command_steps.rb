@@ -1685,3 +1685,107 @@ When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
   node = get_target(host)
   node.run_until_ok("lsof  -i:#{port}")
 end
+
+Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
+  _output, code = $server.run("ss --listening --numeric | grep :#{port}", check_errors: false, verbose: true)
+  port_opened = code.zero?
+  if selection == 'closed'
+    raise "Port '#{port}' open although it should not be!" if port_opened
+  else
+    raise "Port '#{port}' not open although it should be!" unless port_opened
+  end
+end
+
+# rebooting via SSH
+When(/^I reboot the server through SSH$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run('reboot > /dev/null 2> /dev/null &')
+  default_timeout = 300
+
+  check_shutdown($server.public_ip, default_timeout)
+  check_restart($server.public_ip, temp_server, default_timeout)
+
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot > /dev/null 2> /dev/null &')
+  reboot_timeout = 120
+  check_shutdown($node.public_ip, reboot_timeout)
+  check_restart($server.public_ip, node, reboot_timeout)
+end
+
+When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
+  steps %(
+    Given I am on the Systems overview page of this "#{host}"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "This action's status is: Completed" text
+  )
+end
+
+When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
+  if slemicro_host?(host)
+    step %(I reboot the "#{host}" minion through SSH)
+  end
+end
+
+When(/^I change the server's short hostname from hosts and hostname files$/) do
+  old_hostname = $server.hostname
+  new_hostname = old_hostname + '2'
+  log "New short hostname: #{new_hostname}"
+
+  $server.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{$server.public_ip} #{new_hostname}#{$server.full_hostname.delete_prefix($server.hostname)} #{new_hostname}' >> /etc/hosts")
+end
+
+# changing hostname
+When(/^I run spacewalk-hostname-rename command on the server$/) do
+  temp_server = twopence_init("ssh:#{$server.public_ip}")
+  temp_server.extend(LavandaBasic)
+  command = "spacewalk-hostname-rename #{$server.public_ip}
+            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
+            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
+            --ssl-ca-password=spacewalk -u admin -p admin"
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  log "#{out_spacewalk}"
+
+  default_timeout = 300
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server: spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
+  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+end
+
+When(/^I change back the server's hostname$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
+end
+
+When(/^I clean up the server's hosts file$/) do
+  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
+  $server.run(command)
+end

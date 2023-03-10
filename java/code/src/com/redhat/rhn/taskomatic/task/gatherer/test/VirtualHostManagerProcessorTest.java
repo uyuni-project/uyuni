@@ -682,6 +682,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         minimalHost.setRamMb(128);
         minimalHost.setCpuArch("x86_64");
         minimalHost.setCpuMhz(400.0);
+        minimalHost.setTotalCpuThreads(1);
         minimalHost.setTotalCpuCores(1);
         minimalHost.setTotalCpuSockets(1);
         minimalHost.setOs("Windows");

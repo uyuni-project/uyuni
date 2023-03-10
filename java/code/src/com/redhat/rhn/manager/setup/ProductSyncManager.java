@@ -231,15 +231,9 @@ public class ProductSyncManager {
         int failedCounter = 0;
         SyncStatus syncStatus;
         Date maxLastSyncDate = null;
-        StringBuilder debugDetails = new StringBuilder();
-
 
         for (Channel c : product.getMandatoryChannels()) {
             SyncStatus channelStatus = getChannelSyncStatus(c.getLabel(), channelByLabel);
-
-            if (StringUtils.isNotBlank(channelStatus.getDetails())) {
-                debugDetails.append(channelStatus.getDetails());
-            }
 
             if (channelStatus.isNotMirrored()) {
                 LOGGER.debug("Channel not mirrored: {}", c.getLabel());
@@ -276,7 +270,6 @@ public class ProductSyncManager {
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
             syncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
-            syncStatus.setDetails(debugDetails.toString());
         }
         // Otherwise return IN_PROGRESS
         else {
@@ -327,12 +320,6 @@ public class ProductSyncManager {
                 repoSyncRunFound = true;
                 lastRunEndTime = run.getEndTime();
 
-                // Get debug information
-                String debugInfo = run.getTailOfStdError(1024);
-                if (debugInfo.isEmpty()) {
-                    debugInfo = run.getTailOfStdOutput(1024);
-                }
-
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (LOGGER.isDebugEnabled()) {
@@ -345,7 +332,6 @@ public class ProductSyncManager {
                     // Reposync has failed or has been interrupted
                     SyncStatus status = new SyncStatus(SyncStatus.SyncStage.FAILED);
                     status.setMessageKey(prefix + "message.reposync.failed");
-                    status.setDetails(debugInfo);
 
                     // Don't return from here, there might be a new schedule already
                     lastFailedStatus = Optional.of(status);
@@ -355,7 +341,6 @@ public class ProductSyncManager {
                     // Reposync is in progress
                     SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     status.setMessageKey(prefix + "message.reposync.progress");
-                    status.setDetails(debugInfo);
                     return status;
                 }
 

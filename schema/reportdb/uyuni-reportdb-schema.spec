@@ -24,7 +24,7 @@ Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/reportdb/%{name}-rpmlintrc
@@ -33,6 +33,11 @@ URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+%if 0%{?rhel}
+BuildRequires:  perl-File-Find
+%endif
+
+BuildRequires:  make
 BuildRequires:  susemanager-schema-sanity
 %if 0%{?suse_version}
 BuildRequires:  fdupes

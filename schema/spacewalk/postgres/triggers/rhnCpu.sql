@@ -29,5 +29,5 @@ create trigger
 rhn_cpu_up_trig
 after update on rhnCpu
 for each row
-when (OLD.nrcpu is distinct from NEW.nrcpu OR OLD.nrsocket is distinct from NEW.nrsocket)
+when (OLD.nrcpu is distinct from NEW.nrcpu OR OLD.nrsocket is distinct from NEW.nrsocket OR OLD.nrcore is distinct from NEW.nrcore OR OLD.nrthread is distinct from NEW.nrthread)
 execute procedure rhn_cpu_up_trig_fun();

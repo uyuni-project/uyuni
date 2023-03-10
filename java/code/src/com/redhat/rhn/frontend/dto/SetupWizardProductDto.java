@@ -71,9 +71,6 @@ public class SetupWizardProductDto implements Selectable,
         // Error message key
         private String messageKey;
 
-        // Store additional debug information here
-        private String details;
-
         // This is for showing synchronization progress
         private int syncProgress;
 
@@ -132,22 +129,6 @@ public class SetupWizardProductDto implements Selectable,
          */
         public void setMessageKey(String messageKeyIn) {
             this.messageKey = messageKeyIn;
-        }
-
-        /**
-         * Get additional debug information (if available).
-         * @return the details
-         */
-        public String getDetails() {
-            return details;
-        }
-
-        /**
-         * Set any additional debug information.
-         * @param detailsIn the details to set
-         */
-        public void setDetails(String detailsIn) {
-            this.details = detailsIn;
         }
 
         /**

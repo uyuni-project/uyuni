@@ -69,7 +69,7 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
@@ -89,6 +89,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 BuildRequires:  docbook-utils
+BuildRequires:  make
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 
 %if "%{_vendor}" != "debbuild"

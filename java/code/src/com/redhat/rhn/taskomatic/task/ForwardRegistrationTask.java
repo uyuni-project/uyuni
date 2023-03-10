@@ -26,6 +26,7 @@ import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import org.quartz.JobExecutionContext;
 
@@ -99,8 +100,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
             log.debug("{} RegCacheItems found to delete", deregister.size());
 
+            List<SCCVirtualizationHostJson> virtHosts = SCCCachingFactory.listVirtualizationHosts();
+            log.debug("{} VirtHosts found to send", virtHosts.size());
+
             sccRegManager.deregister(deregister, false);
             sccRegManager.register(forwardRegistration, primaryCredentials);
+            sccRegManager.virtualInfo(virtHosts, primaryCredentials);
             if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
                 sccRegManager.updateLastSeen(primaryCredentials);
                 // next run in 22 - 26 hours

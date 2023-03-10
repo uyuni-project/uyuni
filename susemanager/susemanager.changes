@@ -1,8 +1,18 @@
 - Add bootstrap repository definitions for openEuler 22.03
-- Create repostories with sha256 instead of sha1.
-- Bootstrap repository definitions for openSUSE Leap Micro 5.3 and
-  openSUSE MicroOS for Uyuni
-- Add SLES15SP5 to bootstrap repo definitions
+- Tune the dabase after copying the old configuration (bsc#1208611)
+- Remove non-salt-bundle packages from repositories for SLE12,
+  CentOS7 and clones
+- Replace apache group to root for RHEL.
+
+-------------------------------------------------------------------
+Tue Feb 21 14:10:57 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Create repostories with sha256 instead of sha1.
+  * Bootstrap repository definitions for openSUSE Leap Micro 5.3 and
+    openSUSE MicroOS for Uyuni
+  * Add SLES15SP5 to bootstrap repo definitions
+  * Add openSUSE Leap 15.5 uyuni bootstrap repositories
 
 -------------------------------------------------------------------
 Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com

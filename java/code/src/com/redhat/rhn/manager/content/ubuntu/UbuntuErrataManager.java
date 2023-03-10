@@ -193,8 +193,11 @@ public class UbuntuErrataManager {
      * @throws IOException in case of download issues
      */
     public static void sync(Set<Long> channelIds) throws IOException {
+        LOG.debug("sync started - get and parse errata");
         List<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
+        LOG.debug("get and parse errata finished - process Ubuntu Errata By Id");
         processUbuntuErrataByIds(channelIds, ubuntuErrataInfo);
+        LOG.debug("process Ubuntu Errata By Id finished");
     }
 
     /**
