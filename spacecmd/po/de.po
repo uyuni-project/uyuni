@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:38+0100\n"
+"POT-Creation-Date: 2023-03-10 15:37+0100\n"
 "PO-Revision-Date: 2022-08-02 12:06+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
@@ -322,8 +322,8 @@ msgstr ""
 msgid "System Groups"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:209
-#: ../src/spacecmd/package.py:266 ../src/spacecmd/softwarechannel.py:1358
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:205
+#: ../src/spacecmd/package.py:262 ../src/spacecmd/softwarechannel.py:1358
 #: ../src/spacecmd/softwarechannel.py:1460
 #: ../src/spacecmd/softwarechannel.py:1542
 #: ../src/spacecmd/softwarechannel.py:1788
@@ -3710,12 +3710,12 @@ msgstr ""
 msgid "No packages found to remove"
 msgstr ""
 
-#: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
+#: ../src/spacecmd/package.py:209 ../src/spacecmd/package.py:266
 #: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:946
 msgid "Remove these packages [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:210
 msgid "No packages has been removed"
 msgstr ""
 
@@ -3748,7 +3748,7 @@ msgstr ""
 msgid "No orphaned packages"
 msgstr ""
 
-#: ../src/spacecmd/package.py:263
+#: ../src/spacecmd/package.py:267
 msgid "No packages were removed"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:38+0100\n"
+"POT-Creation-Date: 2023-03-10 15:37+0100\n"
 "PO-Revision-Date: 2023-01-06 03:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
@@ -335,8 +335,8 @@ msgstr "권한 부여"
 msgid "System Groups"
 msgstr "시스템 그룹"
 
-#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:209
-#: ../src/spacecmd/package.py:266 ../src/spacecmd/softwarechannel.py:1358
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:205
+#: ../src/spacecmd/package.py:262 ../src/spacecmd/softwarechannel.py:1358
 #: ../src/spacecmd/softwarechannel.py:1460
 #: ../src/spacecmd/softwarechannel.py:1542
 #: ../src/spacecmd/softwarechannel.py:1788
@@ -3968,12 +3968,12 @@ msgstr "사용법: package_remove PACKAGE ..."
 msgid "No packages found to remove"
 msgstr "제거할 패키지를 찾지 못함"
 
-#: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
+#: ../src/spacecmd/package.py:209 ../src/spacecmd/package.py:266
 #: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:946
 msgid "Remove these packages [y/N]:"
 msgstr "이 패키지 제거 [y/N]:"
 
-#: ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:210
 msgid "No packages has been removed"
 msgstr "패키지가 제거되지 않음"
 
@@ -4006,7 +4006,7 @@ msgstr "독립 패키지를 찾지 못함"
 msgid "No orphaned packages"
 msgstr "독립 패키지 없음"
 
-#: ../src/spacecmd/package.py:263
+#: ../src/spacecmd/package.py:267
 msgid "No packages were removed"
 msgstr "패키지가 제거되지 않음"
 
