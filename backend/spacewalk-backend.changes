@@ -1,3 +1,5 @@
+- Fix issues with kickstart syncing on mirrorlist repositories
+- Do not sync .mirrorlist and other non needed files
 - reposync: catch local file not found urlgrabber error properly (bsc#1208288)
 
 -------------------------------------------------------------------

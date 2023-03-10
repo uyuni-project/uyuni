@@ -60,6 +60,7 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.i18n import sstr
 from urlgrabber.grabber import URLGrabError
+from urlgrabber.mirror import MirrorGroup
 
 
 # namespace prefix to parse patches.xml file
@@ -82,6 +83,9 @@ RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-f
 
 APACHE_USER = 'wwwrun'
 APACHE_GROUP = 'www'
+
+# possible urlgrabber errno
+NO_MORE_MIRRORS_TO_TRY = 256
 
 class ZyppoSync:
     """
@@ -1092,22 +1096,17 @@ type=rpm-md
 
         :returns: str
         """
-        media_products_path = os.path.join(self._get_repodata_path(), 'media.1/products')
-        try:
-            (s,b,p,q,f,o) = urlparse(self.url)
-            if p[-1] != '/':
-                p = p + '/'
-            p = p + 'media.1/products'
-        except (ValueError, IndexError, KeyError) as e:
-            return None
-        url = urlunparse((s,b,p,q,f,o))
+        url = 'media.1/products'
+        media_products_path = os.path.join(self._get_repodata_path(), url)
+        grabber = urlgrabber.grabber.URLGrabber()
+        mirror_group = MirrorGroup(grabber, self.repo.urls)
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)
-            urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
+            mirror_group.urlgrab(url, media_products_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code") and exc.errno != 2:
+            if not hasattr(exc, "code") and exc.errno != NO_MORE_MIRRORS_TO_TRY:
                 msg = "ERROR: Media product file download failed: %s - %s" % (
                     url,
                     exc.strerror,
@@ -1289,16 +1288,9 @@ type=rpm-md
     def get_file(self, path, local_base=None):
         try:
             try:
+                grabber = urlgrabber.grabber.URLGrabber()
+                mirror_group = MirrorGroup(grabber, self.repo.urls)
                 temp_file = ""
-                try:
-                    if not urlparse(path).scheme:
-                        (s,b,p,q,f,o) = urlparse(self.url)
-                        if p[-1] != '/':
-                            p = p + '/'
-                        p = p + path
-                        path = urlunparse((s,b,p,q,f,o))
-                except (ValueError, IndexError, KeyError) as e:
-                    return None
 
                 if local_base is not None:
                     target_file = os.path.join(local_base, path)
@@ -1310,13 +1302,13 @@ type=rpm-md
                         os.unlink(temp_file)
                     urlgrabber_opts = {}
                     self.set_download_parameters(urlgrabber_opts, path, temp_file)
-                    downloaded = urlgrabber.urlgrab(path, temp_file, **urlgrabber_opts)
+                    downloaded = mirror_group.urlgrab(path, temp_file, **urlgrabber_opts)
                     os.rename(downloaded, target_file)
                     return target_file
                 else:
                     urlgrabber_opts = {}
                     self.set_download_parameters(urlgrabber_opts, path)
-                    return urlgrabber.urlread(path, **urlgrabber_opts)
+                    return mirror_group.urlread(path, **urlgrabber_opts)
             except urlgrabber.grabber.URLGrabError:
                 return
         finally:
