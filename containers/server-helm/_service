@@ -1,0 +1,3 @@
+<services>
+  <service mode="buildtime" name="kiwi_metainfo_helper"/>
+</services>

@@ -1,0 +1,40 @@
+apiVersion: v1
+data:
+  MANAGER_USER: {{ .Values.uyuniUser | default "spacewalk" }}
+  MANAGER_ADMIN_EMAIL: {{ .Values.uyuniAdminEmail }}
+  MANAGER_DB_NAME: "susemanager"
+  MANAGER_DB_HOST: "localhost"
+  MANAGER_DB_PORT: "5432"
+  MANAGER_DB_PROTOCOL: "TCP"
+  MANAGER_ENABLE_TFTP: '{{ .Values.uyuniEnableTftp | default true | ternary "Y" "N" }}'
+  REPORT_DB_HOST: {{ .Values.reportDbHost | default .Values.fqdn }}
+{{- if .Values.reportDbPort }}
+  REPORT_DB_PORT: {{ .Values.reportDbPort }}
+{{- end }}
+{{- if .Values.reportDbUser }}
+  REPORT_DB_USER: {{ .Values.reportDbUser }}
+{{- end }}
+{{- if .Values.reportDbPass }}
+  REPORT_DB_PASS: {{ .Values.reportDbPass }}
+{{- end }}
+{{- if .Values.reportDbName }}
+  REPORT_DB_NAME: {{ .Values.reportDbName }}
+{{- end }}
+  NO_SSL: "Y"
+  MANAGER_MAIL_FROM: {{ .Values.uyuniMailFrom }}
+  UYUNI_FQDN: {{ .Values.fqdn }}
+kind: ConfigMap
+metadata:
+  name: uyuni-config
+  namespace: "{{ .Release.Namespace }}"
+---
+apiVersion: v1
+data:
+  MANAGER_PASS: {{ .Values.uyuniPass | default "spacewalk" | b64enc }}
+  SCC_USER: {{ .Values.sccUser | default "" | b64enc }}
+  SCC_PASS: {{ .Values.sccPass | default "" | b64enc }}
+kind: Secret
+metadata:
+  name: uyuni-secret
+  namespace: "{{ .Release.Namespace }}"
+

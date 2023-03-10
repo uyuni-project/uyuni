@@ -3,17 +3,25 @@ kind: Ingress
 metadata:
   creationTimestamp: null
   name: uyuni-ingress-ssl
+  namespace: "{{ .Release.Namespace }}"
   annotations:
+{{- if eq .Values.ingress "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "uyuni-dev.world-co.com"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ .Values.fqdn }}"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
+{{- end }}
+{{- if .Values.ingressSslAnnotations }}
+{{ toYaml .Values.ingressSslAnnotations | indent 4 }}
+{{- end }}
+  labels:
+    app: uyuni
 spec:
   tls:
     - hosts:
-      - uyuni-dev.world-co.com
+      - {{ .Values.fqdn }}
       secretName: uyuni-cert
   rules:
-  - host: uyuni-dev.world-co.com
+  - host: {{ .Values.fqdn }}
     http:
       paths:
       - backend:
@@ -23,18 +31,22 @@ spec:
               number: 80
         path: /
         pathType: Prefix
+{{- if eq .Values.ingress "traefik" }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   creationTimestamp: null
   name: uyuni-ingress-ssl-redirect
+  namespace: "{{ .Release.Namespace }}"
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: "default-uyuni-https-redirect@kubernetescrd"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
+  labels:
+    app: uyuni
 spec:
   rules:
-  - host: uyuni-dev.world-co.com
+  - host: {{ .Values.fqdn }}
     http:
       paths:
       - backend:
@@ -44,18 +56,26 @@ spec:
               number: 80
         path: /
         pathType: Prefix
+{{- end }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   creationTimestamp: null
   name: uyuni-ingress-nossl
+  namespace: "{{ .Release.Namespace }}"
   annotations:
+{{- if eq .Values.ingress "nginx" }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+{{- else if eq .Values.ingress "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "false"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
+{{- end }}
+  labels:
+    app: uyuni
 spec:
   rules:
-  - host: uyuni-dev.world-co.com
+  - host: {{ .Values.fqdn }}
     http:
       paths:
       - backend:

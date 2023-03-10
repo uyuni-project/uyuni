@@ -919,6 +919,11 @@ do_setup() {
 
     setup_spacewalk
 
+    # In the container case, we have the MIRROR_PATH environment variable at setup
+    if [ -n "$MIRROR_PATH" ]; then
+        echo "server.susemanager.fromdir = $MIRROR_PATH" >> /etc/rhn/rhn.conf
+    fi
+
     if [ -n "$ISS_PARENT" ]; then
         local certname=`echo "MASTER-$ISS_PARENT-TRUSTED-SSL-CERT" | sed 's/\./_/g'`
         curl -s -S -o /usr/share/rhn/$certname "http://$ISS_PARENT/pub/RHN-ORG-TRUSTED-SSL-CERT"
