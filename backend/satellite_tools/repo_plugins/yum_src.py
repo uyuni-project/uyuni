@@ -548,7 +548,7 @@ class ContentSource:
         cert = (self.sslclientcert, self.sslclientkey)
         verify = self.sslcacert
         try:
-            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify)
+            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify, headers=self.http_headers)
             # We want to check the page content-type usually, but
             # we have to wrap the next bit in a try-block for if the resource is
             # cached and returns a 304; cached page returns no content type
