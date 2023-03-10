@@ -401,6 +401,11 @@ Style/DocumentationMethod:
     - 'features/support/namespaces/system.rb'
     - 'features/support/twopence_init.rb'
 
+# Offense count: 1
+Style/For:
+  Exclude:
+    - 'features/step_definitions/command_steps.rb'
+
 # Offense count: 40
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
