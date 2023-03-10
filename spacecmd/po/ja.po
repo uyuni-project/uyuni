@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:33+0100\n"
+"POT-Creation-Date: 2023-03-10 15:40+0100\n"
 "PO-Revision-Date: 2023-01-10 02:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -356,8 +356,8 @@ msgstr "エンタイトルメント"
 msgid "System Groups"
 msgstr "システムグループ"
 
-#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:210
-#: ../src/spacecmd/package.py:268 ../src/spacecmd/softwarechannel.py:1368
+#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
 #: ../src/spacecmd/softwarechannel.py:1558
 #: ../src/spacecmd/softwarechannel.py:1810
@@ -4107,12 +4107,12 @@ msgstr "使用方法: package_remove パッケージ ..."
 msgid "No packages found to remove"
 msgstr "削除すべきパッケージが見つかりませんでした"
 
-#: ../src/spacecmd/package.py:206 ../src/spacecmd/package.py:264
+#: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
 #: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "これらのパッケージを削除します [y/N]:"
 
-#: ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:211
 msgid "No packages has been removed"
 msgstr "何もパッケージを削除しませんでした"
 
@@ -4145,7 +4145,7 @@ msgstr "孤立したパッケージは見つかりませんでした"
 msgid "No orphaned packages"
 msgstr "孤立したパッケージはありません"
 
-#: ../src/spacecmd/package.py:265
+#: ../src/spacecmd/package.py:269
 msgid "No packages were removed"
 msgstr "何もパッケージを削除しませんでした"
 

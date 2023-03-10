@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:33+0100\n"
+"POT-Creation-Date: 2023-03-10 15:40+0100\n"
 "PO-Revision-Date: 2022-12-02 20:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
@@ -352,8 +352,8 @@ msgstr "Oprávnenia"
 msgid "System Groups"
 msgstr "Systémové skupiny"
 
-#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:210
-#: ../src/spacecmd/package.py:268 ../src/spacecmd/softwarechannel.py:1368
+#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
 #: ../src/spacecmd/softwarechannel.py:1558
 #: ../src/spacecmd/softwarechannel.py:1810
@@ -4088,12 +4088,12 @@ msgstr "použitie: package_remove BALÍK ..."
 msgid "No packages found to remove"
 msgstr "Nenašli sa žiadne balíky na odstránenie"
 
-#: ../src/spacecmd/package.py:206 ../src/spacecmd/package.py:264
+#: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
 #: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "Odstrániť tieto balíky [a/N]:"
 
-#: ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:211
 msgid "No packages has been removed"
 msgstr "Žiadne balíky neboli odstránené"
 
@@ -4126,7 +4126,7 @@ msgstr "Neboli nájdené žiadne osirelé balíky"
 msgid "No orphaned packages"
 msgstr "Žiadne osirelé balíky"
 
-#: ../src/spacecmd/package.py:265
+#: ../src/spacecmd/package.py:269
 msgid "No packages were removed"
 msgstr "Neboli odstránené žiadne balíky"
 
