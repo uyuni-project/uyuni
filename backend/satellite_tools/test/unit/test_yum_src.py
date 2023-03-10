@@ -21,6 +21,7 @@ import solv
 import unittest
 import pytest
 from urllib.parse import quote
+from urlgrabber.grabber import URLGrabError
 try:
     from io import StringIO
 except ImportError:
@@ -52,7 +53,7 @@ class YumSrcTest(unittest.TestCase):
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com", "test_repo", org='')
+        cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org='')
         mockReturnPackages = MagicMock()
         mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
         mockReturnPackages.returnPackages.return_value = []
@@ -72,7 +73,7 @@ class YumSrcTest(unittest.TestCase):
 
     def setUp(self):
         patch('spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs').start()
-        self.repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com", "1")
+        self.repo = yum_src.ZypperRepo(tempfile.mkdtemp(), "http://example.com/fake_path/", "1")
 
     def tearDown(self):
         shutil.rmtree(self.repo.root)
@@ -255,6 +256,20 @@ class YumSrcTest(unittest.TestCase):
                     "http://host3/base/arch1/os/",
                     ])
 
+
+    def test_get_mediaproduct_no_logging_when_local_file_not_found(self):
+        cs = self._make_dummy_cs()
+        urlgrab_exc = URLGrabError()
+        urlgrab_exc.errno = 2
+        grabber_mock = Mock(side_effect=urlgrab_exc)
+        log_mock = Mock()
+        with patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock
+        ), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.log", log_mock
+        ):
+            assert not cs.get_mediaproducts()
+            log_mock.assert_not_called()
 
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
