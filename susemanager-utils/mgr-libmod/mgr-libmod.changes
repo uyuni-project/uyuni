@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 09 18:51:11 UTC 2023 - marina.latini@suse.com
+
+- version 4.3.4-1
+  * Ignore extra metadata fields for Liberty Linux (bsc#1208908)
+
+-------------------------------------------------------------------
 Tue Apr 19 11:48:41 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.3-1
