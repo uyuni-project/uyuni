@@ -408,7 +408,7 @@
 
   <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
     <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;[^&quot;]*&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n&quot;/' -i /etc/sysconfig/tomcat"/>
+        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
     </exec>
   </target>
 
