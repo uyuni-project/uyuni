@@ -1,7 +1,9 @@
+{{- if eq .Values.ingress "traefik" }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: uyuni-https-redirect
+  namespace: "{{ .Release.Namespace }}"
 spec:
   redirectScheme:
     scheme: https
@@ -11,6 +13,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: postgresql-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - postgres
@@ -24,6 +27,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: salt-publish-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - salt-publish
@@ -37,6 +41,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: salt-request-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - salt-request
@@ -50,6 +55,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: cobbler-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - cobbler
@@ -58,11 +64,13 @@ spec:
       services:
       - name: uyuni-tcp
         port: 25151
+{{- if .Values.exposeJavaDebug }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tomcat-debug-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - tomcat-debug
@@ -76,6 +84,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tasko-debug-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - tasko-debug
@@ -84,11 +93,13 @@ spec:
       services:
       - name: uyuni-tcp
         port: 8001
+{{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteUDP
 metadata:
   name: tftp-router
+  namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
     - tftp
@@ -96,3 +107,4 @@ spec:
     - services:
       - name: uyuni-udp
         port: 69
+{{- end }}

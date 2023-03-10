@@ -1,0 +1,44 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: uyuni-issuer
+  namespace: default
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uyuni-ca
+  namespace: default
+spec:
+  isCA: true
+  subject:
+    countries: ["FR"]
+    provinces: ["Burgundy"]
+    localities: ["Macon"]
+    organizations: ["SUSE"]
+    organizationalUnits: ["BCL"]
+  emailAddresses:
+    - sylvestre@world-co.com
+  commonName: uyuni-dev.world-co.com
+  dnsNames:
+    - uyuni-dev.world-co.com
+  secretName: uyuni-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: uyuni-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: uyuni-ca-issuer
+  namespace: default
+spec:
+  ca:
+    secretName:
+      uyuni-ca
