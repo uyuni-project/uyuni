@@ -864,6 +864,7 @@ do_setup() {
         ask_input REPORT_DB_USER
         ask_input REPORT_DB_PASS
         ask_input REPORT_DB_CA_CERT
+        ask_input UYUNI_FQDN
     fi;
     if [ -z "$SYS_DB_PASS" ]; then
         SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
@@ -899,6 +900,9 @@ do_setup() {
 
     if [ -z "$NO_SSL" ]; then
         NO_SSL=
+    fi
+    if [ -n "$UYUNI_FQDN" ]; then
+        HOSTNAME=$UYUNI_FQDN
     fi
 
     check_re_install
