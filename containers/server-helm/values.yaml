@@ -28,6 +28,10 @@ accessModes:
 ##
 # storageClass: "-"
 
+## matchPvByLabel adds selectors on each claim to select a PV with a 'data' label matching the PVC name.
+## This can be helpful for static PV management.
+matchPvByLabel: false
+
 # TODO Parametrize big volumes sizes
 
 ## servicesAnnotations are annotations to set on both TCP and UDP services.
