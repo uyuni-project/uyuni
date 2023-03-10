@@ -557,7 +557,7 @@ class ContentSource:
             urlgrabber.urlgrab(url, mirrorlist_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code"):
+            if not hasattr(exc, "code") and exc.errno != 2:
                 msg = "ERROR: Mirror list download failed: %s - %s" % (
                     url,
                     exc.strerror,
@@ -1096,7 +1096,7 @@ type=rpm-md
             urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code"):
+            if not hasattr(exc, "code") and exc.errno != 2:
                 msg = "ERROR: Media product file download failed: %s - %s" % (
                     url,
                     exc.strerror,
