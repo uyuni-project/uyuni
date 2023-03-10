@@ -2,26 +2,32 @@
  * This file is the old core theme file, over time we can hopefully clean this up and separate the logic accordingly
  */
 
+html,
 body {
-  background: @body-background;
-  width: auto;
-  -webkit-font-smoothing: antialiased;
-  font-family: @lato;
-}
-html, body {
-  height: auto;
+  height: 100%;
+  min-height: 100%;
+  min-width: fit-content;
+  margin: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  background: @body-background;
+  font-family: @lato;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+ 
 a {
   color: @link-color;
   cursor: pointer;
 }
 
 header {
-  position: fixed;
-  top: 0;
   height:auto;
-  z-index: 1000;
   width: 100%;
   border: none;
   border-radius: 0;
@@ -43,6 +49,34 @@ header {
 
   img {
     float: left;
+  }
+}
+
+.spacewalk-main-column-layout {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  aside {
+    overflow: auto !important;
+    float: none !important;
+    position: relative !important;
+
+    footer {
+      position: -webkit-sticky;
+      position: sticky;
+      bottom: 0;
+    }
+  }
+
+  section {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  #page-body {
+    flex: 1 1 auto;
+    overflow: auto;
   }
 }
 
@@ -155,18 +189,19 @@ section {
 }
 
 .navbar-collapse {
-  max-height: none;
+  display: flex;
+  flex-direction: column;
+
+  #nav {
+    flex: 1 0 auto;
+  }
 
   &.in {
-    display: block !important;
+    display: flex !important;
   }
 
   &.collapse {
     display: none !important;
-
-    & + div section {
-      width: 100%;
-    }
   }
 }
 

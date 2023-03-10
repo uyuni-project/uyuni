@@ -1,8 +1,8 @@
-// TODO: Get this dynamically after https://github.com/SUSE/spacewalk/issues/18942 is implemented
 /**
  * A list of updated page pathnames, e.g. `"/rhn/manager/foo/bar"`
+ * NB! This must be in sync with java/code/src/com/suse/manager/webui/utils/ViewHelper.java
  */
-const UPDATED_PAGES: string[] = [];
+const BOOTSTRAP_READY_PAGES: string[] = [];
 
 export const onEndNavigate = () => {
   const pathname = window.location.pathname;
@@ -13,7 +13,7 @@ export const onEndNavigate = () => {
     return;
   }
 
-  if (UPDATED_PAGES.includes(pathname)) {
+  if (BOOTSTRAP_READY_PAGES.includes(pathname)) {
     themeLink.setAttribute("disabled", "disabled");
     updatedThemeLink.removeAttribute("disabled");
   } else {

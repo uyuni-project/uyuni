@@ -1,7 +1,50 @@
 /* Main HTML5 tags defined for the theme */
-html, body {
-  height: 100%
+html,
+body {
+  height: 100% !important;
+  min-height: 100%;
+  min-width: fit-content;
+  margin: 0;
+  max-height: 100%;
+  overflow: hidden !important;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.spacewalk-main-column-layout {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  aside {
+    overflow: auto !important;
+    float: none !important;
+    position: relative !important;
+
+    footer {
+      position: -webkit-sticky;
+      position: sticky;
+      bottom: 0;
+    }
+  }
+
+  section {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  #page-body {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+}
+
+
 footer {
   padding: 1.2em 0;
   background: #030303;
@@ -60,7 +103,7 @@ p {
 
 .spacewalk-main-column-layout {
   .make-row(0);
-  min-height: 100%;
+
   aside {
     .make-sm-column(2);
   }
