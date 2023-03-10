@@ -16,9 +16,11 @@ spec:
   resources:
     requests:
       storage: 100Gi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: var-pgsql
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -38,9 +40,11 @@ spec:
   resources:
     requests:
       storage: 100Gi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: var-cache
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -60,9 +64,11 @@ spec:
   resources:
     requests:
       storage: 100Gi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: var-spacewalk
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -82,9 +88,11 @@ spec:
   resources:
     requests:
       storage: 2Gi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: var-log
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -104,9 +112,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-salt
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -126,9 +136,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-www-pub
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -148,9 +160,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-www-cobbler
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -170,9 +184,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-www-osimages
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -192,9 +208,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-tftpboot
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -214,9 +232,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-formulametadata
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -236,9 +256,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-pillar
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -258,9 +280,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-susemanager
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -280,9 +304,11 @@ spec:
   resources:
     requests:
       storage: 100Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: srv-spacewalk
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -302,9 +328,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: root
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -324,9 +352,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-apache2
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -346,9 +376,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-rhn
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -368,9 +400,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-systemd
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -390,9 +424,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-salt
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -412,9 +448,11 @@ spec:
   resources:
     requests:
       storage: 10Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-tomcat
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -434,9 +472,11 @@ spec:
   resources:
     requests:
       storage: 1Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-cobbler
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -456,9 +496,11 @@ spec:
   resources:
     requests:
       storage: 1Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-sysconfig
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -478,6 +520,8 @@ spec:
   resources:
     requests:
       storage: 1Mi
+{{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
       data: etc-tls
+{{- end }}
