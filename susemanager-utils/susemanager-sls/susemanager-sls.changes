@@ -1,3 +1,6 @@
+- support multiple gpgkey urls for a channel (bsc#1208540)
+- make SUSE Addon GPG key available on all instance (bsc#1208540)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:47:21 CET 2023 - jgonzalez@suse.com
 

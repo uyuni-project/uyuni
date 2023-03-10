@@ -1,3 +1,5 @@
+- support multiple gpgkey urls for a channel (bsc#1208540)
+
 -------------------------------------------------------------------
 Fri Mar 17 11:59:18 CET 2023 - jgonzalez@suse.com
 
