@@ -1,0 +1,483 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-pgsql
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: var-pgsql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-cache
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: var-cache
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-spacewalk
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Gi
+  selector:
+    matchLabels:
+      data: var-spacewalk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-log
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 2Gi
+  selector:
+    matchLabels:
+      data: var-log
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-salt
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-salt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-www-pub
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-pub
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-www-cobbler
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-cobbler
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-www-osimages
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-www-osimages
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-tftpboot
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-tftpboot
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-formulametadata
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-formulametadata
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-pillar
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-pillar
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-susemanager
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-susemanager
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: srv-spacewalk
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      data: srv-spacewalk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: root
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: root
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-apache2
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-apache2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-rhn
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-rhn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-systemd
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-systemd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-salt
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-salt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-tomcat
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+  selector:
+    matchLabels:
+      data: etc-tomcat
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-cobbler
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-cobbler
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-sysconfig
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-sysconfig
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-tls
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 1Mi
+  selector:
+    matchLabels:
+      data: etc-tls
