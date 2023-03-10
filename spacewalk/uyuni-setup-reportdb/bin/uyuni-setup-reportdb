@@ -125,6 +125,7 @@ create() {
         if $LOCAL ; then
             ADDRESS="127.0.0.1"
             REMOTE="127.0.0.1/32,::1/128"
+            HOST="localhost"
         else
             [ ! -s "$SSL_CERT" ] && {
                 echo "SSL Certificate ($SSL_CERT) is required to setup the reporting database" >&2
