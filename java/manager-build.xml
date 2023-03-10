@@ -22,7 +22,6 @@
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />
   <property name="deploy.namespace" value="default"/>
-  <property name="deploy.pod" value="uyuni"/>
 
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
@@ -39,8 +38,6 @@
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
   <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
   <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
-
-  <property name="kubectl.args" value="-n ${deploy.namespace} ${deploy.pod}"/>
 
   <!-- Taskdefs -->
   <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
@@ -297,9 +294,16 @@
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
   <target name="is-kubectl-installed">
-    <exec failifexecutionfails="false" resultproperty="kubectl.installed" executable="kubectl">
-      <arg line="version" />
+    <exec failifexecutionfails="false" resultproperty="kubectl.installed" outputproperty="deploy.pod" executable="kubectl">
+        <arg line="get" />
+        <arg line="pod" />
+        <arg line="-n" />
+        <arg line="${deploy.namespace}" />
+        <arg line="-o"/>
+        <arg line="jsonpath={.items[0].metadata.name}" />
+        <arg line="-lapp=uyuni" />
     </exec>
+    <property name="kubectl.args" value="-n ${deploy.namespace} ${deploy.pod}"/>
   </target>
 
   <target name="warn-if-kubectl-not-installed" depends="is-kubectl-installed" unless="kubectl.installed">
@@ -402,19 +406,19 @@
         <arg value="--"/>
         <arg value="sh"/>
         <arg value="-c"/>
-        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
+        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
     </exec>
   </target>
 
   <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
     <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
+        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
     </exec>
   </target>
 
   <target name="enable-java-debug-kube" depends="warn-if-kubectl-not-installed, append-tomcat-debug-kube, replace-tomcat-debug-kube" description="Add tomcat and taskomatic options to connect a Java debugger">
     <exec executable="kubectl">
-      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=${deploy.pod}:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
+      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
     </exec>
     <echo message="Restart taskomatic and tomcat at your convenience to debug"/>
   </target>

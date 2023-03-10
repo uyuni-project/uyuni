@@ -1,0 +1,93 @@
+# The default repository and image version if not defined otherwise
+repository: registry.opensuse.org/uyuni
+version: latest
+
+## Allows to override the default URI for an image if defined
+## Requires a full URI in a form of <registry>/<image>:<version-tag>
+##
+images:
+    # server: <registry>/<image>/<version>
+
+
+## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+##
+pullPolicy: "IfNotPresent"
+
+## uyuni server overall Persistent Volume access modes
+## Must match those of existing PV or dynamic provisioner
+## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+accessModes:
+  - ReadWriteOnce
+
+## If defined, storageClassName: <storageClass>
+## If set to "-", storageClassName: "", which disables dynamic provisioning
+## If undefined (the default) or set to null, no storageClassName spec is
+##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+##   GKE, AWS & OpenStack)
+##
+# storageClass: "-"
+
+# TODO Parametrize big volumes sizes
+
+## servicesAnnotations are annotations to set on both TCP and UDP services.
+## This can be useful to share the same IP when using metallb
+# servicesAnnotations:
+
+## exposeJavaDebug will expose the 8000 and 8001 ports to connect a Java debugger
+## to tomcat and taskomatic respectively
+# exposeJavaDebug: true
+
+## ingress defines the ingress that is used in the cluster.
+## It can be either "nginx", "traefik" or any other value.
+ingress: "traefik"
+
+## ingressSsl are annotations to pass the SSL ingress.
+## This can be used to set a cert-manager issuer like:
+## ingressSslAnnotations:
+##   cert-manager.io/cluster-issuer: uyuniIssuer
+# ingressSslAnnotations:
+
+## uyuniUser is the login of the user accessing the database
+uyuniUser: "spacewalk"
+## uyuniPass is the password of the user accessing the database
+uyuniPass: "spacewalk"
+
+## uyuniEnableTftp toggles TFTP service
+uyuniEnableTftp: true
+
+## reportDbHost is the report database FQDN.
+## Only set when using an external report database
+# reportDbHost: "uyuni.local"
+
+## reportDbPort is the report database port to connect to.
+## Only set when using an external report database
+# reportDbPort: "5432"
+
+## reportDbUser is the username to use to connect to the report database.
+## Only set when using an external report database
+# reportDbUser: ""
+
+## reportDbPass is the password to use to connect to the report database.
+## Only set when using an external report database
+# reportDbPass: "
+
+## reportDbName is the report database name.
+## Only set when using an external report database
+# reportDbName: ""
+
+# TODO Add reportDbCaCert value and handle it
+
+## uyuniAdminEmail is the email where all Uyuni notifications are sent
+uyuniAdminEmail: "galaxy-noise@suse.de"
+## uyuniMailFrom is the address in the from field of the emails sent by Uyuni
+uyuniMailFrom: "notifications@uyuni.local"
+
+## fqdn is the user accessible fully qualified domain name of the uyuni server
+fqdn: "uyuni.local"
+
+## sccUser is the SUSE Customer Center login
+# sccUser: ""
+
+## sccPass is the SUSE Customer Center password
+# sccPass: ""
