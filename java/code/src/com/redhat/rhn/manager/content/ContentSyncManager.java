@@ -1564,12 +1564,9 @@ public class ContentSyncManager {
                             Opt.or(
                                     Optional.ofNullable(dbProductsById.get(productJson.getId())),
                                     Optional.ofNullable(SUSEProductFactory.findSUSEProduct(
-                                            productJson.getIdentifier(),
-                                            productJson.getVersion(),
-                                            productJson.getReleaseType(),
-                                            productJson.getArch(),
-                                            false
-                                    ))),
+                                            productJson.getIdentifier(), productJson.getVersion(),
+                                            productJson.getReleaseType(), productJson.getArch(), false))
+                            ),
                             () -> {
                                 SUSEProduct prod = createNewProduct(productJson, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
