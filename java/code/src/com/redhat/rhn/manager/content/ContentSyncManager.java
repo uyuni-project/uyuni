@@ -1767,8 +1767,9 @@ public class ContentSyncManager {
                             prodRepoLink.setRepository(repo);
                             prodRepoLink.setRootProduct(root);
                             if (!entry.getGpgInfo().isEmpty()) {
-                                // we use only the 1st entry
-                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
+                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
                             }
@@ -1810,8 +1811,9 @@ public class ContentSyncManager {
                             prodRepoLink.setMandatory(entry.isMandatory());
                             prodRepoLink.getRepository().setSigned(entry.isSigned());
                             if (!entry.getGpgInfo().isEmpty()) {
-                                // we use only the 1st entry
-                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
+                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
                             }
