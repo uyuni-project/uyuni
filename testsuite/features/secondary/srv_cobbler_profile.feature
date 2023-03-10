@@ -86,7 +86,8 @@ Feature: Cobbler editing profiles results in ISE
     And I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
 
   Scenario: Create and modify a System profile using the XML-RPC API
-    # XML-RPC should return an error here
+    # This should intentionally fail and XML-RPC should return an error here until
+    # https://github.com/uyuni-project/uyuni/pull/6676 gets merged by Ion
     And I create and modify the kickstart system "isesystem_api" with hostname "ise-system.test" via XML-RPC
       | inst.repo   | http://ise.cobbler.test |
       | self_update | http://ise.cobbler.test |
