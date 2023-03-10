@@ -3,6 +3,7 @@
 
 @scope_power_management
 @scope_cobbler
+@sle_minion
 Feature: IPMI Power management
 
   Scenario: Fake an IPMI host

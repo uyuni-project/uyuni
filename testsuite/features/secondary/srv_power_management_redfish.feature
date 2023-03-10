@@ -3,6 +3,7 @@
 
 @scope_power_management
 @scope_cobbler
+@sle_minion
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
