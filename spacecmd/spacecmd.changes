@@ -1,3 +1,5 @@
+- Show targetted packages before actually removing them (bsc#1207830)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:43:37 CET 2023 - jgonzalez@suse.com
 
