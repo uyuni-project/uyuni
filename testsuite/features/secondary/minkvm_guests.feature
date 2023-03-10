@@ -310,6 +310,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
+  Scenario: Install TFTP boot package on the server
+    When I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -330,8 +334,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @scc_credentials
   Scenario: Create auto installation distribution
-    And I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP4-KVM" as "label"
@@ -407,6 +409,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "SLE-15-SP4-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-KVM" text
+
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
