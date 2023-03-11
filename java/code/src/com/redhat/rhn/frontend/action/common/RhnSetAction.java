@@ -52,7 +52,7 @@ public abstract class RhnSetAction<T> extends RhnListDispatchAction<T> {
      * @param formIn ActionForm
      * @param request ServletRequest
      * @param response ServletResponse
-     * @return The ActionForward to go to next
+     * @return The ActionForward to go to next.
      */
     public ActionForward updatelist(ActionMapping mapping,
                                     ActionForm formIn,
