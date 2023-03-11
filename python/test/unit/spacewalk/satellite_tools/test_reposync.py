@@ -27,7 +27,7 @@ except ImportError:
     from StringIO import StringIO
 from datetime import datetime, timedelta
 
-from mock import Mock, patch, call
+from mock import MagicMock, Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
@@ -1083,3 +1083,29 @@ def _mock_rhnsql(module, return_values):
     query.fetchall_dict = query.fetchone_dict = returned_obj
     module.rhnSQL.execute = Mock(return_value=query)
     module.rhnSQL.prepare = Mock(return_value=query)
+
+
+def test_ksdirhtmlparser():
+    HTML_OUTPUT = b'''
+<a href="./item1">item1/</a>
+<a href="./item1/">item1</a>
+<a href="./item1.rpm">item1.rpm</a>
+<a href="./item1.mirrorlist">item1.mirrorlist</a>
+<a href="./foobar/grub/grub.cfg">grub.cfg</a>
+<a href="./foobar/boot/">boot/</a>
+<a href="#">#</a>
+<a href="..">..</a>
+    '''
+
+    EXPECTATIONS = [
+        {'name': './item1', 'type': 'FILE'},
+        {'name': './item1/', 'type': 'DIR'},
+        {'name': './foobar/grub/grub.cfg', 'type': 'FILE'},
+        {'name': './foobar/boot/', 'type': 'DIR'}
+    ]
+
+    plugin = Mock()
+    plugin.get_file = MagicMock(return_value=HTML_OUTPUT)
+    parser = spacewalk.satellite_tools.reposync.KSDirHtmlParser(plugin, "foobar")
+
+    assert all([a == b for a, b in zip(parser.dir_content, EXPECTATIONS)])

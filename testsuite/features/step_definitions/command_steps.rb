@@ -919,7 +919,7 @@ When(/^I install package tftpboot-installation on the server$/) do
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  $server.run("rpm -i #{package}", check_errors: false)
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1736,6 +1736,12 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
   )
+end
+
+When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
+  if slemicro_host?(host)
+    step %(I reboot the "#{host}" minion through SSH)
+  end
 end
 
 When(/^I change the server's short hostname from hosts and hostname files$/) do

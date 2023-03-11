@@ -323,6 +323,13 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp3-updates-x86_64
     sle-module-basesystem15-sp3-updates-x86_64
     sle-module-server-applications15-sp3-updates-x86_64
+    sle15-sp3-installer-updates-x86_64
+    sle-module-desktop-applications15-sp3-pool-x86_64
+    sle-module-desktop-applications15-sp3-updates-x86_64
+    sle-module-devtools15-sp3-pool-x86_64
+    sle-module-devtools15-sp3-updates-x86_64
+    sle-module-containers15-sp3-pool-x86_64
+    sle-module-containers15-sp3-updates-x86_64
   ],
   '15-SP4' =>
   %w[
@@ -340,6 +347,11 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-updates-x86_64
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
+    sle15-sp4-installer-updates-x86_64
+    sle-module-desktop-applications15-sp4-pool-x86_64
+    sle-module-desktop-applications15-sp4-updates-x86_64
+    sle-module-devtools15-sp4-pool-x86_64
+    sle-module-devtools15-sp4-updates-x86_64
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
   ],
@@ -350,9 +362,6 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sll8-uyuni-client-x86_64
   ]
 }.freeze
-
-MIGRATE_SSH_MINION_FROM = '15-SP3'.freeze
-MIGRATE_SSH_MINION_TO = '15-SP4'.freeze
 
 OS_REPOS_BY_OS_VERSION = {
   '11-SP4' =>

@@ -1,4 +1,5 @@
 - Use context manager for mgr-create-bootstrap-repo.
+- Tune the dabase after copying the old configuration (bsc#1208611)
 - Remove non-salt-bundle packages from repositories for SLE12,
   CentOS7 and clones
 - Replace apache group to root for RHEL.
