@@ -64,7 +64,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * TargetSystemsConfirmAction
  */
-public class TargetSystemsConfirmAction extends RhnAction implements Listable<T>, MaintenanceWindowsAware {
+public class TargetSystemsConfirmAction<T> extends RhnAction<T> implements Listable<T>, MaintenanceWindowsAware<T> {
 
     private static final Logger LOG = LogManager.getLogger(TargetSystemsConfirmAction.class);
 

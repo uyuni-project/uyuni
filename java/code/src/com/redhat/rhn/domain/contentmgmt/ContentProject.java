@@ -53,7 +53,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseContentProject")
-public class ContentProject extends BaseDomainHelper {
+public class ContentProject<T> extends BaseDomainHelper<T> {
 
     private Long id;
     private Org org;

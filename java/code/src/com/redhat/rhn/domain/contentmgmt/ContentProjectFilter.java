@@ -34,7 +34,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseContentFilterProject")
-public class ContentProjectFilter {
+public class ContentProjectFilter<T> {
 
     private Long id;
     private State state;

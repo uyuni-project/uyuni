@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * RhnSet
  */
-public interface RhnSet extends Set<T> {
+public interface RhnSet<T> extends Set<T> {
 
     /**
      * Setter for user id

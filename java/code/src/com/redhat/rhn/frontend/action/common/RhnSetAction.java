@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @see com.redhat.rhn.frontend.struts.RhnAction
  */
-public abstract class RhnSetAction extends RhnListDispatchAction {
+public abstract class RhnSetAction<T> extends RhnListDispatchAction<T> {
 
     /**
      * Updates RhnSet with checked set elements

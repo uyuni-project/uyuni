@@ -46,7 +46,7 @@ import javax.persistence.criteria.Root;
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
  */
-public class ContentProjectFactory extends HibernateFactory {
+public class ContentProjectFactory<T> extends HibernateFactory<T> {
 
     private static final ContentProjectFactory INSTANCE = new ContentProjectFactory();
     private static Logger log = LogManager.getLogger(ContentProjectFactory.class);

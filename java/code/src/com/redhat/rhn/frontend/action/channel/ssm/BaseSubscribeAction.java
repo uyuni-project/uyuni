@@ -64,7 +64,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * BaseSubscribeAction
  */
-public class BaseSubscribeAction extends RhnLookupDispatchAction {
+public class BaseSubscribeAction<T> extends RhnLookupDispatchAction<T> {
 
     private static Logger log = LogManager.getLogger(BaseSubscribeAction.class);
     private static LocalizationService localizationInstance =

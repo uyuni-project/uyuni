@@ -43,7 +43,7 @@ import javax.persistence.Table;
 @Table(name = "suseContentProjectSource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class ProjectSource {
+public abstract class ProjectSource<T> {
 
     private Long id;
     private Integer position;

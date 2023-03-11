@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * ConfigFileFilter
  */
-public abstract class BaseConfigFilter implements ListFilter {
+public abstract class BaseConfigFilter<T> implements ListFilter<T> {
 
     private Map<String, String> fieldMap;
     /**

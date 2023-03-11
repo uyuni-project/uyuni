@@ -35,7 +35,7 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * XccdfSearchHelper
  */
-public class XccdfSearchHelper extends RhnAction {
+public class XccdfSearchHelper<T> extends RhnAction<T> {
 
     private static final String IDENT_INDEX = "xccdfIdent";
     private static final String INDEX_SEARCH = "index.search";
