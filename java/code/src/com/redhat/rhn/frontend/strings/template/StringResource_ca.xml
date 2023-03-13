@@ -263,15 +263,13 @@ This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date.
     </source>
-        <target state="needs-adaptation">
+        <target state="translated">
 ----------------------
 Llista de sistemes afectats
 ----------------------
-Aquest Avís de Pedaços pot aplicar-se als sistemes que s'indiquen a continuació. Si sabeu
-aquest pedaç no s'aplica a un sistema llistat, és possible que el
-el perfil del paquet per a aquest servidor no estigui actualitzat. En aquest cas, hauríeu d'executar
-"up2date -p" (RHEL 4 i posterior) o "rhn-profile-sync" (SLES, RHEL 5 i posterior)
-com a root al sistema en qüestió per actualitzar el perfil de programari.
+Aquest Avís de Pedaços pot aplicar-se als sistemes que s'indiquen a continuació. Si
+sabeu que aquest pedaç no s'aplica a un sistema llistat, és possible que el
+el perfil del paquet per a aquest servidor no estigui actualitzat.
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
