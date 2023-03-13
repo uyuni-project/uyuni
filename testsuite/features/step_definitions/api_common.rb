@@ -581,5 +581,5 @@ When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)
   STDOUT.puts "system_id: #{system_id}"
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
-  _command = $api_test.system.set_variables(system_id, variables)
+  $api_test.system.set_variables(system_id, variables)
 end
