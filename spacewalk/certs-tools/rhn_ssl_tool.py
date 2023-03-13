@@ -229,6 +229,13 @@ def getCAPassword(options, confirmYN=1):
     global DEFS
     while not options.password:
         pw = _pw = None
+        if options.password_file:
+            if os.path.isfile(options.password_file):
+                with open(options.password_file, 'r') as fd:
+                    pw = _pw = fd.read().strip()
+            else:
+                print("No such file '{}'".format(options.password_file))
+
         while not pw:
             pw = getpass.getpass("CA password: ")
         if confirmYN:

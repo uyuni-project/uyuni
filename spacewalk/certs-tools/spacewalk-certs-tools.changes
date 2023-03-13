@@ -1,3 +1,4 @@
+- Read CA password from a file
 - remove unused dependencies
 
 -------------------------------------------------------------------
