@@ -61,7 +61,7 @@ ExecStart=/usr/bin/podman run \
     -v home:/home \
     -v etc-sysconfig:/etc/sysconfig \
     --env-host \
-    --hostname ${HOSTNAME} \
+    --hostname ${UYUNI_FQDN} \
     --name uyuni-server ${NAMESPACE}/server:${TAG}
 ExecStop=/usr/bin/podman stop \
     --ignore -t 10 \
