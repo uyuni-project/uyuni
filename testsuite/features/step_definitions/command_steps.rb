@@ -1789,3 +1789,16 @@ When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
 end
+
+When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
+  add_ports = ''
+  for port in [9100, 9117, 9187] do
+    add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
+  end
+  cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
+  node = get_target(host)
+  node.run(cmd)
+  output, _code = node.run('firewall-cmd --list-ports')
+  raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
+    output.include? '9100/tcp 9117/tcp 9187/tcp'
+end
