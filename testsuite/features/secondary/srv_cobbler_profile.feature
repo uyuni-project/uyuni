@@ -4,7 +4,7 @@
 @scope_cobbler
 Feature: Cobbler editing profiles results in ISE
   Tests for occuring Cobbler issue (bsc#1207532)
-  This feature is split up into 2 section
+  This feature is split up into 2 sections
   The first section uses the webUI
   The second one uses the XML-RPC API
 

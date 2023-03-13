@@ -128,7 +128,7 @@ class NamespaceSystem
   end
 
   ##
-  # Creates a system record on the Spacewalk server.
+  # Creates a system record on the SUMA server.
   #
   # Args:
   #   name: The name of the system record.
