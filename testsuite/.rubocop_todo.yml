@@ -406,6 +406,11 @@ Style/DocumentationMethod:
     - 'features/support/twopence_init.rb'
 
 # Offense count: 1
+Style/For:
+  Exclude:
+    - 'features/step_definitions/command_steps.rb'
+
+# Offense count: 1
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: annotated, template, unannotated
 Style/FormatStringToken:
