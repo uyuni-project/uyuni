@@ -1,0 +1,13 @@
+## Add common channels and special repositories BEGIN ###
+
+- features/build_validation/add_common_repositories/ubuntu1804_minion_add_common_repositories.feature
+- features/build_validation/add_common_repositories/alma9_minion_build_clm.feature
+- features/build_validation/add_common_repositories/centos7_minion_add_iso.feature
+- features/build_validation/add_common_repositories/liberty9_minion_build_clm.feature
+- features/build_validation/add_common_repositories/oracle9_minion_build_clm.feature
+- features/build_validation/add_common_repositories/rocky8_minion_add_iso_and_build_clm.feature
+- features/build_validation/add_common_repositories/rocky9_minion_build_clm.feature
+
+## Add common channels and special repositories END ###
+
+

@@ -89,10 +89,10 @@ namespace :utils do
     clients.reject! { |client| client.include?('monitoring_server') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
-        'features/build_validation/add_custom_repositories/add_maintenance_update_repositories.template',
+        'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
         File.basename(client,'.feature'),
-        'features/build_validation/add_custom_repositories',
-        'run_sets/build_validation_add_custom_repositories.yml'
+        'features/build_validation/add_MU_repositories',
+        'run_sets/build_validation_add_MU_repositories.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -188,7 +188,7 @@ namespace :jenkins do
       next if minion.include?('ssh')
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_maintenance_update_repositories',
                                                           File.basename(minion,'.feature'),
-                                                          'features/build_validation/add_custom_repositories',
+                                                          'features/build_validation/add_MU_repositories',
                                                           "run_sets/build_validation_add_maintenance_update_repositories_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
