@@ -1,3 +1,4 @@
+- Use versioned Python during packaging.
 - Allow default component for context manager.
 
 -------------------------------------------------------------------
