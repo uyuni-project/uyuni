@@ -251,14 +251,32 @@ When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
 end
 
 When(/^I start local monitoring of Cobbler$/) do
-  $server.run('tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log', timeout: 1)
+  cobbler_conf_file = '/etc/cobbler/logging_config.conf'
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  $server.run("rm #{cobbler_log_file}", check_errors: false)
+  _result, code = $server.run("test -f #{cobbler_conf_file}.old", check_errors: false)
+  if !code.zero?
+    handler_name = 'FileLogger02'
+    handler_class = "\"\n[handler_#{handler_name}]\n" \
+                  "class=FileHandler\n" \
+                  "level=DEBUG\n" \
+                  "formatter=Logfile\n" \
+                  "args=('#{cobbler_log_file}', 'a')\""
+    command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
+              "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
+              "line_number=`awk \"/\\\[logger_root\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
+              "echo -e #{handler_class} >> #{cobbler_conf_file}"
+    $server.run("#{command} && systemctl restart cobblerd", check_errors: false)
+  else
+    $server.run('systemctl restart cobblerd', check_errors: false)
+  end
 end
 
 When(/^I check for Cobbler errors in the local logs$/) do
-  command_output, _code = $server.run('ps axo pid,cmd | grep tail | grep -v grep', check_errors: false)
-  pid = command_output.split(' ')[0]
-  $server.run("kill #{pid}", check_errors: false)
-  output, code = $server.run('grep -i error /var/log/cobbler/testsuite_cobbler_watch.log', check_errors: false)
-  $server.run('rm /var/log/cobbler/testsuite_cobbler_watch.log', check_errors: false)
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  output, code = $server.run("grep -i error #{cobbler_log_file}", check_errors: false)
+  $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") if code.zero?
   raise "Errors in Cobbler logs:\n #{output}" if code.zero?
 end
