@@ -292,14 +292,16 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
   client.sub! 'monitoring_server', 'sle15sp4_minion'
-  custom_channel = if client.include? 'rocky8'
+  custom_channel = if client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'liberty9'
+                     'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+                   elsif client.include? 'rocky8'
                      'no-appstream-8-result-custom_channel_rocky8_minion'
                    elsif client.include? 'rocky9'
                      'no-appstream-9-result-custom_channel_rocky9_minion'
-                   elsif client.include? 'alma9'
-                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
-                   elsif client.include? 'oracle9'
-                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
                    else
                      "custom_channel_#{client}"
                    end
