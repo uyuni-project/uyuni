@@ -1,3 +1,4 @@
+- Ensure installation of make for building.
 - Use versioned Python during packaging.
 - Allow default component for context manager.
 

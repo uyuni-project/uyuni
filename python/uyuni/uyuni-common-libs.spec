@@ -53,6 +53,7 @@ Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
