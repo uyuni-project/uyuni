@@ -190,7 +190,7 @@ public class MirrorCredentialsManager {
         }
 
         // Clear Repository Authentications
-        SCCCachingFactory.lookupRepositoryAuthByCredential(dbCreds).stream()
+        SCCCachingFactory.lookupRepositoryAuthByCredential(dbCreds)
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
 
         // Clear the cache for deleted credentials
