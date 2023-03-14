@@ -1,6 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scc_credentials
 @scope_changing_software_channels
 @sle_minion
 Feature: Assign child channel to a system

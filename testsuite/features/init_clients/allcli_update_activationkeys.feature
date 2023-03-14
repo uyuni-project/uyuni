@@ -44,6 +44,7 @@ Feature: Update activation keys
     And I wait until the channel "fake-rpm-sles-channel" has been synced
     And I disable source package syncing
 
+@scc_credentials
   Scenario: Update SLE key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
@@ -64,6 +65,7 @@ Feature: Update activation keys
     When I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
+@scc_credentials
   Scenario: Update SSH key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
@@ -75,6 +77,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been modified" text
 
+@scc_credentials
   Scenario: Update SSH tunnel key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
