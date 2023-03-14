@@ -131,7 +131,8 @@ public class ProductsController {
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
         data.put(REFRESH_FILE_LOCKED, String.valueOf(FileLocks.SCC_REFRESH_LOCK.isLocked()));
         data.put(NO_TOOLS_CHANNEL_SUBSCRIPTION,
-                String.valueOf(!(ConfigDefaults.get().isUyuni() || csm.hasToolsChannelSubscription())));
+                String.valueOf(!(ConfigDefaults.get().isUyuni() ||
+                        csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT())));
 
         return new ModelAndView(data, "templates/products/show.jade");
     }
