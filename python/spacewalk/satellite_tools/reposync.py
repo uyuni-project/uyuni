@@ -823,11 +823,7 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
-
-        if comps_type == 'modules':
-            log(0, "*** NOTE: Importing {1} file for the channel '{0}'.".format(self.channel['label'], comps_type))
-        else:
-            log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
+        log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
         file_timestamp = os.path.getmtime(filename)
@@ -839,30 +835,26 @@ class RepoSync(object):
             return abspath
 
         # update or insert
-        hu = rhnSQL.prepare("""
-            update rhnChannelComps
-            set relative_filename = :relpath,
-                modified = current_timestamp,
-                last_modified = :last_modified
-            where channel_id = :cid
-                and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                and relative_filename = :relpath""")
+        hu = rhnSQL.prepare("""update rhnChannelComps
+                                  set relative_filename = :relpath,
+                                      modified = current_timestamp,
+                                      last_modified = :last_modified
+                                where channel_id = :cid
+                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
         hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
 
-        hi = rhnSQL.prepare("""
-            insert into rhnChannelComps(id, channel_id, relative_filename, last_modified, comps_type_id)
-            (select sequence_nextval('rhn_channelcomps_id_seq'),
-                    :cid,
-                    :relpath,
-                    :last_modified,
-                    (select id from rhnCompsType where label = :ctype)
-                from dual
-                where not exists
-                    (select 1 from rhnChannelComps
-                        where channel_id = :cid
-                            and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                            and relative_filename = :relpath))""")
+        hi = rhnSQL.prepare("""insert into rhnChannelComps
+                              (id, channel_id, relative_filename, last_modified, comps_type_id)
+                              (select sequence_nextval('rhn_channelcomps_id_seq'),
+                                      :cid,
+                                      :relpath,
+                                      :last_modified,
+                              (select id from rhnCompsType where label = :ctype)
+                                 from dual
+                                where not exists (select 1 from rhnChannelComps
+                                    where channel_id = :cid
+                                    and comps_type_id = (select id from rhnCompsType where label = :ctype)))""")
         hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
         return abspath

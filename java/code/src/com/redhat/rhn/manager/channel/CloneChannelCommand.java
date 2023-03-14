@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.channel;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -116,9 +117,14 @@ public class CloneChannelCommand extends CreateChannelCommand {
         ChannelFactory.save(c);
         c = ChannelFactory.reload(c);
 
-        // Comps files are cloned by the DB trigger 'rhn_channel_cloned_comps_trig'
-        if (stripModularMetadata && c.isModular()) {
-            c.getModules().clear();
+        if (stripModularMetadata) {
+            if (c.getModules() != null) {
+                HibernateFactory.getSession().delete(c.getModules());
+            }
+            c.setModules(null);
+        }
+        else {
+            c.cloneModulesFrom(original);
         }
 
         // This ends up being a mode query call so need to save first to get channel id
