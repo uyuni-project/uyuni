@@ -67,14 +67,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -336,7 +332,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             Comps comps = new Comps();
             comps.setChannel(channel);
             comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
-            comps.setLastModified(new Date());
             channel.setComps(comps);
 
             try {
@@ -666,7 +661,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             Comps comps = new Comps();
             comps.setChannel(channel);
             comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
-            comps.setLastModified(new Date());
             channel.setComps(comps);
 
             try {
@@ -705,35 +699,28 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 Collections.emptyMap(),
                 channel.getLabel(), "modules.yaml");
 
-        Path modulesRelativeDir = Path.of("rhn", "modules", channel.getName());
-        Path modulesDir = Path.of(Config.get().getString(ConfigDefaults.MOUNT_POINT)).resolve(modulesRelativeDir);
+        String modulesRelativeDirPath = "rhn/modules/" + channel.getName();
+        String modulesDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + modulesRelativeDirPath;
+        String modulesName = modulesRelativeDirPath + "123hash123-modules";
+        File modulesDir = new File(modulesDirPath);
         try {
-            Files.createDirectories(modulesDir);
-            Path modulesFile = Files.createTempFile(modulesDir, "n3wha5h", "-modules.yaml");
-            Files.write(modulesFile, TestUtils.randomString().getBytes());
+            assertTrue(modulesDir.mkdirs());
+            File modulesFile = File.createTempFile(modulesDirPath + "/" + modulesName, ".yaml", modulesDir);
+            Files.write(modulesFile.getAbsoluteFile().toPath(),
+                    TestUtils.randomString().getBytes());
 
             // create modules object
-            Modules modulesLatest = new Modules(modulesRelativeDir.resolve(modulesFile.getFileName()).toString(),
-                    Date.from(Files.getLastModifiedTime(modulesFile).toInstant()));
-            channel.addModules(modulesLatest);
-
-            // Create a second, older modules.yaml file
-            Path modulesFileOlder = Files.createTempFile(modulesDir, "01dha5h", "-modules.yaml");
-            Files.write(modulesFileOlder, TestUtils.randomString().getBytes());
-            // Set file time to 1 second earlier than the other one
-            Files.setLastModifiedTime(modulesFileOlder,
-                    FileTime.from(Files.getLastModifiedTime(modulesFile).toInstant().minus(Duration.ofSeconds(1))));
-
-            Modules modulesOlder = new Modules(modulesRelativeDir.resolve(modulesFileOlder.getFileName()).toString(),
-                    Date.from(Files.getLastModifiedTime(modulesFileOlder).toInstant()));
-            channel.addModules(modulesOlder);
+            Modules modules = new Modules();
+            modules.setChannel(channel);
+            modules.setRelativeFilename(modulesRelativeDirPath + "/" + modulesFile.getName());
+            channel.setModules(modules);
 
             try {
                 assertNotNull(DownloadController.downloadMetadata(request, response));
 
-                assertEquals(modulesFile.toAbsolutePath().toString(), response.raw().getHeader("X-Sendfile"));
+                assertEquals(modulesFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
-                assertEquals("attachment; filename=" + modulesFile.getFileName().toString(),
+                assertEquals("attachment; filename=" + modulesFile.getName(),
                         response.raw().getHeader("Content-Disposition"));
             }
             catch (spark.HaltException e) {
@@ -741,7 +728,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             }
         }
         finally {
-            FileUtils.deleteDirectory(modulesDir.toFile());
+            FileUtils.deleteDirectory(modulesDir);
         }
     }
 
@@ -778,7 +765,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             MediaProducts prd = new MediaProducts();
             prd.setChannel(channel);
             prd.setRelativeFilename(productsRelativeDirPath + "/" + productsFile.getName());
-            prd.setLastModified(new Date());
             channel.setMediaProducts(prd);
 
             try {
