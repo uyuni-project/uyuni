@@ -4,6 +4,7 @@
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
 # - sumaform: as it is configuring monitoring to be enabled after deployment
 
+@skip_if_container
 @scope_monitoring
 @scope_res
 @rhlike_minion

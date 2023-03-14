@@ -1,6 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scc_credentials
 @scope_changing_software_channels
 @sle_minion
@@ -66,7 +67,7 @@ Feature: Assign child channel to a system
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I uncheck "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

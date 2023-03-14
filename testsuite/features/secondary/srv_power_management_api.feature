@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_api
 @sle_minion
 Feature: IPMI Power management API
