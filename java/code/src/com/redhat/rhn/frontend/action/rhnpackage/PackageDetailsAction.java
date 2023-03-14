@@ -74,7 +74,6 @@ public class PackageDetailsAction extends RhnAction {
                 throw new PermissionException("Invalid pid");
             }
 
-            request.setAttribute("type", "rpm");
             request.setAttribute(PACKAGE_NAME, pkg.getFilename());
             if (!pkg.getPackageKeys().isEmpty()) {
                 request.setAttribute(PACKAGE_KEY, pkg.getPackageKeys().iterator().next()
