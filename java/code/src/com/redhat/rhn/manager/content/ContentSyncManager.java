@@ -2601,4 +2601,20 @@ public class ContentSyncManager {
                .filter(p -> p.getChannelFamily() != null)
                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
     }
+
+    /**
+     * Check if Tools Channels can be synced via Cloud RMT Infrastructure.
+     * In PAYG scenario, we do not have a subscription, but we have access
+     * via the Cloud RMT server and can mirror them.
+     * @return return true if we can sync tools channels via Cloud RMT, otherwise false
+     */
+    public boolean canSyncToolsChannelViaCloudRMT() {
+        return SCCCachingFactory.lookupRepositoryAuth().stream()
+                .filter(a -> a.cloudRmtAuth().isPresent())
+                .map(a -> a.getRepo())
+                .flatMap(r -> r.getProducts().stream())
+                .map(pr -> pr.getProduct())
+                .filter(p -> p.getChannelFamily() != null)
+                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
+    }
 }
