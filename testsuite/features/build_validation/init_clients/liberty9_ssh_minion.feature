@@ -39,6 +39,10 @@ Feature: Bootstrap a Liberty Linux 9 Salt SSH minion
     And I follow "Proxy" in the content area
     Then I should see "liberty9_ssh_minion" hostname
 
+@monitoring_server
+  Scenario: Prepare Liberty Linux 9 Salt SSH minion firewall for monitoring
+    When I enable firewall ports for monitoring on this "liberty9_ssh_minion"
+
   Scenario: Check events history for failures on Liberty Linux 9 Salt SSH minion
     Given I am on the Systems overview page of this "liberty9_ssh_minion"
     Then I check for failed events on history event page
