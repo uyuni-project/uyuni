@@ -18,6 +18,7 @@ package com.redhat.rhn.taskomatic.task.payg;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
@@ -219,6 +220,8 @@ public class PaygAuthDataExtractor {
         if (instance.getHost().equals("localhost")) {
             PaygInstanceInfo paygInstanceInfo = extractAuthDataLocal();
             List<PaygProductInfo> slemtProductInfos = SUSEProductFactory.listAllSLEMTProducts()
+                    // TODO: deb not yet available on RMT
+                    .filter(p -> p.getArch().getArchType().getLabel().equals(PackageFactory.ARCH_TYPE_RPM))
                     .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch().getLabel()))
                     .collect(Collectors.toList());
             paygInstanceInfo.getProducts().addAll(slemtProductInfos);
