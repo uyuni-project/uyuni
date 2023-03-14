@@ -71,7 +71,10 @@ Capybara.register_driver(:headless_chrome) do |app|
       args: chrome_options,
       w3c: false,
       prefs: {
-        'download.default_directory': '/tmp/downloads'
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
+        }
       }
     },
     unexpectedAlertBehaviour: 'accept',
