@@ -1,3 +1,5 @@
+- change backup file extension from .orig to .date
+
 -------------------------------------------------------------------
 Tue Feb 21 12:39:12 CET 2023 - jgonzalez@suse.com
 
