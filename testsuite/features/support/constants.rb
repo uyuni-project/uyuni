@@ -123,8 +123,16 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
+
+# For containers we do not have SCC, so we set the Fake Base Channel
+# for sle_minion
+if ENV["PROVIDER"].include? 'docker'
+  sle_base_channel = 'Fake Base Channel'
+else
+  sle_base_channel = 'SLES15-SP4-Pool'
+end
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
-                           'sle_minion' => 'SLES15-SP4-Pool',
+                           'sle_minion' => sle_base_channel,
                            'ssh_minion' => 'SLES15-SP4-Pool',
                            'rhlike_minion' => 'RHEL8-Pool for x86_64',
                            'deblike_minion' => 'ubuntu-2004-amd64-main',
@@ -193,6 +201,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                           'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                           'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
+                          'Fake Base Channel' => 'fake_base_channel',
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                           'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                           'oraclelinux9 for x86_64' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
@@ -220,6 +229,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'SUSE-MicroOS-5.2-Pool for x86_64' => 'SLE-MICRO-5.2-x86_64',
                                     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                     'almalinux9 for x86_64' => 'almalinux-9-x86_64',
+                                    'Fake Base Channel' => 'fake_base_channel-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                     'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
@@ -247,6 +257,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                                            'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                                            'almalinux9 for x86_64' => nil,
+                                           'Fake Base Channel' => nil,
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                                            'EL9-Pool for x86_64' => 'el9-pool-x86_64',
                                            'oraclelinux9 for x86_64' => nil,
