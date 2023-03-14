@@ -1,3 +1,4 @@
+- Display activation key details after executing the corresponding command (bsc#1208719)
 - Show targetted packages before actually removing them (bsc#1207830)
 - Fix spacecmd not showing any output for softwarechannel_diff 
   and softwarechannel_errata_diff (bsc#1207352)
