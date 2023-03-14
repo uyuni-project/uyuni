@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    run: rhn-ssl-tool
+  name: rhn-ssl-tool
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: gen-ca
+        image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server
+        command:
+        - rhn-ssl-tool
+        - --gen-ca
+        - --no-rpm
+        - --set-common-name=uyuni-dev.world-co.com
+        - --set-country=FR
+        - --set-state=Burgundy
+        - --set-city=Macon
+        - --set-org=SUSE
+        - --set-org-unit=BCL
+        - --set-email=sylvestre@world-co.com
+        - --password-file=/ssl-build/password
+        volumeMounts:
+        - name: ssl-build
+          mountPath: /ssl-build
+      containers:
+      - name: gen-server
+        image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server
+        command:
+        - rhn-ssl-tool
+        - --gen-server
+        - --no-rpm
+        - --set-cname=uyuni-dev.world-co.com
+        - --set-country=FR
+        - --set-state=Burgundy
+        - --set-city=Macon
+        - --set-org=SUSE
+        - --set-org-unit=BCL
+        - --set-email=sylvestre@world-co.com
+        - --set-hostname=uyuni-dev
+        - --set-cname=uyuni.world-co.com
+        - --password-file=/ssl-build/password
+        volumeMounts:
+        - name: ssl-build
+          mountPath: /ssl-build
+      volumes:
+      - name: ssl-build
+        hostPath:
+          path: /var/uyuni/ssl-build
+          type: Directory
