@@ -1,3 +1,5 @@
+- Fix rendering of notifications list with subscription warnings (bsc#1209259)
+
 -------------------------------------------------------------------
 Tue Feb 28 11:55:21 CET 2023 - jgonzalez@suse.com
 
