@@ -3,11 +3,7 @@
 ## Prerequisites
 
 The following assumes you have a single-node rke2 or k3s cluster ready with enough resources for the Uyuni server.
-It also assumes that `kubectl` is installed on your machine and configured to connect to the cluster.
-
-** HACK ** For now I used the SSL certificates and CA generated in one of my installation attempts.
-I will assume you already have SSL certificates matching the FQDN of the cluster node.
-Instructions or tools on how to generate those will come later.
+It also assumes that `kubectl` and `helm` are installed on your machine and configured to connect to the cluster.
 
 ## Setting up the resources
 
@@ -100,19 +96,79 @@ Proceed with the next steps.
 ***Hostname***: this procedure doesn't handle any hostname change.
 Certificates migration also needs to be documented, but that can be guessed for now with the instructions to setup a server from scratch.
 
+
+### CA certificates using `rhn-ssl-tool`
+
+On the cluster node, prepare the volume with the CA password in the `/var/uyuni/ssl-build/password` file:
+
+```
+mkdir -p /var/uyuni/ssl-build
+chmod 700 /var/uyuni
+vim /var/uyuni/ssl-build/password
+chmod 500 /var/uyuni/ssl-build/password
+```
+
+Edit the `rhn-ssl-tool.yaml` file to match your FQDN and subject.
+Generate the CA certificate and server certificate and key using `rhn-ssl-tool` by running:
+
+```
+kubectl apply -f rhn-ssl-tool.yaml
+```
+
+**Note** that it pulls the big server container image and thus takes quite some time to complete.
+Wait for the generated pod to be in `COMPLETED` state before continuing.
+
+Create the TLS secret holding the server SSL certificates by running this on the cluster node:
+
+```
+kubectl create secret tls uyuni-cert --key /var/uyuni/ssl-build/<servername>/server.key --cert /var/uyuni/ssl-build/<servername>/server.crt
+```
+
+Create a `ConfigMap` with the CA certificate by running this on the cluster node:
+
+```
+kubectl create configmap uyuni-ca --from-file=ca.crt=/var/uyuni/ssl-build/RHN-ORG-TRUSTED-SSL-CERT
+```
+
+### CA certificates using Cert-Manager
+
+Install cert-manager on the cluster.
+The [default static install](https://cert-manager.io/docs/installation/#default-static-install) is enoughfor the testing use case:
+
+```
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+```
+
+`cert-manager` now needs to be configured to issue certificates.
+The following instructions will document setting up a self signed CA and the corresponding issuers.
+Check the [documentation](https://cert-manager.io/docs/configuration/acme/) on how to set up other issuers like Let's Encrypt.
+
+Edit the `cert-manager-selfsigned-issuer.yaml` file to match the server FQDN and subject and then apply it:
+
+```
+kubectl apply -f cert-manager-selfsigned-issuer.yaml
+```
+
+For security reason, copy the CA certificate into a separate config map, to not mount the CA secret on the pod:
+
+```
+kubectl get secret uyuni-ca -o=jsonpath='{.data.ca\.crt}' | base64 -d >ca.crt
+kubectl create configmap uyuni-ca --from-file=ca.crt
+rm ca.crt
+```
+
+Run the following command to append the ingress annotation to use the new CA when applying the helm chart later:
+
+```
+cat >values.yaml << EOF
+ingressSslAnnotations:
+  cert-manager.io/issuer: uyuni-ca-issuer
+EOF
+```
+
+
 ### Deploy the pod and its resources
 
-Create the TLS secret holding the server SSL certificates:
-
-```
-kubectl create secret tls uyuni-cert --key <pathto>/server.key --cert <pathto>/server.crt
-```
-
-Create a `ConfigMap` with the CA certificate:
-
-```
-kubectl create configmap uyuni-ca --from-file=ca.crt=<pathto>/RHN-ORG-TRUSTED-SSL-CERT
-```
 
 Change the hostname associated to the persistent volumes to match the hostname of your node:
 
@@ -127,21 +183,28 @@ The volumes are folders on the cluster node and need to be manually created:
 mkdir -p `kubectl get pv -o jsonpath='{.items[*].spec.local.path}'`
 ```
 
-Install the helm chart from the source's `containers` folder:
-Replace the `uyuni-dev.world-co.com` by your FQDN.
+Run the following to add the helm chart configuration values but replace the `uyuni-dev.world-co.com` by your server's FQDN:
+
 ```
-helm install uyuni server-helm \
-    --set repository=registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni \
-    --set storageClass=local-storage \
-    --set exposeJavaDebug=true \
-    --set uyuniMailFrom=notifications@uyuni-dev.world-co.com \
-    --set fqdn=uyuni-dev.world-co.com
+CAT >>values.yaml << EOF
+repository: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni
+storageClass: local-storage
+exposeJavaDebug: true
+uyuniMailFrom: notifications@uyuni-dev.world-co.com
+fqdn: uyuni-dev.world-co.com
+EOF
 ```
 
-If deploying on `rke2`, add the `--set ingres=nginx` parameter to the `helm install` command.
+If deploying on `rke2`, add the `ingress: nginx` line to the `values.yaml` file.
 
 You can also set more variables like `sccUser` or `sccPass`.
-Check the `server-helm/values.yaml` file for the complete list.
+Check the [server-helm/values.yaml](https://github.com/uyuni-project/uyuni/blob/server-container/containers/server-helm/values.yaml) file for the complete list.
+
+Install the helm chart from the source's `containers` folder:
+
+```
+helm install uyuni server-helm -f values
+```
 
 Note that the Helm chart installs a deployment with one replica.
 The pod name is automatically generated by kubernetes and changes at every start.
