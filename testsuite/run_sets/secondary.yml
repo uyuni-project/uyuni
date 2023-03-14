@@ -60,5 +60,5 @@
 - features/secondary/srv_cobbler_sync.feature
 - features/secondary/srv_cobbler_distro.feature
 - features/secondary/srv_cobbler_buildiso.feature
-- features/secondary/srv_cobbler_profile_ise.feature
+- features/secondary/srv_cobbler_profile.feature
 ## Secondary features END ##
