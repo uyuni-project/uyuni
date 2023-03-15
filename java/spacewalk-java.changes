@@ -7,6 +7,12 @@
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 
 -------------------------------------------------------------------
+Wed Mar 15 16:00:24 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.48-1
+  * Fix rendering of notifications list with subscription warnings (bsc#1209259)
+
+-------------------------------------------------------------------
 Wed Feb 22 14:48:01 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.47-1
