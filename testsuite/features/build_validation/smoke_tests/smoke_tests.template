@@ -46,10 +46,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until event "Patch Update:" is completed
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Install a package on the <client>
     When I follow "Software" in the content area
@@ -61,10 +58,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Remove package from <client>
     When I follow "Software" in the content area
@@ -76,10 +70,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Run a remote command on <client> minion
     When I follow the left menu "Salt > Remote Commands"
@@ -115,10 +106,7 @@ Feature: Smoke tests for <client>
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Deploy the configuration file to <client>
     And I follow the left menu "Configuration > Channels"
@@ -132,13 +120,19 @@ Feature: Smoke tests for <client>
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
-
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
-
-  Scenario: Check the configuration file afterwards
+    And I reboot the "<client>" if it is a SLE Micro
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
+
+  Scenario: Reboot the <client> and wait until reboot is completed
+    Given I am on the Systems overview page of this "<client>"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "This action's status is: Completed" text
 
   Scenario: Install spacecmd from the client tools on the <client>
     When I follow "Software" in the content area
@@ -150,10 +144,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Test Prometheus exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
@@ -182,10 +173,7 @@ Feature: Smoke tests for <client>
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
     And I wait until "postgres" exporter service is active on "<client>"
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
-
-@slemicro
-  Scenario: Reboot the <client> and wait until reboot is completed
-    And I reboot the "<client>" minion through the web UI
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Test <client> on Grafana
     When I visit the grafana dashboards of this "monitoring_server"

@@ -1,3 +1,6 @@
+- Filter CLM modular packages using release strings (bsc#1207814)
+- merge multiple older schema upgrade directories together
+
 -------------------------------------------------------------------
 Tue Feb 21 12:32:15 CET 2023 - jgonzalez@suse.com
 

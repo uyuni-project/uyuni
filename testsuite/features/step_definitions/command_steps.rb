@@ -919,7 +919,7 @@ When(/^I install package tftpboot-installation on the server$/) do
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  $server.run("rpm -i #{package}", check_errors: false)
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1738,6 +1738,12 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   )
 end
 
+When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
+  if slemicro_host?(host)
+    step %(I reboot the "#{host}" minion through SSH)
+  end
+end
+
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   old_hostname = $server.hostname
   new_hostname = old_hostname + '2'
@@ -1782,4 +1788,17 @@ end
 When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
+end
+
+When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
+  add_ports = ''
+  for port in [9100, 9117, 9187] do
+    add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
+  end
+  cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
+  node = get_target(host)
+  node.run(cmd)
+  output, _code = node.run('firewall-cmd --list-ports')
+  raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
+    output.include? '9100/tcp 9117/tcp 9187/tcp'
 end

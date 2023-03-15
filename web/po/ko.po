@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
-"PO-Revision-Date: 2023-01-06 05:14+0000\n"
+"POT-Creation-Date: 2023-03-10 15:33+0100\n"
+"PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -595,7 +595,7 @@ msgstr "시스템 잠김"
 msgid "Filter"
 msgstr "필터"
 
-#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/SearchField.tsx:53
 #, fuzzy
 msgid "Select a filter"
 msgstr "일정 선택"
@@ -2294,9 +2294,8 @@ msgstr "동일한 이름 제공"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
-#, fuzzy
 msgid "none (disable modularity)"
-msgstr "(없음, 서비스 비활성화)"
+msgstr "없음(모듈성 비활성화)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
@@ -2349,9 +2348,8 @@ msgid "enable module"
 msgstr "모듈 활성화"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
-#, fuzzy
 msgid "disable all modules"
-msgstr "모듈 활성화"
+msgstr "모든 모듈 비활성화"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
 msgid "Build ({0})"

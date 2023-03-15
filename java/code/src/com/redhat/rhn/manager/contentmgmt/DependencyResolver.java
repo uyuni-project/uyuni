@@ -18,10 +18,10 @@ package com.redhat.rhn.manager.contentmgmt;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModularPackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -34,11 +34,9 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -147,24 +145,7 @@ public class DependencyResolver {
         List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
 
         // 1. Modular packages to be denied
-        // Collect every synced module metadata file in every source, including outdated ones
-        Set<Modules> allMetadata = sources.stream()
-                .flatMap(s -> s.getModules().stream())
-                .collect(Collectors.toSet());
-
-        // Set to collect all the modular package NEVRAs
-        Set<String> pkgNevras = new HashSet<>();
-        Stream<PackageFilter> pkgDenyFilters;
-        try {
-            for (Modules metadata : allMetadata) {
-                pkgNevras.addAll(modulemdApi.getAllPackages(metadata));
-            }
-        }
-        catch (ModulemdApiException e) {
-            throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
-        }
-        // Generate a DENY filter for each modular package
-        pkgDenyFilters = pkgNevras.stream().map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
+        PackageFilter pkgDenyFilter = new ModularPackageFilter();
 
         // 2. Non-modular packages to be denied by name
         Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream()
@@ -175,8 +156,8 @@ public class DependencyResolver {
                 .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.ALLOW));
 
         // Concatenate filter streams into the list
-        return new DependencyResolutionResult(Stream.of(pkgDenyFilters, providedRpmApiFilters, pkgAllowFilters)
-                .flatMap(s -> s).collect(toList()), resolvedModules);
+        return new DependencyResolutionResult(Stream.of(providedRpmApiFilters, pkgAllowFilters,
+                Stream.of(pkgDenyFilter)).flatMap(s -> s).collect(toList()), resolvedModules);
     }
 
     /**
@@ -186,6 +167,7 @@ public class DependencyResolver {
      */
     public static boolean isModulesDisabled(Collection<ContentFilter> filters) {
         return filters.stream()
+                .filter(f -> f instanceof ModuleFilter)
                 .anyMatch(f -> FilterCriteria.Matcher.MODULE_NONE.equals(f.getCriteria().getMatcher()));
     }
 

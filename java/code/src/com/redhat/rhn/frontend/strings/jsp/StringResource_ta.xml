@@ -28017,6 +28017,23 @@ given channel.</source>
         <source>System Profile Refresh</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+
+
+ 
       </body>
   </file>
 </xliff>

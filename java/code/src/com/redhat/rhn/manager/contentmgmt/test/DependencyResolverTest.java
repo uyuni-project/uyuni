@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModularPackageFilter;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
@@ -154,7 +155,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Expected result from the sample data in MockModulemdApi:
      * 5 ALLOW nevra filters for modular packages of the selected modules (postgresql:10, perl:5.24)
      * 3 DENY name filters for postgresql:10 provided apis (postgresql, postgresql-server, perl)
-     * 7 DENY nevra filters for all modular packages
+     * 1 DENY filter for all modular packages
      *
      * @see DependencyResolver#resolveModularDependencies
      */
@@ -173,7 +174,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         // The original module filters must be absent
         List<ContentFilter> filters = result.getFilters();
-        assertEquals(15, filters.size());
+        assertEquals(9, filters.size());
         assertTrue(filters.stream().noneMatch(filter1::equals));
         assertTrue(filters.stream().noneMatch(filter2::equals));
 
@@ -192,10 +193,9 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         // For the enabled module, all other packages with the same name should be filtered out from different sources
         moduleData.getRpmApis().forEach(a -> assertTrue(filters.stream().anyMatch(f -> isDenyNameMatches(f, a))));
 
-        // DENY filters for all modular packages
+        // DENY filter for all modular packages
         // Deny-all rule for all modular packages (are overridden by ALLOW filters for the selected modules)
-        api.getAllPackages(modularChannel.getLatestModules())
-                .forEach(p -> assertTrue(filters.stream().anyMatch(f -> isDenyNevraEquals(f, p))));
+        assertTrue(filters.stream().anyMatch(f -> f instanceof ModularPackageFilter));
     }
 
     /**
@@ -210,12 +210,12 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
 
-        assertEquals(10, result.size());
+        assertEquals(4, result.size());
         // There should be one and only one "perl" api filter
         assertEquals(1, result.stream().filter(f -> isDenyNameMatches(f, "perl")).count());
         // There should be "allow" filters for both versions
-        assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.0-xxx.x86_64")));
-        assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.1-yyy.x86_64")));
+        assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.0-1.module_xxx.x86_64")));
+        assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.1-1.module_yyy.x86_64")));
     }
 
     /**
@@ -242,7 +242,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testModuleFiltersForeignPackagesSelected() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
         assertNotEmpty(result);
@@ -327,6 +327,10 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
     private boolean isFilterOfType(ContentFilter f, ContentFilter.Rule rule, FilterCriteria.Matcher matcher,
             String field, String value) {
+        if (f.getCriteria() == null) {
+            return false;
+        }
+
         return rule.equals(f.getRule()) && matcher.equals(f.getCriteria().getMatcher()) && field
                 .equals(f.getCriteria().getField()) && value.equals(f.getCriteria().getValue());
     }

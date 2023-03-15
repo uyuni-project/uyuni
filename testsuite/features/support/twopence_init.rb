@@ -52,26 +52,26 @@ if $build_validation
   $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
   $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
   $slemicro53_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO53_SSHMINION']}") if ENV['SLEMICRO53_SSHMINION']
-  $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
-  $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
-  $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
-  $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
-  $rocky9_minion = twopence_init("ssh:#{ENV['ROCKY9_MINION']}") if ENV['ROCKY9_MINION']
-  $rocky9_ssh_minion = twopence_init("ssh:#{ENV['ROCKY9_SSHMINION']}") if ENV['ROCKY9_SSHMINION']
   $alma9_minion = twopence_init("ssh:#{ENV['ALMA9_MINION']}") if ENV['ALMA9_MINION']
   $alma9_ssh_minion = twopence_init("ssh:#{ENV['ALMA9_SSHMINION']}") if ENV['ALMA9_SSHMINION']
+  $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
+  $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
+  $liberty9_minion = twopence_init("ssh:#{ENV['LIBERTY9_MINION']}") if ENV['LIBERTY9_MINION']
+  $liberty9_ssh_minion = twopence_init("ssh:#{ENV['LIBERTY9_SSHMINION']}") if ENV['LIBERTY9_SSHMINION']
   $oracle9_minion = twopence_init("ssh:#{ENV['ORACLE9_MINION']}") if ENV['ORACLE9_MINION']
   $oracle9_ssh_minion = twopence_init("ssh:#{ENV['ORACLE9_SSHMINION']}") if ENV['ORACLE9_SSHMINION']
   $rhel9_minion = twopence_init("ssh:#{ENV['RHEL9_MINION']}") if ENV['RHEL9_MINION']
   $rhel9_ssh_minion = twopence_init("ssh:#{ENV['RHEL9_SSHMINION']}") if ENV['RHEL9_SSHMINION']
+  $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
+  $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
+  $rocky9_minion = twopence_init("ssh:#{ENV['ROCKY9_MINION']}") if ENV['ROCKY9_MINION']
+  $rocky9_ssh_minion = twopence_init("ssh:#{ENV['ROCKY9_SSHMINION']}") if ENV['ROCKY9_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
   $ubuntu2204_minion = twopence_init("ssh:#{ENV['UBUNTU2204_MINION']}") if ENV['UBUNTU2204_MINION']
   $ubuntu2204_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2204_SSHMINION']}") if ENV['UBUNTU2204_SSHMINION']
-  $debian9_minion = twopence_init("ssh:#{ENV['DEBIAN9_MINION']}") if ENV['DEBIAN9_MINION']
-  $debian9_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN9_SSHMINION']}") if ENV['DEBIAN9_SSHMINION']
   $debian10_minion = twopence_init("ssh:#{ENV['DEBIAN10_MINION']}") if ENV['DEBIAN10_MINION']
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
@@ -89,16 +89,16 @@ if $build_validation
              $sle15sp4_minion, $sle15sp4_ssh_minion,
              $slemicro52_minion, $slemicro52_ssh_minion,
              $slemicro53_minion, $slemicro53_ssh_minion,
-             $centos7_minion, $centos7_ssh_minion,
-             $rocky8_minion, $rocky8_ssh_minion,
-             $rocky9_minion, $rocky9_ssh_minion,
              $alma9_minion, $alma9_ssh_minion,
+             $centos7_minion, $centos7_ssh_minion,
+             $liberty9_minion, $liberty9_ssh_minion,
              $oracle9_minion, $oracle9_ssh_minion,
              $rhel9_minion, $rhel9_ssh_minion,
+             $rocky8_minion, $rocky8_ssh_minion,
+             $rocky9_minion, $rocky9_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $ubuntu2204_minion, $ubuntu2204_ssh_minion,
-             $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
@@ -288,26 +288,26 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
                   'slemicro53_minion'         => $slemicro53_minion,
                   'slemicro53_ssh_minion'     => $slemicro53_ssh_minion,
-                  'centos7_minion'            => $centos7_minion,
-                  'centos7_ssh_minion'        => $centos7_ssh_minion,
-                  'rocky8_minion'             => $rocky8_minion,
-                  'rocky8_ssh_minion'         => $rocky8_ssh_minion,
-                  'rocky9_minion'             => $rocky9_minion,
-                  'rocky9_ssh_minion'         => $rocky9_ssh_minion,
                   'alma9_minion'              => $alma9_minion,
                   'alma9_ssh_minion'          => $alma9_ssh_minion,
+                  'centos7_minion'            => $centos7_minion,
+                  'centos7_ssh_minion'        => $centos7_ssh_minion,
+                  'liberty9_minion'           => $liberty9_minion,
+                  'liberty9_ssh_minion'       => $liberty9_ssh_minion,
                   'oracle9_minion'            => $oracle9_minion,
                   'oracle9_ssh_minion'        => $oracle9_ssh_minion,
                   'rhel9_minion'              => $rhel9_minion,
                   'rhel9_ssh_minion'          => $rhel9_ssh_minion,
+                  'rocky8_minion'             => $rocky8_minion,
+                  'rocky8_ssh_minion'         => $rocky8_ssh_minion,
+                  'rocky9_minion'             => $rocky9_minion,
+                  'rocky9_ssh_minion'         => $rocky9_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
                   'ubuntu2004_ssh_minion'     => $ubuntu2004_ssh_minion,
                   'ubuntu2204_minion'         => $ubuntu2204_minion,
                   'ubuntu2204_ssh_minion'     => $ubuntu2204_ssh_minion,
-                  'debian9_minion'            => $debian9_minion,
-                  'debian9_ssh_minion'        => $debian9_ssh_minion,
                   'debian10_minion'           => $debian10_minion,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,

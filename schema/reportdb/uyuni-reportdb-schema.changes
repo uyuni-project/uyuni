@@ -1,3 +1,5 @@
+- Require perl-File-Find for Enterprise Linux.
+
 -------------------------------------------------------------------
 Tue Feb 21 12:30:41 CET 2023 - jgonzalez@suse.com
 

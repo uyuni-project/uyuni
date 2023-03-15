@@ -24540,12 +24540,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>소켓:</target>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.hardware.cores" xml:space="preserve">
         <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="needs-adaptation">코어:</target>
+        <target state="final">소켓당 코어 수:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -29802,34 +29802,34 @@ given channel.</source>
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
           <source>Some systems already have a reboot scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">일부 시스템의 재부팅이 이미 예약되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+      <trans-unit approved="yes" id="systemlist.jsp.rebootneeded" xml:space="preserve">
         <source>System requires reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">시스템을 재부팅해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.rebootaction" xml:space="preserve">
         <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">(&lt;a href="{0}"&gt;시스템 재부팅 작업&lt;/a&gt;)</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.rebootscheduled" xml:space="preserve">
         <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">시스템 재부팅 예약됨</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
         <source>Summary</source>
@@ -29857,31 +29857,48 @@ given channel.</source>
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="final">이 일정에 할당된 시스템에는 {0}에 유지보수 기간이 없습니다.</target>
       </trans-unit>
-    <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.hardware.cpus" xml:space="preserve">
         <source>CPUs:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <target state="final">CPU:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.hardware.threads" xml:space="preserve">
         <source>Threads per Core:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <target state="final">코어당 스레드 수:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
         <source>Schedule System Profile refresh on all managed systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="final">모든 관리형 시스템에서 시스템 프로파일 새로 고침 예약</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+        <target state="final">시스템 프로파일 새로 고침</target>
+      </trans-unit>
+    <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
-        <source>System Profile Refresh</source>
+      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
+
+
+ 
       </body>
   </file>
 </xliff>

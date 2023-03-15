@@ -67,6 +67,11 @@ When(/^I create a system record$/) do
   $api_test.system.create_system_record('testserver', 'fedora_kickstart_profile_upload', '', 'my test server', [dev])
 end
 
+When(/^I create a system record with name "([^"]*)" and kickstart label "([^"]*)"$/) do |name, label|
+  dev = { 'name' => 'eth0', 'ip' => '1.1.1.2', 'mac' => '00:22:22:77:EE:DD', 'dnsname' => 'testserver.example.com' }
+  $api_test.system.create_system_record(name, label, '', 'my test server', [dev])
+end
+
 When(/^I wait for the OpenSCAP audit to finish$/) do
   @sle_id = $api_test.system.retrieve_server_id($minion.full_hostname)
   begin
@@ -233,6 +238,8 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   is_ssh_minion = client.include? 'ssh_minion'
   $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
+  $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel)
@@ -247,14 +254,16 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
   client.sub! 'monitoring_server', 'sle15sp4_minion'
-  custom_channel = if client.include? 'rocky8'
+  custom_channel = if client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'liberty9'
+                     'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+                   elsif client.include? 'rocky8'
                      'no-appstream-8-result-custom_channel_rocky8_minion'
                    elsif client.include? 'rocky9'
                      'no-appstream-9-result-custom_channel_rocky9_minion'
-                   elsif client.include? 'alma9'
-                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
-                   elsif client.include? 'oracle9'
-                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
                    else
                      "custom_channel_#{client}"
                    end
@@ -567,4 +576,12 @@ end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
   assert($output.select { |p| p['name'] == profile_name }.count == 1)
+end
+
+When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)" via XML-RPC$/) do |name, hostname, values|
+  system_id = $api_test.system.create_system_profile(name, 'hostname' => hostname)
+  STDOUT.puts "system_id: #{system_id}"
+  # this works only with a 2 column table where the key is in the left column
+  variables = values.rows_hash
+  $api_test.system.set_variables(system_id, variables)
 end

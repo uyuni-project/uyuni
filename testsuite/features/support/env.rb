@@ -71,7 +71,10 @@ Capybara.register_driver(:headless_chrome) do |app|
       args: chrome_options,
       w3c: false,
       prefs: {
-        'download.default_directory': '/tmp/downloads'
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
+        }
       }
     },
     unexpectedAlertBehaviour: 'accept',
@@ -208,12 +211,44 @@ Before('@virthost_kvm') do
   skip_this_scenario unless $kvm_server
 end
 
+Before('@alma9_minion') do
+  skip_this_scenario unless $alma9_minion
+end
+
+Before('@alma9_ssh_minion') do
+  skip_this_scenario unless $alma9_ssh_minion
+end
+
 Before('@centos7_minion') do
   skip_this_scenario unless $centos7_minion
 end
 
 Before('@centos7_ssh_minion') do
   skip_this_scenario unless $centos7_ssh_minion
+end
+
+Before('@liberty9_minion') do
+  skip_this_scenario unless $liberty9_minion
+end
+
+Before('@liberty9_ssh_minion') do
+  skip_this_scenario unless $liberty9_ssh_minion
+end
+
+Before('@oracle9_minion') do
+  skip_this_scenario unless $oracle9_minion
+end
+
+Before('@oracle9_ssh_minion') do
+  skip_this_scenario unless $oracle9_ssh_minion
+end
+
+Before('@rhel9_minion') do
+  skip_this_scenario unless $rhel9_minion
+end
+
+Before('@rhel9_ssh_minion') do
+  skip_this_scenario unless $rhel9_ssh_minion
 end
 
 Before('@rocky8_minion') do
@@ -228,32 +263,8 @@ Before('@rocky9_minion') do
   skip_this_scenario unless $rocky9_minion
 end
 
-Before('@rhel9_minion') do
-  skip_this_scenario unless $rhel9_minion
-end
-
-Before('@rhel9_ssh_minion') do
-  skip_this_scenario unless $rhel9_ssh_minion
-end
-
 Before('@rocky9_ssh_minion') do
   skip_this_scenario unless $rocky9_ssh_minion
-end
-
-Before('@alma9_minion') do
-  skip_this_scenario unless $alma9_minion
-end
-
-Before('@alma9_ssh_minion') do
-  skip_this_scenario unless $alma9_ssh_minion
-end
-
-Before('@oracle9_minion') do
-  skip_this_scenario unless $oracle9_minion
-end
-
-Before('@oracle9_ssh_minion') do
-  skip_this_scenario unless $oracle9_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -278,14 +289,6 @@ end
 
 Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless $ubuntu2204_ssh_minion
-end
-
-Before('@debian9_minion') do
-  skip_this_scenario unless $debian9_minion
-end
-
-Before('@debian9_ssh_minion') do
-  skip_this_scenario unless $debian9_ssh_minion
 end
 
 Before('@debian10_minion') do

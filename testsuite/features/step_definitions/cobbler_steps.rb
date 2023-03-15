@@ -54,6 +54,18 @@ When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct.system_remove(system)
 end
 
+When(/^I remove profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = ::CobblerTest.new
+  ct.login(user, pwd)
+  ct.profile_remove(system)
+end
+
+When(/^I remove distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = ::CobblerTest.new
+  ct.login(user, pwd)
+  ct.distro_remove(system)
+end
+
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
   # -------------------------------
@@ -190,6 +202,12 @@ When(/^I cleanup xorriso temp files$/) do
   $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
 end
 
+# cobbler settings
+Given(/^cobbler settings are successfully migrated$/) do
+  out, code = $server.run('cobbler-settings migrate -t /etc/cobbler/settings.yaml')
+  raise "error when running cobbler-settings to migrate current settings.\nLogs:\n#{out}" if code.nonzero?
+end
+
 # cobbler parameters
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
@@ -224,7 +242,11 @@ When(/^I copy autoinstall mocked files on server$/) do
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
-When(/^I synchronize the tftp configuration on the proxy with the server$/) do
-  out, _code = $server.run('cobbler sync')
-  raise 'cobbler sync failed' if out.include? 'Push failed'
+When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
+  if checking == 'with'
+    out, _code = $server.run('cobbler sync')
+    raise 'cobbler sync failed' if out.include? 'Push failed'
+  else
+    _out, _code = $server.run('cobbler sync')
+  end
 end

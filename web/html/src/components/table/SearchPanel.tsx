@@ -52,7 +52,7 @@ export function SearchPanel(props: SearchPanelProps) {
           onSearchField: props.onSearchField,
         })
       )}
-      <div className="d-inline-block">
+      <div className="d-inline-block table-search-select-all">
         <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
         {props.selectable && props.selectedCount > 0 && (
           <span>

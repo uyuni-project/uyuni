@@ -95,10 +95,11 @@ if ($javamax == 0)
     };
 }
 
-# java web ui, taskomatic and search uses c3p0 pooling
+# java web ui, taskomatic uses c3p0 pooling
+# search used a fixed number of connections (10)
 # + every apache process can eat a connection
 # + buffer for local connections
-my $mindb = (3*$javamax) + $apachemax + 60;
+my $mindb = (2*$javamax) + $apachemax + 10 + 60;
 my $dblimit = 0;
 
 $dblimit = run_query(<<EOF);

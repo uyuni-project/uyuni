@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_api
+@sle_minion
 Feature: IPMI Power management API
 
   Scenario: Setup an IPMI host for API test

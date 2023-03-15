@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-03-10 15:33+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -602,7 +602,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/SearchField.tsx:53
 #, fuzzy
 msgid "Select a filter"
 msgstr "Selecionar uma agenda"
