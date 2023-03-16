@@ -46,6 +46,7 @@ const PaygInfoEdit = (props: Props) => {
           setItem(props.payg);
           setErrors(null);
         }}
+        disableEditing={!props.editing}
         renderContent={() => (
           <React.Fragment>
             <PaygInfoView payg={props.payg} />
