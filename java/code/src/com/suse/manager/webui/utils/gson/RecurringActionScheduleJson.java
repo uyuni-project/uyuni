@@ -18,9 +18,9 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * JSON representation of the Recurring State Scheduling
+ * JSON representation of the Recurring Action Scheduling
  */
-public class RecurringStateScheduleJson {
+public class RecurringActionScheduleJson {
 
     private Long recurringActionId;
 

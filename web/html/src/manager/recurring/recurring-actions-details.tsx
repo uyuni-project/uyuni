@@ -7,10 +7,10 @@ import { Messages } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 
-import { DisplayHighstate } from "./display-highstate";
-import { targetTypeToString } from "./recurring-states-utils";
+import { DisplayHighstate } from "../state/display-highstate";
+import { targetTypeToString } from "./recurring-actions-utils";
 
-type RecurringStatesDetailsProps = {
+type RecurringActionsDetailsProps = {
   data?: any;
   minions?: any;
   onCancel: (arg0: string) => any;
@@ -18,15 +18,15 @@ type RecurringStatesDetailsProps = {
   onDelete: (arg0: any) => any;
 };
 
-type RecurringStatesDetailsState = {
+type RecurringActionsDetailsState = {
   messages: any[];
   minions: any;
 };
 
-class RecurringStatesDetails extends React.Component<RecurringStatesDetailsProps, RecurringStatesDetailsState> {
+class RecurringActionsDetails extends React.Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
   weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  constructor(props: RecurringStatesDetailsProps) {
+  constructor(props: RecurringActionsDetailsProps) {
     super(props);
 
     this.state = {
@@ -170,7 +170,7 @@ class RecurringStatesDetails extends React.Component<RecurringStatesDetailsProps
         {this.showScheduleDetails(this.props.data)}
         <DeleteDialog
           id="delete-modal"
-          title={t("Delete Recurring State Schedule")}
+          title={t("Delete Recurring Action Schedule")}
           content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
           onConfirm={() => this.props.onDelete(this.props.data)}
         />
@@ -180,4 +180,4 @@ class RecurringStatesDetails extends React.Component<RecurringStatesDetailsProps
   }
 }
 
-export { RecurringStatesDetails };
+export { RecurringActionsDetails };

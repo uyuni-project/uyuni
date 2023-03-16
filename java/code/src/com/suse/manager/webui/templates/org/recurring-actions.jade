@@ -1,12 +1,14 @@
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
+    a(href="/rhn/admin/multiorg/DeleteOrg.do?oid=#{orgId}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("delete organization")}
   h1
     i.fa.fa-group
     | #{" " + orgName + " "}
-    a(href="/docs/#{docsLocale}/reference/home/my-organization-menu.html" target="_blank")
-      i.fa.fa-question-circle.spacewalk-help-link
 
-#recurring-states
+!{tabs}
+#recurring-actions
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -18,5 +20,5 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
 
 script(type='text/javascript').
-    spaImportReactPage('state/recurring-states')
-        .then(function(module) { module.renderer('recurring-states') });
+    spaImportReactPage('recurring/recurring-actions')
+        .then(function(module) { module.renderer('recurring-actions') });
