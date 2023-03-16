@@ -1484,7 +1484,6 @@ When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
 end
-<<<<<<< HEAD
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   add_ports = ''
@@ -1546,5 +1545,3 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   node.init_os_family(os_family)
   node.init_os_version(os_version)
 end
-=======
->>>>>>> 75f9b5cb8a (Implement steps to monitor cobbler logs)

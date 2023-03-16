@@ -5,6 +5,13 @@
 @scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
+<<<<<<< HEAD
+=======
+  Scenario: Log in as testing user
+    Given I am authorized as "testing" with password "testing"
+    And I am logged in via the Cobbler API as user "testing" with password "testing"
+
+>>>>>>> d5e764ee8a (Add monitoring to new cobbler features)
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
