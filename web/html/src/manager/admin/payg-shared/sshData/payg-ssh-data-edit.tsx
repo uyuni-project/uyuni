@@ -60,6 +60,7 @@ const PaygSshDataEdit = (props: Props) => {
           setItem(props.paygSshData);
           setErrors(null);
         }}
+        disableEditing={!props.editing}
         renderContent={() => (
           <React.Fragment>
             <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />
