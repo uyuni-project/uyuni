@@ -227,12 +227,11 @@ When(/^I cleanup after Cobbler buildiso$/) do
 end
 
 When(/^I cleanup Cobbler files$/) do
-  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json && ' \
-                    'rm -r /srv/tftpboot && ' \
-                    'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml && ' \
-                    'systemctl restart apache && ' \
-                    'systemctl restart cobblerd'
-  result, code = $server.run(cleanup_command.to_s)
+  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && ' \
+                    'rm -r /srv/tftpboot 2> /dev/null && ' \
+                    'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
+  $server.run(cleanup_command.to_s, check_errors: false)
+  result, code = $server.run('systemctl restart apache && systemctl restart cobblerd')
   raise "Error during Cobbler cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
