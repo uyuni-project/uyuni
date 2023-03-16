@@ -10,7 +10,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
-import { targetTypeToString } from "./recurring-states-utils";
+import { targetTypeToString } from "./recurring-actions-utils";
 
 type Props = {
   data?: any;
@@ -27,7 +27,7 @@ type State = {
   itemToDelete?: any;
 };
 
-class RecurringStatesList extends React.Component<Props, State> {
+class RecurringActionsList extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -49,7 +49,7 @@ class RecurringStatesList extends React.Component<Props, State> {
           className="btn-default"
           icon="fa-plus"
           text={t("Create")}
-          title="Schedule a new Recurring States Action"
+          title="Schedule a new Recurring Action"
           handler={() => this.props.onActionChanged("create")}
         />
       </div>,
@@ -57,7 +57,7 @@ class RecurringStatesList extends React.Component<Props, State> {
 
     return (
       <InnerPanel
-        title={t("Recurring States")}
+        title={t("Recurring Actions")}
         icon="spacewalk-icon-salt"
         buttons={this.props.disableCreate ? [] : buttons}
         summary={
@@ -72,7 +72,7 @@ class RecurringStatesList extends React.Component<Props, State> {
             ) : null}
           </>
         }
-        // We only want to display the help icon in the 'Schedule > Recurring States' page so we use disableCreate as
+        // We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as
         // an indicator whether we currently render this page
         helpUrl={this.props.disableCreate ? "reference/schedule/recurring-actions.html" : ""}
       >
@@ -156,7 +156,7 @@ class RecurringStatesList extends React.Component<Props, State> {
             </Table>
             <DeleteDialog
               id="delete-modal"
-              title={t("Delete Recurring State Schedule")}
+              title={t("Delete Recurring Action Schedule")}
               content={t("Are you sure you want to delete the selected item?")}
               onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
               onClosePopUp={() => this.selectToDelete(null)}
@@ -168,4 +168,4 @@ class RecurringStatesList extends React.Component<Props, State> {
   }
 }
 
-export { RecurringStatesList };
+export { RecurringActionsList };

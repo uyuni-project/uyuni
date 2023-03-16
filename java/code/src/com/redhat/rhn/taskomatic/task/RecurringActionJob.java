@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Used to run a scheduled Recurring Highstate Apply action
+ * Used to schedule actions from Recurring action schedules
  */
-public class RecurringStateApplyJob extends RhnJavaJob {
+public class RecurringActionJob extends RhnJavaJob {
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 

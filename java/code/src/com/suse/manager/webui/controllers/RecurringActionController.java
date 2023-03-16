@@ -38,7 +38,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
@@ -78,8 +78,8 @@ public class RecurringActionController {
      * @param jade the template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/schedule/recurring-states",
-                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringStates))),
+        get("/manager/schedule/recurring-actions",
+                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
                 jade);
 
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
@@ -89,15 +89,15 @@ public class RecurringActionController {
     }
 
     /**
-     * Handler for the Recurring States schedule page.
+     * Handler for the Recurring Actions schedule page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringStates(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-states.jade");
+    public static ModelAndView recurringActions(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
     }
 
     /**
@@ -109,7 +109,7 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listAll(Request request, Response response, User user) {
-        List<RecurringStateScheduleJson> schedules =
+        List<RecurringActionScheduleJson> schedules =
                 actionsToJson(RecurringActionManager.listAllRecurringActions(user));
 
         return json(response, schedules);
@@ -145,15 +145,15 @@ public class RecurringActionController {
         return json(response, actionsToJson(schedules));
     }
 
-    private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
+    private static List<RecurringActionScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
         return actions
                 .stream()
                 .map(a -> actionToJson(a, a.getTargetType()))
                 .collect(Collectors.toList());
     }
 
-    private static RecurringStateScheduleJson actionToJson(RecurringAction a, TargetType targetType) {
-        RecurringStateScheduleJson json = new RecurringStateScheduleJson();
+    private static RecurringActionScheduleJson actionToJson(RecurringAction a, TargetType targetType) {
+        RecurringActionScheduleJson json = new RecurringActionScheduleJson();
         json.setRecurringActionId(a.getId());
         json.setScheduleName(a.getName());
 
@@ -182,7 +182,7 @@ public class RecurringActionController {
     }
 
     /**
-     * Creates a new Recurring State Schedule
+     * Creates a new Recurring Action Schedule
      *
      * @param request the request
      * @param response the response
@@ -192,7 +192,7 @@ public class RecurringActionController {
     public static String save(Request request, Response response, User user) {
         List<String> errors = new LinkedList<>();
 
-        RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
+        RecurringActionScheduleJson json = GSON.fromJson(request.body(), RecurringActionScheduleJson.class);
 
         try {
             RecurringAction action = createOrGetAction(user, json);
@@ -214,7 +214,7 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
-    private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
+    private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {
         if (json.getRecurringActionId() == null) {
             RecurringAction.TargetType type = RecurringAction.TargetType.valueOf(json.getTargetType().toUpperCase());
             return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
@@ -250,7 +250,7 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
-    private static void mapJsonToAction(RecurringStateScheduleJson json, RecurringAction action) {
+    private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
 
