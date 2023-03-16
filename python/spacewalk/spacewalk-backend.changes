@@ -1,3 +1,5 @@
+- Fix the mgr-inter-sync not creating valid repository metadata when dealing 
+  with empty channels (bsc#1207829)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Fix issues with kickstart syncing on mirrorlist repositories
 - Do not sync .mirrorlist and other non needed files
