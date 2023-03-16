@@ -4,9 +4,6 @@
 {%- include 'channels/disablelocalrepos.sls' %}
 {% endif %}
 
-include:
-  - util.syncstates
-
 disable_spacewalksd:
   service.dead:
     - name: rhnsd

@@ -2,6 +2,9 @@
 ##  java bootstrapping calls certs.sls before this state
 ##
 
+include:
+  - util.syncstates
+
 # Make sure no SUSE Manager server aliasing left over from ssh-push via tunnel
 mgr_server_localhost_alias_absent:
   host.absent:
@@ -236,9 +239,6 @@ salt-install-contextvars:
 
 {%- if not transactional %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
-{% else %}
-include:
-  - util.syncstates
 {%- endif %}
 
 # Manage minion key files in case they are provided in the pillar

@@ -1,3 +1,6 @@
+include:
+  - util.syncstates
+
 {% include 'bootstrap/remove_traditional_stack.sls' %}
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}

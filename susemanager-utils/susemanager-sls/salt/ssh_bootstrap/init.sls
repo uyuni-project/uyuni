@@ -3,6 +3,9 @@
 ##
 {%- set mgr_sudo_user = salt['pillar.get']('mgr_sudo_user') or 'root' %}
 
+include:
+  - util.syncstates
+
 mgr_ssh_identity:
   ssh_auth.present:
     - user: {{ mgr_sudo_user }}
