@@ -126,3 +126,19 @@ class NamespaceActivationkey
     @test.call('activationkey.setDetails', sessionKey: @test.token, key: id, details: details).to_i == 1
   end
 end
+
+  ##
+  # Sets the entitlements of an activation key.
+  #
+  # Args:
+  #   id: The ID of the activation key.
+  #   entitlements: Array of entitlements to enable on this AK.
+  #                   Valid values are:
+  #                   - container_build_host
+  #                   - monitoring_entitled
+  #                   - osimage_build_host
+  #                   - virtualization_host
+  #                   - ansible_control_node
+  def set_entitlement(id, entitlements)
+    @test.call('activationkey.addEntitlements', sessionKey: @test.token, key: id, entitlements: entitlements)
+  end
