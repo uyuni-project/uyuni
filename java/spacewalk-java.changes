@@ -1,3 +1,5 @@
+- Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
+
 -------------------------------------------------------------------
 Wed Mar 15 16:00:24 CET 2023 - jgonzalez@suse.com
 
