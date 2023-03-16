@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
@@ -30,6 +31,8 @@ import com.redhat.rhn.taskomatic.task.payg.PaygDataExtractException;
 import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
+
+import com.suse.cloud.CloudPaygManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,6 +85,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         super.setUp();
         clearDb();
 
+        PAYG_DATA_TASK.setCloudPaygManager(new CloudPaygManager());
         paygData = createPaygSshData();
         PaygSshDataFactory.savePaygSshData(paygData);
         paygInstanceInfo = createPaygInstanceInfo();
@@ -101,6 +105,61 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         HibernateFactory.commitTransaction();
+    }
+
+    @Test
+    public void testLocalhostPaygConnection() throws Exception {
+        CONTEXT.checking(new Expectations() {
+            {
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(paygInstanceInfo));
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(paygInstanceInfo));
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(paygInstanceInfo));
+        }});
+        CloudPaygManager mgr = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        PAYG_DATA_TASK.setCloudPaygManager(mgr);
+        PAYG_DATA_TASK.execute(null);
+        for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
+            switch (outPaygData.getHost()) {
+                case "localhost":
+                    assertEquals("SUSE Manager Pay-as-you-go", outPaygData.getDescription());
+                    assertEquals("root", outPaygData.getUsername());
+                    break;
+                case "my-instance":
+                    assertEquals("username", outPaygData.getUsername());
+                    assertEquals("password", outPaygData.getPassword());
+                    assertEquals(21, outPaygData.getPort());
+                    break;
+                default:
+                    assertTrue(false, "unexpected result");
+            }
+        }
+        mgr = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return false;
+            }
+        };
+        PAYG_DATA_TASK.setCloudPaygManager(mgr);
+        PAYG_DATA_TASK.execute(null);
+        for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
+            switch (outPaygData.getHost()) {
+                case "my-instance":
+                    assertEquals("username", outPaygData.getUsername());
+                    assertEquals("password", outPaygData.getPassword());
+                    assertEquals(21, outPaygData.getPort());
+                    break;
+                default:
+                    assertTrue(false, "unexpected result");
+            }
+        }
     }
 
     @Test
