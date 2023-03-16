@@ -8,17 +8,17 @@ import { Utils as MessagesUtils } from "components/messages";
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-import { RecurringStatesDetails } from "./recurring-states-details";
-import { RecurringStatesEdit } from "./recurring-states-edit";
-import { RecurringStatesList } from "./recurring-states-list";
+import { RecurringActionsDetails } from "./recurring-actions-details";
+import { RecurringActionsEdit } from "./recurring-actions-edit";
+import { RecurringActionsList } from "./recurring-actions-list";
 
 /**
  * See:
- *  - java/code/src/com/suse/manager/webui/templates/groups/recurring-states.jade
- *  - java/code/src/com/suse/manager/webui/templates/minion/recurring-states.jade
- *  - java/code/src/com/suse/manager/webui/templates/org/recurring-states.jade
- *  - java/code/src/com/suse/manager/webui/templates/schedule/recurring-states.jade
- *  - java/code/src/com/suse/manager/webui/templates/yourorg/recurring-states.jade
+ *  - java/code/src/com/suse/manager/webui/templates/groups/recurring-actions.jade
+ *  - java/code/src/com/suse/manager/webui/templates/minion/recurring-actions.jade
+ *  - java/code/src/com/suse/manager/webui/templates/org/recurring-actions.jade
+ *  - java/code/src/com/suse/manager/webui/templates/schedule/recurring-actions.jade
+ *  - java/code/src/com/suse/manager/webui/templates/yourorg/recurring-actions.jade
  */
 declare global {
   interface Window {
@@ -67,7 +67,7 @@ type State = {
   selected?: any;
 };
 
-class RecurringStates extends React.Component<Props, State> {
+class RecurringActions extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -220,7 +220,7 @@ class RecurringStates extends React.Component<Props, State> {
       <div>
         {messages}
         {this.state.action === "details" && this.state.selected ? (
-          <RecurringStatesDetails
+          <RecurringActionsDetails
             data={this.state.selected}
             onCancel={this.handleForwardAction}
             onEdit={this.handleEditAction}
@@ -230,7 +230,7 @@ class RecurringStates extends React.Component<Props, State> {
           (this.state.action === "create" && this.isFilteredList()) ? (
           <>
             {notification}
-            <RecurringStatesEdit
+            <RecurringActionsEdit
               key="edit"
               schedule={this.state.selected}
               onEdit={this.updateSchedule}
@@ -238,7 +238,7 @@ class RecurringStates extends React.Component<Props, State> {
             />
           </>
         ) : (
-          <RecurringStatesList
+          <RecurringActionsList
             data={this.state.schedules}
             disableCreate={!this.isFilteredList()}
             onActionChanged={this.handleForwardAction}
@@ -254,4 +254,4 @@ class RecurringStates extends React.Component<Props, State> {
 }
 
 export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<RecurringStates />, document.getElementById("recurring-states"));
+  SpaRenderer.renderNavigationReact(<RecurringActions />, document.getElementById("recurring-actions"));

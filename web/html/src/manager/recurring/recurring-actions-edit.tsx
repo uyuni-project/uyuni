@@ -6,7 +6,7 @@ import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
 import { Toggler } from "components/toggler";
 
-import { DisplayHighstate } from "./display-highstate";
+import { DisplayHighstate } from "../state/display-highstate";
 
 type Props = {
   schedule?: any;
@@ -27,7 +27,7 @@ type State = {
   test?: any;
 };
 
-class RecurringStatesEdit extends React.Component<Props, State> {
+class RecurringActionsEdit extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -160,4 +160,4 @@ class RecurringStatesEdit extends React.Component<Props, State> {
   }
 }
 
-export { RecurringStatesEdit };
+export { RecurringActionsEdit };

@@ -197,15 +197,16 @@
     <rhn-tab name="Highstate">
       <rhn-tab-url>/rhn/manager/systems/details/highstate</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Recurring States">
-      <rhn-tab-url>/rhn/manager/systems/details/recurring-states</rhn-tab-url>
-    </rhn-tab>
     <rhn-tab name="Packages">
       <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Configuration Channels">
       <rhn-tab-url>/rhn/manager/systems/details/custom</rhn-tab-url>
      </rhn-tab>
+  </rhn-tab>
+
+  <rhn-tab name="Recurring Actions" acl="system_has_salt_entitlement()">
+    <rhn-tab-url>/rhn/manager/systems/details/recurring-actions</rhn-tab-url>
   </rhn-tab>
 
   <rhn-tab name="Formulas" acl="system_has_salt_entitlement() or system_is_bootstrap_minion_server()">

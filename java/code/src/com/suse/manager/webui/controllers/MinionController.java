@@ -100,8 +100,8 @@ public class MinionController {
         get("/manager/systems/details/highstate",
                 withCsrfToken(withDocsLocale(withUserAndServer(MinionController::highstate))),
                 jade);
-        get("/manager/systems/details/recurring-states",
-                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::recurringStates))),
+        get("/manager/systems/details/recurring-actions",
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::recurringActions))),
                 jade);
         get("/manager/systems/details/proxy",
                 withCsrfToken(withDocsLocale(withUserAndServer(MinionController::proxy))),
@@ -109,22 +109,22 @@ public class MinionController {
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
-        get("/manager/multiorg/details/recurring-states",
-                withCsrfToken(withUser(MinionController::orgRecurringStates)),
+        get("/manager/multiorg/recurring-actions",
+                withCsrfToken(withUser(MinionController::orgRecurringActions)),
                 jade);
         get("/manager/yourorg/custom",
                 withCsrfToken(withDocsLocale(withUser(MinionController::yourOrgConfigChannels))),
                 jade);
-        get("/manager/yourorg/recurring-states",
-                withCsrfToken(withDocsLocale(withUser(MinionController::yourOrgRecurringStates))),
+        get("/manager/yourorg/recurring-actions",
+                withCsrfToken(withDocsLocale(withUser(MinionController::yourOrgRecurringActions))),
                 jade);
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
-        get("/manager/groups/details/recurring-states",
-                withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
+        get("/manager/groups/details/recurring-actions",
+                withCsrfToken(withUser(MinionController::serverGroupRecurringActions)),
                 jade);
     }
 
@@ -198,14 +198,14 @@ public class MinionController {
     }
 
     /**
-     * Handler for the org recurring-states page.
+     * Handler for the org recurring-actions page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView orgRecurringStates(Request request, Response response, User user) {
+    public static ModelAndView orgRecurringActions(Request request, Response response, User user) {
         DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(user, null);
         dr.elaborate();
         Set<Long> systems = Arrays.stream(dr.toArray())
@@ -224,7 +224,7 @@ public class MinionController {
         data.put("entityType", "ORG");
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
-        return new ModelAndView(data, "templates/org/recurring-states.jade");
+        return new ModelAndView(data, "templates/org/recurring-actions.jade");
     }
 
     /**
@@ -245,14 +245,14 @@ public class MinionController {
     }
 
     /**
-     * Handler for the org recurring-states page.
+     * Handler for the org recurring-actions page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView yourOrgRecurringStates(Request request, Response response,
+    public static ModelAndView yourOrgRecurringActions(Request request, Response response,
                                                      User user) {
         DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(user, null);
         dr.elaborate();
@@ -269,7 +269,7 @@ public class MinionController {
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
         data.put("entityType", "ORG");
-        return new ModelAndView(data, "templates/yourorg/recurring-states.jade");
+        return new ModelAndView(data, "templates/yourorg/recurring-actions.jade");
     }
 
     /**
@@ -309,14 +309,14 @@ public class MinionController {
     }
 
     /**
-     * Handler for the server group recurring-states page.
+     * Handler for the server group recurring-actions page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupRecurringStates(Request request, Response response,
+    public static ModelAndView serverGroupRecurringActions(Request request, Response response,
                                                     User user) {
         String grpId = request.queryParams("sgid");
 
@@ -336,7 +336,7 @@ public class MinionController {
         data.put("entityType", "GROUP");
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
-        return new ModelAndView(data, "templates/groups/recurring-states.jade");
+        return new ModelAndView(data, "templates/groups/recurring-actions.jade");
     }
 
     /**
@@ -404,7 +404,7 @@ public class MinionController {
     }
 
     /**
-     * Handler for the recurring-states page.
+     * Handler for the recurring-actions page.
      *
      * @param request the request object
      * @param response the response object
@@ -412,10 +412,10 @@ public class MinionController {
      * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringStates(Request request, Response response, User user, Server server) {
+    public static ModelAndView recurringActions(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
         data.put("entityType", "MINION");
-        return new ModelAndView(data, "templates/minion/recurring-states.jade");
+        return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 
     /**
