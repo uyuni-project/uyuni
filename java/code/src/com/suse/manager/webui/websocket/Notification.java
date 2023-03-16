@@ -20,24 +20,25 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
 import org.apache.log4j.Logger;
 
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnError;
-import javax.websocket.Session;
-import javax.websocket.EndpointConfig;
-import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.websocket.EndpointConfig;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
@@ -50,8 +51,8 @@ public class Notification {
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
     private static final Object LOCK = new Object();
-    private static Map<Session, Long> wsSessions = new HashMap<>();
-    private static Set<Session> brokenSessions = new HashSet<>();
+    private static ConcurrentHashMap<Session, Long> wsSessions = new ConcurrentHashMap<>();
+    private static Set<Session> brokenSessions = ConcurrentHashMap.newKeySet();
     private static final WebsocketHeartbeatService HEARTBEAT_SERVICE = GlobalInstanceHolder.WEBSOCKET_SESSION_MANAGER;
 
     /**
@@ -153,16 +154,12 @@ public class Notification {
 
     /**
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
-     * Must be synchronized. Sending messages concurrently from separate threads
-     * will result in IllegalStateException.
      */
     public static void spreadUpdate() {
-        synchronized (LOCK) {
-            // if there are unread messages, notify it to all attached WebSocket sessions
-            wsSessions.forEach((session, user) -> {
-                sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
-            });
-        }
+        // if there are unread messages, notify it to all attached WebSocket sessions
+        wsSessions.forEach((session, user) -> {
+            sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
+        });
     }
 
     /**
@@ -177,10 +174,14 @@ public class Notification {
                 }
             });
 
+            // this is a temporary list to cope with the scenario
+            // when new "brokenSessions" where added while we were cleaning them
+            List<Session> brokenSessionRemove = new LinkedList<>();
             // remove any invalid/broken session from the valid set
             // try to close it if it is still open
             brokenSessions.forEach(session -> {
                 wsSessions.remove(session);
+                brokenSessionRemove.add(session);
                 if (session.isOpen()) {
                     try {
                         session.close();
@@ -190,7 +191,7 @@ public class Notification {
                     }
                 }
             });
-            brokenSessions.clear();
+            brokenSessions.removeAll(brokenSessionRemove);
         }
     }
 
@@ -201,9 +202,7 @@ public class Notification {
      */
     private static void handshakeSession(long userId, Session session) {
         HEARTBEAT_SERVICE.register(session);
-        synchronized (LOCK) {
-            wsSessions.put(session, userId);
-        }
+        wsSessions.put(session, userId);
     }
 
     /**
@@ -212,9 +211,7 @@ public class Notification {
      */
     private static void handbreakSession(Session session) {
         HEARTBEAT_SERVICE.unregister(session);
-        synchronized (LOCK) {
-            brokenSessions.add(session);
-        }
+        brokenSessions.add(session);
     }
 
     private static ScheduledExecutorService scheduledExecutorService;
@@ -222,7 +219,6 @@ public class Notification {
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
-                clearBrokenSessions();
                 spreadUpdate();
             }
             catch (Exception e) {
