@@ -7,7 +7,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
-    And I am logged into Cobbler API as user "testing" with password "testing"
+    And I am logged in via the Cobbler API as user "testing" with password "testing"
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
@@ -174,7 +174,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Cleanup: delete test distro and profiles
     When I remove kickstart profiles and distros
-    And I log out from Cobbler API
+    And I log out from Cobbler via the API
 
   Scenario: Check for errors in Cobbler monitoring
-    When I check for Cobbler errors in the local logs
+    Then the local logs for Cobbler should not contain errors

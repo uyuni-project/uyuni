@@ -419,4 +419,4 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
   Scenario: Check for errors in Cobbler monitoring
-    When I check for Cobbler errors in the local logs
+    Then the local logs for Cobbler should not contain errors

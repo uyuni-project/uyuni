@@ -14,11 +14,11 @@ When(/^I restart cobbler on the server$/) do
   $server.run('systemctl restart cobblerd.service')
 end
 
-Given(/^I am logged into Cobbler API as user "([^"]*)" with password "([^"]*)"$/) do |user, pwd|
+Given(/^I am logged in via the Cobbler API as user "([^"]*)" with password "([^"]*)"$/) do |user, pwd|
   $cobbler_test.login(user, pwd)
 end
 
-When(/^I log out from Cobbler API$/) do
+When(/^I log out from Cobbler via the API$/) do
   $cobbler_test.logout
 end
 
@@ -268,13 +268,13 @@ When(/^I start local monitoring of Cobbler$/) do
               "line_number=`awk \"/\\\[logger_root\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
               "echo -e #{handler_class} >> #{cobbler_conf_file}"
-    $server.run("#{command} && systemctl restart cobblerd", check_errors: false)
+    $server.run("#{command} && systemctl restart cobblerd")
   else
-    $server.run('systemctl restart cobblerd', check_errors: false)
+    $server.run('systemctl restart cobblerd')
   end
 end
 
-When(/^I check for Cobbler errors in the local logs$/) do
+Then(/^the local logs for Cobbler should not contain errors$/) do
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
   output, code = $server.run("grep -i error #{cobbler_log_file}", check_errors: false)
   $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") if code.zero?

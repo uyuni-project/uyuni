@@ -29,7 +29,7 @@ class CobblerTest
   def login(user, pass)
     @token = @server.call('login', user, pass)
   rescue StandardError
-    raise(StandardError, "Login to cobbler failed. #{$ERROR_INFO}")
+    raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
   end
 
   ##
@@ -38,7 +38,7 @@ class CobblerTest
   def logout
     @server.call('logout', @token)
   rescue StandardError
-    raise(StandardError, "Logout to cobbler failed. #{$ERROR_INFO}")
+    raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
   end
 
   ##
@@ -166,8 +166,9 @@ class CobblerTest
   end
 
   ##
-  # Checks if a distribution exists in the database by using 'distro' as the table name,
-  # 'name' as the column and the name of the distro.
+  # Checks if a Cobbler item exists in the database by using
+  # 'distros|profiles|systems|repos' as the table name,
+  # 'name' as the column and the name of the item.
   #
   # Args:
   #   name: The name of the distro.

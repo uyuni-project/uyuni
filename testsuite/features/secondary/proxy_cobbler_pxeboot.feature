@@ -161,4 +161,4 @@ Feature: PXE boot a terminal with Cobbler
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Check for errors in Cobbler monitoring
-    When I check for Cobbler errors in the local logs
+    Then the local logs for Cobbler should not contain errors

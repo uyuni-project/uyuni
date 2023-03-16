@@ -103,4 +103,4 @@ Feature: IPMI Power management
     When I click on the clear SSM button
 
   Scenario: Check for errors in Cobbler monitoring
-    When I check for Cobbler errors in the local logs
+    Then the local logs for Cobbler should not contain errors
