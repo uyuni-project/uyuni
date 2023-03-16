@@ -21,6 +21,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${PRODUCT_PATTERN} \
+    spacecmd \
     javamail \
     libyui-ncurses-pkg16 \
     vim
