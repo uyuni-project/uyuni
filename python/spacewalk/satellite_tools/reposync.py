@@ -1330,10 +1330,13 @@ class RepoSync(object):
 
                 except (KeyboardInterrupt, rhnSQL.SQLError):
                     raise
-                except Exception:
-                    e = str(sys.exc_info()[1])
-                    if e:
-                        log2(0, 1, e, stream=sys.stderr)
+                except Exception as e:
+                    e_message = f'Exception: {e}'
+                    if importer:
+                        e_message += f'\nPackage: {repr(importer)}'
+                    if src_importer:
+                        e_message += f'\nSource package: {repr(src_importer)}'
+                    log2(0, 1, e_message, stream=sys.stderr)
                     if self.fail:
                         raise
                 finally:
