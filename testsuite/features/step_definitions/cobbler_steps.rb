@@ -256,15 +256,22 @@ When(/^I start local monitoring of Cobbler$/) do
   $server.run("rm #{cobbler_log_file}", check_errors: false)
   _result, code = $server.run("test -f #{cobbler_conf_file}.old", check_errors: false)
   if !code.zero?
+    step %(I install package "python3-python-json-logger" on this "server")
     handler_name = 'FileLogger02'
+    formatter_name = 'JSONlogfile'
     handler_class = "\"\n[handler_#{handler_name}]\n" \
                   "class=FileHandler\n" \
                   "level=DEBUG\n" \
-                  "formatter=Logfile\n" \
-                  "args=('#{cobbler_log_file}', 'a')\""
+                  "formatter=#{formatter_name}\n" \
+                  "args=('#{cobbler_log_file}', 'a')\n\n" \
+                  "[formatter_#{formatter_name}]\n" \
+                  "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
+                  "class = pythonjsonlogger.jsonlogger.JsonFormatter\n\""
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
               "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
+              "line_number=`awk \"/\\\[formatters\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 1))s/$/,#{formatter_name}/\" -i #{cobbler_conf_file} && " \
               "line_number=`awk \"/\\\[logger_root\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
               "echo -e #{handler_class} >> #{cobbler_conf_file}"
@@ -276,7 +283,14 @@ end
 
 Then(/^the local logs for Cobbler should not contain errors$/) do
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
-  output, code = $server.run("grep -i error #{cobbler_log_file}", check_errors: false)
-  $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") if code.zero?
-  raise "Errors in Cobbler logs:\n #{output}" if code.zero?
+  local_file = '/tmp/cobbler_debug.log'
+  return_code = file_extract($server, cobbler_log_file, local_file)
+  raise 'File extraction failed' unless return_code.zero?
+
+  file_data = File.read(local_file).gsub!("\n", ',').chop
+  file_data = "[#{file_data}]"
+  data_hash = JSON.parse(file)
+  output = data_hash.select { |_key, hash| hash['levelname'] == 'ERROR' }
+  $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
+  raise "Errors in Cobbler logs:\n #{output}" unless output.empty?
 end

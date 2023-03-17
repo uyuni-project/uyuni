@@ -5,12 +5,12 @@
 @scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
     And I am logged in via the Cobbler API as user "testing" with password "testing"
-
-  Scenario: Start Cobbler monitoring
-    When I start local monitoring of Cobbler
 
   Scenario: Copy cobbler profiles on the server
     When I copy autoinstall mocked files on server

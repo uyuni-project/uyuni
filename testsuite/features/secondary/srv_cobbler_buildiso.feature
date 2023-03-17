@@ -6,12 +6,12 @@
 Feature: Cobbler buildiso
   Builds several ISOs with Cobbler and checks the configuration files and ISOs afterwards.
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Log in as testing user in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
     And I am logged in via the Cobbler API as user "testing" with password "testing"
-
-  Scenario: Start Cobbler monitoring
-    When I start local monitoring of Cobbler
 
   Scenario: Copy cobbler profiles on the server in the cobbler buildiso context
     When I copy autoinstall mocked files on server
