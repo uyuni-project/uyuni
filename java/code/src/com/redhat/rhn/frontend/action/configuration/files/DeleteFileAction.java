@@ -49,7 +49,7 @@ public class DeleteFileAction extends RhnAction {
                                  HttpServletResponse resp) {
         RequestContext ctx = new RequestContext(req);
         User usr = ctx.getCurrentUser();
-        Map params =  makeParamMap(req);
+        Map<String, Object> params =  makeParamMap(req);
         ConfigFileForm cff = (ConfigFileForm)form;
 
         ConfigFile cf = ConfigActionHelper.getFile(req);

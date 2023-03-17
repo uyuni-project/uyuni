@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -31,17 +32,22 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackageDependenciesAction
+ *
  */
 public class PackageDependenciesAction extends RhnAction {
-
-    private List<String> createDependenciesStrings(DataResult dr) {
+    /**
+    * Creates dependency strings for the given data result.
+    *
+    * @param dr the data result to process
+    * @return a list of dependency strings
+    */
+    private List<String> createDependenciesStrings(DataResult<Row> dr) {
 
         if (dr == null || dr.isEmpty()) {
             return null;
@@ -50,9 +56,7 @@ public class PackageDependenciesAction extends RhnAction {
         List<String> lines = new ArrayList<>();
 
         // Loop through all items in data result
-        for (Object oIn : dr) {
-            Map item = (Map) oIn;
-
+        for (Row item : dr) {
             String name = (String) item.get("name");
             String version = (String) item.get("version");
             Long sense = (Long) item.get("sense");

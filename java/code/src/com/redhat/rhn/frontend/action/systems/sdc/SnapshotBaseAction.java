@@ -55,7 +55,7 @@ public abstract class SnapshotBaseAction<T> extends RhnAction implements Listabl
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.SID, sid);
         params.put(SNAPSHOT_ID, ssid);
         params.put(SNAPSHOT_CREATED, snapshot.getName());

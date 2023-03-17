@@ -53,7 +53,7 @@ public class LocalAddFileAction extends BaseAddFilesAction {
 
     @Override
     protected Map makeParamMap(HttpServletRequest request) {
-        Map map = super.makeParamMap(request);
+        Map<String, Object> map = super.makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         map.put(RequestContext.SID,
                 ctx.lookupAndBindServer().getId().toString());

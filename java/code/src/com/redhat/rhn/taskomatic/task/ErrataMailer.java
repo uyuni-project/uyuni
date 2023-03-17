@@ -207,7 +207,7 @@ public class ErrataMailer extends RhnJavaJob {
         return ls.getMessage("email.errata.notification.body.summary", args);
     }
 
-    private String getEmailBodyAffectedSystems(String host, List servers) {
+    private String getEmailBodyAffectedSystems(String host, List<Row> servers) {
         LocalizationService ls = LocalizationService.getInstance();
 
         //Render the header of the affected systems section along with helpful text.
@@ -235,8 +235,7 @@ public class ErrataMailer extends RhnJavaJob {
         //      the table according to the String Resource bundle.
         StringWriter writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer, true);
-        for (Object serverIn : servers) {
-            Map row = (Map) serverIn;
+        for (Row row : servers) {
             String release = (String) row.get("release");
             printWriter.print(release);
             for (int i = 0; i < (11 - release.length()); i++) {

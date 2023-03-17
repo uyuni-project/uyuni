@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
@@ -107,9 +108,8 @@ public class SummaryPopulation extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_INSERT_SUMMARY_QUEUE);
 
         try {
-            DataResult result = select.execute(params);
-            Map row = (Map) result.get(0);
-            Long count = (Long) row.get("queued");
+            DataResult<Row> result = select.execute(params);
+            Long count = (Long) result.get(0).get("queued");
             if (count.intValue() == 0) {
                 return m.executeUpdate(params);
             }

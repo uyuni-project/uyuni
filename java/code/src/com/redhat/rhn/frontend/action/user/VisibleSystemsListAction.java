@@ -79,7 +79,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
         }
 
         RhnSetManager.store(rs);
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }

@@ -56,7 +56,7 @@ public abstract class Renderable {
     public abstract void navNodeActive(StringBuilder sb,
                        NavNode node,
                        NavTreeIndex treeIndex,
-                       Map parameters,
+                       Map<String, Object> parameters,
                        int depth);
 
     /**
@@ -72,7 +72,7 @@ public abstract class Renderable {
     public abstract void navNodeInactive(StringBuilder sb,
                          NavNode node,
                          NavTreeIndex treeIndex,
-                         Map parameters,
+                         Map<String, Object> parameters,
                          int depth);
 
     /**

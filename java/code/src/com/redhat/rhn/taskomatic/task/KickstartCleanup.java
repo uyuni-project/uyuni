@@ -19,6 +19,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -33,10 +34,9 @@ import java.util.Map;
 
 /**
  * Cleans up stale Kickstarts
- *
  */
 
-public class KickstartCleanup extends RhnJavaJob {
+public class  KickstartCleanup extends RhnJavaJob {
 
     @Override
     public String getConfigNamespace() {
@@ -54,7 +54,7 @@ public class KickstartCleanup extends RhnJavaJob {
         try {
             SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                     TaskConstants.TASK_QUERY_KSCLEANUP_FIND_CANDIDATES);
-            DataResult dr = select.execute(Collections.emptyMap());
+            DataResult<Row> dr = select.execute(Collections.emptyMap());
             if (log.isDebugEnabled()) {
                 log.debug("Found {} entries to process", dr.size());
             }
@@ -68,8 +68,7 @@ public class KickstartCleanup extends RhnJavaJob {
                 log.warn("Failed kickstart state id not found");
                 return;
             }
-            for (Object oIn : dr) {
-                Map row = (Map) oIn;
+            for (Row row : dr) {
                 processRow(failedStateId, row);
             }
         }
@@ -83,14 +82,14 @@ public class KickstartCleanup extends RhnJavaJob {
         Long retval = null;
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_FAILED_STATE_ID);
-        DataResult dr = select.execute(Collections.emptyMap());
+        DataResult<Row> dr = select.execute(Collections.emptyMap());
         if (!dr.isEmpty()) {
-            retval = (Long) ((Map) dr.get(0)).get("id");
+            retval = (Long) dr.get(0).get("id");
         }
         return retval;
     }
 
-    private void processRow(Long failedStateId, Map row) {
+    private void processRow(Long failedStateId, Map<String, Object> row) {
         Long sessionId = (Long) row.get("id");
         if (log.isInfoEnabled()) {
             log.info("Processing stalled kickstart session {}", sessionId);
@@ -132,14 +131,13 @@ public class KickstartCleanup extends RhnJavaJob {
 
         Long retval = startingAction;
         Long preqid = startingAction;
-        DataResult dr = select.execute(params);
+        DataResult<Row> dr = select.execute(params);
         if (log.isDebugEnabled()) {
             log.debug("dr: {}", dr);
         }
 
         while (!dr.isEmpty() && preqid != null) {
-            preqid = (Long)
-                ((Map) dr.get(0)).get("prerequisite");
+            preqid = (Long) dr.get(0).get("prerequisite");
             if (preqid != null) {
                 retval = preqid;
                 params.put("action_id", retval);

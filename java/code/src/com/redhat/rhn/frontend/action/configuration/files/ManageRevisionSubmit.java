@@ -123,7 +123,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
                     new ActionMessage("emptyselectionerror"));
             getStrutsDelegate().saveMessages(request, msg);
 
-            Map params = makeParamMap(form, request);
+            Map<String, Object> params = makeParamMap(form, request);
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
         }
@@ -201,7 +201,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         ConfigFile file = ConfigActionHelper.getFile(request);
         User user = new RequestContext(request).getCurrentUser();
 
-        Map params = makeParamMap(form, request);
+        Map<String, Object> params = makeParamMap(form, request);
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         int successCount = 0;

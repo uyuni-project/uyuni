@@ -61,7 +61,7 @@ public class RenderEngine {
     }
 
     private void renderLevel(Renderable renderer, List todo,
-                             Map parameters, int depth) {
+                             Map<String, Object> parameters, int depth) {
         if (todo == null || todo.isEmpty()) {
             return;
         }

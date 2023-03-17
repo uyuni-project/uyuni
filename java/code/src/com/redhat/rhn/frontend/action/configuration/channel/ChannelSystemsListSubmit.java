@@ -93,7 +93,7 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
             ActionForm formIn,
             HttpServletRequest request,
             HttpServletResponse response) {
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         operateOnSelectedSet(mapping, formIn, request, response, "unsubscribeSystems");
         RequestContext requestContext = new RequestContext(request);
         ConfigActionHelper.clearRhnSets(requestContext.getCurrentUser());

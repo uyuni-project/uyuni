@@ -1028,14 +1028,14 @@ public class ActionManager extends BaseManager {
      * @param aid The action id for the action in question
      * @return Return a list containing the errata for the action.
      */
-    public static DataResult getErrataList(Long aid) {
+    public static DataResult<Row> getErrataList(Long aid) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
                 "errata_associated_with_action");
 
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -1045,13 +1045,13 @@ public class ActionManager extends BaseManager {
      * @param aid The action id for the action in question
      * @return Return a list containing the errata for the action.
      */
-    public static DataResult getConfigFileUploadList(Long aid) {
+    public static DataResult<Row> getConfigFileUploadList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "upload_action_status");
 
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -1061,13 +1061,13 @@ public class ActionManager extends BaseManager {
      * @param aid The action id for the action in question
      * @return Return a list containing the details for the action.
      */
-    public static DataResult getConfigFileDeployList(Long aid) {
+    public static DataResult<Row> getConfigFileDeployList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "config_action_revisions");
 
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -1077,13 +1077,13 @@ public class ActionManager extends BaseManager {
      * @param aid The action id for the action in question
      * @return Return a list containing the details for the action.
      */
-    public static DataResult getConfigFileDiffList(Long aid) {
+    public static DataResult<Row> getConfigFileDiffList(Long aid) {
         SelectMode m = ModeFactory.getMode("config_queries", "diff_action_revisions");
 
         Map<String, Object> params = new HashMap<>();
         params.put("aid", aid);
 
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }

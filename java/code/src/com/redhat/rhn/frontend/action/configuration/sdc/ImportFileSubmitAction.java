@@ -100,7 +100,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
                                     ActionForm formIn,
                                     HttpServletRequest request,
                                     HttpServletResponse response) {
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
 
         //read the file names from the textbox and add them to the import set
         //return to the same page if there are any validation errors.

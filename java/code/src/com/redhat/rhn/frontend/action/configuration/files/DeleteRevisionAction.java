@@ -46,7 +46,7 @@ public class DeleteRevisionAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request, HttpServletResponse response) {
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         ConfigFileForm cff = (ConfigFileForm)form;
 
         ConfigRevision cr = ConfigActionHelper.findRevision(request);

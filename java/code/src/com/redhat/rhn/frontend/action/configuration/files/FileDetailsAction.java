@@ -74,7 +74,7 @@ public class FileDetailsAction extends RhnAction {
         cff.set(ConfigFileForm.REV_FILETYPE,
                         cr.getConfigFileType().getLabel());
         cff.set(ConfigFileForm.REV_PATH, cr.getConfigFile().getConfigFileName().getPath());
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
 
         if (isSubmitted(cff)) {
             ConfigFileBuilder builder = ConfigFileBuilder.getInstance();

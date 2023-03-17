@@ -87,7 +87,7 @@ public class MasterAction extends RhnAction {
                     request);
         }
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         request.setAttribute(DATA_SET, slaves);

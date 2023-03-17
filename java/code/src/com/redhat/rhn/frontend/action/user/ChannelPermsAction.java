@@ -78,7 +78,7 @@ public class ChannelPermsAction extends RhnListAction {
 
         }
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
 
         params.put("uid", uid);
         params.put(RequestContext.FILTER_STRING,

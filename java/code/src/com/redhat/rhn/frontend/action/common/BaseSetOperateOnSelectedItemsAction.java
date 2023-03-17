@@ -71,7 +71,7 @@ public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
             return handleEmptySelection(mapping, formIn, request);
         }
 
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
 
@@ -79,8 +79,8 @@ public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
 
         int successCount = 0;
         int failureCount = 0;
-        for (Iterator i = set.getElements().iterator(); i.hasNext();) {
-            RhnSetElement element = (RhnSetElement) i.next();
+        for (Iterator<RhnSetElement> i = set.getElements().iterator(); i.hasNext();) {
+            RhnSetElement element = i.next();
             boolean success = callMethod(callbackMethodName,
                                          new Object[] {formIn,
                                                        request,
@@ -126,7 +126,7 @@ public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         ActionMessages msg = new ActionMessages();
         msg.add(ActionMessages.GLOBAL_MESSAGE, getEmptySelectionMessage());
         strutsDelegate.saveMessages(request, msg);
@@ -162,7 +162,7 @@ public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
         msg.add(ActionMessages.GLOBAL_MESSAGE, getNoScriptMessage());
         strutsDelegate.saveMessages(request, msg);
 
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         String forward = getForwardName(request);
         return strutsDelegate.forwardParams(mapping.findForward(forward), params);
     }
