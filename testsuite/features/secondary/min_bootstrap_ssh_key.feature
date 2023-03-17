@@ -65,7 +65,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
   Scenario: Cleanup: restore authorized keys
     When I restore the SSH authorized_keys file of host "sle_minion"
 
-  Scenario: Cleanup: delete SLES minion after after SSH key tests
+  Scenario: Cleanup: delete SLES minion after SSH key tests
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text

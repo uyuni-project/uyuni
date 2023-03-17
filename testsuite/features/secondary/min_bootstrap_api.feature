@@ -67,7 +67,7 @@ Feature: Register a Salt minion via API
   Scenario: Bootstrap a salt-ssh system with activation key and default contact method
     When I call system.bootstrap() on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault
 
-  Scenario: Cleanup: delete SLES minion after after bootstrap script tests
+  Scenario: Cleanup: delete SLES minion after bootstrap script tests
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text

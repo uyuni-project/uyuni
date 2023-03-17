@@ -84,7 +84,7 @@ Feature: Register a Salt minion via Bootstrap-script
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
 
-  Scenario: Cleanup: delete SLES minion after after bootstrap script tests
+  Scenario: Cleanup: delete SLES minion after bootstrap script tests
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
