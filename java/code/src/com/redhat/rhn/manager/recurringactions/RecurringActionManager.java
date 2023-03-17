@@ -144,14 +144,13 @@ public class RecurringActionManager {
      * @param user the user
      * @return list of minion recurring actions
      */
-    public static List<MinionRecurringAction> listMinionRecurringActions(long minionId, User user) {
+    public static List<RecurringAction> listMinionRecurringActions(long minionId, User user) {
         try {
-            SystemManager.ensureAvailableToUser(user, minionId);
+            return RecurringActionFactory.listMinionRecurringActions(SystemManager.lookupByIdAndUser(minionId, user));
         }
         catch (LookupException e) {
             throw new PermissionException(String.format("Minion id %d not accessible to user ", minionId), e);
         }
-        return RecurringActionFactory.listMinionRecurringActions(minionId);
     }
 
     /**
@@ -161,14 +160,13 @@ public class RecurringActionManager {
      * @param user the user
      * @return list of group recurring actions
      */
-    public static List<GroupRecurringAction> listGroupRecurringActions(long groupId, User user) {
+    public static List<RecurringAction> listGroupRecurringActions(long groupId, User user) {
         if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
             throw new PermissionException(String.format("User does not have access to group id %d", groupId));
         }
         try {
             /* Check if user has permission to access the group */
-            SERVER_GROUP_MANAGER.lookup(groupId, user);
-            return RecurringActionFactory.listGroupRecurringActions(groupId);
+            return RecurringActionFactory.listGroupRecurringActions(SERVER_GROUP_MANAGER.lookup(groupId, user));
         }
         catch (LookupException e) {
             throw new PermissionException(String.format("User does not have access to group id %d", groupId), e);
