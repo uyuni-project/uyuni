@@ -16,6 +16,7 @@ spec:
       initContainers:
       - name: init-etc-tls
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -37,6 +38,7 @@ spec:
             mountPath: /etc/pki/spacewalk-tls
       - name: init-var-pgsql
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -52,6 +54,7 @@ spec:
             name: var-pgsql
       - name: init-var-cache
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -67,6 +70,7 @@ spec:
             name: var-cache
       - name: init-var-log
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -82,6 +86,7 @@ spec:
             name: var-log
       - name: init-srv-salt
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -94,6 +99,7 @@ spec:
             name: srv-salt
       - name: init-srv-www-pub
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -110,6 +116,7 @@ spec:
             name: srv-www-pub
       - name: init-srv-www-cobbler
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -125,6 +132,7 @@ spec:
             name: srv-www-cobbler
       - name: init-srv-www-osimages
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -137,6 +145,7 @@ spec:
             name: srv-www-osimages
       - name: init-srv-tftpboot
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -152,6 +161,7 @@ spec:
             name: srv-tftpboot
       - name: init-srv-formulametadata
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -167,6 +177,7 @@ spec:
             name: srv-formulametadata
       - name: init-srv-pillar
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -182,6 +193,7 @@ spec:
             name: srv-pillar
       - name: init-srv-susemanager
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -197,6 +209,7 @@ spec:
             name: srv-susemanager
       - name: init-srv-spacewalk
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -212,6 +225,7 @@ spec:
             name: srv-spacewalk
       - name: init-root
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -227,6 +241,7 @@ spec:
             name: root
       - name: init-etc-apache2
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -242,6 +257,7 @@ spec:
             name: etc-apache2
       - name: init-etc-rhn
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -257,6 +273,7 @@ spec:
             name: etc-rhn
       - name: init-etc-systemd
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -272,6 +289,7 @@ spec:
             name: etc-systemd
       - name: init-etc-salt
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -287,6 +305,7 @@ spec:
             name: etc-salt
       - name: init-etc-tomcat
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -302,6 +321,7 @@ spec:
             name: etc-tomcat
       - name: init-etc-cobbler
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -317,6 +337,7 @@ spec:
             name: etc-cobbler
       - name: init-etc-sysconfig
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         command:
           - sh
           - -x
@@ -333,6 +354,7 @@ spec:
       containers:
       - name: uyuni
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         securityContext:
           capabilities:
             add:

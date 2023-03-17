@@ -17,7 +17,7 @@ COPY uyuni-setup.service /usr/lib/systemd/system/
 # Main packages
 COPY remove_unused.sh .  
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
-# TODO Remove vi and possibly python3-simplejson
+# TODO Remove vi
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${PRODUCT_PATTERN} \
