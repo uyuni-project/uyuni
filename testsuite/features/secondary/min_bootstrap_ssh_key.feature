@@ -64,3 +64,24 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Cleanup: restore authorized keys
     When I restore the SSH authorized_keys file of host "sle_minion"
+
+  Scenario: Cleanup: delete SLES minion after after SSH key tests
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle_minion" should not be registered
+
+  Scenario: Cleanup: bootstrap a SLES minion after SSH key tests
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select the hostname of "proxy" from "proxies" if present
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until onboarding is completed for "sle_minion"
