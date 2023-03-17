@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 15:37+0100\n"
+"POT-Creation-Date: 2023-03-17 13:48+0100\n"
 "PO-Revision-Date: 2023-01-06 03:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
@@ -343,32 +343,32 @@ msgstr "시스템 그룹"
 msgid "Packages"
 msgstr "패키지"
 
-#: ../src/spacecmd/activationkey.py:992
+#: ../src/spacecmd/activationkey.py:995
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr "activationkey_enableconfigdeployment: 구성 채널 배포 활성화"
 
-#: ../src/spacecmd/activationkey.py:994
+#: ../src/spacecmd/activationkey.py:997
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "사용법: activationkey_enableconfigdeployment KEY"
 
-#: ../src/spacecmd/activationkey.py:1021
+#: ../src/spacecmd/activationkey.py:1024
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr "activationkey_disableconfigdeployment: 구성 채널 배포 비활성화"
 
-#: ../src/spacecmd/activationkey.py:1023
+#: ../src/spacecmd/activationkey.py:1026
 msgid "usage: activationkey_disableconfigdeployment KEY"
 msgstr "사용법: activationkey_disableconfigdeployment KEY"
 
-#: ../src/spacecmd/activationkey.py:1050
+#: ../src/spacecmd/activationkey.py:1053
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr "activationkey_setbasechannel: 활성화 키의 기본 채널 설정"
 
-#: ../src/spacecmd/activationkey.py:1052
+#: ../src/spacecmd/activationkey.py:1055
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "사용법: activationkey_setbasechannel KEY CHANNEL"
 
-#: ../src/spacecmd/activationkey.py:1099
+#: ../src/spacecmd/activationkey.py:1102
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
@@ -376,33 +376,33 @@ msgstr ""
 "activationkey_setusagelimit: 활성화 키의 사용 제한 설정, 숫자 또는 \"무제한"
 "\"일 수 있음"
 
-#: ../src/spacecmd/activationkey.py:1101
+#: ../src/spacecmd/activationkey.py:1104
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
 msgstr "사용법: activationkey_setusagelimit KEY <usage limit>"
 
-#: ../src/spacecmd/activationkey.py:1102
+#: ../src/spacecmd/activationkey.py:1105
 msgid "usage: activationkey_setusagelimit KEY unlimited "
 msgstr "사용법: activationkey_setusagelimit KEY 무제한 "
 
-#: ../src/spacecmd/activationkey.py:1132
+#: ../src/spacecmd/activationkey.py:1135
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
 msgstr "인수 %s을(를) 정수로 변환할 수 없음"
 
-#: ../src/spacecmd/activationkey.py:1154
+#: ../src/spacecmd/activationkey.py:1157
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr "activationkey_setuniversaldefault: 이 값을 범용 기본값으로 설정"
 
-#: ../src/spacecmd/activationkey.py:1156
+#: ../src/spacecmd/activationkey.py:1159
 msgid "usage: activationkey_setuniversaldefault KEY"
 msgstr "사용법: activationkey_setuniversaldefault KEY"
 
-#: ../src/spacecmd/activationkey.py:1197
+#: ../src/spacecmd/activationkey.py:1200
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr "activationkey_export: 활성화 키를 JSON 형식 파일로 엑스포트"
 
-#: ../src/spacecmd/activationkey.py:1198
+#: ../src/spacecmd/activationkey.py:1201
 msgid ""
 "usage: activationkey_export [options] [<KEY> ...])\n"
 "\n"
@@ -426,71 +426,71 @@ msgstr ""
 "참고: 키 목록은 선택 사항이며, 기본값은 모든 키 엑스포트입니다. "
 
 #. Get the key details
-#: ../src/spacecmd/activationkey.py:1214
+#: ../src/spacecmd/activationkey.py:1217
 #, python-format
 msgid "Getting activation key details for %s"
 msgstr "%s에 대한 키 기본값 가져오기"
 
-#: ../src/spacecmd/activationkey.py:1268
+#: ../src/spacecmd/activationkey.py:1271
 #, python-format
 msgid "Exporting ALL activation keys to %s"
 msgstr "모든 활성화 키를 %s(으)로 엑스포트"
 
-#: ../src/spacecmd/activationkey.py:1277
+#: ../src/spacecmd/activationkey.py:1280
 msgid "Invalid activation key passed"
 msgstr "유효하지 않은 활성화 키 전달됨"
 
-#: ../src/spacecmd/activationkey.py:1292
+#: ../src/spacecmd/activationkey.py:1295
 #, python-format
 msgid "Exporting key %s to %s"
 msgstr "%s 키를 %s(으)로 엑스포트"
 
-#: ../src/spacecmd/activationkey.py:1301
+#: ../src/spacecmd/activationkey.py:1304
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
-#: ../src/spacecmd/activationkey.py:1306
+#: ../src/spacecmd/activationkey.py:1309
 msgid "Failed to save exported keys to file: {}"
 msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
-#: ../src/spacecmd/activationkey.py:1315
+#: ../src/spacecmd/activationkey.py:1318
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
 msgstr "activationkey_import: JSON 파일에서 활성화 키 가져오기"
 
-#: ../src/spacecmd/activationkey.py:1316
+#: ../src/spacecmd/activationkey.py:1319
 msgid "usage: activationkey_import <JSONFILE ...>"
 msgstr "사용법: activationkey_import <JSONFILE ...>"
 
-#: ../src/spacecmd/activationkey.py:1325
+#: ../src/spacecmd/activationkey.py:1328
 msgid "No filename passed"
 msgstr "전달된 파일 이름 없음"
 
-#: ../src/spacecmd/activationkey.py:1334
+#: ../src/spacecmd/activationkey.py:1337
 #, python-format
 msgid "Could not read json data from %s"
 msgstr "%s에서 json 데이터를 읽을 수 없음"
 
-#: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
+#: ../src/spacecmd/activationkey.py:1342 ../src/spacecmd/activationkey.py:1386
 #, python-format
 msgid "Failed to import key %s"
 msgstr "%s 키를 가져오지 못함"
 
-#: ../src/spacecmd/activationkey.py:1353
+#: ../src/spacecmd/activationkey.py:1356
 #, python-format
 msgid "%s already exists! Skipping!"
 msgstr "%s이(가) 이미 있습니다! 건너뜁니다!"
 
-#: ../src/spacecmd/activationkey.py:1408
+#: ../src/spacecmd/activationkey.py:1411
 #, python-format
 msgid "System group %s doesn't exist, creating"
 msgstr "시스템 그룹 %s이(가) 없습니다. 다음을 생성:"
 
-#: ../src/spacecmd/activationkey.py:1429
+#: ../src/spacecmd/activationkey.py:1432
 msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone: 활성화 키 복제"
 
-#: ../src/spacecmd/activationkey.py:1430
+#: ../src/spacecmd/activationkey.py:1433
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -518,111 +518,111 @@ msgstr ""
 "  -x \"s/foo/bar\" : 선택 사항 정규식 대체, 클론 설명, 기본 채널 레이블,\n"
 "                   하위 채널 레이블, 구성 채널 이름에서 foo를 bar로 대체 "
 
-#: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
+#: ../src/spacecmd/activationkey.py:1461 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3090
 msgid "Activation Keys"
 msgstr "활성화 키"
 
-#: ../src/spacecmd/activationkey.py:1464
+#: ../src/spacecmd/activationkey.py:1467
 #, python-format
 msgid "Key to clone: %s"
 msgstr "복제할 키: %s"
 
-#: ../src/spacecmd/activationkey.py:1468
+#: ../src/spacecmd/activationkey.py:1471
 msgid "Original Key:"
 msgstr "원래 키:"
 
-#: ../src/spacecmd/activationkey.py:1470
+#: ../src/spacecmd/activationkey.py:1473
 msgid "Cloned Key:"
 msgstr "복제된 키:"
 
-#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1434
+#: ../src/spacecmd/activationkey.py:1476 ../src/spacecmd/configchannel.py:1434
 msgid "Error - must specify either -c or -x options!"
 msgstr "오류 - -c 또는 -x 옵션을 지정해야 합니다!"
 
-#: ../src/spacecmd/activationkey.py:1478
+#: ../src/spacecmd/activationkey.py:1481
 #, python-format
 msgid "Key %s already exists"
 msgstr "%s 키가 이미 있음"
 
-#: ../src/spacecmd/activationkey.py:1482
+#: ../src/spacecmd/activationkey.py:1485
 msgid "Error no activationkey to clone passed!"
 msgstr "복제할 활성화 키 전달 안 됨 오류입니다!"
 
-#: ../src/spacecmd/activationkey.py:1536
+#: ../src/spacecmd/activationkey.py:1539
 #, python-format
 msgid "Found child channel %s key %s, %s"
 msgstr "하위 채널 %s 키 %s, %s 찾음"
 
-#: ../src/spacecmd/activationkey.py:1538
+#: ../src/spacecmd/activationkey.py:1541
 msgid " does not exist, skipping!"
 msgstr " 이(가) 없습니다. 건너뜁니다!"
 
-#: ../src/spacecmd/activationkey.py:1545
+#: ../src/spacecmd/activationkey.py:1548
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr "정규식 대체가 존재하지 않는 새 기본 채널 %s에서 수행됩니다!"
 
-#: ../src/spacecmd/activationkey.py:1561
+#: ../src/spacecmd/activationkey.py:1564
 #, python-format
 msgid "Found config channel %s for key %s, %s "
 msgstr "%s, %s 키를 위한 구성 채널 %s 찾음 "
 
-#: ../src/spacecmd/activationkey.py:1563
+#: ../src/spacecmd/activationkey.py:1566
 msgid "does not exist, skipping!"
 msgstr "없습니다. 건너뜁니다!"
 
-#: ../src/spacecmd/activationkey.py:1581
+#: ../src/spacecmd/activationkey.py:1584
 #, python-format
 msgid "Cloning key %s as %s"
 msgstr "%s 키를 %s(으)로 복제"
 
-#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1486
+#: ../src/spacecmd/activationkey.py:1588 ../src/spacecmd/configchannel.py:1486
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s을(를) %s(으)로 복제하지 못함"
 
-#: ../src/spacecmd/activationkey.py:1603
+#: ../src/spacecmd/activationkey.py:1606
 msgid "no activationkey label given"
 msgstr "활성화 레이블이 지정되지 않음"
 
-#: ../src/spacecmd/activationkey.py:1606
+#: ../src/spacecmd/activationkey.py:1609
 msgid "invalid activationkey label "
 msgstr "유효하지 않은 활성화 키 레이블 "
 
-#: ../src/spacecmd/activationkey.py:1623
+#: ../src/spacecmd/activationkey.py:1626
 msgid "activationkey_diff: Diff activation keys"
 msgstr "activationkey_diff: 다른 활성화 키"
 
-#: ../src/spacecmd/activationkey.py:1625
+#: ../src/spacecmd/activationkey.py:1628
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr "사용법: activationkey_diff SOURCE_KEY TARGET_KEY"
 
-#: ../src/spacecmd/activationkey.py:1675
+#: ../src/spacecmd/activationkey.py:1678
 msgid "activationkey_disable: Disable an activation key"
 msgstr "activationkey_disable: 활성화 키 비활성화"
 
-#: ../src/spacecmd/activationkey.py:1677
+#: ../src/spacecmd/activationkey.py:1680
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr "사용법: activationkey_disable KEY [KEY ...]"
 
-#: ../src/spacecmd/activationkey.py:1709
+#: ../src/spacecmd/activationkey.py:1712
 msgid "activationkey_enable: Enable an activation key"
 msgstr "activationkey_enable: 활성화 키 활성화"
 
-#: ../src/spacecmd/activationkey.py:1711
+#: ../src/spacecmd/activationkey.py:1714
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr "사용법: activationkey_enable KEY [KEY ...]"
 
-#: ../src/spacecmd/activationkey.py:1743
+#: ../src/spacecmd/activationkey.py:1746
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr "activationkey_setdescription: 활성화 키 설명 설정"
 
-#: ../src/spacecmd/activationkey.py:1745
+#: ../src/spacecmd/activationkey.py:1748
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "사용법: activationkey_setdescription KEY DESCRIPTION"
 
-#: ../src/spacecmd/activationkey.py:1777
+#: ../src/spacecmd/activationkey.py:1780
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
@@ -630,11 +630,11 @@ msgstr ""
 "activationkey_setcontactmethod: 이 키로 등록된 시스템에서 사용할 연락 방법을 "
 "설정합니다."
 
-#: ../src/spacecmd/activationkey.py:1779 ../src/spacecmd/system.py:4179
+#: ../src/spacecmd/activationkey.py:1782 ../src/spacecmd/system.py:4179
 msgid "Available contact methods: "
 msgstr "사용할 수 있는 연락 방법: "
 
-#: ../src/spacecmd/activationkey.py:1780
+#: ../src/spacecmd/activationkey.py:1783
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "사용법: activationkey_setcontactmethod KEY CONTACT_METHOD"
 
