@@ -82,7 +82,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
         for (Object valueIn : result) {
 
             // Add action for each package found in the elaborator
-            Map data = (Map) valueIn;
+            Map<String, Object> data = (Map) valueIn;
 
             // Load the server
             Long sid = (Long) data.get("id");
@@ -93,7 +93,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
 
             List<PackageListItem> items = new ArrayList<>(elabList.size());
             for (Object oIn : elabList) {
-                Map elabData = (Map) oIn;
+                Map<String, Object> elabData = (Map) oIn;
                 String idCombo = (String) elabData.get("id_combo");
                 PackageListItem item = PackageListItem.parse(idCombo);
                 items.add(item);

@@ -206,7 +206,7 @@ public class ListRhnSetHelper extends ListSetHelper {
      */
     private void setup(RhnSetDecl declIn) {
         RequestContext context = getContext();
-        Map params = getParamMap();
+        Map<String, Object> params = getParamMap();
         if (params.isEmpty()) {
             decl = declIn;
         }

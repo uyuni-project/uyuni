@@ -61,7 +61,7 @@ public class EditGroupAction extends RhnAction {
 
         DynaActionForm daForm = (DynaActionForm)form;
         ActionErrors errors = new ActionErrors();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
 
         if (ctx.hasParam("sgid")) {

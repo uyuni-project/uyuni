@@ -962,7 +962,7 @@ public class ErrataHandler extends BaseHandler {
         return 1;
     }
 
-    private Object getRequiredAttribute(Map map, String attribute) {
+    private Object getRequiredAttribute(Map<String, Object> map, String attribute) {
         Object value = map.get(attribute);
         if (value == null || StringUtils.isEmpty(value.toString())) {
             throw new MissingErrataAttributeException(attribute);

@@ -95,7 +95,7 @@ public class SlaveAction extends RhnAction {
                     request);
         }
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         ListTagHelper.bindSetDeclTo(LIST_NAME, getSetDecl(), request);

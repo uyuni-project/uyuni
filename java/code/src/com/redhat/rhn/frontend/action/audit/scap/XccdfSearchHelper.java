@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.audit.scap;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -56,26 +57,26 @@ public class XccdfSearchHelper extends RhnAction {
      * @throws XmlRpcException in the case of a serialization failure
      * @throws XmlRpcFault bad communication with search server
      */
-    public static DataResult performSearch(String searchString, String whereToSearch,
-            Date startDate, Date endDate, String ruleResult, boolean returnTestResults,
-            RequestContext context)
+    public static DataResult<BaseDto> performSearch(String searchString, String whereToSearch,
+                                                    Date startDate, Date endDate, String ruleResult,
+                                                    boolean returnTestResults, RequestContext context)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
-        ArrayList args = new ArrayList<>();
+        ArrayList<Object> args = new ArrayList<>();
         args.add(context.getWebSession().getId().toString());
         args.add(IDENT_INDEX);
         args.add(preprocessSearchString(searchString));
-        args.add(true); //fine grained
-        List searchResult = invokeSearchServer(INDEX_SEARCH, args);
+        args.add(Boolean.TRUE); // convert boolean to String
+        List<Map<String, Object>> searchResult = invokeSearchServer(INDEX_SEARCH, args);
         // searchResult contains id to rhnXccdfIdent relation,
         // while we want to return RuleResults
         List<Long> identIds = new ArrayList<>();
         for (int x = searchResult.size() - 1; x >= 0; x--) {
-            Map item = (Map) searchResult.get(x);
+            Map<String, Object> item = searchResult.get(x);
             Long id = Long.valueOf((String)item.get("id"));
             identIds.add(id);
         }
 
-        Map params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", context.getCurrentUser().getId());
         if (SYSTEM_LIST.equals(whereToSearch)) {
             params.put("slabel", SYSTEM_LIST);

@@ -73,7 +73,7 @@ public class ForgotCredentialsAction extends RhnAction {
         ActionErrors errors = new ActionErrors();
 
         RequestContext ctx = new RequestContext(request);
-        Map forwardParams = makeParamMap(request);
+        Map<String, Object> forwardParams = makeParamMap(request);
         // For saving previous request times
         HttpSession session = request.getSession();
 

@@ -15,8 +15,8 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
@@ -26,7 +26,6 @@ import org.quartz.JobExecutionException;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Cleans up orphaned packages
@@ -49,7 +48,7 @@ public class PackageCleanup extends RhnJavaJob {
             String pkgDir = Config.get().getString("web.mount_point");
 
             // Retrieve list of orpahned packages
-            List candidates = findCandidates();
+            List<Row> candidates = findCandidates();
 
             // Bail if no work to do
             if (candidates == null || candidates.isEmpty()) {
@@ -62,8 +61,7 @@ public class PackageCleanup extends RhnJavaJob {
             }
 
             // Delete them from the filesystem
-            for (Object candidateIn : candidates) {
-                Map row = (Map) candidateIn;
+            for (Row row : candidates) {
                 String path = (String) row.get("path");
                 if (log.isDebugEnabled()) {
                     log.debug("Deleting package {}", path);
@@ -116,11 +114,10 @@ public class PackageCleanup extends RhnJavaJob {
         }
     }
 
-    private List findCandidates() {
+    private List<Row> findCandidates() {
         SelectMode query = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PKGCLEANUP_FIND_CANDIDATES);
-        DataResult dr = query.execute(Collections.emptyMap());
-        return dr;
+        return query.execute(Collections.emptyMap());
     }
 
 }

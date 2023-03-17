@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
+import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
@@ -64,7 +65,7 @@ public class XccdfSearchAction extends BaseSearchAction {
 
         if (!StringUtils.isBlank(searchString)) {
             picker.processDatePickers(getOptionScanDateSearch(request), false);
-            DataResult results = XccdfSearchHelper.performSearch(searchString,
+            DataResult<BaseDto> results = XccdfSearchHelper.performSearch(searchString,
                 whereToSearch, getPickerDate(request, "start"),
                 getPickerDate(request, "end"), getRuleResultLabel(form),
                 isTestestResultRequested(form), context);
@@ -151,7 +152,7 @@ public class XccdfSearchAction extends BaseSearchAction {
                 "system_list".equals(whereToSearch) ? whereToSearch : "all");
         setupRuleResultLabelOptions(request);
         setupShowAsOption(form);
-        Map m = form.getMap();
+        Map<String, Object> m = form.getMap();
         Set<String> keys = m.keySet();
         for (String key : keys) {
             Object vObj = m.get(key);

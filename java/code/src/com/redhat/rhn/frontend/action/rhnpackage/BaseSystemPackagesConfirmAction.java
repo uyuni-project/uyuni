@@ -248,7 +248,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
      */
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
-                                   Map params) {
+                                   Map<String, Object> params) {
         RequestContext requestContext = new RequestContext(request);
         Long sid = requestContext.getRequiredParam("sid");
         params.put("sid", sid);

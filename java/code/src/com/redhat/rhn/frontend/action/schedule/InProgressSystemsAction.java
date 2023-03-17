@@ -76,7 +76,7 @@ public class InProgressSystemsAction extends RhnSetAction {
          */
         int numSystems = updateSet(request).size();
         ActionMessages msgs = new ActionMessages();
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
 
         if (numSystems == 0) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,

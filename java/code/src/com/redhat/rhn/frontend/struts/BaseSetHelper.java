@@ -268,7 +268,7 @@ public class BaseSetHelper {
             }
         }
         else if (obj instanceof Map) {
-            Map next = (Map) obj;
+            Map<String, Object> next = (Map<String, Object>) obj;
             next.remove(SELECTED);
         }
         else if (obj instanceof Identifiable) {
@@ -310,7 +310,7 @@ public class BaseSetHelper {
             }
         }
         else if (obj instanceof Map) {
-            Map next = (Map) obj;
+            Map<String, Object> next = (Map<String, Object>) obj;
             if (next.containsKey(SELECTABLE) &&
                     set.contains(next.get(KEY))) {
                 next.put(SELECTED, true);
@@ -363,7 +363,7 @@ public class BaseSetHelper {
             }
         }
         else if (obj instanceof Map) {
-            Map next = (Map) obj;
+            Map<String, Object> next = (Map<String, Object>) obj;
             set.add(next.get(KEY));
         }
         else if (obj instanceof Identifiable) {

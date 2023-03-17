@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /**
- * Elaboratable
+ * Elaborator
  */
 public interface Elaborator extends Serializable {
 
@@ -29,12 +29,12 @@ public interface Elaborator extends Serializable {
      * Returns an elaborated list for the given List of objects
      * @param objectsToElaborate the list of objects to elaborate
      */
-    void elaborate(List objectsToElaborate);
+    void elaborate(List<Object> objectsToElaborate);
 
     /**
      * Returns an elaborated list for the given List of objects with an updated session
      * @param objectsToElaborate the list of objects to elaborate
      * @param session session to use
      */
-    void elaborate(List objectsToElaborate, Session session);
+    void elaborate(List<Object> objectsToElaborate, Session session);
 }

@@ -98,7 +98,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         ActionChainHelper.prepopulateActionChains(req);
 
         ConfigActionHelper.setupRequestAttributes(ctx, cc);
-        Map m = makeParamMap(req);
+        Map<String, Object> m = makeParamMap(req);
         return getStrutsDelegate().forwardParams(mapping.findForward(forwardLabel), m);
     }
 
@@ -139,7 +139,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
 
     @Override
     protected Map makeParamMap(HttpServletRequest request) {
-        Map m = super.makeParamMap(request);
+        Map<String, Object> m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.processParamMap(cc, m);
         return m;

@@ -50,7 +50,7 @@ public class DeleteChannelAction extends RhnAction {
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
         DynaActionForm daForm = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
 
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
 

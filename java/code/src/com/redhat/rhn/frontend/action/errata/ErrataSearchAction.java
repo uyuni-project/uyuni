@@ -180,7 +180,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             form.set(ERRATA_ENH, Boolean.TRUE);
         }
 
-        Map m = form.getMap();
+        Map<String, Object> m = form.getMap();
         Set<String> keys = m.keySet();
         for (String key : keys) {
             Object vObj = m.get(key);

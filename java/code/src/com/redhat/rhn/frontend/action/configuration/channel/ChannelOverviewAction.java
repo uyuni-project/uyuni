@@ -73,7 +73,7 @@ public class ChannelOverviewAction extends RhnAction {
                                  HttpServletResponse response) {
 
         DynaActionForm daForm = (DynaActionForm)form;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext  context = new RequestContext(request);
         User user = context.getCurrentUser();
         ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -168,7 +168,7 @@ public class ChannelOverviewAction extends RhnAction {
      * @param params the params to use
      */
     protected void setupForm(HttpServletRequest request, ConfigChannel cc,
-            DynaActionForm form, Map params) {
+            DynaActionForm form, Map<String, Object> params) {
 
         RequestContext ctx = new RequestContext(request);
 

@@ -54,10 +54,10 @@ public class AuditMachineAction extends RhnAction implements Listable<AuditRevie
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
         ActionMessages amsgs;
-        Enumeration paramNames;
+        Enumeration<String> paramNames;
         ListHelper helper = new ListHelper(this, request);
         Long start, end;
-        Map forwardParams = makeParamMap(request);
+        Map<String, Object> forwardParams = makeParamMap(request);
         RequestContext requestContext = new RequestContext(request);
         String str, reviewed, machine, username;
 

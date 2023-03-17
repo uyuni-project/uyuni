@@ -119,7 +119,7 @@ public class PackageHelper {
         return pkgMap;
     }
 
-    private static void addEntry(Map map, String key, Object value) {
+    private static void addEntry(Map<String, Object> map, String key, Object value) {
         map.put(key, value);
     }
 

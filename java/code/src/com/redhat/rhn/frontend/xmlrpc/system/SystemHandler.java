@@ -1020,15 +1020,14 @@ public class SystemHandler extends BaseHandler {
                 server.getPackageType()
         );
 
-        List toCheck = packagesToCheck(server, name);
+        List<Map<String, Object>> toCheck = packagesToCheck(server, name);
 
-        List returnList = new ArrayList<>();
+        List<Map<String, String>> returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is older, add it to returnList.
          */
-        for (Object oIn : toCheck) {
-            Map pkg = (Map) oIn;
+        for (Map<String, Object> pkg : toCheck) {
 
             String pkgName = (String) pkg.get("name");
             String pkgVersion = (String) pkg.get("version");
@@ -1097,14 +1096,13 @@ public class SystemHandler extends BaseHandler {
                 server.getPackageType()
         );
 
-        List toCheck = packagesToCheck(server, name);
-        List returnList = new ArrayList<>();
-        /*
-         * Loop through the packages to check and compare the evr parts to what was
-         * passed in from the user. If the package is newer, add it to returnList.
-         */
-        for (Object oIn : toCheck) {
-            Map pkg = (Map) oIn;
+        List<Map<String, Object>> toCheck = packagesToCheck(server, name);
+        List<Map<String, String>> returnList = new ArrayList<>();
+    /*
+     * Loop through the packages to check and compare the evr parts to what was
+     * passed in from the user. If the package is newer, add it to returnList.
+     */
+        for (Map<String, Object> pkg : toCheck) {
             String pkgName = (String) pkg.get("name");
             String pkgVersion = (String) pkg.get("version");
             String pkgRelease = (String) pkg.get("release");
@@ -2549,9 +2547,8 @@ public class SystemHandler extends BaseHandler {
         else if (type.equals(ActionFactory.TYPE_ERRATA)) {
 
             // retrieve the errata that were associated with the action...
-            DataResult errata = ActionManager.getErrataList(action.getId());
-            for (Object erratumIn : errata) {
-                Map erratum = (Map) erratumIn;
+            DataResult<Row> errata = ActionManager.getErrataList(action.getId());
+            for (Row erratum : errata) {
                 String detail = (String) erratum.get("advisory");
                 detail += " (" + erratum.get("synopsis") + ")";
 
@@ -2564,10 +2561,8 @@ public class SystemHandler extends BaseHandler {
                 type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
 
             // retrieve the details associated with the action...
-            DataResult files = ActionManager.getConfigFileUploadList(action.getId());
-            for (Object fileIn : files) {
-                Map file = (Map) fileIn;
-
+            DataResult<Row> files = ActionManager.getConfigFileUploadList(action.getId());
+            for (Row file : files) {
                 Map<String, String> info = new HashMap<>();
                 info.put("detail", (String) file.get("path"));
                 String error = (String) file.get("failure_reason");
@@ -2580,10 +2575,8 @@ public class SystemHandler extends BaseHandler {
         else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
 
             // retrieve the details associated with the action...
-            DataResult files = ActionManager.getConfigFileDeployList(action.getId());
-            for (Object fileIn : files) {
-                Map file = (Map) fileIn;
-
+            DataResult<Row> files = ActionManager.getConfigFileDeployList(action.getId());
+            for (Row file : files) {
                 Map<String, String> info = new HashMap<>();
                 String path = (String) file.get("path");
                 path += " (rev. " + file.get("revision") + ")";
@@ -2598,10 +2591,8 @@ public class SystemHandler extends BaseHandler {
         else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
 
             // retrieve the details associated with the action...
-            DataResult files = ActionManager.getConfigFileDiffList(action.getId());
-            for (Object fileIn : files) {
-                Map file = (Map) fileIn;
-
+            DataResult<Row> files = ActionManager.getConfigFileDiffList(action.getId());
+            for (Row file : files) {
                 Map<String, String> info = new HashMap<>();
                 String path = (String) file.get("path");
                 path += " (rev. " + file.get("revision") + ")";

@@ -130,7 +130,7 @@ public class AllowSlaveOrgsAction extends RhnAction {
                 "message.iss_slave_allowed_orgs_updated", s.getSlave()));
         getStrutsDelegate().saveMessages(context.getRequest(), msg);
 
-        Map params = makeParamMap(context.getRequest());
+        Map<String, Object> params = makeParamMap(context.getRequest());
         if (sid != null) {
             params.put("sid", sid);
         }

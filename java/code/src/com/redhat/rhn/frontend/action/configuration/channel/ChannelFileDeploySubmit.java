@@ -80,7 +80,7 @@ public class ChannelFileDeploySubmit extends BaseSetOperateOnSelectedItemsAction
             HttpServletRequest request,
             HttpServletResponse response) {
         selectall(mapping, formIn, request, response);
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         return getStrutsDelegate().forwardParams(mapping.findForward("success"), params);
     }
 
@@ -102,7 +102,7 @@ public class ChannelFileDeploySubmit extends BaseSetOperateOnSelectedItemsAction
         if (set.isEmpty()) {
             return handleEmptySelection(mapping, formIn, request);
         }
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         return getStrutsDelegate().forwardParams(mapping.findForward("success"), params);
     }
 }

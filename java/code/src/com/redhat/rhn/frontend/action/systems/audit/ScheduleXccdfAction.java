@@ -72,7 +72,7 @@ public class ScheduleXccdfAction extends ScapSetupAction {
             if (errors.isEmpty()) {
                 ActionMessages msgs = processForm(user, server, form);
                 strutsDelegate.saveMessages(request, msgs);
-                Map params = makeParamMap(request);
+                Map<String, Object> params = makeParamMap(request);
                 params.put("sid", sid);
                 forward = strutsDelegate.forwardParams(mapping.findForward("submit"),
                         params);

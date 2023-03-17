@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.errata.cache;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -71,13 +72,12 @@ public class ErrataCacheManager extends HibernateFactory {
         }
         HashMap<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
-        DataResult dr = executeSelectMode("ErrataCache_queries",
+        DataResult<Row> dr = executeSelectMode("ErrataCache_queries",
                 "count_servers_in_errata_cache_queue", params);
         if (dr.isEmpty()) {
             return 0;
         }
-        Map record = (Map) dr.get(0);
-        Long cnt = (Long) record.get("num_items");
+        Long cnt = (Long) dr.get(0).get("num_items");
         return (cnt != null) ? cnt.intValue() : 0;
     }
 
@@ -99,7 +99,7 @@ public class ErrataCacheManager extends HibernateFactory {
      * @param org Org
      * @return all Server ids for the given org.
      */
-    public static DataResult allServerIdsForOrg(Org org) {
+    public static DataResult<Row> allServerIdsForOrg(Org org) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         return executeSelectMode("ErrataCache_queries",

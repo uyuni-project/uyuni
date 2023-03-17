@@ -73,7 +73,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         request.setAttribute("system_count", set.size());
         DynaActionForm daForm = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
 
         if (isSubmitted(daForm)) {
             Iterator it = set.iterator();

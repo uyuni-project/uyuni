@@ -230,7 +230,7 @@ public class TaskomaticApi {
             Map<String, String> params) throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
-        Map task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
+        Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
@@ -381,7 +381,7 @@ public class TaskomaticApi {
      */
     public void unscheduleRepoSync(Channel chan, User user) throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
-        Map task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
+        Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
@@ -462,8 +462,8 @@ public class TaskomaticApi {
      */
     public boolean satScheduleActive(String jobLabel, User user)
         throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
-        for (Map schedule : schedules) {
+        List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
+        for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return Boolean.TRUE;
             }
@@ -481,7 +481,7 @@ public class TaskomaticApi {
     public String getRepoSyncSchedule(Channel chan, User user)
         throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
-        Map task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
+        Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
         if (task == null) {
             return null;
         }

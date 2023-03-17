@@ -67,7 +67,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
         request.setAttribute("channel_name", currentChan.getName());
         request.setAttribute(RequestContext.CID, cid);
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.CID, cid);
 
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);

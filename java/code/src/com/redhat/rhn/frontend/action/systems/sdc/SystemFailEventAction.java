@@ -49,7 +49,7 @@ public class SystemFailEventAction extends RhnAction {
         Long aid = context.getRequiredParam("aid");
         request.setAttribute("sid", sid);
         request.setAttribute("aid", aid);
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         if (isSubmitted(daForm)) {
             User user = context.getCurrentUser();
             String description = daForm.getString("description");

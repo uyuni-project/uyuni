@@ -95,7 +95,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
                                           ActionForm form,
                                           HttpServletRequest request,
                                           HttpServletResponse response) {
-        Map params = makeParamMap(form, request);
+        Map<String, Object> params = makeParamMap(form, request);
         operateOnSelectedSet(mapping, form, request, response, "subscribeSystems");
         //now some of the sets may be invalid, so delete them.
         RequestContext requestContext = new RequestContext(request);

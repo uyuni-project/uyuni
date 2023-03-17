@@ -57,7 +57,7 @@ public class SnapshotTagsAction extends RhnAction {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() +
                 "?sid=" + server.getId());
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put("sid", sid);
 
         RhnSet set =  RhnSetDecl.SNAPSHOT_TAGS_TO_DELETE.get(user);

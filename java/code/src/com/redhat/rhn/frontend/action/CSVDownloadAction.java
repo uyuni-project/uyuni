@@ -36,6 +36,7 @@ import org.apache.struts.actions.DownloadAction;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -194,7 +195,7 @@ public class CSVDownloadAction extends DownloadAction {
 
         Elaborator elaborator = TagHelper.lookupElaboratorFor(getUniqueName(request), request);
         if (elaborator != null) {
-            elaborator.elaborate(pageData, HibernateFactory.getSession());
+            elaborator.elaborate(pageData.stream().collect(Collectors.toList()), HibernateFactory.getSession());
         }
 
         String contentType = csvWriter.getMimeType() + ";charset=" + response.getCharacterEncoding();

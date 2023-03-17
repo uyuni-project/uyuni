@@ -59,7 +59,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
             strutsDelegate.saveMessage("filelists.jsp.selectafilelist", request);
             forwardName = RhnHelper.DEFAULT_FORWARD;
         }
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         RhnSetManager.store(set);
         return strutsDelegate.forwardParams(mapping.findForward(forwardName), params);
     }

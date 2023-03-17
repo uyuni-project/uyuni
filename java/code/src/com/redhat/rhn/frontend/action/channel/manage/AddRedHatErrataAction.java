@@ -214,13 +214,13 @@ public class AddRedHatErrataAction extends RhnListAction {
     }
 
 
-    private List findChannelsByVersion(User user, String version) {
+    private List<Channel> findChannelsByVersion(User user, String version) {
 
         if (version == null) {
             return null;
         }
         List<Channel> channels = ChannelFactory.listRedHatBaseChannels(user);
-        List toReturn = new ArrayList<>();
+        List<Channel> toReturn = new ArrayList<>();
         for (Channel chan : channels) {
             for (DistChannelMap map : chan.getDistChannelMaps()) {
                 if (ChannelVersion.getChannelVersionForDistChannelMap(map).

@@ -248,7 +248,7 @@ public class PackageManager extends BaseManager {
      * @param pid The id of the package in question
      * @return Returns a list of channels that provide the given package
      */
-    public static DataResult orgPackageChannels(Long orgId, Long pid) {
+    public static DataResult<Row> orgPackageChannels(Long orgId, Long pid) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "org_pkg_channels",
                                            Map.class);
         Map<String, Object> params = new HashMap<>();
@@ -793,7 +793,7 @@ public class PackageManager extends BaseManager {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionCheckFailureException();
         }
-        DataResult channels = PackageManager.orgPackageChannels(
+        DataResult<Row> channels = PackageManager.orgPackageChannels(
                 user.getOrg().getId(), pkg.getId());
         if (pkg.getOrg() == null || user.getOrg() != pkg.getOrg()) {
             throw new PermissionCheckFailureException();
@@ -811,8 +811,7 @@ public class PackageManager extends BaseManager {
 
         // For every channel the package is in, mark the channel as "changed" in case its
         // metadata needs tto be updated (RHEL5+, mostly)
-        for (Object channelIn : channels) {
-            Map m = (Map) channelIn;
+        for (Row m : channels) {
             String channelLabel = m.get("label").toString();
             Channel channel = ChannelFactory.lookupByLabel(user.getOrg(), channelLabel);
             // force channel save to change last_modified

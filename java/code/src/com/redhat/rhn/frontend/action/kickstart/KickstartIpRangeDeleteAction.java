@@ -52,7 +52,7 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         ActionErrors messages = new ActionErrors();
