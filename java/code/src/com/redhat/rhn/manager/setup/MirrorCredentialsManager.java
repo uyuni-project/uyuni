@@ -60,7 +60,7 @@ public class MirrorCredentialsManager {
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
         List<MirrorCredentialsDto> credsList = new ArrayList<>();
-        for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             MirrorCredentialsDto creds = new MirrorCredentialsDto(
                     c.getUsername(), c.getPassword());
             creds.setId(c.getId());
@@ -110,7 +110,7 @@ public class MirrorCredentialsManager {
             throw new ContentSyncException("User or password is empty");
         }
         // Check if the supplied user name already exists in stored credentials
-        for (Credentials existingCred : CredentialsFactory.lookupSCCCredentials()) {
+        for (Credentials existingCred : CredentialsFactory.listSCCCredentials()) {
             if (existingCred.getUsername().equals(creds.getUser()) &&
                     (creds.getId() != existingCred.getId())) {
                 throw new MirrorCredentialsNotUniqueException("Username already exists");
@@ -138,7 +138,7 @@ public class MirrorCredentialsManager {
         }
 
         // Make this the primary pair of credentials if it's the only one
-        if (CredentialsFactory.lookupSCCCredentials().size() == 1) {
+        if (CredentialsFactory.listSCCCredentials().size() == 1) {
             makePrimaryCredentials(c.getId());
         }
         return c.getId();
@@ -160,7 +160,7 @@ public class MirrorCredentialsManager {
 
         // Make new primary credentials if necessary
         if (credentials.isPrimary()) {
-            List<Credentials> credsList = CredentialsFactory.lookupSCCCredentials();
+            List<Credentials> credsList = CredentialsFactory.listSCCCredentials();
             if (credsList != null && !credsList.isEmpty()) {
                 credsList.stream().filter(c -> !c.equals(dbCreds)).findFirst()
                     .ifPresent(c -> {

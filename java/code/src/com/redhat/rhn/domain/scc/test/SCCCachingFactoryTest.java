@@ -73,7 +73,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testRefreshNeeded() {
-        for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
         Credentials creds = CredentialsFactory.createSCCCredentials();

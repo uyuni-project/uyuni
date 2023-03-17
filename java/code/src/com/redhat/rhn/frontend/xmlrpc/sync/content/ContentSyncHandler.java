@@ -315,7 +315,7 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 new MirrorCredentialsManager().deleteMirrorCredentials(c.getId(), null);
                 break;
