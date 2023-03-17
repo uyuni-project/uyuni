@@ -1,3 +1,4 @@
+- Use slf4j-reload4j and jaf
 - Add `mgr_server_is_uyuni` minion pillar item
 - Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
 - Mark as failed actions that cannot be scheduled because earliest

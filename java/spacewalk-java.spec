@@ -139,7 +139,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  %{log4j}
-BuildRequires:  slf4j-log4j12
+BuildRequires:  (slf4j-reload4j or slf4j-log4j12)
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -186,7 +186,7 @@ Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       %{ehcache}
-Requires:       (jaf or gnu-jaf)
+Requires:       jaf
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       (glassfish-jaxb-api or jaxb-api)
 Requires:       glassfish-jaxb-core
@@ -239,7 +239,7 @@ Requires:       jcommon
 Requires:       jdom
 Requires:       jta
 Requires:       %{log4j}
-Requires:       slf4j-log4j12
+Requires:       (slf4j-reload4j or slf4j-log4j12)
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
