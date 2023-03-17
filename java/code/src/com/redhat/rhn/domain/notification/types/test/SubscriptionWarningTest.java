@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.notification.types.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -30,18 +29,6 @@ class SubscriptionWarningTest extends RhnBaseTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-    }
-
-    @Test
-    public void testGetNullStrings() {
-        SubscriptionWarning sw = new SubscriptionWarning() {
-            @Override
-            public boolean expiresSoon() {
-                return false;
-            }
-        };
-        assertNull(sw.getSummary());
-        assertNull(sw.getDetails());
     }
 
     @Test

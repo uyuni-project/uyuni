@@ -154,6 +154,8 @@ Feature: Smoke tests for <client>
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
 
+@skip_for_sle_micro
+  # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
     When I follow "Software" in the content area
     And I follow "Install"

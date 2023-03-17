@@ -111,7 +111,14 @@ end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
   system_name = get_system_name(host)
-  step %(I wait until I see "#{system_name}" text, refreshing the page)
+  step %(I wait until I see the "#{system_name}" system, refreshing the page)
+end
+
+When(/^I wait until I see the "([^"]*)" system, refreshing the page$/) do |system_name|
+  steps %(
+    And I wait until I do not see "Loading..." text
+    And I wait until I see "#{system_name}" text, refreshing the page
+  )
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|

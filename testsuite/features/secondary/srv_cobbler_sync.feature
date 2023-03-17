@@ -1,3 +1,7 @@
+# Copyright (c) 2022-2023 SUSE LLC
+# Licensed under the terms of the MIT license.
+
+@scope_cobbler
 Feature: Run Cobbler Sync via WebUI
 
   Scenario: Login as admin

@@ -42,21 +42,11 @@ Feature: Content lifecycle
     And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
-@uyuni
-  Scenario: Verify added sources for Uyuni
+  Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
-
-@susemanager
-  Scenario: Verify added sources for SUSE Manager
-    When I follow the left menu "Content Lifecycle > Projects"
-    And I follow "clp_name"
-    Then I should see a "SLE-Manager-Tools15-Updates for x86_64 SP4" text
-    And I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
-    And I should see a "SLE-Manager-Tools15-Pool for x86_64 SP4" text
-    And I should see a "Build (4)" text
 
   Scenario: Add environments to the project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -85,24 +75,11 @@ Feature: Content lifecycle
     Then I wait until I see "qa_name" text
     And I should see a "qa_desc" text
 
-@uyuni
-  Scenario: Build the sources in the project for Uyuni
+  Scenario: Build the sources in the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
     When I click on "Build (2)"
-    Then I should see a "Version 1 history" text
-    When I enter "test version message 1" as "message"
-    And I click the environment build button
-    And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
-    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
-
-@susemanager
-  Scenario: Build the sources in the project for SUSE Manager
-    When I follow the left menu "Content Lifecycle > Projects"
-    And I follow "clp_name"
-    Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (4)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button

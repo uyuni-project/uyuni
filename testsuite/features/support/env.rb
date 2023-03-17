@@ -60,7 +60,10 @@ Capybara.register_driver(:headless_chrome) do |app|
       args: chrome_options,
       w3c: false,
       prefs: {
-        'download.default_directory': '/tmp/downloads'
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
+        }
       }
     },
     unexpectedAlertBehaviour: 'accept',
@@ -421,7 +424,7 @@ Before('@skip_for_rocky9') do
   skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
-Before('@skip_for_sle_micro') do
+Before('@skip_for_sle_micro') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'slemicro'
 end
 
