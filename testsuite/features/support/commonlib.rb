@@ -69,7 +69,7 @@ def product_version
 end
 
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
   $product == 'Uyuni' || %w[head 4.3 4.2].include?($product_version)
 end
 
