@@ -1,4 +1,8 @@
-- change jar versions in ivy configuration file
+-------------------------------------------------------------------
+Fri Mar 17 11:59:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.50-1
+  * change jar versions in ivy configuration file
 
 -------------------------------------------------------------------
 Thu Mar 16 16:38:51 CET 2023 - jgonzalez@suse.com
