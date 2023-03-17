@@ -57,7 +57,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
-            List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+            List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
             Optional<Credentials> optPrimCred = credentials.stream()
                     .filter(Credentials::isPrimarySCCCredential)
                     .findFirst();
