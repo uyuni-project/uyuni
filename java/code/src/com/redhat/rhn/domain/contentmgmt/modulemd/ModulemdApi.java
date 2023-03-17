@@ -57,13 +57,14 @@ public class ModulemdApi {
     }
 
     /**
-     * Get all modular packages from a single metadata file
+     * Get all modular packages in the specified source channels
      *
-     * @param modules the module metadata (modules.yaml) instance
+     * @param sources the modular source channels
      * @return a list of modular packages in NEVRA format
      */
-    public List<String> getAllPackages(Modules modules) throws ModulemdApiException {
-        ModulemdApiResponse res = callSync(ModulemdApiRequest.listPackagesRequest(List.of(getMetadataPath(modules))));
+    public List<String> getAllPackages(List<Channel> sources) throws ModulemdApiException {
+        List<String> metadataPaths = getMetadataPaths(sources);
+        ModulemdApiResponse res = callSync(ModulemdApiRequest.listPackagesRequest(metadataPaths));
         return res.getListPackages().getPackages();
     }
 
@@ -113,17 +114,8 @@ public class ModulemdApi {
         if (!channel.isModular()) {
             throw new RepositoryNotModularException();
         }
-        return getMetadataPath(channel.getLatestModules());
-    }
-
-    /**
-     * Get 'modules.yaml' file path for the specified source on the server
-     *
-     * @param modules the module metadata instance
-     * @return the 'modules.yaml' path
-     */
-    private static String getMetadataPath(Modules modules) {
-        return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsolutePath();
+        Modules metadata = channel.getModules();
+        return new File(MOUNT_POINT_PATH, metadata.getRelativeFilename()).getAbsolutePath();
     }
 
     /**

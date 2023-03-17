@@ -1,3 +1,5 @@
+- Filter CLM modular packages using release strings (bsc#1207814)
+- Fix systems subscribed to channel CSV download (bsc#1201063)
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 - Fix cobbler system entries for retail terminals (bsc#1208661)
 - Add missing text for user preferenaces page
@@ -5,6 +7,12 @@
 - Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
 - Allow single-value lists in query strings in HTTP API (bsc#1207297)
 - Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+
+-------------------------------------------------------------------
+Wed Mar 15 15:58:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.14-1
+  * Fix rendering of notifications list with subscription warnings (bsc#1209259)
 
 -------------------------------------------------------------------
 Tue Feb 28 11:55:21 CET 2023 - jgonzalez@suse.com

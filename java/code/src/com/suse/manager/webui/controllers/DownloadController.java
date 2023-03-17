@@ -328,10 +328,10 @@ public class DownloadController {
      * @return modules file to be used for this channel
      */
     private static File getModulesFile(Channel channel) {
-        Modules modules = channel.getLatestModules();
+        Modules modules = channel.getModules();
 
         if (modules == null && channel.isCloned()) {
-            modules = channel.getOriginal().getLatestModules();
+            modules = channel.getOriginal().getModules();
         }
         if (modules != null) {
             return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsoluteFile();

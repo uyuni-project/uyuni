@@ -232,7 +232,7 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
     }
 
     /**
-     * Sets the criteria.
+     * Sets the criteria, validating it against allowed matcher-field combinations
      *
      * @param criteriaIn - the criteria
      * @throws IllegalArgumentException when the matcher-field combination is not allowed

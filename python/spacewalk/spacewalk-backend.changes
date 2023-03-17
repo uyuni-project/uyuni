@@ -1,4 +1,8 @@
 - Added context manager usage for more files.
+- Fix the mgr-inter-sync not creating valid repository metadata when dealing 
+  with empty channels (bsc#1207829)
+- Filter CLM modular packages using release strings (bsc#1207814)
+- fix repo sync for cloud payg connected repositories (bsc#1208772)
 - Fix issues with kickstart syncing on mirrorlist repositories
 - Do not sync .mirrorlist and other non needed files
 - reposync: catch local file not found urlgrabber error properly (bsc#1208288)
