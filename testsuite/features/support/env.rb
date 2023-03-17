@@ -427,7 +427,7 @@ Before('@skip_for_rocky9') do
   skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
-Before('@skip_for_sle_micro') do
+Before('@skip_for_sle_micro') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'slemicro'
 end
 
