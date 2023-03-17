@@ -125,7 +125,6 @@ class NamespaceActivationkey
     }
     @test.call('activationkey.setDetails', sessionKey: @test.token, key: id, details: details).to_i == 1
   end
-end
 
   ##
   # Sets the entitlements of an activation key.
@@ -142,3 +141,4 @@ end
   def set_entitlement(id, entitlements)
     @test.call('activationkey.addEntitlements', sessionKey: @test.token, key: id, entitlements: entitlements)
   end
+end
