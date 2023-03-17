@@ -8,7 +8,6 @@ require_all 'features/support'
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
 warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?

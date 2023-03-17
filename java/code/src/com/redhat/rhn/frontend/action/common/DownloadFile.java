@@ -614,7 +614,7 @@ public class DownloadFile extends DownloadAction {
                     }
                     else if (path.endsWith("/modules.yaml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            "/" + tree.getChannel().getLatestModules().getRelativeFilename();
+                            "/" + tree.getChannel().getModules().getRelativeFilename();
                     }
                     else {
                         String[] split = StringUtils.split(path, '/');
@@ -648,7 +648,7 @@ public class DownloadFile extends DownloadAction {
             }
             else if (path.endsWith("/modules.yaml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    "/" + child.getLatestModules().getRelativeFilename();
+                    "/" + child.getModules().getRelativeFilename();
             }
             else {
                 String[] split = StringUtils.split(path, '/');

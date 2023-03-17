@@ -75,10 +75,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <one-to-one name="comps" property-ref="channel"
             class="com.redhat.rhn.domain.channel.Comps" cascade="all" lazy="proxy"/>
 
-        <set name="modules" cascade="all-delete-orphan" lazy="true" inverse="true" where="comps_type_id = 2">
-            <key column="channel_id" not-null="true"/>
-            <one-to-many class="com.redhat.rhn.domain.channel.Modules"/>
-        </set>
+        <one-to-one name="modules" property-ref="channel"
+            class="com.redhat.rhn.domain.channel.Modules" cascade="all" lazy="proxy"/>
 
         <one-to-one name="mediaProducts" property-ref="channel"
             class="com.redhat.rhn.domain.channel.MediaProducts" cascade="all" lazy="proxy"/>

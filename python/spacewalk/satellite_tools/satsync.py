@@ -46,7 +46,7 @@ from spacewalk.common.rhnLog import initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback, fetchTraceback
 from uyuni.common.checksum import getFileChecksum
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL, taskomatic
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnLib import get_package_path
 from uyuni.common import fileutils
@@ -1657,7 +1657,11 @@ class Syncer:
         short_package_collection = sync_handlers.ShortPackageCollection()
         _package_collection = sync_handlers.PackageCollection()
         uq_packages = {}
+        empty_channels = []
         for chn, package_ids in list(self._channel_packages_full.items()):
+            if len(package_ids) == 0:
+                empty_channels.append(chn)
+                continue
             for pid in package_ids:
                 package = short_package_collection.get_package(pid)
                 if not package:
@@ -1676,6 +1680,8 @@ class Syncer:
         # check to make sure the orgs exported are valid
         _validate_package_org(uq_pkg_data)
         try:
+            for ch in empty_channels:
+                taskomatic.add_to_repodata_queue(ch, "satsync.import_packages", "generate repomd for empty channel")
             if OPTIONS.mount_point:  # if OPTIONS.consider_full is not set interpret dump as incremental
                 importer = sync_handlers.link_channel_packages(uq_pkg_data, strict=OPTIONS.consider_full)
             else:
