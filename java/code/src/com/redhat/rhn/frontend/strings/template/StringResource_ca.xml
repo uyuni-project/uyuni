@@ -270,7 +270,7 @@ as root on the system in question to refresh your software profile.
 Llista de sistemes afectats
 ----------------------
 Aquest Avís de Pedaços pot aplicar-se als sistemes que s'indiquen a continuació. Si sabeu
-aquest pedaç no s'aplica a un sistema llistat, és possible que el
+que aquest pedaç no s'aplica a un sistema llistat, és possible que el
 el perfil del paquet per a aquest servidor no estigui actualitzat. En aquest cas, hauríeu d'executar
 "up2date -p" (RHEL 4 i posterior) o "rhn-profile-sync" (SLES, RHEL 5 i posterior)
 com a root al sistema en qüestió per actualitzar el perfil de programari.
