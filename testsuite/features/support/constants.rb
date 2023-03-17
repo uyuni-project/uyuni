@@ -73,6 +73,8 @@ BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'pending' => 'fa-hand-o-right text-success',
                  'refreshing' => 'fa-refresh text-warning' }.freeze
 
+# Used for testing software installation/removal in BV
+# The value is the package to be installed/removed
 PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle_minion' => 'bison',
                       'ssh_minion' => 'bison',
@@ -129,6 +131,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse154arm_minion' => 'bison',
                       'opensuse154arm_ssh_minion' => 'bison' }.freeze
 
+# The values can be found under Software -> Channel List -> Create Channel
+# Then have a look at Parent Channel and find the desired name
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle_client' => 'SLES15-SP4-Pool',
                            'sle_minion' => 'SLES15-SP4-Pool',
@@ -190,6 +194,10 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
                            'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64' }.freeze
 
+# Used for creating activation keys
+# The values can be found under Admin -> Setup Wizard -> Products
+# Select the desired product and have a look at its product channels
+# The required product has to be synced before.
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
                           'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
                           'SLES12-SP5-Pool' => 'sles12-sp5-pool-x86_64',
@@ -211,6 +219,9 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'debian-11-pool' => 'debian-11-pool-amd64',
                           'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64' }.freeze
 
+# Used for creating bootstrap repositories
+# The values can be found out on the server by running 'mgr-create-bootstrap-repo'
+# Then select the correct name for the product you want
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'SUMA-43-PROXY-x86_64',
                                     'SLES12-SP4-Pool' => 'SLE-12-SP4-x86_64',
                                     'SLES12-SP5-Pool' => 'SLE-12-SP5-x86_64',
@@ -231,6 +242,10 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'debian-11-pool' => 'debian11-amd64',
                                     'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64' }.freeze
 
+# Used for creating bootstrap repositories
+# The values can be found under Admin -> Setup Wizard -> Products
+# Select the desired product and have a look at its product channels
+# The required product has to be synced before.
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
                                            'SLES12-SP4-Pool' => nil,
                                            'SLES12-SP5-Pool' => nil,
