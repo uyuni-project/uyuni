@@ -36,8 +36,8 @@
         <dependency org="manager-42" name="hibernate-ehcache" rev="5.3.7" />
         <dependency org="manager-42" name="httpasyncclient" rev="4.1.4" />
         <dependency org="manager-42" name="httpclient" rev="4.5.6" />
-        <dependency org="manager-42" name="httpcore" rev="4.4.10" />
-        <dependency org="manager-42" name="httpcore-nio" rev="4.4.10" />
+        <dependency org="manager-42" name="httpcore" rev="4.4.13" />
+        <dependency org="manager-42" name="httpcore-nio" rev="4.4.13" />
         <dependency org="manager-42" name="ical4j" rev="3.0.18" />
         <dependency org="manager-42" name="jade4j" rev="1.2.5" />
         <dependency org="manager-42" name="jaf" rev="1.1.1" />
@@ -75,7 +75,7 @@
         <dependency org="manager-42" name="sitemesh" rev="2.1" />
         <dependency org="manager-42" name="slf4j-api" rev="1.7.30" />
         <dependency org="manager-42" name="slf4j-log4j12" rev="1.7.30" />
-        <dependency org="manager-42" name="snakeyaml" rev="1.31" />
+        <dependency org="manager-42" name="snakeyaml" rev="1.33" />
         <dependency org="manager-42" name="spark-core" rev="2.7.2" />
         <dependency org="manager-42" name="spark-template-jade" rev="2.3" />
         <dependency org="manager-42" name="spy" rev="0.8.3" />
@@ -98,15 +98,15 @@
         <!-- <dependency org="manager-42" name="commons-lang" rev="2.6" /> -->
 
         <!-- Tomcat jars -->
-        <dependency org="manager-42" name="jasper" rev="9.0.36" />
-        <dependency org="manager-42" name="jasper-el" rev="9.0.36" />
-        <dependency org="manager-42" name="tomcat-el-3.0-api" rev="9.0.36" />
-        <dependency org="manager-42" name="tomcat-jsp-2.3-api" rev="9.0.36" />
-        <dependency org="manager-42" name="tomcat-juli" rev="9.0.36" />
-        <dependency org="manager-42" name="tomcat-servlet-4.0-api" rev="9.0.36" />
+        <dependency org="manager-42" name="jasper" rev="9.0.43" />
+        <dependency org="manager-42" name="jasper-el" rev="9.0.43" />
+        <dependency org="manager-42" name="tomcat-el-3.0-api" rev="9.0.43" />
+        <dependency org="manager-42" name="tomcat-jsp-2.3-api" rev="9.0.43" />
+        <dependency org="manager-42" name="tomcat-juli" rev="9.0.43" />
+        <dependency org="manager-42" name="tomcat-servlet-4.0-api" rev="9.0.43" />
 
         <!-- Compilation and testing -->
-        <dependency org="manager-42" name="jetty-util" rev="9.4.43" />
+        <dependency org="manager-42" name="jetty-util" rev="9.4.48" />
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
         </dependency>
