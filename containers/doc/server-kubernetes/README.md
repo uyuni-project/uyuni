@@ -17,8 +17,6 @@ Run this command to watch it restart:
 watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=rke2-ingress-nginx
 ```
 
-Set the shell variable `INGRESS=nginx` to be used in the next steps.
-
 ### K3s specific setup
 
 
@@ -29,8 +27,6 @@ Run this commant to watch it restart:
 ```
 watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=traefik
 ```
-
-Set the shell variable `INGRESS=traefik` to be used in the next steps.
 
 ***Offline installation:*** with k3s it is possible to preload the container images and avoid it to be fetched from a registry.
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
