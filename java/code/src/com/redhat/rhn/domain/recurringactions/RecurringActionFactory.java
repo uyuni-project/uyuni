@@ -19,6 +19,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
@@ -41,32 +43,38 @@ public class RecurringActionFactory extends HibernateFactory {
     /**
      * List minion recurring actions with minion id.
      *
-     * @param id - id of the minion
+     * @param minion - the minion
      * @return list of minion recurring actions
      */
-    public static List<MinionRecurringAction> listMinionRecurringActions(Long id) {
-       return getSession()
-               .createQuery("SELECT action FROM MinionRecurringAction action " +
-                       "WHERE action.minion.id = :mid " +
+    public static List<RecurringAction> listMinionRecurringActions(Server minion) {
+        return getSession()
+                .createQuery("SELECT action FROM RecurringAction action " +
+                       "WHERE action.minion = :minion " +
+                       "OR action.group in :groups " +
+                       "OR action.org = :org " +
                        "ORDER BY action.id DESC",
-                       MinionRecurringAction.class)
-               .setParameter("mid", id)
+                       RecurringAction.class)
+               .setParameter("minion", minion)
+               .setParameter("groups", minion.getGroups())
+               .setParameter("org", minion.getOrg())
                .list();
     }
 
     /**
      * List group recurring actions with group id.
      *
-     * @param id - id of the group
+     * @param group - the server group
      * @return list of group recurring actions
      */
-    public static List<GroupRecurringAction> listGroupRecurringActions(Long id) {
+    public static List<RecurringAction> listGroupRecurringActions(ServerGroup group) {
         return getSession()
-                .createQuery("SELECT action FROM GroupRecurringAction action " +
-                        "WHERE action.group.id = :gid " +
+                .createQuery("SELECT action FROM RecurringAction action " +
+                        "WHERE action.group = :group " +
+                        "OR action.org = :org " +
                         "ORDER BY action.id DESC",
-                        GroupRecurringAction.class)
-                .setParameter("gid", id)
+                        RecurringAction.class)
+                .setParameter("group", group)
+                .setParameter("org", group.getOrg())
                 .list();
     }
 

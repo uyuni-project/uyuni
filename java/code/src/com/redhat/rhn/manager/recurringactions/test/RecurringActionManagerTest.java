@@ -108,7 +108,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
-        assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
-        assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group.getId()));
+        assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group));
     }
 
     @Test
@@ -319,7 +319,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         RecurringActionManager.deleteAndUnschedule(recurringAction, user);
-        assertTrue(RecurringActionFactory.listMinionRecurringActions(recurringAction.getId()).isEmpty());
+        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
     }
 
     @Test

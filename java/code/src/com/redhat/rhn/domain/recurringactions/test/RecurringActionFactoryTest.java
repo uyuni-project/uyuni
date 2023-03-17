@@ -54,7 +54,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setCronExpr(CRON_EXPR);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action2.setMinion(minion);
         RecurringActionFactory.save(action2);
 
-        var actualSet = new HashSet<>(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        var actualSet = new HashSet<>(RecurringActionFactory.listMinionRecurringActions(minion));
         assertEquals(Set.of(action, action2), actualSet);
     }
 
@@ -86,7 +86,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setCronExpr(CRON_EXPR);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group.getId()));
+        assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group));
     }
 
     @Test
@@ -233,11 +233,11 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setCronExpr(CRON_EXPR);
 
         RecurringActionFactory.save(action);
-        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion));
 
         RecurringActionFactory.delete(action);
 
-        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion.getId()).isEmpty());
+        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
     }
 
     @Test
