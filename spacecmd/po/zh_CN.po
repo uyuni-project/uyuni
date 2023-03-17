@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 15:37+0100\n"
+"POT-Creation-Date: 2023-03-17 13:48+0100\n"
 "PO-Revision-Date: 2022-11-14 22:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -342,32 +342,32 @@ msgstr "系统组"
 msgid "Packages"
 msgstr "软件包"
 
-#: ../src/spacecmd/activationkey.py:992
+#: ../src/spacecmd/activationkey.py:995
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr "activationkey_enableconfigdeployment：启用配置通道部署"
 
-#: ../src/spacecmd/activationkey.py:994
+#: ../src/spacecmd/activationkey.py:997
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "用法：activationkey_enableconfigdeployment KEY"
 
-#: ../src/spacecmd/activationkey.py:1021
+#: ../src/spacecmd/activationkey.py:1024
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr "activationkey_disableconfigdeployment：禁用配置通道部署"
 
-#: ../src/spacecmd/activationkey.py:1023
+#: ../src/spacecmd/activationkey.py:1026
 msgid "usage: activationkey_disableconfigdeployment KEY"
 msgstr "用法：activationkey_disableconfigdeployment KEY"
 
-#: ../src/spacecmd/activationkey.py:1050
+#: ../src/spacecmd/activationkey.py:1053
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr "activationkey_setbasechannel：设置激活密钥的基础通道"
 
-#: ../src/spacecmd/activationkey.py:1052
+#: ../src/spacecmd/activationkey.py:1055
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "用法：activationkey_setbasechannel KEY CHANNEL"
 
-#: ../src/spacecmd/activationkey.py:1099
+#: ../src/spacecmd/activationkey.py:1102
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
@@ -375,33 +375,33 @@ msgstr ""
 "activationkey_setusagelimit：设置激活密钥的使用限制，可以是数字或 \"unlimited"
 "\""
 
-#: ../src/spacecmd/activationkey.py:1101
+#: ../src/spacecmd/activationkey.py:1104
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
 msgstr "用法：activationkey_setusagelimit KEY <使用限制>"
 
-#: ../src/spacecmd/activationkey.py:1102
+#: ../src/spacecmd/activationkey.py:1105
 msgid "usage: activationkey_setusagelimit KEY unlimited "
 msgstr "用法：activationkey_setusagelimit KEY unlimited "
 
-#: ../src/spacecmd/activationkey.py:1132
+#: ../src/spacecmd/activationkey.py:1135
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
 msgstr "无法将参数 %s 转换为整数"
 
-#: ../src/spacecmd/activationkey.py:1154
+#: ../src/spacecmd/activationkey.py:1157
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr "activationkey_setuniversaldefault：将此密钥设置为通用默认值"
 
-#: ../src/spacecmd/activationkey.py:1156
+#: ../src/spacecmd/activationkey.py:1159
 msgid "usage: activationkey_setuniversaldefault KEY"
 msgstr "用法：activationkey_setuniversaldefault KEY"
 
-#: ../src/spacecmd/activationkey.py:1197
+#: ../src/spacecmd/activationkey.py:1200
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr "activationkey_export：将激活密钥导出到 JSON 格式的文件"
 
-#: ../src/spacecmd/activationkey.py:1198
+#: ../src/spacecmd/activationkey.py:1201
 msgid ""
 "usage: activationkey_export [options] [<KEY> ...])\n"
 "\n"
@@ -425,71 +425,71 @@ msgstr ""
 "注意：密钥列表是可选的，默认为导出所有密钥 "
 
 #. Get the key details
-#: ../src/spacecmd/activationkey.py:1214
+#: ../src/spacecmd/activationkey.py:1217
 #, python-format
 msgid "Getting activation key details for %s"
 msgstr "正在获取 %s 的激活密钥细节"
 
-#: ../src/spacecmd/activationkey.py:1268
+#: ../src/spacecmd/activationkey.py:1271
 #, python-format
 msgid "Exporting ALL activation keys to %s"
 msgstr "正在将所有激活密钥导出到 %s"
 
-#: ../src/spacecmd/activationkey.py:1277
+#: ../src/spacecmd/activationkey.py:1280
 msgid "Invalid activation key passed"
 msgstr "传递了无效的激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1292
+#: ../src/spacecmd/activationkey.py:1295
 #, python-format
 msgid "Exporting key %s to %s"
 msgstr "正在将密钥 %s 导出到 %s"
 
-#: ../src/spacecmd/activationkey.py:1301
+#: ../src/spacecmd/activationkey.py:1304
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "文件 %s 已存在，请确认是否重写文件？(y/n)"
 
-#: ../src/spacecmd/activationkey.py:1306
+#: ../src/spacecmd/activationkey.py:1309
 msgid "Failed to save exported keys to file: {}"
 msgstr "无法将导出的密钥保存到文件：{}"
 
-#: ../src/spacecmd/activationkey.py:1315
+#: ../src/spacecmd/activationkey.py:1318
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
 msgstr "activationkey_import：从 JSON 文件导入激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1316
+#: ../src/spacecmd/activationkey.py:1319
 msgid "usage: activationkey_import <JSONFILE ...>"
 msgstr "用法：activationkey_import <JSON 文件 ...>"
 
-#: ../src/spacecmd/activationkey.py:1325
+#: ../src/spacecmd/activationkey.py:1328
 msgid "No filename passed"
 msgstr "未传递文件名"
 
-#: ../src/spacecmd/activationkey.py:1334
+#: ../src/spacecmd/activationkey.py:1337
 #, python-format
 msgid "Could not read json data from %s"
 msgstr "无法读取 %s 中的 json 数据"
 
-#: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
+#: ../src/spacecmd/activationkey.py:1342 ../src/spacecmd/activationkey.py:1386
 #, python-format
 msgid "Failed to import key %s"
 msgstr "无法导入密钥 %s"
 
-#: ../src/spacecmd/activationkey.py:1353
+#: ../src/spacecmd/activationkey.py:1356
 #, python-format
 msgid "%s already exists! Skipping!"
 msgstr "%s 已存在！正在跳过！"
 
-#: ../src/spacecmd/activationkey.py:1408
+#: ../src/spacecmd/activationkey.py:1411
 #, python-format
 msgid "System group %s doesn't exist, creating"
 msgstr "系统组 %s 不存在，正在创建"
 
-#: ../src/spacecmd/activationkey.py:1429
+#: ../src/spacecmd/activationkey.py:1432
 msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone：克隆激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1430
+#: ../src/spacecmd/activationkey.py:1433
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -519,122 +519,122 @@ msgstr ""
 "                   基础通道标签、子通道标签、配置通道名称中的\n"
 "                   foo 替换为 bar "
 
-#: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
+#: ../src/spacecmd/activationkey.py:1461 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3090
 msgid "Activation Keys"
 msgstr "激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1464
+#: ../src/spacecmd/activationkey.py:1467
 #, python-format
 msgid "Key to clone: %s"
 msgstr "要克隆的密钥：%s"
 
-#: ../src/spacecmd/activationkey.py:1468
+#: ../src/spacecmd/activationkey.py:1471
 msgid "Original Key:"
 msgstr "原始密钥："
 
-#: ../src/spacecmd/activationkey.py:1470
+#: ../src/spacecmd/activationkey.py:1473
 msgid "Cloned Key:"
 msgstr "克隆的密钥："
 
-#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1434
+#: ../src/spacecmd/activationkey.py:1476 ../src/spacecmd/configchannel.py:1434
 msgid "Error - must specify either -c or -x options!"
 msgstr "错误 - 必须指定 -c 或 -x 选项！"
 
-#: ../src/spacecmd/activationkey.py:1478
+#: ../src/spacecmd/activationkey.py:1481
 #, python-format
 msgid "Key %s already exists"
 msgstr "密钥 %s 已存在"
 
-#: ../src/spacecmd/activationkey.py:1482
+#: ../src/spacecmd/activationkey.py:1485
 msgid "Error no activationkey to clone passed!"
 msgstr "错误：未传递要克隆的激活密钥！"
 
-#: ../src/spacecmd/activationkey.py:1536
+#: ../src/spacecmd/activationkey.py:1539
 #, python-format
 msgid "Found child channel %s key %s, %s"
 msgstr "已找到子通道 %s - 密钥为 %s，%s"
 
-#: ../src/spacecmd/activationkey.py:1538
+#: ../src/spacecmd/activationkey.py:1541
 msgid " does not exist, skipping!"
 msgstr " 不存在，正在跳过！"
 
-#: ../src/spacecmd/activationkey.py:1545
+#: ../src/spacecmd/activationkey.py:1548
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr "正则表达式替换导致新基础通道 %s 不存在！"
 
-#: ../src/spacecmd/activationkey.py:1561
+#: ../src/spacecmd/activationkey.py:1564
 #, python-format
 msgid "Found config channel %s for key %s, %s "
 msgstr "已找到配置通道 %s - 密钥为 %s，%s "
 
-#: ../src/spacecmd/activationkey.py:1563
+#: ../src/spacecmd/activationkey.py:1566
 msgid "does not exist, skipping!"
 msgstr "不存在，正在跳过！"
 
-#: ../src/spacecmd/activationkey.py:1581
+#: ../src/spacecmd/activationkey.py:1584
 #, python-format
 msgid "Cloning key %s as %s"
 msgstr "正在将密钥 %s 克隆为 %s"
 
-#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1486
+#: ../src/spacecmd/activationkey.py:1588 ../src/spacecmd/configchannel.py:1486
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "无法将 %s 克隆到 %s"
 
-#: ../src/spacecmd/activationkey.py:1603
+#: ../src/spacecmd/activationkey.py:1606
 msgid "no activationkey label given"
 msgstr "未指定激活密钥标签"
 
-#: ../src/spacecmd/activationkey.py:1606
+#: ../src/spacecmd/activationkey.py:1609
 msgid "invalid activationkey label "
 msgstr "无效的激活密钥标签 "
 
-#: ../src/spacecmd/activationkey.py:1623
+#: ../src/spacecmd/activationkey.py:1626
 msgid "activationkey_diff: Diff activation keys"
 msgstr "activationkey_diff：比较激活密钥的差异"
 
-#: ../src/spacecmd/activationkey.py:1625
+#: ../src/spacecmd/activationkey.py:1628
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr "用法：activationkey_diff SOURCE_KEY TARGET_KEY"
 
-#: ../src/spacecmd/activationkey.py:1675
+#: ../src/spacecmd/activationkey.py:1678
 msgid "activationkey_disable: Disable an activation key"
 msgstr "activationkey_disable：禁用激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1677
+#: ../src/spacecmd/activationkey.py:1680
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr "用法：activationkey_disable KEY [KEY ...]"
 
-#: ../src/spacecmd/activationkey.py:1709
+#: ../src/spacecmd/activationkey.py:1712
 msgid "activationkey_enable: Enable an activation key"
 msgstr "activationkey_enable：启用激活密钥"
 
-#: ../src/spacecmd/activationkey.py:1711
+#: ../src/spacecmd/activationkey.py:1714
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr "用法：activationkey_enable KEY [KEY ...]"
 
-#: ../src/spacecmd/activationkey.py:1743
+#: ../src/spacecmd/activationkey.py:1746
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr "activationkey_setdescription：设置激活密钥说明"
 
-#: ../src/spacecmd/activationkey.py:1745
+#: ../src/spacecmd/activationkey.py:1748
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "用法：activationkey_setdescription KEY DESCRIPTION"
 
-#: ../src/spacecmd/activationkey.py:1777
+#: ../src/spacecmd/activationkey.py:1780
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
 msgstr ""
 "activationkey_setcontactmethod：设置要对通过此密钥注册的系统使用的联系方法。"
 
-#: ../src/spacecmd/activationkey.py:1779 ../src/spacecmd/system.py:4179
+#: ../src/spacecmd/activationkey.py:1782 ../src/spacecmd/system.py:4179
 msgid "Available contact methods: "
 msgstr "可用联系方法： "
 
-#: ../src/spacecmd/activationkey.py:1780
+#: ../src/spacecmd/activationkey.py:1783
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "用法：activationkey_setcontactmethod KEY CONTACT_METHOD"
 

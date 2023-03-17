@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 15:37+0100\n"
+"POT-Creation-Date: 2023-03-17 13:48+0100\n"
 "PO-Revision-Date: 2022-11-11 09:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -364,33 +364,33 @@ msgstr "システムグループ"
 msgid "Packages"
 msgstr "パッケージ"
 
-#: ../src/spacecmd/activationkey.py:992
+#: ../src/spacecmd/activationkey.py:995
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr "activationkey_enableconfigdeployment: 設定チャンネルの配備の有効化"
 
-#: ../src/spacecmd/activationkey.py:994
+#: ../src/spacecmd/activationkey.py:997
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "使用方法: activationkey_enableconfigdeployment キー"
 
-#: ../src/spacecmd/activationkey.py:1021
+#: ../src/spacecmd/activationkey.py:1024
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr "activationkey_disableconfigdeployment: 設定チャンネルの配備の無効化"
 
-#: ../src/spacecmd/activationkey.py:1023
+#: ../src/spacecmd/activationkey.py:1026
 msgid "usage: activationkey_disableconfigdeployment KEY"
 msgstr "使用方法: activationkey_disableconfigdeployment キー"
 
-#: ../src/spacecmd/activationkey.py:1050
+#: ../src/spacecmd/activationkey.py:1053
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr ""
 "activationkey_setbasechannel: アクティベーションキーのベースチャンネルを設定"
 
-#: ../src/spacecmd/activationkey.py:1052
+#: ../src/spacecmd/activationkey.py:1055
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "使用方法: activationkey_setbasechannel キー チャンネル"
 
-#: ../src/spacecmd/activationkey.py:1099
+#: ../src/spacecmd/activationkey.py:1102
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
@@ -398,35 +398,35 @@ msgstr ""
 "activationkey_setusagelimit: アクティベーションキーの使用制限 (数値または "
 "\"unlimited\" (無制限)) を設定"
 
-#: ../src/spacecmd/activationkey.py:1101
+#: ../src/spacecmd/activationkey.py:1104
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
 msgstr "使用方法: activationkey_setusagelimit キー <使用制限>"
 
-#: ../src/spacecmd/activationkey.py:1102
+#: ../src/spacecmd/activationkey.py:1105
 msgid "usage: activationkey_setusagelimit KEY unlimited "
 msgstr "使用方法: activationkey_setusagelimit KEY unlimited "
 
-#: ../src/spacecmd/activationkey.py:1132
+#: ../src/spacecmd/activationkey.py:1135
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
 msgstr "パラメータ %s を整数に変換できませんでした"
 
-#: ../src/spacecmd/activationkey.py:1154
+#: ../src/spacecmd/activationkey.py:1157
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr "activationkey_setuniversaldefault: このキーを汎用デフォルトに設定"
 
-#: ../src/spacecmd/activationkey.py:1156
+#: ../src/spacecmd/activationkey.py:1159
 msgid "usage: activationkey_setuniversaldefault KEY"
 msgstr "使用方法: activationkey_setuniversaldefault キー"
 
-#: ../src/spacecmd/activationkey.py:1197
+#: ../src/spacecmd/activationkey.py:1200
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr ""
 "activationkey_export: アクティベーションキーを JSON 形式のファイルにエクス"
 "ポートする"
 
-#: ../src/spacecmd/activationkey.py:1198
+#: ../src/spacecmd/activationkey.py:1201
 msgid ""
 "usage: activationkey_export [options] [<KEY> ...])\n"
 "\n"
@@ -450,72 +450,72 @@ msgstr ""
 "注意: <キー> を指定しない場合、全てのキーをエクスポートします "
 
 #. Get the key details
-#: ../src/spacecmd/activationkey.py:1214
+#: ../src/spacecmd/activationkey.py:1217
 #, python-format
 msgid "Getting activation key details for %s"
 msgstr "%s に対するアクティベーションキーの詳細を取得しています"
 
-#: ../src/spacecmd/activationkey.py:1268
+#: ../src/spacecmd/activationkey.py:1271
 #, python-format
 msgid "Exporting ALL activation keys to %s"
 msgstr "全てのアクティベーションキーを %s にエクスポートしています"
 
-#: ../src/spacecmd/activationkey.py:1277
+#: ../src/spacecmd/activationkey.py:1280
 msgid "Invalid activation key passed"
 msgstr "正しくないアクティベーションキーを指定しています"
 
-#: ../src/spacecmd/activationkey.py:1292
+#: ../src/spacecmd/activationkey.py:1295
 #, python-format
 msgid "Exporting key %s to %s"
 msgstr "キー %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/activationkey.py:1301
+#: ../src/spacecmd/activationkey.py:1304
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ファイル %s は既に存在しています。上書きしてよろしいですか？ (y/n)"
 
-#: ../src/spacecmd/activationkey.py:1306
+#: ../src/spacecmd/activationkey.py:1309
 msgid "Failed to save exported keys to file: {}"
 msgstr "エクスポートしたキーをファイルに書き込む処理が失敗しました: {}"
 
-#: ../src/spacecmd/activationkey.py:1315
+#: ../src/spacecmd/activationkey.py:1318
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
 msgstr ""
 "activationkey_import: JSON ファイルからアクティベーションキーをインポートする"
 
-#: ../src/spacecmd/activationkey.py:1316
+#: ../src/spacecmd/activationkey.py:1319
 msgid "usage: activationkey_import <JSONFILE ...>"
 msgstr "使用方法: activationkey_import <JSONファイル ...>"
 
-#: ../src/spacecmd/activationkey.py:1325
+#: ../src/spacecmd/activationkey.py:1328
 msgid "No filename passed"
 msgstr "ファイル名が指定されていません"
 
-#: ../src/spacecmd/activationkey.py:1334
+#: ../src/spacecmd/activationkey.py:1337
 #, python-format
 msgid "Could not read json data from %s"
 msgstr "%s から JSON データを読み込むことができませんでした"
 
-#: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
+#: ../src/spacecmd/activationkey.py:1342 ../src/spacecmd/activationkey.py:1386
 #, python-format
 msgid "Failed to import key %s"
 msgstr "キー %s のインポートに失敗しました"
 
-#: ../src/spacecmd/activationkey.py:1353
+#: ../src/spacecmd/activationkey.py:1356
 #, python-format
 msgid "%s already exists! Skipping!"
 msgstr "%s は既に存在しています。処理を飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1408
+#: ../src/spacecmd/activationkey.py:1411
 #, python-format
 msgid "System group %s doesn't exist, creating"
 msgstr "システムグループ %s は存在していません。作成します"
 
-#: ../src/spacecmd/activationkey.py:1429
+#: ../src/spacecmd/activationkey.py:1432
 msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone: アクティベーションキーを複製"
 
-#: ../src/spacecmd/activationkey.py:1430
+#: ../src/spacecmd/activationkey.py:1433
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -546,111 +546,111 @@ msgstr ""
 "                   ラベルや設定チャンネル名を置き換えるための正規表現 \n"
 "                   (\"foo\" を \"bar\" に置き換える) "
 
-#: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
+#: ../src/spacecmd/activationkey.py:1461 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3090
 msgid "Activation Keys"
 msgstr "アクティベーションキー"
 
-#: ../src/spacecmd/activationkey.py:1464
+#: ../src/spacecmd/activationkey.py:1467
 #, python-format
 msgid "Key to clone: %s"
 msgstr "複製するキー: %s"
 
-#: ../src/spacecmd/activationkey.py:1468
+#: ../src/spacecmd/activationkey.py:1471
 msgid "Original Key:"
 msgstr "元のキー:"
 
-#: ../src/spacecmd/activationkey.py:1470
+#: ../src/spacecmd/activationkey.py:1473
 msgid "Cloned Key:"
 msgstr "複製されたキー:"
 
-#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1434
+#: ../src/spacecmd/activationkey.py:1476 ../src/spacecmd/configchannel.py:1434
 msgid "Error - must specify either -c or -x options!"
 msgstr "エラー - オプション -c と -x は同時に指定できません！"
 
-#: ../src/spacecmd/activationkey.py:1478
+#: ../src/spacecmd/activationkey.py:1481
 #, python-format
 msgid "Key %s already exists"
 msgstr "キー %s は既に存在しています"
 
-#: ../src/spacecmd/activationkey.py:1482
+#: ../src/spacecmd/activationkey.py:1485
 msgid "Error no activationkey to clone passed!"
 msgstr "複製すべきアクティベーションがありません！"
 
-#: ../src/spacecmd/activationkey.py:1536
+#: ../src/spacecmd/activationkey.py:1539
 #, python-format
 msgid "Found child channel %s key %s, %s"
 msgstr "子チャンネル %s (キー %s) %s"
 
-#: ../src/spacecmd/activationkey.py:1538
+#: ../src/spacecmd/activationkey.py:1541
 msgid " does not exist, skipping!"
 msgstr " が存在しません。読み飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1545
+#: ../src/spacecmd/activationkey.py:1548
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr "新しいベースチャンネル %s に対する正規表現の結果がありません！"
 
-#: ../src/spacecmd/activationkey.py:1561
+#: ../src/spacecmd/activationkey.py:1564
 #, python-format
 msgid "Found config channel %s for key %s, %s "
 msgstr "設定チャンネル %s (キー %s) %s "
 
-#: ../src/spacecmd/activationkey.py:1563
+#: ../src/spacecmd/activationkey.py:1566
 msgid "does not exist, skipping!"
 msgstr "が存在しません。読み飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1581
+#: ../src/spacecmd/activationkey.py:1584
 #, python-format
 msgid "Cloning key %s as %s"
 msgstr "キー %s を %s として複製しています"
 
-#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1486
+#: ../src/spacecmd/activationkey.py:1588 ../src/spacecmd/configchannel.py:1486
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s を %s に複製する処理が失敗しました"
 
-#: ../src/spacecmd/activationkey.py:1603
+#: ../src/spacecmd/activationkey.py:1606
 msgid "no activationkey label given"
 msgstr "アクティベーションキーのラベルを指定していません"
 
-#: ../src/spacecmd/activationkey.py:1606
+#: ../src/spacecmd/activationkey.py:1609
 msgid "invalid activationkey label "
 msgstr "アクティベーションキーのラベルが正しくありません "
 
-#: ../src/spacecmd/activationkey.py:1623
+#: ../src/spacecmd/activationkey.py:1626
 msgid "activationkey_diff: Diff activation keys"
 msgstr "activationkey_diff: アクティベーションキーの差分を表示"
 
-#: ../src/spacecmd/activationkey.py:1625
+#: ../src/spacecmd/activationkey.py:1628
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr "使用方法: activationkey_diff キー_1 キー_2"
 
-#: ../src/spacecmd/activationkey.py:1675
+#: ../src/spacecmd/activationkey.py:1678
 msgid "activationkey_disable: Disable an activation key"
 msgstr "activationkey_disable: アクティベーションキーを無効化"
 
-#: ../src/spacecmd/activationkey.py:1677
+#: ../src/spacecmd/activationkey.py:1680
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr "使用方法: activationkey_disable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1709
+#: ../src/spacecmd/activationkey.py:1712
 msgid "activationkey_enable: Enable an activation key"
 msgstr "activationkey_enable: アクティベーションキーの有効化"
 
-#: ../src/spacecmd/activationkey.py:1711
+#: ../src/spacecmd/activationkey.py:1714
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr "使用方法: activationkey_enable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1743
+#: ../src/spacecmd/activationkey.py:1746
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr "activationkey_setdescription: アクティベーションキーの説明を設定"
 
-#: ../src/spacecmd/activationkey.py:1745
+#: ../src/spacecmd/activationkey.py:1748
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "使用方法: activationkey_setdescription キー 説明"
 
-#: ../src/spacecmd/activationkey.py:1777
+#: ../src/spacecmd/activationkey.py:1780
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
@@ -658,11 +658,11 @@ msgstr ""
 "activationkey_setcontactmethod: このキーで登録されたシステムに対して適用する"
 "連絡方法を設定。"
 
-#: ../src/spacecmd/activationkey.py:1779 ../src/spacecmd/system.py:4179
+#: ../src/spacecmd/activationkey.py:1782 ../src/spacecmd/system.py:4179
 msgid "Available contact methods: "
 msgstr "利用可能な連絡方法: "
 
-#: ../src/spacecmd/activationkey.py:1780
+#: ../src/spacecmd/activationkey.py:1783
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
