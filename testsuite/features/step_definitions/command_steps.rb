@@ -928,7 +928,7 @@ When(/^I install package tftpboot-installation on the server$/) do
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  $server.run("rpm -i #{package}", check_errors: false)
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1596,7 +1596,7 @@ When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
   node = get_target(host)
   node.run('reboot > /dev/null 2> /dev/null &')
   reboot_timeout = 120
-  check_shutdown($node.public_ip, reboot_timeout)
+  check_shutdown(node.public_ip, reboot_timeout)
   check_restart($server.public_ip, node, reboot_timeout)
 end
 
