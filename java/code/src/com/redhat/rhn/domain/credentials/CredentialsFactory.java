@@ -20,10 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -97,15 +94,8 @@ public class CredentialsFactory extends HibernateFactory {
      * Helper method for looking up SCC credentials.
      * @return credentials or null
      */
-    @SuppressWarnings("unchecked")
-    public static List<Credentials> lookupSCCCredentials() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(Credentials.class);
-        c.add(Restrictions.eq("type", CredentialsFactory
-                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
-        c.addOrder(Order.asc("url"));
-        c.addOrder(Order.asc("id"));
-        return c.list();
+    public static List<Credentials> listSCCCredentials() {
+        return listCredentialsByType(Credentials.TYPE_SCC);
     }
 
     /**
@@ -199,6 +189,17 @@ public class CredentialsFactory extends HibernateFactory {
         CredentialsFactory.storeCredentials(credentials);
 
         return credentials;
+    }
+
+    /**
+     * @param type the credential type label
+     * @return return a list of credentials of the given type
+     */
+    public static List<Credentials> listCredentialsByType(String type) {
+        return getSession()
+                .createNamedQuery("Credentials.listByType", Credentials.class)
+                .setParameter("type", findCredentialsTypeByLabel(type))
+                .list();
     }
 
     @Override

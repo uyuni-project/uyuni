@@ -289,7 +289,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<SCCRepositoryJson> repositories = gson.fromJson(
                 inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        Credentials credentials = CredentialsFactory.lookupSCCCredentials()
+        Credentials credentials = CredentialsFactory.listSCCCredentials()
                 .stream()
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
@@ -824,7 +824,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        Credentials sccCreds = CredentialsFactory.lookupSCCCredentials().get(0);
+        Credentials sccCreds = CredentialsFactory.listSCCCredentials().get(0);
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
@@ -892,7 +892,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals("my-fake-token", a.tokenAuth().get().getAuth());
         }
         MirrorCredentialsManager mgr = new MirrorCredentialsManager();
-        Credentials scc1st = CredentialsFactory.lookupSCCCredentials().get(0);
+        Credentials scc1st = CredentialsFactory.listSCCCredentials().get(0);
         Credentials scc2nd = SUSEProductTestUtils.createSecondarySCCCredentials("dummy2", user);
 
         Gson gson = new GsonBuilder()
@@ -2091,7 +2091,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Clear all credentials from the database.
      */
     private void clearCredentials() {
-        for (Credentials creds : CredentialsFactory.lookupSCCCredentials()) {
+        for (Credentials creds : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(creds);
         }
     }
