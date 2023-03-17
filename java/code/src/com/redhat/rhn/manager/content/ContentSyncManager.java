@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -52,6 +54,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -233,8 +236,19 @@ public class ContentSyncManager {
             return list;
         }
 
-        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+        List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
         if (credentials.isEmpty()) {
+            CloudPaygManager mgr = new CloudPaygManager();
+            if (mgr.isPaygInstance()) {
+                // We look for the local RMT Cloud Credentials as alternative
+                List<Credentials> rmtCreds = PaygSshDataFactory.lookupByHostname("localhost")
+                        .map(PaygSshData::getCredentials)
+                        .stream().collect(Collectors.toList());
+                if (!rmtCreds.isEmpty()) {
+                    return rmtCreds;
+                }
+            }
+            // TODO: is just an empty list for no credentials ok as well? Test it out
             throw new ContentSyncException("No SCC organization credentials found.");
         }
         else {
@@ -2554,11 +2568,20 @@ public class ContentSyncManager {
             }
         }
 
-        String username = credentials == null ? null : credentials.getUsername();
-        String password = credentials == null ? null : credentials.getPassword();
+        String username = null;
+        String password = null;
+        if (credentials != null) {
+            if (credentials.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
+                URI uri = new URI(credentials.getUrl());
+                url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
+            }
+            else {
+                username = credentials.getUsername();
+                password = credentials.getPassword();
+            }
+        }
 
-        return SCCClientFactory.getInstance(url, username, password, localAbsolutePath,
-                getUUID());
+        return SCCClientFactory.getInstance(url, username, password, localAbsolutePath, getUUID());
     }
 
     /**
