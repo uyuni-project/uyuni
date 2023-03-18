@@ -81,7 +81,6 @@ public class AuditManager {
     public static DataResult<AuditDto> getAuditLogs(String[] types, String machine,
             Long start, Long end) {
         DataResult<AuditDto> result = null;
-        List<AuditDto> audits;
         Long fileStart, fileEnd;
 
         if (types == null) {
@@ -115,10 +114,10 @@ public class AuditManager {
                             (fileStart / 1000) + "-" +
                             (fileEnd / 1000) + ".parsed");
 
-                audits = readAuditFile(auditLog, types, start, end);
+                List<AuditDto> audits = readAuditFile(auditLog, types, start, end);
 
                 if (result == null) {
-                    result = new DataResult(audits);
+                    result = new DataResult<>(audits);
                 } else {
                     result.addAll(audits);
                 }
@@ -129,7 +128,7 @@ public class AuditManager {
         }
 
         if (result == null || result.isEmpty()) {
-            return null;
+            return new DataResult<>(Collections.emptyList());
         }
 
         return result;
