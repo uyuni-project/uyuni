@@ -81,8 +81,8 @@ public class AuditManager /* extends BaseManager */ {
      */
     public static DataResult getAuditLogs(String[] types, String machine,
             Long start, Long end) {
-        DataResult dr = null;
-        List l;
+        DataResult result = null;
+        List auditLogs;
         Long fileStart, fileEnd;
 
         if (types == null) {
@@ -97,30 +97,31 @@ public class AuditManager /* extends BaseManager */ {
             end = Long.MAX_VALUE;
         }
 
+        DataResult<AuditReviewDto> machineReviewSections = getMachineReviewSections(machine);
+        if (machineReviewSections == null) {
+            return null;
+        }
+
         try {
-            DataResult<AuditReviewDto> aureviewsections = getMachineReviewSections(machine);
-            if (aureviewsections != null) {
-                for (AuditReviewDto aureview : getMachineReviewSections(machine)) {
-                    fileStart = aureview.getStart().getTime();
-                    fileEnd = aureview.getEnd().getTime();
+            for (AuditReviewDto auditReview : machineReviewSections) {
+                fileStart = auditReview.getStart().getTime();
+                fileEnd = auditReview.getEnd().getTime();
 
-                    if (fileEnd < start || fileStart > end) {
-                        continue;
-                    }
+                if (fileEnd < start || fileStart > end) {
+                    continue;
+                }
 
-                    File auditLog = new File(
-                        logDirStr + "/" + aureview.getName() + "/audit/audit-" +
-                        (fileStart / 1000) + "-" +
-                        (fileEnd / 1000) + ".parsed");
+                File auditLog = new File(
+                    logDirStr + "/" + auditReview.getName() + "/audit/audit-" +
+                            (fileStart / 1000) + "-" +
+                            (fileEnd / 1000) + ".parsed");
 
-                    l = readAuditFile(auditLog, types, start, end);
+                auditLogs = readAuditFile(auditLog, types, start, end);
 
-                    if (dr == null) {
-                        dr = new DataResult(l);
-                    }
-                    else {
-                        dr.addAll(l);
-                    }
+                if (result == null) {
+                    result = new DataResult(auditLogs);
+                } else {
+                    result.addAll(auditLogs);
                 }
             }
         }
@@ -128,11 +129,11 @@ public class AuditManager /* extends BaseManager */ {
             log.warn("AAAAHHHH IOException", ioex);
         }
 
-        if (dr == null || dr.isEmpty()) {
+        if (result == null || result.isEmpty()) {
             return null;
         }
 
-        return dr;
+        return result;
     }
 
     /**
