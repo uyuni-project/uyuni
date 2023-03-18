@@ -46,6 +46,7 @@ public class AuditManager /* extends BaseManager */ {
 
     private static Logger log = LogManager.getLogger(AuditManager.class);
     private static Map<String, String[]> auditTypeMappings = null;
+    private static final Pattern auditFilenamePattern = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
     private AuditManager() {
     }
@@ -314,16 +315,14 @@ public class AuditManager /* extends BaseManager */ {
         DataResult<AuditReviewDto> dr, rec;
         File hostDir;
         LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
-        Matcher fnmatch;
-        Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
         // if machineName is null, look up all review sections by recursion
         if (machineName == null || machineName.isEmpty()) {
             dr = null;
 
-            for (AuditMachineDto aumachine : getMachines()) {
-                if (aumachine.getName() != null) {
-                    rec = getMachineReviewSections(aumachine.getName());
+            for (AuditMachineDto auditMachines : getMachines()) {
+                if (auditMachines.getName() != null) {
+                    rec = getMachineReviewSections(auditMachines.getName());
 
                     if (dr == null) {
                         dr = rec;
@@ -345,11 +344,11 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         for (String auditLog : hostDir.list()) {
-            fnmatch = fnregex.matcher(auditLog);
+            Matcher auditFileMatcher = auditFilenamePattern.matcher(auditLog);
 
-            if (fnmatch.matches()) { // found a matching audit file
-                start = Long.parseLong(fnmatch.group(1)) * 1000;
-                end = Long.parseLong(fnmatch.group(2)) * 1000;
+            if (auditFileMatcher.matches()) { // found a matching audit file
+                start = Long.parseLong(auditFileMatcher.group(1)) * 1000;
+                end = Long.parseLong(auditFileMatcher.group(2)) * 1000;
 
                 try { // but is it reviewed yet?
                     aurevs.add(getReviewInfo(machineName, start, end));
