@@ -29,20 +29,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * AuditManager
  */
-public class AuditManager /* extends BaseManager */ {
+public class AuditManager {
 
     private static Logger log = LogManager.getLogger(AuditManager.class);
     private static Map<String, String[]> auditTypeMappings = null;
@@ -217,19 +211,18 @@ public class AuditManager /* extends BaseManager */ {
 
     /**
      * Get the time for the first unreviewed log for the specified machine
+     *
      * @param machineName The machine to find review times for
      * @return An AuditReviewDto for the machine's first unreviewed section
      */
     public static AuditReviewDto getFirstUnreviewed(String machineName) {
         AuditReviewDto firstUnreviewed = null;
-        DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
+        DataResult<AuditReviewDto> machineReviews = getMachineReviewSections(machineName);
 
-        for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedBy() == null) { // an unreviewed log!
-                if (firstUnreviewed == null ||
-                        aurev.getStart().getTime() <
-                        firstUnreviewed.getStart().getTime()) {
-                    firstUnreviewed = aurev;
+        for (AuditReviewDto auditReview : machineReviews) {
+            if (auditReview.getReviewedBy() == null) { // an unreviewed log!
+                if (firstUnreviewed == null || auditReview.getStart().before(firstUnreviewed.getStart())) {
+                    firstUnreviewed = auditReview;
                 }
             }
         }
@@ -239,6 +232,7 @@ public class AuditManager /* extends BaseManager */ {
 
     /**
      * Get the last time-of-review for the specified machine
+     *
      * @param machineName The machine to find review times for
      * @return An AuditReviewDto for the machine's last review time
      */
@@ -246,12 +240,10 @@ public class AuditManager /* extends BaseManager */ {
         AuditReviewDto lastReviewed = null;
         DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
 
-        for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedOn() != null) {
-                if (lastReviewed == null ||
-                        aurev.getReviewedOn().getTime() >
-                        lastReviewed.getReviewedOn().getTime()) {
-                    lastReviewed = aurev;
+        for (AuditReviewDto auditReview : dr) {
+            if (auditReview.getReviewedOn() != null) {
+                if (lastReviewed == null || auditReview.getReviewedOn().after(lastReviewed.getReviewedOn())) {
+                    lastReviewed = auditReview;
                 }
             }
         }
@@ -261,6 +253,7 @@ public class AuditManager /* extends BaseManager */ {
 
     /**
      * Retrieve the set of all machines we know about
+     *
      * @return The set of machines
      */
     public static DataResult<AuditMachineDto> getMachines() {
@@ -306,6 +299,7 @@ public class AuditManager /* extends BaseManager */ {
 
     /**
      * Retrieve the set of audit sections, possibly for a specified machine
+     *
      * @param machineName The machine to get review sections for; can be null
      * @return The set of review sections
      */
