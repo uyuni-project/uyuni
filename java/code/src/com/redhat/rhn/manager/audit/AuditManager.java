@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  */
 public class AuditManager {
 
-    private static Logger log = LogManager.getLogger(AuditManager.class);
+    private static final Logger log = LogManager.getLogger(AuditManager.class);
     private static Map<String, String[]> auditTypeMappings = null;
     private static final Pattern auditFilenamePattern = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
@@ -52,6 +52,7 @@ public class AuditManager {
 
     /**
      * Mark a machine/start/end as reviewed.
+     *
      * @param machine Machine name
      * @param start Start time in ms from epoch
      * @param end End time in ms from epoch
@@ -59,16 +60,18 @@ public class AuditManager {
      * @throws IOException Thrown when the audit review log isn't writeable
      */
     public static void markReviewed(String machine, Long start, Long end,
-            String username) throws IOException {
-        FileWriter fwr = new FileWriter(reviewFile, true); // append!
+                                    String username) throws IOException {
 
-        fwr.write(machine + "," + (start / 1000) + "," + (end / 1000) + "," +
-            username + "," + (new Date().getTime() / 1000) + "\n");
-        fwr.close();
+        try (FileWriter fwr = new FileWriter(reviewFile, true)) {
+            fwr.write(machine + "," + (start / 1000) + "," + (end / 1000) + "," +
+                    username + "," + (new Date().getTime() / 1000) + "\n");
+        }
+
     }
 
     /**
      * Retrieve the audits for a machine, possibly filtering by types and time
+     *
      * @param types The types to look for (e.g. "DAEMON_START"); can be null
      * @param machine The machine name
      * @param start The start time; can be null
@@ -134,6 +137,7 @@ public class AuditManager {
 
     /**
      * Return the various audit type-mappings we have defined
+     *
      * @return A mapping between the set name and the audit types
      */
     public static Map<String, String[]> getAuditTypeMap() {
