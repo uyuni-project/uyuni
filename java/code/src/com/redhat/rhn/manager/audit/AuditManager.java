@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 public class AuditManager /* extends BaseManager */ {
 
     private static Logger log = LogManager.getLogger(AuditManager.class);
+    private static Map<String, String[]> auditTypeMappings = null;
 
     private AuditManager() {
     }
@@ -141,74 +142,76 @@ public class AuditManager /* extends BaseManager */ {
      * @return A mapping between the set name and the audit types
      */
     public static Map<String, String[]> getAuditTypeMap() {
-        Map<String, String[]> types = new HashMap<>();
+        if (auditTypeMappings == null) {
+            auditTypeMappings = new HashMap<>();
 
-        types.put("default", new String[]{
-            "USER",
-            "USER_AUTH",
-            "USER_MGMT",
-            "USER_ERR",
-            "USER_LOGIN",
-            "USER_LOGOUT",
-            "ADD_USER",
-            "DEL_USER",
-            "ADD_GROUP",
-            "DEL_GROUP",
-            "DAEMON_START",
-            "DAEMON_END",
-            "DAEMON_ABORT",
-            "DAEMON_CONFIG",
-            "DAEMON_ROTATE",
-            "DAEMON_RESUME",
-            "CONFIG_CHANGE",
-            "MAC_POLICY_LOAD",
-            "MAC_STATUS",
-            "MAC_CONFIG_CHANGE",
-            "ANOM_PROMISCUOUS",
-            "ANOM_ABEND",
-            "ANOM_LOGIN_FAILURES",
-            "ANOM_LOGIN_TIME",
-            "ANOM_LOGIN_SESSIONS",
-            "ANOM_LOGIN_ACCT",
-            "ANOM_LOGIN_LOCATION",
-            "ANOM_MAX_DAC",
-            "ANOM_MAX_MAC",
-            "ANOM_AMTU_FAIL",
-            "ANOM_RBAC_FAIL",
-            "ANOM_RBAC_INTEGRITY_FAIL",
-            "ANOM_CRYPTO_FAIL",
-            "ANOM_ACCESS_FS",
-            "ANOM_EXEC",
-            "ANOM_MK_EXEC",
-            "ANOM_ADD_ACCT",
-            "ANOM_DEL_ACCT",
-            "ANOM_MOD_ACCT",
-            "USER_ROLE_CHANGE",
-            "ROLE_ASSIGN",
-            "ROLE_REMOVE",
-            "LABEL_OVERRIDE",
-            "LABEL_LEVEL_CHANGE",
-            "USER_LABELED_EXPORT",
-            "USER_UNLABELED_EXPORT",
-            "DEV_ALLOC",
-            "DEV_DEALLOC",
-            "FS_RELABEL"
-        });
+            auditTypeMappings.put("default", new String[]{
+                    "USER",
+                    "USER_AUTH",
+                    "USER_MGMT",
+                    "USER_ERR",
+                    "USER_LOGIN",
+                    "USER_LOGOUT",
+                    "ADD_USER",
+                    "DEL_USER",
+                    "ADD_GROUP",
+                    "DEL_GROUP",
+                    "DAEMON_START",
+                    "DAEMON_END",
+                    "DAEMON_ABORT",
+                    "DAEMON_CONFIG",
+                    "DAEMON_ROTATE",
+                    "DAEMON_RESUME",
+                    "CONFIG_CHANGE",
+                    "MAC_POLICY_LOAD",
+                    "MAC_STATUS",
+                    "MAC_CONFIG_CHANGE",
+                    "ANOM_PROMISCUOUS",
+                    "ANOM_ABEND",
+                    "ANOM_LOGIN_FAILURES",
+                    "ANOM_LOGIN_TIME",
+                    "ANOM_LOGIN_SESSIONS",
+                    "ANOM_LOGIN_ACCT",
+                    "ANOM_LOGIN_LOCATION",
+                    "ANOM_MAX_DAC",
+                    "ANOM_MAX_MAC",
+                    "ANOM_AMTU_FAIL",
+                    "ANOM_RBAC_FAIL",
+                    "ANOM_RBAC_INTEGRITY_FAIL",
+                    "ANOM_CRYPTO_FAIL",
+                    "ANOM_ACCESS_FS",
+                    "ANOM_EXEC",
+                    "ANOM_MK_EXEC",
+                    "ANOM_ADD_ACCT",
+                    "ANOM_DEL_ACCT",
+                    "ANOM_MOD_ACCT",
+                    "USER_ROLE_CHANGE",
+                    "ROLE_ASSIGN",
+                    "ROLE_REMOVE",
+                    "LABEL_OVERRIDE",
+                    "LABEL_LEVEL_CHANGE",
+                    "USER_LABELED_EXPORT",
+                    "USER_UNLABELED_EXPORT",
+                    "DEV_ALLOC",
+                    "DEV_DEALLOC",
+                    "FS_RELABEL"
+            });
 
-        types.put("login", new String[]{
-            "ANOM_LOGIN_ACCT",
-            "ANOM_LOGIN_FAILURES",
-            "ANOM_LOGIN_LOCATION",
-            "ANOM_LOGIN_SESSIONS",
-            "ANOM_LOGIN_TIME",
-            "ANOM_ROOT_TRANS",
-            "USER_AUTH",
-            "USER_ERR",
-            "USER_LOGIN",
-            "USER_ROLE_CHANGE"
-        });
+            auditTypeMappings.put("login", new String[]{
+                    "ANOM_LOGIN_ACCT",
+                    "ANOM_LOGIN_FAILURES",
+                    "ANOM_LOGIN_LOCATION",
+                    "ANOM_LOGIN_SESSIONS",
+                    "ANOM_LOGIN_TIME",
+                    "ANOM_ROOT_TRANS",
+                    "USER_AUTH",
+                    "USER_ERR",
+                    "USER_LOGIN",
+                    "USER_ROLE_CHANGE"
+            });
+        }
 
-        return types;
+        return auditTypeMappings;
     }
 
     /**
