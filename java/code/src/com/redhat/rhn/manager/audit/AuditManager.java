@@ -78,10 +78,10 @@ public class AuditManager {
      * @param end The end time; can be null
      * @return The set of matching audit logs
      */
-    public static DataResult getAuditLogs(String[] types, String machine,
+    public static DataResult<AuditDto> getAuditLogs(String[] types, String machine,
             Long start, Long end) {
-        DataResult result = null;
-        List auditLogs;
+        DataResult<AuditDto> result = null;
+        List<AuditDto> audits;
         Long fileStart, fileEnd;
 
         if (types == null) {
@@ -115,12 +115,12 @@ public class AuditManager {
                             (fileStart / 1000) + "-" +
                             (fileEnd / 1000) + ".parsed");
 
-                auditLogs = readAuditFile(auditLog, types, start, end);
+                audits = readAuditFile(auditLog, types, start, end);
 
                 if (result == null) {
-                    result = new DataResult(auditLogs);
+                    result = new DataResult(audits);
                 } else {
-                    result.addAll(auditLogs);
+                    result.addAll(audits);
                 }
             }
         }
@@ -262,8 +262,7 @@ public class AuditManager {
      */
     public static DataResult<AuditMachineDto> getMachines() {
         AuditReviewDto aurev;
-        DataResult<AuditMachineDto> dr;
-        Date lastReview, firstUnreviewed;
+        Date lastReviewDate, firstUnreviewed;
         LinkedList<AuditMachineDto> hosts = new LinkedList<>();
 
         if (logDir == null || !logDir.canRead()) {
@@ -275,10 +274,10 @@ public class AuditManager {
                 aurev = getLastReview(host.getName());
 
                 if (aurev != null) {
-                    lastReview = aurev.getReviewedOn();
+                    lastReviewDate = aurev.getReviewedOn();
                 }
                 else {
-                    lastReview = null;
+                    lastReviewDate = null;
                 }
 
                 aurev = getFirstUnreviewed(host.getName());
@@ -291,14 +290,13 @@ public class AuditManager {
                 }
 
                 hosts.add(new AuditMachineDto(
-                    host.getName(), lastReview, firstUnreviewed));
+                    host.getName(), lastReviewDate, firstUnreviewed));
             }
         }
 
         Collections.sort(hosts);
-        dr = new DataResult<>(hosts);
 
-        return dr;
+        return new DataResult<>(hosts);
     }
 
     /**
@@ -366,6 +364,7 @@ public class AuditManager {
 
     /**
      * Retrieve the review info for a specified machine/time
+     *
      * @param machine The machine name
      * @param start The start time in ms from the epoch
      * @param end The end time in ms from the epoch
@@ -398,23 +397,20 @@ public class AuditManager {
             reviewedBy, reviewedOn);
     }
 
-    private static List readAuditFile(File aufile, String[] types, Long start,
+    private static List<AuditDto> readAuditFile(File auditFile, String[] types, Long start,
             Long end) throws IOException {
         int milli = 0, serial = -1;
-        BufferedReader brdr;
+        BufferedReader auditFileReader;
         LinkedHashMap<String, String> hmap;
         LinkedList<AuditDto> events;
         Long time = -1L;
-        String node = null, str, strtime = null;
 
-        brdr = new BufferedReader(new FileReader(aufile));
+        auditFileReader = new BufferedReader(new FileReader(auditFile));
         events = new LinkedList<>();
         hmap = new LinkedHashMap<>();
 
-        for (str = brdr.readLine(); str != null; str = brdr.readLine()) {
-            if (str.equals("")) {
-                strtime = hmap.remove("seconds");
-
+        for (String line = auditFileReader.readLine(); line != null; line = auditFileReader.readLine()) {
+            if (line.isEmpty()) {
                 try {
                     serial = Integer.parseInt(hmap.remove("serial"));
                 }
@@ -423,17 +419,17 @@ public class AuditManager {
                 }
 
                 try {
-                    time = Long.parseLong(strtime) * 1000;
+                    time = Long.parseLong(hmap.remove("seconds")) * 1000;
                 }
                 catch (NumberFormatException nfex) {
                     time = 0L;
                 }
 
                 if (time >= start && time <= end) {
+                    String targetType = hmap.get("type");
                     for (String type : types) {
-                        if (type.equals(hmap.get("type"))) {
-                            events.add(new AuditDto(
-                                serial, new Date(time), milli, node, hmap));
+                        if (Objects.equals(type, targetType)) {
+                            events.add(new AuditDto(serial, new Date(time), milli, null, hmap));
                             break;
                         }
                     }
@@ -441,17 +437,17 @@ public class AuditManager {
 
                 hmap.clear();
             }
-            else if (str.indexOf('=') >= 0) {
+            else if (line.indexOf('=') >= 0) {
                 hmap.put(
-                    str.substring(0, str.indexOf('=')).trim(),
-                    str.substring(str.indexOf('=') + 1).trim());
+                    line.substring(0, line.indexOf('=')).trim(),
+                    line.substring(line.indexOf('=') + 1).trim());
             }
             else {
-                log.debug("unknown string: {}", str);
+                log.debug("unknown string: {}", line);
             }
         }
 
-        brdr.close();
+        auditFileReader.close();
 
         return events;
     }
