@@ -6,10 +6,17 @@
 require 'json'
 require 'socket'
 
+## Testing inside containers needs to be done without ssl
+if $is_container_provider
+  ssl_verify = false
+else
+  ssl_verify = true
+end
+
 $api_test = if $debug_mode
               ApiTestXmlrpc.new($server.full_hostname)
             else
-              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname, ssl_verify) : ApiTestXmlrpc.new($server.full_hostname)
             end
 
 ## system namespace
