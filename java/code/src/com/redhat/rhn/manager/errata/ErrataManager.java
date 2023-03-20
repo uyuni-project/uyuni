@@ -1768,8 +1768,36 @@ public class ErrataManager extends BaseManager {
 
         List<Errata> errataList = ErrataManager.lookupErrataByIds(errataIds, user);
 
-        return scheduleErrataActions(user.getOrg(), earliest, actionChain,
+        return scheduleErrataActions(user, earliest, actionChain,
                 allowVendorChange, serverApplicableErrataMap, errataList);
+    }
+
+    /**
+     * Create and schedule computed errata actions
+     *
+     * @param user the user scheduling the action
+     * @param earliest schedule time
+     * @param actionChain the action chain to add the action to or null
+     * @param allowVendorChange true if vendor change allowed
+     * @param serverApplicableErrataMap server to applicable errata map
+     * @param errataList list of erratas
+     * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static List<Long> scheduleErrataActions(User user, Date earliest, ActionChain actionChain,
+                                                   boolean allowVendorChange,
+                                                   Map<Long, List<Long>> serverApplicableErrataMap,
+                                                   List<Errata> errataList) throws TaskomaticApiException {
+        return scheduleErrataActions(
+            user,
+            user.getOrg(),
+            earliest,
+            actionChain,
+            allowVendorChange,
+            serverApplicableErrataMap,
+            errataList
+        );
     }
 
     /**
@@ -1789,6 +1817,22 @@ public class ErrataManager extends BaseManager {
                                                     boolean allowVendorChange,
                                                     Map<Long, List<Long>> serverApplicableErrataMap,
                                                     List<Errata> errataList) throws TaskomaticApiException {
+        return scheduleErrataActions(
+            null,
+            org,
+            earliest,
+            actionChain,
+            allowVendorChange,
+            serverApplicableErrataMap,
+            errataList
+        );
+    }
+
+    private static List<Long> scheduleErrataActions(User scheduler, Org org, Date earliest, ActionChain actionChain,
+                                                    boolean allowVendorChange,
+                                                    Map<Long, List<Long>> serverApplicableErrataMap,
+                                                    List<Errata> errataList) throws TaskomaticApiException {
+
         List<Errata> retracted = errataList.stream()
                 .filter(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED)
                 .collect(toList());
@@ -1841,14 +1885,19 @@ public class ErrataManager extends BaseManager {
 
         // 1- compute actions for traditional clients running yum
         // those get one Action per system, per errata (yum is known to have problems)
-        Stream<ErrataAction> nonZypperTradClientActions = nonZypperTradClients.stream()
-            .flatMap(sid -> serverErrataMap.get(sid).stream()
-                .sorted((a, b) -> updateStackMap.get(b).compareTo(updateStackMap.get(a)))
-                .map(eid -> createErrataActionForNonZypperTradClient(org,
-                    errataMap.get(eid), earliest, actionChain, serverMap.get(sid),
-                    updateStackMap.get(eid))
-                )
-            );
+        Stream<ErrataAction> nonZypperTradClientActions = nonZypperTradClients.stream().flatMap(sid ->
+            serverErrataMap.get(sid)
+                           .stream()
+                           .sorted((a, b) -> updateStackMap.get(b).compareTo(updateStackMap.get(a)))
+                           .map(eid -> createErrataActionForNonZypperTradClient(
+                               scheduler,
+                               org,
+                               errataMap.get(eid),
+                               earliest,
+                               actionChain,
+                               serverMap.get(sid))
+                           )
+        );
 
         // 2- compute actions for all others
         // 2.1- compute a system to errata map for minions
@@ -1886,11 +1935,11 @@ public class ErrataManager extends BaseManager {
                 groupServersByErrataSet(minionErrataMap);
 
         // 2.4- compute the actions
-        Stream<ErrataAction> updateStackActions = computeActions(org, earliest,
+        Stream<ErrataAction> updateStackActions = computeActions(scheduler, org, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, updateStackTargets);
-        Stream<ErrataAction> nonUpdateStackActions = computeActions(org, earliest,
+        Stream<ErrataAction> nonUpdateStackActions = computeActions(scheduler, org, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, nonUpdateStackTargets);
-        Stream<ErrataAction> minionActions = computeActions(org, earliest,
+        Stream<ErrataAction> minionActions = computeActions(scheduler, org, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, minionTargets);
         // store all actions and return ids
         List<Long> actionIds = new ArrayList<>();
@@ -1928,6 +1977,7 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Computes Action objects
+     * @param user the user scheduling Actions, or null if it's automatically executed
      * @param org the org of the user scheduling Actions
      * @param earliest the earliest execution date
      * @param actionChain an action chain, if any
@@ -1937,30 +1987,23 @@ public class ErrataManager extends BaseManager {
      * @param targets map from lists of server ids to lists of errata ids
      * @return a stream of actions
      */
-    public static Stream<ErrataAction> computeActions(Org org, Date earliest,
+    public static Stream<ErrataAction> computeActions(User user, Org org, Date earliest,
             ActionChain actionChain, Map<Long, Errata> errataMap,
             Map<Long, Boolean> updateStackMap, Map<Long, Server> serverMap,
             Map<List<Long>, List<Long>> targets) {
-        return targets.entrySet().stream()
-            .flatMap(e -> {
-                if (e.getKey().isEmpty()) {
-                    return Stream.empty();
-                }
+        return targets.entrySet()
+                      .stream()
+                      .flatMap(e -> {
+                          if (e.getKey().isEmpty()) {
+                              return Stream.empty();
+                          }
 
-                List<Errata> erratas = e.getKey().stream()
-                    .map(errataMap::get)
-                    .collect(toList());
+                          List<Errata> erratas = e.getKey().stream().map(errataMap::get).collect(toList());
+                          List<Server> servers = e.getValue().stream().map(serverMap::get).collect(toList());
+                          boolean updatesStack = errataMap.keySet().stream().anyMatch(updateStackMap::get);
 
-                List<Server> servers = e.getValue().stream()
-                    .map(sid -> serverMap.get(sid))
-                    .collect(toList());
-
-                boolean updateStackAction = errataMap.keySet().stream()
-                    .anyMatch(updateStackMap::get);
-
-                return createErrataActions(org, erratas, earliest, actionChain,
-                        servers, updateStackAction);
-            });
+                          return createErrataActions(user, org, erratas, earliest, actionChain, servers, updatesStack);
+                      });
      }
 
 
@@ -1992,6 +2035,7 @@ public class ErrataManager extends BaseManager {
      * Note that in case an Action Chain is specified, one Action is created for
      * each system, otherwise only one Action is returned.
      *
+     * @param user the user scheduling the action, or null if it's automatically executed
      * @param org the organization
      * @param errata the list of errata
      * @param earliest the earliest date of execution
@@ -2000,7 +2044,7 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static Stream<ErrataAction> createErrataActions(Org org, List<Errata> errata,
+    private static Stream<ErrataAction> createErrataActions(User user, Org org, List<Errata> errata,
             Date earliest, ActionChain actionChain, List<Server> servers,
             boolean updateStack) {
 
@@ -2008,12 +2052,8 @@ public class ErrataManager extends BaseManager {
         if (actionChain != null) {
             return servers.stream()
                 .map(server -> {
-                    ErrataAction errataUpdate =
-                        ActionManager.createErrataAction(org,
-                        errata.get(0));
-                    errata.stream()
-                        .skip(1)
-                        .forEach(e -> errataUpdate.addErrata(e));
+                    ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
+                    errata.stream().skip(1).forEach(errataUpdate::addErrata);
 
                     if (earliest != null) {
                         errataUpdate.setEarliestAction(earliest);
@@ -2022,16 +2062,14 @@ public class ErrataManager extends BaseManager {
                     errataUpdate.setName(getErrataName(errata, updateStack));
 
                     int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-                    ActionChainFactory.queueActionChainEntry(errataUpdate, actionChain,
-                            server, sortOrder);
+                    ActionChainFactory.queueActionChainEntry(errataUpdate, actionChain, server, sortOrder);
 
                     return errataUpdate;
                 });
         }
 
         // otherwise, return one only Action
-        ErrataAction errataUpdate = ActionManager.createErrataAction(
-                org, errata.get(0));
+        ErrataAction errataUpdate = buildErrataAction(user, org, errata.get(0));
         errata.stream()
             .skip(1)
             .forEach(e -> errataUpdate.addErrata(e));
@@ -2042,9 +2080,17 @@ public class ErrataManager extends BaseManager {
 
         errataUpdate.setName(getErrataName(errata, updateStack));
 
-        servers.stream().forEach(s -> ActionManager.addServerToAction(s, errataUpdate));
+        servers.forEach(s -> ActionManager.addServerToAction(s, errataUpdate));
 
         return Stream.of(errataUpdate);
+    }
+
+    private static ErrataAction buildErrataAction(User user, Org org, Errata errata) {
+        if (user != null) {
+            return ActionManager.createErrataAction(user, errata);
+        }
+
+        return ActionManager.createErrataAction(org, errata);
     }
 
     /**
@@ -2077,30 +2123,30 @@ public class ErrataManager extends BaseManager {
      * Note that this is used exclusively on non-zypper traditional clients (those are
      * known not to handle combined upgrades properly).
      *
+     * @param user the user scheduling the action
      * @param org the org
      * @param erratum the erratum
      * @param earliest the earliest date of execution
      * @param actionChain the action chain to add the actions to or null
      * @param server the server
-     * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static ErrataAction createErrataActionForNonZypperTradClient(Org org,
-            Errata erratum, Date earliest, ActionChain actionChain, Server server,
-            boolean updateStack) {
-        ErrataAction errataUpdate = ActionManager.createErrataAction(
-                org, erratum);
+    private static ErrataAction createErrataActionForNonZypperTradClient(User user, Org org,
+                                                                         Errata erratum, Date earliest,
+                                                                         ActionChain actionChain, Server server) {
+        ErrataAction errataUpdate = buildErrataAction(user, org, erratum);
         if (earliest != null) {
             errataUpdate.setEarliestAction(earliest);
         }
+
         if (actionChain == null) {
             ActionManager.addServerToAction(server, errataUpdate);
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-            ActionChainFactory.queueActionChainEntry(errataUpdate, actionChain,
-                    server, sortOrder);
+            ActionChainFactory.queueActionChainEntry(errataUpdate, actionChain, server, sortOrder);
         }
+
         return errataUpdate;
     }
 
