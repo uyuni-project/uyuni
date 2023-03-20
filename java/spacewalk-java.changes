@@ -1,3 +1,4 @@
+- Use reload4j instead of log4j or log4j12
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 - Use slf4j-reload4j and jaf
 - Add `mgr_server_is_uyuni` minion pillar item
