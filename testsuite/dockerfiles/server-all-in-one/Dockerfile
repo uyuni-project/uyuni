@@ -16,7 +16,6 @@ RUN zypper -n in python3-simplejson
 RUN zypper --non-interactive install --auto-agree-with-licenses --force-resolution patterns-uyuni_server
 RUN zypper mr -d repo-backports-update repo-sle-update
 
-RUN echo 'root:root123!' | chpasswd
 # hack to correct the report db script to work on containers
 RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
