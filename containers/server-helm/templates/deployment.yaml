@@ -355,10 +355,6 @@ spec:
       - name: uyuni
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
-        securityContext:
-          capabilities:
-            add:
-              - SYS_ADMIN
         ports:
           - containerPort: 443
           - containerPort: 80
