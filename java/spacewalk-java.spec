@@ -49,7 +49,7 @@
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
-%define log4j                      (log4j or log4j12)
+%define log4j                      reload4j
 
 
 %if 0%{?is_opensuse}
@@ -139,7 +139,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  %{log4j}
-BuildRequires:  (slf4j-reload4j or slf4j-log4j12)
+BuildRequires:  slf4j-reload4j
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
@@ -239,7 +239,7 @@ Requires:       jcommon
 Requires:       jdom
 Requires:       jta
 Requires:       %{log4j}
-Requires:       (slf4j-reload4j or slf4j-log4j12)
+Requires:       slf4j-reload4j
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
