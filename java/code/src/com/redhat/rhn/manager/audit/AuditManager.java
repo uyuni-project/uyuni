@@ -29,7 +29,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,9 +45,9 @@ import java.util.regex.Pattern;
  */
 public class AuditManager {
 
-    private static final Logger log = LogManager.getLogger(AuditManager.class);
+    private static final Logger LOGGER = LogManager.getLogger(AuditManager.class);
     private static Map<String, String[]> auditTypeMappings = null;
-    private static final Pattern auditFilenamePattern = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
+    private static final Pattern AUDIT_FILENAME_PATTERN = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
     private AuditManager() {
     }
@@ -118,13 +125,14 @@ public class AuditManager {
 
                 if (result == null) {
                     result = new DataResult<>(audits);
-                } else {
+                }
+                else {
                     result.addAll(audits);
                 }
             }
         }
         catch (IOException ioex) {
-            log.warn("AAAAHHHH IOException", ioex);
+            LOGGER.warn("AAAAHHHH IOException", ioex);
         }
 
         if (result == null || result.isEmpty()) {
@@ -339,7 +347,7 @@ public class AuditManager {
         }
 
         for (String auditLog : hostDir.list()) {
-            Matcher auditFileMatcher = auditFilenamePattern.matcher(auditLog);
+            Matcher auditFileMatcher = AUDIT_FILENAME_PATTERN.matcher(auditLog);
 
             if (auditFileMatcher.matches()) { // found a matching audit file
                 start = Long.parseLong(auditFileMatcher.group(1)) * 1000;
@@ -442,7 +450,7 @@ public class AuditManager {
                     line.substring(line.indexOf('=') + 1).trim());
             }
             else {
-                log.debug("unknown string: {}", line);
+                LOGGER.debug("unknown string: {}", line);
             }
         }
 
