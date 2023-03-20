@@ -70,7 +70,8 @@ import javax.persistence.criteria.Root;
  */
 public class CVEAuditManager {
 
-    private static final Pattern LIVEPATCH_PACKAGES_REGEX = Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$");
+    private static final Pattern LIVEPATCH_PACKAGES_REGEX =
+            Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$");
     /** The log. */
     private static Logger log = LogManager.getLogger(CVEAuditManager.class);
 
