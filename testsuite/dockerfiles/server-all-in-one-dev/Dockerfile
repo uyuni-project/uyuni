@@ -18,7 +18,11 @@ RUN zypper ref && \
     zypper -n install obs-to-maven yarn && \
     zypper clean -a
 COPY minima.yaml /etc/minima.yaml
-COPY minima /usr/bin/minima
+RUN mkdir /tmp/minima && \
+    cd /tmp/minima && \
+    wget -c https://github.com/moio/minima/releases/download/v0.10/minima-linux-amd64.tar.gz && \
+    tar zxvf minima-linux-amd64.tar.gz && \
+    cp minima /usr/bin/minima
 RUN /usr/bin/minima sync -c /etc/minima.yaml && \
     mv /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/rpm/* /srv/www/htdocs/pub/TestRepoRpmUpdates/ && \
    rm -rf /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/
