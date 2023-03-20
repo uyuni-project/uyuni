@@ -1,3 +1,5 @@
+- Improve error handling in mgr_events.py (bsc#1208687)
+
 -------------------------------------------------------------------
 Tue Feb 21 14:10:36 CET 2023 - jgonzalez@suse.com
 
