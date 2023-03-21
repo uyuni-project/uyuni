@@ -1,7 +1,7 @@
 name: test-all-in-one
 on: pull_request
 env:
-  UYUNI_PROJECT: jordimassaguerpla
+  UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 jobs:
