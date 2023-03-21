@@ -46,6 +46,8 @@
 - features/build_validation/init_clients/opensuse154arm_minion.feature
 - features/build_validation/init_clients/opensuse154arm_ssh_minion.feature
 
+- features/build_validation/init_clients/slemicro51_minion.feature
+- features/build_validation/init_clients/slemicro51_ssh_minion.feature
 - features/build_validation/init_clients/slemicro52_minion.feature
 - features/build_validation/init_clients/slemicro52_ssh_minion.feature
 - features/build_validation/init_clients/slemicro53_minion.feature
