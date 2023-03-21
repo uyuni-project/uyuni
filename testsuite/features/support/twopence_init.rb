@@ -256,6 +256,11 @@ def file_inject(node, local_file, remote_file)
   code
 end
 
+_out, code = $server.run('which uyunictl', check_errors: false)
+if code.zero?
+  $server.init_has_uyunictl
+end
+
 # Other global variables
 $product = product
 $product_version = product_version
