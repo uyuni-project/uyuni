@@ -47,6 +47,24 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "fedora_kickstart_distro" link
 
+  Scenario: Create a distribution via the API, without kernel options
+    When I create a kickstart tree via the API
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    Then I should see a "fedora_kickstart_distro_api" link
+
+  Scenario: Create a distribution via the API, with kernel options
+    When I create a kickstart tree with kernel options via the API
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    Then I should see a "fedora_kickstart_distro_kernel_api" link
+
+  Scenario: Update a distribution via the API
+    When I update a kickstart tree via the API
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow this "fedora_kickstart_distro_api" link
+    Then option "Generic RPM" is selected as "installtype"
+    And I should see "self_update=0" in field "kernelopts"
+    And I should see "self_update=1" in field "postkernelopts"
+
   Scenario: Create a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Create Kickstart Profile"
