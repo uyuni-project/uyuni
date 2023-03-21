@@ -25,17 +25,25 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.NotificationType;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.payg.PaygAuthDataExtractor;
 import com.redhat.rhn.taskomatic.task.payg.PaygDataExtractException;
 import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jcraft.jsch.JSchException;
@@ -50,12 +58,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
 public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
@@ -66,6 +80,11 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()
             .create();
+
+    private static final String PRODUCTS_UNSCOPED =
+            "/com/redhat/rhn/manager/content/test/smallBase/productsUnscoped.json";
+    private static final String PRODUCT_TREE = "/com/redhat/rhn/manager/content/test/smallBase/product_tree.json";
+    private static final String UPGRADE_PATHS = "/com/redhat/rhn/manager/content/test/smallBase/upgrade_paths.json";
 
     @RegisterExtension
     protected static final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
@@ -103,6 +122,10 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     }
 
     private void clearDb() {
+        SCCCachingFactory.clearRepositories();
+        SCCCachingFactory.clearSubscriptions();
+        SUSEProductFactory.findAllSUSEProducts().forEach(SUSEProductFactory::remove);
+        CredentialsFactory.listSCCCredentials().forEach(CredentialsFactory::removeCredentials);
         CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
@@ -133,6 +156,9 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 case "localhost":
                     assertEquals("SUSE Manager Pay-as-you-go", outPaygData.getDescription());
                     assertEquals("root", outPaygData.getUsername());
+                    assertEquals("https://smt-ec2.susecloud.net/repo", outPaygData.getCredentials().getUrl());
+                    //Fake URL for next test
+                    outPaygData.getCredentials().setUrl("http://localhost:8888/repo");
                     break;
                 case "my-instance":
                     assertEquals("username", outPaygData.getUsername());
@@ -143,6 +169,48 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                     assertTrue(false, "unexpected result");
             }
         }
+
+        WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8888));
+        wireMockServer.start();
+
+        WireMock.configureFor("localhost", 8888);
+        String productsUnscoped = new BufferedReader(new InputStreamReader(
+                PaygUpdateAuthTaskTest.class.getResourceAsStream(PRODUCTS_UNSCOPED)))
+                .lines().collect(Collectors.joining("\n"));
+
+        String productTree = new BufferedReader(new InputStreamReader(
+                PaygUpdateAuthTaskTest.class.getResourceAsStream(PRODUCT_TREE)))
+                .lines().collect(Collectors.joining("\n"));
+
+        WireMock.stubFor(
+                WireMock.get(WireMock.urlPathEqualTo("/connect/organizations/products/unscoped"))
+                        .willReturn(WireMock.aResponse()
+                            .withStatus(HttpURLConnection.HTTP_OK)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(productsUnscoped)));
+
+        WireMock.stubFor(
+                WireMock.get(WireMock.urlPathEqualTo("/suma/product_tree.json"))
+                        .willReturn(WireMock.aResponse()
+                                .withStatus(HttpURLConnection.HTTP_OK)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(productTree)));
+
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setTesting(true);
+        csm.setSumaProductTreeJson(Optional.empty());
+        csm.setCloudPaygManager(mgr);
+        csm.setUpgradePathsJson(new File(TestUtils.findTestData(UPGRADE_PATHS).getPath()));
+        csm.updateSUSEProducts(csm.getProducts());
+
+
+        WireMock.verify(WireMock.getRequestedFor(
+                WireMock.urlPathEqualTo("/connect/organizations/products/unscoped")));
+        WireMock.verify(WireMock.getRequestedFor(
+                WireMock.urlPathEqualTo("/suma/product_tree.json")));
+        wireMockServer.stop();
+
         mgr = new CloudPaygManager() {
             @Override
             public boolean isPaygInstance() {
