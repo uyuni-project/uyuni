@@ -1,3 +1,5 @@
+- Prevent HTTP API restricted args from being logged (bsc#1208119)
+
 -------------------------------------------------------------------
 Wed Mar 15 15:58:47 CET 2023 - jgonzalez@suse.com
 
