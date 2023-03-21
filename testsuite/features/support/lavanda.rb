@@ -77,6 +77,12 @@ module LavandaBasic
     @in_os_version = os_version
   end
 
+  ##
+  # Initializes the @in_has_uyunictl variable to true.
+  def init_has_uyunictl
+    @in_has_uyunictl = true
+  end
+
   # getter functions, executed on testsuite
   def hostname
     raise 'empty hostname, something wrong' if @in_hostname.empty?
@@ -145,15 +151,16 @@ module LavandaBasic
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
+    cmd_prefix = @in_has_uyunictl ? "uyunictl exec -i " : ""
     if separated_results
-      out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
+      out, err, _lo, _rem, code = test_and_store_results_separately(cmd_prefix + cmd, user, timeout, buffer_size)
     else
-      out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
+      out, _lo, _rem, code = test_and_store_results_together(cmd_prefix + cmd, user, timeout, buffer_size)
     end
     if check_errors
-      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
+      raise "FAIL: #{cmd_prefix}#{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
     end
-    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
+    STDOUT.puts "#{cmd_prefix}#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
     if separated_results
       [out, err, code]
     else
