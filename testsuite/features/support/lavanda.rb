@@ -77,6 +77,12 @@ module LavandaBasic
     @in_os_version = os_version
   end
 
+  ##
+  # Initializes the @in_has_uyunictl variable to true.
+  def init_has_uyunictl
+    @in_has_uyunictl = true
+  end
+
   # getter functions, executed on testsuite
   def hostname
     raise 'empty hostname, something wrong' if @in_hostname.empty?
@@ -145,6 +151,23 @@ module LavandaBasic
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
+    cmd_prefixed = @in_has_uyunictl ? "uyunictl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+  end
+
+  ##
+  # It runs a command, and returns the output, error, and exit code.
+  #
+  # Args:
+  #   cmd: The command to run.
+  #   separated_results: Whether the results should be stored separately. Defaults to false.
+  #   check_errors: Whether to check for errors or not. Defaults to true.
+  #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
+  #   user: The user to be used to run the command. Defaults to root.
+  #   successcodes: An array with the values to be accepted as success codes from the command run.
+  #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
+  #   verbose: Whether to log the output of the command in case of success. Defaults to false.
+  def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
     else
@@ -201,5 +224,116 @@ module LavandaBasic
       sleep 2
       result
     end
+  end
+
+  ##
+  # Copy a local file to a remote node.
+  # Handles copying to the server container if possible
+  #
+  # Args:
+  #   local_file: The path to the file to copy
+  #   remote_file: The path in the destination
+  #   user: The owner of the file
+  def inject(local_file, remote_file, user = 'root', dots = true)
+    if @in_has_uyunictl
+      tmp_folder, _code = run_local('mktemp -d')
+      tmp_file = File.join(tmp_folder.strip, File.basename(local_file))
+      code, _remote = inject_file(local_file, tmp_file, user, dots)
+      if code.zero?
+        _out, code = run_local("uyunictl cp --user #{user} #{tmp_file} server:#{remote_file}")
+        raise "Failed to copy #{tmp_file} to container" unless code.zero?
+      end
+      run_local("rm -r #{tmp_folder}")
+    else
+      code, _remote = inject_file(local_file, remote_file, user, dots)
+    end
+    code
+  end
+
+  ##
+  # Copy a remote file to a local one
+  # Handles copying from the server container if possible
+  #
+  # Args:
+  #   remote_file: The path in the destination
+  #   local_file: The path to the file to copy
+  #   user: The owner of the file
+  def extract(remote_file, local_file, user = 'root', dots = true)
+    if @in_has_uyunictl
+      tmp_folder, _code = run_local('mktemp -d')
+      tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
+      _out, code = run_local("uyunictl cp --user #{user} server:#{remote_file} #{tmp_file}")
+      raise "Failed to extract #{remote_file} from container" unless code.zero?
+      code, _remote = extract_file(tmp_file, local_file, user, dots)
+      raise "Failed to extract #{tmp_file} from host" unless code.zero?
+      run_local("rm -r #{tmp_folder}")
+    else
+      code, _local = extract_file(remote_file, local_file, user, dots)
+    end
+    code
+  end
+
+  ##
+  # Check if a file exists on a node.
+  # Handles checking in server container if possible.
+  #
+  # Args:
+  #   file: The path to check on the node.
+  def file_exists(file)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'test -f #{file}'", check_errors: false)
+      exists = code.zero?
+    else
+      _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
+      exists = code.zero? && local.zero?
+    end
+    exists
+  end
+
+  ##
+  # Check if a folder exists on a node.
+  # Handles checking in server container if possible.
+  #
+  # Args:
+  #   file: The path to check on the node.
+  def folder_exists(file)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'test -d #{file}'", check_errors: false)
+      exists = code.zero?
+    else
+      _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
+      exists = code.zero? && local.zero?
+    end
+    exists
+  end
+
+  ##
+  # Delete a file on a node.
+  # Handles checking in server container if possible.
+  #
+  # Args:
+  #   file: The path of the file to delete on the node.
+  def file_delete(file)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'rm #{file}'")
+    else
+      _out, _local, _remote, code = test_and_store_results_together("rm #{file}", 'root', 500)
+    end
+    code
+  end
+
+  ##
+  # Delete a folder on a node.
+  # Handles checking in server container if possible.
+  #
+  # Args:
+  #   folder: The path of the folder to delete on the node.
+  def folder_delete(folder)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'rm -rf #{folder}'")
+    else
+      _out, _local, _remote, code = test_and_store_results_together("rm-rf #{folder}", 'root', 500)
+    end
+    code
   end
 end
