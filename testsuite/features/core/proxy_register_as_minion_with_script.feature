@@ -29,7 +29,7 @@ Feature: Setup SUSE Manager proxy
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
     And I run "sh ./bootstrap-proxy.sh" on "proxy"
 
-# WORKAROUND https://github.com/SUSE/spacewalk/issues/20849 (conted)
+# WORKAROUND https://github.com/SUSE/spacewalk/issues/20849 (continued)
 # @salt_bundle
 #  Scenario: Create the bundle-aware bootstrap script for the proxy and use it
 #    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
