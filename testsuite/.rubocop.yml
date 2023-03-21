@@ -9,5 +9,8 @@ Metrics/CyclomaticComplexity:
 Metrics/ClassLength:
   Enabled: false
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Style/MissingElse:
   Enabled: false
