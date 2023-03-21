@@ -1,4 +1,8 @@
-- support multiple gpgkey urls for a channel (bsc#1208540)
+-------------------------------------------------------------------
+Tue Mar 21 13:43:03 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.51-1
+  * support multiple gpgkey urls for a channel (bsc#1208540)
 
 -------------------------------------------------------------------
 Fri Mar 17 11:59:18 CET 2023 - jgonzalez@suse.com
