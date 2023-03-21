@@ -12,7 +12,6 @@ copy setup_env.sh /root/setup_env.sh
 
 RUN zypper ref
 RUN zypper -n in vi
-RUN zypper -n in python3-simplejson
 RUN zypper --non-interactive install --auto-agree-with-licenses --force-resolution patterns-uyuni_server
 RUN zypper mr -d repo-backports-update repo-sle-update
 
