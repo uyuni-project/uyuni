@@ -94,8 +94,8 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Obsoletes:      rhn-search < 5.3.0
-Requires:       (log4j or log4j12)
-BuildRequires:  (log4j or log4j12)
+Requires:       reload4j
+BuildRequires:  reload4j
 
 %description
 This package contains the code for the Full Text Search Server for
