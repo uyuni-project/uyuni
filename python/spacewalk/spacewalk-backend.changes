@@ -1,4 +1,8 @@
-- fix repo sync for cloud payg connected repositories (bsc#1208772)
+-------------------------------------------------------------------
+Tue Mar 21 13:39:32 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * fix repo sync for cloud payg connected repositories (bsc#1208772)
 
 -------------------------------------------------------------------
 Wed Feb 22 14:46:56 CET 2023 - jgonzalez@suse.com
