@@ -1,3 +1,4 @@
+- support multiple gpgkey urls for a channel (bsc#1208540)
 - Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Fix systems subscribed to channel CSV download (bsc#1201063)
