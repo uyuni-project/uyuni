@@ -1,3 +1,5 @@
+- Use reload4j instead of log4j or log4j12
+
 -------------------------------------------------------------------
 Thu Feb 09 09:53:48 CET 2023 - jgonzalez@suse.com
 
