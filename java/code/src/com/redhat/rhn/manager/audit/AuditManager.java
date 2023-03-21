@@ -323,9 +323,9 @@ public class AuditManager {
         if (machineName == null || machineName.isEmpty()) {
             dr = null;
 
-            for (AuditMachineDto auditMachines : getMachines()) {
-                if (auditMachines.getName() != null) {
-                    rec = getMachineReviewSections(auditMachines.getName());
+            for (AuditMachineDto machine : getMachines()) {
+                if (machine.getName() != null) {
+                    rec = getMachineReviewSections(machine.getName());
 
                     if (dr == null) {
                         dr = rec;
