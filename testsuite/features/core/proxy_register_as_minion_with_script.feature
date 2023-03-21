@@ -18,8 +18,10 @@ Feature: Setup SUSE Manager proxy
     And I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
-
-@skip_if_salt_bundle
+# Workadound https://github.com/SUSE/spacewalk/issues/20849: 
+# 4.2 proxy does not have the salt bundle in its bootstrap repo
+# Ignoring the salt bundle tag to be able to bootstrap it with regular salt
+# @skip_if_salt_bundle
   Scenario: Create the bootstrap script for the proxy and use it
     When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date"
     Then I should get "* bootstrap script (written):"
@@ -27,13 +29,14 @@ Feature: Setup SUSE Manager proxy
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
     And I run "sh ./bootstrap-proxy.sh" on "proxy"
 
-@salt_bundle
-  Scenario: Create the bundle-aware bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
-    Then I should get "* bootstrap script (written):"
-    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
-    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
-    And I run "sh ./bootstrap-proxy.sh" on "proxy"
+# Workadound https://github.com/SUSE/spacewalk/issues/20849 (conted)
+# @salt_bundle
+#  Scenario: Create the bundle-aware bootstrap script for the proxy and use it
+#    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
+#    Then I should get "* bootstrap script (written):"
+#    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+#    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
+#    And I run "sh ./bootstrap-proxy.sh" on "proxy"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
