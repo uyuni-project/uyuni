@@ -75,6 +75,7 @@ import com.suse.utils.Opt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,6 +122,8 @@ public class ContentSyncManager {
     // Logger instance
     private static Logger log = LogManager.getLogger(ContentSyncManager.class);
 
+    private Path tmpLoggingDir;
+
     /**
      * OES channel family name, this is used to distinguish supported non-SUSE
      * repos that are served directly from NCC instead of SCC.
@@ -152,10 +155,31 @@ public class ContentSyncManager {
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
 
+    // TODO: detection of isPAYG happens only on taskomatic start. Is this ok?
+    private CloudPaygManager cloudPaygManager = new CloudPaygManager();
+
+    private boolean testing = false;
+
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
+    }
+
+    /**
+     * Need for automated tests
+     * @param testingIn set to true for unit tests
+     */
+    public void setTesting(boolean testingIn) {
+        testing = testingIn;
+    }
+
+    /**
+     * Need for automatic tests
+     * @param mgrIn
+     */
+    public void setCloudPaygManager(CloudPaygManager mgrIn) {
+        cloudPaygManager = mgrIn;
     }
 
     /**
@@ -238,8 +262,7 @@ public class ContentSyncManager {
 
         List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
         if (credentials.isEmpty()) {
-            CloudPaygManager mgr = new CloudPaygManager();
-            if (mgr.isPaygInstance()) {
+            if (cloudPaygManager.isPaygInstance()) {
                 // We look for the local RMT Cloud Credentials as alternative
                 List<Credentials> rmtCreds = PaygSshDataFactory.lookupByHostname("localhost")
                         .map(PaygSshData::getCredentials)
@@ -284,6 +307,7 @@ public class ContentSyncManager {
                     // Add product in any case
                     productList.add(product);
                 }
+                cleanupTestingTmpLoggingDir();
             }
             catch (SCCClientException | URISyntaxException e) {
                 throw new ContentSyncException(e);
@@ -557,6 +581,7 @@ public class ContentSyncManager {
                 List<SCCRepositoryJson> repos = scc.listRepositories();
                 repos.addAll(getAdditionalRepositories());
                 refreshRepositoriesAuthentication(repos, c, mirrorUrl);
+                cleanupTestingTmpLoggingDir();
             }
             catch (SCCClientException | URISyntaxException e) {
                 throw new ContentSyncException(e);
@@ -1158,6 +1183,7 @@ public class ContentSyncManager {
             refreshSubscriptionCache(subscriptions, credentials);
             refreshOrderItemCache(credentials);
             generateOEMOrderItems(subscriptions, credentials);
+            cleanupTestingTmpLoggingDir();
             return subscriptions;
         }
         catch (URISyntaxException e) {
@@ -1216,6 +1242,7 @@ public class ContentSyncManager {
             existingOI.stream()
                 .filter(item -> item.getSccId() >= 0)
                 .forEach(SCCCachingFactory::deleteOrderItem);
+            cleanupTestingTmpLoggingDir();
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:{}", e.getMessage());
@@ -1450,6 +1477,7 @@ public class ContentSyncManager {
                 try {
                     SCCClient scc = getSCCClient(c);
                     tree = scc.productTree();
+                    cleanupTestingTmpLoggingDir();
                 }
                 catch (SCCClientException | URISyntaxException e) {
                     throw new ContentSyncException(e);
@@ -2414,7 +2442,29 @@ public class ContentSyncManager {
             }
         }
 
+        if (testing) {
+            try {
+                tmpLoggingDir = Files.createTempDirectory("scc-data");
+                return SCCClientFactory.getInstance(url, username, password, localAbsolutePath, getUUID(),
+                        tmpLoggingDir.toAbsolutePath().toString());
+            }
+            catch (IOException e) {
+                log.error(e);
+                // we try without temp testing dir
+            }
+        }
         return SCCClientFactory.getInstance(url, username, password, localAbsolutePath, getUUID());
+    }
+
+    private void cleanupTestingTmpLoggingDir() {
+        if (testing && Objects.nonNull(tmpLoggingDir)) {
+            try {
+                FileUtils.forceDelete(tmpLoggingDir.toFile());
+            }
+            catch (IOException e) {
+                log.error("Unable to delete tmp dir: ", e);
+            }
+        }
     }
 
     /**

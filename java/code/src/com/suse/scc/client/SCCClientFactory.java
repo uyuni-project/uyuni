@@ -48,4 +48,21 @@ public class SCCClientFactory {
             return new SCCWebClient(config);
         }
     }
+
+    /**
+     * Factory method.
+     * @param url the URL of scc
+     * @param username the username
+     * @param password the password
+     * @param resourcePath the local path for JSON files or null
+     * @param uuid the UUID or null
+     * @param loggingDirIn logging dir path
+     * @return the new {@link SCCWebClient}
+     */
+    public static SCCClient getInstance(URI url, String username, String password,
+                                        String resourcePath, String uuid, String loggingDirIn) {
+
+        SCCConfig config = new SCCConfig(url, username, password, uuid, null, loggingDirIn, false);
+        return new SCCWebClient(config);
+    }
 }
