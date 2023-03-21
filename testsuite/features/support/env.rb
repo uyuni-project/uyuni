@@ -360,6 +360,14 @@ Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
 end
 
+Before('@slemicro51_minion') do
+  skip_this_scenario unless $slemicro51_minion
+end
+
+Before('@slemicro51_ssh_minion') do
+  skip_this_scenario unless $slemicro51_ssh_minion
+end
+
 Before('@slemicro52_minion') do
   skip_this_scenario unless $slemicro52_minion
 end

@@ -54,6 +54,8 @@ if $build_validation
   $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $slemicro51_minion = twopence_init("ssh:#{ENV['SLEMICRO51_MINION']}") if ENV['SLEMICRO51_MINION']
+  $slemicro51_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO51_SSHMINION']}") if ENV['SLEMICRO51_SSHMINION']
   $slemicro52_minion = twopence_init("ssh:#{ENV['SLEMICRO52_MINION']}") if ENV['SLEMICRO52_MINION']
   $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
   $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
@@ -94,6 +96,7 @@ if $build_validation
              $sle15sp2_minion, $sle15sp2_ssh_minion, $sle15sp2_client,
              $sle15sp3_minion, $sle15sp3_ssh_minion, $sle15sp3_client,
              $sle15sp4_minion, $sle15sp4_ssh_minion, $sle15sp4_client,
+             $slemicro51_minion, $slemicro51_ssh_minion,
              $slemicro52_minion, $slemicro52_ssh_minion,
              $slemicro53_minion, $slemicro53_ssh_minion,
              $alma9_minion, $alma9_ssh_minion,
@@ -300,6 +303,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp4_client'           => $sle15sp4_client,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'slemicro51_minion'         => $slemicro51_minion,
+                  'slemicro51_ssh_minion'     => $slemicro51_ssh_minion,
                   'slemicro52_minion'         => $slemicro52_minion,
                   'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
                   'slemicro53_minion'         => $slemicro53_minion,
