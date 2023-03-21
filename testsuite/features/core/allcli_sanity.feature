@@ -6,8 +6,7 @@ Feature: Sanity checks
   I want to be sure to use a sane environment
 
   Scenario: The server is healthy
-    Then "server" should have a FQDN
-    And reverse resolution should work for "server"
+    Then reverse resolution should work for "server"
     And the clock from "server" should be exact
     And service "apache2" is enabled on "server"
     And service "apache2" is active on "server"

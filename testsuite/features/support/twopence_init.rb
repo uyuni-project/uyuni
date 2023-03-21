@@ -18,7 +18,7 @@ def client_public_ip(node)
   raise "Cannot resolve node for host '#{host}'" if node.nil?
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
-    output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+    output, code = node.run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
     next unless code.zero?
 
     node.init_public_interface(dev)
@@ -41,6 +41,24 @@ def process_private_and_public_ip(host, node)
   node
 end
 
+def initialize_server(host, node)
+  _out, code = node.run('which uyunictl', check_errors: false)
+  node.init_has_uyunictl if code.zero?
+
+  fqdn, code = node.run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
+  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  node.init_full_hostname(fqdn)
+  node.init_hostname(fqdn.split('.')[0])
+
+  node = process_os_family_and_version(host, fqdn, node.hostname, node)
+  node = process_private_and_public_ip(host, node)
+
+  $node_by_host[host] = node
+  $host_by_node[node] = host
+  node
+end
+
 # Initialize a Twopence node through its host (additionally it will setup some handy maps)
 def twopence_init(host)
   puts "Initializing a twopence node for '#{host}'."
@@ -60,6 +78,8 @@ def twopence_init(host)
   # Lavanda library module extension
   # Look at support/lavanda.rb for more details
   node.extend(LavandaBasic)
+
+  return initialize_server(host, node) if host == 'server'
 
   # Initialize hostname
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)

@@ -200,7 +200,7 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 sle_base_channel =
   if ENV['PROVIDER'].include? 'podman'
     'Fake Base Channel'
-  elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
+  elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr') || $is_container_server
     'openSUSE Leap 15.5 (x86_64)'
   else
     'SLES15-SP4-Pool'
