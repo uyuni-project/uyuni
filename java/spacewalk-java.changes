@@ -1,3 +1,4 @@
+- change jar versions in ivy configuration file
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - support multiple gpgkey urls for a channel (bsc#1208540)
 - Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
