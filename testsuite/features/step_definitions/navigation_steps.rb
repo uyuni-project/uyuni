@@ -939,7 +939,8 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |text, field|
+# identifier must be the value of name, ID or other element attribute, not the shown text
+Then(/^I should see "([^"]*)" in field identified by "([^"]*)"$/) do |text, field|
   raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
 

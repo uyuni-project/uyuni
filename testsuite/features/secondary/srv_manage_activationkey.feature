@@ -26,7 +26,7 @@ Feature: Manipulate activation keys
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
-    And I should see "20" in field "usageLimit"
+    And I should see "20" in field identified by "usageLimit"
 
   Scenario: Change the base channel of the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
