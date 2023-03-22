@@ -355,10 +355,10 @@ The check box can be identified by name, id or label text.
 
 Note that the text area variant handles the new lines characters while the others don't.
 
-* Make sure a text is in a given input field of a form
+* Make sure a text is in a given input field of a form. The identifier can be the name or ID of the element, but it's always the HTML label, not the shown text.
 
 ```gherkin
-  Then I should see "20" in field "usageLimit"
+  Then I should see "20" in field identified by "usageLimit"
 ```
 
 * Type text in the text editor
