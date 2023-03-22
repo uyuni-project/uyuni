@@ -48,8 +48,11 @@ import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
@@ -1690,12 +1693,9 @@ public class ContentSyncManager {
                             Opt.or(
                                     Optional.ofNullable(dbProductsById.get(productJson.getId())),
                                     Optional.ofNullable(SUSEProductFactory.findSUSEProduct(
-                                            productJson.getIdentifier(),
-                                            productJson.getVersion(),
-                                            productJson.getReleaseType(),
-                                            productJson.getArch(),
-                                            false
-                                    ))),
+                                            productJson.getIdentifier(), productJson.getVersion(),
+                                            productJson.getReleaseType(), productJson.getArch(), false))
+                            ),
                             () -> {
                                 SUSEProduct prod = createNewProduct(productJson, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
@@ -1767,8 +1767,9 @@ public class ContentSyncManager {
                             prodRepoLink.setRepository(repo);
                             prodRepoLink.setRootProduct(root);
                             if (!entry.getGpgInfo().isEmpty()) {
-                                // we use only the 1st entry
-                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
+                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
                             }
@@ -1810,8 +1811,9 @@ public class ContentSyncManager {
                             prodRepoLink.setMandatory(entry.isMandatory());
                             prodRepoLink.getRepository().setSigned(entry.isSigned());
                             if (!entry.getGpgInfo().isEmpty()) {
-                                // we use only the 1st entry
-                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
+                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
                             }
@@ -2117,39 +2119,53 @@ public class ContentSyncManager {
         }
         String label = dbChannel.getLabel();
         List<SUSEProductSCCRepository> suseProductSCCRepositories = SUSEProductFactory.lookupPSRByChannelLabel(label);
+        boolean regenPillar = false;
 
-        Opt.consume(suseProductSCCRepositories.stream().findFirst(),
-                () -> {
-                    log.warn("Expired Vendor Channel with label '{}' found. To remove it please run: ", label);
-                    log.warn("spacewalk-remove-channel -c {}", label);
-                },
-                productrepo -> {
-                    SUSEProduct product = productrepo.getProduct();
+        Optional<SUSEProductSCCRepository> prdrepoOpt = suseProductSCCRepositories.stream().findFirst();
+        if (prdrepoOpt.isEmpty()) {
+            log.warn("Expired Vendor Channel with label '{}' found. To remove it please run: ", label);
+            log.warn("spacewalk-remove-channel -c {}", label);
+        }
+        else {
+            SUSEProductSCCRepository productrepo = prdrepoOpt.get();
+            SUSEProduct product = productrepo.getProduct();
 
-                    // update only the fields which are save to be updated
-                    dbChannel.setChannelFamily(product.getChannelFamily());
-                    dbChannel.setName(productrepo.getChannelName());
-                    dbChannel.setSummary(product.getFriendlyName());
-                    dbChannel.setDescription(
-                            Optional.ofNullable(product.getDescription())
-                                    .orElse(product.getFriendlyName()));
-                    dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
-                    dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
-                    dbChannel.setUpdateTag(productrepo.getUpdateTag());
-                    dbChannel.setInstallerUpdates(productrepo.getRepository().isInstallerUpdates());
-                    dbChannel.setGPGKeyUrl(productrepo.getGpgKeyUrl());
-                    dbChannel.setGPGKeyId(productrepo.getGpgKeyId());
-                    dbChannel.setGPGKeyFp(productrepo.getGpgKeyFingerprint());
-                    ChannelFactory.save(dbChannel);
+            // update only the fields which are save to be updated
+            dbChannel.setChannelFamily(product.getChannelFamily());
+            dbChannel.setName(productrepo.getChannelName());
+            dbChannel.setSummary(product.getFriendlyName());
+            dbChannel.setDescription(
+                    Optional.ofNullable(product.getDescription())
+                            .orElse(product.getFriendlyName()));
+            dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
+            dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
+            dbChannel.setUpdateTag(productrepo.getUpdateTag());
+            dbChannel.setInstallerUpdates(productrepo.getRepository().isInstallerUpdates());
+            if (!Objects.equals(dbChannel.getGPGKeyUrl(), productrepo.getGpgKeyUrl())) {
+                dbChannel.setGPGKeyUrl(productrepo.getGpgKeyUrl());
+                regenPillar = true;
+            }
+            dbChannel.setGPGKeyId(productrepo.getGpgKeyId());
+            dbChannel.setGPGKeyFp(productrepo.getGpgKeyFingerprint());
+            ChannelFactory.save(dbChannel);
 
-                    // update Mandatory Flag
-                    dbChannel.getSuseProductChannels().forEach(pc -> suseProductSCCRepositories.forEach(pr -> {
-                        if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
-                            pc.setMandatory(pr.isMandatory());
-                            SUSEProductFactory.save(pc);
-                        }
-                    }));
-                });
+            // update Mandatory Flag
+            for (SUSEProductChannel pc : dbChannel.getSuseProductChannels()) {
+                for (SUSEProductSCCRepository pr : suseProductSCCRepositories) {
+                    if (pr.getProduct().equals(pc.getProduct()) && pr.isMandatory() != pc.isMandatory()) {
+                        pc.setMandatory(pr.isMandatory());
+                        regenPillar = true;
+                        SUSEProductFactory.save(pc);
+                    }
+                }
+            }
+        }
+        if (regenPillar) {
+            for (MinionServer minion : ServerFactory.listMinionsByChannel(dbChannel.getId())) {
+                MinionGeneralPillarGenerator gen = new MinionGeneralPillarGenerator();
+                gen.generatePillarData(minion);
+            }
+        }
     }
 
     /**

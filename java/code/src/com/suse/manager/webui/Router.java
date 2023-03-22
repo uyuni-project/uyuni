@@ -46,6 +46,7 @@ import com.suse.manager.webui.controllers.ImageUploadController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
+import com.suse.manager.webui.controllers.PackageController;
 import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
@@ -158,6 +159,9 @@ public class Router implements SparkApplication {
 
         // Systems API
         systemsController.initRoutes(jade);
+
+        // Packages
+        PackageController.initRoutes(jade);
 
         // Proxy
         proxyController.initRoutes(proxyController, jade);

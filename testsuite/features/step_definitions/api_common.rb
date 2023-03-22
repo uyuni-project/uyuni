@@ -234,7 +234,8 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   id = description = "#{client}_key"
   base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]
   key = $api_test.activationkey.create(id, description, base_channel, 100)
-  raise if key.nil?
+  raise StandardError, 'Error creating activation key via the API' if key.nil?
+  STDOUT.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
   $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
@@ -268,6 +269,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
                      "custom_channel_#{client}"
                    end
   child_channels.push(custom_channel)
+  STDOUT.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
   $api_test.activationkey.add_child_channels(key, child_channels)

@@ -71,7 +71,10 @@ Capybara.register_driver(:headless_chrome) do |app|
       args: chrome_options,
       w3c: false,
       prefs: {
-        'download.default_directory': '/tmp/downloads'
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
+        }
       }
     },
     unexpectedAlertBehaviour: 'accept',
@@ -364,6 +367,14 @@ Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
 end
 
+Before('@slemicro51_minion') do
+  skip_this_scenario unless $slemicro51_minion
+end
+
+Before('@slemicro51_ssh_minion') do
+  skip_this_scenario unless $slemicro51_ssh_minion
+end
+
 Before('@slemicro52_minion') do
   skip_this_scenario unless $slemicro52_minion
 end
@@ -424,7 +435,7 @@ Before('@skip_for_rocky9') do
   skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
-Before('@skip_for_sle_micro') do
+Before('@skip_for_sle_micro') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'slemicro'
 end
 
