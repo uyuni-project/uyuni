@@ -41,6 +41,9 @@ public class RecurringActionScheduleJson {
      */
     private String targetType;
 
+    /** The name of the target */
+    private String targetName;
+
     /** Array containing Quartz information */
     private Map<String, String> cronTimes;
 
@@ -55,9 +58,6 @@ public class RecurringActionScheduleJson {
 
     /**  Login of the schedule creator **/
     private String creatorLogin;
-
-    /**  Name of the Organization - only applicable for OrgRecurringAction **/
-    private String orgName;
 
     /**
      * Gets the recurringActionId.
@@ -233,11 +233,11 @@ public class RecurringActionScheduleJson {
     }
 
     /**
-     *  Sets the name of the organization
+     *  Sets the name of the target
      *
-     * @param orgNameIn name of the organization
+     * @param nameIn name of the target
      */
-    public void setOrgName(String orgNameIn) {
-        this.orgName = orgNameIn;
+    public void setTargetName(String nameIn) {
+        this.targetName = nameIn;
     }
 }
