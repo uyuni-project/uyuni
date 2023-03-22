@@ -58,7 +58,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
   Scenario: Activation Key was correctly created
     When I follow the left menu "Systems > Activation Keys"
     And I follow "My Activation Key created via Salt"
-    Then I should see "10" in field "usageLimit"
+    Then I should see "10" in field identified by "usageLimit"
     And I should see "virtualization_host" as checked
     And I should see a "Push via SSH" text
     And I should see "enable-config-auto-deploy" as checked
