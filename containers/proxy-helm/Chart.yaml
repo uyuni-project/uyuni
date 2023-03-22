@@ -3,7 +3,7 @@
 #!BuildTag: uyuni/proxy:4.4.1
 #!BuildTag: uyuni/proxy:4.4.1-build%RELEASE%
 apiVersion: v2
-name: uyuni-proxy-helm
+name: proxy-helm
 description: Uyuni proxy containers.
 type: application
 home: https://www.uyuni-project.org/
