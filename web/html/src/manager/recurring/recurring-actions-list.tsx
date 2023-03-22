@@ -10,7 +10,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
-import { targetTypeToString } from "./recurring-actions-utils";
+import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 type Props = {
   data?: any;
@@ -119,6 +119,13 @@ class RecurringActionsList extends React.Component<Props, State> {
                 columnKey="targetType"
                 header={t("Target Type")}
                 cell={(row) => targetTypeToString(row.targetType)}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="targetName"
+                header={t("Target Name")}
+                cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId)}
               />
               <Column
                 columnClass="text-right"

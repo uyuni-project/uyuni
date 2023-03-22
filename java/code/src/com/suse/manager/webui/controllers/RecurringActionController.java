@@ -28,7 +28,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
+import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
@@ -173,12 +174,24 @@ public class RecurringActionController {
         json.setTest(((RecurringHighstateType) a.getActionType()).isTestMode());
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId());
+        json.setTargetName(getEntityName(a, targetType));
         json.setCreated(a.getCreated());
         json.setCreatorLogin(a.getCreator().getLogin());
-        if (a instanceof OrgRecurringAction) {
-            json.setOrgName(OrgFactory.lookupById(a.getEntityId()).getName());
-        }
+
         return json;
+    }
+
+    private static String getEntityName(RecurringAction action, RecurringAction.TargetType type) {
+        switch (type) {
+            case MINION:
+                return ((MinionRecurringAction) action).getMinion().getName();
+            case GROUP:
+                return ((GroupRecurringAction) action).getGroup().getName();
+            case ORG:
+                return ((OrgRecurringAction) action).getOrg().getName();
+            default:
+                throw new IllegalStateException("Unsupported type " + type);
+        }
     }
 
     /**
