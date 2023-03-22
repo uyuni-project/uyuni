@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export UYUNI_PROJECT=jordimassaguerpla
+export UYUNI_PROJECT=uyuni-project
 export UYUNI_VERSION=master
 
 set -x
