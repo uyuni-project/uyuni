@@ -87,7 +87,30 @@ while read PKG_NAME PKG_VER PKG_DIR; do
  for tries in 1 2 3; do
 
   if [[ $PKG_DIR == *"containers"* ]]; then
-    continue
+    CONTAINER_NAME=$(basename "$PKG_DIR")
+    echo "=== Building container image [${CONTAINER_NAME}]"
+    if [ -d "$PKG_DIR" ]; then
+      cp -r "$PKG_DIR" "$SRPM_DIR/"
+      if [ -f "${PKG_DIR}/Chart.yaml" ]; then
+        pushd "${SRPM_DIR}/${CONTAINER_NAME}"
+        CHART_FILES="values.yaml values.schema.json charts crds templates LICENSE README.md"
+        TO_INCLUDE=""
+        for F in ${CHART_FILES}; do
+          if [ -e "${F}" ]; then
+              TO_INCLUDE="${TO_INCLUDE} ${F}"
+          fi
+        done
+        tar cf "${SRPM_DIR}/${CONTAINER_NAME}/${CONTAINER_NAME}.tar" "${TO_INCLUDE}"
+        rm -r "${TO_INCLUDE}"
+        popd
+      fi
+      SUCCEED_CNT=$(($SUCCEED_CNT+1))
+    else
+      FAILED_CNT=$(($FAILED_CNT+1))
+      FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $(basename $PKG_DIR)")"
+      echo "*** FAILED Building package [$(basename $PKG_DIR)] - $PKG_DIR does not exist"
+    fi
+    continue 2
   fi
 
   echo "=== Building package [$PKG_NAME-$PKG_VER] from $PKG_DIR (Try $tries)"
