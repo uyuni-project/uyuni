@@ -8,7 +8,7 @@ import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { DisplayHighstate } from "../state/display-highstate";
-import { targetTypeToString } from "./recurring-actions-utils";
+import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 type RecurringActionsDetailsProps = {
   data?: any;
@@ -109,12 +109,10 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                 <td>{t("Target type")}:</td>
                 <td>{targetTypeToString(data.targetType)}</td>
               </tr>
-              {window.entityType === "NONE" && data.targetType === "ORG" && (
-                <tr>
-                  <td>{t("Organization name")}:</td>
-                  <td>{data.orgName}</td>
-                </tr>
-              )}
+              <tr>
+                <td>{t("Target name")}:</td>
+                <td>{targetNameLink(data.targetName, data.targetType, data.targetId)}</td>
+              </tr>
               <tr>
                 <td>{t("Created by")}:</td>
                 <td>{t(data.creatorLogin)}</td>
