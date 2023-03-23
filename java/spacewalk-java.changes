@@ -1,3 +1,4 @@
+- Update report outdated system query to de-duplicate errata id's
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Fix systems subscribed to channel CSV download (bsc#1201063)
