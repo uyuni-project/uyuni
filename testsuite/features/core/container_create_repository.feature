@@ -119,3 +119,6 @@ Feature: Add a repository to a channel
     And I click on "Save Repositories"
     Then I should see a "Fake-RH-Like-Channel repository information was successfully updated" text
 
+  Scenario: Cleanup disable source package syncing
+    Then I disable source package syncing
+
