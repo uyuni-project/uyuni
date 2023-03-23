@@ -146,8 +146,8 @@ public abstract class LoggingInvocationProcessor {
         Stream<String> restrictedArguments = Stream.of("password", "key", "content");
         String handlerAndMethod = handler + "." + method;
         return restrictedArguments.anyMatch(s -> argName.toLowerCase().contains(s)) ||
-                RESTRICTED_ARGS.containsKey(handlerAndMethod) &&
-                RESTRICTED_ARGS.get(handlerAndMethod).containsValue(argName);
+                (RESTRICTED_ARGS.containsKey(handlerAndMethod) &&
+                RESTRICTED_ARGS.get(handlerAndMethod).containsValue(argName));
     }
 
     protected static StopWatch getStopWatch() {
