@@ -195,6 +195,10 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                         argPosition == 11 || argPosition == 12 || argPosition == 13;
             case "admin.payg.setDetails":
                 return argPosition == 1;
+            case "formula.setSystemFormulaData":
+                return argPosition == 3;
+            case "formula.setGroupFormulaData":
+                return argPosition == 3;
             default:
                 return false;
         }
