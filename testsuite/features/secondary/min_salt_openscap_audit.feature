@@ -10,7 +10,7 @@ Feature: OpenSCAP audit of Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
-  
+
   @skip_if_container
   Scenario: Install the OpenSCAP packages on the SLE minion
     When I refresh the metadata for "sle_minion"
