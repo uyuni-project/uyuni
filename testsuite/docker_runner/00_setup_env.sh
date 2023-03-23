@@ -12,7 +12,7 @@ if [ -z "${UYUNI_VERSION}" ];then
 fi
 
 echo "Killing old containers"
-containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test-1 controller-test-1"
+containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
 for i in ${containers};do
     docker kill ${i}
 done
