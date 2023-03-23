@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @rhlike_minion
-Feature: Bootstrap a Red Hat-like minion and do some basic operations on it
+Feature: Bootstrap a Red Hat-like minion
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -16,6 +16,6 @@ Feature: Bootstrap a Red Hat-like minion and do some basic operations on it
     And I wait until I do not see "Loading..." text
     Then I should see a "accepted" text
     When I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until I see the name of "rhlike_minion", refreshing the page
     Then the Salt master can reach "rhlike_minion"
 

@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @deblike_minion
-Feature: Bootstrap a Debian-like minion and do some basic operations on it
+Feature: Bootstrap a Debian-like minion
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
