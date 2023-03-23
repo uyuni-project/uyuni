@@ -14,6 +14,7 @@
  */
 package com.suse.manager.admin;
 
+/* TEST */
 public enum PaygAdminFields {
     description(true),
     host(false),
