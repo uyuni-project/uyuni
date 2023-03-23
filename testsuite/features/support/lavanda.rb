@@ -151,16 +151,35 @@ module LavandaBasic
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
-    cmd_prefix = @in_has_uyunictl ? "uyunictl exec -i " : ""
+    cmd_prefixed = cmd
+    if @in_has_uyunictl
+      cmd_prefixed = "uyunictl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'"
+    end
+    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+  end
+
+  ##
+  # It runs a command, and returns the output, error, and exit code.
+  #
+  # Args:
+  #   cmd: The command to run.
+  #   separated_results: Whether the results should be stored separately. Defaults to false.
+  #   check_errors: Whether to check for errors or not. Defaults to true.
+  #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
+  #   user: The user to be used to run the command. Defaults to root.
+  #   successcodes: An array with the values to be accepted as success codes from the command run.
+  #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
+  #   verbose: Whether to log the output of the command in case of success. Defaults to false.
+  def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
-      out, err, _lo, _rem, code = test_and_store_results_separately(cmd_prefix + cmd, user, timeout, buffer_size)
+      out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
     else
-      out, _lo, _rem, code = test_and_store_results_together(cmd_prefix + cmd, user, timeout, buffer_size)
+      out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
     if check_errors
-      raise "FAIL: #{cmd_prefix}#{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
+      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
     end
-    STDOUT.puts "#{cmd_prefix}#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
+    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
     if separated_results
       [out, err, code]
     else
@@ -208,5 +227,20 @@ module LavandaBasic
       sleep 2
       result
     end
+  end
+
+  def inject(local_file, remote_file, user = "root", dots = true)
+    if @in_has_uyunictl
+      tmp_folder, _code = run_local("mktemp -d")
+      tmp_file = File.join(tmp_folder.strip, File.basename(local_file))
+      code, _remote = inject_file(local_file, tmp_file, user, dots)
+      if code.zero?
+        _out, code = run_local("uyunictl cp --user #{user} #{tmp_file} server:#{remote_file}")
+      end
+      run_local("rm -r #{tmp_folder}")
+    else
+        code, _remote = inject_file(local_file, remote_file, user, dots)
+    end
+    code
   end
 end
