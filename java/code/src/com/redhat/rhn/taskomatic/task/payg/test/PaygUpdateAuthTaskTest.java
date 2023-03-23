@@ -46,6 +46,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jcraft.jsch.JSchException;
 
+import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.junit5.JUnit5Mockery;
@@ -60,13 +61,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
@@ -194,20 +197,23 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(productTree)));
 
+        Path tmpLogDir = Files.createTempDirectory("scc-data");
+        try {
+            ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
+            csm.setUpgradePathsJson(new File(TestUtils.findTestData(UPGRADE_PATHS).getPath()));
+            csm.updateSUSEProducts(csm.getProducts());
 
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setTesting(true);
-        csm.setSumaProductTreeJson(Optional.empty());
-        csm.setCloudPaygManager(mgr);
-        csm.setUpgradePathsJson(new File(TestUtils.findTestData(UPGRADE_PATHS).getPath()));
-        csm.updateSUSEProducts(csm.getProducts());
-
-
-        WireMock.verify(WireMock.getRequestedFor(
+            WireMock.verify(WireMock.getRequestedFor(
                 WireMock.urlPathEqualTo("/connect/organizations/products/unscoped")));
-        WireMock.verify(WireMock.getRequestedFor(
+            WireMock.verify(WireMock.getRequestedFor(
                 WireMock.urlPathEqualTo("/suma/product_tree.json")));
-        wireMockServer.stop();
+            wireMockServer.stop();
+        }
+        finally {
+            if (Objects.nonNull(tmpLogDir)) {
+                FileUtils.forceDelete(tmpLogDir.toFile());
+            }
+        }
 
         mgr = new CloudPaygManager() {
             @Override
