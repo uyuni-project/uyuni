@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 

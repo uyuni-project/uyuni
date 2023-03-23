@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @sle_minion
 @scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
