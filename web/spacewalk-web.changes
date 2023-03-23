@@ -1,3 +1,4 @@
+- Disable login button with empty password
 - Ignore mandatory channels results that don't match list of channels (bsc#1204270)
 - Increase datetimepicker font sizes (bsc#1210437)
 - Recurring custom states
