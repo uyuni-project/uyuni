@@ -929,6 +929,7 @@ sub postgresql_reportdb_setup {
     
     if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         my %dbOptions = ();
+        ### uyuni-setup-reportdb writes param in rhn.conf. We need to read them and persists them in satellite-local-rules.conf
         read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION, \%dbOptions);
         ### here we need _ instead of - cause we read them from rhn.conf
         write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled');
