@@ -128,7 +128,7 @@ B<rhn-config-satellite.pl> --target=<target_file> --option=<key,value> [ --optio
 
 =head1 DESCRIPTION
 
-This script will make sure that in F<target_file> are present configuration variables in format C<key=value>. If such key already exist there, it is removed and new variables are put at the end of the F<target_file>. Original file is preserved as F<target_file.DATE>
+This script will make sure that in F<target_file> are present configuration variables in format C<key=value>. If such key already exist there, it is removed and new variables are put at the end of the F<target_file>. Original file is preserved as F<target_file.CURRENT_TIME>
 
 This script is used internally by B<spacewalk-setup>(1)
 =head1 OPTIONS
