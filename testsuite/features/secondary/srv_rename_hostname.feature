@@ -1,6 +1,7 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT License.
 
+@skip_if_container
 @skip_if_cloud
 Feature: Reconfigure the server's hostname
   As admin 

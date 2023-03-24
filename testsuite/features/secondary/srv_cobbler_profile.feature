@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
+@skip_if_container
 Feature: Cobbler editing profiles results in ISE
   Tests for occuring Cobbler issue (bsc#1207532)
   This feature is split up into 2 sections

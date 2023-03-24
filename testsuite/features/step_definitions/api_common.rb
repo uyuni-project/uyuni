@@ -6,10 +6,17 @@
 require 'json'
 require 'socket'
 
+## Testing inside containers needs to be done without ssl
+ssl_verify = if $is_container_provider
+               false
+             else
+               true
+             end
+
 $api_test = if $debug_mode
               ApiTestXmlrpc.new($server.full_hostname)
             else
-              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname, ssl_verify) : ApiTestXmlrpc.new($server.full_hostname)
             end
 
 ## system namespace
@@ -496,7 +503,7 @@ Then(/^I should get the test channel$/) do
   channel = if arch != 'x86_64'
               'fake-i586-channel'
             else
-              'fake-rpm-sles-channel'
+              'fake-rpm-suse-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
@@ -586,4 +593,16 @@ When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
   $api_test.system.set_variables(system_id, variables)
+end
+
+When(/^I create a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'fedora18')
+end
+
+When(/^I create a kickstart tree with kernel options via the API$/) do
+  $api_test.kickstart.tree.create_distro_w_kernel_options('fedora_kickstart_distro_kernel_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'fedora18', 'self_update=0', 'self_update=1')
+end
+
+When(/^I update a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'generic_rpm', 'self_update=0', 'self_update=1')
 end

@@ -41,7 +41,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Managers"
 
   Scenario: User Roles were assigned
@@ -58,7 +58,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
   Scenario: Activation Key was correctly created
     When I follow the left menu "Systems > Activation Keys"
     And I follow "My Activation Key created via Salt"
-    Then I should see "10" in field "usageLimit"
+    Then I should see "10" in field identified by "usageLimit"
     And I should see "virtualization_host" as checked
     And I should see a "Push via SSH" text
     And I should see "enable-config-auto-deploy" as checked

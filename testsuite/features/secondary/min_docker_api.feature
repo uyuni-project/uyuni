@@ -5,6 +5,7 @@
 #       it is tested in buildhost_docker_build_image.feature and
 #                       buildhost_docker_auth_registry.feature
 
+@skip_if_container
 @skip_if_cloud
 @scope_building_container_images
 Feature: API "image" namespace for containers and sub-namespaces

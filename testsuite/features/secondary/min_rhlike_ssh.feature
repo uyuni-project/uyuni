@@ -5,6 +5,7 @@
 # 2) run a remote command
 # 3) delete Red Hat-like SSH minion and register as normal minion
 
+@skip_if_container
 @scope_res
 @rhlike_minion
 Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operations on it
