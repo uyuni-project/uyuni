@@ -1,3 +1,5 @@
+- change backup file extension from .orig to .current_time
+
 -------------------------------------------------------------------
 Mon Sep 26 12:30:19 UTC 2022 - marina.latini@suse.com
 
