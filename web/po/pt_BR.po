@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 15:33+0100\n"
+"POT-Creation-Date: 2023-03-24 14:54+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -250,7 +250,7 @@ msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:123
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -266,6 +266,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:72
+#: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -398,6 +400,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:144
 msgid "Filter by package name"
 msgstr ""
 
@@ -527,7 +530,7 @@ msgid "Custom Quartz format:"
 msgstr "Formato de quartzo personalizado:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:371
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "There are no entries to show."
 msgstr "Não há entradas para mostrar."
 
@@ -625,7 +628,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:372
+#: ../html/src/components/table/TableDataHandler.tsx:375
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
@@ -638,7 +641,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:405
+#: ../html/src/components/table/TableDataHandler.tsx:408
 msgid "items per page"
 msgstr ""
 
@@ -1212,6 +1215,7 @@ msgid "Arch"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:684
+#: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr ""
 
@@ -1524,6 +1528,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
 msgstr ""
 
@@ -2133,6 +2138,7 @@ msgid "Delete Project"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
 msgstr ""
 
@@ -4168,6 +4174,41 @@ msgstr ""
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:80
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:81
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:89
+msgid " Package Management "
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Binary packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:118
+#, fuzzy
+msgid "Source packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:126
+#, fuzzy
+msgid "package"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:146
+msgid "No Packages."
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:172
+msgid "Content Provider"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
