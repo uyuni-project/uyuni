@@ -123,8 +123,8 @@ use constant SCC_CREDENTIAL_FILE =>
 my $DEBUG;
 $DEBUG = 0;
 
-my $SILENT;
-$SILENT = 0;
+my $DRY_RUN;
+$DRY_RUN = 0;
 
 sub parse_options {
   my @valid_opts = (
@@ -285,7 +285,7 @@ sub system_debug {
   if ($DEBUG) {
     print "Command: '" . join(' ', @args) . "'\n";
   }
-  if ($SILENT) {
+  if ($DRY_RUN) {
     return 0;
   }
   else {
@@ -533,7 +533,7 @@ EOQ
         $drop_sth->execute();
     }
 
-    if ($SILENT) {
+    if ($DRY_RUN) {
         $dbh->rollback();
     }
     else {
