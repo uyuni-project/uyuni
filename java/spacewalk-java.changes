@@ -1,3 +1,5 @@
+- Update report outdated system query to de-duplicate errata id's
+- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Fix systems subscribed to channel CSV download (bsc#1201063)
 - Fix cobbler system entries for retail terminals (bsc#1208661)
@@ -5,6 +7,12 @@
 - Add missing text for user preferenaces page
 - Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
+
+-------------------------------------------------------------------
+Tue Mar 21 13:43:03 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.51-1
+  * support multiple gpgkey urls for a channel (bsc#1208540)
 
 -------------------------------------------------------------------
 Fri Mar 17 11:59:18 CET 2023 - jgonzalez@suse.com

@@ -624,3 +624,15 @@ When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)
   variables = values.rows_hash
   $api_test.system.set_variables(system_id, variables)
 end
+
+When(/^I create a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'fedora18')
+end
+
+When(/^I create a kickstart tree with kernel options via the API$/) do
+  $api_test.kickstart.tree.create_distro_w_kernel_options('fedora_kickstart_distro_kernel_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'fedora18', 'self_update=0', 'self_update=1')
+end
+
+When(/^I update a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'rhel8-pool-x86_64', 'generic_rpm', 'self_update=0', 'self_update=1')
+end

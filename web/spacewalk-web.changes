@@ -1,3 +1,4 @@
+- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - Fix datepicker layout shift on Highstate pages
 
 -------------------------------------------------------------------

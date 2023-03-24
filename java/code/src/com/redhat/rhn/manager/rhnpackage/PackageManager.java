@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -54,6 +55,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -1252,6 +1255,150 @@ public class PackageManager extends BaseManager {
             elabs.put("org_id", orgId);
             dr.setElaborationParams(elabs);
             return dr;
+    }
+
+    /**
+     * List all custom packages for an org
+     * @param orgId the org
+     * @param source list source packages instead of regular
+     * @param pc page controller
+     * @return List of custom package (PackageOverview)
+     */
+    public static DataResult<PackageOverview> listCustomPackages(Long orgId, boolean source, PageControl pc) {
+        if (source) {
+            if (List.of("provider", "channels").contains(pc.getSortColumn())) {
+                pc.setSortColumn(null);
+            }
+            return new PagedSqlQueryBuilder("PS.id")
+                    .select("PS.id AS ID, " +
+                            "SRPM.name AS NVREA, " +
+                            "PS.path as PATH")
+                    .from("rhnPackageSource PS " +
+                            "inner join rhnSourceRPM SRPM on PS.source_rpm_id = SRPM.id")
+                    .where("PS.org_id = :org_id")
+                    .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
+        }
+
+        // We can't use aliases in WHERE clauses and using a subquery would defeat the idea of paged SQL query
+        if ("nvrea".equals(pc.getFilterColumn())) {
+            pc.setFilterColumn("PN.name");
+        }
+        return new PagedSqlQueryBuilder("P.id")
+                .select("P.id AS ID, " +
+                        "PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS NVREA, " +
+                        "PP.name as provider, " +
+                        "(select string_agg(C.name, ',') " +
+                            "FROM rhnChannel C, rhnChannelPackage CP " +
+                            "WHERE CP.package_id = P.id AND c.id = CP.channel_id) AS channels")
+                .from("rhnPackage P " +
+                        "inner join rhnPackageArch PA on P.package_arch_id = PA.id " +
+                        "inner join rhnPackageName PN on P.name_id = PN.id " +
+                        "inner join rhnPackageEVR PE on P.evr_id = PE.id " +
+                        "left join rhnPackageKeyAssociation assoc on assoc.package_id = P.id " +
+                        "left join rhnPackageKey KEY on KEY.id = assoc.key_id " +
+                        "left join rhnPackageProvider PP on KEY.provider_id = PP.id")
+                .countFrom("rhnPackage P")
+                .where("P.org_id = :org_id")
+                .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
+    }
+
+    /**
+     * List orphaned custom packages for an org
+     * @param orgId the org
+     * @param source list source packages instead of regular
+     * @param pc page controller
+     * @return list of package overview objects
+     */
+    public static DataResult<PackageOverview> listOrphanPackages(Long orgId, boolean source, PageControl pc) {
+        if ("channels".equals(pc.getSortColumn())) {
+            pc.setSortColumn(null);
+        }
+
+        if (source) {
+            if ("provider".equals(pc.getSortColumn())) {
+                pc.setSortColumn(null);
+            }
+            return new PagedSqlQueryBuilder("PS.id")
+                    .select("PS.id AS ID, " +
+                            "SRPM.name AS NVREA, " +
+                            "PS.path as PATH")
+                    .from("rhnPackageSource PS " +
+                            "inner join rhnSourceRPM SRPM on PS.source_rpm_id = SRPM.id " +
+                            "left join rhnPackage P on SRPM.id = P.source_rpm_id " +
+                            "left join rhnChannelPackage CP on CP.package_id")
+                    .where("PS.org_id = :org_id AND CP.package_id is null")
+                    .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
+        }
+
+        // We can't use aliases in WHERE clauses and using a subquery would defeat the idea of paged SQL query
+        if ("nvrea".equals(pc.getFilterColumn())) {
+            pc.setFilterColumn("PN.name");
+        }
+        return new PagedSqlQueryBuilder("P.id")
+                .select("P.id AS ID, " +
+                        "PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS NVREA, " +
+                        "PP.name as provider")
+                .from("rhnPackage P " +
+                        "inner join rhnPackageArch PA on P.package_arch_id = PA.id " +
+                        "inner join rhnPackageName PN on P.name_id = PN.id " +
+                        "inner join rhnPackageEVR PE on P.evr_id = PE.id " +
+                        "left join rhnChannelPackage CP on CP.package_id = P.id " +
+                        "left join rhnPackageKeyAssociation assoc on assoc.package_id = P.id " +
+                        "left join rhnPackageKey KEY on KEY.id = assoc.key_id " +
+                        "left join rhnPackageProvider PP on KEY.provider_id = PP.id")
+                .where("P.org_id = :org_id AND CP.package_id is null")
+                .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
+    }
+
+    /**
+     * list custom packages contained in a channel
+     * @param cid the channel id
+     * @param orgId the org id
+     * @param source list source packages instead of regular
+     * @param pc page controller
+     * @return the list of custom package (package overview)
+     */
+    public static DataResult<PackageOverview> listCustomPackageForChannel(Long cid, Long orgId,
+                                                                          boolean source, PageControl pc) {
+        if (source) {
+            if (List.of("provider", "channels").contains(pc.getSortColumn())) {
+                pc.setSortColumn(null);
+            }
+            return new PagedSqlQueryBuilder("PS.id")
+                    .select("PS.id AS ID, " +
+                            "SRPM.name AS NVREA, " +
+                            "PS.path as PATH")
+                    .from("rhnPackageSource PS " +
+                            "inner join rhnSourceRPM SRPM on PS.source_rpm_id = SRPM.id " +
+                            "left join rhnPackage P on SRPM.id = P.source_rpm_id " +
+                            "left join rhnChannelPackage CP on CP.package_id = P.id")
+                    .where("PS.org_id = :org_id AND CP.channel_id = :cid")
+                    .run(Map.of("org_id", orgId, "cid", cid), pc,
+                            PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
+        }
+
+        // We can't use aliases in WHERE clauses and using a subquery would defeat the idea of paged SQL query
+        if ("nvrea".equals(pc.getFilterColumn())) {
+            pc.setFilterColumn("PN.name");
+        }
+        return new PagedSqlQueryBuilder("P.id")
+                .select("P.id AS ID, " +
+                        "PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS NVREA, " +
+                        "PP.name as provider, " +
+                        "(select string_agg(C.name, ',') " +
+                        "FROM rhnChannel C, rhnChannelPackage CP " +
+                        "WHERE CP.package_id = P.id AND c.id = CP.channel_id) AS channels")
+                .from("rhnPackage P " +
+                        "inner join rhnPackageArch PA on P.package_arch_id = PA.id " +
+                        "inner join rhnPackageName PN on P.name_id = PN.id " +
+                        "inner join rhnPackageEVR PE on P.evr_id = PE.id " +
+                        "left join rhnPackageKeyAssociation assoc on assoc.package_id = P.id " +
+                        "left join rhnPackageKey KEY on KEY.id = assoc.key_id " +
+                        "left join rhnPackageProvider PP on KEY.provider_id = PP.id " +
+                        "left join rhnChannelPackage CP on P.id = CP.package_id")
+                .where("P.org_id = :org_id AND CP.channel_id = :cid")
+                .run(Map.of("org_id", orgId, "cid", cid), pc,
+                        PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
     }
 
     /**

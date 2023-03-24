@@ -1,3 +1,5 @@
+- use template for reportdb configuration (bsc#1206783)
+
 -------------------------------------------------------------------
 Wed Feb 22 14:43:11 CET 2023 - jgonzalez@suse.com
 

@@ -123,6 +123,9 @@ use constant SCC_CREDENTIAL_FILE =>
 my $DEBUG;
 $DEBUG = 0;
 
+my $DRY_RUN;
+$DRY_RUN = 0;
+
 sub parse_options {
   my @valid_opts = (
             "help",
@@ -204,6 +207,9 @@ sub read_config {
       $value =~ s/^\s*//msg;
       $value =~ s/\s*$//msg;
       $options->{$key} = $value;
+      if ($DEBUG) {
+        print("read $key = $value from $config_file\n");
+      }
     }
   }
   return;
@@ -278,6 +284,8 @@ sub system_debug {
 
   if ($DEBUG) {
     print "Command: '" . join(' ', @args) . "'\n";
+  }
+  if ($DRY_RUN) {
     return 0;
   }
   else {
@@ -531,7 +539,7 @@ EOQ
         $drop_sth->execute();
     }
 
-    if ($DEBUG) {
+    if ($DRY_RUN) {
         $dbh->rollback();
     }
     else {
@@ -869,7 +877,7 @@ sub postgresql_setup_db {
     my $populate_db = 0;
 
     set_hibernate_conf($answers);
-    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled', 'hibernate.dialect', 'hibernate.connection.driver_class', 'hibernate.connection.driver_proto');
+    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
 
     postgresql_populate_db($opts, $answers, $populate_db);
 
@@ -919,11 +927,10 @@ sub postgresql_reportdb_setup {
     }
     if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         my %dbOptions = ();
+        ### uyuni-setup-reportdb writes param in rhn.conf. We need to read them and persists them in satellite-local-rules.conf
         read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION, \%dbOptions);
-        foreach my $key (keys %dbOptions) {
-            delete $dbOptions{$key} if ($key !~ /^report_/);
-        }
-        write_config(\%dbOptions, '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
+        ### here we need _ instead of - cause we read them from rhn.conf
+        write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled');
     }
     print loc("** Database: Installation complete.\n");
 
@@ -1245,6 +1252,7 @@ sub write_rhn_conf {
         }
 
         write_config(\%config, DEFAULT_RHN_CONF_LOCATION);
+        write_config(\%config, Spacewalk::Setup::DEFAULT_SATCON_DICT);
 }
 
 # Set hibernate strings into answers according to DB backend.
@@ -1256,6 +1264,7 @@ sub set_hibernate_conf {
         $answers->{'hibernate.connection.driver_class'} = "org.postgresql.Driver";
         $answers->{'hibernate.connection.driver_proto'} = "jdbc:postgresql";
     }
+    write_rhn_conf($answers, 'hibernate.dialect', 'hibernate.connection.driver_class', 'hibernate.connection.driver_proto');
 }
 
 =head1 DESCRIPTION

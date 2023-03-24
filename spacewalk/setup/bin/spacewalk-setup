@@ -148,10 +148,9 @@ setup_ssl_certs(\%opts, \%answers);
 
 if(not $opts{"skip-reportdb-setup"}) {
     Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+    print Spacewalk::Setup::loc("* Report DB Configured. \n");
 }
 
-print Spacewalk::Setup::loc("* Deploying configuration files.\n");
-populate_final_configs(\%opts, \%answers);
 
 if(not $opts{"skip-db-population"}) {
     print Spacewalk::Setup::loc("* Update configuration in database.\n");
@@ -160,6 +159,9 @@ if(not $opts{"skip-db-population"}) {
 
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
+
+print Spacewalk::Setup::loc("* Deploying configuration files.\n");
+populate_final_configs(\%opts, \%answers);
 
 if ($opts{'upgrade'}) {
   Spacewalk::Setup::postgresql_start() if (Spacewalk::Setup::is_embedded_db(\%opts));
