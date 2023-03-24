@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-22 10:10+0100\n"
+"POT-Creation-Date: 2023-03-24 14:57+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -248,7 +248,7 @@ msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:133
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -264,6 +264,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:71
+#: ../html/src/manager/packages/list.tsx:124
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -472,7 +474,7 @@ msgid "Custom Quartz format:"
 msgstr "Formato de quartzo personalizado:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:348
+#: ../html/src/components/table/TableDataHandler.tsx:351
 msgid "There are no entries to show."
 msgstr "Não há entradas para mostrar."
 
@@ -530,7 +532,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:349
+#: ../html/src/components/table/TableDataHandler.tsx:352
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
@@ -542,7 +544,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:380
+#: ../html/src/components/table/TableDataHandler.tsx:383
 msgid "items per page"
 msgstr ""
 
@@ -1104,6 +1106,7 @@ msgid "Arch"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:644
+#: ../html/src/manager/packages/list.tsx:156
 msgid "Channels"
 msgstr ""
 
@@ -1412,6 +1415,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:101
 msgid "Channel"
 msgstr ""
 
@@ -2025,6 +2029,7 @@ msgid "Delete Project"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:150
 msgid "Package"
 msgstr ""
 
@@ -3981,6 +3986,45 @@ msgstr ""
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:79
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:80
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:88
+msgid " Package Management "
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:116
+#, fuzzy
+msgid "Binary packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Source packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:125
+#, fuzzy
+msgid "package"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:143
+msgid "Filter by package name"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:144
+msgid "No Packages."
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:170
+msgid "Content Provider"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
