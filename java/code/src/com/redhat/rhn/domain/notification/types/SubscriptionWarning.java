@@ -52,17 +52,11 @@ public class SubscriptionWarning implements NotificationData {
 
     @Override
     public String getSummary() {
-         if (expiresSoon()) {
-             return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.summary");
-         }
-        return null;
+         return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.summary");
     }
 
     @Override
     public String getDetails() {
-        if (expiresSoon()) {
-            return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.detail");
-        }
-        return null;
+        return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.detail");
     }
 }

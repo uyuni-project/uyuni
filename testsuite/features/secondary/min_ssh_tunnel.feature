@@ -1,6 +1,7 @@
 # Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_salt_ssh
 @ssh_minion
 Feature: Register a Salt system to be managed via SSH tunnel

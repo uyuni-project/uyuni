@@ -80,7 +80,7 @@ Then(/^it should be possible to use the HTTP proxy$/) do
 end
 
 Then(/^it should be possible to use the custom download endpoint$/) do
-  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-suse-channel/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -919,7 +919,7 @@ When(/^I install package tftpboot-installation on the server$/) do
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  $server.run("rpm -i #{package}", check_errors: false)
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -929,7 +929,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-suse-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1721,7 +1721,7 @@ When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
   node = get_target(host)
   node.run('reboot > /dev/null 2> /dev/null &')
   reboot_timeout = 120
-  check_shutdown($node.public_ip, reboot_timeout)
+  check_shutdown(node.public_ip, reboot_timeout)
   check_restart($server.public_ip, node, reboot_timeout)
 end
 
@@ -1788,4 +1788,17 @@ end
 When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
+end
+
+When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
+  add_ports = ''
+  for port in [9100, 9117, 9187] do
+    add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
+  end
+  cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
+  node = get_target(host)
+  node.run(cmd)
+  output, _code = node.run('firewall-cmd --list-ports')
+  raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
+    output.include? '9100/tcp 9117/tcp 9187/tcp'
 end

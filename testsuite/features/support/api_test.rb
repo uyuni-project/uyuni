@@ -107,9 +107,9 @@ class ApiTestHttp < ApiTest
   #
   # Args:
   #   host: The hostname of the server.
-  def initialize(host)
-    super
-    @connection = HttpClient.new(host)
+  def initialize(host, ssl_verify = true)
+    super(host)
+    @connection = HttpClient.new(host, ssl_verify)
   end
 
   ##

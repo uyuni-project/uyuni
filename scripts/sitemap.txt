@@ -515,7 +515,6 @@
 "/rhn/systems/customdata/CreateCustomKey.do",
 "/rhn/systems/customdata/DeleteCustomKey.do",
 "/rhn/systems/customdata/UpdateCustomKey.do",
-"/rhn/software/manage/packages/PackageList.do",
 "/rhn/software/manage/packages/ConfirmPackageRemove.do",
 "/rhn/software/packages/Details.do",
 "/rhn/software/packages/Dependencies.do",
@@ -789,3 +788,4 @@
 "/rhn/manager/sso/sls",
 "/rhn/manager/frontend-log",
 "/rhn/manager/download/saltssh/pubkey",
+"/rhn/manager/packages/list",

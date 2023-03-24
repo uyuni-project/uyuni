@@ -10662,7 +10662,14 @@
         "mandatory": true,
         "signed": true,
         "recommended": false,
-        "channel_name": "SLE-Module-Legacy12-Pool for x86_64"
+        "channel_name": "SLE-Module-Legacy12-Pool for x86_64",
+        "gpg_info": [
+            {
+                "url": "file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc",
+                "keyId": "39DB7C82",
+                "fingerprint": "FEAB502539D846DB2C0961CA70AF9E8139DB7C82"
+            }
+        ]
     },
     {
         "channel_label": "sle-module-legacy12-debuginfo-pool-x86_64",

@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-03-24 14:54+0100\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -246,7 +246,7 @@ msgstr "취소"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:123
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -262,6 +262,8 @@ msgstr "취소"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:72
+#: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -392,6 +394,7 @@ msgstr "목록으로 돌아가기"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:144
 #, fuzzy
 msgid "Filter by package name"
 msgstr "이름을 기준으로 필터링"
@@ -519,7 +522,7 @@ msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:371
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
@@ -595,7 +598,7 @@ msgstr "시스템 잠김"
 msgid "Filter"
 msgstr "필터"
 
-#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/SearchField.tsx:53
 #, fuzzy
 msgid "Select a filter"
 msgstr "일정 선택"
@@ -618,7 +621,7 @@ msgstr "지우기"
 msgid "Select All"
 msgstr "모두 선택"
 
-#: ../html/src/components/table/TableDataHandler.tsx:372
+#: ../html/src/components/table/TableDataHandler.tsx:375
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
@@ -631,7 +634,7 @@ msgstr "모두 선택"
 msgid "Loading..."
 msgstr "로드하는 중..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:405
+#: ../html/src/components/table/TableDataHandler.tsx:408
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
@@ -1232,6 +1235,7 @@ msgid "Arch"
 msgstr "아키텍처"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:684
+#: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "채널"
 
@@ -1545,6 +1549,7 @@ msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
 msgstr "채널"
 
@@ -2167,6 +2172,7 @@ msgid "Delete Project"
 msgstr "프로젝트 삭제"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
 msgstr "패키지"
 
@@ -4231,6 +4237,44 @@ msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
 msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
+
+#: ../html/src/manager/packages/list.tsx:80
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:81
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:89
+#, fuzzy
+msgid " Package Management "
+msgstr "패키지 관리 스택에 영향을 줌"
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Binary packages"
+msgstr "패키지 검색"
+
+#: ../html/src/manager/packages/list.tsx:118
+#, fuzzy
+msgid "Source packages"
+msgstr "패키지 검색"
+
+#: ../html/src/manager/packages/list.tsx:126
+#, fuzzy
+msgid "package"
+msgstr "패키지"
+
+#: ../html/src/manager/packages/list.tsx:146
+#, fuzzy
+msgid "No Packages."
+msgstr "패키지"
+
+#: ../html/src/manager/packages/list.tsx:172
+#, fuzzy
+msgid "Content Provider"
+msgstr "클러스터 공급자"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -6496,9 +6540,6 @@ msgstr "푸 {0} 티 {1}"
 
 #~ msgid "Edit properties"
 #~ msgstr "속성 편집"
-
-#~ msgid "Cluster provider"
-#~ msgstr "클러스터 공급자"
 
 #~ msgid "Management node"
 #~ msgstr "관리 노드"

@@ -1,8 +1,10 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_power_management
 @scope_cobbler
+@sle_minion
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host

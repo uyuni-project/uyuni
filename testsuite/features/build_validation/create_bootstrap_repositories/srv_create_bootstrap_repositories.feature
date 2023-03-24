@@ -38,6 +38,14 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for the monitoring server
     When I create the bootstrap repository for "monitoring_server" on the server
 
+@slemicro51_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.1 minion
+    When I create the bootstrap repository for "slemicro51_minion" on the server
+
+@slemicro51_ssh_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.1 SSH minion
+    When I create the bootstrap repository for "slemicro51_ssh_minion" on the server
+
 @slemicro52_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.2 minion
     When I create the bootstrap repository for "slemicro52_minion" on the server
