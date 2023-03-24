@@ -6,10 +6,17 @@
 require 'json'
 require 'socket'
 
+## Testing inside containers needs to be done without ssl
+ssl_verify = if $is_container_provider
+               false
+             else
+               true
+             end
+
 $api_test = if $debug_mode
               ApiTestXmlrpc.new($server.full_hostname)
             else
-              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname, ssl_verify) : ApiTestXmlrpc.new($server.full_hostname)
             end
 
 ## system namespace
@@ -496,7 +503,7 @@ Then(/^I should get the test channel$/) do
   channel = if arch != 'x86_64'
               'fake-i586-channel'
             else
-              'fake-rpm-sles-channel'
+              'fake-rpm-suse-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))

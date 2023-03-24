@@ -39,6 +39,7 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV["PROVIDER"].include? 'aws'
+$is_container_provider = ENV["PROVIDER"].include? 'docker'
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
@@ -497,6 +498,11 @@ end
 # skip tests if executed in cloud environment
 Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
+end
+
+# skip tests if executed in docker
+Before('@skip_if_container') do
+  skip_this_scenario if $is_container_provider
 end
 
 # have more infos about the errors

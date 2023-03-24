@@ -1,3 +1,4 @@
+- Update report outdated system query to de-duplicate errata id's
 - change jar versions in ivy configuration file
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - support multiple gpgkey urls for a channel (bsc#1208540)

@@ -5,6 +5,7 @@
 # 2) run a remote command
 # 3) delete Debian-like SSH minion and register as normal minion
 
+@skip_if_container
 @scope_deblike
 @scope_salt_ssh
 @deblike_minion
