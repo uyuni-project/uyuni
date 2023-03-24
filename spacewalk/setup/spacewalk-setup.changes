@@ -1,3 +1,4 @@
+- use template for reportdb configuration (bsc#1206783)
 - Enable netapi clients in master configuration (required for Salt 3006)
 
 -------------------------------------------------------------------
