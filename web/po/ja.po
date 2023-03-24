@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-22 10:10+0100\n"
+"POT-Creation-Date: 2023-03-24 14:57+0100\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -250,7 +250,7 @@ msgstr "取り消し"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:133
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -266,6 +266,8 @@ msgstr "取り消し"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:71
+#: ../html/src/manager/packages/list.tsx:124
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -469,7 +471,7 @@ msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:348
+#: ../html/src/components/table/TableDataHandler.tsx:351
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
@@ -527,7 +529,7 @@ msgstr "消去"
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:349
+#: ../html/src/components/table/TableDataHandler.tsx:352
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
@@ -539,7 +541,7 @@ msgstr "すべてを選択"
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:380
+#: ../html/src/components/table/TableDataHandler.tsx:383
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
@@ -1127,6 +1129,7 @@ msgid "Arch"
 msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:644
+#: ../html/src/manager/packages/list.tsx:156
 msgid "Channels"
 msgstr "チャンネル"
 
@@ -1440,6 +1443,7 @@ msgstr "パッチは利用可能ですが、チャンネルにクローンを作
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:101
 msgid "Channel"
 msgstr "チャンネル"
 
@@ -2076,6 +2080,7 @@ msgid "Delete Project"
 msgstr "プロジェクトの削除"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:150
 msgid "Package"
 msgstr "パッケージ"
 
@@ -4088,6 +4093,49 @@ msgid ""
 msgstr ""
 "この組織内の各 minion サーバに対し、設定チャンネルの適用をスケジュールしまし"
 "た"
+
+#: ../html/src/manager/packages/list.tsx:79
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:80
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:88
+#, fuzzy
+msgid " Package Management "
+msgstr "パッケージ管理スタックに影響があります"
+
+#: ../html/src/manager/packages/list.tsx:116
+#, fuzzy
+msgid "Binary packages"
+msgstr "パッケージの検索"
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Source packages"
+msgstr "パッケージの検索"
+
+#: ../html/src/manager/packages/list.tsx:125
+#, fuzzy
+msgid "package"
+msgstr "パッケージ"
+
+#: ../html/src/manager/packages/list.tsx:143
+#, fuzzy
+msgid "Filter by package name"
+msgstr "名前でフィルタ"
+
+#: ../html/src/manager/packages/list.tsx:144
+#, fuzzy
+msgid "No Packages."
+msgstr "パッケージ"
+
+#: ../html/src/manager/packages/list.tsx:170
+#, fuzzy
+msgid "Content Provider"
+msgstr "クラスタのプロバイダ"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -6349,9 +6397,6 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "Edit properties"
 #~ msgstr "プロパティの編集"
-
-#~ msgid "Cluster provider"
-#~ msgstr "クラスタのプロバイダ"
 
 #~ msgid "Management node"
 #~ msgstr "管理ノード"
