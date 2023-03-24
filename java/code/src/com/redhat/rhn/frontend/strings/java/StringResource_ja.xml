@@ -11305,7 +11305,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
         <target state="translated">ターゲットは自動インストールプロファイルで使用されています。削除できません。</target>
       </trans-unit>
-      <trans-unit id="task.action.rejection.reason" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.action.rejection.reason" xml:space="preserve">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
         <target state="final">このアクションは、最初の実行日が古すぎるため実行されませんでした。スケジューリングからピックアップまでの時間が {0} 時間を超えると、関連性がなくなったと見なされるため、アクションは破棄されます。
