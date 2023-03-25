@@ -1,3 +1,4 @@
+- Detect a Cloud PAYG instance and connect it to the RMT infrastructure
 - cache debian package metadata snippets in DB
 - Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
   Management Management/Operations on SSM -> Provisioning
