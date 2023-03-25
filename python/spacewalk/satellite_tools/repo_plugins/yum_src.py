@@ -740,16 +740,36 @@ type=rpm-md
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
-        new_query = unquote(urlencode(query_params, doseq=True))
         # urlparse cannot handle uln urls, so we need to keep this check
         if uln_repo:
+            new_query = unquote(urlencode(query_params, doseq=True))
             return "{0}&{1}".format(url, new_query)
         parsed_url = urlparse(url)
+        netloc = parsed_url.netloc
+        if parsed_url.username and parsed_url.password:
+            creds_cfg = '''
+username={user}
+password={passwd}
+'''
+            netloc = parsed_url.hostname
+            if parsed_url.port:
+                netloc = "{1}:{2}".format(netloc, parsed_url.port)
+            cdir = os.path.join(REPOSYNC_ZYPPER_ROOT, "etc/zypp/credentials.d")
+            if not os.path.exists(cdir):
+                os.makedirs(cdir)
+            cfile = os.path.join(cdir, str(self.channel_label or self.reponame))
+            with open(cfile, "w") as creds_file:
+                creds_file.write(creds_cfg.format(user=parsed_url.username,
+                                                  passwd=parsed_url.password))
+                query_params['credentials'] = str(self.channel_label or self.reponame)
+            os.chmod(cfile, int('0600', 8))
+        new_query = unquote(urlencode(query_params, doseq=True))
+
         existing_query = parsed_url.query
         combined_query = "&".join([q for q in [existing_query, new_query] if q])
         return urlunparse((
             parsed_url.scheme,
-            parsed_url.netloc,
+            netloc,
             parsed_url.path,
             parsed_url.params,
             combined_query,
