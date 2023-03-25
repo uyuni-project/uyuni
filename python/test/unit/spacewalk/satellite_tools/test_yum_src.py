@@ -27,6 +27,12 @@ try:
     from io import StringIO
 except ImportError:
     from StringIO import StringIO
+
+try:
+    from urlparse import urlparse, urlunparse
+except:
+    from urllib.parse import urlparse, urlunparse
+
 from collections import namedtuple
 
 from mock import Mock, MagicMock, patch, mock_open
@@ -386,7 +392,8 @@ class YumSrcTest(unittest.TestCase):
                 ("https://example.com/", False),
                 ("https://example.org/repo/path/?token", False),
                 ("uln://example.com/", True),
-                ("uln:///channel", True)
+                ("uln:///channel", True),
+                ("https://user:password@example.org/repo/path/", False)
                 ]
         proxy_url = "http://proxy.example.com:8080"
         proxy_user = "user"
@@ -394,6 +401,7 @@ class YumSrcTest(unittest.TestCase):
         cs.proxy_hostname = proxy_url
         cs.proxy_user = proxy_user
         cs.proxy_pass = proxy_pass
+        cs.channel_label = "testchannel"
 
         for url, is_uln in urls:
             if is_uln or "?" in url:
@@ -401,16 +409,32 @@ class YumSrcTest(unittest.TestCase):
             else:
                 separator = "?"
 
-            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+            exp_url = url
+            parsed_url = urlparse(url)
+            extra_query=""
+            if parsed_url.username and parsed_url.password:
+                netloc = parsed_url.hostname
+                if parsed_url.port:
+                    netloc = "{1}:{2}".format(netloc, parsed_url.port)
+
+                exp_url = urlunparse((parsed_url.scheme, netloc, parsed_url.path,
+                    parsed_url.params, parsed_url.query, parsed_url.fragment))
+                extra_query = "&credentials={}".format(cs.channel_label)
+
+            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}{}".format(exp_url,
                                                                            separator,
                                                                            quote(proxy_url),
                                                                            proxy_user,
-                                                                           proxy_pass
+                                                                           proxy_pass,
+                                                                           extra_query
                                                                            )
+            with patch(
+                    "builtins.open", mock_open()
+                 ), patch(
+                    "spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock()):
+                comp_url = cs._prep_zypp_repo_url(url, is_uln)
 
-            comp_url = cs._prep_zypp_repo_url(url, is_uln)
-
-            assert expected_url == comp_url
+                assert expected_url == comp_url
 
     def test_update_notice_parse(self):
         update_notice_xml = StringIO(
