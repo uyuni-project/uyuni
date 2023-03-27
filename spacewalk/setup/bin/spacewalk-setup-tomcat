@@ -16,99 +16,26 @@
 use strict;
 use Spacewalk::Setup;
 use File::Spec;
+use File::Copy;
 
-use constant TOMCAT_PAM_LDAP  => "";
-use constant TOMCAT_JAVA_OPTS =>
-        File::Spec->catfile(Spacewalk::Setup::SHARED_DIR, "tomcat.java_opts");
+use constant TOMCAT_JAVA_OPT_FILE => "tomcat_java_opts.conf";
+use constant TOMCAT_JAVA_OPT_PATH =>
+        File::Spec->catfile(Spacewalk::Setup::SHARED_DIR, TOMCAT_JAVA_OPT_FILE);
 
-sub java_opts {
-  my $ret = '';
-  if (-r TOMCAT_JAVA_OPTS) {
-    open F, '<', TOMCAT_JAVA_OPTS
-                 or die "Error reading [" + TOMCAT_JAVA_OPTS + "]: $!\n";
-    $ret = join("", <F>);
-    chomp($ret);
-    $ret =~ s/\n/ /gm;
-    close(F);
-    $ret .= ld_library_path();
-    $ret = qq{JAVA_OPTS="$ret"\n};
-  }
-  return $ret;
-}
+use constant TOMCAT_DIR =>  "/etc/tomcat/";
+use constant TOMCAT_CONFIG_DIR =>
+        File::Spec->catfile(TOMCAT_DIR, "conf.d/");
 
-sub ld_preload {
-  my $ret = '';
-  return $ret;
-}
-
-sub ld_library_path {
-  my $ret = '';
-  return $ret;
-}
+use constant TOMCAT_CONFIG_PATH => 
+        File::Spec->catfile(TOMCAT_CONFIG_DIR, TOMCAT_JAVA_OPT_FILE);
 
 sub setup_tomcat {
-  my %macros = (JAVA_OPTS       => java_opts(),
-                LD_PRELOAD      => ld_preload(),
-                );
 
-  my ($tomcatvol, $tomcatdir, $tomcatname);
+  mkdir(TOMCAT_CONFIG_DIR) unless(-d TOMCAT_CONFIG_DIR);
+  copy(TOMCAT_JAVA_OPT_PATH, TOMCAT_CONFIG_PATH) 
+    or die "Cannot copy ".TOMCAT_JAVA_OPT_PATH." in ".TOMCAT_CONFIG_PATH."\n";
 
-  for my $conf_glob ("/etc/sysconfig/tomcat{5,6,}", "/etc/tomcat*/tomcat*.conf") {
-    my ($conf_vol, $conf_dir, $conf_file) = File::Spec->splitpath($conf_glob);
-    my ($tomcatconf_content_orig, $tomcatconf_content);
-    my @tomcat_confs = grep { -f $_ } glob($conf_glob);
-    if (@tomcat_confs < 1) {
-      next;
-      #die "Couldn't find tomcat config file ($conf_glob).\n";
-    } elsif (@tomcat_confs > 1) {
-      die "Multiple tomcat config files found:\n  @tomcat_confs\nNot sure which tomcat to use.\n";
-    }
-
-    my $tomcatfile = $tomcat_confs[0];
-    ($tomcatvol, $tomcatdir, $tomcatname) = File::Spec->splitpath($tomcatfile);
-
-    {
-      open FILE, '<', $tomcatfile
-        or die "Error opening [$tomcatfile]: $!\n";
-      local $/ = undef;
-      $tomcatconf_content = <FILE>;
-      $tomcatconf_content_orig = $tomcatconf_content;
-      close FILE;
-    }
-
-    for my $file (glob Spacewalk::Setup::SHARED_DIR . "/$conf_file.[0-9]") {
-      open FILE, '<', $file or die "Error reading [$file]: $!\n";
-      my $regexp = <FILE>;
-      chomp $regexp;
-
-      my $content;
-      {
-        local $/ = undef;
-        $content = <FILE>;
-      }
-      close FILE;
-      if (defined($content)) {
-        for my $key (keys %macros) {
-          $content =~ s/\@$key\@(\n)?/$macros{$key}/;
-        }
-      } else {
-        $content = '';
-      }
-      $tomcatconf_content =~ s!$regexp!$content!gm or $tomcatconf_content .= $content;
-    }
-
-    if ($tomcatconf_content ne $tomcatconf_content_orig) {
-      Spacewalk::Setup::backup_file($tomcatdir, $tomcatname);
-
-      open FILE, '>', $tomcatfile
-        or die "Error opening [$tomcatfile]: $!\n";
-      chmod 0644, $tomcatfile;
-      print FILE $tomcatconf_content;
-      close FILE;
-    }
-  }
-
-  my $serverxmlfile = "$tomcatdir/server.xml";
+  my $serverxmlfile = "".TOMCAT_DIR."/server.xml";
   {
     local $/ = undef;
     local *FILE;
@@ -132,10 +59,10 @@ sub setup_tomcat {
   }
 
   my $web_patch = Spacewalk::Setup::SHARED_DIR."/web.xml.patch";
-  my $command = "patch --silent --directory=$tomcatdir --forward -p1 --input=$web_patch";
+  my $command = "patch --silent --directory=".TOMCAT_DIR." --forward -p1 --input=$web_patch";
   system($command." --dry-run");
   if (not $?){
-      Spacewalk::Setup::backup_file($tomcatdir, 'web.xml');
+      Spacewalk::Setup::backup_file(TOMCAT_DIR, 'web.xml');
 
       system($command);
   }

@@ -153,27 +153,13 @@ make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
 
-%if 0%{?rhel} == 6
-cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
-%endif
-#if java -version 2>&1 | grep -q IBM ; then
-#    cat share/tomcat.java_opts.ibm >>share/tomcat.java_opts
-#fi
-%if 0%{?suse_version}
-cat share/tomcat.java_opts.suse >>share/tomcat.java_opts | tr '\n' ' '
-# SLES12 tomcat has only tomcat.conf
-cat share/tomcat.1 >share/tomcat.conf.1
-%endif
-rm -f share/tomcat.java_opts.*
-
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -206,26 +192,22 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
+if [ -e /etc/tomcat/server.xml ]; then
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
+    xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
+fi
+
 if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
 #during upgrade, setup new connectionTimeout if the user didn't change it
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
 fi
 
-%if 0%{?suse_version}
-if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
-     sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
-fi
-%endif
-
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chmod g+r /etc/zypp/credentials.d/SCCcredentials
 fi
-for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
-  test -f $name \
-  && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
-done
+
 if [ -d /var/cache/salt/master/thin ]; then
   # clean the thin cache
   rm -rf /var/cache/salt/master/thin
