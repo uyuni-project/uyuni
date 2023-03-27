@@ -9,6 +9,13 @@
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
 
 -------------------------------------------------------------------
+Mon Mar 27 09:06:19 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.52-1
+  * Add more restricted arguments to prevent HTTP API logging
+    sensitive data (bsc#1209386, bsc#1209395)
+
+-------------------------------------------------------------------
 Tue Mar 21 13:43:03 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.51-1
