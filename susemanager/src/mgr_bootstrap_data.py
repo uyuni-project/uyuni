@@ -1105,6 +1105,14 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
     },
+    'openSUSE-Leap-15.5-x86_64' : {
+        'PDID' : [2588, 1712], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },
+    'openSUSE-Leap-15.5-aarch64' : {
+        'PDID' : [2585, 1709], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },
     'openSUSE-Leap-15.5-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_5-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
