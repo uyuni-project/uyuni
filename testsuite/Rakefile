@@ -11,7 +11,7 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  (Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')) + Dir.glob(File.join(Dir.pwd, 'run_sets', 'build_validation_add_non_MU_repositories', '*.yml'))).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
