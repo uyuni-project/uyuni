@@ -16,7 +16,7 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
-import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
@@ -56,7 +56,7 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
                 .add("created", src.getCreated())
                 .add("creator", src.getCreator().getLogin())
                 // TODO: Set values depending on action type
-                .add("test", ((RecurringHighstateType) src.getActionType()).isTestMode())
+                .add("test", ((RecurringHighstate) src.getActionType()).isTestMode())
                 .add("active", src.isActive())
                 .build();
     }
