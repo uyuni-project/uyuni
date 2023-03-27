@@ -29,3 +29,4 @@ gem 'redis', '~> 5.0'
 # or build and install from https://github.com/openSUSE/twopence
 gem 'twopence', "~> 0.4"
 gem 'pg', "~> 1.4"
+gem 'fileutils'

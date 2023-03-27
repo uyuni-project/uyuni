@@ -7,16 +7,18 @@ require 'yaml'
 require 'cucumber/rake/task'
 require 'rake/task'
 require 'parallel'
+require 'fileutils'
 
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
+  Rake::Task['utils:create_results_folder'].invoke()
   Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o json_results/output_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o html_results/output_#{timestamp}-#{filename}.html"
+      json_results = "-f json -o results/output_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o results/output_#{timestamp}-#{filename}.html"
       profiles = ENV['PROFILE']
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
@@ -145,9 +147,16 @@ namespace :utils do
   desc 'Generate test report'
   task :generate_test_report do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
-    sh 'timeout 180 bash -c -- "while find json_results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
+    sh 'timeout 180 bash -c -- "while find results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
     sh 'find . -size 0 -delete', verbose: false
     sh 'node index.js &> cucumber_reporter.log', verbose: false
+  end
+
+  task :create_results_folder do
+    unless File.directory?('results')
+      puts "Creating results folder..."
+      FileUtils.mkdir_p('results')
+    end
   end
 end
 
