@@ -1,3 +1,4 @@
+- Fix update of sql function create_new_org
 - Filter CLM modular packages using release strings (bsc#1207814)
 - merge multiple older schema upgrade directories together
 
