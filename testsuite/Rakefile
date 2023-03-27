@@ -7,12 +7,12 @@ require 'yaml'
 require 'cucumber/rake/task'
 require 'rake/task'
 require 'parallel'
-require 'fileutils'
 
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
-  Rake::Task['utils:create_results_folder'].invoke()
+  # Create results folder
+  sh "mkdir -p results", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
@@ -150,13 +150,6 @@ namespace :utils do
     sh 'timeout 180 bash -c -- "while find results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
     sh 'find . -size 0 -delete', verbose: false
     sh 'node index.js &> cucumber_reporter.log', verbose: false
-  end
-
-  task :create_results_folder do
-    unless File.directory?('results')
-      puts "Creating results folder..."
-      FileUtils.mkdir_p('results')
-    end
   end
 end
 
