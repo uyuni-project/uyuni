@@ -48,9 +48,11 @@ import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
-import com.redhat.rhn.domain.recurringactions.RecurringAction;
-import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.state.InternalState;
+import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
+import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
@@ -143,7 +145,6 @@ public class AnnotationRegistry {
         PackageSuggests.class,
         PackagePreDepends.class,
         PackageEnhances.class,
-        RecurringAction.class,
         MinionRecurringAction.class,
         GroupRecurringAction.class,
         OrgRecurringAction.class,
@@ -156,8 +157,11 @@ public class AnnotationRegistry {
         Pillar.class,
         CloudRmtHost.class,
         PaygSshData.class,
-        RecurringActionType.class,
-        RecurringHighstate.class
+        RecurringHighstate.class,
+        RecurringState.class,
+        RecurringConfigChannel.class,
+        RecurringInternalState.class,
+        InternalState.class
     );
 
     /**
