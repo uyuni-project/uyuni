@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.recurringactions;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.recurringactions.state.InternalState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -190,6 +191,19 @@ public class RecurringActionFactory extends HibernateFactory {
     public static Optional<RecurringAction> lookupByJobName(String scheduleName) {
         long id = Long.parseLong(scheduleName.replace(RecurringAction.RECURRING_ACTION_PREFIX, ""));
         return lookupById(id);
+    }
+
+    /**
+     * Lookup internal state with given state name
+     *
+     * @param stateName the name of the state
+     * @return optional of matching internal state
+     */
+    public static Optional<InternalState> lookupInternalStateByName(String stateName) {
+        return getSession().createQuery("SELECT state FROM InternalState state " +
+                "WHERE state.name = :name", InternalState.class)
+                .setParameter("name", stateName)
+                .uniqueResultOptional();
     }
 
     /**
