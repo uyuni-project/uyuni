@@ -1,3 +1,4 @@
+- Fix datetime picker appearing behind modal edge
 - Fix datepicker layout shift on Highstate pages
 
 -------------------------------------------------------------------
