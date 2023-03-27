@@ -1,4 +1,6 @@
+- Add bootstrap repository definitions for openSUSE Leap 15.5
 - add bootstrap repository definitions for SLE-Micro 5.1 (bsc#1209557)
+- Add SLES15SP5 to bootstrap repo definitions
 
 -------------------------------------------------------------------
 Tue Feb 28 15:24:35 CET 2023 - jgonzalez@suse.com
