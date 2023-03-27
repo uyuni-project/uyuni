@@ -28,14 +28,12 @@ namespace :cucumber do
       include_tags =  tags.nil? ? [] : ['--tags', tags]
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
         %w[-f pretty -r features] + include_tags
+      # Immediately fail core if any feature is failing
+      if filename.to_s.include?('core')
+        cucumber_opts << '--fail-fast'
+      end
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
-      # When running core, will stop if any feature is failing
-      if filename.to_s.include?('core')
-        t.fail_fast = true # Enable fail_fast to stop execution on first failure.
-      else
-        t.fail_fast = false
-      end
     end
   end
 end
