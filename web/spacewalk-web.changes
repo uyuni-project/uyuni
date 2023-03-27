@@ -1,8 +1,10 @@
+- Fix datetime picker appearing behind modal edge (bsc#1209703)
+
 -------------------------------------------------------------------
 Tue Mar 28 09:51:46 UTC 2023 - marina.latini@suse.com
 
 - version 4.2.33-1
-  * Deprecate jQuery datepicker, integrate React datepicker
+  * Deprecate jQuery datepicker, integrate React datepicker (bsc#1209689)
   * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 
 -------------------------------------------------------------------
