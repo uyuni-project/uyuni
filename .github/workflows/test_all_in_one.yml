@@ -11,6 +11,8 @@ jobs:
     # run this action in your Pull Requests
     if: github.actor == 'jordimassaguerpla'
     steps:
+      - name: welcome_message
+        run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v3
       - name: Cache-jar-files
         uses: actions/cache@v3
