@@ -50,7 +50,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
@@ -157,7 +157,7 @@ public class AnnotationRegistry {
         CloudRmtHost.class,
         PaygSshData.class,
         RecurringActionType.class,
-        RecurringHighstateType.class
+        RecurringHighstate.class
     );
 
     /**

@@ -23,19 +23,19 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Recurring Action Type for highstate implementation
+ * Recurring Action type for highstate implementation
  */
 
 @Entity
-@Table(name = "suseRecurringHighstateType")
-public class RecurringHighstateType extends RecurringActionType {
+@Table(name = "suseRecurringHighstate")
+public class RecurringHighstate extends RecurringActionType {
 
     private boolean testMode;
 
     /**
      * Standard constructor
      */
-    public RecurringHighstateType() {
+    public RecurringHighstate() {
     }
 
     /**
@@ -43,7 +43,7 @@ public class RecurringHighstateType extends RecurringActionType {
      *
      * @param testModeIn if action is in testMode
      */
-    public RecurringHighstateType(boolean testModeIn) {
+    public RecurringHighstate(boolean testModeIn) {
         super();
         setTestMode(testModeIn);
     }

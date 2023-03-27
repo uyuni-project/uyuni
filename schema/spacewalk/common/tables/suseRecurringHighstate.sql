@@ -8,12 +8,11 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
---
-CREATE TABLE suseRecurringHighstateType
+CREATE TABLE suseRecurringHighstate
 (
   rec_id            NUMERIC NOT NULL
-                    CONSTRAINT suse_recurring_highstate_type_id_pk PRIMARY KEY
-                    CONSTRAINT suse_recurring_action_id_fk
+                    CONSTRAINT suse_recurring_highstate_id_pk PRIMARY KEY
+                    CONSTRAINT suse_recurring_action_highstate_id_fk
                       REFERENCES suseRecurringAction(id)
                       ON DELETE CASCADE,
   test_mode         CHAR(1) NOT NULL

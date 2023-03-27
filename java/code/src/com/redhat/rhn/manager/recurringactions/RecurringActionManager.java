@@ -27,7 +27,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
-import com.redhat.rhn.domain.recurringactions.type.RecurringHighstateType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -100,7 +100,7 @@ public class RecurringActionManager {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
         MinionRecurringAction action = new MinionRecurringAction(
-            new RecurringHighstateType(false), true, minion, user
+                new RecurringHighstate(false), true, minion, user
         );
         return action;
     }
@@ -117,7 +117,7 @@ public class RecurringActionManager {
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
         }
-        GroupRecurringAction action = new GroupRecurringAction(new RecurringHighstateType(false), true, group, user);
+        GroupRecurringAction action = new GroupRecurringAction(new RecurringHighstate(false), true, group, user);
         return action;
     }
 
@@ -133,7 +133,7 @@ public class RecurringActionManager {
         if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
         }
-        return new OrgRecurringAction(new RecurringHighstateType(false), true, org, user);
+        return new OrgRecurringAction(new RecurringHighstate(false), true, org, user);
     }
 
     /**
