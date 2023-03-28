@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     # create a PR to add yourself if you want to be a beta user and
     # run this action in your Pull Requests
-    if: github.actor == 'jordimassaguerpla'
+    if: github.actor == 'jordimassaguerpla' || github.actor == 'elariekerboull'
     steps:
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
