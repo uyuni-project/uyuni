@@ -1,1 +1,2 @@
 - Added new tables to handle PAYG instances computations
+- Added PAYG dimension computation taskomatic job configuration
