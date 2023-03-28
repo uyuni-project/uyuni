@@ -138,4 +138,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-system-overview-bunc
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-profile-refresh-bunch', 'Refresh System Profiles of all registered servers', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'payg-dimension-computation-bunch', 'Compute the dimensions data required for PAYG billing', null);
+
 commit;

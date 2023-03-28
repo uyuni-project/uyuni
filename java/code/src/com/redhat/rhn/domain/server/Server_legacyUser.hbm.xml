@@ -619,4 +619,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         AND status in ( 0, 1 )]]>
     </query>
 
+    <query name="Server.listAllServerIds">
+        <![CDATA[SELECT s.id
+                   FROM com.redhat.rhn.domain.server.Server AS s
+               ORDER BY s.id
+        ]]>
+    </query>
+
 </hibernate-mapping>
