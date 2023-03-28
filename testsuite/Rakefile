@@ -29,7 +29,7 @@ namespace :cucumber do
       # not as an intersection of them (using 'and')
       include_tags =  tags.nil? ? [] : ['--tags', tags]
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
-        %w[-f pretty -r features] + include_tags
+                      %w[-f pretty -r features] + include_tags
       # Immediately fail core if any feature is failing
       if filename.to_s.include?('core')
         cucumber_opts << '--fail-fast'
