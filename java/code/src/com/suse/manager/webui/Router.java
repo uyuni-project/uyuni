@@ -55,6 +55,7 @@ import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SaltbootController;
+import com.suse.manager.webui.controllers.ScapAuditController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -129,6 +130,7 @@ public class Router implements SparkApplication {
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
+        ScapAuditController scapAuditController = new ScapAuditController();
 
         // Login
         LoginController.initRoutes(jade);
@@ -221,6 +223,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        //SCAP audit
+        scapAuditController.initRoutes(jade);
 
         // Rhn Set API
         SetController.initRoutes();
