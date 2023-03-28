@@ -268,6 +268,7 @@ while read PKG_NAME; do
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+          sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
@@ -282,6 +283,7 @@ while read PKG_NAME; do
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
+          sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
           sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
           CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
           mkdir ${SRPM_PKG_DIR}/tar
