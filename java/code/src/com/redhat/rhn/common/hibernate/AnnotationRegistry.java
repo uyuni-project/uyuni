@@ -17,6 +17,7 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -204,6 +205,8 @@ public class AnnotationRegistry {
         AppStream.class,
         AppStreamApi.class,
         TokenChannelAppStream.class
+        PaygDimensionResult.class,
+        TailoringFile.class
     );
 
     /**
