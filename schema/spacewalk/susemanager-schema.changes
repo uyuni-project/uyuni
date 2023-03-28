@@ -1,3 +1,4 @@
+- Added PAYG dimension computation taskomatic job configuration
 - Added new tables to handle PAYG instances computations
 - Fix update of sql function create_new_org
 - Filter CLM modular packages using release strings (bsc#1207814)
