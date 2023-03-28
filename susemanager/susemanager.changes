@@ -1,3 +1,5 @@
+- Make python3-ordered-set optional for the SLE15 bootstrap repo as it is
+  not required or present in SLE15SP3 or older
 - Add bootstrap repository definitions for openSUSE Leap 15.5
 - add bootstrap repository definitions for SLE-Micro 5.1 (bsc#1209557)
 - Add SLES15SP5 to bootstrap repo definitions
