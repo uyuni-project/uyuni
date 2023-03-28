@@ -171,6 +171,11 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-hub-def
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-hub-bunch'),
         current_timestamp, '0 30 1 ? * *');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'payg-dimension-computation-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='payg-dimension-computation-bunch'),
+        current_timestamp, '0 45 * ? * * *');
+
 -- Once a month at the 15th at 5am
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
