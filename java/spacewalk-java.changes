@@ -1,17 +1,21 @@
-- Prevent logging formula data (bsc#1209386)
-- Use gnu-jaf instead of jaf
-- Use reload4j instead of log4j or log4j12
-- Save scheduler user when creating Patch actions manually (bsc#1208321)
-- Use slf4j-reload4j and jaf
-- Add `mgr_server_is_uyuni` minion pillar item
-- Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
-- Mark as failed actions that cannot be scheduled because earliest
-  date is too old
-- Update earliest date when rescheduling failed actions (bsc#1206562)
-- Fix reconnection of postgres event stream
-- fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
-- Fix duplicate keys in image tables (bsc#1207799)
-- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
+-------------------------------------------------------------------
+Tue Mar 28 09:48:38 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.48-1
+  * Prevent logging formula data (bsc#1209386)
+  * Use gnu-jaf instead of jaf
+  * Use reload4j instead of log4j or log4j12
+  * Save scheduler user when creating Patch actions manually (bsc#1208321)
+  * Use slf4j-reload4j and jaf
+  * Add `mgr_server_is_uyuni` minion pillar item
+  * Do not execute immediately Package Refresh action for the SSH minion (bsc#1208325)
+  * Mark as failed actions that cannot be scheduled because earliest
+    date is too old
+  * Update earliest date when rescheduling failed actions (bsc#1206562)
+  * Fix reconnection of postgres event stream
+  * fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
+  * Fix duplicate keys in image tables (bsc#1207799)
+  * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 
 -------------------------------------------------------------------
 Fri Feb 24 10:06:53 CET 2023 - jgonzalez@suse.com
