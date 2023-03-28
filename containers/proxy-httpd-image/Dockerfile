@@ -51,7 +51,6 @@ LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-httpd-image
 LABEL org.opencontainers.image.version=4.4.1
-LABEL org.opencontainers.image.product-version=2023.01
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:4.4.1.%RELEASE%"
 # endlabelprefix

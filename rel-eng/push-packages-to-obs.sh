@@ -268,14 +268,13 @@ while read PKG_NAME; do
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
-          sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
       fi
-      sed "s/^LABEL org.opencontainers.image.product-version=.*$/LABEL org.opencontainers.image.product-version=${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
@@ -283,7 +282,6 @@ while read PKG_NAME; do
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
-          sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
           sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
           CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
           mkdir ${SRPM_PKG_DIR}/tar
@@ -292,7 +290,7 @@ while read PKG_NAME; do
           tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
           rm -rf ${SRPM_PKG_DIR}/tar
       fi
-      sed "s/^appVersion: .*$/appVersion: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+      sed "/^#\!BuildTag:/ s/$/ ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)
