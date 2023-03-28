@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -167,7 +168,8 @@ public class AnnotationRegistry {
         RecurringInternalState.class,
         InternalState.class,
         PaygDimensionComputation.class,
-        PaygDimensionResult.class
+        PaygDimensionResult.class,
+        TailoringFile.class
     );
 
     /**
