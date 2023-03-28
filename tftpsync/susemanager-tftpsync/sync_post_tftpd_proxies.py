@@ -46,19 +46,19 @@ def register():
 
 
 def run(api, args):
+    del args # unused, required API
     logger.info("sync_post_tftp_proxies started - this can take a while (to see the progress check the cobbler logs)")
     settings = api.settings()
 
+
     # test if proxies are configured:
     try:
-        p = settings.proxies
-    except:
+        _ = settings.proxies
+    except AttributeError:
         # not configured - so we return
         return 0
 
     tftpbootdir = "/srv/tftpboot"
-    syncstart = os.stat(tftpbootdir).st_mtime
-
     find_delete_from_proxies(tftpbootdir, settings)
 
     pool = ThreadPoolExecutor()
