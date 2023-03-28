@@ -228,7 +228,7 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "python3-MarkupSafe",
     "python3-M2Crypto",
     "python3-msgpack",
-    "python3-ordered-set",
+    "python3-ordered-set*",
     "python3-packaging",
     "python3-psutil",
     "python3-py",
