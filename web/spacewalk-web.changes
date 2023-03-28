@@ -1,5 +1,9 @@
-- Deprecate jQuery datepicker, integrate React datepicker
-- Fix CLM environments UI for environment labels containing dots (bsc#1207838)
+-------------------------------------------------------------------
+Tue Mar 28 09:51:46 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.33-1
+  * Deprecate jQuery datepicker, integrate React datepicker
+  * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
 
 -------------------------------------------------------------------
 Thu Feb 09 10:06:22 CET 2023 - jgonzalez@suse.com
