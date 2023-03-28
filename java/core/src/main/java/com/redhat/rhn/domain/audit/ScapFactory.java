@@ -22,7 +22,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -143,6 +148,48 @@ public class ScapFactory extends HibernateFactory {
      */
     public static void save(XccdfRuleResult ruleResult) {
         getSession().persist(ruleResult);
+    }
+
+    /**
+     * Search for all tailoring files objects in the database
+     * @return list of tailoring files objects
+     */
+    public static List<TailoringFile> lookupAllTailoringFiles() {
+        return getSession().createQuery("FROM TailoringFile").list();
+    }
+
+    /**
+     * search for a tailoring file object based on the id
+     * @param id tailoring file ID
+     * @return optional of tailoring file object
+     */
+    public static Optional<TailoringFile> lookupTailoringFileById(Integer id) {
+
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> select = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = select.from(TailoringFile.class);
+        select.where(builder.equal(root.get("id"), id));
+
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Deletes the Tailoring file object from the database
+     * @param tailoringFile TailoringFile object
+     */
+    public static void deleteTailoringFile(TailoringFile tailoringFile) {
+        getSession().delete(tailoringFile);
+    }
+    /**
+     * Save the tailoringFile object to the database
+     * @param tailoringFile object
+     */
+    public static void saveTailoringFile(TailoringFile tailoringFile) {
+        tailoringFile.setModified(new Date());
+        singleton.saveObject(tailoringFile);
     }
 
     /**
