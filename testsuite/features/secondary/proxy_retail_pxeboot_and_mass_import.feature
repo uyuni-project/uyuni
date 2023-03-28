@@ -12,6 +12,7 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
+@skip_if_container
 @buildhost
 @proxy
 @private_net

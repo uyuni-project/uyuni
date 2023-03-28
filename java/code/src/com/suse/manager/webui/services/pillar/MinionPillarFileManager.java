@@ -16,6 +16,7 @@ package com.suse.manager.webui.services.pillar;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.logging.log4j.LogManager;
@@ -66,7 +67,10 @@ public class MinionPillarFileManager {
     public void removePillar(MinionServer minion) {
         removePillarFile(minion.getMinionId());
         minion.getPillarByCategory(this.minionPillarGenerator.getCategory())
-                .ifPresent(pillar -> minion.getPillars().remove(pillar));
+                .ifPresent(pillar -> {
+                    minion.getPillars().remove(pillar);
+                    HibernateFactory.getSession().remove(pillar);
+                });
     }
 
     /**

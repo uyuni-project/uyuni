@@ -30,6 +30,13 @@ mgr_deploy_tools_uyuni_key:
     - makedirs: True
     - mode: 644
 
+mgr_deploy_suse_addon_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key
+    - source: salt://gpg/build-addon-97A636DB0BAD8ECC.key
+    - makedirs: True
+    - mode: 644
+
 {%- if grains['os_family'] == 'RedHat' %}
 {# deploy all keys to the clients. If they get imported dependes on the used channels #}
 
@@ -81,8 +88,13 @@ mgr_deploy_{{ keyname }}:
 
 {%- set gpg_urls = [] %}
 {%- for chan, args in pillar.get(pillar.get('_mgr_channels_items_name', 'channels'), {}).items() %}
-{%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'] not in gpg_urls %}
-{{ gpg_urls.append(args['gpgkeyurl']) | default("", True) }}
+{%- if args['gpgkeyurl'] is defined %}
+{%- set keys = args['gpgkeyurl'].split(' ') %}
+{%- for gpgkey in keys %}
+{%- if gpgkey not in gpg_urls %}
+{{ gpg_urls.append(gpgkey) | default("", True) }}
+{%- endif %}
+{%- endfor %}
 {%- endif %}
 {%- endfor %}
 

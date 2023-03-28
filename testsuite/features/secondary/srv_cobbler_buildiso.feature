@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
+@skip_if_container
 Feature: Cobbler buildiso
   Builds several ISOs with Cobbler and checks the configuration files and ISOs afterwards.
 

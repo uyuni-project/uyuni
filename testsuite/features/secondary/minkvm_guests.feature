@@ -58,8 +58,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Edit a KVM virtual machine
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    Then I should see "512" in field "memory"
-    And I should see "1" in field "vcpu"
+    Then I should see "512" in field identified by "memory"
+    And I should see "1" in field identified by "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
     And option "virtio" is selected as "disk0_bus"

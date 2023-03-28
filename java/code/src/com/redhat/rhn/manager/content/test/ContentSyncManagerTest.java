@@ -19,6 +19,7 @@ import static com.redhat.rhn.domain.channel.test.ChannelFactoryTest.createTestCl
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,14 +53,21 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
@@ -704,6 +712,121 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
             "management tools and technology certifications across the platform, and each product is " +
             "enterprise-class.", changedUpdate.getDescription());
+    }
+
+    /**
+     * Test if changes in SCC data result in updates of the channel data in the DB and pillar
+     * data for an assigned system
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testUpdateChannelsPillar() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        testMinionServer = TestUtils.saveAndReload(testMinionServer);
+
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1150));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Channel pool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
+        Channel update = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
+        Channel legacy = ChannelFactory.lookupByLabel("sle-module-legacy12-pool-x86_64");
+        assertEquals("SLES12-Pool for x86_64", pool.getName());
+        assertEquals("SUSE Linux Enterprise Server 12 x86_64", pool.getSummary());
+        assertEquals(
+                "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+                "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+                "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+                "management tools and technology certifications across the platform, and each product is " +
+                "enterprise-class.", pool.getDescription());
+        assertTrue(pool.getSuseProductChannels().stream().findFirst().get().isMandatory());
+        assertEquals("SLES12-Updates for x86_64", update.getName());
+        assertEquals("SUSE Linux Enterprise Server 12 x86_64", update.getSummary());
+        assertEquals(
+                "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+                "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+                "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+                "management tools and technology certifications across the platform, and each product is " +
+                "enterprise-class.", update.getDescription());
+
+        assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc", legacy.getGPGKeyUrl());
+
+        SystemManager.subscribeServerToChannel(user, testMinionServer, pool);
+        SystemManager.subscribeServerToChannel(user, testMinionServer, update);
+        SystemManager.subscribeServerToChannel(user, testMinionServer, legacy);
+
+
+        // Refresh pillar data for the assigned clients
+        MinionPillarManager.INSTANCE.generatePillar(testMinionServer, true,
+                MinionPillarManager.PillarSubset.GENERAL);
+        Pillar pillar = testMinionServer.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Object channelPillar = pillar.getPillar().get("channels");
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
+        List<SCCProductJson> productsChanged = gson.fromJson(
+                inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
+        List<UpgradePathJson> upgradePaths = gson.fromJson(
+                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
+        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+
+        InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
+        List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Channel changedPool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
+        Channel changedUpdate = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
+        Channel changedLegacy = ChannelFactory.lookupByLabel("sle-module-legacy12-pool-x86_64");
+        assertEquals("SLES12-Pool for x86_64 UPDATED", changedPool.getName());
+        assertEquals("SUSE Linux Enterprise Server 12 x86_64 UPDATED", changedPool.getSummary());
+        assertEquals(
+            "UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+            "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+            "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+            "management tools and technology certifications across the platform, and each product is " +
+            "enterprise-class.", changedPool.getDescription());
+        assertFalse(changedPool.getSuseProductChannels().stream().findFirst().get().isMandatory());
+        assertEquals("SLES12-Updates for x86_64 UPDATED", changedUpdate.getName());
+        assertEquals("SUSE Linux Enterprise Server 12 x86_64 UPDATED", changedUpdate.getSummary());
+        assertEquals(
+            "UPDATED: SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
+            "The platform addresses business needs from the smallest thin-client devices to the world's most " +
+            "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
+            "management tools and technology certifications across the platform, and each product is " +
+            "enterprise-class.", changedUpdate.getDescription());
+        assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc " +
+                        "file:///etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key",
+                changedLegacy.getGPGKeyUrl());
+        Pillar pillarChanged = testMinionServer.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY)
+                .orElseThrow();
+        Map<String, Map<String, String>> changedChannelPillar = (Map<String, Map<String, String>>) pillarChanged
+                .getPillar().get("channels");
+        assertNotEquals(channelPillar, changedChannelPillar);
+        assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc " +
+                        "file:///etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key",
+            changedChannelPillar.get("sle-module-legacy12-pool-x86_64").get("gpgkeyurl"));
     }
 
     /**

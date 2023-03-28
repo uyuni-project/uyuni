@@ -2,7 +2,7 @@
 set -e
 
 # temporarily disable non-working repo
-zypper mr --disable Fake-RPM-SLES-Channel || :
+zypper mr --disable Fake-RPM-SUSE-Channel || :
 zypper --non-interactive --gpg-auto-import-keys ref
 
 # install, configure, and start avahi
@@ -11,7 +11,7 @@ cp /root/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 /usr/sbin/avahi-daemon -D
 
 # re-enable normal repo and remove helper repo
-zypper mr --enable Fake-RPM-SLES-Channel || :
+zypper mr --enable Fake-RPM-SUSE-Channel || :
 zypper rr sles15sp4
 
 # do the real test

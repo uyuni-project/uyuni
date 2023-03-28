@@ -181,7 +181,7 @@
     <query params="offset, limit">
           SELECT rhnserverneededcache.server_id AS system_id
                     , count(distinct rhnpackage.name_id) AS packages_out_of_date
-                    , count(rhnserverneededcache.errata_id) AS errata_out_of_date
+                    , count(distinct rhnserverneededcache.errata_id) AS errata_out_of_date
             FROM rhnpackage, rhnserverneededcache
            WHERE rhnserverneededcache.package_id = rhnpackage.id
         GROUP BY rhnserverneededcache.server_id

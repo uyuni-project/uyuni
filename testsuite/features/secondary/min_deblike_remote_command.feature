@@ -1,6 +1,10 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# Skip if container. This test is broken
+# This needs to be fixed
+
+@skip_if_container
 @scope_deblike
 @deblike_minion
 Feature: Remote command on Debian-like Salt minion

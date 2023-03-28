@@ -1,3 +1,5 @@
+- Fix datetime picker appearing behind modal edge
+- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - Fix UI inconsistencies in susemanager-light and susemanager-dark
   theme
 - Deprecate jQuery datepicker, integrate React datepicker

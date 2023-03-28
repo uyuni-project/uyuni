@@ -1,6 +1,11 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# skip if container because we do not have a domain name and the
+# javascript validation fails on validating the URL
+# this needs to be fixed
+
+@skip_if_container
 @scope_maintenance_windows
 @sle_minion
 @rhlike_minion

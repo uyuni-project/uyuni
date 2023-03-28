@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-09 16:58+0100\n"
+"POT-Creation-Date: 2023-03-17 13:41+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -1750,7 +1750,7 @@ msgstr "Metadata paket sumber diffing (apa yang hilang secara lokal?): %s"
 msgid "Downloading source package metadata"
 msgstr "Mengunduh metadata paket sumber"
 
-#: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2043
+#: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2049
 #, fuzzy, python-format
 msgid "Unable to save file %s: %s"
 msgstr "Tidak dapat menyimpan berkas %s: %s"
@@ -1819,7 +1819,7 @@ msgid "Importing:  "
 msgstr "Mengimpor..."
 
 #. not in the cache
-#: ../satellite_tools/satsync.py:1719
+#: ../satellite_tools/satsync.py:1725
 #, fuzzy
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
@@ -1828,38 +1828,38 @@ msgstr ""
 "Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu.Paket "
 "tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
 
-#: ../satellite_tools/satsync.py:1725
+#: ../satellite_tools/satsync.py:1731
 #, fuzzy
 msgid "Importing channel patches"
 msgstr "Mengimpor patch saluran"
 
-#: ../satellite_tools/satsync.py:1730
+#: ../satellite_tools/satsync.py:1736
 #, fuzzy, python-format
 msgid "Importing %s patches for channel %s."
 msgstr "Mengimpor patch %s untuk saluran %s."
 
 #. Incomplete configuration
-#: ../satellite_tools/satsync.py:2129
+#: ../satellite_tools/satsync.py:2135
 #, fuzzy
 msgid "ERROR: server.mount_point not set in the configuration file"
 msgstr "GALAT: server.mount_point tidak ditetapkan dalam berkas konfigurasi"
 
-#: ../satellite_tools/satsync.py:2133
+#: ../satellite_tools/satsync.py:2139
 #, fuzzy, python-format
 msgid "ERROR: server.mount_point %s do not exist"
 msgstr "GALAT: server.mount_point %s tidak ada"
 
-#: ../satellite_tools/satsync.py:2138
+#: ../satellite_tools/satsync.py:2144
 #, fuzzy, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
 msgstr "GALAT: jalur di server.mount_point (%s) tidak ada"
 
-#: ../satellite_tools/satsync.py:2215
+#: ../satellite_tools/satsync.py:2221
 #, fuzzy, python-format
 msgid "Commandline: %s"
 msgstr "Baris perintah: %s"
 
-#: ../satellite_tools/satsync.py:2218
+#: ../satellite_tools/satsync.py:2224
 #, fuzzy, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
@@ -1868,17 +1868,17 @@ msgstr ""
 "DEBUG HANYA: max. batch-size untuk XML/database-import processing (1..%s).\" "
 "manusia satelit-sync\" untuk informasi lebih lanjut."
 
-#: ../satellite_tools/satsync.py:2221
+#: ../satellite_tools/satsync.py:2227
 #, fuzzy
 msgid "alternative SSL CA Cert (fullpath to cert file)"
 msgstr "alternatif SSL CA Cert (fullpath ke cert file)"
 
-#: ../satellite_tools/satsync.py:2223
+#: ../satellite_tools/satsync.py:2229
 #, fuzzy
 msgid "process data for this channel only"
 msgstr "data proses untuk saluran ini saja"
 
-#: ../satellite_tools/satsync.py:2225
+#: ../satellite_tools/satsync.py:2231
 #, fuzzy
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
@@ -1887,12 +1887,12 @@ msgstr ""
 "dump disk akan dianggap sebagai ekspor penuh; lihat \"man satellite-sync\" "
 "untuk informasi lebih lanjut."
 
-#: ../satellite_tools/satsync.py:2228
+#: ../satellite_tools/satsync.py:2234
 #, fuzzy
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr "saluran kustom yang ada juga akan disinkronkan (kecuali -c digunakan)"
 
-#: ../satellite_tools/satsync.py:2230
+#: ../satellite_tools/satsync.py:2236
 #, fuzzy, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
@@ -1900,123 +1900,123 @@ msgstr ""
 "menimpa tingkat debug yang ditetapkan dalam /etc/rhn/rhn.conf (yang saat ini "
 "disedingkan di %s)."
 
-#: ../satellite_tools/satsync.py:2232
+#: ../satellite_tools/satsync.py:2238
 #, fuzzy, python-format
 msgid "requested version of XML dump (default: %s)"
 msgstr "versi yang diminta dari dump XML (default: %s)"
 
-#: ../satellite_tools/satsync.py:2234
+#: ../satellite_tools/satsync.py:2240
 #, fuzzy
 msgid "e-mail a report of what was synced/imported"
 msgstr "e-mail laporan tentang apa yang disinkronkan / diimpor"
 
-#: ../satellite_tools/satsync.py:2236
+#: ../satellite_tools/satsync.py:2242
 #, fuzzy
 msgid "forcibly process all (not a diff of) patch metadata"
 msgstr "secara paksa memproses semua (bukan diff) patch metadata"
 
-#: ../satellite_tools/satsync.py:2238
+#: ../satellite_tools/satsync.py:2244
 #, fuzzy
 msgid "Do not use an http proxy under any circumstances."
 msgstr "Jangan gunakan proxy http dalam keadaan apa pun."
 
-#: ../satellite_tools/satsync.py:2240
+#: ../satellite_tools/satsync.py:2246
 #, fuzzy
 msgid "alternative http proxy (hostname:port)"
 msgstr "alternatif http proxy (hostname:port)"
 
-#: ../satellite_tools/satsync.py:2242
+#: ../satellite_tools/satsync.py:2248
 #, fuzzy
 msgid "alternative http proxy username"
 msgstr "alternatif http proxy username"
 
-#: ../satellite_tools/satsync.py:2244
+#: ../satellite_tools/satsync.py:2250
 #, fuzzy
 msgid "alternative http proxy password"
 msgstr "kata sandi proxy http alternatif"
 
-#: ../satellite_tools/satsync.py:2246
+#: ../satellite_tools/satsync.py:2252
 #, fuzzy
 msgid "parent SUSE Manager to import content from"
 msgstr "induk SUSE Manager untuk mengimpor konten dari"
 
-#: ../satellite_tools/satsync.py:2248
+#: ../satellite_tools/satsync.py:2254
 #, fuzzy
 msgid "list all available channels and exit"
 msgstr "daftar semua saluran yang tersedia dan keluar"
 
-#: ../satellite_tools/satsync.py:2250
+#: ../satellite_tools/satsync.py:2256
 #, fuzzy
 msgid "help on all error codes mgr-inter-sync returns"
 msgstr "bantuan pada semua kode kesalahan mgr-inter-sync kembali"
 
-#: ../satellite_tools/satsync.py:2252
+#: ../satellite_tools/satsync.py:2258
 #, fuzzy
 msgid "source mount point for import - disk update only"
 msgstr "titik pasang sumber untuk impor - hanya pembaruan disk"
 
-#: ../satellite_tools/satsync.py:2254
+#: ../satellite_tools/satsync.py:2260
 #, fuzzy
 msgid "do not process patch data"
 msgstr "jangan memproses data patch"
 
-#: ../satellite_tools/satsync.py:2256
+#: ../satellite_tools/satsync.py:2262
 #, fuzzy
 msgid "do not process kickstart data (provisioning only)"
 msgstr "jangan memproses data kickstart (hanya penyediaan)"
 
-#: ../satellite_tools/satsync.py:2258
+#: ../satellite_tools/satsync.py:2264
 #, fuzzy
 msgid "do not process full package metadata"
 msgstr "tidak memproses metadata paket lengkap"
 
-#: ../satellite_tools/satsync.py:2260
+#: ../satellite_tools/satsync.py:2266
 #, fuzzy
 msgid "do not download, or process any RPMs"
 msgstr "tidak mengunduh, atau memproses RPM apa pun"
 
-#: ../satellite_tools/satsync.py:2262
+#: ../satellite_tools/satsync.py:2268
 #, fuzzy
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr "organisasi tempat sinkronisasi mengimpor data. default ke akun admin"
 
-#: ../satellite_tools/satsync.py:2264
+#: ../satellite_tools/satsync.py:2270
 #, fuzzy
 msgid "print the configuration and exit"
 msgstr "mencetak konfigurasi dan keluar"
 
-#: ../satellite_tools/satsync.py:2266
+#: ../satellite_tools/satsync.py:2272
 #, fuzzy
 msgid "alternative server with which to connect (hostname)"
 msgstr "server alternatif yang digunakan untuk menghubungkan (nama host)"
 
-#: ../satellite_tools/satsync.py:2268
+#: ../satellite_tools/satsync.py:2274
 #, fuzzy
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
 msgstr ""
 "sinkronisasi ke langkah ini (man satellite-sync untuk info lebih lanjut)"
 
-#: ../satellite_tools/satsync.py:2270
+#: ../satellite_tools/satsync.py:2276
 #, fuzzy
 msgid "write complete data to tempfile before streaming to remainder of app"
 msgstr "menulis data lengkap ke tempfile sebelum streaming ke sisa aplikasi"
 
-#: ../satellite_tools/satsync.py:2272
+#: ../satellite_tools/satsync.py:2278
 #, fuzzy
 msgid "DEBUG ONLY: alternative path to digital system id"
 msgstr "DEBUG HANYA: jalur alternatif ke id sistem digital"
 
-#: ../satellite_tools/satsync.py:2274
+#: ../satellite_tools/satsync.py:2280
 #, fuzzy
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr "alamat email alternatif untuk output sinkronisasi (--opsi email)"
 
-#: ../satellite_tools/satsync.py:2276
+#: ../satellite_tools/satsync.py:2282
 #, fuzzy
 msgid "do not remove rpms when importing from local dump"
 msgstr "tidak menghapus rpm saat mengimpor dari dump lokal"
 
-#: ../satellite_tools/satsync.py:2278
+#: ../satellite_tools/satsync.py:2284
 #, fuzzy
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
@@ -2026,7 +2026,7 @@ msgstr ""
 "mount-point. Diperlukan jika Anda ingin mengimpor data organisasi dan izin "
 "saluran."
 
-#: ../satellite_tools/satsync.py:2288
+#: ../satellite_tools/satsync.py:2294
 #, fuzzy, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
@@ -2034,57 +2034,57 @@ msgstr ""
 "%sGALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
 
 #. An SQL error is fatal... crash and burn
-#: ../satellite_tools/satsync.py:2300
+#: ../satellite_tools/satsync.py:2306
 #, fuzzy, python-format
 msgid "ERROR: Can't connect to the database: %s"
 msgstr "GALAT: Tidak dapat menyambung ke pangkalan data: %s"
 
-#: ../satellite_tools/satsync.py:2301
+#: ../satellite_tools/satsync.py:2307
 #, fuzzy
 msgid "ERROR: Check if your database is running."
 msgstr "GALAT: Periksa apakah database Anda berjalan."
 
-#: ../satellite_tools/satsync.py:2334
+#: ../satellite_tools/satsync.py:2340
 #, fuzzy, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
 msgstr "GALAT: --debug-level mengambil nilai bilangan bulat dalam kisaran %s."
 
-#: ../satellite_tools/satsync.py:2336
+#: ../satellite_tools/satsync.py:2342
 #, fuzzy
 msgid "  0  - little logging/messaging."
 msgstr "0 - sedikit penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2337
+#: ../satellite_tools/satsync.py:2343
 #, fuzzy
 msgid "  1  - minimal logging/messaging."
 msgstr "1 - minimal penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2338
+#: ../satellite_tools/satsync.py:2344
 #, fuzzy
 msgid "  2  - normal level of logging/messaging."
 msgstr "2 - tingkat normal penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2339
+#: ../satellite_tools/satsync.py:2345
 #, fuzzy
 msgid "  3  - lots of logging/messaging."
 msgstr "3 - banyak penebangan / pesan."
 
-#: ../satellite_tools/satsync.py:2340
+#: ../satellite_tools/satsync.py:2346
 #, fuzzy
 msgid "  4+ - excessive logging/messaging."
 msgstr "4+ - penebangan/pesan yang berlebihan."
 
-#: ../satellite_tools/satsync.py:2353
+#: ../satellite_tools/satsync.py:2359
 #, fuzzy
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr "GALAT: Opsi --master hanya berlaku dengan opsi --mount-point"
 
-#: ../satellite_tools/satsync.py:2363
+#: ../satellite_tools/satsync.py:2369
 #, fuzzy, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
 msgstr "GALAT: Tidak dapat mencari Id Organisasi %s"
 
-#: ../satellite_tools/satsync.py:2372
+#: ../satellite_tools/satsync.py:2378
 #, fuzzy
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
@@ -2092,7 +2092,7 @@ msgstr ""
 "PERINGATAN: Opsi --list-channels menimpa opsi --step apa pun. --langkah "
 "diabaikan."
 
-#: ../satellite_tools/satsync.py:2387
+#: ../satellite_tools/satsync.py:2393
 #, fuzzy, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
@@ -2100,7 +2100,7 @@ msgstr ""
 "GALAT: '%s' bukan langkah yang valid. Lihat 'man satellite-sync' untuk "
 "detail lebih lanjut."
 
-#: ../satellite_tools/satsync.py:2419
+#: ../satellite_tools/satsync.py:2425
 #, fuzzy
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
@@ -2111,112 +2111,112 @@ msgstr ""
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
-#: ../satellite_tools/satsync.py:2468 ../satellite_tools/satsync.py:2472
+#: ../satellite_tools/satsync.py:2474 ../satellite_tools/satsync.py:2478
 #, fuzzy
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
 msgstr "GALAT: --batch-size harus memiliki nilai dalam kisaran: 1..50"
 
-#: ../satellite_tools/satsync.py:2480
+#: ../satellite_tools/satsync.py:2486
 #, fuzzy, python-format
 msgid "ERROR: no such directory %s"
 msgstr "Galat sewaktu membuat direktori %s."
 
-#: ../satellite_tools/satsync.py:2485
+#: ../satellite_tools/satsync.py:2491
 #, fuzzy
 msgid "Error Codes: Returned codes means:"
 msgstr "Kode kesalahan: Kode yang dikembalikan berarti:"
 
-#: ../satellite_tools/satsync.py:2486
+#: ../satellite_tools/satsync.py:2492
 #, fuzzy
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr "-1 - Tidak dapat mengunci file atau KeyboardInterrupt atau SystemExit"
 
-#: ../satellite_tools/satsync.py:2487
+#: ../satellite_tools/satsync.py:2493
 #, fuzzy
 msgid "  0  - User interrupted or intentional exit"
 msgstr "0 - Pengguna terganggu atau disengaja keluar"
 
-#: ../satellite_tools/satsync.py:2488
+#: ../satellite_tools/satsync.py:2494
 #, fuzzy
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
 msgstr "1 - mencoba untuk menjalankan lebih dari satu contoh mgr-inter-sync."
 
-#: ../satellite_tools/satsync.py:2489
+#: ../satellite_tools/satsync.py:2495
 #, fuzzy
 msgid "  2  - Unable to find synchronization tools."
 msgstr "2 - Tidak dapat menemukan alat sinkronisasi."
 
-#: ../satellite_tools/satsync.py:2490
+#: ../satellite_tools/satsync.py:2496
 #, fuzzy
 msgid "  3  - a general socket exception occurred"
 msgstr "3 - pengecualian soket umum terjadi"
 
-#: ../satellite_tools/satsync.py:2491
+#: ../satellite_tools/satsync.py:2497
 #, fuzzy
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr "4 - terjadi kesalahan SSL. Periksa kembali pengaturan SSL Anda."
 
-#: ../satellite_tools/satsync.py:2492
+#: ../satellite_tools/satsync.py:2498
 #, fuzzy
 msgid "  5  - ISS error"
 msgstr "5 - Kesalahan ISS"
 
-#: ../satellite_tools/satsync.py:2493
+#: ../satellite_tools/satsync.py:2499
 #, fuzzy
 msgid "  6  - unhandled exception occurred"
 msgstr "6 - pengecualian ditangani terjadi"
 
-#: ../satellite_tools/satsync.py:2494
+#: ../satellite_tools/satsync.py:2500
 #, fuzzy
 msgid "  7  - unknown sync error"
 msgstr "7 - kesalahan sinkronisasi tidak diketahui"
 
-#: ../satellite_tools/satsync.py:2495
+#: ../satellite_tools/satsync.py:2501
 #, fuzzy
 msgid "  8  - ERROR: must be root to execute"
 msgstr "8 - ERROR: harus root untuk mengeksekusi"
 
-#: ../satellite_tools/satsync.py:2496
+#: ../satellite_tools/satsync.py:2502
 #, fuzzy
 msgid "  9  - rpclib fault during synchronization init"
 msgstr "9 - rpclib kesalahan selama sinkronisasi init"
 
-#: ../satellite_tools/satsync.py:2497
+#: ../satellite_tools/satsync.py:2503
 #, fuzzy
 msgid "  10 - synchronization init error"
 msgstr "10 - sinkronisasi init kesalahan"
 
-#: ../satellite_tools/satsync.py:2498
+#: ../satellite_tools/satsync.py:2504
 #, fuzzy
 msgid "  11 - Error parsing XML stream"
 msgstr "11 - Kesalahan parsing XML stream"
 
-#: ../satellite_tools/satsync.py:2499
+#: ../satellite_tools/satsync.py:2505
 #, fuzzy
 msgid "  12 - Channel do not exist"
 msgstr "12 - Saluran tidak ada"
 
-#: ../satellite_tools/satsync.py:2500
+#: ../satellite_tools/satsync.py:2506
 #, fuzzy
 msgid "  13 - SQL error during importing package metadata"
 msgstr "13 - Galat SQL selama mengimpor metadata paket"
 
-#: ../satellite_tools/satsync.py:2501
+#: ../satellite_tools/satsync.py:2507
 #, fuzzy
 msgid "  14 - SQL error during linking channel packages"
 msgstr "14 - Galat SQL selama menghubungkan paket saluran"
 
-#: ../satellite_tools/satsync.py:2502
+#: ../satellite_tools/satsync.py:2508
 #, fuzzy
 msgid "  15 - SQL error during xml processing"
 msgstr "15 - Galat SQL selama pemrosesan xml"
 
-#: ../satellite_tools/satsync.py:2503
+#: ../satellite_tools/satsync.py:2509
 #, fuzzy
 msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "16 - server.mount_point tidak ditetapkan dalam file konfigurasi"
 
-#: ../satellite_tools/satsync.py:2504
+#: ../satellite_tools/satsync.py:2510
 #, fuzzy
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
@@ -2225,57 +2225,57 @@ msgstr ""
 "17 - GALAT SQL selama mengambil saluran yang sudah diimpor dalam database "
 "SUSE Manager"
 
-#: ../satellite_tools/satsync.py:2505
+#: ../satellite_tools/satsync.py:2511
 #, fuzzy
 msgid "  18 - Wrong db connection string in rhn.conf"
 msgstr "18 - String koneksi db salah di rhn.conf"
 
-#: ../satellite_tools/satsync.py:2506
+#: ../satellite_tools/satsync.py:2512
 #, fuzzy
 msgid "  19 - Bad arguments"
 msgstr "19 - Argumen buruk"
 
-#: ../satellite_tools/satsync.py:2507
+#: ../satellite_tools/satsync.py:2513
 #, fuzzy
 msgid "  20 - Could not connect to db."
 msgstr "20 - Tidak dapat terhubung ke db."
 
-#: ../satellite_tools/satsync.py:2508
+#: ../satellite_tools/satsync.py:2514
 #, fuzzy
 msgid "  21 - Bad debug level"
 msgstr "21 - Tingkat debug buruk"
 
-#: ../satellite_tools/satsync.py:2509
+#: ../satellite_tools/satsync.py:2515
 #, fuzzy
 msgid "  22 - Not valid step"
 msgstr "22 - Tidak berlaku langkah"
 
-#: ../satellite_tools/satsync.py:2510
+#: ../satellite_tools/satsync.py:2516
 #, fuzzy
 msgid "  24 - no such file"
 msgstr "24 - tidak ada file tersebut"
 
-#: ../satellite_tools/satsync.py:2511
+#: ../satellite_tools/satsync.py:2517
 #, fuzzy
 msgid "  25 - no such directory"
 msgstr "25 - tidak ada direktori tersebut"
 
-#: ../satellite_tools/satsync.py:2512
+#: ../satellite_tools/satsync.py:2518
 #, fuzzy
 msgid "  26 - mount_point does not exist"
 msgstr "26 - mount_point tidak ada"
 
-#: ../satellite_tools/satsync.py:2513
+#: ../satellite_tools/satsync.py:2519
 #, fuzzy
 msgid "  27 - No such org"
 msgstr "27 - Tidak ada organisasi seperti itu"
 
-#: ../satellite_tools/satsync.py:2514
+#: ../satellite_tools/satsync.py:2520
 #, fuzzy
 msgid "  28 - error: --master is only valid with --mount-point"
 msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 
-#: ../satellite_tools/satsync.py:2521
+#: ../satellite_tools/satsync.py:2527
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"

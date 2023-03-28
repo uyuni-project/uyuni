@@ -90,9 +90,15 @@ no_ssh_push_key_authorized:
   #end of expections
 {%- endif %}
 
+# openEuler Family. This OS is based in RedHat, but declares a separate family
+{%- if grains['os_family'] == 'openEuler' %}
+  {% set os_base = grains['os'] %}
+  {% set osrelease = grains['osrelease'] %}
+{%- endif %}
+
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
 
-{%- if grains['os_family'] == 'RedHat' or  grains['os_family'] == 'Suse'%}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' or grains['os_family'] == 'Suse'%}
   {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
   {%- if 'status' not in bootstrap_repo_request %}
     {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
@@ -120,7 +126,7 @@ bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
     - name: /etc/zypp/repos.d/susemanager:bootstrap.repo
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: /etc/yum.repos.d/susemanager:bootstrap.repo
 {%- elif grains['os_family'] == 'Debian' %}
     - name: /etc/apt/sources.list.d/susemanager_bootstrap.list

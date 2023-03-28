@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 15:33+0100\n"
+"POT-Creation-Date: 2023-03-24 14:54+0100\n"
 "PO-Revision-Date: 2023-02-19 21:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -248,7 +248,7 @@ msgstr "Zrušiť"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:123
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -264,6 +264,8 @@ msgstr "Zrušiť"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:72
+#: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -393,6 +395,7 @@ msgstr "Späť na zoznam"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:144
 msgid "Filter by package name"
 msgstr "Filtrovať podľa názvu balíka"
 
@@ -521,7 +524,7 @@ msgid "Custom Quartz format:"
 msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:371
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "There are no entries to show."
 msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
@@ -615,7 +618,7 @@ msgstr "Vyčistiť"
 msgid "Select All"
 msgstr "Vybrať všetko"
 
-#: ../html/src/components/table/TableDataHandler.tsx:372
+#: ../html/src/components/table/TableDataHandler.tsx:375
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
@@ -628,7 +631,7 @@ msgstr "Vybrať všetko"
 msgid "Loading..."
 msgstr "Načítava sa..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:405
+#: ../html/src/components/table/TableDataHandler.tsx:408
 msgid "items per page"
 msgstr "položiek na stránku"
 
@@ -1232,6 +1235,7 @@ msgid "Arch"
 msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:684
+#: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Kanály"
 
@@ -1551,6 +1555,7 @@ msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
 msgstr "Kanál"
 
@@ -2186,6 +2191,7 @@ msgid "Delete Project"
 msgstr "Vymazať projekt"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
 msgstr "Balík"
 
@@ -4266,6 +4272,44 @@ msgid ""
 msgstr ""
 "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
 "tejto organizácii"
+
+#: ../html/src/manager/packages/list.tsx:80
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:81
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:89
+#, fuzzy
+msgid " Package Management "
+msgstr "Ovplyvňuje zásobník správy balíkov"
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Binary packages"
+msgstr "Hľadať balík"
+
+#: ../html/src/manager/packages/list.tsx:118
+#, fuzzy
+msgid "Source packages"
+msgstr "Hľadať balík"
+
+#: ../html/src/manager/packages/list.tsx:126
+#, fuzzy
+msgid "package"
+msgstr "Balík"
+
+#: ../html/src/manager/packages/list.tsx:146
+#, fuzzy
+msgid "No Packages."
+msgstr "Balíky"
+
+#: ../html/src/manager/packages/list.tsx:172
+#, fuzzy
+msgid "Content Provider"
+msgstr "Poskytovateľ klastrov"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -6550,9 +6594,6 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "Edit properties"
 #~ msgstr "Upraviť vlastnosti"
-
-#~ msgid "Cluster provider"
-#~ msgstr "Poskytovateľ klastrov"
 
 #~ msgid "Management node"
 #~ msgstr "Uzol správy"

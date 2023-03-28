@@ -11,7 +11,7 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  (Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')) + Dir.glob(File.join(Dir.pwd, 'run_sets', 'build_validation_add_non_MU_repositories', '*.yml'))).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
@@ -89,10 +89,10 @@ namespace :utils do
     clients.reject! { |client| client.include?('monitoring_server') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
-        'features/build_validation/add_custom_repositories/add_maintenance_update_repositories.template',
+        'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
         File.basename(client,'.feature'),
-        'features/build_validation/add_custom_repositories',
-        'run_sets/build_validation_add_custom_repositories.yml'
+        'features/build_validation/add_MU_repositories',
+        'run_sets/build_validation_add_MU_repositories.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -188,7 +188,7 @@ namespace :jenkins do
       next if minion.include?('ssh')
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_maintenance_update_repositories',
                                                           File.basename(minion,'.feature'),
-                                                          'features/build_validation/add_custom_repositories',
+                                                          'features/build_validation/add_MU_repositories',
                                                           "run_sets/build_validation_add_maintenance_update_repositories_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end

@@ -1,3 +1,9 @@
+- Fix deleting custom info pillar (bsc#1209253)
+- Update report outdated system query to de-duplicate errata id's
+- change jar versions in ivy configuration file
+- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+- support multiple gpgkey urls for a channel (bsc#1208540)
+- Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Fix systems subscribed to channel CSV download (bsc#1201063)
 - Save scheduler user when creating Patch actions manually (bsc#1208321)
@@ -7,6 +13,13 @@
 - Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
 - Allow single-value lists in query strings in HTTP API (bsc#1207297)
 - Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+
+
+-------------------------------------------------------------------
+Tue Mar 21 15:23:53 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.15-1
+  * Prevent HTTP API restricted args from being logged (bsc#1208119)
 
 -------------------------------------------------------------------
 Wed Mar 15 15:58:47 CET 2023 - jgonzalez@suse.com

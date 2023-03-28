@@ -1,0 +1,5 @@
+## Add non MU repositories for alma9 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/alma9_minion_build_clm.feature
+
+## Add non MU repositories END ###
