@@ -398,6 +398,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Tailoring Files" xml:space="preserve">
+        <source>Tailoring Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="XCCDF Diff" xml:space="preserve">
         <source>XCCDF Diff</source>
         <context-group name="ctx">

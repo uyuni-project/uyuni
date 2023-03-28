@@ -399,8 +399,10 @@ public class MenuTree {
                         .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("OpenSCAP").addChild(new MenuItem("All Scans")
                         .withPrimaryUrl("/rhn/audit/ListXccdf.do"))
-                        .addChild(
-                                new MenuItem("XCCDF Diff").withPrimaryUrl("/rhn/audit/scap/Diff.do")
+                        .addChild(new MenuItem("Tailoring Files")
+                                .withPrimaryUrl("/rhn/manager/audit/scap/tailoring-files")
+                                .withDir("/rhn/manager/audit/scap/tailoring-files"))
+                        .addChild(new MenuItem("XCCDF Diff").withPrimaryUrl("/rhn/audit/scap/Diff.do")
                                         .withAltUrl("/rhn/audit/scap/DiffSubmit.do"))
                         .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/audit/scap/Search.do"))
                         .addChild(new MenuItem("audit.nav.logreview")
