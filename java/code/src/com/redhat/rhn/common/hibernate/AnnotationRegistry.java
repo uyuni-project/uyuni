@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -338,6 +339,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
+            TailoringFile.class
             SUSEProduct.class,
             Task.class,
             TaskoBunch.class,
