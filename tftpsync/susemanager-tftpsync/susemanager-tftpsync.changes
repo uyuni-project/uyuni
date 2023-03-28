@@ -1,3 +1,6 @@
+- Fix server-side cache that's used for only pushing files to
+  proxies that need to be pushed, as well as propagating deletions
+  (bsc#1209215)
 - Fix removal of proxies section in cobbler settings (bsc#1207063)
 
 -------------------------------------------------------------------
