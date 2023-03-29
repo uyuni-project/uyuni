@@ -72,9 +72,9 @@ Feature: Setup Uyuni proxy
 
 @skip_if_cloud
   Scenario: Install expect package on proxy for bootstrapping minion via script
-    When I enable repositories before installing branch server
+    When I enable repositories during branch server installation
     And I install package "expect" on this "proxy"
-    And I disable repositories after installing branch server
+    And I disable repositories during branch server installation
 
   Scenario: Cleanup: remove proxy bootstrap scripts
     When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"

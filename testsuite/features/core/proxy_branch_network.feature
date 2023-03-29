@@ -154,7 +154,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
   Scenario: Enable repositories for installing branch services
-    When I enable repositories before installing branch server
+    When I enable repositories during branch server installation
 
 @proxy
 @private_net
@@ -200,7 +200,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
   Scenario: Disable repositories after installing branch services
-    When I disable repositories after installing branch server
+    When I disable repositories during branch server installation
     # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
     # And I wait until event "Package List Refresh scheduled by (none)" is completed
     And I wait for "700" seconds

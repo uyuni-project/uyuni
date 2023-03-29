@@ -91,22 +91,28 @@ def compute_kiwi_profile_version(host)
   end
 end
 
-When(/^I enable repositories before installing branch server$/) do
+When(/^I (enable|disable) repositories during branch server installation$/) do |action|
   os_version = $proxy.os_version
   os_family = $proxy.os_family
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  log $proxy.run("zypper mr --enable #{repos}")
+  log $proxy.run("zypper mr --#{action} #{repos}")
 
-  # Server Applications
+# Server Applications, proxy product and modules, proxy devel
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    log $proxy.run("zypper mr --enable #{repos}")
+    repos = 'proxy_module_pool_repo proxy_module_update_repo' \
+           'proxy_product_pool_repo proxy_product_update_repo' \
+           'server_devel_releasenotes_repo server_devel_repo' \
+           'module_server_applications_pool_repo module_server_applications_update_repo'
+
+  elsif os_family =~ /^opensuse/
+    repos = 'proxy_pool_repo'
   end
+  log $proxy.run("zypper mr --#{action} #{repos}")
 end
 
-When(/^I disable repositories after installing branch server$/) do
+When(/^I disable repositories during branch server installation$/) do
   os_version = $proxy.os_version
   os_family = $proxy.os_family
 
@@ -125,13 +131,13 @@ When(/^I start tftp on the proxy$/) do
   case $product
   # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
-    step %(I enable repositories before installing branch server)
+    step %(I enable repositories during branch server installation)
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
           'zypper --non-interactive install tftp && ' \
           'systemctl enable tftp.service && ' \
           'systemctl start tftp.service'
     $proxy.run(cmd)
-    step %(I disable repositories after installing branch server)
+    step %(I disable repositories during branch server installation)
   else
     cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
     $proxy.run(cmd)
