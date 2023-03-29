@@ -112,21 +112,6 @@ When(/^I (enable|disable) repositories during branch server installation$/) do |
   log $proxy.run("zypper mr --#{action} #{repos}")
 end
 
-When(/^I disable repositories during branch server installation$/) do
-  os_version = $proxy.os_version
-  os_family = $proxy.os_family
-
-  # Distribution
-  repos = 'os_pool_repo os_update_repo'
-  log $proxy.run("zypper mr --disable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    log $proxy.run("zypper mr --disable #{repos}")
-  end
-end
-
 When(/^I start tftp on the proxy$/) do
   case $product
   # TODO: Should we handle this in Sumaform?
