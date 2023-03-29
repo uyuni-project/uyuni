@@ -99,7 +99,7 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   repos = 'os_pool_repo os_update_repo testing_overlay_devel_repo'
   log $proxy.run("zypper mr --#{action} #{repos}")
 
-# Server Applications, proxy product and modules, proxy devel
+  # Server Applications, proxy product and modules, proxy devel
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = 'proxy_module_pool_repo proxy_module_update_repo' \
            'proxy_product_pool_repo proxy_product_update_repo' \
