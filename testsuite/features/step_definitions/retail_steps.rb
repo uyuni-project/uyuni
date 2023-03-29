@@ -91,7 +91,7 @@ def compute_kiwi_profile_version(host)
   end
 end
 
-When(/^I (enable|disable) repositories (before|after) installing branch server$/) do |action, _optional|
+When(/^I (enable|disable) repositories (before|after) installing branch server$/) do |action, _when|
   os_version = $proxy.os_version
   os_family = $proxy.os_family
 
