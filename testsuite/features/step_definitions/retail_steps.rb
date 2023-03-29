@@ -96,7 +96,7 @@ When(/^I (enable|disable) repositories during branch server installation$/) do |
   os_family = $proxy.os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
+  repos = 'os_pool_repo os_update_repo testing_overlay_devel_repo'
   log $proxy.run("zypper mr --#{action} #{repos}")
 
 # Server Applications, proxy product and modules, proxy devel
