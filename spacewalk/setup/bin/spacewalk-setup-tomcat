@@ -35,28 +35,6 @@ sub setup_tomcat {
   copy(TOMCAT_JAVA_OPT_PATH, TOMCAT_CONFIG_PATH) 
     or die "Cannot copy ".TOMCAT_JAVA_OPT_PATH." in ".TOMCAT_CONFIG_PATH."\n";
 
-  my $serverxmlfile = "".TOMCAT_DIR."/server.xml";
-  {
-    local $/ = undef;
-    local *FILE;
-    open FILE, '<', $serverxmlfile
-      or die "Error opening [$serverxmlfile]: $!\n";
-    my $serverxml_content_orig = <FILE>;
-    close FILE;
-
-    my $template = Spacewalk::Setup::SHARED_DIR . '/server.xml.xsl';
-    my $serverxml_content = qx{/usr/bin/xsltproc $template $serverxmlfile};
-    die "There was an error running xsltproc\n" if $?;
-    if ($serverxml_content ne $serverxml_content_orig) {
-      Spacewalk::Setup::backup_file($serverxmlfile =~ m!^(.+)/(.+)$!);
-
-      open FILE, '>', $serverxmlfile
-        or die "Error opening [$serverxmlfile]: $!\n";
-      chmod 0644, $serverxmlfile;
-      print FILE $serverxml_content;
-      close FILE;
-    }
-  }
 
   my $web_patch = Spacewalk::Setup::SHARED_DIR."/web.xml.patch";
   my $command = "patch --silent --directory=".TOMCAT_DIR." --forward -p1 --input=$web_patch";
