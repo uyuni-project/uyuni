@@ -14,12 +14,12 @@ import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 type Props = {
   data?: any;
-  disableCreate?: boolean;
+  isFilteredList?: boolean;
   onActionChanged: (arg0: any) => any;
   onToggleActive: (arg0: any) => any;
   onSelect: (arg0: any) => any;
   onEdit: (arg0: any) => any;
-  onDelete: (arg0: any) => any;
+  onDelete: (arg0: any, arg1: React.RefObject<any>) => any;
 };
 
 type State = {
@@ -28,8 +28,10 @@ type State = {
 };
 
 class RecurringActionsList extends React.Component<Props, State> {
+  tableRef: React.RefObject<any>;
   constructor(props) {
     super(props);
+    this.tableRef = React.createRef();
 
     this.state = {
       itemsToDelete: [],
@@ -43,6 +45,7 @@ class RecurringActionsList extends React.Component<Props, State> {
   }
 
   render() {
+    const disableCreate = !this.props.isFilteredList;
     const buttons = [
       <div className="btn-group pull-right">
         <Button
@@ -59,11 +62,11 @@ class RecurringActionsList extends React.Component<Props, State> {
       <InnerPanel
         title={t("Recurring Actions")}
         icon="spacewalk-icon-salt"
-        buttons={this.props.disableCreate ? [] : buttons}
+        buttons={disableCreate ? [] : buttons}
         summary={
           <>
             <p>{t("The following recurring actions have been created.")}</p>
-            {this.props.disableCreate ? (
+            {disableCreate ? (
               <p>
                 {t(
                   "To create new recurring actions head to the system, group or organization you want to create the action for."
@@ -74,7 +77,7 @@ class RecurringActionsList extends React.Component<Props, State> {
         }
         // We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as
         // an indicator whether we currently render this page
-        helpUrl={this.props.disableCreate ? "reference/schedule/recurring-actions.html" : ""}
+        helpUrl={disableCreate ? "reference/schedule/recurring-actions.html" : ""}
       >
         <div className="panel panel-default">
           <div className="panel-heading">
@@ -84,13 +87,13 @@ class RecurringActionsList extends React.Component<Props, State> {
           </div>
           <div>
             <Table
-              data={this.props.data}
+              selectable={false}
+              data={this.props.isFilteredList ? this.props.data : "/rhn/manager/api/recurringactions"}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
-              initialItemsPerPage={this.props.disableCreate ? pageSize : 0}
-              emptyText={t(
-                "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
-              )}
+              initialItemsPerPage={disableCreate ? pageSize : 0}
+              emptyText={t("No schedules created." + (disableCreate ? "" : " Use Create to add a schedule."))}
+              ref={this.tableRef}
             >
               <Column
                 columnKey="active"
@@ -165,7 +168,7 @@ class RecurringActionsList extends React.Component<Props, State> {
               id="delete-modal"
               title={t("Delete Recurring Action Schedule")}
               content={t("Are you sure you want to delete the selected item?")}
-              onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
+              onConfirm={() => this.props.onDelete(this.state.itemToDelete, this.tableRef)}
               onClosePopUp={() => this.selectToDelete(null)}
             />
           </div>

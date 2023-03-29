@@ -14,7 +14,10 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.common.util.RecurringEventPicker;
+
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -194,6 +197,15 @@ public class RecurringActionScheduleJson {
      */
     public void setCron(String cronIn) {
         cron = cronIn;
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cron);
+        Map<String, String> cronTimesMap = new HashMap<>();
+        cronTimesMap.put("minute", picker.getMinute());
+        cronTimesMap.put("hour", picker.getHour());
+        cronTimesMap.put("dayOfMonth", picker.getDayOfMonth());
+        cronTimesMap.put("dayOfWeek", picker.getDayOfWeek());
+
+        setType(picker.getStatus());
+        setCronTimes(cronTimesMap);
     }
 
     /**

@@ -16,6 +16,9 @@
 package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -35,6 +38,8 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -43,14 +48,18 @@ import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
+
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * RecurringActionManager
  */
-public class RecurringActionManager {
+public class RecurringActionManager extends BaseManager {
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
@@ -191,10 +200,15 @@ public class RecurringActionManager {
      * List all {@link RecurringAction}s visible to the given user
      *
      * @param user the user
+     * @param pc the page control
      * @return the actions visible to the user
      */
-    public static List<? extends RecurringAction> listAllRecurringActions(User user) {
-        return RecurringActionFactory.listAllRecurringActions(user);
+    public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(User user, PageControl pc) {
+        List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
+        List<String> orgsParam = orgs.stream().map(o -> o.getId().toString()).collect(Collectors.toList());
+        SelectMode m = ModeFactory.getMode("Action_queries", "recurring_action_list");
+        m.getQuery().modifyQuery(":orgs", orgsParam, null);
+        return makeDataResult(new HashMap<>(), null, pc, m);
     }
 
     /**
