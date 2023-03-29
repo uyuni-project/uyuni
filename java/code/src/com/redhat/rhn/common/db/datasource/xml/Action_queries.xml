@@ -241,6 +241,48 @@ ORDER BY EARLIEST DESC
   <elaborator name="action_overview_elab" />
 </mode>
 
+<mode name="recurring_action_list"
+      class="com.suse.manager.webui.utils.gson.RecurringActionScheduleJson">
+    <query>
+        select
+            ra.id as recurring_action_id,
+            case
+                when ra.target_type = 'organization' then org.id
+                when ra.target_type = 'group' then sg.id
+                when ra.target_type = 'minion' then minion.id
+            end as target_id,
+            case
+                when ra.target_type = 'organization' then org.name
+                when ra.target_type = 'group' then sg.name
+                when ra.target_type = 'minion' then minion.name
+            end as target_name,
+            ra.name as schedule_name,
+            ra.active as active,
+            case
+                when ra.target_type = 'organization' then 'ORG'
+                else UPPER(ra.target_type)
+            end as target_type,
+            ra.cron_expr as cron,
+            highstate.test_mode as test,
+            creator.login as creator_login,
+            ra.created as created
+        from suseRecurringAction ra
+        inner join web_contact creator
+        on creator.id = ra.creator_id
+        left join rhnservergroup sg
+        on sg.id = ra.group_id
+        left join rhnserver minion
+        on minion.id = ra.minion_id
+        left join web_customer org
+        on org.id = ra.org_id
+        left join suserecurringhighstate highstate
+        on highstate.rec_id = ra.id
+        where (ra.target_type = 'organization' and ra.org_id in (:orgs))
+        or (ra.target_type = 'group' and sg.org_id in (:orgs))
+        or (ra.target_type = 'minion' and minion.org_id in (:orgs))
+    </query>
+</mode>
+
 <write-mode name="archive_actions">
   <query params="user_id, label, org_id">
 UPDATE rhnAction

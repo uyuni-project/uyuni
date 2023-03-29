@@ -24,6 +24,7 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
@@ -36,9 +37,12 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -50,6 +54,7 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -110,10 +115,11 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listAll(Request request, Response response, User user) {
-        List<RecurringActionScheduleJson> schedules =
-                actionsToJson(RecurringActionManager.listAllRecurringActions(user));
+        PageControlHelper pageHelper = new PageControlHelper(request, "scheduleName");
+        PageControl pc = pageHelper.getPageControl();
 
-        return json(response, schedules);
+        DataResult<RecurringActionScheduleJson> schedules = RecurringActionManager.listAllRecurringActions(user, pc);
+        return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
     }
 
     /**

@@ -156,13 +156,16 @@ class RecurringActions extends React.Component<Props, State> {
       .catch(this.handleResponseError);
   };
 
-  deleteSchedule = (item) => {
+  deleteScheduleUpdateTable = (item, tableRef) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
       .then((_) => {
         this.setState({
           messages: MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."),
         });
         this.handleForwardAction();
+        if (tableRef) {
+          tableRef.current?.refresh();
+        }
       })
       .catch((data) => {
         const taskoErrorMsg = MessagesUtils.error(t("Error when deleting the action. Check if Taskomatic is running"));
@@ -173,9 +176,13 @@ class RecurringActions extends React.Component<Props, State> {
       });
   };
 
+  deleteSchedule = (item) => {
+    return this.deleteScheduleUpdateTable(item, null);
+  };
+
   handleForwardAction = (action?: string) => {
     const loc = window.location;
-    if (typeof action === "undefined" || action === "back") {
+    if ((typeof action === "undefined" || action === "back") && this.isFilteredList()) {
       this.getRecurringScheduleList().then((data) => {
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
@@ -240,12 +247,12 @@ class RecurringActions extends React.Component<Props, State> {
         ) : (
           <RecurringActionsList
             data={this.state.schedules}
-            disableCreate={!this.isFilteredList()}
+            isFilteredList={this.isFilteredList()}
             onActionChanged={this.handleForwardAction}
             onToggleActive={this.toggleActive}
             onSelect={this.handleDetailsAction}
             onEdit={this.handleEditAction}
-            onDelete={this.deleteSchedule}
+            onDelete={this.deleteScheduleUpdateTable}
           />
         )}
       </div>
