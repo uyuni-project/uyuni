@@ -1,0 +1,31 @@
+## Path:           System/Services
+## Description:    The SUSE Manager Billing Data Service
+## Type:           string()
+## Default:        "127.0.0.1"
+## ServiceRestart: billing-data-service
+#
+# IP to listen on
+#
+LISTEN="127.0.0.1"
+
+## Path:           System/Services
+## Description:    The SUSE Manager Billing Data Service
+## Type:           string()
+## Default:        "18888"
+## ServiceRestart: billing-data-service
+#
+# Port to listen on
+#
+PORT="18888"
+
+## Path:           System/Services
+## Description:    The SUSE Manager Billing Data Service
+## Type:           string()
+## Default:        ""
+## ServiceRestart: billing-data-service
+#
+# Additional arguments for the billing-data-service
+# Please call: flask run --help
+# to get a full list of possible options.
+#
+ARGS=""
