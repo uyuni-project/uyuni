@@ -1,0 +1,12 @@
+[Unit]
+Description=SUSE Manager PAYG billing data service
+After=local-fs.target network.target postgresql.service
+
+[Service]
+Type=simple
+ExecStart=/srv/billing-data-service/billing-data-service
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
