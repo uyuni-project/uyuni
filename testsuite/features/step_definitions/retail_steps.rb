@@ -91,7 +91,7 @@ def compute_kiwi_profile_version(host)
   end
 end
 
-When(/^I (enable|disable) repositories during branch server installation$/) do |action|
+When(/^I (enable|disable) repositories (before|after) installing branch server$/) do |action, _optional|
   os_version = $proxy.os_version
   os_family = $proxy.os_family
 
@@ -116,13 +116,13 @@ When(/^I start tftp on the proxy$/) do
   case $product
   # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
-    step %(I enable repositories during branch server installation)
+    step %(I enable repositories before installing branch server)
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
           'zypper --non-interactive install tftp && ' \
           'systemctl enable tftp.service && ' \
           'systemctl start tftp.service'
     $proxy.run(cmd)
-    step %(I disable repositories during branch server installation)
+    step %(I disable repositories after installing branch server)
   else
     cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
     $proxy.run(cmd)

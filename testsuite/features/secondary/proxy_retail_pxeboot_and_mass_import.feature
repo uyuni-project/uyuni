@@ -100,10 +100,10 @@ Feature: PXE boot a Retail terminal
   Scenario: Apply the PXE formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
-    And I enable repositories during branch server installation
+    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories during branch server installation
+    And I disable repositories after installing branch server
     Then socket "tftp" is enabled on "proxy"
     And socket "tftp" is active on "proxy"
 
@@ -148,9 +148,9 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 systems were added to SERVERS server group." text
 
   Scenario: Move the image to the branch server
-    When I enable repositories during branch server installation
+    When I enable repositories before installing branch server
     And I apply state "image-sync" to "proxy"
-    And I disable repositories during branch server installation
+    And I disable repositories after installing branch server
     Then the image for "pxeboot_minion" should exist on the branch server
 
   Scenario: Enable Saltboot formula for hardware type group
@@ -285,7 +285,7 @@ Feature: PXE boot a Retail terminal
   Scenario: Cleanup: apply the highstate to clear PXE formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
-    And I enable repositories during branch server installation
+    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
@@ -312,10 +312,10 @@ Feature: PXE boot a Retail terminal
   Scenario: Apply the highstate to take into account the imported formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
-    And I enable repositories during branch server installation
+    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories during branch server installation
+    And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
     When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy

@@ -187,7 +187,7 @@ Feature: Prepare the branch server for PXE booting
 
   Scenario: Apply the branch network formulas via the highstate
     When I follow "States" in the content area
-    And I enable repositories during branch server installation
+    And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 

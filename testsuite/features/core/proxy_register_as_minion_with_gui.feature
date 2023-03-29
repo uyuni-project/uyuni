@@ -60,9 +60,9 @@ Feature: Setup Uyuni proxy
     Then I should see a "Proxy" link in the content area
 
   Scenario: Install expect package on proxy for bootstrapping minion with GUI
-    When I enable repositories during branch server installation
+    When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"
-    And I disable repositories during branch server installation
+    And I disable repositories after installing branch server
 
   Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
