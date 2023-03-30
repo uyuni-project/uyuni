@@ -131,6 +131,13 @@ class RecurringActionsList extends React.Component<Props, State> {
                 cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId)}
               />
               <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="actionType"
+                header={t("Action Type")}
+                cell={(row) => row.actionTypeDescription}
+              />
+              <Column
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t("Actions")}
