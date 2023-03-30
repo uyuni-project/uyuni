@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -76,7 +78,7 @@ public class RecurringConfigChannel extends RecurringStateConfig {
     @Override
     @Transient
     public String getStateName() {
-        return configChannel.getName();
+        return ConfigChannelSaltManager.getInstance().getChannelStateName(this.configChannel);
     }
 
     /**

@@ -29,19 +29,26 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
+import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.ConfigChannelJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -56,10 +63,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -270,12 +279,33 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
+    // TODO: Create StateConfigJson object to be used instead
+    private static Set<RecurringStateConfig> getStateConfigFromJson(Set<ConfigChannelJson> json, User user) {
+        ConfigurationManager configManager = ConfigurationManager.getInstance();
+        Set<RecurringStateConfig> stateConfig = new HashSet<>();
+        json.forEach(config -> {
+            String type = config.getType();
+            if (type.equals("internalState")) {
+                RecurringActionFactory.lookupInternalStateByName(config.getName()).ifPresent(state -> {
+                    stateConfig.add(new RecurringInternalState(state, config.getPosition().longValue()));
+                });
+            }
+            else {
+                ConfigChannel channel = configManager.lookupConfigChannel(user, config.getId());
+                if (channel != null) {
+                    stateConfig.add(new RecurringConfigChannel(channel, config.getPosition().longValue()));
+                }
+            }
+        });
+        return stateConfig;
+    }
+
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
 
         // TODO: Get action type and set paramenter depending on it
-        if (action.getRecurringActionType() instanceof RecurringHighstate) {
+        if (action.getActionType().equals(RecurringActionType.ActionType.HIGHSTATE)) {
             ((RecurringHighstate) action.getRecurringActionType()).setTestMode(json.isTest());
         }
 
