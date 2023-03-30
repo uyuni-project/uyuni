@@ -47,7 +47,7 @@
   box-sizing: content-box;
 }
 
-.form-control.date-time-picker-wrapper {
+.date-time-picker-wrapper {
   padding: 0 !important;
   position: relative;
 }

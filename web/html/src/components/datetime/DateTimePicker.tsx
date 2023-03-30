@@ -1,6 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
+import "./dateTimePicker.css";
 
-import { forwardRef, useRef } from "react";
+import { useRef } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
@@ -16,10 +17,6 @@ type Props = {
   // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
   serverTimeZone?: boolean;
 };
-
-const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>((props, ref) => {
-  return <input ref={ref} {...props} />;
-});
 
 export const DateTimePicker = (props: Props) => {
   // See https://github.com/date-fns/date-fns/blob/main/docs/unicodeTokens.md
@@ -86,21 +83,15 @@ export const DateTimePicker = (props: Props) => {
              * body. Please don't remove this as it otherwise breaks z-index stacking.
              */
             portalId="date-picker-portal"
+            id={datePickerId}
             ref={datePickerRef}
             selected={props.value.toDate()}
             onChange={onChange}
             dateFormat={DATE_FORMAT}
+            // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
+            className="form-control"
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
-            customInput={
-              <InputPassthrough
-                id={datePickerId}
-                // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
-                className="form-control"
-                // This is used by Cucumber to interact with the component
-                data-testid="date-picker"
-              />
-            }
           />
         </>
       )}
@@ -112,6 +103,7 @@ export const DateTimePicker = (props: Props) => {
           <ReactDatePicker
             key="date-picker"
             portalId="time-picker-portal"
+            id={timePickerId}
             ref={timePickerRef}
             selected={props.value.toDate()}
             onChange={onChange}
@@ -120,16 +112,9 @@ export const DateTimePicker = (props: Props) => {
             // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
             dateFormat={TIME_FORMAT}
             timeFormat={TIME_FORMAT}
+            className="form-control"
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
-            customInput={
-              <InputPassthrough
-                id={timePickerId}
-                className="form-control"
-                // This is used by Cucumber to interact with the component
-                data-testid="time-picker"
-              />
-            }
           />
         </>
       )}
