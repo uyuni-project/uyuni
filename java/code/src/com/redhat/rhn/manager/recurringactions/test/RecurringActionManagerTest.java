@@ -306,7 +306,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
         // Make sure action type is persisted when running the test
-        HibernateFactory.getSession().save(recurringAction.getActionType());
+        HibernateFactory.getSession().save(recurringAction.getRecurringActionType());
         RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         assertEquals(List.of(recurringAction), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));

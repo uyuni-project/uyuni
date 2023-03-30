@@ -37,8 +37,15 @@ public abstract class RecurringActionType {
     private RecurringAction recurringAction;
 
     public enum ActionType {
-        HIGHSTATE,
-        CUSTOMSTATE
+        HIGHSTATE("Highstate"),
+        CUSTOMSTATE("Custom state");
+        private final String description;
+        ActionType(String descriptionIn) {
+            this.description = descriptionIn;
+        }
+        public String getDescription() {
+            return this.description;
+        }
     }
 
     /**
