@@ -177,12 +177,13 @@ public class RecurringActionController {
         json.setCronTimes(cronTimes);
         json.setActive(a.isActive());
         // TODO: Set values depending on action type
-        json.setTest(((RecurringHighstate) a.getActionType()).isTestMode());
+        json.setTest(((RecurringHighstate) a.getRecurringActionType()).isTestMode());
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId());
         json.setTargetName(getEntityName(a, targetType));
         json.setCreated(a.getCreated());
         json.setCreatorLogin(a.getCreator().getLogin());
+        json.setActionType(a.getActionType());
 
         return json;
     }
@@ -274,8 +275,8 @@ public class RecurringActionController {
         action.setActive(json.isActive());
 
         // TODO: Get action type and set paramenter depending on it
-        if (action.getActionType() instanceof RecurringHighstate) {
-            ((RecurringHighstate) action.getActionType()).setTestMode(json.isTest());
+        if (action.getRecurringActionType() instanceof RecurringHighstate) {
+            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(json.isTest());
         }
 
         String cron = json.getCron();

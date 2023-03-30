@@ -56,7 +56,7 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
                 .add("created", src.getCreated())
                 .add("creator", src.getCreator().getLogin())
                 // TODO: Set values depending on action type
-                .add("test", ((RecurringHighstate) src.getActionType()).isTestMode())
+                .add("test", ((RecurringHighstate) src.getRecurringActionType()).isTestMode())
                 .add("active", src.isActive())
                 .build();
     }

@@ -70,7 +70,7 @@ public class RecurringActionJob extends RhnJavaJob {
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         try {
-            RecurringActionType actionType = action.getActionType();
+            RecurringActionType actionType = action.getRecurringActionType();
             if (actionType instanceof RecurringHighstate) {
                 ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
                         Optional.of(((RecurringHighstate) actionType).isTestMode()), context.getFireTime(), null);

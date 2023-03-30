@@ -265,7 +265,8 @@ ORDER BY EARLIEST DESC
             ra.cron_expr as cron,
             highstate.test_mode as test,
             creator.login as creator_login,
-            ra.created as created
+            ra.created as created,
+            ra.action_type as action_type
         from suseRecurringAction ra
         inner join web_contact creator
         on creator.id = ra.creator_id

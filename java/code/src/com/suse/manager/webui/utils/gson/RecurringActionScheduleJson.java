@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -61,6 +62,9 @@ public class RecurringActionScheduleJson {
 
     /**  Login of the schedule creator **/
     private String creatorLogin;
+
+    private RecurringActionType.ActionType actionType;
+    private String actionTypeDescription;
 
     /**
      * Gets the recurringActionId.
@@ -252,4 +256,23 @@ public class RecurringActionScheduleJson {
     public void setTargetName(String nameIn) {
         this.targetName = nameIn;
     }
+
+    /**
+     * Sets the type of the action
+     *
+     * @param actionTypeIn the type of the action
+     */
+    public void setActionType(RecurringActionType.ActionType actionTypeIn) {
+        this.actionType = actionTypeIn;
+        this.actionTypeDescription = actionTypeIn.getDescription();
+    }
+
+    /**
+     * Sets the type of the action based on the enumeration string
+     *
+     * @param actionTypeIn the enumeration string representing action's type
+     */
+     public void setActionType(String actionTypeIn) {
+         setActionType(RecurringActionType.ActionType.valueOf(actionTypeIn));
+     }
 }

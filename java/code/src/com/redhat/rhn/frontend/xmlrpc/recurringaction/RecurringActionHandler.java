@@ -164,7 +164,7 @@ public class RecurringActionHandler extends BaseHandler {
         action.setCronExpr((String) actionProps.get("cron_expr"));
         if (actionProps.containsKey("test")) {
             // TODO: Set values depending on action type
-            ((RecurringHighstate) action.getActionType()).setTestMode(
+            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(
                     Boolean.parseBoolean(actionProps.get("test").toString()));
         }
         return action;
@@ -211,7 +211,7 @@ public class RecurringActionHandler extends BaseHandler {
         }
         if (actionProps.containsKey("test")) {
             // TODO: Set values depending on action type
-            ((RecurringHighstate) action.getActionType()).setTestMode(
+            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(
                     Boolean.parseBoolean(actionProps.get("test").toString()));
         }
         if (actionProps.containsKey("active")) {
