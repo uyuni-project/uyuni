@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -209,9 +210,9 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         var action = new MinionRecurringAction();
         action.setMinion(minion);
-        action.setName("test-recurring-action-1");
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action");
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
@@ -234,6 +235,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setGroup(group);
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action-1");
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         assertTrue(manager.canAccess(user, group));
@@ -254,6 +256,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setOrg(user.getOrg());
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action-1");
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), user));
