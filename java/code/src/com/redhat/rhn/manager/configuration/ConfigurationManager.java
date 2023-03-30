@@ -38,6 +38,10 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -1401,12 +1405,17 @@ public class ConfigurationManager extends BaseManager {
         if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
             throw new IllegalArgumentException("User is not a config admin.");
         }
+        // Get associated recurring state actions
+        List<RecurringAction> actions = RecurringActionFactory.listActionWithConfChannel(channel);
+
         //remove the channel
         ConfigChannelSaltManager.getInstance().removeConfigChannelFiles(channel);
         StateFactory.StateRevisionsUsage usage = StateFactory.latestStateRevisionsByConfigChannel(channel);
         removeChannelFromRevision(usage, channel);
+        removeChannelFromRecurringActions(actions, channel);
         ConfigurationFactory.removeConfigChannel(channel);
         SaltStateGeneratorService.INSTANCE.regenerateConfigStates(usage);
+        SaltStateGeneratorService.INSTANCE.regenerateRecurringStates(actions);
     }
 
     /**
@@ -1421,6 +1430,12 @@ public class ConfigurationManager extends BaseManager {
         usage.getServerStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getServerGroupStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getOrgStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
+    }
+
+    private void removeChannelFromRecurringActions(List<RecurringAction> actions, ConfigChannel channel) {
+        actions.forEach(a -> ((RecurringState) a.getRecurringActionType()).getStateConfig()
+                .removeIf(c -> c instanceof RecurringConfigChannel &&
+                        ((RecurringConfigChannel) c).getConfigChannel().equals(channel)));
     }
 
     /**

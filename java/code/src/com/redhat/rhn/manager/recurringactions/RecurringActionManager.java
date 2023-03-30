@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -47,10 +48,16 @@ import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.SaltConstants;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.SaltFileUtils;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -188,7 +195,7 @@ public class RecurringActionManager extends BaseManager {
      * @param user the user
      * @return list of org recurring actions
      */
-    public static List<OrgRecurringAction> listOrgRecurringActions(long orgId, User user) {
+    public static List<RecurringAction> listOrgRecurringActions(long orgId, User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionException("Org not accessible to user");
         }
@@ -234,7 +241,19 @@ public class RecurringActionManager extends BaseManager {
         validateAction(action, user);
         RecurringAction saved = (RecurringAction) RecurringActionFactory.getSession().merge(action);
         taskomaticApi.scheduleRecurringAction(saved, user);
+        saveStateConfig(saved);
         return saved;
+    }
+
+    /**
+     * Save the recurring state configuration .sls file for Recurring State actions
+     *
+     * @param action the recurring action
+     */
+    public static void saveStateConfig(RecurringAction action) {
+        if (action.getActionType().equals(RecurringActionType.ActionType.CUSTOMSTATE)) {
+            SaltStateGeneratorService.INSTANCE.generateRecurringState(action);
+        }
     }
 
     /**
@@ -284,13 +303,30 @@ public class RecurringActionManager extends BaseManager {
      * @throws PermissionException if the user does not have permission to delete the action
      * @throws TaskomaticApiException when there is a problem with taskomatic during unscheduling
      */
-    public static void deleteAndUnschedule(RecurringAction action, User user)  throws TaskomaticApiException {
+    public static void deleteAndUnschedule(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
             throw new PermissionException(String.format("%s not accessible to user %s", action, user));
         }
         RecurringActionFactory.delete(action);
-
+        removeStateFile(action);
         taskomaticApi.unscheduleRecurringAction(action, user);
+    }
+
+    /**
+     * Remove state files associated with given recurring action
+     *
+     * @param action the recurring action
+     */
+    public static void removeStateFile(RecurringAction action) {
+        if (action.getActionType().equals(RecurringActionType.ActionType.CUSTOMSTATE)) {
+            File stateFile = Paths
+                    .get(SaltConstants.SUMA_STATE_FILES_ROOT_PATH)
+                    .resolve(SaltConstants.SALT_RECURRING_STATES_DIR)
+                    .resolve(SaltFileUtils.defaultExtension(
+                            SaltConstants.SALT_RECURRING_STATE_FILE_PREFIX + action.getId()))
+                    .toFile();
+            FileUtils.deleteQuietly(stateFile);
+        }
     }
 
     private static LocalizationService getLocalization() {

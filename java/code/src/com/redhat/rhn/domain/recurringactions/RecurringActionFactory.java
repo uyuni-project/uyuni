@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
@@ -85,12 +86,12 @@ public class RecurringActionFactory extends HibernateFactory {
      * @param id - id of the organization
      * @return list of org recurring actions
      */
-    public static List<OrgRecurringAction> listOrgRecurringActions(Long id) {
+    public static List<RecurringAction> listOrgRecurringActions(Long id) {
         return getSession()
                 .createQuery("SELECT action FROM OrgRecurringAction action " +
                         "WHERE action.org.id = :oid " +
                         "ORDER BY action.id DESC",
-                        OrgRecurringAction.class)
+                        RecurringAction.class)
                 .setParameter("oid", id)
                 .list();
     }
@@ -134,6 +135,22 @@ public class RecurringActionFactory extends HibernateFactory {
                 .stream();
 
         return Stream.concat(orgActions, Stream.concat(groupActions, minionActions)).collect(Collectors.toList());
+    }
+
+    /**
+     * Return a list of recurring actions that use given config channel
+     *
+     * @param channel the config channel
+     * @return list of actions
+     */
+    public static List<RecurringAction> listActionWithConfChannel(ConfigChannel channel) {
+        return getSession().createQuery("SELECT action FROM RecurringAction action " +
+                        "JOIN TREAT(action.recurringActionType AS RecurringState) " +
+                        "type LEFT JOIN type.stateConfig conf " +
+                        "WHERE conf.configChannel = :channel",
+                RecurringAction.class)
+                .setParameter("channel", channel)
+                .list();
     }
 
     /**

@@ -92,6 +92,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
 
         this.recurringActionType = recurringActionTypeIn;
         this.recurringActionType.setRecurringAction(this);
+        this.actionType = recurringActionTypeIn.getActionType();
     }
 
     /**
