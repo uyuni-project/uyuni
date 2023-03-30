@@ -159,7 +159,7 @@ install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -272,6 +272,7 @@ make test
 %doc Changes README answers.txt
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
 %config %{_sysconfdir}/salt/master.d/salt-ssh-logging.conf
+%config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts.conf
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd
