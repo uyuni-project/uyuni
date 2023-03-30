@@ -1,11 +1,11 @@
-- Fix datetime picker appearing behind modal edge
+- Fix datepicker appearing behind modal edge (bsc#1209703)
 - Fix datepicker layout shift on Highstate pages
 
 -------------------------------------------------------------------
 Wed Feb 22 14:48:24 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.28-1
-  * Deprecate jQuery datepicker, integrate React datepicker
+  * Deprecate jQuery datepicker, integrate React datepicker (bsc#1209689)
   * Fix UI inconsistencies in susemanager-light and susemanager-dark
     theme
   * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
