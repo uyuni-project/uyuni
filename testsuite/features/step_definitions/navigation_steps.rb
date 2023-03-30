@@ -446,9 +446,8 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do
     system_name = get_system_name(host)
   rescue
     raise "Host #{host} not found" if if_present.empty?
-
     log "Host #{host} is not deployed, not trying to select it"
-    return
+    next
   end
   step %(I select "#{system_name}" from "#{field}")
 end
