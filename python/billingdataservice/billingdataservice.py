@@ -9,7 +9,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 import json
-from flask import Flask
+from flask import Flask, abort
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import initCFG
 
@@ -24,6 +24,13 @@ initCFG('server.susemanager')
 rhnSQL.initDB()
 
 app = Flask(__name__)
+
+@app.route("/")
+def index():
+    result = rhnSQL.fetchone_dict(rhnSQL.Statement("select '1' || '2' || '3' as testing from dual"))
+    if result:
+        return "online"
+    abort(503) #Service Unavailable
 
 @app.route("/metering")
 def metering():
