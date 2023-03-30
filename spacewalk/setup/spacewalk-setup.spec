@@ -164,7 +164,6 @@ install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
@@ -177,7 +176,6 @@ install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
@@ -282,7 +280,6 @@ make test
 %{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
-%{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/spacewalk-setup-ipa-authentication
 %{_mandir}/man[13]/*.[13]*
