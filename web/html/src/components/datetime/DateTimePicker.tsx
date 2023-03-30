@@ -6,18 +6,6 @@ import ReactDatePicker from "react-datepicker";
 
 import { localizedMoment } from "utils";
 
-type InputPassthroughProps = {
-  "data-id": string | undefined;
-};
-
-const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement> & InputPassthroughProps>(
-  (props, ref) => {
-    // react-datepicker internally resets the id prop so we use a named prop to bypass the issue
-    const { "data-id": dataId, ...rest } = props;
-    return <input ref={ref} {...rest} id={dataId} />;
-  }
-);
-
 type Props = {
   id?: string;
   legacyId?: string;
@@ -28,6 +16,10 @@ type Props = {
   // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
   serverTimeZone?: boolean;
 };
+
+const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>((props, ref) => {
+  return <input ref={ref} {...props} />;
+});
 
 export const DateTimePicker = (props: Props) => {
   // See https://github.com/date-fns/date-fns/blob/main/docs/unicodeTokens.md
@@ -61,11 +53,7 @@ export const DateTimePicker = (props: Props) => {
     timePickerRef.current?.setOpen(true);
   };
 
-  const onChange = (newDateValue: Date | null) => {
-    // Currently we don't support propagating null values, we might want to do this in the future
-    if (newDateValue === null) {
-      return;
-    }
+  const onChange = (newDateValue: Date) => {
     const newValue = localizedMoment(newDateValue).tz(timeZone);
     if (props.value.valueOf() !== newValue.valueOf()) {
       props.onChange(newValue);
@@ -104,11 +92,9 @@ export const DateTimePicker = (props: Props) => {
             dateFormat={DATE_FORMAT}
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
-            // This is used by Cucumber to check whether the picker is open
-            popperClassName="date-time-picker-popup"
             customInput={
               <InputPassthrough
-                data-id={datePickerId}
+                id={datePickerId}
                 // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
                 className="form-control"
                 // This is used by Cucumber to interact with the component
@@ -136,11 +122,9 @@ export const DateTimePicker = (props: Props) => {
             timeFormat={TIME_FORMAT}
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
-            // This is used by Cucumber to check whether the picker is open
-            popperClassName="date-time-picker-popup"
             customInput={
               <InputPassthrough
-                data-id={timePickerId}
+                id={timePickerId}
                 className="form-control"
                 // This is used by Cucumber to interact with the component
                 data-testid="time-picker"

@@ -65,7 +65,7 @@ const newPickerLegacyId = "new-legacy";
     {/* eslint-disable-next-line local-rules/no-raw-date */}
     <p>browser time: {moment().toISOString(true)}</p>
     <p>legacy id: "{newPickerLegacyId}"</p>
-    <DateTimePicker value={newPickerValue} onChange={(newValue) => setNewPickerValue(newValue)} legacyId={newPickerLegacyId} />
+    <DateTimePicker value={newPickerValue} onChange={(newValue) => setNewPickerValue(newValue)} />
   </div>
 </div>
 ```
