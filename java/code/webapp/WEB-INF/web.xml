@@ -263,7 +263,7 @@
         <display-name>Redirect Servlet</display-name>
         <servlet-class>com.redhat.rhn.frontend.security.RedirectServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-  </servlet>o
+  </servlet>
 
   <servlet>
         <servlet-name>jsp</servlet-name>
