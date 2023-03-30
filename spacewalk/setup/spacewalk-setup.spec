@@ -163,7 +163,6 @@ install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_datadir}/spacewalk/s
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
@@ -179,7 +178,6 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
 # Sphinx built manpage
 %define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
 install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
@@ -281,7 +279,6 @@ make test
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
 %{_bindir}/spacewalk-setup-sudoers
-%{_bindir}/spacewalk-setup-ipa-authentication
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
