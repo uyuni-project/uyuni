@@ -43,7 +43,7 @@ INSERT INTO suseRecurringHighstate (rec_id, test_mode)
          WHERE NOT EXISTS (SELECT id FROM suseRecurringHighstate);
 ALTER TABLE suseRecurringAction DROP COLUMN IF EXISTS test_mode;
 
-ALTER TABLE suseRecurringAction ADD COLUMN action_type VARCHAR(32) NULL;
+ALTER TABLE suseRecurringAction ADD COLUMN IF NOT EXISTS action_type VARCHAR(32) NULL;
 UPDATE suseRecurringAction SET action_type = 'HIGHSTATE' where action_type IS NULL;
 ALTER TABLE suseRecurringAction ALTER COLUMN action_type SET NOT NULL;
 
