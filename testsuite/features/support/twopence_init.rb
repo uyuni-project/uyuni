@@ -199,13 +199,8 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = $proxy.full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
-      node = get_target(host)
-      system_name = node.full_hostname
-    rescue RuntimeError
-      # If the node for that host is not defined, just return the host parameter as system_name
-      system_name = host
-    end
+    node = get_target(host)
+    system_name = node.full_hostname
   end
   system_name
 end
