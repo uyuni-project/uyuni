@@ -21,6 +21,28 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${PRODUCT_PATTERN} \
+    susemanager-tftpsync \
+    golang-github-prometheus-node_exporter \
+    prometheus-postgres_exporter \
+    golang-github-QubitProducts-exporter_exporter \
+    prometheus-jmx_exporter \
+    prometheus-jmx_exporter-tomcat \
+    spacecmd \
+    grafana-formula \
+    locale-formula \
+    prometheus-exporters-formula \
+    prometheus-formula \
+    registry-formula \
+    bind-formula \
+    dhcpd-formula \
+    tftpd-formula \
+    virtualization-formulas \
+    vsftpd-formula \
+    golang-github-lusitaniae-apache_exporter \
+    golang-github-prometheus-node_exporter \
+    prometheus-postgres_exporter \
+    golang-github-QubitProducts-exporter_exporter \
+    prometheus-jmx_exporter \
     spacecmd \
     javamail \
     libyui-ncurses-pkg16 \
