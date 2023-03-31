@@ -22,13 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
@@ -219,10 +217,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         assertNull(futureServerAction.getResultCode());
         assertTrue(minion.getLastBoot() > 1L);
 
-        // explicitly remove any row created by the worker, as it commits
-        OrgFactory.deleteOrg(user.getOrg().getId(), user);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
+        // The worker commits, so mark the session for cleanup
+        commitHappened();
     }
 
     @Test
