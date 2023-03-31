@@ -25,10 +25,12 @@ defaultdict = {
                         "/SUSE_Updates_SLE-Product-SLES_15-SP2-LTSS_x86_64/"],
     "sle15sp3_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
+                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/"],
     "sle15sp3_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
+                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/"],
     "sle15sp4_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
@@ -58,10 +60,11 @@ defaultdict = {
 # Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict42 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.2_x86_64/",
-               "SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
+               "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.2_x86_64/",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"]
 }
@@ -70,11 +73,11 @@ nodesdict42.update(defaultdict)
 # Dictionary for SUMA 4.3 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict43 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.3_x86_64/",
-               "SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
+               "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
-              "SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"]
 }
@@ -88,7 +91,7 @@ def parse_args():
     parser.add_argument("-v", "--version", dest="version",
                         help="Version of SUMA you want to run this script for, options are 42 for 4.2 or 43 for 4.3",
                         default="43", action='store')
-    parser.add_argument("-i", "--rrids", dest="rrids", help="RR IDs", default=None, action='store')
+    parser.add_argument("-i", "--mi_ids", dest="mi_ids", help="MI IDs", default=None, action='store')
 
     args = parser.parse_args()
     return args
@@ -106,18 +109,18 @@ def read_requests():
         print("The ibs command failed for some reason")
     output = result.stdout.decode('utf-8')
     lines = output.splitlines()
-    # Create empty list to add the rrids from the output
-    rrids = []
+    # Create empty list to add the maintenance incidents from the output
+    mi_ids = []
     for line in lines:
         if "ReviewRequest" in line:
             line1 = line.rstrip()
             line2 = line1.split(sep=":")
-            rrid = line2[3]
-            rrids.append(rrid)
-    return rrids
+            mi_id = line2[3]
+            mi_ids.append(mi_id)
+    return mi_ids
 
 
-def find_valid_repos(rrids, version):
+def find_valid_repos(mi_ids, version):
     if version == '42':
         dict_version = nodesdict42
     elif version == '43':
@@ -128,42 +131,42 @@ def find_valid_repos(rrids, version):
 
     finaldict = {}
     for node, suffixraw in dict_version.items():
-        for rrid in rrids:
+        for mi_id in mi_ids:
             if isinstance(suffixraw, str):
                 suffix = suffixraw
-                repo = create_url(rrid, suffix)
+                repo = create_url(mi_id, suffix)
                 if repo is not None:
                     if node in finaldict:
-                        # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server
+                        # This is needed for mi_ids that have multiple repos for each node, e.g. basesystem and server
                         # apps for server
-                        if rrid in finaldict[node]:
+                        if mi_id in finaldict[node]:
                             for i in range(1, 100):
-                                if str(rrid) + '-' + str(i) not in finaldict[node]:
-                                    finaldict[node][str(rrid) + '-' + str(i)] = repo
+                                if str(mi_id) + '-' + str(i) not in finaldict[node]:
+                                    finaldict[node][str(mi_id) + '-' + str(i)] = repo
                                     break
                         else:
-                            finaldict[node][rrid] = repo
+                            finaldict[node][mi_id] = repo
                     else:
-                        # for each rrid we have multiple repos sometimes for each node
-                        finaldict[node] = {rrid: repo}
+                        # for each mi_id we have multiple repos sometimes for each node
+                        finaldict[node] = {mi_id: repo}
             elif isinstance(suffixraw, list):
                 for suffix in suffixraw:
-                    repo = create_url(rrid, suffix)
+                    repo = create_url(mi_id, suffix)
                     if repo is not None:
                         if node in finaldict:
-                            # This is needed for rrids that have multiple repos for each node, e.g. basesystem and
+                            # This is needed for mi_ids that have multiple repos for each node, e.g. basesystem and
                             # server apps for server
-                            if rrid in finaldict[node]:
+                            if mi_id in finaldict[node]:
                                 for i in range(1, 100):
-                                    if str(rrid) + '-' + str(i) not in finaldict[node]:
-                                        finaldict[node][str(rrid) + '-' + str(i)] = repo
+                                    if str(mi_id) + '-' + str(i) not in finaldict[node]:
+                                        finaldict[node][str(mi_id) + '-' + str(i)] = repo
                                         break
                             else:
-                                # for each rrid we have multiple repos sometimes for each node
-                                finaldict[node][rrid] = repo
+                                # for each mi_id we have multiple repos sometimes for each node
+                                finaldict[node][mi_id] = repo
                         else:
-                            # for each rrid we have multiple repos sometimes for each node
-                            finaldict[node] = {rrid: repo}
+                            # for each mi_id we have multiple repos sometimes for each node
+                            finaldict[node] = {mi_id: repo}
 
     # Format into json and print
     # Check that it's not empty and save to file
@@ -171,14 +174,14 @@ def find_valid_repos(rrids, version):
         with open('custom_repositories.json', 'w', encoding='utf-8') as f:
             json.dump(finaldict, f, indent=2)
     else:
-        print("Dictionary is emtpy, something went wrong")
+        print("Dictionary is empty, something went wrong")
         sys.exit(1)
 
 
-def create_url(rrid, suffix):
-    link = ["http://download.suse.de/ibs/SUSE:/Maintenance:/", str(rrid)]
+def create_url(mi_id, suffix):
+    link = ["http://download.suse.de/ibs/SUSE:/Maintenance:/", str(mi_id)]
 
-    if link[:-1] == str(rrid):
+    if link[:-1] == str(mi_id):
         link.append(suffix)
         url = ''.join(link)
     else:
@@ -191,11 +194,11 @@ def create_url(rrid, suffix):
 
 def main():
     args = parse_args()
-    if args.rrids is not None:
-        rrids = args.rrids.split(",")
+    if args.mi_ids is not None:
+        mi_ids = args.mi_ids.split(",")
     else:
-        rrids = read_requests()
-    find_valid_repos(rrids, args.version)
+        mi_ids = read_requests()
+    find_valid_repos(mi_ids, args.version)
 
 
 if __name__ == '__main__':

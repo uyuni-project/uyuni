@@ -153,6 +153,10 @@ RES9 = [
     "venv-salt-minion", 
 ]
 
+OPENEULER2203 = [
+        "venv-salt-minion",
+]
+
 PKGLISTUMBLEWEED_SALT_NO_BUNDLE = [
     "libgomp1",
     "libmpdec3",
@@ -224,7 +228,7 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "python3-MarkupSafe",
     "python3-M2Crypto",
     "python3-msgpack",
-    "python3-ordered-set",
+    "python3-ordered-set*",
     "python3-packaging",
     "python3-psutil",
     "python3-py",
@@ -1101,6 +1105,14 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
     },
+    'openSUSE-Leap-15.5-x86_64' : {
+        'PDID' : [2588, 1712], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },
+    'openSUSE-Leap-15.5-aarch64' : {
+        'PDID' : [2585, 1709], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+    },
     'openSUSE-Leap-15.5-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_5-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
@@ -1447,5 +1459,13 @@ DATA = {
          'BASECHANNEL' : 'astralinux-orel-pool-amd64', 'PKGLIST' : PKGLISTASTRALINUXOREL,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/astra/orel/bootstrap/',
          'TYPE' : 'deb'
+     },
+     'openeuler22.03-x86_64-uyuni': {
+         'BASECHANNEL' : 'openeuler2203-x86_64', 'PKGLIST' : OPENEULER2203,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
+     },
+     'openeuler22.03-aarch64-uyuni': {
+         'BASECHANNEL' : 'openeuler2203-aarch64', 'PKGLIST' : OPENEULER2203,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
      }
 }

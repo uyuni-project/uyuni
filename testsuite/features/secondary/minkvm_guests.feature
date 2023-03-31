@@ -14,6 +14,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Show the KVM host system overview
     Given I am on the Systems overview page of this "kvm_server"
 
@@ -415,3 +418,5 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors

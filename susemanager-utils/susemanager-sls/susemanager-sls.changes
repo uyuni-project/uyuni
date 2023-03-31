@@ -1,3 +1,4 @@
+- Add openEuler 22.03 support
 - support multiple gpgkey urls for a channel (bsc#1208540)
 - make SUSE Addon GPG key available on all instance (bsc#1208540)
 - Improve error handling in mgr_events.py (bsc#1208687)

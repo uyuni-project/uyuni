@@ -335,7 +335,7 @@ class BootstrapMinions extends React.Component<Props, State> {
           <a className="js-spa" href="/rhn/manager/systems/list/all">
             {t("systems")}
           </a>{" "}
-          {t("shortly")}.
+          {t("shortly. If it is a transactional system, please reboot it to finish registration")}.
         </p>
       );
     } else if (this.state.errors.length > 0) {
