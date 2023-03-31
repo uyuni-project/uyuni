@@ -1,6 +1,6 @@
 /* This element already has `position: absolute` */
 .react-datepicker-popper {
-  z-index: 1050 !important;
+  z-index: 1010 !important;
 }
 
 .react-datepicker {
@@ -47,7 +47,7 @@
   box-sizing: content-box;
 }
 
-.form-control.date-time-picker-wrapper {
+.date-time-picker-wrapper {
   padding: 0 !important;
   position: relative;
 }
