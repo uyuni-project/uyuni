@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PaygAuthDataProcessor {
@@ -66,7 +67,7 @@ public class PaygAuthDataProcessor {
         Credentials credentials = processAndGetCredentials(instance, paygData);
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(credentials);
 
-        List<SCCRepository> repositories = getReposToInsert(paygData.getProducts());
+        Set<SCCRepository> repositories = getReposToInsert(paygData.getProducts());
 
         List<SCCRepositoryAuth> processedRepoAuth = new ArrayList<>();
         repositories.forEach(sccRepo-> {
@@ -139,9 +140,17 @@ public class PaygAuthDataProcessor {
         return credentials;
     }
 
-    private List<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
-        return products.stream().map(product ->
-            SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(product.getName(), product.getArch())
-        ).flatMap(List::stream).collect(Collectors.toList());
+    private Set<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
+        return products.stream()
+                .map(product -> {
+                    if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
+                        return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
+                                product.getName(), product.getVersion(), product.getArch());
+                    }
+                    return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
+                            product.getName(), product.getArch());
+                })
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 }

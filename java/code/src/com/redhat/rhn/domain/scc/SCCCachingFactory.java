@@ -17,10 +17,13 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
@@ -39,6 +42,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -465,19 +469,45 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Returns a list of repositories for a product, independent of the version, and arch.
+     * Returns a set of repositories for a product, independent of the version, and arch.
      *
      * @param productName name of the product we want to filter
      * @param archName arch name we want to filter
-     * @return List of repositories for all version of one product and arch
+     * @return Set of repositories for all version of one product and arch
      */
-    public static List<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(String productName,
-                                                                                    String archName) {
-        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg")
+    public static Set<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
+            String productName, String archName) {
+        return new HashSet<>(getSession()
+                .createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
                 .setParameter("product_name", productName)
                 .setParameter("arch_name", archName)
-                .getResultList();
+                .list());
     }
+
+    /**
+     * Returns a set of repositories for a root product
+     *
+     * @param productName name of the product we want to filter
+     * @param productVersion version of the product we want to filter
+     * @param archName arch name we want to filter
+     * @return Set of repositories for one root product with extensions
+     */
+    public static Set<SCCRepository> lookupRepositoriesByRootProductNameVersionArchForPayg(
+            String productName, String productVersion, String archName) {
+        SUSEProduct product = SUSEProductFactory.findSUSEProduct(productName, productVersion, null, archName, true);
+        if (product == null) {
+            return Collections.emptySet();
+        }
+        List<SUSEProduct> prds = SUSEProductFactory.findAllExtensionsOfRootProduct(product);
+        prds.add(product);
+        List<String> cfList = List.of(product.getChannelFamily().getLabel(),
+                ChannelFamilyFactory.MODULE_CHANNEL_FAMILY_LABEL);
+        return prds.stream()
+                .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
+                .flatMap(p -> p.getRepositories().stream())
+                .map(SUSEProductSCCRepository::getRepository)
+                .collect(Collectors.toSet());
+        }
 
     /**
      * Find a compatible SCCRepository using a json repository
