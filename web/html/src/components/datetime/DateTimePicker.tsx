@@ -1,11 +1,22 @@
 import "react-datepicker/dist/react-datepicker.css";
-import "./dateTimePicker.css";
 
-import { useRef } from "react";
+import { forwardRef, useRef } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
 import { localizedMoment } from "utils";
+
+type InputPassthroughProps = {
+  "data-id": string | undefined;
+};
+
+const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement> & InputPassthroughProps>(
+  (props, ref) => {
+    // react-datepicker internally resets the id prop so we use a named prop to bypass the issue
+    const { "data-id": dataId, ...rest } = props;
+    return <input ref={ref} {...rest} id={dataId} />;
+  }
+);
 
 type Props = {
   id?: string;
@@ -50,7 +61,11 @@ export const DateTimePicker = (props: Props) => {
     timePickerRef.current?.setOpen(true);
   };
 
-  const onChange = (newDateValue: Date) => {
+  const onChange = (newDateValue: Date | null) => {
+    // Currently we don't support propagating null values, we might want to do this in the future
+    if (newDateValue === null) {
+      return;
+    }
     const newValue = localizedMoment(newDateValue).tz(timeZone);
     if (props.value.valueOf() !== newValue.valueOf()) {
       props.onChange(newValue);
@@ -83,15 +98,23 @@ export const DateTimePicker = (props: Props) => {
              * body. Please don't remove this as it otherwise breaks z-index stacking.
              */
             portalId="date-picker-portal"
-            id={datePickerId}
             ref={datePickerRef}
             selected={props.value.toDate()}
             onChange={onChange}
             dateFormat={DATE_FORMAT}
-            // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
-            className="form-control"
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
+            // This is used by Cucumber to check whether the picker is open
+            popperClassName="date-time-picker-popup"
+            customInput={
+              <InputPassthrough
+                data-id={datePickerId}
+                // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
+                className="form-control"
+                // This is used by Cucumber to interact with the component
+                data-testid="date-picker"
+              />
+            }
           />
         </>
       )}
@@ -103,7 +126,6 @@ export const DateTimePicker = (props: Props) => {
           <ReactDatePicker
             key="date-picker"
             portalId="time-picker-portal"
-            id={timePickerId}
             ref={timePickerRef}
             selected={props.value.toDate()}
             onChange={onChange}
@@ -112,9 +134,18 @@ export const DateTimePicker = (props: Props) => {
             // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
             dateFormat={TIME_FORMAT}
             timeFormat={TIME_FORMAT}
-            className="form-control"
             wrapperClassName="form-control date-time-picker-wrapper"
             popperModifiers={popperModifiers}
+            // This is used by Cucumber to check whether the picker is open
+            popperClassName="date-time-picker-popup"
+            customInput={
+              <InputPassthrough
+                data-id={timePickerId}
+                className="form-control"
+                // This is used by Cucumber to interact with the component
+                data-testid="time-picker"
+              />
+            }
           />
         </>
       )}
