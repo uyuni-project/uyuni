@@ -14,15 +14,15 @@ fi
 echo "Killing old containers"
 containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
 for i in ${containers};do
-    docker kill ${i}
+    podman kill ${i}
 done
 
 echo "Remove network"
-docker network rm uyuni-network-1
+podman network rm uyuni-network-1
 
 echo "Wait for the containers to stop"
 for i in ${containers};do
-    docker wait ${i}
+    podman wait ${i}
 done
 
 sleep 10

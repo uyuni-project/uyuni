@@ -177,6 +177,7 @@ Feature: Smoke tests for <client>
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
     And I reboot the "<client>" if it is a SLE Micro
 
+@monitoring_server
   Scenario: Test <client> on Grafana
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text

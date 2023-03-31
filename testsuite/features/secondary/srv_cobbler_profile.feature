@@ -18,6 +18,9 @@ Feature: Cobbler editing profiles results in ISE
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   ## UI tests
   Scenario: Create a Cobbler distribution via the UI
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -102,3 +105,6 @@ Feature: Cobbler editing profiles results in ISE
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors
