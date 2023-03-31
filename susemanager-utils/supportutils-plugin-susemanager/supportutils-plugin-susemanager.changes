@@ -1,4 +1,8 @@
-- fix db connection check tool (bsc#1208586)
+-------------------------------------------------------------------
+Tue Mar 28 09:57:17 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.6-1
+  * fix db connection check tool (bsc#1208586)
 
 -------------------------------------------------------------------
 Thu Feb 09 09:45:39 CET 2023 - jgonzalez@suse.com

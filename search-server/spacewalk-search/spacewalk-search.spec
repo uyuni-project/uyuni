@@ -32,7 +32,7 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.2.9
+Version:        4.2.10
 Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -94,8 +94,8 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Obsoletes:      rhn-search < 5.3.0
-Requires:       (log4j or log4j12)
-BuildRequires:  (log4j or log4j12)
+Requires:       reload4j
+BuildRequires:  reload4j
 
 %description
 This package contains the code for the Full Text Search Server for

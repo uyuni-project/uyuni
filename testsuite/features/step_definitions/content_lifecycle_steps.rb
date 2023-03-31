@@ -123,8 +123,10 @@ end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
+  $api_test.auth.login('admin', 'admin')
   node_id = $api_test.system.retrieve_server_id(system_name)
   react_key = $api_test.system.obtain_reactivation_key(node_id)
+  $api_test.auth.logout
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end

@@ -11,12 +11,14 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  # Create results folder
+  sh "mkdir -p results", verbose: false
+  Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o output_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o output_#{timestamp}-#{filename}.html"
+      json_results = "-f json -o results/output_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o results/output_#{timestamp}-#{filename}.html"
       profiles = ENV['PROFILE']
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
@@ -28,6 +30,10 @@ namespace :cucumber do
       include_tags =  tags.nil? ? [] : ['--tags', tags]
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
                       %w[-f pretty -r features] + include_tags
+      # Immediately fail core if any feature is failing
+      if filename.to_s.include?('core')
+        cucumber_opts << '--fail-fast'
+      end
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
@@ -76,7 +82,7 @@ namespace :utils do
         'features/build_validation/smoke_tests/smoke_tests.template',
         File.basename(client,'.feature'),
         'features/build_validation/smoke_tests',
-        'run_sets/build_validation_smoke_tests.yml'
+        'run_sets/build_validation/build_validation_smoke_tests.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -89,10 +95,10 @@ namespace :utils do
     clients.reject! { |client| client.include?('monitoring_server') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
-        'features/build_validation/add_custom_repositories/add_maintenance_update_repository.template',
+        'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
         File.basename(client,'.feature'),
-        'features/build_validation/add_custom_repositories',
-        'run_sets/build_validation_add_custom_repositories.yml'
+        'features/build_validation/add_MU_repositories',
+        'run_sets/build_validation/build_validation_add_MU_repositories.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -106,8 +112,22 @@ namespace :utils do
         'features/build_validation/add_activation_keys/add_activation_key.template',
         File.basename(client,'.feature'),
         'features/build_validation/add_activation_keys',
-        'run_sets/build_validation_add_activation_keys.yml'
+        'run_sets/build_validation/build_validation_add_activation_keys.yml'
       )
+      Rake::Task['utils:generate_feature'].reenable
+    end
+  end
+
+  desc 'Generate feature to create bootstrap repositories for all the clients'
+  task :generate_create_bootstrap_repositories_features do
+    clients = Rake::FileList['features/build_validation/init_clients/*.feature']
+    clients.reject! { |client| client.include? 'ssh'}
+    clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
+    clients.each do |client|
+      Rake::Task['utils:generate_feature'].invoke('features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
+                                                  File.basename(client,'.feature'),
+                                                  'features/build_validation/create_bootstrap_repositories',
+                                                  'run_sets/build_validation/build_validation_create_bootstrap_repositories.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
@@ -120,12 +140,14 @@ namespace :utils do
     Rake::Task['utils:generate_add_maintenance_update_repository_features'].reenable
     Rake::Task['utils:generate_add_activation_keys_features'].invoke
     Rake::Task['utils:generate_add_activation_keys_features'].reenable
+    Rake::Task['utils:generate_create_bootstrap_repositories_features'].invoke
+    Rake::Task['utils:generate_create_bootstrap_repositories_features'].reenable
   end
 
   desc 'Generate test report'
   task :generate_test_report do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
-    sh 'timeout 180 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
+    sh 'timeout 180 bash -c -- "while find results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
     sh 'find . -size 0 -delete', verbose: false
     sh 'node index.js &> cucumber_reporter.log', verbose: false
   end
@@ -136,5 +158,98 @@ namespace :utils do
     else
       'salt'
     end
+  end
+end
+
+namespace :jenkins do
+
+  desc 'Generate Rakefiles runstep'
+  task :generate_rake_run_step, [:extension, :client_name, :output_path, :yaml_path] do |_t, args|
+    output_filepath = "#{args[:output_path]}/#{args[:client_name]}#{args[:extension]}.feature"
+    sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
+  end
+
+  desc 'Generate Rakefiles for create bootstrap repositories'
+  task :generate_rake_files_create_bootstrap_repositories, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      next if minion.include?('ssh')
+      Rake::Task['jenkins:generate_rake_run_step'].invoke('_create_bootstrap_repository',
+                                                          File.basename(minion,'.feature'),
+                                                          'features/build_validation/create_bootstrap_repositories',
+                                                          "run_sets/build_validation/build_validation_create_bootstrap_repository_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate Rakefiles for init clients'
+  task :generate_rake_files_init_clients, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      next if minion.include?('proxy') or minion.include?('monitoring')
+      Rake::Task['jenkins:generate_rake_run_step'].invoke('',
+                                                          File.basename(minion,'.feature'),
+                                                          'features/build_validation/init_clients',
+                                                          "run_sets/build_validation/build_validation_init_client_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate Rakefiles for Maintenance Update Channels and repositories'
+  task :generate_rake_files_add_maintenance_update_repository, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      next if minion.include?('ssh')
+      Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_maintenance_update_repositories',
+                                                          File.basename(minion,'.feature'),
+                                                          'features/build_validation/add_MU_repositories',
+                                                          "run_sets/build_validation/build_validation_add_maintenance_update_repositories_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate Rakefiles for Activation Keys feature'
+  task :generate_rake_files_add_activation_keys, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_activation_key',
+                                                          File.basename(minion,'.feature'),
+                                                          'features/build_validation/add_activation_keys',
+                                                          "run_sets/build_validation/build_validation_add_activation_key_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate Rakefiles for smoke tests '
+  task :generate_rake_files_smoke_tests, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      next if minion.include?('proxy') or minion.include?('monitoring')
+      Rake::Task['jenkins:generate_rake_run_step'].invoke('_smoke_tests',
+                                                          File.basename(minion,'.feature'),
+                                                          'features/build_validation/smoke_tests',
+                                                          "run_sets/build_validation/build_validation_smoke_tests_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate all the Rakefiles needed for Build Validation'
+  task :generate_rake_files_build_validation do
+    instances = []
+    ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') || k.include?('MONITORING') }.each do |key, _value|
+      # Convert ENV variables into testsuite variables
+      instance = "#{key}".downcase
+      instances << instance.gsub('sshminion', 'ssh_minion')
+    end
+    Rake::Task['jenkins:generate_rake_files_smoke_tests'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_smoke_tests'].reenable
+    Rake::Task['jenkins:generate_rake_files_create_bootstrap_repositories'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_create_bootstrap_repositories'].reenable
+    Rake::Task['jenkins:generate_rake_files_init_clients'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_init_clients'].reenable
+    Rake::Task['jenkins:generate_rake_files_add_activation_keys'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_add_activation_keys'].reenable
+    Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].reenable
   end
 end

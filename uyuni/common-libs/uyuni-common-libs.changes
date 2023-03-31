@@ -1,4 +1,8 @@
-- Allow default component for context manager.
+-------------------------------------------------------------------
+Tue Mar 28 09:59:06 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.10-1
+  * Allow default component for context manager.
 
 -------------------------------------------------------------------
 Fri Feb 24 13:03:18 CET 2023 - jgonzalez@suse.com

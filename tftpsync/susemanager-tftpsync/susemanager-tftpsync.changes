@@ -1,4 +1,8 @@
-- Fix removal of proxies section in cobbler settings (bsc#1207063)
+-------------------------------------------------------------------
+Tue Mar 28 09:57:56 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.4-1
+  * Fix removal of proxies section in cobbler settings (bsc#1207063)
 
 -------------------------------------------------------------------
 Fri Jul 16 14:36:37 CEST 2021 - jgonzalez@suse.com

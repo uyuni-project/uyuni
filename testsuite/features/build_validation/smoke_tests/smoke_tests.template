@@ -189,6 +189,7 @@ Feature: Smoke tests for <client>
     And I wait until "postgres" exporter service is active on "<client>"
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
 
+@monitoring_server
 @skip_for_traditional
   Scenario: Test <client> on Grafana
     When I visit the grafana dashboards of this "monitoring_server"

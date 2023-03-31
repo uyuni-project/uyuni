@@ -1,15 +1,15 @@
-# Copyright 2021-2022 SUSE LLC
+# Copyright 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Add common channels and schedule their synchronization
-  In order to use external repositories that are not in SCC
+@ubuntu1804_minion
+Feature: Add Ubuntu common channels and schedule their synchronization
+  In order to use external repositories for Ubuntu that are not in SCC
   As an authorized user
   I want to declare channels with these repositories and synchronize them
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-@ubuntu1804_minion
   Scenario: Add common channels for Ubuntu 18.04 main
     When I use spacewalk-common-channel to add channel "ubuntu-1804-amd64-main" with arch "amd64-deb"
     And I follow the left menu "Software > Manage > Channels"
@@ -22,7 +22,6 @@ Feature: Add common channels and schedule their synchronization
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main." text
 
-@ubuntu1804_minion
   Scenario: Add common channels for Ubuntu 18.04 updates
     When I use spacewalk-common-channel to add channel "ubuntu-1804-amd64-main-updates" with arch "amd64-deb"
     And I follow the left menu "Software > Manage > Channels"
@@ -35,7 +34,6 @@ Feature: Add common channels and schedule their synchronization
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Updates." text
 
-@ubuntu1804_minion
   Scenario: Add common channels for Ubuntu 18.04 security
     When I use spacewalk-common-channel to add channel "ubuntu-1804-amd64-main-security" with arch "amd64-deb"
     And I follow the left menu "Software > Manage > Channels"
@@ -49,4 +47,3 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Security." text
 
   # No common channels for Ubuntu 20.04
-
