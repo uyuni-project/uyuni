@@ -25,10 +25,12 @@ defaultdict = {
                         "/SUSE_Updates_SLE-Product-SLES_15-SP2-LTSS_x86_64/"],
     "sle15sp3_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
+                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/"],
     "sle15sp3_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
+                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/"],
     "sle15sp4_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
@@ -58,10 +60,11 @@ defaultdict = {
 # Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict42 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.2_x86_64/",
-               "SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
+               "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.2_x86_64/",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"]
 }
@@ -70,11 +73,11 @@ nodesdict42.update(defaultdict)
 # Dictionary for SUMA 4.3 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict43 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.3_x86_64/",
-               "SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
+               "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
-              "SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"]
 }
@@ -171,7 +174,7 @@ def find_valid_repos(mi_ids, version):
         with open('custom_repositories.json', 'w', encoding='utf-8') as f:
             json.dump(finaldict, f, indent=2)
     else:
-        print("Dictionary is emtpy, something went wrong")
+        print("Dictionary is empty, something went wrong")
         sys.exit(1)
 
 
