@@ -157,8 +157,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         ErrataCacheManager.insertNeededErrataCache(
                 this.server2.getId(), this.errata2.getId(), this.pkg.getId());
 
-        this.server = ActionChainHandlerTest.reload(this.server);
-        this.server2 = ActionChainHandlerTest.reload(this.server2);
+        this.server = reload(this.server);
+        this.server2 = reload(this.server2);
 
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);

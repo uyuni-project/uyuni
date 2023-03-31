@@ -160,9 +160,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     @Test
     public void testInsert() throws Exception {
         insert("insert_test", 3);
-        // Close our Session so we test to make sure it
-        // actually inserted.
-        commitAndCloseSession();
+        clearSession();
         lookup("insert_test", 3, 1);
     }
 
@@ -176,7 +174,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals(1, m.executeUpdate(params));
         // Close our Session so we test to make sure it
         // actually deleted.
-        commitAndCloseSession();
+        clearSession();
         lookup("Blarg", 1, 0);
     }
 
@@ -192,7 +190,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals(1, res);
         // Close our Session so we test to make sure it
         // actually updated.
-        commitAndCloseSession();
+        clearSession();
         lookup("after_update", 4, 1);
     }
 

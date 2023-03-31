@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.system.test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
-import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
@@ -337,7 +336,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
-        HibernateFactory.commitTransaction();
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
@@ -359,8 +357,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
-
-        HibernateFactory.commitTransaction();
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
