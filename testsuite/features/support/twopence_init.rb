@@ -241,7 +241,7 @@ end
 
 # This function extracts a file from a node
 def file_extract(node, remote_file, local_file)
-  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
+  code, _remote = node.extract(remote_file, local_file, 'root', false)
   code
 end
 
