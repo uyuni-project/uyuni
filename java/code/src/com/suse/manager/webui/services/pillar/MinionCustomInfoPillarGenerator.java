@@ -18,6 +18,7 @@ package com.suse.manager.webui.services.pillar;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
@@ -49,7 +50,10 @@ public class MinionCustomInfoPillarGenerator implements MinionPillarGenerator {
     @Override
     public Optional<Pillar> generatePillarData(MinionServer minion) {
         if (minion.getCustomDataValues().isEmpty()) {
-            minion.getPillarByCategory(CATEGORY).ifPresent(pillar -> minion.getPillars().remove(pillar));
+            minion.getPillarByCategory(CATEGORY).ifPresent(pillar -> {
+                minion.getPillars().remove(pillar);
+                HibernateFactory.getSession().remove(pillar);
+            });
             return Optional.empty();
         }
         Pillar pillar = minion.getPillarByCategory(CATEGORY).orElseGet(() -> {

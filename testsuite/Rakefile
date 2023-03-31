@@ -11,12 +11,14 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 
 namespace :cucumber do
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  # Create results folder
+  sh "mkdir -p results", verbose: false
+  Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o output_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o output_#{timestamp}-#{filename}.html"
+      json_results = "-f json -o results/output_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o results/output_#{timestamp}-#{filename}.html"
       profiles = ENV['PROFILE']
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
@@ -28,6 +30,10 @@ namespace :cucumber do
       include_tags =  tags.nil? ? [] : ['--tags', tags]
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
                       %w[-f pretty -r features] + include_tags
+      # Immediately fail core if any feature is failing
+      if filename.to_s.include?('core')
+        cucumber_opts << '--fail-fast'
+      end
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
@@ -76,7 +82,7 @@ namespace :utils do
         'features/build_validation/smoke_tests/smoke_tests.template',
         File.basename(client,'.feature'),
         'features/build_validation/smoke_tests',
-        'run_sets/build_validation_smoke_tests.yml'
+        'run_sets/build_validation/build_validation_smoke_tests.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -92,7 +98,7 @@ namespace :utils do
         'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
         File.basename(client,'.feature'),
         'features/build_validation/add_MU_repositories',
-        'run_sets/build_validation_add_MU_repositories.yml'
+        'run_sets/build_validation/build_validation_add_MU_repositories.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -106,7 +112,7 @@ namespace :utils do
         'features/build_validation/add_activation_keys/add_activation_key.template',
         File.basename(client,'.feature'),
         'features/build_validation/add_activation_keys',
-        'run_sets/build_validation_add_activation_keys.yml'
+        'run_sets/build_validation/build_validation_add_activation_keys.yml'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -121,7 +127,7 @@ namespace :utils do
       Rake::Task['utils:generate_feature'].invoke('features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
                                                   File.basename(client,'.feature'),
                                                   'features/build_validation/create_bootstrap_repositories',
-                                                  'run_sets/build_validation_create_bootstrap_repositories.yml')
+                                                  'run_sets/build_validation/build_validation_create_bootstrap_repositories.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
@@ -141,7 +147,7 @@ namespace :utils do
   desc 'Generate test report'
   task :generate_test_report do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
-    sh 'timeout 180 bash -c -- "while find output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
+    sh 'timeout 180 bash -c -- "while find results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
     sh 'find . -size 0 -delete', verbose: false
     sh 'node index.js &> cucumber_reporter.log', verbose: false
   end
@@ -171,7 +177,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_create_bootstrap_repository',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/create_bootstrap_repositories',
-                                                          "run_sets/build_validation_create_bootstrap_repository_#{minion}.yml")
+                                                          "run_sets/build_validation/build_validation_create_bootstrap_repository_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end
@@ -184,7 +190,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke('',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/init_clients',
-                                                          "run_sets/build_validation_init_client_#{minion}.yml")
+                                                          "run_sets/build_validation/build_validation_init_client_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end
@@ -197,7 +203,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_maintenance_update_repositories',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/add_MU_repositories',
-                                                          "run_sets/build_validation_add_maintenance_update_repositories_#{minion}.yml")
+                                                          "run_sets/build_validation/build_validation_add_maintenance_update_repositories_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end
@@ -209,7 +215,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_add_activation_key',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/add_activation_keys',
-                                                          "run_sets/build_validation_add_activation_key_#{minion}.yml")
+                                                          "run_sets/build_validation/build_validation_add_activation_key_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end
@@ -222,7 +228,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke('_smoke_tests',
                                                           File.basename(minion,'.feature'),
                                                           'features/build_validation/smoke_tests',
-                                                          "run_sets/build_validation_smoke_tests_#{minion}.yml")
+                                                          "run_sets/build_validation/build_validation_smoke_tests_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end

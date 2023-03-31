@@ -3,55 +3,54 @@
 
 ### This file contains the definitions for all steps concerning Cobbler.
 
+$cobbler_test = CobblerTest.new
+
 # cobbler daemon
 Given(/^cobblerd is running$/) do
-  ct = CobblerTest.new
-  raise 'cobblerd is not running' unless ct.running?
+  raise 'cobblerd is not running' unless $cobbler_test.running?
 end
 
 When(/^I restart cobbler on the server$/) do
   $server.run('systemctl restart cobblerd.service')
 end
 
+Given(/^I am logged in via the Cobbler API as user "([^"]*)" with password "([^"]*)"$/) do |user, pwd|
+  $cobbler_test.login(user, pwd)
+end
+
+When(/^I log out from Cobbler via the API$/) do
+  $cobbler_test.logout
+end
+
 # distro and profile management
 Given(/^distro "([^"]*)" exists$/) do |distro|
-  ct = CobblerTest.new
-  raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
+  raise "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
 end
 
 Given(/^profile "([^"]*)" exists$/) do |profile|
-  ct = CobblerTest.new
-  raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
+  raise "Profile #{profile} does not exist" unless $cobbler_test.element_exists('profiles', profile)
 end
 
-When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
+When(/^I create distro "([^"]*)"$/) do |distro|
+  raise "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
 
-  ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  $cobbler_test.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
+When(/^I create profile "([^"]*)" for distro "([^"]*)"$/) do |profile, distro|
+  raise "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
 
-  ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
+  $cobbler_test.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
-When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'system ' + system + ' already exists' if ct.system_exists(system)
+When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
+  raise "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
 
-  ct.system_create(system, profile)
+  $cobbler_test.system_create(system, profile)
 end
 
-When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  ct.system_remove(system)
+When(/^I remove system "([^"]*)"$/) do |system|
+  $cobbler_test.system_remove(system)
 end
 
 When(/^I remove profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
@@ -251,4 +250,49 @@ When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
   else
     _out, _code = $server.run('cobbler sync')
   end
+end
+
+When(/^I start local monitoring of Cobbler$/) do
+  cobbler_conf_file = '/etc/cobbler/logging_config.conf'
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  $server.run("rm #{cobbler_log_file}", check_errors: false)
+  _result, code = $server.run("test -f #{cobbler_conf_file}.old", check_errors: false)
+  if !code.zero?
+    step %(I install package "python3-python-json-logger" on this "server")
+    handler_name = 'FileLogger02'
+    formatter_name = 'JSONlogfile'
+    handler_class = "\"\n[handler_#{handler_name}]\n" \
+                  "class=FileHandler\n" \
+                  "level=DEBUG\n" \
+                  "formatter=#{formatter_name}\n" \
+                  "args=('#{cobbler_log_file}', 'a')\n\n" \
+                  "[formatter_#{formatter_name}]\n" \
+                  "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
+                  "class = pythonjsonlogger.jsonlogger.JsonFormatter\n\""
+    command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
+              "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
+              "line_number=`awk \"/\\\[formatters\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 1))s/$/,#{formatter_name}/\" -i #{cobbler_conf_file} && " \
+              "line_number=`awk \"/\\\[logger_root\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
+              "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
+              "echo -e #{handler_class} >> #{cobbler_conf_file}"
+    $server.run("#{command} && systemctl restart cobblerd")
+  else
+    $server.run('systemctl restart cobblerd')
+  end
+end
+
+Then(/^the local logs for Cobbler should not contain errors$/) do
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  local_file = '/tmp/cobbler_debug.log'
+  return_code = file_extract($server, cobbler_log_file, local_file)
+  raise 'File extraction failed' unless return_code.zero?
+
+  file_data = File.read(local_file).gsub!("\n", ',').chop
+  file_data = "[#{file_data}]"
+  data_hash = JSON.parse(file_data)
+  output = data_hash.select { |_key, hash| hash['levelname'] == 'ERROR' }
+  $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
+  raise "Errors in Cobbler logs:\n #{output}" unless output.empty?
 end
