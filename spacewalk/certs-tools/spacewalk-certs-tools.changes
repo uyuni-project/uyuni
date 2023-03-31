@@ -1,3 +1,4 @@
+- mgr-bootstrap read the hostname from rhn.conf if possible
 - Read CA password from a file
 - Add shadow as dependency of osimage certificate package
   (bsc#1210834 bsc#1204089)
