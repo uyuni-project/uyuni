@@ -50,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ConfigChannelJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
+import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -98,6 +99,7 @@ public class RecurringActionController {
                 jade);
 
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
+        get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
         delete("/manager/api/recurringactions/:id/delete", asJson(withUser(RecurringActionController::deleteSchedule)));
@@ -129,6 +131,22 @@ public class RecurringActionController {
 
         DataResult<RecurringActionScheduleJson> schedules = RecurringActionManager.listAllRecurringActions(user, pc);
         return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
+    }
+
+    /**
+     * Processes a GET request to get the details of a recurring action based on its id.
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return JSON representing the action details object
+     */
+    public static String getDetails(Request request, Response response, User user) {
+        long id = Long.parseLong(request.params("id"));
+        Optional<RecurringAction> action = RecurringActionManager.find(id);
+        if (action.isEmpty()) {
+            return json(response, HttpStatus.SC_NOT_FOUND);
+        }
+        return json(response, actionToDetailsDto(action.get()));
     }
 
     /**
@@ -172,29 +190,31 @@ public class RecurringActionController {
         RecurringActionScheduleJson json = new RecurringActionScheduleJson();
         json.setRecurringActionId(a.getId());
         json.setScheduleName(a.getName());
+        json.setCron(a.getCronExpr());
+        json.setActive(a.isActive());
+        json.setTargetType(targetType.toString());
+        json.setTargetId(a.getEntityId());
+        json.setTargetName(getEntityName(a, targetType));
+        json.setActionType(a.getActionType());
+        return json;
+    }
 
-        String cronExpr = a.getCronExpr();
-        json.setCron(cronExpr);
-        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
+    private static RecurringActionDetailsDto actionToDetailsDto(RecurringAction action) {
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, action.getCronExpr());
         Map<String, String> cronTimes = new HashMap<>();
         cronTimes.put("minute", picker.getMinute());
         cronTimes.put("hour", picker.getHour());
         cronTimes.put("dayOfMonth", picker.getDayOfMonth());
         cronTimes.put("dayOfWeek", picker.getDayOfWeek());
-
-        json.setType(picker.getStatus());
-        json.setCronTimes(cronTimes);
-        json.setActive(a.isActive());
-        // TODO: Set values depending on action type
-        json.setTest(((RecurringHighstate) a.getRecurringActionType()).isTestMode());
-        json.setTargetType(targetType.toString());
-        json.setTargetId(a.getEntityId());
-        json.setTargetName(getEntityName(a, targetType));
-        json.setCreated(a.getCreated());
-        json.setCreatorLogin(a.getCreator().getLogin());
-        json.setActionType(a.getActionType());
-
-        return json;
+        RecurringActionDetailsDto dto = new RecurringActionDetailsDto();
+        dto.setCreated(action.getCreated());
+        dto.setCreatorLogin(action.getCreator().getLogin());
+        dto.setType(picker.getStatus());
+        dto.setCronTimes(cronTimes);
+        if (RecurringActionType.ActionType.HIGHSTATE.equals(action.getActionType())) {
+            dto.setTest(((RecurringHighstate) action.getRecurringActionType()).isTestMode());
+        }
+        return dto;
     }
 
     private static String getEntityName(RecurringAction action, RecurringAction.TargetType type) {
@@ -301,18 +321,19 @@ public class RecurringActionController {
     }
 
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
+        RecurringActionDetailsDto details = json.getDetails();
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
 
         // TODO: Get action type and set paramenter depending on it
-        if (action.getActionType().equals(RecurringActionType.ActionType.HIGHSTATE)) {
-            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(json.isTest());
+        if (action.getRecurringActionType() instanceof RecurringHighstate) {
+            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(details.isTest());
         }
 
         String cron = json.getCron();
         if (StringUtils.isBlank(cron)) {
             cron = RecurringEventPicker
-                    .prepopulatePicker("date", json.getType(), json.getCronTimes(), null)
+                    .prepopulatePicker("date", details.getType(), details.getCronTimes(), null)
                     .getCronEntry();
         }
         action.setCronExpr(cron);

@@ -7,6 +7,8 @@ import { Messages } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 
+import Network from "utils/network";
+
 import { DisplayHighstate } from "../state/display-highstate";
 import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
@@ -21,6 +23,7 @@ type RecurringActionsDetailsProps = {
 type RecurringActionsDetailsState = {
   messages: any[];
   minions: any;
+  details: any;
 };
 
 class RecurringActionsDetails extends React.Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
@@ -32,46 +35,57 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
     this.state = {
       messages: [],
       minions: props.minions,
+      details: null,
     };
   }
 
-  getExecutionText(data) {
-    if (data.type !== "cron") {
+  componentDidMount(): void {
+    Network.get(`/rhn/manager/api/recurringactions/${this.props.data.recurringActionId}/details`)
+      .then((details) => {
+        this.setState({
+          details,
+        });
+      })
+      .catch((e) => console.log(e));
+  }
+
+  getExecutionText(details) {
+    if (details.type !== "cron") {
       return (
         <tr>
           <td>{t("Execution time")}:</td>
-          {data.type === "hourly" ? (
+          {details.type === "hourly" ? (
             <td>
               {"Every hour at minute "}
-              <b>{data.cronTimes.minute}</b>
+              <b>{details.cronTimes.minute}</b>
             </td>
-          ) : data.type === "daily" ? (
+          ) : details.type === "daily" ? (
             <td>
               {"Every day at "}
-              <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+              <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
             </td>
-          ) : data.type === "weekly" ? (
+          ) : details.type === "weekly" ? (
             <td>
               {"Every "}
-              <b>{this.weekDays[data.cronTimes.dayOfWeek - 1]}</b>
+              <b>{this.weekDays[details.cronTimes.dayOfWeek - 1]}</b>
               {" at "}
-              <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+              <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
             </td>
           ) : (
             <td>
               {"Every "}
               <b>
-                {data.cronTimes.dayOfMonth +
-                  (data.cronTimes.dayOfMonth === "1"
+                {details.cronTimes.dayOfMonth +
+                  (details.cronTimes.dayOfMonth === "1"
                     ? "st "
-                    : data.cronTimes.dayOfMonth === "2"
+                    : details.cronTimes.dayOfMonth === "2"
                     ? "nd "
-                    : data.cronTimes.dayOfMonth === "3"
+                    : details.cronTimes.dayOfMonth === "3"
                     ? "rd "
                     : "th ")}
               </b>
               {"of the month at "}
-              <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+              <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
             </td>
           )}
         </tr>
@@ -87,8 +101,12 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
   }
 
   showScheduleDetails(data) {
-    data.cronTimes.hour = data.cronTimes.hour.padStart(2, "0");
-    data.cronTimes.minute = data.cronTimes.minute.padStart(2, "0");
+    const { details } = this.state;
+    if (details == null) {
+      return false;
+    }
+    details.cronTimes.hour = details.cronTimes.hour.padStart(2, "0");
+    details.cronTimes.minute = details.cronTimes.minute.padStart(2, "0");
 
     return (
       <BootstrapPanel title={t("Schedule Details")}>
@@ -115,15 +133,15 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               </tr>
               <tr>
                 <td>{t("Created by")}:</td>
-                <td>{t(data.creatorLogin)}</td>
+                <td>{t(details.creatorLogin)}</td>
               </tr>
               {
                 <tr>
                   <td>{t("Created at")}:</td>
-                  <td>{data.createdAt + " " + window.timezone}</td>
+                  <td>{details.createdAt + " " + window.timezone}</td>
                 </tr>
               }
-              {this.getExecutionText(data)}
+              {this.getExecutionText(details)}
               <tr>
                 <td>{t("Quartz format string")}:</td>
                 <td>{data.cron}</td>

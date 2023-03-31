@@ -61,6 +61,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -216,6 +217,16 @@ public class RecurringActionManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Action_queries", "recurring_action_list");
         m.getQuery().modifyQuery(":orgs", orgsParam, null);
         return makeDataResult(new HashMap<>(), null, pc, m);
+    }
+
+    /**
+     * Find a recurring action with given id.
+     *
+     * @param id - id of the recurring action
+     * @return optional of matching recurring action
+     */
+    public static Optional<RecurringAction> find(Long id) {
+        return RecurringActionFactory.lookupById(id);
     }
 
     /**

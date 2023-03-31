@@ -263,21 +263,14 @@ ORDER BY EARLIEST DESC
                 else UPPER(ra.target_type)
             end as target_type,
             ra.cron_expr as cron,
-            highstate.test_mode as test,
-            creator.login as creator_login,
-            ra.created as created,
             ra.action_type as action_type
         from suseRecurringAction ra
-        inner join web_contact creator
-        on creator.id = ra.creator_id
         left join rhnservergroup sg
         on sg.id = ra.group_id
         left join rhnserver minion
         on minion.id = ra.minion_id
         left join web_customer org
         on org.id = ra.org_id
-        left join suserecurringhighstate highstate
-        on highstate.rec_id = ra.id
         where (ra.target_type = 'organization' and ra.org_id in (:orgs))
         or (ra.target_type = 'group' and sg.org_id in (:orgs))
         or (ra.target_type = 'minion' and minion.org_id in (:orgs))
