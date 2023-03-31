@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-24 14:54+0100\n"
+"POT-Creation-Date: 2023-03-31 15:18+0200\n"
 "PO-Revision-Date: 2023-03-25 15:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -4937,8 +4937,10 @@ msgid "systems"
 msgstr "systémy"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
-msgid "shortly"
-msgstr "krátko"
+msgid ""
+"shortly. If it is a transactional system, please reboot it to finish "
+"registration"
+msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
@@ -6458,6 +6460,9 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "shortly"
+#~ msgstr "krátko"
 
 #~ msgid "Action has been successfully added to the "
 #~ msgstr "Akcia bola úspešne pridaná do "
