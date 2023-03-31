@@ -32,6 +32,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.controllers.RecurringActionController;
+import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -99,7 +100,13 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         Map<String, Object> action = (Map<String, Object>) list.iterator().next();
         assertNotNull(action.get("targetId"));
         assertEquals("test-schedule-123", action.get("scheduleName"));
-        assertEquals(user.getLogin(), action.get("creatorLogin"));
+
+        var detailsRequest = getRequestWithCsrf("/manager/api/recurringactions/:id/details",
+                (long) Double.parseDouble(action.get("recurringActionId").toString()));
+        var details = GSON.fromJson(
+                RecurringActionController.getDetails(detailsRequest, response, user), RecurringActionDetailsDto.class
+        );
+        assertEquals(user.getLogin(), details.getCreatorLogin());
     }
 
     @Test
@@ -148,12 +155,14 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
                 "'scheduleName': '" + scheduleName + "'," +
                 targetId.map(id -> "'targetId': " + id + ",").orElse("") +
                 "'targetType': 'org'," +
-                "'type': 'hourly'," +
-                "'cronTimes': " +
-                "  {'minute': '0'," +
-                "   'hour': '0'," +
-                "   'dayOfWeek': '0'," +
-                "   'dayOfMonth': '0'" +
+                "'details': {" +
+                    "'type': 'hourly'," +
+                    "'cronTimes': " +
+                    "  {'minute': '0'," +
+                    "   'hour': '0'," +
+                    "   'dayOfWeek': '0'," +
+                    "   'dayOfMonth': '0'" +
+                    "  }" +
                 "  }" +
                 "}";
     }
