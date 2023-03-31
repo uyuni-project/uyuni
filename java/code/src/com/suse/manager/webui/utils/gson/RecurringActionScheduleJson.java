@@ -14,12 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * JSON representation of the Recurring Action Scheduling
@@ -37,8 +32,7 @@ public class RecurringActionScheduleJson {
     /** Schedule is active */
     private boolean active;
 
-    /** The schedule type */
-    private String type;
+    private RecurringActionDetailsDto details;
 
     /** The schedule target Type.
      * Either minion, group, selected minions or organization
@@ -48,20 +42,8 @@ public class RecurringActionScheduleJson {
     /** The name of the target */
     private String targetName;
 
-    /** Array containing Quartz information */
-    private Map<String, String> cronTimes;
-
     /** Cron format string */
     private String cron;
-
-    /** Is test run */
-    private boolean test;
-
-    /** Schedule creation date **/
-    private Date createdAt;
-
-    /**  Login of the schedule creator **/
-    private String creatorLogin;
 
     private RecurringActionType.ActionType actionType;
     private String actionTypeDescription;
@@ -105,12 +87,6 @@ public class RecurringActionScheduleJson {
         return active;
     }
 
-    /**
-     * @return the type of the schedule
-     */
-    public String getType() {
-        return type;
-    }
 
     /**
      * @return the target type of the schedule
@@ -122,22 +98,8 @@ public class RecurringActionScheduleJson {
     /**
      * @return the Array containing Quartz information
      */
-    public Map<String, String> getCronTimes() {
-        return cronTimes;
-    }
-
-    /**
-     * @return the Array containing Quartz information
-     */
     public String getCron() {
         return cron;
-    }
-
-    /**
-     * @return the Array containing Quartz information
-     */
-    public boolean isTest() {
-        return test;
     }
 
     /**
@@ -168,15 +130,6 @@ public class RecurringActionScheduleJson {
     }
 
     /**
-     * Sets the type.
-     *
-     * @param typeIn the type
-     */
-    public void setType(String typeIn) {
-        type = typeIn;
-    }
-
-    /**
      * Sets the targetType.
      *
      * @param targetTypeIn the targetType
@@ -186,66 +139,12 @@ public class RecurringActionScheduleJson {
     }
 
     /**
-     * Sets the cronTimes.
-     *
-     * @param cronTimesIn the cronTimes
-     */
-    public void setCronTimes(Map<String, String> cronTimesIn) {
-        cronTimes = cronTimesIn;
-    }
-
-    /**
      * Sets the cron.
      *
      * @param cronIn the cron
      */
     public void setCron(String cronIn) {
         cron = cronIn;
-        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cron);
-        Map<String, String> cronTimesMap = new HashMap<>();
-        cronTimesMap.put("minute", picker.getMinute());
-        cronTimesMap.put("hour", picker.getHour());
-        cronTimesMap.put("dayOfMonth", picker.getDayOfMonth());
-        cronTimesMap.put("dayOfWeek", picker.getDayOfWeek());
-
-        setType(picker.getStatus());
-        setCronTimes(cronTimesMap);
-    }
-
-    /**
-     * Sets the test.
-     *
-     * @param testIn the test
-     */
-    public void setTest(boolean testIn) {
-        test = testIn;
-    }
-
-    /**
-     * Gets the creation date
-     *
-     * @return createdAt
-     */
-    public Date getCreated() {
-        return createdAt;
-    }
-
-    /**
-     *  Sets the creation date
-     *
-     * @param createdAtIn schedule creation date
-     */
-    public void setCreated(Date createdAtIn) {
-        this.createdAt = createdAtIn;
-    }
-
-    /**
-     *  Sets the creator login
-     *
-     * @param creatorLoginIn login name of the creator
-     */
-    public void setCreatorLogin(String creatorLoginIn) {
-        this.creatorLogin = creatorLoginIn;
     }
 
     /**
@@ -275,4 +174,20 @@ public class RecurringActionScheduleJson {
      public void setActionType(String actionTypeIn) {
          setActionType(RecurringActionType.ActionType.valueOf(actionTypeIn));
      }
+
+    /**
+     * Gets the details of the recurring action
+     * @return an instance of RecurringActionDetailsDto
+     */
+    public RecurringActionDetailsDto getDetails() {
+        return details;
+    }
+
+    /**
+     * Sets the details of the recurring action
+     * @param detailsIn the details object
+     */
+    public void setDetails(RecurringActionDetailsDto detailsIn) {
+        details = detailsIn;
+    }
 }
