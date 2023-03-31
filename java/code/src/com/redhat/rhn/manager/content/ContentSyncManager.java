@@ -2476,7 +2476,7 @@ public class ContentSyncManager {
                .map(SCCSubscription::getProducts)
                .flatMap(Set::stream)
                .filter(p -> p.getChannelFamily() != null)
-               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
+               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 
     /**
@@ -2492,6 +2492,6 @@ public class ContentSyncManager {
                 .flatMap(r -> r.getProducts().stream())
                 .map(pr -> pr.getProduct())
                 .filter(p -> p.getChannelFamily() != null)
-                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
+                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 }
