@@ -1192,6 +1192,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 server.getId().intValue(),
                 valuesToSet);
 
+        server = reload(server);
+
         //make sure the val was updated
         val = server.getCustomDataValue(testKey);
         assertEquals(val2, val.getValue());
@@ -1250,6 +1252,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 valuesToDelete);
 
         assertEquals(1, setResult);
+
+        server = reload(server);
+
         val = server.getCustomDataValue(testKey);
         assertNull(val);
 
@@ -1259,6 +1264,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 PILLAR_DATA_FILE_EXT);
 
         assertFalse(Files.exists(filePath));
+
+        try {
+            pillar = readCustomInfoPillar(server);
+            fail("Custom info pillar was not deleted.");
+        }
+        catch (java.util.NoSuchElementException e) {
+            //success
+        }
     }
 
     @Test
