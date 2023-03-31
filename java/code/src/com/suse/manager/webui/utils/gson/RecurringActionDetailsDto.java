@@ -101,6 +101,15 @@ public class RecurringActionDetailsDto {
     }
 
     /**
+     *  Get the creator login
+     *
+     * @return creatorLoginIn
+     */
+    public String getCreatorLogin() {
+        return this.creatorLogin;
+    }
+
+    /**
      * Sets the type.
      *
      * @param typeIn the type
