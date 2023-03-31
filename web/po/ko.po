@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-24 14:57+0100\n"
+"POT-Creation-Date: 2023-03-31 15:22+0200\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -4680,8 +4680,10 @@ msgid "systems"
 msgstr "시스템"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
-msgid "shortly"
-msgstr "곧"
+msgid ""
+"shortly. If it is a transactional system, please reboot it to finish "
+"registration"
+msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
@@ -6192,6 +6194,9 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "shortly"
+#~ msgstr "곧"
 
 #~ msgid "Loading.."
 #~ msgstr "로드하는 중.."
