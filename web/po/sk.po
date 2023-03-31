@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-24 14:57+0100\n"
-"PO-Revision-Date: 2023-01-27 18:14+0000\n"
+"POT-Creation-Date: 2023-03-31 15:22+0200\n"
+"PO-Revision-Date: 2023-03-25 15:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
 ">\n"
@@ -4089,46 +4089,39 @@ msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:79
 msgid "Packages in no channel"
-msgstr ""
+msgstr "Balíky v žiadnom kanáli"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "All managed packages"
-msgstr ""
+msgstr "Všetky spravované balíky"
 
 #: ../html/src/manager/packages/list.tsx:88
-#, fuzzy
 msgid " Package Management "
-msgstr "Ovplyvňuje zásobník správy balíkov"
+msgstr " Správa balíkov "
 
 #: ../html/src/manager/packages/list.tsx:116
-#, fuzzy
 msgid "Binary packages"
-msgstr "Hľadať balík"
+msgstr "Binárne balíky"
 
 #: ../html/src/manager/packages/list.tsx:117
-#, fuzzy
 msgid "Source packages"
-msgstr "Hľadať balík"
+msgstr "Zdrojové balíky"
 
 #: ../html/src/manager/packages/list.tsx:125
-#, fuzzy
 msgid "package"
-msgstr "Balík"
+msgstr "balík"
 
 #: ../html/src/manager/packages/list.tsx:143
-#, fuzzy
 msgid "Filter by package name"
-msgstr "Filtrovať podľa názvu"
+msgstr "Filtrovať podľa názvu balíka"
 
 #: ../html/src/manager/packages/list.tsx:144
-#, fuzzy
 msgid "No Packages."
-msgstr "Balíky"
+msgstr "Žiadne balíky."
 
 #: ../html/src/manager/packages/list.tsx:170
-#, fuzzy
 msgid "Content Provider"
-msgstr "Poskytovateľ klastrov"
+msgstr "Poskytovateľ obsahu"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4728,8 +4721,10 @@ msgid "systems"
 msgstr "systémy"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
-msgid "shortly"
-msgstr "krátko"
+msgid ""
+"shortly. If it is a transactional system, please reboot it to finish "
+"registration"
+msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
@@ -6262,6 +6257,9 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "shortly"
+#~ msgstr "krátko"
 
 #~ msgid "Loading.."
 #~ msgstr "Načítava sa.."

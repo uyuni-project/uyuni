@@ -15,16 +15,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-17 13:46+0100\n"
-"PO-Revision-Date: 2021-04-23 07:57+0000\n"
-"Last-Translator: Eric Schirra <ecsos@schirra.net>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
-">\n"
+"PO-Revision-Date: 2023-03-31 13:14+0000\n"
+"Last-Translator: Georg Mayer <georgbmayer@yahoo.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -206,7 +206,7 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s Benutzer wurde auf diesem Server deaktiviert.\n"
+"               %s Benutzer wurde auf diesem Server deaktiviert.\n"
 "                   Bitte kontaktieren Sie Ihren Org-Administrator für Hilfe."
 
 #: ../server/rhnChannel.py:1999
@@ -267,7 +267,7 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Bitte führen Sie rhn_register als root auf diesem Client aus"
 
 #: ../server/rhnHandler.py:75
 #, python-format
@@ -631,7 +631,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -639,8 +638,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Die Option --force für rhnpush wurde auf diesem Server deaktiviert. \n"
-"     Bitte kontaktieren Sie den Satellite Administrator für Hilfestellung.\n"
+"     Die Option --force mgrpush wurde auf diesem Server deaktiviert. \n"
+"     Bitte kontaktieren Sie Ihren SUSE-Administrator für Hilfestellung.\n"
 "     "
 
 #. 60-70: token errors
@@ -651,6 +650,10 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     Das Aktivierungstoken konnte nicht auf diesem Server gefunden werden. \n"
+"\tBitte versuchen Sie es mit einem gültigen Schlüssel erneut.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
