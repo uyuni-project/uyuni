@@ -290,7 +290,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   file_data = File.read(local_file).gsub!("\n", ',').chop
   file_data = "[#{file_data}]"
   data_hash = JSON.parse(file_data)
-  output = data_hash.select { |_key, hash| hash['levelname'] == 'ERROR' }
+  output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
   $server.run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
   raise "Errors in Cobbler logs:\n #{output}" unless output.empty?
 end
