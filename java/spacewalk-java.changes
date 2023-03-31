@@ -1,3 +1,4 @@
+- Fixed issue with checking ptf repositories on cloned channels
 - Add support to add optional channels via webUI
 - Added APIs to allow frontend to install and remove ptf
 - Show the package summary where applicable to better describe PTF packages

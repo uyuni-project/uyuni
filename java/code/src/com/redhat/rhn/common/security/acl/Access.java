@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -613,6 +614,7 @@ public class Access extends BaseHandler {
         // Evaluate if any of the subscript channel refers to a PTF repository
         return server.getChannels()
                      .stream()
+                     .map(channel -> channel instanceof ClonedChannel ? channel.getOriginal() : channel)
                      .flatMap(c -> c.getSources().stream())
                      .map(ContentSource::getSourceUrl)
                      .anyMatch(url -> url.contains("/PTF/"));
