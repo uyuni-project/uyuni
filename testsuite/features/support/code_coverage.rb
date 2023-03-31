@@ -67,7 +67,7 @@ class CodeCoverage
     html_report = html ? "--html /srv/www/htdocs/pub/jacoco-#{feature_name}" : ''
     xml_report = xml ? "--xml /srv/www/htdocs/pub/jacoco-#{feature_name}.xml" : ''
     sourcefiles = source ? '--sourcefiles /tmp/uyuni-master/java/code/src' : ''
-    classfiles = '--classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib'
+    classfiles = '--classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib/rhn.jar'
     dump_path = "/tmp/jacoco-#{feature_name}.exec"
     $server.run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset")
     $server.run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}")
