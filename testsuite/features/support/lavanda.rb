@@ -236,10 +236,28 @@ module LavandaBasic
       code, _remote = inject_file(local_file, tmp_file, user, dots)
       if code.zero?
         _out, code = run_local("uyunictl cp --user #{user} #{tmp_file} server:#{remote_file}")
+        raise "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
     else
         code, _remote = inject_file(local_file, remote_file, user, dots)
+    end
+    code
+  end
+
+  def extract(remote_file, local_file, user = "root", dots = true)
+    if @in_has_uyunictl
+      tmp_folder, _code = run_local("mktemp -d")
+      tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
+      if code.zero?
+        _out, code = run_local("uyunictl cp --user #{user} server:#{remote_file} #{tmp_file}")
+        raise "Failed to extract #{remote_file} from container" unless code.zero?
+        code, _remote = extract_file(tmp_file, local_file, user, dots)
+        raise "Failed to extract #{tmp_file} from host" unless code.zero?
+      end
+      run_local("rm -r #{tmp_folder}")
+    else
+        code, _local = extract_file(remote_file, local_file, user, dots)
     end
     code
   end
