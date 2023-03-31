@@ -321,9 +321,13 @@ public class RecurringActionController {
     }
 
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
-        RecurringActionDetailsDto details = json.getDetails();
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
+
+        RecurringActionDetailsDto details = json.getDetails();
+        if (details == null) {
+            return;
+        }
 
         // TODO: Get action type and set paramenter depending on it
         if (action.getRecurringActionType() instanceof RecurringHighstate) {
