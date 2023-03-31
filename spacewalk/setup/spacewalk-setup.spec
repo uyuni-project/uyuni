@@ -156,6 +156,7 @@ find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
+install -d -m 755 %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
