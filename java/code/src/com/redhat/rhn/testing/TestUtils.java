@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
@@ -210,14 +209,8 @@ public class TestUtils {
         req.setupServerName("mymachine.rhndev.redhat.com");
         req.setSession(session);
 
-        User u = null;
-        try {
-            u = UserTestUtils.createUserInOrgOne();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        u.removePermanentRole(RoleFactory.ORG_ADMIN);
+        User u = UserTestUtils.findNewUser("testUser",
+            "testOrg_getRequestWithSessionAndUser" + RandomStringUtils.randomAlphanumeric(5));
         Long userid = u.getId();
 
         RequestContext requestContext = new RequestContext(req);

@@ -23,8 +23,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -40,7 +39,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class SaltUtilsTest  {
+public class SaltUtilsTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPackageToKey() {
@@ -104,7 +103,6 @@ public class SaltUtilsTest  {
      */
     @Test
     public void testPackageChangeOutcomeWithLivePatchPackages() throws Exception {
-        User user = UserTestUtils.createSatAdminInOrgOne();
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> installLivePatch =

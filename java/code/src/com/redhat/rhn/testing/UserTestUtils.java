@@ -139,29 +139,6 @@ public class UserTestUtils  {
     }
 
     /**
-     * Useful for legacy tests that arent multi-org aware.
-     * @return User from org_id = 1
-     */
-    public static User createUserInOrgOne() {
-        User retval = createUser("testUser", 1L);
-        retval.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(retval);
-        return retval;
-    }
-
-
-    /**
-     * Useful for legacy tests that arent multi-org aware.
-     * @return New Sat Admin User from org_id = 1
-     */
-    public static User createSatAdminInOrgOne() {
-        User retval = createUser("testUser", 1L);
-        retval.addPermanentRole(RoleFactory.SAT_ADMIN);
-        UserFactory.save(retval);
-        return retval;
-    }
-
-    /**
      * Creates a new User and Org with the given userName and orgName.
      * The current time is appended to the given username and orgName.
      * @param userName Name of user.

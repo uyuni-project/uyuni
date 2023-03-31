@@ -130,8 +130,7 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
         String expectedMessage = LOCALIZATION.getMessage("task.action.rejection.reason",
             MinionActionExecutor.MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
 
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
+        HibernateFactory.getSession().clear();
 
         sa1 = HibernateFactory.reload(sa1);
         sa2 = HibernateFactory.reload(sa2);

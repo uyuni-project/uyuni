@@ -20,16 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
@@ -50,19 +52,20 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String satAdminKey;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
+    private boolean committed;
 
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        admin = UserTestUtils.createUserInOrgOne();
-        admin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(admin);
 
-        regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
-        regular.removePermanentRole(RoleFactory.ORG_ADMIN);
+        committed = false;
 
-        satAdmin = UserTestUtils.createSatAdminInOrgOne();
+        admin = UserTestUtils.findNewUser("adminUser", "testOrg" + this.getClass().getSimpleName(), true);
+        regular = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        satAdmin = UserTestUtils.createUser("satUser", admin.getOrg().getId());
+        satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        UserFactory.save(satAdmin);
 
         assertTrue(admin.hasRole(RoleFactory.ORG_ADMIN));
         assertFalse(regular.hasRole(RoleFactory.ORG_ADMIN));
@@ -84,9 +87,30 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
         MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+
+        // If at some point we created a user and committed the transaction, we need
+        // clean up our mess
+        if (committed) {
+            UserFactory.deleteUser(regular.getId());
+            UserFactory.deleteUser(satAdmin.getId());
+            OrgFactory.deleteOrg(admin.getOrg().getId(), admin);
+            commitAndCloseSession();
+        }
+        committed = false;
+    }
+
+    // If we have to commit in mid-test, set up the next transaction correctly
+    protected void commitHappened() {
+        committed = true;
     }
 
     protected void addRole(User user, Role role) {

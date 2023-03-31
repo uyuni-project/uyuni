@@ -98,7 +98,6 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -693,7 +692,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
                 ksData, user, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = RhnBaseTestCase.reload(ksSession);
+        ksSession = reload(ksSession);
 
         List actionList = createActionList(user, new Action [] {parentAction});
 
