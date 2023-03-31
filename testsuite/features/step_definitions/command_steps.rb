@@ -1002,35 +1002,91 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-    return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
-    raise 'File extraction failed' unless return_code.zero?
-    $proxy.run('mkdir -p /root/ssl-build')
-    return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
-    raise 'File injection failed' unless return_code.zero?
+  _out, code = $server.run_local("systemctl is-active k3s")
+  if code.zero?
+    # Server running in Kubernetes doesn't know anything about SSL CA
+    certificate = "apiVersion: cert-manager.io/v1\\n"\
+                  "kind: Certificate\\n"\
+                  "metadata:\\n"\
+                  "  name: uyuni-proxy\\n"\
+                  "spec:\\n"\
+                  "  secretName: uyuni-proxy-cert\\n"\
+                  "  subject:\\n"\
+                  "    countries: ['DE']\\n"\
+                  "    provinces: ['Bayern']\\n"\
+                  "    localities: ['Nuernberg']\\n"\
+                  "    organizations: ['SUSE']\\n"\
+                  "    organizationalUnits: ['SUSE']\\n"\
+                  "  emailAddresses:\\n"\
+                  "    - galaxy-noise@suse.de\\n"\
+                  "  commonName: #{$proxy.full_hostname}\\n"\
+                  "  dnsNames:\\n"\
+                  "    - #{$proxy.full_hostname}\\n"\
+                  "  issuerRef:\\n"\
+                  "    name: uyuni-ca-issuer\\n"\
+                  "    kind: Issuer"
+    _out, return_code = $server.run_local("echo -e \"#{certificate}\" | kubectl apply -f -")
+    raise 'Failed to define proxy Certificate resource' unless return_code.zero?
+    # cert-manager takes some time to generate the secret, wait for it before continuing
+    repeat_until_timeout(timeout: 600, message: "Kubernetes uyuni-proxy-cert secret has not been defined") do
+      _result, code = $server.run_local("kubectl get secret uyuni-proxy-cert", check_errors: false)
+      break if code.zero? 
+      sleep 1
+    end
+    _out, return_code = $server.run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.tls\\.crt}' | base64 -d >/tmp/proxy.crt")
+    raise 'Failed to store proxy certificate' unless return_code.zero?
+    _out, return_code = $server.run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.tls\\.key}' | base64 -d >/tmp/proxy.key")
+    raise 'Failed to store proxy key' unless return_code.zero?
+    _out, return_code = $server.run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.ca\\.crt}' | base64 -d >/tmp/ca.crt")
+    raise 'Failed to store CA certificate' unless return_code.zero?
+
+    %w[proxy.crt proxy.key ca.crt].each do |file|
+      return_code, = $server.extract_file("/tmp/#{file}", "/tmp/#{file}")
+      raise 'File extraction failed' unless return_code.zero?
+      return_code = file_inject($proxy, "/tmp/#{file}", "/tmp/#{file}")
+      raise 'File injection failed' unless return_code.zero?
+    end
+  else
+    %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
+      return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
+      raise 'File extraction failed' unless return_code.zero?
+      $proxy.run('mkdir -p /root/ssl-build')
+      return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
+      raise 'File injection failed' unless return_code.zero?
+    end
   end
 end
 
 When(/^I configure the proxy$/) do
+  _out, code = $server.run_local("systemctl is-active k3s")
+
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.full_hostname}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
-             "USE_EXISTING_CERTS=n\n" \
              "INSTALL_MONITORING=n\n" \
-             "SSL_PASSWORD=spacewalk\n" \
-             "SSL_ORG=SUSE\n" \
-             "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy.full_hostname}\n" \
-             "SSL_CITY=Nuremberg\n" \
-             "SSL_STATE=Bayern\n" \
-             "SSL_COUNTRY=DE\n" \
-             "SSL_EMAIL=galaxy-noise@suse.de\n" \
-             "SSL_CNAME_ASK=proxy.example.org\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
+  if code.zero?
+    settings += "USE_EXISTING_CERTS=y\n" \
+                "CA_CERT=/tmp/ca.crt\n" \
+                "SERVER_KEY=/tmp/proxy.key\n" \
+                "SERVER_CERT=/tmp/proxy.crt\n"
+  else
+    settings += "USE_EXISTING_CERTS=n\n" \
+                "INSTALL_MONITORING=n\n" \
+                "SSL_PASSWORD=spacewalk\n" \
+                "SSL_ORG=SUSE\n" \
+                "SSL_ORGUNIT=SUSE\n" \
+                "SSL_COMMON=#{$proxy.full_hostname}\n" \
+                "SSL_CITY=Nuremberg\n" \
+                "SSL_STATE=Bayern\n" \
+                "SSL_COUNTRY=DE\n" \
+                "SSL_EMAIL=galaxy-noise@suse.de\n" \
+                "SSL_CNAME_ASK=proxy.example.org\n"
+  end
   path = generate_temp_file('config-answers.txt', settings)
   step 'I copy "' + path + '" to "proxy"'
   `rm #{path}`
