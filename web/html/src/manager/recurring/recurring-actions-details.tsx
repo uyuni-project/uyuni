@@ -3,7 +3,7 @@ import * as React from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages } from "components/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
 
@@ -17,7 +17,9 @@ type RecurringActionsDetailsProps = {
   minions?: any;
   onCancel: (arg0: string) => any;
   onEdit: (arg0: any) => any;
-  onDelete: (arg0: any) => any;
+  onError: (arg0: any) => any;
+  onDeleteError: (arg0: any) => any;
+  onSetMessages: (arg0: any) => any;
 };
 
 type RecurringActionsDetailsState = {
@@ -46,8 +48,17 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
           details,
         });
       })
-      .catch((e) => console.log(e));
+      .catch(this.props.onError);
   }
+
+  deleteSchedule = (item) => {
+    return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
+      .then((_) => {
+        this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
+        this.props.onCancel("back");
+      })
+      .catch(this.props.onDeleteError);
+  };
 
   getExecutionText(details) {
     if (details.type !== "cron") {
@@ -188,7 +199,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
           id="delete-modal"
           title={t("Delete Recurring Action Schedule")}
           content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
-          onConfirm={() => this.props.onDelete(this.props.data)}
+          onConfirm={() => this.deleteSchedule(this.props.data)}
         />
         {window.entityType === "NONE" ? null : <DisplayHighstate minions={this.state.minions} />}
       </TopPanel>
