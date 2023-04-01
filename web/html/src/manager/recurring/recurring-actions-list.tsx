@@ -5,26 +5,30 @@ import { pageSize } from "core/user-preferences";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { Utils as MessagesUtils } from "components/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
-import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import Network from "utils/network";
+
+import { inferEntityParams, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 type Props = {
-  data?: any;
+  onSetMessages: (arg0: any) => any;
   isFilteredList?: boolean;
   onActionChanged: (arg0: any) => any;
-  onToggleActive: (arg0: any) => any;
   onSelect: (arg0: any) => any;
   onEdit: (arg0: any) => any;
-  onDelete: (arg0: any, arg1: React.RefObject<any>) => any;
+  onError: (arg0: any) => any;
+  onDeleteError: (arg0: any) => any;
 };
 
 type State = {
   itemsToDelete: any[];
   itemToDelete?: any;
+  schedules: any[];
 };
 
 class RecurringActionsList extends React.Component<Props, State> {
@@ -32,11 +36,48 @@ class RecurringActionsList extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.tableRef = React.createRef();
-
     this.state = {
+      schedules: [],
       itemsToDelete: [],
     };
   }
+
+  componentDidMount = () => {
+    this.getRecurringScheduleList();
+  };
+
+  getRecurringScheduleList = () => {
+    const entityParams = inferEntityParams();
+    const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
+    return Network.get(endpoint)
+      .then((schedules) => {
+        this.setState({
+          schedules: schedules,
+        });
+      })
+      .catch(this.props.onError);
+  };
+
+  deleteSchedule = (item, tableRef) => {
+    return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
+      .then((_) => {
+        this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
+        this.getRecurringScheduleList();
+        if (tableRef) {
+          tableRef.current.refresh();
+        }
+      })
+      .catch(this.props.onDeleteError);
+  };
+
+  toggleActive = (schedule) => {
+    Object.assign(schedule, { active: !schedule.active });
+    return Network.post("/rhn/manager/api/recurringactions/save", schedule)
+      .then((_) => {
+        this.props.onSetMessages(MessagesUtils.info(t("Schedule successfully updated.")));
+      })
+      .catch(this.props.onError);
+  };
 
   selectToDelete(item) {
     this.setState({
@@ -88,7 +129,7 @@ class RecurringActionsList extends React.Component<Props, State> {
           <div>
             <Table
               selectable={false}
-              data={this.props.isFilteredList ? this.props.data : "/rhn/manager/api/recurringactions"}
+              data={this.props.isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
               initialItemsPerPage={disableCreate ? pageSize : 0}
@@ -98,9 +139,7 @@ class RecurringActionsList extends React.Component<Props, State> {
               <Column
                 columnKey="active"
                 header={t("Active")}
-                cell={(row) => (
-                  <Toggler value={row.active} className="btn" handler={() => this.props.onToggleActive(row)} />
-                )}
+                cell={(row) => <Toggler value={row.active} className="btn" handler={() => this.toggleActive(row)} />}
               />
               <Column
                 columnClass="text-center"
@@ -175,7 +214,7 @@ class RecurringActionsList extends React.Component<Props, State> {
               id="delete-modal"
               title={t("Delete Recurring Action Schedule")}
               content={t("Are you sure you want to delete the selected item?")}
-              onConfirm={() => this.props.onDelete(this.state.itemToDelete, this.tableRef)}
+              onConfirm={() => this.deleteSchedule(this.state.itemToDelete, this.tableRef)}
               onClosePopUp={() => this.selectToDelete(null)}
             />
           </div>
