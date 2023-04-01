@@ -4,6 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
+import { Utils as MessagesUtils } from "components/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
 import { Toggler } from "components/toggler";
@@ -14,8 +15,9 @@ import { DisplayHighstate } from "../state/display-highstate";
 
 type Props = {
   schedule?: any;
-  onEdit: (arg0: any) => any;
   onActionChanged: (arg0: any) => any;
+  onSetMessages: (arg0: any) => any;
+  onError: (arg0: any) => any;
 };
 
 type State = {
@@ -47,14 +49,6 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     }
   }
 
-  getDetailsData(): void {
-    Network.get(`/rhn/manager/api/recurringactions/${this.props.schedule.recurringActionId}/details`)
-      .then((details) => {
-        this.setState({ details });
-      })
-      .catch((e) => console.log(e));
-  }
-
   componentDidMount(): void {
     if (this.props.schedule && this.props.schedule.recurringActionId) {
       this.getDetailsData();
@@ -66,6 +60,24 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       this.getDetailsData();
     }
   }
+
+  getDetailsData(): void {
+    Network.get(`/rhn/manager/api/recurringactions/${this.props.schedule.recurringActionId}/details`)
+      .then((details) => {
+        this.setState({ details });
+      })
+      .catch(this.props.onError);
+  }
+
+  updateSchedule = (schedule) => {
+    return Network.post("/rhn/manager/api/recurringactions/save", schedule)
+      .then((_) => {
+        const successMsg = <span>{t("Schedule successfully" + (this.isEdit() ? " updated." : " created."))}</span>;
+        this.props.onSetMessages(MessagesUtils.info(successMsg));
+        this.props.onActionChanged("back");
+      })
+      .catch(this.props.onError);
+  };
 
   setSchedule = (schedule) => {
     Object.assign(this.state, schedule);
@@ -95,7 +107,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onEdit = () => {
-    return this.props.onEdit({
+    return this.updateSchedule({
       targetId: this.state.targetId,
       recurringActionId: this.state.recurringActionId,
       scheduleName: this.state.scheduleName,

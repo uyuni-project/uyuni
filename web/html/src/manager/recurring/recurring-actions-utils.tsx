@@ -22,4 +22,15 @@ const targetNameLink = (targetName?: string, targetType?: string, targetId?: num
   return null;
 };
 
-export { targetTypeToString, targetNameLink };
+const inferEntityParams = () => {
+  if (window.entityType === "GROUP") {
+    return "/GROUP/" + window.groupId;
+  } else if (window.entityType === "ORG") {
+    return "/ORG/" + window.orgId;
+  } else if (window.entityType === "MINION") {
+    return "/MINION/" + window.minions?.[0].id;
+  }
+  return "";
+};
+
+export { targetTypeToString, targetNameLink, inferEntityParams };
