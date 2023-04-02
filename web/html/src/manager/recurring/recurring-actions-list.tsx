@@ -11,9 +11,11 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
+import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { inferEntityParams, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import { RecurringActionsSearch } from "./search/recurring-actions-search";
 
 type Props = {
   onSetMessages: (arg0: any) => any;
@@ -86,7 +88,8 @@ class RecurringActionsList extends React.Component<Props, State> {
   }
 
   render() {
-    const disableCreate = !this.props.isFilteredList;
+    const { isFilteredList } = this.props;
+    const disableCreate = !isFilteredList;
     const buttons = [
       <div className="btn-group pull-right">
         <Button
@@ -129,11 +132,12 @@ class RecurringActionsList extends React.Component<Props, State> {
           <div>
             <Table
               selectable={false}
-              data={this.props.isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
+              data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
               initialItemsPerPage={disableCreate ? pageSize : 0}
               emptyText={t("No schedules created." + (disableCreate ? "" : " Use Create to add a schedule."))}
+              searchField={<RecurringActionsSearch />}
               ref={this.tableRef}
             >
               <Column
@@ -144,7 +148,8 @@ class RecurringActionsList extends React.Component<Props, State> {
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="scheduleName"
+                columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
+                comparator={Utils.sortByText}
                 header={t("Schedule Name")}
                 cell={(row) => row.scheduleName}
               />
@@ -158,21 +163,24 @@ class RecurringActionsList extends React.Component<Props, State> {
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="targetType"
+                columnKey={isFilteredList ? "targetType" : "target_type"}
+                comparator={Utils.sortByText}
                 header={t("Target Type")}
                 cell={(row) => targetTypeToString(row.targetType)}
               />
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="targetName"
+                columnKey={isFilteredList ? "targetName" : "target_name"}
+                comparator={Utils.sortByText}
                 header={t("Target Name")}
                 cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId)}
               />
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="actionType"
+                columnKey={isFilteredList ? "actionType" : "action_type"}
+                comparator={Utils.sortByText}
                 header={t("Action Type")}
                 cell={(row) => row.actionTypeDescription}
               />

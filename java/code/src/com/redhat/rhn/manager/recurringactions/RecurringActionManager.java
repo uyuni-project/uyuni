@@ -17,8 +17,6 @@ package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
@@ -48,6 +46,7 @@ import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.SaltFileUtils;
@@ -61,6 +60,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -208,14 +208,50 @@ public class RecurringActionManager extends BaseManager {
      *
      * @param user the user
      * @param pc the page control
+     * @param parser the parser for filters when building query
      * @return the actions visible to the user
      */
-    public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(User user, PageControl pc) {
+    public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(
+            User user, PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+                "ra.id as recurring_action_id, " +
+                "ra.cron_expr as cron, " +
+                "ra.action_type as action_type, " +
+                "ra.name as schedule_name, " +
+                "ra.active as active, " +
+                "case" +
+                "  when ra.target_type = 'organization' then org.id " +
+                "  when ra.target_type = 'group' then sg.id " +
+                "  when ra.target_type = 'minion' then minion.id " +
+                "end as target_id, " +
+                "case" +
+                "  when ra.target_type = 'organization' then org.name " +
+                "  when ra.target_type = 'group' then sg.name " +
+                "  when ra.target_type = 'minion' then minion.name " +
+                "end as target_name, " +
+                "case" +
+                "  when ra.target_type = 'organization' then 'ORG' " +
+                "  else UPPER(ra.target_type) " +
+                "end as target_type, " +
+                "case" +
+                "  when ra.target_type = 'organization' then ra.org_id " +
+                "  when ra.target_type = 'group' then sg.org_id " +
+                "  when ra.target_type = 'minion' then minion.org_id " +
+                "end as target_org " +
+                "from suseRecurringAction ra " +
+                "left join rhnservergroup sg on sg.id = ra.group_id " +
+                "left join rhnserver minion on minion.id = ra.minion_id " +
+                "left join web_customer org on org.id = ra.org_id" +
+            ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
-        List<String> orgsParam = orgs.stream().map(o -> o.getId().toString()).collect(Collectors.toList());
-        SelectMode m = ModeFactory.getMode("Action_queries", "recurring_action_list");
-        m.getQuery().modifyQuery(":orgs", orgsParam, null);
-        return makeDataResult(new HashMap<>(), null, pc, m);
+        String orgsParam = orgs.stream().map(o -> o.getId().toString()).collect(Collectors.joining(","));
+        String where = String.format("ra.target_org in (%s)", orgsParam);
+
+        return new PagedSqlQueryBuilder("ra.recurring_action_id")
+                .select("ra.*")
+                .from(from)
+                .where(where)
+                .run(new HashMap<>(), pc, parser, RecurringActionScheduleJson.class);
     }
 
     /**
