@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.ConfigChannelJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
@@ -128,8 +129,8 @@ public class RecurringActionController {
     public static String listAll(Request request, Response response, User user) {
         PageControlHelper pageHelper = new PageControlHelper(request, "scheduleName");
         PageControl pc = pageHelper.getPageControl();
-
-        DataResult<RecurringActionScheduleJson> schedules = RecurringActionManager.listAllRecurringActions(user, pc);
+        DataResult<RecurringActionScheduleJson> schedules =
+                RecurringActionManager.listAllRecurringActions(user, pc, PagedSqlQueryBuilder::parseFilterAsText);
         return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
     }
 
