@@ -15,9 +15,10 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           billing-data-service
 Version:        0.1
-Release:        1
+Release:        0
 Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
@@ -25,7 +26,10 @@ URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:       apache2
 Requires:       python3-Flask
+Requires:       spacewalk-taskomatic
+Requires:       tomcat
 
 %description
 Server to provide PAYG billing information in public clouds
@@ -48,6 +52,13 @@ install -m 0644 billing-data-service.sysconfig %{buildroot}%{_fillupdir}/sysconf
 install -m 0644 billing-data-service.service %{buildroot}%{_unitdir}/billing-data-service.service
 ln -sf service %{buildroot}%{_sbindir}/rcbilling-data-service
 
+# when you shutdown billing-data-service, systemd shutdown also these
+SYSTEMD_OVERRIDE_SERVICES="tomcat.service apache2.service taskomatic.service"
+for service in ${SYSTEMD_OVERRIDE_SERVICES}; do
+    mkdir -p %{buildroot}%{_unitdir}/${service}.d
+    install -m 0644 payg-service-override.conf %{buildroot}%{_unitdir}/${service}.d/payg-override.conf
+done
+
 %pre
 %service_add_pre billing-data-service.service
 
@@ -61,7 +72,6 @@ ln -sf service %{buildroot}%{_sbindir}/rcbilling-data-service
 %postun
 %service_del_postun billing-data-service.service
 
-
 %files
 %license LICENSE
 %dir %{_sysconfdir}/sysconfig
@@ -69,8 +79,7 @@ ln -sf service %{buildroot}%{_sbindir}/rcbilling-data-service
 %{_sbindir}/rcbilling-data-service
 %attr(0755, root, root) /srv/billing-data-service/billing-data-service
 /srv/billing-data-service/billingdataservice.py
-%{_unitdir}/billing-data-service.service
+%{_unitdir}/*
 %{_fillupdir}/sysconfig.%{name}
 
 %changelog
-
