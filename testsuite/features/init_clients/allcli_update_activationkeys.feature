@@ -49,6 +49,7 @@ Feature: Update activation keys
     And I follow "SUSE Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
     And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
@@ -71,6 +72,7 @@ Feature: Update activation keys
     And I follow "SUSE SSH Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"
@@ -82,6 +84,7 @@ Feature: Update activation keys
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"
