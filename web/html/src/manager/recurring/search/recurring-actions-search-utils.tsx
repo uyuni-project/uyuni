@@ -15,5 +15,5 @@ export const TARGET_TYPE_OPTIONS = [ALL_OPTION, ORG_OPTION, GROUP_OPTION, MINION
 
 // Value options for filtering by Action Type in recurring actions list
 const HIGHSTATE_OPTION = { value: "HIGHSTATE", label: t("Highstate") };
-const CUSTOM_STATE_OPTION = { value: "CUSTOM_STATE", label: t("Custom State") }
+const CUSTOM_STATE_OPTION = { value: "CUSTOM_STATE", label: t("Custom State") };
 export const ACTION_TYPE_OPTIONS = [ALL_OPTION, CUSTOM_STATE_OPTION, HIGHSTATE_OPTION];
