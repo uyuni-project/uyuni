@@ -1,4 +1,8 @@
-- Fix datetime picker appearing behind modal edge (bsc#1209703)
+-------------------------------------------------------------------
+Mon Apr 03 06:54:40 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.34-1
+  * Fix datetime picker appearing behind modal edge (bsc#1209703)
 
 -------------------------------------------------------------------
 Tue Mar 28 09:51:46 UTC 2023 - marina.latini@suse.com
