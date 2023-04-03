@@ -1,5 +1,9 @@
-- Fix datepicker appearing behind modal edge (bsc#1209703)
-- Fix datepicker layout shift on Highstate pages
+-------------------------------------------------------------------
+Mon Apr 03 07:50:02 UTC 2023 - marina.latini@suse.com
+
+- version 4.3.29-1
+  * Fix datepicker appearing behind modal edge (bsc#1209703)
+  * Fix datepicker layout shift on Highstate pages
 
 -------------------------------------------------------------------
 Wed Feb 22 14:48:24 CET 2023 - jgonzalez@suse.com
