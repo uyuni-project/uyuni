@@ -460,7 +460,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return list of {@link SCCRepository} for the given channel family label
      */
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
-        return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
+        return getSession().createNamedQuery("SCCRepository.lookupByChannelFamily", SCCRepository.class)
                 .setParameter("channelFamily", channelFamily).getResultList();
     }
 
