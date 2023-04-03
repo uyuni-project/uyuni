@@ -32,6 +32,17 @@ accessModes:
 ## This can be helpful for static PV management.
 matchPvByLabel: false
 
+## mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
+## Use either claimName or hostPath to reference the volume source.
+##
+## When using claimName, both claims and PVs need to be defined before running the chart
+## Note that hostPath will not work on multi-node cluster
+##
+## If the value is set before the first run of the server, the rhn.conf file will be adjusted during the setup.
+#mirror:
+#  claimName: mirror
+#  hostPath: /srv/mirror
+
 # TODO Parametrize big volumes sizes
 
 ## servicesAnnotations are annotations to set on both TCP and UDP services.

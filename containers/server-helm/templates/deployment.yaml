@@ -368,6 +368,11 @@ spec:
           - containerPort: 8000
           - containerPort: 8001
 {{- end }}
+{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+        env:
+          - name: MIRROR_PATH
+            value: /mirror
+{{- end }}
         envFrom:
           - configMapRef:
               name: uyuni-config
@@ -428,6 +433,10 @@ spec:
             subPath: ca.crt
           - name: tls-key
             mountPath: /etc/pki/spacewalk-tls
+{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+          - name: mirror
+            mountPath: /mirror
+{{- end }}
       volumes:
       - name: tmp
         emptyDir:
@@ -515,5 +524,16 @@ spec:
             - key: tls.key
               path: spacewalk.key
               mode: 0600
+{{- if .Values.mirror }}
+  {{- if .Values.mirror.claimName }}
+      - name: mirror
+        persistentVolumeClaim:
+          claimName: {{ .Values.mirror.claimName }}
+  {{- else if .Values.mirror.hostPath }}
+      - name: mirror
+        hostPath:
+          path: {{ .Values.mirror.hostPath }}
+  {{- end }}
+{{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
