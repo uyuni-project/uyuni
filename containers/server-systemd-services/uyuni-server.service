@@ -15,7 +15,7 @@ Restart=on-failure
 ExecStartPre=/bin/rm \
     -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStart=/usr/bin/podman run \
-        --conmon-pidfile %t/uyuni-server.pid \
+    --conmon-pidfile %t/uyuni-server.pid \
     --cidfile=%t/%n.ctr-id \
     --cgroups=no-conmon \
     --rm \
@@ -62,6 +62,7 @@ ExecStart=/usr/bin/podman run \
     -v etc-sysconfig:/etc/sysconfig \
     --env-host \
     --hostname ${UYUNI_FQDN} \
+    $EXTRA_POD_ARGS \
     --name uyuni-server ${NAMESPACE}/server:${TAG}
 ExecStop=/usr/bin/podman stop \
     --ignore -t 10 \
