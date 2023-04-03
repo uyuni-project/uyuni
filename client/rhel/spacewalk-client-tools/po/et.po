@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-04-03 13:13+0200\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/spacewalk/"
@@ -202,12 +202,12 @@ msgstr "Esines tundmatu operatsioonisüsteemi viga:"
 msgid "See /var/log/up2date for more information"
 msgstr "Täpsemalt vaata /var/log/up2date"
 
-#: ../src/up2date_client/rhnreg.py:76
+#: ../src/up2date_client/rhnreg.py:75
 #, fuzzy
 msgid "Warning: unable to enable rhnsd with systemd"
 msgstr "Hoiatus: ei suudeta lubada rhnsd chkconfig-iga"
 
-#: ../src/up2date_client/rhnreg.py:82
+#: ../src/up2date_client/rhnreg.py:81
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Hoiatus: ei suudeta lubada rhnsd chkconfig-iga"
 
