@@ -2248,7 +2248,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -2262,7 +2262,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="final">&lt;div style="text-align: left;"&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -6536,27 +6536,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">无法自动安装系统 {0}，因为它没有 &lt;strong&gt; {1} &lt;/strong&gt; 网络设备。</target>
       </trans-unit>
-      <trans-unit approved="yes" id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="final">根据此系统的当前基础通道和所需目标通道 {0}，找不到需要的 @@PRODUCT_NAME@@ 置备软件包</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="translated">您没有属于 &lt;strong&gt;{0}&lt;/strong&gt; 当前基础通道的 @@PRODUCT_NAME@@ 置备通道的剩余订阅。</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="translated">您在 &lt;strong&gt;{1}&lt;/strong&gt; 当前基础通道中没有通道 {0} 的剩余订阅。</target>
-      </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
@@ -8583,13 +8562,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">此通道中已存在名为 "{0}" 的文件。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">无法自动为系统订阅 @@PRODUCT_NAME@@ 工具通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
@@ -8597,40 +8569,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道，并安排安装此软件包。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">无法自动为系统订阅 RHEL 虚拟化通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">找不到包含 {0} 软件包的通道。使用 @@PRODUCT_NAME@@ 管理虚拟 Guest 需要此软件包。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target state="translated">系统已具有 {0} 系统类型。</target>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
-        </context-group>
-        <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子通道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>

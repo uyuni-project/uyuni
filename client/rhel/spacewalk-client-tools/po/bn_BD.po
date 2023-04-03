@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-04-03 13:13+0200\n"
 "PO-Revision-Date: 2011-03-04 15:46+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -187,11 +187,11 @@ msgstr ""
 msgid "See /var/log/up2date for more information"
 msgstr ""
 
-#: ../src/up2date_client/rhnreg.py:76
+#: ../src/up2date_client/rhnreg.py:75
 msgid "Warning: unable to enable rhnsd with systemd"
 msgstr ""
 
-#: ../src/up2date_client/rhnreg.py:82
+#: ../src/up2date_client/rhnreg.py:81
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr ""
 
