@@ -29,37 +29,50 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   $output, _code = $server.run("cat #{filename}")
 end
 
+When(/^I kill the salt-minion process running on "([^"]*)"$/) do |minion|
+  node = get_target(minion)
+  process = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  if process == "venv-salt-minion"
+    step %(I run "pkill -f #{process}" on "#{node}")
+  else
+    # if we run pkill -f salt-minion, it will also kill the venv-salt-minion, which we want to avoid
+    step %(I run "pkill #{process}" on "#{node}")
+  end
+end
+
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run('rcsalt-minion stop', check_errors: false)
+    node.run("rc#{pkgname} stop", check_errors: false)
   else
-    node.run('systemctl stop salt-minion', check_errors: false)
+    node.run("systemctl stop #{pkgname}", check_errors: false)
   end
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run('rcsalt-minion start', check_errors: false)
+    node.run("rc#{pkgname} start", check_errors: false)
   else
-    node.run('systemctl start salt-minion', check_errors: false)
+    node.run("systemctl start #{pkgname}", check_errors: false)
   end
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
-  # TODO: once use_salt_bundle tag is implemented sync the following lines with 4.3 branch
   if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run('rcsalt-minion restart', check_errors: false)
+    node.run("rc#{pkgname} restart", check_errors: false)
   else
-    node.run('systemctl restart venv-salt-minion', check_errors: false)
+    node.run("systemctl restart #{pkgname}", check_errors: false)
   end
 end
 
@@ -77,9 +90,9 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    # TODO: once use_salt_bundle tag is implemented sync following line with 4.3 branch
-    output, _code = target.run('venv-salt-call -lquiet saltutil.running 2> /dev/null || salt-call -lquiet saltutil.running')
+    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
     break if output == "local:\n"
     sleep 3
   end
@@ -342,9 +355,7 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = "venv-salt-call"
-  # TODO: Replace previous line with following line
-  # salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
@@ -416,12 +427,14 @@ end
 # salt-ssh steps
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
+  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if suse_host?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif rh_host?(host)
-    target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", check_errors: false)
+    target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
   elsif deb_host?(host)
-    target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", check_errors: false)
+    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
+    target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
 end
 
@@ -446,14 +459,20 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
+  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if rh_host?(host)
-    node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
+    node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
   elsif deb_host?(host)
-    node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
+    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
+    node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
   else
-    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', check_errors: false)
+    node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
   end
-  node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+  if $use_salt_bundle
+    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
+  else
+    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+  end
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 

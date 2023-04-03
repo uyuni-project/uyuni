@@ -116,8 +116,7 @@ Feature: Salt package states
 
   Scenario: Use Salt presence mechanism on an unreachable minion
     Then I follow "States" in the content area
-    # this command kills both salt-minion and venv-salt-minion running on the minion
-    And I run "pkill -f salt-minion" on "sle_minion"
+    And I kill the salt-minion process running on "sle_minion"
     And I follow "Highstate" in the content area
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
