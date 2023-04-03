@@ -22,9 +22,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +34,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link SCCCachingFactory}.
  */
-public class SCCCachingFactoryTest extends RhnBaseTestCase {
+public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test if initially an empty list is returned.
@@ -94,6 +97,20 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
     }
 
+    @Test
+    public void testListReposForRootProduct() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
+                "sles", "12", "x86_64");
+        List<String> repoNames = repos.stream().map(SCCRepository::getName).collect(Collectors.toList());
+        assertContains(repoNames, "SUSE-PackageHub-12-Pool");
+        assertContains(repoNames, "SLE-Module-Web-Scripting12-Pool");
+        assertContains(repoNames, "SLES12-Updates");
+        assertContains(repoNames, "SLE-Manager-Tools12-Pool");
+    }
     /**
      * Repo for testing setting random strings and a given ID.
      * @return repository
@@ -114,6 +131,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
+        super.setUp();
         SCCCachingFactory.clearRepositories();
     }
 }
