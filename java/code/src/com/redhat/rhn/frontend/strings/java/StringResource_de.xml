@@ -2229,7 +2229,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -6474,27 +6474,6 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         </context-group>
         <target>System {0} kann nicht gekickstartet werden, da es über keine {1} Netzwerkeinheit verfügt.</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>Konnte die benötigten @@PRODUCT_NAME@@ Provisioning-Pakete angesichts des aktuellen Basis-Channels dieses System's und gewünschten Ziel-Channels nicht finden: {0}</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>Sie haben keine verbleibenden Subskriptionen für den @@PRODUCT_NAME@@ Provisioning-Channel für den derzeitigen Basis-Channel dieses Systems.</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>Sie besitzen keine verbleibenden Subskriptionen für den Channel {0} für den derzeitigen Basis-Channel dieses System's.</target>
-      </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
@@ -8457,13 +8436,6 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         </context-group>
         <target>Eine Datei namens "{0}" existiert bereits in diesem Channel.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="needs-adaptation">Das System konnte den RHN Tools Channel nicht automatisch subskribieren. Dieser Channel enthält für die Virtualisierung benötigte Pakete. Die Ursache liegt mit hoher Wahrscheinlichkeit an fehlenden Channel-Berechtigungen.</target>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
@@ -8471,40 +8443,12 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         </context-group>
         <target>Mehrere Subchannels gefunden mit Paket: {0}. Bitte subskribieren Sie manuell den richtigen Subchannel für dieses System.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Mehrere Subchannels gefunden mit Paket: {0}. Bitte subskribieren Sie manuell den richtigen Subchannel für dieses System und planen die Installation dieses Pakets.</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Das System konnte den RHEL Virtualization Channel nicht automatisch subskribieren. Dieser Channel enthält für die Virtualisierung benötigte Pakete. Die Ursache liegt mit hoher Wahrscheinlichkeit an fehlenden Channel-Berechtigungen.</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Konnte keinen Channel mit dem {0} Paket finden. Dieses Paket ist erforderlich, um virtuelle Gäste mit @@PRODUCT_NAME@@ zu verwalten.</target>
-      </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>Das System besitzt bereits die {0} Berechtigung.</target>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
-        </context-group>
-        <target state="needs-adaptation">HINWEIS: Um die Virtualisierungsfähigkeiten in @@PRODUCT_NAME@@ für dieses System zu aktivieren und zu nutzen, installieren Sie das "rhn-virtualization-host"-Paket vom zugehörigen RHN Tools-Subchannel. Werfen Sie einen Blick auf die Red Hat Dokumentation für weitere Voraussetzungen von Red Hat Enterprise Linux zur Aktivieren der Virtualisierung auf einem Host-System.</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
