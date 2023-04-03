@@ -1,3 +1,4 @@
+- fixed select all for ptf packages list
 - added SLES 12 support for ptf removal
 - fixed issue with checking ptf repositories on cloned channels
 - remove spacewalk-koan and mgr-virtualization usage
