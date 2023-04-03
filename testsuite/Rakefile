@@ -17,8 +17,10 @@ namespace :cucumber do
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o results/output_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o results/output_#{timestamp}-#{filename}.html"
+      node_name = ENV['NODE']
+      node_result_extension = node_name.nil? ? '' : "_#{node_name}"
+      json_results = "-f json -o results/output#{node_result_extension}_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o results/output#{node_result_extension}_#{timestamp}-#{filename}.html"
       profiles = ENV['PROFILE']
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
