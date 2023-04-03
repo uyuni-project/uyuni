@@ -1,3 +1,4 @@
+- remove pylint check at build time
 - Fix the mgr-inter-sync not creating valid repository metadata when dealing 
   with empty channels (bsc#1207829)
 - Filter CLM modular packages using release strings (bsc#1207814)

@@ -1,3 +1,6 @@
+- remove spacewalk-koan and mgr-virtualization usage
+- disable gpgckeck when building docker containers as we
+  work with trusted content and the repos are served via SSL
 - Fix deleting custom info pillar (bsc#1209253)
 - Update report outdated system query to de-duplicate errata id's
 - change jar versions in ivy configuration file

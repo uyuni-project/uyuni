@@ -852,7 +852,6 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   else
     raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
-  pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
