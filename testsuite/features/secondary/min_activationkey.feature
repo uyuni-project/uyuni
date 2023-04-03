@@ -40,6 +40,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
     And I select "SLE-Product-SLES15-SP3-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"

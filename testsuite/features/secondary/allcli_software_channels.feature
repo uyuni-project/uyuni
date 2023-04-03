@@ -207,6 +207,7 @@ Feature: Channel subscription via SSM
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
     And I check "SLE-Module-Containers15-SP3-Pool for x86_64"
