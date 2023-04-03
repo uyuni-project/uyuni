@@ -382,7 +382,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<SUSEProductSCCRepository> findNotSyncedMandatoryChannels(String channelLabel) {
         return findAllMandatoryChannels(channelLabel).
-                filter(spsr -> !Optional.ofNullable(ChannelFactory.lookupByLabel(spsr.getChannelLabel())).isPresent())
+                filter(spsr -> Objects.nonNull(ChannelFactory.lookupByLabel(spsr.getChannelLabel())))
                 .sorted(Comparator.comparing(SUSEProductSCCRepository::getParentChannelLabel,
                         Comparator.nullsFirst(Comparator.naturalOrder())));
     }
@@ -518,12 +518,9 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Map<Long, SUSEProduct> productsByProductIds() {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProduct.class);
-        Map<Long, SUSEProduct> result = new HashMap<>();
-        for (SUSEProduct prd: (List<SUSEProduct>) c.list()) {
-            result.put(prd.getProductId(), prd);
-        }
-        return result;
+        return session.createQuery("from com.redhat.rhn.domain.product.SUSEProduct", SUSEProduct.class)
+                .stream()
+                .collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
     }
 
     /**
