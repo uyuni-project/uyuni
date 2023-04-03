@@ -127,7 +127,7 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 # For containers we do not have SCC, so we set the Fake Base Channel
 # for sle_minion
 sle_base_channel =
-  if ENV['PROVIDER'].include? 'docker'
+  if ENV['PROVIDER'].include? 'podman'
     'Fake Base Channel'
   else
     'SLES15-SP4-Pool'

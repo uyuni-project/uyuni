@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-04-03 13:13+0200\n"
 "PO-Revision-Date: 2022-03-22 20:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -215,11 +215,11 @@ msgstr "S'ha produït un error:"
 msgid "See /var/log/up2date for more information"
 msgstr "Consulteu /var/log/up2date per a més informació"
 
-#: ../src/up2date_client/rhnreg.py:76
+#: ../src/up2date_client/rhnreg.py:75
 msgid "Warning: unable to enable rhnsd with systemd"
 msgstr "Advertència: no s'ha pogut habilitar rhnsd amb systemd"
 
-#: ../src/up2date_client/rhnreg.py:82
+#: ../src/up2date_client/rhnreg.py:81
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Advertència: no s'ha pogut habilitar rhnsd amb chkconfig"
 

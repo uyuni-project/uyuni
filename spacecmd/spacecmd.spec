@@ -26,10 +26,6 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
-%if 0%{?fedora} || 0%{?rhel} >= 8
-%{!?pylint_check: %global pylint_check 0}
-%endif
-
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8 || "%{_vendor}" == "debbuild"
 %global build_py3   1
 %if "%{_vendor}" != "debbuild"
@@ -69,13 +65,6 @@ BuildRequires:  gettext
 BuildRequires:  intltool
 %endif
 
-%if 0%{?pylint_check}
-%if 0%{?build_py3}
-BuildRequires:  spacewalk-python3-pylint
-%else
-BuildRequires:  spacewalk-python2-pylint
-%endif
-%endif
 %if 0%{?build_py3}
 BuildRequires:  python3
 %if "%{_vendor}" == "debbuild"
@@ -151,17 +140,6 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 
 make -C po install PREFIX=$RPM_BUILD_ROOT
 %find_lang spacecmd
-
-%check
-%if 0%{?pylint_check}
-%if 0%{?build_py3}
-PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
-	  spacewalk-python3-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
-%else
-PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
-	  spacewalk-python2-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
-%endif
-%endif
 
 %files -f spacecmd.lang
 %defattr(-,root,root)

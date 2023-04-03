@@ -1,7 +1,0 @@
-[Unit]
-Description=Spacewalk Server daemon
-After=syslog.target network.target auditd.service
-ConditionFileNotEmpty=/etc/sysconfig/rhn/systemid
-
-[Service]
-ExecStart=/usr/sbin/rhn_check

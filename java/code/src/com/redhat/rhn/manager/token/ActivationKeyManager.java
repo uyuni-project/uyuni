@@ -569,23 +569,6 @@ public class ActivationKeyManager {
     }
 
     /**
-     * Enables the activation key to be virtualization ready
-     * Adds the virt channel, the tools channel
-     * and adds the rn-virtualization-host package
-     * @param key the activation key to be updated.
-     */
-    public void setupVirtEntitlement(ActivationKey key) {
-        if (subscribeToChildChannelWithPackageName(key,
-                ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME)) {
-            key.addPackage(PackageManager.lookupPackageName(ChannelManager.
-                    RHN_VIRT_HOST_PACKAGE_NAME), null);
-        }
-        // Do not automatically subscribe to virt channels (bnc#768856)
-        // subscribeToChildChannelWithPackageName(key,
-        //         ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
-    }
-
-    /**
      * Returns all bootstrap keys from any Org.
      *
      * @return bootstrap keys
