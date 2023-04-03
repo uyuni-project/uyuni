@@ -2266,7 +2266,7 @@ available for this kickstart profile to function properly.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
+        <target state="translated">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;Ak chcete tento problém vyriešiť, skontrolujte nasledujúce veci:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2281,9 +2281,9 @@ administrátora @@PRODUCT_NAME@@ a požiadajte o mgr-inter-sync pre kanál
 nástrojov klienta a skúste to znova.
 &lt;/li&gt;
 &lt;li&gt;
-Uistite sa, že balík spacewalk-koan zodpovedajúci tomuto kickstart je k dispozícii
-v kanáli nástrojov základného kanála kickstart. Ak nie je, budete musieť ho sprístupniť,
-aby tento profil kickstart správne fungoval.
+Uistite sa, že požadované balíky zodpovedajúce tomuto kickstart sú k dispozícii
+v kanáli nástrojov základného kanála kickstart. Ak nie je, budete ich musieť 
+sprístupniť, aby tento profil kickstart správne fungoval.
 &lt;/li&gt;
 &lt;li&gt;
 Sú vyššie uvedené balíky k dispozícii v tomto základnom kanáli kickstart? Ak nie, budete ich musieť
