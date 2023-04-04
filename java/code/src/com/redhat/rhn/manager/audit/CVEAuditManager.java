@@ -69,9 +69,6 @@ import javax.persistence.criteria.Root;
  *
  */
 public class CVEAuditManager {
-
-    private static final Pattern LIVEPATCH_PACKAGES_REGEX =
-            Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$");
     /** The log. */
     private static Logger log = LogManager.getLogger(CVEAuditManager.class);
 
@@ -937,6 +934,8 @@ public class CVEAuditManager {
         Map<Long, List<CVEPatchStatus>> resultsBySystem =
                 results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
 
+        Pattern livepatchPackagesRegex = Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$");
+
         // Loop for each system, calculating the patch status individually
         for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {
             CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemResultMap.getKey());
@@ -955,7 +954,7 @@ public class CVEAuditManager {
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
             // Keep a list of package names to be ignored.
             Set<String> livePatchedPackages = resultsByPackage.keySet().stream()
-                    .map(LIVEPATCH_PACKAGES_REGEX::matcher)
+                    .map(livepatchPackagesRegex::matcher)
                     .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
 
             AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
