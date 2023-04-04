@@ -8,6 +8,7 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
+import os
 import json
 from flask import Flask, abort
 from spacewalk.server import rhnSQL
@@ -20,10 +21,11 @@ from spacewalk.common.rhnConfig import initCFG
 #from flask import cli
 #cli.show_server_banner = lambda *_: None
 
-initCFG('server.susemanager')
-rhnSQL.initDB()
-
 app = Flask(__name__)
+
+if os.environ.get("TESTING", "0") != "1":
+    initCFG('server.susemanager')
+    rhnSQL.initDB()
 
 @app.route("/")
 def index():
