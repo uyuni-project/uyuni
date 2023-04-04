@@ -2183,7 +2183,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -6360,27 +6360,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>ਲੋੜੀਂਦਾ @@PRODUCT_NAME@@ ਮਨਜੂਰੀ ਪੈਕੇਜ ਨਹੀਂ ਲੱਭ ਸਕਿਆ ਜੋ ਇਸ ਸਿਸਟਮ ਦਾ ਮੌਜੂਦਾ ਅਧਾਰ ਚੈਨਲ ਅਤੇ ਲੋੜੀਂਦਾ ਮੰਜ਼ਿਲ ਚੈਨਲ ਦਿੰਦਾ ਹੈ, ਨੂੰ ਲੱਭ ਨਹੀਂ ਸਕਿਆ: {0}</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਸਿਸਟਮ ਦੇ ਵਰਤਮਾਨ ਅਧਾਰ ਚੈਨਲ ਲਈ @@PRODUCT_NAME@@ ਮਨਜੂਰੀ ਚੈਨਲ ਤੇ ਕੋਈ ਮੈਂਬਰੀ ਨਹੀਂ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਸਿਸਟਮ ਦੇ ਵਰਤਮਾਨ ਅਧਾਰ ਚੈਨਲ ਲਈ ਚੈਨਲ {0} ਤੇ ਕੋਈ ਮੈਂਬਰੀ ਨਹੀਂ ਹੈ।</target>
-      </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
@@ -8241,38 +8220,11 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>"{0}" ਨਾਂ ਵਾਲੀ ਇੱਕ ਫਾਇਲ ਪਹਿਲਾਂ ਹੀ ਇਸ ਚੈਨਲ ਤੇ ਮੌਜੂਦ ਹੈ।</target>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      <target state="needs-adaptation"/>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>ਸਿਸਟਮ ਨੂੰ RHEL ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ ਚੈਨਲ ਤੇ ਸਵੈ ਹੀ ਮੈਂਬਰ ਨਹੀਂ ਬਣਾ ਸਕਦਾ।  ਇਸ ਚੈਨਲ ਉੱਪਰ ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ ਲਈ ਲੋੜੀਂਦੇ ਪੈਕੇਜ ਸ਼ਆਮਿਲ ਹਨ।  ਇਸ ਦਾ ਕਾਰਨ ਚੈਨਲ ਇੰਟਾਈਟਲਮੈਂਟਾਂ ਦੀ ਕਮੀ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>{0} ਪੈਕੇਜ ਵਾਲਾ ਕੋਈ ਚੈਨਲ ਨਹੀਂ ਲੱਭਿਆ। ਇਹ ਪੈਕੇਜ @@PRODUCT_NAME@@ ਵਾਲੇ ਗਿਸਟਾਂ ਦੇ ਪਰਬੰਧਨ ਲਈ ਲੋੜੀਂਦਾ ਹੈ।</target>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
@@ -8280,13 +8232,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>ਸਿਸਟਮ ਉੱਪਰ ਪਹਿਲਾਂ ਹੀ {0} ਇੰਟਾਈਟਲਮੈਂਟ ਹਨ।</target>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
-        </context-group>
-      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>

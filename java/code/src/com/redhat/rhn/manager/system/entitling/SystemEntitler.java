@@ -15,31 +15,19 @@
 
 package com.redhat.rhn.manager.system.entitling;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
-import com.redhat.rhn.common.validator.ValidatorWarning;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -51,8 +39,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -116,14 +102,7 @@ public class SystemEntitler {
                 result.addError(new ValidatorError("system.entitle.guestcantvirt"));
                 return result;
             }
-
-            LOG.debug("setting up system for virt.");
-            ValidatorResult virtSetupResults = setupSystemForVirtualization(server.getOrg(), server.getId());
-            result.append(virtSetupResults);
-            if (!virtSetupResults.getErrors().isEmpty()) {
-                LOG.debug("error trying to setup virt ent: {}", virtSetupResults.getMessage());
-                return result;
-            }
+            // no special installed package required
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
             saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
@@ -218,118 +197,5 @@ public class SystemEntitler {
         VirtualInstanceManager.updateHostVirtualInstance(minion,
                 VirtualInstanceFactory.getInstance().getFullyVirtType());
         virtManager.updateLibvirtEngine(minion);
-    }
-
-    // Need to do some extra logic here
-    // 1) Subscribe system to rhel-i386-server-vt-5 channel
-    // 2) Subscribe system to rhn-tools-rhel-i386-server-5
-    // 3) Schedule package install of rhn-virtualization-host
-    // Return a map with errors and warnings:
-    //      warnings -> list of ValidationWarnings
-    //      errors -> list of ValidationErrors
-    private ValidatorResult setupSystemForVirtualization(Org orgIn, Long sid) {
-
-        Server server = ServerFactory.lookupById(sid);
-        User user = UserFactory.findRandomOrgAdmin(orgIn);
-        ValidatorResult result = new ValidatorResult();
-
-        // If this is a Satellite
-        if (!ConfigDefaults.get().isSpacewalk()) {
-            // just install libvirt for RHEL6 base channel
-            Channel base = server.getBaseChannel();
-
-            if (base != null && base.isCloned()) {
-                base = base.getOriginal();
-            }
-
-            if ((base != null) &&
-                    (!base.isVendorChannel() || base.isReleaseXChannel(5))) {
-                // Do not automatically subscribe to virt channels (bnc#768856)
-                // subscribeToVirtChannel(server, user, result);
-            }
-        }
-
-        if (server.hasEntitlement(EntitlementManager.MANAGEMENT)) {
-            // Before we start looking to subscribe to a 'tools' channel for
-            // rhn-virtualization-host, check if the server already has a package by this
-            // name installed and leave it be if so.
-            InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
-            if (rhnVirtHost != null) {
-                // System already has the package, we can stop here.
-                LOG.debug("System already has {} installed.", ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-                return result;
-            }
-            try {
-                scheduleVirtualizationHostPackageInstall(server, user, result);
-            }
-            catch (TaskomaticApiException e) {
-                result.addError(new ValidatorError("taskscheduler.down"));
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Schedule installation of rhn-virtualization-host package.
-     *
-     * Implies that we locate a child channel with this package and automatically
-     * subscribe the system to it if possible. If multiple child channels have the package
-     * and the server is not already subscribed to one, we report the discrepancy and
-     * instruct the user to deal with this manually.
-     *
-     * @param server Server to schedule install for.
-     * @param user User performing the operation.
-     * @param result Validation result we'll be returning for the UI to render.
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    private void scheduleVirtualizationHostPackageInstall(Server server,
-            User user, ValidatorResult result) throws TaskomaticApiException {
-        // Now subscribe to a child channel with rhn-virtualization-host (RHN Tools in the
-        // case of Satellite) and schedule it for installation, or warn if we cannot find
-        // a child with the package:
-        Channel toolsChannel = null;
-        try {
-            toolsChannel = ChannelManager.subscribeToChildChannelWithPackageName(
-                    user, server, ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-
-            // If this is a Satellite and no RHN Tools channel is available
-            // report the error
-            if (!ConfigDefaults.get().isSpacewalk() && toolsChannel == null) {
-                LOG.warn("no tools channel found");
-                result.addError(new ValidatorError("system.entitle.notoolschannel"));
-            }
-            // If Spacewalk and no channel has the rhn-virtualization-host package,
-            // warn but allow the operation to proceed.
-            else if (toolsChannel == null) {
-                result.addWarning(new ValidatorWarning("system.entitle.novirtpackage",
-                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-            }
-            else {
-                List<Map<String, Object>> packageResults =
-                        ChannelManager.listLatestPackagesEqual(
-                        toolsChannel.getId(), ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-                if (!packageResults.isEmpty()) {
-                    Map<String, Object> row = packageResults.get(0);
-                    Long nameId = (Long) row.get("name_id");
-                    Long evrId = (Long) row.get("evr_id");
-                    Long archId = (Long) row.get("package_arch_id");
-                    ActionManager.schedulePackageInstall(
-                            user, server, nameId, evrId, archId);
-                }
-                else {
-                    result.addError(new ValidatorError("system.entitle.novirtpackage",
-                            ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-                }
-            }
-        }
-        catch (MultipleChannelsWithPackageException e) {
-            LOG.warn("Found multiple child channels with package: {}", ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-            result.addWarning(new ValidatorWarning(
-                    "system.entitle.multiplechannelswithpackagepleaseinstall",
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
-        }
     }
 }

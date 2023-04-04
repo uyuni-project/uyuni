@@ -81,7 +81,6 @@ BuildRequires:  pyxml
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
-BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
 BuildRequires:  %fillup_prereq
@@ -153,7 +152,6 @@ BuildRequires:  python-enum34
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
-Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
 BuildRequires:  docbook-utils

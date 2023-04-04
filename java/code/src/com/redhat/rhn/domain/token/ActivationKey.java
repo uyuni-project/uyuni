@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
@@ -254,10 +253,6 @@ public class ActivationKey extends BaseDomainHelper {
      */
     public void addEntitlement(ServerGroupType entitlementIn) {
         this.getToken().addEntitlement(entitlementIn);
-        if (ServerConstants.getServerGroupTypeVirtualizationEntitled().
-                                                        equals(entitlementIn)) {
-            ActivationKeyManager.getInstance().setupVirtEntitlement(this);
-        }
     }
 
     /**
