@@ -14,10 +14,16 @@
  */
 package com.suse.cloud;
 
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -132,6 +138,42 @@ public class CloudPaygManager {
         }
         catch (Exception ex) {
             throw new ExecutionException("Unexpected Error while checking the instance type", ex);
+        }
+    }
+
+    /**
+     * Check if SUSE Manager PAYG is operating in a compliant mode
+     * @return true if not payg or all components works as they should, otherwise false
+     */
+    public boolean isCompliant() {
+        if (!isPaygInstance()) {
+            return true;
+        }
+        // we only need to check compliance for SUMA PAYG
+        try {
+            if (!requestUrl("http://localhost:18888/").equals("online")) {
+                LOG.error("Billing Data Service offline");
+                return false;
+            }
+        }
+        catch (IOException e) {
+            LOG.error("Billing Data Service down", e);
+            return false;
+        }
+        //TODO: Check billing adapter report
+        return true;
+    }
+
+    protected String requestUrl(String url) throws IOException {
+        HttpClientAdapter httpClient = new HttpClientAdapter();
+        HttpGet httpGet = new HttpGet(url);
+        HttpResponse httpResponse = httpClient.executeRequest(httpGet);
+        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            return new String(httpResponse.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+        }
+        else {
+            throw new IOException("error downloading " + url + " status code " +
+                   httpResponse.getStatusLine().getStatusCode());
         }
     }
 
