@@ -46,8 +46,7 @@ import java.util.regex.Pattern;
 public class AuditManager {
 
     private static final Logger LOGGER = LogManager.getLogger(AuditManager.class);
-    private static Map<String, String[]> auditTypeMappings = null;
-    private static final Pattern AUDIT_FILENAME_PATTERN = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
+    private static final Map<String, String[]> AUDIT_TYPE_MAPPINGS = new HashMap<>();
 
     private AuditManager() {
     }
@@ -148,10 +147,8 @@ public class AuditManager {
      * @return A mapping between the set name and the audit types
      */
     public static Map<String, String[]> getAuditTypeMap() {
-        if (auditTypeMappings == null) {
-            auditTypeMappings = new HashMap<>();
-
-            auditTypeMappings.put("default", new String[]{
+        if (AUDIT_TYPE_MAPPINGS.isEmpty()) {
+            AUDIT_TYPE_MAPPINGS.put("default", new String[]{
                     "USER",
                     "USER_AUTH",
                     "USER_MGMT",
@@ -203,7 +200,7 @@ public class AuditManager {
                     "FS_RELABEL"
             });
 
-            auditTypeMappings.put("login", new String[]{
+            AUDIT_TYPE_MAPPINGS.put("login", new String[]{
                     "ANOM_LOGIN_ACCT",
                     "ANOM_LOGIN_FAILURES",
                     "ANOM_LOGIN_LOCATION",
@@ -217,7 +214,7 @@ public class AuditManager {
             });
         }
 
-        return auditTypeMappings;
+        return AUDIT_TYPE_MAPPINGS;
     }
 
     /**
@@ -346,8 +343,9 @@ public class AuditManager {
             return new DataResult(new LinkedList<>());
         }
 
+        Pattern auditFilenamePattern = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
         for (String auditLog : hostDir.list()) {
-            Matcher auditFileMatcher = AUDIT_FILENAME_PATTERN.matcher(auditLog);
+            Matcher auditFileMatcher = auditFilenamePattern.matcher(auditLog);
 
             if (auditFileMatcher.matches()) { // found a matching audit file
                 start = Long.parseLong(auditFileMatcher.group(1)) * 1000;
