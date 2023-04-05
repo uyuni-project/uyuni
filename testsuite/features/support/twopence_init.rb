@@ -129,15 +129,23 @@ end
 $nodes.each do |node|
   next if node.nil?
 
-  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
-  node.init_hostname(hostname)
+  if node == $server
+    fqdn, code = node.run("sed -n 's/^java.hostname *= *\(.\+\)$/\1/p' /etc/rhn/rhn.conf")
+    raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
+    raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+    node.init_full_hostname(fqdn)
+    node.init_hostname(fqdn.split(".")[0])
+  else
+    hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+    raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+    raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+    node.init_hostname(hostname)
 
-  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
-  node.init_full_hostname(fqdn)
+    fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+    raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+    raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+    node.init_full_hostname(fqdn)
+  end
 
   STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
   os_version, os_family = get_os_version(node)
