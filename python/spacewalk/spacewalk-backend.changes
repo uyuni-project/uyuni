@@ -1,3 +1,4 @@
+- Enhance mirrorlist detection for dnf reposync plugin.
 - Add httpd user and group to rhn.conf.
 - Add package details to reposync error logging
 - Added context manager usage for more files.
