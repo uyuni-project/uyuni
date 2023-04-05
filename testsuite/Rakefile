@@ -63,6 +63,29 @@ namespace :parallel do
 end
 
 namespace :utils do
+  desc 'Split secondary parallelizable tests into separate yaml files'
+  task :split_secondary_p, [:sets] do |_t, args|
+    sets_n = args[:sets].to_i
+    if sets_n < 2
+      puts "sets should be 2 or greater"
+    else
+      all_secondary_p = YAML.load_file('run_sets/secondary_parallelizable.yml')
+      if all_secondary_p.length%sets_n != 0
+        size = (all_secondary_p.length/sets_n) + 1
+      else
+        size = all_secondary_p.length/sets_n
+      end
+      split_sets = all_secondary_p.each_slice(size).to_a
+      puts "split_sets.length: #{split_sets.length}"
+      for i in 1..split_sets.length
+        puts "writing #{i}"
+        File.open("run_sets/secondary_parallelizable_#{i}.yml", "w") { |file|
+          file.write(split_sets[i-1].to_yaml)
+        }
+      end
+    end
+  end
+
   desc 'Generate feature file for a client from a template and include it in a yaml file'
   task :generate_feature, [:template_path, :client_name, :output_path, :yaml_path] do |_t, args|
     # TODO: We want to use English language in our Cucumber .feature files,

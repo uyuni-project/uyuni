@@ -83,6 +83,8 @@ jobs:
         run: ./testsuite/podman_runner/15_accept_all_keys.sh 
       - name: run_cucumber_clients
         run: ./testsuite/podman_runner/16_run_init_clients_tests.sh 
+      - name: split_secondary
+        run: ./testsuite/podman_runner/18_split_secondary_p_tests.sh
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
 
