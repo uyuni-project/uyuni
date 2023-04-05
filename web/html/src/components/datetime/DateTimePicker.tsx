@@ -66,11 +66,35 @@ export const DateTimePicker = (props: Props) => {
     if (newDateValue === null) {
       return;
     }
-    const newValue = localizedMoment(newDateValue).tz(timeZone);
+    // The date we get here is now in the browsers local timezone but with values that should be reinterpreted
+    // as the users configured timezone.
+    const newValue =
+      // We wrap everything in localizedMoment again to have a consistent internal value in utc.
+      localizedMoment(
+        // We first clone the date again to not modify the original. This has the unintended side effect of converting to
+        // UTC and adjusting the values.
+        localizedMoment(newDateValue)
+          // To get back to the values we want we just convert back to the browsers local timezone as it was before.
+          .local()
+          // Then we set the timezone of the date to the users configured timezone without adjusting the values.
+          .tz(timeZone, true)
+      );
     if (props.value.valueOf() !== newValue.valueOf()) {
       props.onChange(newValue);
     }
   };
+
+  window.localizedMoment = localizedMoment;
+
+  // We use localizedMoment to clone the date so we don't modify the original
+  const browserTimezoneValue = localizedMoment(props.value)
+    // We convert the date to the users configured timezone because this is what we want to show the user
+    .tz(localizedMoment.userTimeZone)
+    // The react-datepicker component only shows the browsers local timezone and will convert any date to that
+    // before showing so since we already got the date with the right values we now pretend the date we have is in
+    // the browsers local timezone but without changing its values. This will prevent the react component from
+    // converting it again.
+    .local(true);
 
   // Fix https://github.com/Hacker0x01/react-datepicker/issues/3176#issuecomment-1262100937
   const popperModifiers = [
@@ -99,7 +123,7 @@ export const DateTimePicker = (props: Props) => {
              */
             portalId="date-picker-portal"
             ref={datePickerRef}
-            selected={props.value.toDate()}
+            selected={browserTimezoneValue.toDate()}
             onChange={onChange}
             dateFormat={DATE_FORMAT}
             wrapperClassName="form-control date-time-picker-wrapper"
@@ -127,7 +151,7 @@ export const DateTimePicker = (props: Props) => {
             key="date-picker"
             portalId="time-picker-portal"
             ref={timePickerRef}
-            selected={props.value.toDate()}
+            selected={browserTimezoneValue.toDate()}
             onChange={onChange}
             showTimeSelect
             showTimeSelectOnly
