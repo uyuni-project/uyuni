@@ -11,7 +11,7 @@ WHERE NOT EXISTS (
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 SELECT sequence_nextval('rhn_tasko_schedule_id_seq'), 'payg-dimension-computation-default',
        (SELECT id FROM rhnTaskoBunch WHERE name='payg-dimension-computation-bunch'),
-       current_timestamp, '0 0 0 ? * *'
+       current_timestamp, '0 45 * ? * * *'
 WHERE NOT EXISTS (
         SELECT 1 FROM rhnTaskoSchedule
         WHERE job_label = 'payg-dimension-computation-default'
