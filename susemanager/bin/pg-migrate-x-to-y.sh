@@ -192,6 +192,10 @@ else
     exit 1
 fi
 
+cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
+cp /var/lib/pgsql/data-pg${OLD_VERSION}/postgresql.conf /var/lib/pgsql/data/
+chown postgres:postgres /var/lib/pgsql/data/*
+
 echo "$(timestamp)   Tune new postgresql configuration..."
 smdba system-check autotuning
 if [ $? -eq 0 ]; then
@@ -200,10 +204,6 @@ else
     echo "$(timestamp)   Tuning of new postgresql configuration failed!"
     exit 1
 fi
-
-cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
-cp /var/lib/pgsql/data-pg${OLD_VERSION}/postgresql.conf /var/lib/pgsql/data/
-chown postgres:postgres /var/lib/pgsql/data/*
 
 echo "$(timestamp)   Starting PostgreSQL service..."
 systemctl start postgresql

@@ -117,7 +117,7 @@ public class ConfigDefaults {
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
 
     //Comma separated names of possible kickstart packages
-    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "spacewalk-koan,salt";
+    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "salt";
 
     private static final String KICKSTART_PACKAGE_NAMES = "kickstart_packages";
 

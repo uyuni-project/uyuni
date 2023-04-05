@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
 
+@skip_if_container
 @proxy
 @private_net
 @pxeboot_minion
@@ -13,6 +13,9 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Configure PXE part of DHCP on the proxy
     Given I am on the Systems overview page of this "proxy"
@@ -78,11 +81,11 @@ Feature: PXE boot a terminal with Cobbler
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
-  Scenario: Set up tftp installation
+  Scenario: Set up tftp installation and synchronize it
     When I configure tftp on the "server"
     And I start tftp on the proxy
     And I configure tftp on the "proxy"
-    And I synchronize the tftp configuration on the proxy with the server
+    And I run Cobbler sync with error checking
 
   Scenario: Restart squid so proxy.example.org is recognized
     When I restart squid service on the proxy
@@ -128,9 +131,11 @@ Feature: PXE boot a terminal with Cobbler
     When I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-TFTP" text
+
+  Scenario: Cleanup: remove TFTP boot package from the server
+    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: delete the PXE boot minion
     Given I navigate to the Systems overview page of this "pxeboot_minion"
@@ -154,3 +159,6 @@ Feature: PXE boot a terminal with Cobbler
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors

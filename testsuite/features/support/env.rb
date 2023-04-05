@@ -39,6 +39,7 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV["PROVIDER"].include? 'aws'
+$is_container_provider = ENV["PROVIDER"].include? 'podman'
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
@@ -71,7 +72,10 @@ Capybara.register_driver(:headless_chrome) do |app|
       args: chrome_options,
       w3c: false,
       prefs: {
-        'download.default_directory': '/tmp/downloads'
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
+        }
       }
     },
     unexpectedAlertBehaviour: 'accept',
@@ -208,12 +212,44 @@ Before('@virthost_kvm') do
   skip_this_scenario unless $kvm_server
 end
 
+Before('@alma9_minion') do
+  skip_this_scenario unless $alma9_minion
+end
+
+Before('@alma9_ssh_minion') do
+  skip_this_scenario unless $alma9_ssh_minion
+end
+
 Before('@centos7_minion') do
   skip_this_scenario unless $centos7_minion
 end
 
 Before('@centos7_ssh_minion') do
   skip_this_scenario unless $centos7_ssh_minion
+end
+
+Before('@liberty9_minion') do
+  skip_this_scenario unless $liberty9_minion
+end
+
+Before('@liberty9_ssh_minion') do
+  skip_this_scenario unless $liberty9_ssh_minion
+end
+
+Before('@oracle9_minion') do
+  skip_this_scenario unless $oracle9_minion
+end
+
+Before('@oracle9_ssh_minion') do
+  skip_this_scenario unless $oracle9_ssh_minion
+end
+
+Before('@rhel9_minion') do
+  skip_this_scenario unless $rhel9_minion
+end
+
+Before('@rhel9_ssh_minion') do
+  skip_this_scenario unless $rhel9_ssh_minion
 end
 
 Before('@rocky8_minion') do
@@ -228,32 +264,8 @@ Before('@rocky9_minion') do
   skip_this_scenario unless $rocky9_minion
 end
 
-Before('@rhel9_minion') do
-  skip_this_scenario unless $rhel9_minion
-end
-
-Before('@rhel9_ssh_minion') do
-  skip_this_scenario unless $rhel9_ssh_minion
-end
-
 Before('@rocky9_ssh_minion') do
   skip_this_scenario unless $rocky9_ssh_minion
-end
-
-Before('@alma9_minion') do
-  skip_this_scenario unless $alma9_minion
-end
-
-Before('@alma9_ssh_minion') do
-  skip_this_scenario unless $alma9_ssh_minion
-end
-
-Before('@oracle9_minion') do
-  skip_this_scenario unless $oracle9_minion
-end
-
-Before('@oracle9_ssh_minion') do
-  skip_this_scenario unless $oracle9_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -356,6 +368,14 @@ Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
 end
 
+Before('@slemicro51_minion') do
+  skip_this_scenario unless $slemicro51_minion
+end
+
+Before('@slemicro51_ssh_minion') do
+  skip_this_scenario unless $slemicro51_ssh_minion
+end
+
 Before('@slemicro52_minion') do
   skip_this_scenario unless $slemicro52_minion
 end
@@ -416,7 +436,7 @@ Before('@skip_for_rocky9') do
   skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
-Before('@skip_for_sle_micro') do
+Before('@skip_for_sle_micro') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'slemicro'
 end
 
@@ -478,6 +498,11 @@ end
 # skip tests if executed in cloud environment
 Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
+end
+
+# skip tests if executed in docker
+Before('@skip_if_container') do
+  skip_this_scenario if $is_container_provider
 end
 
 # have more infos about the errors

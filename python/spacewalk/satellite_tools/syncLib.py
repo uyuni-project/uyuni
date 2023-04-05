@@ -124,7 +124,7 @@ def log2stream(level, msg, cleanYN, notimeYN, stream):
     """
     if not isinstance(msg, type([])):
         msg = [msg]
-    with cfg_component() as CFG:
+    with cfg_component(component=None) as CFG:
         if CFG.DEBUG >= level:
             for m in msg:
                 stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + '\n')
@@ -195,7 +195,7 @@ class FileManip:
         self.relative_path = relative_path
         self.timestamp = rhnLib.timestamp(timestamp)
         self.file_size = file_size
-        with cfg_component() as CFG:
+        with cfg_component(component=None) as CFG:
             self.full_path = os.path.join(CFG.MOUNT_POINT, self.relative_path)
             self.buffer_size = CFG.BUFFER_SIZE
 

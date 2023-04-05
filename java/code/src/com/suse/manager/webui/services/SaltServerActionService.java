@@ -1574,10 +1574,8 @@ public class SaltServerActionService {
                                     "autorefresh=1\n\n" +
                                     "baseurl=" + getChannelUrl(minion, s.getLabel()) + "\n\n" +
                                     "type=rpm-md\n\n" +
-                                    "gpgcheck=1\n\n" +
-                                    "repo_gpgcheck=0\n\n" +
-                                    "pkg_gpgcheck=1\n\n").collect(Collectors.joining("\n\n"));
-
+                                    "gpgcheck=0\n\n" // we use trusted content and SSL.
+                                ).collect(Collectors.joining("\n\n"));
                         }
                         pillar.put("repo", repocontent);
 

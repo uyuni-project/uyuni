@@ -20,6 +20,7 @@ from uyuni.common.context_managers import cfg_component
 sys.path.append("/usr/share/susemanager")
 
 rhnSQL.initDB()
+
 with cfg_component('server.susemanager') as CFG:
     basepath = CFG.MOUNT_POINT or '/var/spacewalk'
 LOCK  = None
@@ -314,6 +315,7 @@ def cli():
     if isUyuni():
         log("Is a Uyuni installation", 1)
         blacklistedPids = list_products_needs_tools_subscription()
+
     with cfg_component('server.susemanager') as CFG:
         modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
     try:

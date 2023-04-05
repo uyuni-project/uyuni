@@ -140,6 +140,9 @@ public abstract class LoggingInvocationProcessor {
      * @return - whether the value should be hidden from logging based on argName
      */
     protected static boolean preventValueLogging(String handler, String method, String argName) {
+        if (argName.toLowerCase().contains("password")) {
+            return true;
+        }
         String handlerAndMethod = handler + "." + method;
         return RESTRICTED_ARGS.containsKey(handlerAndMethod) &&
                 RESTRICTED_ARGS.get(handlerAndMethod).containsValue(argName);

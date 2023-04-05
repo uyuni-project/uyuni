@@ -18,11 +18,6 @@
 # needsbinariesforbuild
 
 
-%define rhn_client_tools spacewalk-client-tools
-%define rhn_setup	 spacewalk-client-setup
-%define rhn_check	 spacewalk-check
-%define rhnsd		 mgr-daemon
-
 %if 0%{?suse_version}
 %global pub_bootstrap_dir /srv/www/htdocs/pub/bootstrap
 %else
@@ -42,7 +37,6 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  python3-%{name} = %{version}-%{release}
-Requires:       %{rhn_client_tools}
 Requires:       openssl
 Requires:       rpm-build
 Requires:       spacewalk-base-minimal-config
@@ -58,12 +52,6 @@ Requires(post): python3-uyuni-common-libs
 Requires(post): python3-rhnlib
 Requires(post): python3-rpm
 
-Obsoletes:      rhns-certs < 5.3.0
-Obsoletes:      rhns-certs-tools < 5.3.0
-# can not provides = %{version} since some old packages expect > 3.6.0
-Provides:       rhns-certs = 5.3.0
-Provides:       rhns-certs-tools = 5.3.0
-
 %description
 This package contains tools to generate the SSL certificates required by
 Spacewalk.
@@ -72,7 +60,6 @@ Spacewalk.
 Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
-Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-backend
 BuildRequires:  python3

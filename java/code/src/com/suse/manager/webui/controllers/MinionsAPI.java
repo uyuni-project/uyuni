@@ -449,8 +449,7 @@ public class MinionsAPI {
 
         // When getting ids for the select all we just get all systems ID matching the filter, no paging
         if ("id".equals(pageHelper.getFunction())) {
-            pc.setStart(1);
-            pc.setPageSize(0); // Setting to zero means getting them all
+            return null; // null page control getting them all
         }
 
         return pc;

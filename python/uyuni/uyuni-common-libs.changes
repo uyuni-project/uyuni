@@ -1,5 +1,7 @@
 - fileutils.py uses context manager for apache users.
 - Allow default component for context manager.
+- Ensure installation of make for building.
+- Use versioned Python during packaging.
 
 -------------------------------------------------------------------
 Wed Dec 14 14:13:10 CET 2022 - jgonzalez@suse.com

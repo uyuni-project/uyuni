@@ -98,6 +98,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
 
+@slemicro51_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.1
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.1 x86_64" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.1 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.1 x86_64"
+    And I select "SUSE Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.1 x86_64" product has been added
+
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -137,6 +151,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "openSUSE Leap 15.4 aarch64" product has been added
 
+@alma9_minion
+  Scenario: Add Alma Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 9 x86_64" as the filtered product description
+    And I select "AlmaLinux 9 x86_64" as a product
+    Then I should see the "AlmaLinux 9 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 9 x86_64" product has been added
+
 @centos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -146,6 +170,41 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
+
+@liberty9_minion
+  Scenario: Add Liberty Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 9 Base" as the filtered product description
+    And I select "RHEL and Liberty 9 Base" as a product
+    Then I should see the "RHEL and Liberty 9 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 9 Base" product has been added
+    When I open the sub-list of the product "RHEL and Liberty 9 Base"
+    And I select "SUSE Liberty Linux 9" as a product
+    Then I should see the "SUSE Liberty Linux 9" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux 9" product has been added
+
+@oracle9_minion
+  Scenario: Add Oracle Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Oracle Linux 9" as the filtered product description
+    And I select "Oracle Linux 9" as a product
+    Then I should see the "Oracle Linux 9" selected
+    When I click the Add Product button
+    And I wait until I see "Oracle Linux 9" product has been added
+
+@rhel9_minion
+  Scenario: Add RHEL 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 9 Base" as the filtered product description
+    And I select "RHEL and Liberty 9 Base" as a product
+    Then I should see the "RHEL and Liberty 9 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 9 Base" product has been added
 
 @rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
@@ -169,36 +228,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Rocky Linux 9" selected
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9" product has been added
-
-@alma9_minion
-  Scenario: Add Alma Linux 9
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "AlmaLinux 9 x86_64" as the filtered product description
-    And I select "AlmaLinux 9 x86_64" as a product
-    Then I should see the "AlmaLinux 9 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "AlmaLinux 9 x86_64" product has been added
-
-@oracle9_minion
-  Scenario: Add Oracle Linux 9
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "Oracle Linux 9" as the filtered product description
-    And I select "Oracle Linux 9" as a product
-    Then I should see the "Oracle Linux 9" selected
-    When I click the Add Product button
-    And I wait until I see "Oracle Linux 9" product has been added
-
-@rhel9_minion
-Scenario: Add RHEL and Liberty 9
-  When I follow the left menu "Admin > Setup Wizard > Products"
-  And I wait until I do not see "Loading" text
-  And I enter "RHEL and Liberty 9 Base" as the filtered product description
-  And I select "RHEL and Liberty 9 Base" as a product
-  Then I should see the "RHEL and Liberty 9 Base" selected
-  When I click the Add Product button
-  And I wait until I see "RHEL and Liberty 9 Base" product has been added
 
 @ubuntu1804_minion
   Scenario: Add Ubuntu 18.04

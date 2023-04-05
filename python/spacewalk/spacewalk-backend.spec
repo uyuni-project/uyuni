@@ -20,7 +20,6 @@
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?pylint_check: %global pylint_check 0}
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
@@ -72,9 +71,6 @@ Requires:       %{apache_pkg}
 Requires:       python3-pycurl
 # for Debian support
 Requires:       python3-debian >= 0.1.44
-%if 0%{?pylint_check}
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  %{m2crypto}
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
@@ -351,19 +347,6 @@ install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 %{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
 %{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
-%check
-
-%if 0%{?pylint_check}
-# check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{python3rhnroot}:/usr/lib/rhn:/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs
-spacewalk-python3 $RPM_BUILD_ROOT%{python3rhnroot}/common \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_exporter \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_tools \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/cdn_tools \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/upload_server \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/wsgi
-
-%endif
 
 %post server
 %if 0%{?suse_version}

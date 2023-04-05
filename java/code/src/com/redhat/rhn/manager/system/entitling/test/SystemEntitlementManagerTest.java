@@ -182,7 +182,6 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Test stuff!
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-        assertTrue(server.getChannels().contains(rhnTools));
         if (!ConfigDefaults.get().isSpacewalk()) {
             // this is actually Satellite-specific
             // assertTrue(server.getChannels().contains(rhelVirt));

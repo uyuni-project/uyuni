@@ -99,8 +99,6 @@ public class ChannelTestUtils {
         PackageManagerTest.addPackageToChannel(
                 ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME, rhnTools);
         PackageManagerTest.addPackageToChannel(
-                ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, rhnTools);
-        PackageManagerTest.addPackageToChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), rhnTools);
 
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { forwardRef, useImperativeHandle } from "react";
 
 import { Button } from "components/buttons";
 
@@ -42,7 +43,7 @@ type TableProps = {
   initialItemsPerPage?: number;
 
   /** enables item selection. */
-  selectable: boolean | ((row: any) => boolean);
+  selectable?: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: Array<any>) => void;
@@ -76,28 +77,43 @@ type TableProps = {
 
   /** Initial search query */
   initialSearch?: string;
+
+  /** Title buttons to add next to the items per page selection */
+  titleButtons?: Array<React.ReactNode>;
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
-export function Table(props: TableProps) {
+export type TableRef = {
+  refresh: (...args: any[]) => any;
+};
+
+export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;
   const columns = React.Children.toArray(props.children)
     .filter(isColumn)
     .map((child) => React.cloneElement(child));
+  const dataHandlerRef = React.useRef<TableDataHandler>(null);
+
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      dataHandlerRef.current?.getData();
+    },
+  }));
 
   return (
-    <TableDataHandler columns={columns} {...allProps}>
+    <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps}>
       {({ currItems, headers, handleSelect, selectable, selectedItems, deletable, criteria }) => {
+        const selectableValue = selectable == null ? false : selectable;
         const rows = currItems.map((datum, index) => {
           const cells: React.ReactNode[] = React.Children.toArray(props.children)
             .filter(isColumn)
             .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
 
-          const isSelectable = typeof selectable === "boolean" ? () => selectable : selectable;
-          if (selectable && isSelectable(datum)) {
+          const isSelectable = typeof selectableValue === "boolean" ? () => selectableValue : selectableValue;
+          if (selectableValue && isSelectable(datum)) {
             const checkbox = (
               <Column
                 key="check"
@@ -111,7 +127,7 @@ export function Table(props: TableProps) {
               />
             );
             cells.unshift(checkbox);
-          } else if (selectable && !isSelectable(datum)) {
+          } else if (selectableValue && !isSelectable(datum)) {
             const checkbox = <Column key="check" cell={<input type="checkbox" disabled checked={false} />} />;
             cells.unshift(checkbox);
           }
@@ -168,8 +184,4 @@ export function Table(props: TableProps) {
       }}
     </TableDataHandler>
   );
-}
-
-Table.defaultProps = {
-  selectable: false,
-};
+});
