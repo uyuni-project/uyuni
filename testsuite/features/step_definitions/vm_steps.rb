@@ -14,6 +14,7 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
   memory = '512'
 
   mac = ENV.fetch('MAC_MIN_NESTED', 'RANDOM')
+  STDOUT.puts 'Random MAC address used' if mac == 'RANDOM'
 
   case os_type
   when 'leap'
@@ -53,9 +54,9 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
 
     command_cloudinit = "--disk path=#{cloudinit_image},device=cdrom,bus=sata"
     node.run("cp #{cloudinit_image} #{cloudinit_path}")
-    node.run(command + command_cloudinit)
+    node.run(command + command_cloudinit, verbose: true)
   else
-    node.run(command)
+    node.run(command, verbose: true)
   end
 end
 
