@@ -347,7 +347,7 @@ def client_public_ip(host)
   raise "Cannot resolve node for host '#{host}'" if node.nil?
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
-    output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+    output, code = node.run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
     if code.zero?
       node.init_public_interface(dev)
       return output.split[1].split('/')[0]
