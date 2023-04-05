@@ -978,7 +978,7 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  _out, code = $server.run_local("systemctl is-active k3s")
+  _out, code = $server.run_local("systemctl is-active k3s", check_errors: false)
   if code.zero?
     # Server running in Kubernetes doesn't know anything about SSL CA
     certificate = "apiVersion: cert-manager.io/v1\\n"\
