@@ -203,9 +203,11 @@ class ContentSource(zypper_ContentSource):
         self.digest=hashlib.sha256(self.url.encode('utf8')).hexdigest()[:16]
         self.dnfbase.repos.add(repo)
         self.repoid = repo.id
+        # Try loading the repo configuration
         try:
             self.dnfbase.repos[self.repoid].load()
-            # Don't use mirrors if there are none or if the mirror list is invalid.
+            # Repo config loaded successfully.
+            # Verify whether the supplied mirror list is working as intended. Otherwise don't use mirror lists.
             try:
                 if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
                     no_mirrors = True
