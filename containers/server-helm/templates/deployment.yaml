@@ -361,6 +361,7 @@ spec:
           - containerPort: 4505
           - containerPort: 4506
           - containerPort: 69
+          - containerPort: 9800
             protocol: UDP
           - containerPort: 25151
           - containerPort: 5432

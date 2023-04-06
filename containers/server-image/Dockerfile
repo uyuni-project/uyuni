@@ -14,8 +14,12 @@ RUN sh add_repos.sh ${PRODUCT_REPO}
 # Copy Uyuni setup script
 COPY uyuni-setup.service /usr/lib/systemd/system/
 
+# Add monitoring confguration
+COPY configure_monitoring.sh /usr/bin
+COPY config /usr/local/config
+
 # Main packages
-COPY remove_unused.sh .  
+COPY remove_unused.sh .
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # TODO Remove vi
 RUN zypper ref
@@ -51,6 +55,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN systemctl enable uyuni-setup
+
+RUN sh configure_monitoring.sh
 
 # LABELs
 ARG PRODUCT=Uyuni

@@ -64,6 +64,20 @@ spec:
       services:
       - name: uyuni-tcp
         port: 25151
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: monitoring-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - monitoring
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-tcp
+        port: 9800
 {{- if .Values.exposeJavaDebug }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
