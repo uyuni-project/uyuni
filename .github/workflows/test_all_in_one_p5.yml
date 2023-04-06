@@ -1,7 +1,7 @@
+name: test-all-in-one-p5
 on: pull_request
 jobs:
   test-uyuni:
     uses: ./.github/workflows/test_all_in_one_common.yml
     with:
-      secondary_tests: "17_run_secondary_tests.sh 
-
+      secondary_tests: "18_run_secondary_parallelizable_tests_subset.sh 5"
