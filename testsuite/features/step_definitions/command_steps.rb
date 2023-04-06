@@ -1044,7 +1044,7 @@ When(/^I copy server\'s keys to the proxy$/) do
 end
 
 When(/^I configure the proxy$/) do
-  _out, code = $server.run_local("systemctl is-active k3s")
+  _out, code = $server.run_local("systemctl is-active k3s", check_errors: false)
 
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.full_hostname}\n" \
