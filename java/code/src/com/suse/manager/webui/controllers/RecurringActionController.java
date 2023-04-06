@@ -50,11 +50,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
-import com.suse.manager.webui.utils.gson.ConfigChannelJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -304,13 +304,16 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
-    // TODO: Create StateConfigJson object to be used instead
-    private static Set<RecurringStateConfig> getStateConfigFromJson(Set<ConfigChannelJson> json, User user) {
+    private static Set<RecurringStateConfig> getStateConfigFromJson(Set<StateConfigJson> json, User user) {
+        if (json == null) {
+            throw new ValidatorException(LocalizationService.getInstance().getMessage(
+                    "recurring_action.empty_states_config"));
+        }
         ConfigurationManager configManager = ConfigurationManager.getInstance();
         Set<RecurringStateConfig> stateConfig = new HashSet<>();
         json.forEach(config -> {
             String type = config.getType();
-            if (type.equals("internalState")) {
+            if (type.equals("internal_state")) {
                 RecurringActionFactory.lookupInternalStateByName(config.getName()).ifPresent(state -> {
                     stateConfig.add(new RecurringInternalState(state, config.getPosition().longValue()));
                 });
