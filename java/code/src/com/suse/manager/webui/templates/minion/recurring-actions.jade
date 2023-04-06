@@ -2,6 +2,10 @@ include ./minion-header.jade
 
 #recurring-actions
 
+script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/jquery-ui.js?cb=#{webBuildtimestamp}')
+
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = [{id: #{server.id}, name: "#{server.name}"}];
