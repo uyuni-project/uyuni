@@ -1,4 +1,8 @@
-- Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
+-------------------------------------------------------------------
+Thu Apr 06 13:31:42 UTC 2023 - marina.latini@suse.com
+
+- version 4.2.49-1
+  * Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
 
 -------------------------------------------------------------------
 Tue Mar 28 09:48:38 UTC 2023 - marina.latini@suse.com
