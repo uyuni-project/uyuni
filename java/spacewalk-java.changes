@@ -1,4 +1,4 @@
-- set jasper development mode to false
+- set jasper development mode to false (bsc#1206191)
 - fixed select all for ptf packages list
 - added SLES 12 support for ptf removal
 - fixed issue with checking ptf repositories on cloned channels
