@@ -63,6 +63,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
 @sle15sp3_minion
+@monitoring_server
   Scenario: Add SUSE Linux Enterprise Server 15 SP3
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
