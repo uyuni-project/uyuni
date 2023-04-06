@@ -361,7 +361,11 @@ spec:
           - containerPort: 4505
           - containerPort: 4506
           - containerPort: 69
+{{- if .Values.enableMonitoring | default true }}
+          - containerPort: 9100
+          - containerPort: 9187
           - containerPort: 9800
+{{- end }}
             protocol: UDP
           - containerPort: 25151
           - containerPort: 5432
