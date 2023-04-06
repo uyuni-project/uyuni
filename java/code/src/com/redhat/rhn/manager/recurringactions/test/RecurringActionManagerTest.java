@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.recurringactions.test;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType.ORG;
+import static com.redhat.rhn.domain.recurringactions.type.RecurringActionType.ActionType.HIGHSTATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -96,7 +97,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         try {
-            var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), anotherUser);
+            var recurringAction = RecurringActionManager.createRecurringAction(
+                    MINION, HIGHSTATE, minion.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR); // todo maybe put to create?
             recurringAction.setName("test-recurring-action-1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
@@ -106,7 +108,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             // no-op
         }
 
-        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var recurringAction = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
@@ -123,7 +126,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             var group = ServerGroupTestUtils.createManaged(anotherUser);
             /* Restrict anotherUser from accessing the minion */
             anotherUser.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
-            var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), anotherUser);
+            var recurringAction = RecurringActionManager.createRecurringAction(
+                    GROUP, HIGHSTATE, group.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);
             recurringAction.setName("recurringaction1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
@@ -134,7 +138,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         var group = ServerGroupTestUtils.createManaged(user);
-        var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), user);
+        var recurringAction = RecurringActionManager.createRecurringAction(
+                GROUP, HIGHSTATE, group.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
@@ -150,7 +155,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         try {
-            var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), anotherUser);
+            var recurringAction = RecurringActionManager.createRecurringAction(
+                    ORG, HIGHSTATE, org.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);
             recurringAction.setName("test-recurring-action-1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
@@ -160,7 +166,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             // no-op
         }
 
-        var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), user);
+        var recurringAction = RecurringActionManager.createRecurringAction(
+                ORG, HIGHSTATE, org.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
@@ -177,7 +184,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         anotherUser.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // user 'user' creates an action
-        var action = RecurringActionManager.createRecurringAction(ORG, user.getOrg().getId(), user);
+        var action = RecurringActionManager.createRecurringAction(
+                ORG, HIGHSTATE, user.getOrg().getId(), user);
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(action, user);
@@ -197,7 +205,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     public void testCreateOrgActionNoOrg() {
         try {
             // let's try to create an action for a nonexisting org
-            RecurringActionManager.createRecurringAction(ORG, -123456L, user);
+            RecurringActionManager.createRecurringAction(ORG, HIGHSTATE, -123456L, user);
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -278,7 +286,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
-        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var recurringAction = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
         recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
@@ -305,7 +314,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             allowing(taskomaticMock).unscheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
-        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var recurringAction = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
         // Make sure action type is persisted when running the test
@@ -334,12 +344,14 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
-        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var action = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action");
         RecurringActionManager.saveAndSchedule(action, user);
 
-        var sameAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var sameAction = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         sameAction.setCronExpr(CRON_EXPR);
         sameAction.setName("test-recurring-action");
         try {
@@ -360,12 +372,14 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
-        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var action = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action");
         RecurringActionManager.saveAndSchedule(action, user);
 
-        var otherAction = RecurringActionManager.createRecurringAction(MINION, minion2.getId(), user);
+        var otherAction = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion2.getId(), user);
         otherAction.setCronExpr(CRON_EXPR);
         otherAction.setName("test-recurring-action");
         try {
@@ -385,7 +399,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
-        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        var action = RecurringActionManager.createRecurringAction(
+                MINION, HIGHSTATE, minion.getId(), user);
         action.setCronExpr(invalidCron);
         action.setName("test-recurring-action");
 
