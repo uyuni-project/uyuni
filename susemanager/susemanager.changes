@@ -1,3 +1,4 @@
+- Ensure installation of make for building.
 - Adjust product name in setup script output (bsc#1195380)
 
 -------------------------------------------------------------------
