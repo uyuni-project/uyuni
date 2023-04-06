@@ -449,12 +449,14 @@ public enum SaltStateGeneratorService {
      */
     public void generateRecurringState(RecurringAction action) {
         Set<RecurringStateConfig> config = ((RecurringState) action.getRecurringActionType()).getStateConfig();
-        List<String> statesList = config.stream()
-                .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
-                .map(RecurringStateConfig::getStateName)
-                .collect(Collectors.toList());
-        generateStateAssignmentFile(SALT_RECURRING_STATE_FILE_PREFIX + action.getId(),
-                statesList, suseManagerStatesFilesRoot.resolve(SALT_RECURRING_STATES_DIR));
+        if (config != null) {
+            List<String> statesList = config.stream()
+                    .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
+                    .map(RecurringStateConfig::getStateName)
+                    .collect(Collectors.toList());
+            generateStateAssignmentFile(SALT_RECURRING_STATE_FILE_PREFIX + action.getId(),
+                    statesList, suseManagerStatesFilesRoot.resolve(SALT_RECURRING_STATES_DIR));
+        }
     }
 
     /**

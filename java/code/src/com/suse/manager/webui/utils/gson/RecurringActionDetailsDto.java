@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.gson;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 public class RecurringActionDetailsDto {
 
@@ -34,6 +35,9 @@ public class RecurringActionDetailsDto {
     /** The schedule type */
     private String type;
 
+    /** The states assigned to a custom state schedule */
+    private Set<StateConfigJson> states;
+
     /**
      * @return the Array containing Quartz information
      */
@@ -46,13 +50,6 @@ public class RecurringActionDetailsDto {
      */
     public boolean isTest() {
         return test;
-    }
-
-    /**
-     * @return the type of the schedule
-     */
-    public String getType() {
-        return type;
     }
 
     /**
@@ -110,6 +107,13 @@ public class RecurringActionDetailsDto {
     }
 
     /**
+     * @return the type of the schedule
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Sets the type.
      *
      * @param typeIn the type
@@ -118,4 +122,19 @@ public class RecurringActionDetailsDto {
         type = typeIn;
     }
 
+    /**
+     * @return the set of states
+     */
+    public Set<StateConfigJson> getStates() {
+        return this.states;
+    }
+
+    /**
+     * Sets the states
+     *
+     * @param statesIn the states
+     */
+    public void setStates(Set<StateConfigJson> statesIn) {
+        this.states = statesIn;
+    }
 }
