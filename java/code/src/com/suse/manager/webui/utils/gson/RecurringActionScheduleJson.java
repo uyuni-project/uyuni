@@ -69,8 +69,19 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
     /** Cron format string */
     private String cron;
 
+    /** Action type */
     private RecurringActionType.ActionType actionType;
+
+    /** Action type description */
     private String actionTypeDescription;
+
+    /**
+     * @return recurring action id
+     */
+    @Override
+    public Long getId() {
+        return getRecurringActionId();
+    }
 
     /**
      * Gets the recurringActionId.
@@ -79,15 +90,6 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      */
     public Long getRecurringActionId() {
         return recurringActionId;
-    }
-
-    /**
-     * Sets the recurringActionId.
-     *
-     * @param recurringActionIdIn the recurringActionId
-     */
-    public void setRecurringActionId(Long recurringActionIdIn) {
-        recurringActionId = recurringActionIdIn;
     }
 
     /**
@@ -111,7 +113,6 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
         return active;
     }
 
-
     /**
      * @return the target type of the schedule
      */
@@ -124,6 +125,39 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      */
     public String getCron() {
         return cron;
+    }
+
+    /**
+     * @return the type of recurring action
+     */
+    public RecurringActionType.ActionType getActionType() {
+        return actionType;
+    }
+
+    /**
+     * Gets the action type description
+     *
+     * @return the action type description
+     */
+    public String getActionTypeDescription() {
+        return actionTypeDescription;
+    }
+
+    /**
+     * Gets the details of the recurring action
+     * @return an instance of RecurringActionDetailsDto
+     */
+    public RecurringActionDetailsDto getDetails() {
+        return details;
+    }
+
+    /**
+     * Sets the recurringActionId.
+     *
+     * @param recurringActionIdIn the recurringActionId
+     */
+    public void setRecurringActionId(Long recurringActionIdIn) {
+        recurringActionId = recurringActionIdIn;
     }
 
     /**
@@ -200,26 +234,10 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      }
 
     /**
-     * Gets the details of the recurring action
-     * @return an instance of RecurringActionDetailsDto
-     */
-    public RecurringActionDetailsDto getDetails() {
-        return details;
-    }
-
-    /**
      * Sets the details of the recurring action
      * @param detailsIn the details object
      */
     public void setDetails(RecurringActionDetailsDto detailsIn) {
         details = detailsIn;
-    }
-
-    /**
-     * @return recurring action id
-     */
-    @Override
-    public Long getId() {
-        return getRecurringActionId();
     }
 }

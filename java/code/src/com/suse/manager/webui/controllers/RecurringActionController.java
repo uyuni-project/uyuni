@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -215,6 +216,9 @@ public class RecurringActionController {
         if (RecurringActionType.ActionType.HIGHSTATE.equals(action.getActionType())) {
             dto.setTest(((RecurringHighstate) action.getRecurringActionType()).isTestMode());
         }
+        else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(action.getActionType())) {
+            dto.setTest(((RecurringState) action.getRecurringActionType()).isTestMode());
+        }
         return dto;
     }
 
@@ -267,7 +271,7 @@ public class RecurringActionController {
     private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {
         if (json.getRecurringActionId() == null) {
             RecurringAction.TargetType type = RecurringAction.TargetType.valueOf(json.getTargetType().toUpperCase());
-            return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
+            return RecurringActionManager.createRecurringAction(type, json.getActionType(), json.getTargetId(), user);
         }
         else {
             return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
