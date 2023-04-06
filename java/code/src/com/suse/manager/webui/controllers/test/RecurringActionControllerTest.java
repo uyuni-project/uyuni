@@ -155,6 +155,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
                 "'scheduleName': '" + scheduleName + "'," +
                 targetId.map(id -> "'targetId': " + id + ",").orElse("") +
                 "'targetType': 'org'," +
+                "'actionType': 'HIGHSTATE'," +
                 "'details': {" +
                     "'type': 'hourly'," +
                     "'cronTimes': " +

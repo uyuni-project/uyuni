@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -89,19 +90,42 @@ public class RecurringActionManager extends BaseManager {
     /**
      * Create a minimal {@link RecurringAction} of given type.
      *
-     * @param type the Recurring Action type
+     * @param targetType the Recurring Action entity type
+     * @param actionType the Recurring Action type
      * @param entityId the ID of the target entity
      * @param user the creator
      * @return the newly created {@link RecurringAction}
      */
-    public static RecurringAction createRecurringAction(RecurringAction.TargetType type, long entityId, User user) {
-        switch (type) {
+    public static RecurringAction createRecurringAction(RecurringAction.TargetType targetType,
+                                                        RecurringActionType.ActionType actionType,
+                                                        long entityId, User user) {
+        switch (targetType) {
             case MINION:
-                return createMinionRecurringAction(entityId, user);
+                return createMinionRecurringAction(actionType, entityId, user);
             case GROUP:
-                return createGroupRecurringAction(entityId, user);
+                return createGroupRecurringAction(actionType, entityId, user);
             case ORG:
-                return createOrgRecurringAction(entityId, user);
+                return createOrgRecurringAction(actionType, entityId, user);
+            default:
+                throw new UnsupportedOperationException("type not supported");
+        }
+    }
+
+    /**
+     * Create a minimal {@link RecurringActionType} of given type.
+     *
+     * @param actionType the type of the action
+     * @return the newly crated {@link RecurringActionType}
+     */
+    private static RecurringActionType createRecurringActionType(RecurringActionType.ActionType actionType) {
+        if (actionType == null) {
+            throw new ValidatorException(getLocalization().getMessage("recurring_action.empty_action_type"));
+        }
+        switch (actionType) {
+            case HIGHSTATE:
+                return new RecurringHighstate(false);
+            case CUSTOMSTATE:
+                return new RecurringState(false);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }
@@ -114,11 +138,13 @@ public class RecurringActionManager extends BaseManager {
      * @param user the user
      * @return
      */
-    private static MinionRecurringAction createMinionRecurringAction(long minionId, User user) {
+    private static MinionRecurringAction createMinionRecurringAction(RecurringActionType.ActionType actionType,
+                                                                     long minionId, User user) {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
         MinionRecurringAction action = new MinionRecurringAction(
-                new RecurringHighstate(false), true, minion, user
+                createRecurringActionType(actionType),
+                true, minion, user
         );
         return action;
     }
@@ -130,12 +156,15 @@ public class RecurringActionManager extends BaseManager {
      * @param user the user
      * @return
      */
-    private static GroupRecurringAction createGroupRecurringAction(long groupId, User user) {
+    private static GroupRecurringAction createGroupRecurringAction(RecurringActionType.ActionType actionType,
+                                                                   long groupId, User user) {
         ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
         }
-        GroupRecurringAction action = new GroupRecurringAction(new RecurringHighstate(false), true, group, user);
+        GroupRecurringAction action = new GroupRecurringAction(
+                createRecurringActionType(actionType),
+                true, group, user);
         return action;
     }
 
@@ -146,12 +175,15 @@ public class RecurringActionManager extends BaseManager {
      * @param user the user
      * @return
      */
-    private static OrgRecurringAction createOrgRecurringAction(long orgId, User user) {
+    private static OrgRecurringAction createOrgRecurringAction(RecurringActionType.ActionType actionType,
+                                                               long orgId, User user) {
         Org org = OrgFactory.lookupById(orgId);
         if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
         }
-        return new OrgRecurringAction(new RecurringHighstate(false), true, org, user);
+        return new OrgRecurringAction(
+                createRecurringActionType(actionType),
+                true, org, user);
     }
 
     /**

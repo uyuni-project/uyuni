@@ -20,6 +20,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -151,8 +152,10 @@ public class RecurringActionHandler extends BaseHandler {
         }
         RecurringAction action;
         try {
+            // TODO: Implement for other Action types
             action = RecurringActionManager.createRecurringAction(
                     getEntityType((String) actionProps.get("entity_type")),
+                    RecurringActionType.ActionType.HIGHSTATE,
                     ((Integer) actionProps.get("entity_id")).longValue(),
                     user
             );
