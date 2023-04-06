@@ -14,10 +14,6 @@ RUN sh add_repos.sh ${PRODUCT_REPO}
 # Copy Uyuni setup script
 COPY uyuni-setup.service /usr/lib/systemd/system/
 
-# Add monitoring confguration
-COPY configure_monitoring.sh /usr/bin
-COPY config /usr/local/config
-
 # Main packages
 COPY remove_unused.sh .
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
@@ -60,9 +56,21 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
-RUN systemctl enable uyuni-setup
+RUN mkdir -p /etc/postgres_exporter \
+             /etc/prometheus-jmx_exporter/tomcat \
+             /usr/lib/systemd/system/tomcat.service.d \
+             /etc/prometheus-jmx_exporter/taskomatic \
+             /usr/lib/systemd/system/taskomatic.service.d
 
-RUN sh configure_monitoring.sh
+COPY postgres_exporter_queries.yaml /etc/postgres_exporter/postgres_exporter_queries.yaml
+COPY postgres-exporter /etc/sysconfig/prometheus-postgres_exporter
+COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
+COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
+COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+
+RUN systemctl enable prometheus-node_exporter; \
+    systemctl enable uyuni-setup
 
 # LABELs
 ARG PRODUCT=Uyuni
