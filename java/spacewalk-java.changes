@@ -1,4 +1,7 @@
 - set jasper development mode to false
+- fixed select all for ptf packages list
+- added SLES 12 support for ptf removal
+- fixed issue with checking ptf repositories on cloned channels
 - remove spacewalk-koan and mgr-virtualization usage
 - disable gpgckeck when building docker containers as we
   work with trusted content and the repos are served via SSL

@@ -87,13 +87,10 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListAssignableRoles() throws Exception {
-        assertTrue(handler.listAssignableRoles(admin).
-                                    contains(RoleFactory.ORG_ADMIN.getLabel()));
+    public void testListAssignableRoles() {
+        assertTrue(handler.listAssignableRoles(admin).contains(RoleFactory.ORG_ADMIN.getLabel()));
         assertTrue(handler.listAssignableRoles(regular).isEmpty());
-        User satAdmin = UserTestUtils.createSatAdminInOrgOne();
-        assertTrue(handler.listAssignableRoles(satAdmin).
-                                contains(RoleFactory.SAT_ADMIN.getLabel()));
+        assertTrue(handler.listAssignableRoles(satAdmin).contains(RoleFactory.SAT_ADMIN.getLabel()));
 
     }
 
@@ -219,9 +216,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         catch (FaultException e) {
             //success
         }
-        User satAdmin = UserTestUtils.createSatAdminInOrgOne();
-        handler.addRole(satAdmin, regular.getLogin(),
-                            RoleFactory.SAT_ADMIN.getLabel());
+        handler.addRole(satAdmin, regular.getLogin(), RoleFactory.SAT_ADMIN.getLabel());
         assertTrue(regular.hasRole(RoleFactory.SAT_ADMIN));
 
 
