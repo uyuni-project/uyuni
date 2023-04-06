@@ -42,12 +42,18 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     tftpd-formula \
     virtualization-formulas \
     vsftpd-formula \
+    branch-network-formula \
+    pxe-formula \
+    saltboot-formula \
+    image-sync-formula \
     golang-github-lusitaniae-apache_exporter \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
     golang-github-QubitProducts-exporter_exporter \
     prometheus-jmx_exporter \
     spacecmd \
+    python3-susemanager-retail \
+    susemanager-retail-tools \
     javamail \
     libyui-ncurses-pkg16 \
     vim
