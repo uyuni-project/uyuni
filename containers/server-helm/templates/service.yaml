@@ -31,6 +31,10 @@ spec:
     port: 5432
     protocol: TCP
     targetPort: 5432
+  - name: monitoring
+    port: 9800
+    protocol: TCP
+    targetPort: 9800
 {{- if .Values.exposeJavaDebug | default false }}
   - name: tomcat-debug
     port: 8000
