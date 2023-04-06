@@ -64,20 +64,50 @@ spec:
       services:
       - name: uyuni-tcp
         port: 25151
+{{- if .Values.enableMonitoring | default true }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: monitoring-router
+  name: node-exporter-router
   namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
-    - monitoring
+    - node-exporter
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-tcp
+        port: 9100
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: postgres-exporter-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - postgres-exporter
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-tcp
+        port: 9187
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: taskomatic-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - taskomatic
   routes:
     - match: HostSNI(`*`)
       services:
       - name: uyuni-tcp
         port: 9800
+{{- end }}
 {{- if .Values.exposeJavaDebug }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
