@@ -36,17 +36,9 @@ public class ConfigChannelJson {
     private boolean assigned;
 
     /**
-     * @return the id
+     * Default constructor
      */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn the id
-     */
-    public void setId(Long idIn) {
-        this.id = idIn;
+    public ConfigChannelJson() {
     }
 
     /**
@@ -73,6 +65,20 @@ public class ConfigChannelJson {
         this(channelIn);
         this.position = positionIn;
         this.assigned = true;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the id
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
