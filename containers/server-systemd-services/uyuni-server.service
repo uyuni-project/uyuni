@@ -30,6 +30,9 @@ ExecStart=/usr/bin/podman run \
     -p 69:69 \
     -p 25151:25151 \
     -p 5432:5432 \
+    -p 9100:9100 \
+    -p 9187:9187 \
+    -p 9800:9800 \
     -v cgroup:/sys/fs/cgroup:rw \
     -v pgsql:/var/lib/pgsql \
     -v var-cache:/var/cache \
