@@ -31,6 +31,20 @@ spec:
     port: 5432
     protocol: TCP
     targetPort: 5432
+{{- if .Values.enableMonitoring | default true }}
+  - name: node-exporter
+    port: 9100
+    protocol: TCP
+    targetPort: 9100
+  - name: postgres-exporter
+    port: 9187
+    protocol: TCP
+    targetPort: 9187
+  - name: taskomatic
+    port: 9800
+    protocol: TCP
+    targetPort: 9800
+{{- end }}
 {{- if .Values.exposeJavaDebug | default false }}
   - name: tomcat-debug
     port: 8000
