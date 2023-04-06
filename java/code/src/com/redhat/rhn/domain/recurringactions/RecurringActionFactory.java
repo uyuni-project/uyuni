@@ -154,6 +154,17 @@ public class RecurringActionFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list of all internal states
+     *
+     * @return list of internal states
+     */
+    public static List<InternalState> listInternalStates() {
+        return getSession().createQuery("FROM InternalState",
+                InternalState.class)
+                .list();
+    }
+
+    /**
      * Lookup recurring action with given id.
      *
      * @param id - id of the recurring action

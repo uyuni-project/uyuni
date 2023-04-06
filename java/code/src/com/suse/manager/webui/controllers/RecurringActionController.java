@@ -103,8 +103,10 @@ public class RecurringActionController {
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
         get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
+        get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
         delete("/manager/api/recurringactions/:id/delete", asJson(withUser(RecurringActionController::deleteSchedule)));
+
     }
 
     /**
@@ -179,6 +181,52 @@ public class RecurringActionController {
         }
 
         return json(response, actionsToJson(schedules));
+    }
+
+    /**
+     * Get a list of all available internal states and config channels as well as the current assignments for
+     * a given recurring states action
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return JSON result of the API call
+     */
+    public static String getStatesConfig(Request request, Response response, User user) {
+        String target = request.queryParams("target");
+        String targetLowerCase = target != null ? target.toLowerCase() : "";
+
+        Set<StateConfigJson> result = new HashSet<>(); // use a set to avoid duplicates
+        if (request.queryParams("id") != null) {
+            Long id = Long.parseLong(request.queryParams("id"));
+            Optional<RecurringAction> action = RecurringActionManager.find(id, user);
+            if (action.isEmpty()) {
+                return json(response, HttpStatus.SC_NOT_FOUND);
+            }
+            if (!(action.get().getRecurringActionType() instanceof RecurringState)) {
+                Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
+                        LocalizationService.getInstance().getMessage("recurring_action_invalid_action_type"))));
+            }
+            result.addAll(StateConfigJson.listOrderedStates(
+                    ((RecurringState)action.get().getRecurringActionType()).getStateConfig())
+                    .stream().filter(config -> config.getName().toLowerCase().contains(targetLowerCase))
+                    .collect(Collectors.toList())
+            );
+        }
+
+        // Add available config channels
+        ConfigurationManager.getInstance().listGlobalChannels(user).stream()
+                .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
+                .map(StateConfigJson::new)
+                .forEach(result::add);
+
+        // Add internal states
+        RecurringActionFactory.listInternalStates().stream()
+                .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
+                .map(StateConfigJson::new)
+                .forEach(result::add);
+
+        return json(response, result);
     }
 
     private static List<RecurringActionScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
@@ -337,9 +385,17 @@ public class RecurringActionController {
             return;
         }
 
-        // TODO: Get action type and set paramenter depending on it
         if (action.getRecurringActionType() instanceof RecurringHighstate) {
             ((RecurringHighstate) action.getRecurringActionType()).setTestMode(details.isTest());
+        }
+        else if (action.getRecurringActionType() instanceof RecurringState) {
+            RecurringState stateType = (RecurringState) action.getRecurringActionType();
+            stateType.setTestMode(details.isTest());
+            if (json.getRecurringActionId() == null ||
+                    (json.getRecurringActionId() != null && details.getStates() != null)) {
+                Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
+                ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
+            }
         }
 
         String cron = json.getCron();
