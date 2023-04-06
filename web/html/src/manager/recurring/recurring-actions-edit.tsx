@@ -4,9 +4,11 @@ import _isEqual from "lodash/isEqual";
 
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
+import { Form, Select } from "components/input";
 import { Utils as MessagesUtils } from "components/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
+import { StatesPicker } from "components/states-picker";
 import { Toggler } from "components/toggler";
 
 import Network from "utils/network";
@@ -28,6 +30,7 @@ type State = {
   scheduleName?: any;
   type?: any;
   targetType?: any;
+  actionTypeDescription?: any;
   cron?: any;
   details?: any;
 };
@@ -79,8 +82,17 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       .catch(this.props.onError);
   };
 
+  matchUrl = (target?: string) => {
+    const id = this.state.recurringActionId;
+    return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
+  };
+
   setSchedule = (schedule) => {
     Object.assign(this.state, schedule);
+  };
+
+  getActionTypeFromString = (actionType: string) => {
+    return actionType.replace(/\s+/g, "").toUpperCase();
   };
 
   getTargetType = () => {
@@ -115,7 +127,12 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       targetType: this.state.targetType,
       cron: this.state.cron,
       details: this.state.details,
+      actionType: this.getActionTypeFromString(this.state.actionTypeDescription),
     });
+  };
+
+  onActionTypeChanged = (model) => {
+    this.setState({ actionTypeDescription: model.actionTypeDescription });
   };
 
   onScheduleNameChanged = (scheduleName) => {
@@ -140,6 +157,13 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   onCustomCronChanged = (cron) => {
     this.setState({ cron: cron });
+  };
+
+  onSaveStates = (states) => {
+    let { details } = this.state;
+    details.states = states;
+    this.setState({ details });
+    return Promise.resolve(states);
   };
 
   toggleTestState = () => {
@@ -186,6 +210,17 @@ class RecurringActionsEdit extends React.Component<Props, State> {
         buttonsLeft={buttonsLeft}
         buttons={buttons}
       >
+        <Form onChange={this.onActionTypeChanged} model={{ actionTypeDescription: this.state.actionTypeDescription }}>
+          <Select
+            required
+            name="actionTypeDescription"
+            label={t("Action Type")}
+            disabled={this.isEdit()}
+            options={["Highstate", "Custom state"]}
+            labelClass="col-sm-3"
+            divClass="col-sm-6"
+          />
+        </Form>
         <RecurringEventPicker
           timezone={window.timezone}
           scheduleName={this.state.scheduleName}
@@ -197,7 +232,23 @@ class RecurringActionsEdit extends React.Component<Props, State> {
           onCronTimesChanged={this.onCronTimesChanged}
           onCronChanged={this.onCustomCronChanged}
         />
-        {window.entityType === "NONE" ? null : <DisplayHighstate minions={this.state.minions} />}
+        {/* TODO: Make schedules that don't belong to the currently selected entity readonly */}
+        {window.entityType === "NONE" || this.state.actionTypeDescription !== "Highstate" ? null : (
+          <DisplayHighstate minions={this.state.minions} />
+        )}
+        {this.state.actionTypeDescription === "Custom state" && (
+          <span>
+            <h3>
+              {t("Configure states to execute")}
+              &nbsp;
+            </h3>
+            <StatesPicker
+              matchUrl={this.matchUrl}
+              saveRequest={this.onSaveStates}
+              messages={this.props.onSetMessages}
+            />
+          </span>
+        )}
       </InnerPanel>
     );
   }
