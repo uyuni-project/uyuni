@@ -602,9 +602,10 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return true if the server can have ptf
      */
-    public boolean aclHasPtfRepositories(Map<String, Object> ctx, String[] params) {
-        Long sid = getAsLong(ctx.get("sid"));
-        User user = (User) ctx.get("user");
+    public boolean aclHasPtfRepositories(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         if (server == null || !server.doesOsSupportPtf()) {
@@ -626,9 +627,10 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return true if the system support automated ptf uninstallation
      */
-    public boolean aclSystemSupportsPtfRemoval(Map<String, Object> ctx, String[] params) {
-        Long sid = getAsLong(ctx.get("sid"));
-        User user = (User) ctx.get("user");
+    public boolean aclSystemSupportsPtfRemoval(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         if (server == null) {
