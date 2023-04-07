@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-17 13:46+0100\n"
-"PO-Revision-Date: 2023-03-27 07:14+0000\n"
+"PO-Revision-Date: 2023-04-07 07:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -278,7 +278,7 @@ msgstr ""
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
-msgstr ""
+msgstr "Пакетот не е најден"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
