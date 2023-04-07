@@ -27957,6 +27957,20 @@ given channel.</source>
 
 
  
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
