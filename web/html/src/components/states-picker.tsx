@@ -202,6 +202,13 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           </td>
           <td>{currentChannel.label}</td>
           <td>
+            <i
+              className="fa fa-info-circle fa-1-5x"
+              style={{ color: "royalblue" }}
+              title={currentChannel.description}
+            />
+          </td>
+          <td>
             <div className="form-group">
               <input
                 id={currentChannel.label + "-cbox"}
@@ -377,6 +384,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                     <tr>
                       <th>{this.props.type === "state" ? t("State Name") : t("Channel Name")}</th>
                       <th>{this.props.type === "state" ? t("State Label") : t("Channel Label")}</th>
+                      <th>{t("Description")}</th>
                       <th>{t("Assign")}</th>
                     </tr>
                   </thead>
