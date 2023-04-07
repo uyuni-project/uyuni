@@ -360,7 +360,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                 </div>
                 <div className={`col-sm-1 ${styles.helpIcon}`}>
                   <i
-                    className="fa fa-question-circle spacewalk-help-link"
+                    className="fa fa-info-circle fa-1-5x"
+                    style={{ color: "royalblue" }}
                     title={t("The action will be executed every hour at the specified minute")}
                   />
                 </div>
@@ -458,7 +459,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                 </div>
                 <div className={`col-sm-1 ${styles.helpIcon}`}>
                   <i
-                    className="fa fa-question-circle spacewalk-help-link"
+                    className="fa fa-info-circle fa-1-5x"
+                    style={{ color: "royalblue" }}
                     title={t("Days are limited to 28 to have a recurring schedule available for all the months")}
                   />
                 </div>

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.InternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
@@ -39,6 +40,7 @@ public class StateConfigJson extends ConfigChannelJson {
         this.setId(channelIn.getId());
         this.setName(channelIn.getName());
         this.setLabel(channelIn.getLabel());
+        this.setDescription(channelIn.getDescription());
         this.setType(channelIn.getConfigChannelType().getLabel());
         this.setPosition(null);
         this.setAssigned(false);
@@ -63,6 +65,7 @@ public class StateConfigJson extends ConfigChannelJson {
         this.setId(stateIn.getId());
         this.setName(stateIn.getName());
         this.setLabel(stateIn.getLabel());
+        this.setDescription(getDescriptionString(stateIn.getName()));
         this.setType("internal_state");
         this.setPosition(null);
         this.setAssigned(false);
@@ -96,5 +99,10 @@ public class StateConfigJson extends ConfigChannelJson {
                         ((RecurringConfigChannel) config).getConfigChannel(), config.getPosition().intValue());
             }
         }).collect(Collectors.toList());
+    }
+
+    private static String getDescriptionString(String nameIn) {
+        String name = nameIn.replace(".", "_");
+        return LocalizationService.getInstance().getMessage("internal_state." + name);
     }
 }
