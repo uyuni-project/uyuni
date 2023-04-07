@@ -11314,6 +11314,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">가장 빠른 실행 날짜가 너무 오래되어 이 작업이 실행되지 않았습니다. 예약과 픽업 사이 시간이 {0}시간 이상 경과하면 작업이 더 이상 관련이 없는 것으로 간주되어 삭제됩니다.
            이 작업을 실행하려면 다시 예약하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

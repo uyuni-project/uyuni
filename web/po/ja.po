@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:22+0200\n"
+"POT-Creation-Date: 2023-04-07 15:17+0200\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -160,6 +160,8 @@ msgid "Back"
 msgstr "戻る"
 
 #: ../html/src/components/config-channels.tsx:284
+#: ../html/src/components/package/PackageListActionScheduler.tsx:176
+#: ../html/src/manager/admin/setup/products/products.tsx:1160
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
@@ -360,13 +362,69 @@ msgstr "入力してください..."
 msgid "No flavor"
 msgstr "フレーバー無し"
 
+#: ../html/src/components/package/PackageListActionScheduler.tsx:83
+#: ../html/src/manager/state/highstate.tsx:65
+#, fuzzy
+msgid "Action has been successfully added to the action chain '{0}'."
+msgstr "動作を動作チェーンに追加しました "
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/state/highstate.tsx:71
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr "スケジュールしました"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#, fuzzy
+msgid "The action has been {0}."
+msgstr "動作を "
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:94
+#, fuzzy
+msgid "Unable to clear selection"
+msgstr "システム選択に戻る"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:103
+msgid "Unable to perform action."
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:185
+#: ../html/src/manager/state/recurring-states-edit.tsx:133
+msgid "Back to list"
+msgstr "一覧に戻る"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:204
+#: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:143
+#, fuzzy
+msgid "Filter by package name"
+msgstr "名前でフィルタ"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:210
+#: ../html/src/components/package/PackageListActionScheduler.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
+#: ../html/src/manager/images/image-view-packages.tsx:49
+#: ../html/src/manager/minion/packages/package-states.tsx:343
+msgid "Package Name"
+msgstr "パッケージ名"
+
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
 msgstr "最初"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:403
+#: ../html/src/manager/admin/setup/products/products.tsx:436
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -375,7 +433,7 @@ msgstr "前へ"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:409
+#: ../html/src/manager/admin/setup/products/products.tsx:442
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -392,7 +450,7 @@ msgstr "ページ"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:414
+#: ../html/src/manager/admin/setup/products/products.tsx:447
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "／"
@@ -521,7 +579,7 @@ msgid "({0} selected)"
 msgstr "({0} 個を選択しています)"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/admin/setup/products/products.tsx:363
 msgid "Clear"
 msgstr "消去"
 
@@ -531,6 +589,7 @@ msgstr "すべてを選択"
 
 #: ../html/src/components/table/TableDataHandler.tsx:352
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
@@ -856,7 +915,7 @@ msgid "Bastion SSH connection data"
 msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:262
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Setup Wizard"
 msgstr "セットアップウィザード"
 
@@ -1034,7 +1093,7 @@ msgstr "操作は成功しませんでした: サーバからの応答が空で�
 msgid "Details"
 msgstr "詳細"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:145
+#: ../html/src/manager/admin/setup/products/products.tsx:147
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1042,16 +1101,28 @@ msgstr ""
 "利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools "
 "Channel を必要とする製品は表示されなくなります。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:188
+#: ../html/src/manager/admin/setup/products/products.tsx:190
 msgid "The product catalog refresh is running..."
 msgstr "製品カタログの更新を行なっています..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:214
+#: ../html/src/manager/admin/setup/products/products.tsx:216
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 "次の製品のインストールに失敗しました。 ログファイルを確認してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:287
+#: ../html/src/manager/admin/setup/products/products.tsx:261
+#, fuzzy
+msgid "Selected channels were scheduled successfully for syncing."
+msgstr "いくつかの変更をスケジュールしました。"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:270
+#, fuzzy
+msgid ""
+"The following channel installations for '{0}' failed. Please check log files."
+msgstr ""
+"次の製品のインストールに失敗しました。 ログファイルを確認してください。"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1059,28 +1130,28 @@ msgstr ""
 "製品データの更新処理が裏で動作しています。しばらくしてからやり直してくださ"
 "い。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:292
+#: ../html/src/manager/admin/setup/products/products.tsx:324
 msgid "The product catalog is still refreshing, please wait."
 msgstr "まだ製品カタログを更新しています。しばらくお待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:294
+#: ../html/src/manager/admin/setup/products/products.tsx:326
 msgid "Select some product first."
 msgstr "まずは製品を選択してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:303
-#: ../html/src/manager/admin/setup/products/products.tsx:311
+#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:343
 msgid "Add products"
 msgstr "製品の追加"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:330
+#: ../html/src/manager/admin/setup/products/products.tsx:362
 msgid "Clear products selection"
 msgstr "製品の選択解除"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:370
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 msgid "Why aren't all products displayed in the list?"
 msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:373
+#: ../html/src/manager/admin/setup/products/products.tsx:406
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1088,7 +1159,7 @@ msgstr ""
 "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
 "(ミラークレデンシャル) に直接結びついています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:378
+#: ../html/src/manager/admin/setup/products/products.tsx:411
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1096,7 +1167,7 @@ msgstr ""
 "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
 "報を追加していることをご確認ください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:388
+#: ../html/src/manager/admin/setup/products/products.tsx:421
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1104,60 +1175,61 @@ msgstr ""
 "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
 "スター上でのみ管理することができます。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:464
+#: ../html/src/manager/admin/setup/products/products.tsx:498
 msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:593
 msgid "Filter by product Description"
 msgstr "製品説明でフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:629
+#: ../html/src/manager/admin/setup/products/products.tsx:669
 msgid "Product Description"
 msgstr "製品説明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
-#: ../html/src/manager/admin/setup/products/products.tsx:1013
+#: ../html/src/manager/admin/setup/products/products.tsx:675
+#: ../html/src/manager/admin/setup/products/products.tsx:1053
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:637
+#: ../html/src/manager/admin/setup/products/products.tsx:677
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:644
+#: ../html/src/manager/admin/setup/products/products.tsx:684
 #: ../html/src/manager/packages/list.tsx:156
 msgid "Channels"
 msgstr "チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:815
+#: ../html/src/manager/admin/setup/products/products.tsx:855
 msgid " channels sync failed"
 msgstr " チャンネル同期に失敗しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:823
+#: ../html/src/manager/admin/setup/products/products.tsx:863
 msgid " channels sync in progress"
 msgstr " チャンネル同期を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:831
+#: ../html/src/manager/admin/setup/products/products.tsx:871
 msgid " channels synced"
 msgstr " チャンネルを同期しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:856
+#: ../html/src/manager/admin/setup/products/products.tsx:896
 msgid "To enable this product, the parent product should be selected first"
 msgstr "この製品を有効化するには、先に親製品を選択しておく必要があります"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:857
+#: ../html/src/manager/admin/setup/products/products.tsx:897
 msgid "Select this product"
 msgstr "この製品を選択"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:869
+#: ../html/src/manager/admin/setup/products/products.tsx:909
 msgid "This product is mirrored."
 msgstr "この製品はミラーされています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:898
+#: ../html/src/manager/admin/setup/products/products.tsx:938
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1165,7 +1237,7 @@ msgstr "この製品はミラーされています。"
 msgid "recommended"
 msgstr "推奨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:916
+#: ../html/src/manager/admin/setup/products/products.tsx:956
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1173,51 +1245,55 @@ msgstr "推奨"
 msgid "include recommended"
 msgstr "推奨を含める"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:998
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 製品カタログの更新を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:961
+#: ../html/src/manager/admin/setup/products/products.tsx:1001
 msgid "Scheduling channels product resync"
 msgstr "チャンネル製品の再同期をスケジュールしています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:964
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 msgid "Channels product resync scheduled"
 msgstr "チャンネル製品の再同期をスケジュールしました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:967
+#: ../html/src/manager/admin/setup/products/products.tsx:1007
 msgid "Schedule channels product resync"
 msgstr "チャンネル製品の再同期をスケジュール"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1028
+#: ../html/src/manager/admin/setup/products/products.tsx:1067
 msgid "Show product's channels"
 msgstr "製品チャンネルの表示"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1060
+#: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "Product Channels - "
 msgstr "製品チャンネル - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1065
+#: ../html/src/manager/admin/setup/products/products.tsx:1138
+msgid "Select the optional channels you wish to add and confirm."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
 msgstr "必須チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1072
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 msgid "Optional Channels"
 msgstr "任意チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1180
 msgid "not synced"
 msgstr "同期されていません"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1090
+#: ../html/src/manager/admin/setup/products/products.tsx:1183
 msgid "sync in progress"
 msgstr "同期を行なっています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1093
+#: ../html/src/manager/admin/setup/products/products.tsx:1186
 msgid "synced"
 msgstr "同期済み"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1096
+#: ../html/src/manager/admin/setup/products/products.tsx:1189
 msgid "sync failed"
 msgstr "同期が失敗しました"
 
@@ -1375,7 +1451,7 @@ msgstr "SUSEセキュリティCVEリンク"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:129
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
@@ -1810,7 +1886,7 @@ msgstr "利用可能なモジュールがありません"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:207
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
 msgid "Stream"
 msgstr "ストリーム"
 
@@ -1894,15 +1970,6 @@ msgstr "フィルタタイプ"
 msgid "Matcher"
 msgstr "マッチャー"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
-#: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/minion/packages/package-states.tsx:343
-msgid "Package Name"
-msgstr "パッケージ名"
-
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 msgid "Epoch"
@@ -1938,7 +2005,7 @@ msgid "Product Enhancement Advisory"
 msgstr "製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Type"
 msgstr "アドバイザリタイプ"
 
@@ -1947,7 +2014,7 @@ msgid "Issued"
 msgstr "発行済み"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:165
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "概要"
@@ -1969,21 +2036,26 @@ msgid "Package Provides Name"
 msgstr "名前を指定するパッケージ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:147
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr "名前を指定する"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "Number"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr "拒否"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr "許可"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:273
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
 msgid "Rule"
 msgstr "ルール"
 
@@ -2088,162 +2160,184 @@ msgstr "パッケージ"
 msgid "Patch"
 msgstr "パッチ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
+msgid "Product Temporary Fix"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
 msgstr "含む"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:42
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "containing"
 msgstr "含む"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:50
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "matches"
 msgstr "該当する"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 msgid "regular expression matches package name"
 msgstr "パッケージ名に対する正規表現"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:55
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:100
 msgid "equals"
 msgstr "等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 msgid "contains package name equals"
 msgstr "一致するパッケージ名"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:60
 msgid "version lower than"
 msgstr "バージョン上限"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
 msgid "contains package with epoch/version/release lower than"
 msgstr "指定したエポック／バージョン／リリースよりも古いパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:65
 msgid "version lower or equal than"
 msgstr "バージョン上限 (等しいものを含む)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "contains package with epoch/version/release lower or equal than"
 msgstr ""
 "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも古いパッ"
 "ケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:70
 msgid "version equal"
 msgstr "バージョン一致"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
 msgid "contains package with epoch/version/release equal than"
 msgstr "指定したエポック／バージョン／リリースと等しいパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:75
 msgid "version greater or equal than"
 msgstr "バージョン下限 (等しいものを含む)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:76
 msgid "contains package with epoch/version/release greater or equal than"
 msgstr ""
 "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも新しいパッ"
 "ケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
 msgid "contains package with epoch/version/release greater than"
 msgstr "指定したエポック／バージョン／リリースよりも新しいパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "contains package which provides name equal"
 msgstr "指定した名前が等しいパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:90
 msgid "lower"
 msgstr "古い"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower than"
 msgstr "指定したものより古い"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:95
 msgid "lower or equal"
 msgstr "古いか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal than"
 msgstr "指定したものよりも古いか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "equal"
 msgstr "等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:105
 msgid "greater or equal"
 msgstr "新しいか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal than"
 msgstr "指定したものよりも新しいか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:110
 msgid "greater"
 msgstr "新しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater than"
 msgstr "指定したものより新しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "matches regular expression"
 msgstr "正規表現にマッチするもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:120
 msgid "provides name"
 msgstr "名前が指定されているもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 msgid "provides name equal"
 msgstr "指定した名前が等しいもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:122
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
 msgid "none (disable modularity)"
 msgstr "なし (モジュール化を無効にする)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
+msgid "all"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
+msgid "all program temporary fixes"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:153
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
 msgid "Advisory Name"
 msgstr "アドバイザリ名"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:171
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 msgid "Keyword"
 msgstr "キーワード"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:177
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Issue date"
 msgstr "発行日"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:183
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Contains Package Name"
 msgstr "パッケージ名を含むもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:189
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Provides Name"
 msgstr "名前を指定したパッケージを含むもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:195
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+#, fuzzy
+msgid "All"
+msgstr "許可"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
+#, fuzzy
+msgid "Fixes Package Name"
+msgstr "パッケージ名"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
 msgstr "モジュールの有効化"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
 msgid "disable all modules"
 msgstr "すべてのモジュールの無効化"
 
@@ -2616,7 +2710,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
+#: ../html/src/manager/state/highstate.tsx:140
 msgid "Highstate"
 msgstr "Highstate"
 
@@ -2690,16 +2784,6 @@ msgstr "動作を動作チェーンに追加しました "
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
 msgstr "イメージの構築を "
-
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
-msgstr "スケジュールしました"
 
 #: ../html/src/manager/images/image-build.tsx:241
 msgid "Profile Summary"
@@ -3185,6 +3269,7 @@ msgstr "インストール済み"
 
 #: ../html/src/manager/images/image-view-packages.tsx:54
 #: ../html/src/manager/minion/packages/package-states.tsx:323
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:42
 msgid "Installed"
 msgstr "インストール済み"
 
@@ -3821,7 +3906,7 @@ msgid "Loading playbook contents.."
 msgstr "playbook の内容を読み込んでいます.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/highstate.tsx:119
 #: ../html/src/manager/state/recurring-states-edit.tsx:115
 msgid "Test mode"
 msgstr "テストモード"
@@ -3945,6 +4030,74 @@ msgstr "パッケージの状態を保存しました。"
 msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
+#: ../html/src/manager/notifications/notification-messages.tsx:520
+msgid "Summary"
+msgstr "概要"
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
+msgid "Install Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are available for installation "
+"on this system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
+msgid "No Program Temporary Fixes (PTFs) available."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
+#, fuzzy
+msgid "Install PTFs"
+msgstr "インストール済み"
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
+msgid "Confirm Program Temporary Fixes (PTFs) Installation"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
+msgid "Remove Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are currently installed on this "
+"system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
+msgid "No Program Temporary Fixes (PTFs) installed."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
+#, fuzzy
+msgid "Remove PTFs"
+msgstr "削除"
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
+msgid "Confirm Program Temporary Fixes (PTFs) Removal"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
+msgid "Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
+msgid "There are no relevant actions that can be executed on this system."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
+msgid "List / Remove Installed PTFs"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
+#, fuzzy
+msgid "Install PTF"
+msgstr "インストール済み"
+
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
 msgstr "オンボーディングに失敗しました"
@@ -4043,10 +4196,6 @@ msgstr "概要でフィルタ"
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:520
-msgid "Summary"
-msgstr "概要"
-
 #: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Created"
 msgstr "作成日"
@@ -4121,11 +4270,6 @@ msgstr "パッケージの検索"
 #, fuzzy
 msgid "package"
 msgstr "パッケージ"
-
-#: ../html/src/manager/packages/list.tsx:143
-#, fuzzy
-msgid "Filter by package name"
-msgstr "名前でフィルタ"
 
 #: ../html/src/manager/packages/list.tsx:144
 #, fuzzy
@@ -4534,23 +4678,16 @@ msgstr "完全な highstate 出力の表示"
 msgid "System Group"
 msgstr "システムグループ"
 
-#: ../html/src/manager/state/highstate.tsx:64
-msgid "Action has been successfully added to the "
-msgstr "アクションを追加しました "
-
-#: ../html/src/manager/state/highstate.tsx:69
-msgid "Applying the highstate has been "
+#: ../html/src/manager/state/highstate.tsx:71
+#, fuzzy
+msgid "Applying the highstate has been {0}."
 msgstr "highstate の適用を "
 
-#: ../html/src/manager/state/highstate.tsx:70
-msgid "scheduled."
-msgstr "スケジュールしました。"
-
-#: ../html/src/manager/state/highstate.tsx:126
+#: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
 msgstr "highstate の適用"
 
-#: ../html/src/manager/state/highstate.tsx:135
+#: ../html/src/manager/state/highstate.tsx:136
 msgid "Create Recurring"
 msgstr "繰り返し作成"
 
@@ -4615,10 +4752,6 @@ msgstr "更新 "
 #: ../html/src/manager/state/recurring-states-edit.tsx:123
 msgid "Create "
 msgstr "作成 "
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:133
-msgid "Back to list"
-msgstr "一覧に戻る"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:141
 msgid "Schedule Recurring Highstate"
@@ -6280,6 +6413,12 @@ msgstr "未定義"
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
 
+#~ msgid "Action has been successfully added to the "
+#~ msgstr "アクションを追加しました "
+
+#~ msgid "scheduled."
+#~ msgstr "スケジュールしました。"
+
 #~ msgid "shortly"
 #~ msgstr "しばらくすると現われるはずです"
 
@@ -6411,9 +6550,6 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "Node Hostname"
 #~ msgstr "ノードのホスト名"
-
-#~ msgid "Action has been "
-#~ msgstr "動作を "
 
 #~ msgid " successfully."
 #~ msgstr " 。"

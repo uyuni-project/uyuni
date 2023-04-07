@@ -11316,6 +11316,21 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <target state="translated">Táto akcia nebola vykonaná, pretože jej najskorší dátum vykonania bol príliš starý. Ak medzi naplánovaním a prevzatím uplynie viac ako {0} hodín, akcia sa vyradí, pretože sa už nepovažuje za relevantnú.
           Ak naozaj chcete, aby sa táto akcia vykonala, prosím, presuňte ju na iný termín.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
