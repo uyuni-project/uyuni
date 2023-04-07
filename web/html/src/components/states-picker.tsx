@@ -6,7 +6,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { AsyncButton } from "../components/buttons";
 import { TextField } from "../components/fields";
-import { MessageType } from "../components/messages";
+import { Messages, MessageType } from "../components/messages";
 import { Utils as MessagesUtils } from "../components/messages";
 import { RankingTable } from "../components/ranking-table";
 import { SaltStatePopup } from "../components/salt-state-popup";
@@ -33,7 +33,7 @@ type StatesPickerProps = {
   matchUrl: (filter?: string) => any;
   applyRequest?: () => any;
   saveRequest: (channels: any[]) => any;
-  messages: (messages: MessageType[] | any) => any;
+  messages?: (messages: MessageType[] | any) => any;
 };
 
 class StatesPickerState {
@@ -47,6 +47,7 @@ class StatesPickerState {
   changed = new Map();
   showSaltState?: any | null = undefined;
   rank?: boolean = undefined;
+  messages: MessageType[] | any;
 }
 
 class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState> {
@@ -104,11 +105,11 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
             results: newSearchResults,
           },
         });
-        this.props.messages(MessagesUtils.info(t("State assignments have been saved.")));
+        this.setMessages(MessagesUtils.info(t("State assignments have been saved.")));
         this.hideRanking();
       },
       (jqXHR, textStatus, errorThrown) => {
-        this.props.messages(MessagesUtils.error(t("An error occurred on save.")));
+        this.setMessages(MessagesUtils.error(t("An error occurred on save.")));
       }
     );
     return request;
@@ -252,8 +253,17 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     });
   };
 
+  setMessages = (message) => {
+    this.setState({
+      messages: message,
+    });
+    if (this.props.messages) {
+      return this.props.messages(message);
+    }
+  };
+
   clearMessages() {
-    this.props.messages(null);
+    this.setMessages(null);
   }
 
   getCurrentAssignment = () => {
@@ -312,6 +322,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
     return (
       <span>
+        {!this.props.messages ? this.state.messages ? <Messages items={this.state.messages} /> : null : null}
         <SectionToolbar>
           <div className="action-button-wrapper">
             <div className="btn-group">{buttons}</div>
