@@ -30,6 +30,7 @@ function channelIcon(channel) {
 }
 
 type StatesPickerProps = {
+  type?: string | any;
   matchUrl: (filter?: string) => any;
   applyRequest?: () => any;
   saveRequest: (channels: any[]) => any;
@@ -338,7 +339,10 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                       <TextField
                         id="search-field"
                         value={this.state.filter}
-                        placeholder={t("Search in configuration channels")}
+                        placeholder={t(
+                          "Search in {0}",
+                          this.props.type === "state" ? t("states") : t("configuration channels")
+                        )}
                         onChange={this.onSearchChange}
                         onPressEnter={this.search}
                       />
@@ -353,8 +357,13 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
             {this.state.rank ? (
               <div className="col-md-offset-2 col-md-8">
-                <h2>Edit Channel Ranks</h2>
-                <p>{t("Edit the ranking of the configuration channels by dragging them.")}</p>
+                <h2>{t("Edit {0} Ranks", this.props.type === "state" ? t("State") : t("Channel"))}</h2>
+                <p>
+                  {t(
+                    "Edit the ranking of the {0} by dragging them.",
+                    this.props.type === "state" ? t("states") : t("configuration channels")
+                  )}
+                </p>
                 <RankingTable
                   items={currentAssignment}
                   onUpdate={this.onUpdateRanking}
@@ -366,8 +375,8 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                 <table className="table table-striped">
                   <thead>
                     <tr>
-                      <th>{t("Channel Name")}</th>
-                      <th>{t("Channel Label")}</th>
+                      <th>{this.props.type === "state" ? t("State Name") : t("Channel Name")}</th>
+                      <th>{this.props.type === "state" ? t("State Label") : t("Channel Label")}</th>
                       <th>{t("Assign")}</th>
                     </tr>
                   </thead>
