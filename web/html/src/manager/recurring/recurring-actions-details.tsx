@@ -10,7 +10,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
-import { targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 
 type RecurringActionsDetailsProps = {
   data?: any;
@@ -177,6 +177,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
         <Button
           text={t("Edit")}
           icon="fa-edit"
+          disabled={isReadOnly(this.props.data)}
           title={t("Edit")}
           className="btn-default"
           handler={() => this.props.onEdit(this.props.data)}
@@ -184,6 +185,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
         <ModalButton
           text={t("Delete")}
           icon="fa-trash"
+          disabled={isReadOnly(this.props.data)}
           title={t("Delete")}
           target="delete-modal"
           className="btn-default"
