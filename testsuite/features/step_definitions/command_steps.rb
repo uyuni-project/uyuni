@@ -396,7 +396,10 @@ Then(/^"([^"]*)" package should have been stored$/) do |pkg|
 end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
-  $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
+  repeat_until_timeout(timeout: 300, message: "Reference #{pkg} not found in file.") do
+    _result, code = $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", check_errors: false)
+    break if code.zero?
+  end
 end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
