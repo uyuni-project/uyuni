@@ -5,7 +5,7 @@ ARG INIT_BASE=registry.suse.com/bci/bci-base:15.4
 FROM $INIT_BASE
 
 ARG PRODUCT_REPO
-ARG PRODUCT_PATTERN="patterns-uyuni_server"
+ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
@@ -20,7 +20,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # TODO Remove vi
 RUN zypper ref
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
-    ${PRODUCT_PATTERN} \
+    ${PRODUCT_PATTERN_PREFIX}_server \
+    ${PRODUCT_PATTERN_PREFIX}_retail \
     susemanager-tftpsync \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
@@ -33,23 +34,13 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     prometheus-exporters-formula \
     prometheus-formula \
     registry-formula \
-    bind-formula \
-    dhcpd-formula \
-    tftpd-formula \
     virtualization-formulas \
-    vsftpd-formula \
-    branch-network-formula \
-    pxe-formula \
-    saltboot-formula \
-    image-sync-formula \
     golang-github-lusitaniae-apache_exporter \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
     golang-github-QubitProducts-exporter_exporter \
     prometheus-jmx_exporter \
     spacecmd \
-    python3-susemanager-retail \
-    susemanager-retail-tools \
     javamail \
     libyui-ncurses-pkg16 \
     vim
