@@ -192,17 +192,21 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         >
           <td>
             {channelIcon(currentChannel)}
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
-              href="#"
-              data-toggle="modal"
-              data-target="#saltStatePopUp"
-              onClick={() => {
-                this.showPopUp(currentChannel);
-              }}
-            >
-              {currentChannel.name}
-            </a>
+            {currentChannel.type !== "internal_state" ? (
+              /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
+              <a
+                href="#"
+                data-toggle="modal"
+                data-target="#saltStatePopUp"
+                onClick={() => {
+                  this.showPopUp(currentChannel);
+                }}
+              >
+                {currentChannel.name}
+              </a>
+            ) : (
+              currentChannel.name
+            )}
           </td>
           <td>{currentChannel.label}</td>
           <td>
