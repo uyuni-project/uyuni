@@ -514,7 +514,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
 
         // Create additional user
-        User anotherAdmin = UserTestUtils.createUserInOrgOne();
+        User anotherAdmin = UserTestUtils.createUser("anotherAdmin", admin.getOrg().getId());
         anotherAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(anotherAdmin);
 

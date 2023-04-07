@@ -126,8 +126,6 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         //Create a content and info to put into this revision
         ConfigContent content = ConfigTestUtils.createConfigContent(234L, true);
         ConfigInfo info = ConfigTestUtils.createConfigInfo("root", "root", 777L);
-        commitAndCloseSession();
-        commitHappened();
 
         //Create a config revision
         ConfigRevision revision =

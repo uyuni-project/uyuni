@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
@@ -33,7 +32,6 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -83,6 +81,7 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         // which can cause deadlocks.  We are forced commit the transaction
         // and close the session.
         commitAndCloseSession();
+        commitHappened();
 
         SyncSystemsProfilesAction action = new SyncSystemsProfilesAction();
         Set<String> sessionSet = SessionSetHelper.lookupAndBind(getRequest(),
@@ -109,12 +108,4 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
                 startsWith("/systems/details/packages/profiles/MissingPackages.do"));
     }
 
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-        // We committed stuff - need to remove it all again
-        OrgFactory.deleteOrg(user.getOrg().getId(), user);
-        commitAndCloseSession();
-    }
 }

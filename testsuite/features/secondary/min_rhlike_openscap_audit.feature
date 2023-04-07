@@ -14,19 +14,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
 
   @skip_if_container
   Scenario: Enable repositories for openSCAP on the Red Hat-like minion
-    Given I am on the Systems overview page of this "rhlike_minion"
-    When I follow "Software" in the content area
-    And I follow "Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "no-appstream-8-result-RHEL8-Pool for x86_64"
-    And I check "no-appstream-8-result-Custom Channel for Rocky 8 DVD"
-    And I wait until I do not see "Loading..." text
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
-    When I enable repository "Rocky-BaseOS" on this "rhlike_minion"
+    When I enable the repositories "Rocky-BaseOS Rocky-AppStream" on this "rhlike_minion"
     And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
     And I refresh the metadata for "rhlike_minion"
 
