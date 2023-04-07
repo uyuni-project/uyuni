@@ -25,11 +25,11 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Recurring Actions" acl="user_role(system_group_admin)">
-    <rhn-tab-url>/rhn/manager/groups/details/recurring-actions</rhn-tab-url>
-  </rhn-tab>
-
   <rhn-tab name="Formulas" acl="user_role(system_group_admin)">
     <rhn-tab-url>/rhn/manager/groups/details/formulas</rhn-tab-url>
+  </rhn-tab>
+
+  <rhn-tab name="Recurring Actions" acl="user_role(system_group_admin)">
+    <rhn-tab-url>/rhn/manager/groups/details/recurring-actions</rhn-tab-url>
   </rhn-tab>
 </rhn-navi-tree>
