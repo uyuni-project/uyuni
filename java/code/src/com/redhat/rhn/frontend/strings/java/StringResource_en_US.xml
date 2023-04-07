@@ -9363,6 +9363,36 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
       </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+      </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+      </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.util_synccustomall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
