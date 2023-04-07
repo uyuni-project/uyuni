@@ -10995,6 +10995,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           Please reschedule this action if you really want it to be executed.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
