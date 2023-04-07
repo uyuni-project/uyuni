@@ -29,7 +29,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -87,13 +86,14 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     private SystemManager systemManager;
     private Set<User> users;
-    private boolean committed = false;
 
     /**
      * {@inheritDoc}
      */
     @BeforeEach
     public void setUp() throws Exception {
+        super.setUp();
+
         this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -107,18 +107,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void tearDown() throws Exception {
         super.tearDown();
 
-        // If at some point we created an org and committed the transaction, we must erase it from the database
-        if (this.committed) {
-            users.stream().forEach(user -> OrgFactory.deleteOrg(user.getOrg().getId(), user));
-           commitAndCloseSession();
-        }
-        this.committed = false;
         this.users = null;
-    }
-
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        committed = true;
     }
 
     @Test
@@ -154,8 +143,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups.isEmpty());
 
         UserManager.grantServerGroupPermission(foundUser, group.getId());
-        HibernateFactory.commitTransaction();
-        commitHappened();
 
         HibernateFactory.getSession().clear();
 
@@ -178,8 +165,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups2.isEmpty());
 
         UserManager.grantServerGroupPermission(foundUser2, group.getId());
-        HibernateFactory.commitTransaction();
-        commitHappened();
 
         HibernateFactory.getSession().clear();
 
@@ -215,8 +200,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups2.isEmpty());
 
         UserManager.grantServerGroupPermission(foundUser2.getId(), Arrays.asList(group.getId(), group2.getId()));
-        HibernateFactory.commitTransaction();
-        commitHappened();
 
         HibernateFactory.getSession().clear();
 
@@ -259,8 +242,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups.isEmpty());
 
         UserManager.grantServerGroupPermission(foundUser, group.getId());
-        HibernateFactory.commitTransaction();
-        commitHappened();
 
         HibernateFactory.getSession().clear();
 
@@ -271,8 +252,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups.stream().allMatch(g -> ((ServerGroup) g).getId().equals(group.getId())));
 
         UserManager.revokeServerGroupPermission(foundUser, group.getId());
-        HibernateFactory.commitTransaction();
-        commitHappened();
 
         HibernateFactory.getSession().clear();
 
@@ -293,9 +272,9 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertFalse(UserManager.listRolesAssignableBy(user).
                 contains(RoleFactory.SAT_ADMIN));
 
-        User sat = UserTestUtils.createSatAdminInOrgOne();
-        assertTrue(UserManager.listRolesAssignableBy(sat).
-                contains(RoleFactory.SAT_ADMIN));
+        User satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        assertTrue(UserManager.listRolesAssignableBy(satAdmin).contains(RoleFactory.SAT_ADMIN));
 
 
     }

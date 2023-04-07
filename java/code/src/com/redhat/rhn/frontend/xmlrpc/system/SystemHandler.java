@@ -136,6 +136,8 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PtfMasterFault;
+import com.redhat.rhn.frontend.xmlrpc.PtfPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RetractedPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
@@ -1391,12 +1393,12 @@ public class SystemHandler extends BaseHandler {
             Map<String, Object> systemMap = new HashMap<>();
 
             // get the package name ID
-            Map pkgEvr = PackageManager.lookupEvrIdByPackageName(sid.longValue(), packageName);
+            Map<String, Long> pkgEvr = PackageManager.lookupEvrIdByPackageName(sid.longValue(), packageName);
 
             if (pkgEvr != null) {
                 // find the latest package available to each system
                 Package pkg = PackageManager.guestimatePackageBySystem(sid.longValue(),
-                        (Long) pkgEvr.get("name_id"), (Long) pkgEvr.get("evr_id"),
+                        pkgEvr.get("name_id"), pkgEvr.get("evr_id"),
                         null, loggedInUser.getOrg());
 
                 // build the hash to return
@@ -3984,22 +3986,16 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
+            Org org = loggedInUser.getOrg();
+            Long nameId = packageMap.get("name_id");
+            Long evrId = packageMap.get("evr_id");
+            Long archId = packageMap.get("arch_id");
+
+            return PackageFactory.lookupByNevraIds(org, nameId, evrId, archId).stream();
+        }).collect(toList());
+
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
-            List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
-                PackageName packageName = PackageFactory.lookupPackageName(packageMap.get("name_id"));
-                PackageEvr evr = PackageEvrFactory.lookupPackageEvrById(packageMap.get("evr_id"));
-                PackageArch arch = PackageFactory.lookupPackageArchById(packageMap.get("arch_id"));
-
-                return PackageFactory.lookupByNevra(
-                        loggedInUser.getOrg(),
-                        packageName.getName(),
-                        evr.getVersion(),
-                        evr.getRelease(),
-                        evr.getEpoch(),
-                        arch
-                ).stream();
-            }).collect(toList());
-
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
                     packages.stream().map(Package::getId).collect(toList()),
                     sids.stream().map(Integer::longValue).collect(toList())
@@ -4009,10 +4005,25 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        // Check if the package is part of a PTF. If true it cannot be manually installed/updated/ removed
+        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).collect(toList());
+        if (!ptfPackages.isEmpty()) {
+            throw new PtfPackageFault(ptfPackages);
+        }
+
+        // PTF master packages cannot be removed
+        if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(acT)) {
+            List<Long> ptfMasterPackages = packages.stream()
+                                                   .filter(Package::isMasterPtfPackage)
+                                                   .map(Package::getId)
+                                                   .collect(toList());
+            if (!ptfMasterPackages.isEmpty()) {
+                throw new PtfMasterFault(ptfMasterPackages);
+            }
+        }
 
         for (Integer sid : sids) {
-            Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
-                    loggedInUser);
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
 
             // Would be nice to do this check at the Manager layer but upset many tests,
             // some of which were not cooperative when being fixed. Placing here for now.
@@ -4040,7 +4051,7 @@ public class SystemHandler extends BaseHandler {
 
             actionIds.add(action.getId());
         }
-        return actionIds.toArray(new Long[actionIds.size()]);
+        return actionIds.toArray(new Long[0]);
     }
 
 

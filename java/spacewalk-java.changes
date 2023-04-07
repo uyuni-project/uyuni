@@ -1,3 +1,14 @@
+- Fixed select all for ptf packages list
+- Added SLES 12 support for ptf removal
+- Fixed issue with checking ptf repositories on cloned channels
+- Add support to add optional channels via webUI
+- Added APIs to allow frontend to install and remove ptf
+- Show the package summary where applicable to better describe PTF packages
+- Added CLM filters to match product temporary fixes packages
+- Restrict product temporary fixes visibility in the UI and in the
+  APIs responses
+- Fixed empty selection warning in the lock/unlock page
+- Set GPG Key Url for PTF repositories
 - Fix deleting custom info pillar (bsc#1209253)
 - Update report outdated system query to de-duplicate errata id's
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)

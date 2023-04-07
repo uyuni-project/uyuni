@@ -594,7 +594,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "server_packages_needing_update");
         DataResult dr = m.execute(params);
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             Long id = (Long) ((Map) dr.get(0)).get("id");
             return id;
         }
@@ -609,15 +609,15 @@ public class PackageManager extends BaseManager {
      * @return A map with keys 'name_id' and 'evr_id' containing Long types.
      *         Null if nothing found.
      */
-    public static Map lookupEvrIdByPackageName(Long sid, String name) {
+    public static Map<String, Long> lookupEvrIdByPackageName(Long sid, String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("name", name);
-        SelectMode m = ModeFactory.getMode("Package_queries",
-                "lookup_id_combo_by_name");
-        DataResult dr = m.execute(params);
-        if (dr.size() > 0) {
-            return (Map) dr.get(0);
+        SelectMode m = ModeFactory.getMode("Package_queries", "lookup_id_combo_by_name");
+        @SuppressWarnings("unchecked")
+        DataResult<Map<String, Long>> dr = m.execute(params);
+        if (!dr.isEmpty()) {
+            return dr.get(0);
         }
         return null;
     }
@@ -821,7 +821,7 @@ public class PackageManager extends BaseManager {
             packageFileName.append(pkg.getFile());
         }
         String pfn = packageFileName.toString().trim();
-        if (pfn.length() > 0) {
+        if (!pfn.isEmpty()) {
             schedulePackageFileForDeletion(pfn);
         }
 
@@ -1967,5 +1967,25 @@ public class PackageManager extends BaseManager {
      */
     public static String getNevr(PackageName name, PackageEvr evr) {
         return name.getName() + "-" + evr.toString();
+    }
+
+    /**
+     * Returns the list of installed ptf on the given server
+     * @param sid Server Id
+     * @param pc package control
+     * @return list of packages marked as master ptf installed on given server
+     */
+    public static DataResult<PackageListItem> systemPtfList(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_ptfs_list", pc);
+    }
+
+    /**
+     * Returns available of ptf for given server
+     * @param sid Server Id
+     * @param pc package control
+     * @return list of packages marked as master ptf available for given server
+     */
+    public static DataResult<PackageListItem> systemAvailablePtf(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_available_ptfs", pc);
     }
 }

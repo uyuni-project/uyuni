@@ -571,6 +571,9 @@ public class ContentProjectFactory extends HibernateFactory {
             case MODULE:
                 filter = new ModuleFilter();
                 break;
+            case PTF:
+                filter = new PtfFilter();
+                break;
             default:
                 throw new IllegalArgumentException("Incompatible type " + entityType);
         }

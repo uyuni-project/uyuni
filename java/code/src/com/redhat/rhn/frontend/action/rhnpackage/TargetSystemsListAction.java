@@ -67,6 +67,7 @@ public class TargetSystemsListAction extends RhnAction {
         }
         request.setAttribute("pid", pid);
         request.setAttribute("package_name", pkg.getFilename());
+        request.setAttribute("isPtfPackage", pkg.isPartOfPtf());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?pid=" +
                 pid);
         RhnListSetHelper helper = new RhnListSetHelper(request);

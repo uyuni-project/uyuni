@@ -17,6 +17,7 @@ package com.redhat.rhn.testing;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -35,6 +36,7 @@ import java.nio.file.Path;
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     protected User user;
+    private boolean committed = false;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
 
@@ -45,7 +47,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
         KickstartDataTest.setupTestConfiguration(user);
@@ -63,8 +64,20 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     public void tearDown() throws Exception {
         super.tearDown();
 
+        // If at some point we created a user and committed the transaction, we need
+        // clean up our mess
+        if (committed) {
+            OrgFactory.deleteOrg(user.getOrg().getId(), user);
+            commitAndCloseSession();
+        }
+        committed = false;
         user = null;
         FileUtils.deleteDirectory(tmpPillarRoot.toFile());
         FileUtils.deleteDirectory(tmpSaltRoot.toFile());
+    }
+
+    // If we have to commit in mid-test, set up the next transaction correctly
+    protected void commitHappened() {
+        committed = true;
     }
 }

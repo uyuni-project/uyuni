@@ -630,9 +630,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
 
-        ContentSyncManager csm = new ContentSyncManager();
+        InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
+        List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -824,10 +828,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
+        InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
+        List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+        repositoriesChanged.addAll(additionalRepos);
+
         Credentials sccCreds = CredentialsFactory.lookupSCCCredentials().get(0);
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
+        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
         csm.refreshRepositoriesAuthentication(repositoriesChanged, sccCreds, null);
         csm.linkAndRefreshContentSource(null);
 
@@ -850,6 +860,207 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             .filter(SUSEProductSCCRepository::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+    }
+
+    /**
+     * Test generation of channels for PTF repositories
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testUpdateChannelsWithPtfReposMainProducts() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/data2", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
+        sles.getRepositories().stream()
+            .filter(pr -> pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+        ContentSyncManager csm = new ContentSyncManager();
+        sles.getRepositories()
+        .stream()
+        .filter(pr -> pr.getRepository().getSccId().equals(9999L))
+        .forEach(pr -> {
+            try {
+                csm.addChannel(pr.getChannelLabel(), null);
+            }
+            catch (ContentSyncException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        SCCRepository slesUpRepo = SCCCachingFactory.lookupRepositoryBySccId(1632L).get();
+        assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update/",
+                slesUpRepo.getUrl());
+        assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update/?my-fake-token",
+                slesUpRepo.getBestAuth().get().getUrl());
+
+        SUSEProduct slesChanged = SUSEProductFactory.lookupByProductId(1117);
+        slesChanged.getRepositories().stream()
+            .filter(pr -> pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+
+        SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(9999L).orElse(null);
+        assertNotNull(ptfRepo, "PTF repo not found");
+
+        slesChanged.getRepositories().stream()
+            .filter(pr -> !pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+
+                if (pr.getRepository().getSccId() == 9999L) {
+                    // The PTF repo
+                    assertEquals("a123456-sles-12-ptfs-x86_64", pr.getChannelLabel());
+                    SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                    ContentSource cs = bestAuth.getContentSource();
+                    assertNotNull(cs);
+                    assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+                }
+            });
+    }
+
+    /**
+     * Test generation of channels for PTF repositories per module
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testUpdateChannelsWithPtfReposAllModules() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/data3", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES15 SP2
+        SUSEProduct rootSLES = SUSEProductFactory.lookupByProductId(1939L);
+        SUSEProductTestUtils.addChannelsForProduct(rootSLES);
+        // sle-module-basesystem 15 SP2 with PTF repos
+        SUSEProductTestUtils.addChannelsForProductAndParent(SUSEProductFactory.lookupByProductId(1946L),
+                rootSLES, true, Arrays.asList(15000L, 15001L));
+        // sle-manager-tools 15 with PTF repos
+        SUSEProductTestUtils.addChannelsForProductAndParent(SUSEProductFactory.lookupByProductId(1712L),
+                rootSLES, true, Arrays.asList(15002L, 15003L));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Initialization complete
+
+        SUSEProduct sles = SUSEProductFactory.lookupByProductId(1939L);
+        sles.getRepositories().stream()
+            .filter(pr -> pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+
+        SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(15000L).orElse(null);
+        assertNotNull(ptfRepo, "PTF repo not found");
+
+        // test basesystem module PTFs for SLES root product
+        SUSEProduct basesystem = SUSEProductFactory.lookupByProductId(1946L);
+        List<SUSEProductSCCRepository> r = basesystem.getRepositories().stream()
+            .filter(pr -> pr.getRootProduct().equals(sles))
+            .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
+            .collect(Collectors.toList());
+        assertNotEmpty(r);
+        r.forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                // The PTF repo
+                if (pr.getRepository().getSccId().equals(15000L)) {
+                    assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64", pr.getChannelLabel());
+                    assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64", pr.getChannelName());
+                }
+                else {
+                    fail("Unexpected repository " + pr);
+                }
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+        // test basesystem module PTFs for SAP root product
+        r = basesystem.getRepositories().stream()
+            .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
+            .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
+            .collect(Collectors.toList());
+        assertNotEmpty(r);
+        r.forEach(pr -> {
+            assertNotNull(pr.getRepository());
+            // The PTF repo
+            if (pr.getRepository().getSccId().equals(15000L)) {
+                assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64-sap", pr.getChannelLabel());
+                assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64 SAP", pr.getChannelName());
+            }
+            else {
+                fail("Unexpected repository " + pr);
+            }
+            SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+            ContentSource cs = bestAuth.getContentSource();
+            assertNotNull(cs);
+            assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+        });
+        // test tools ptf repositories for SLES
+        SUSEProduct tools = SUSEProductFactory.lookupByProductId(1712L);
+        r = tools.getRepositories().stream()
+            .filter(pr -> pr.getRootProduct().equals(sles))
+            .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
+            .collect(Collectors.toList());
+        assertNotEmpty(r);
+        r.forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                // The PTF repo
+                if (pr.getRepository().getSccId().equals(15002L)) {
+                    assertEquals("a123456-sle-manager-tools-15-ptfs-x86_64-sp2", pr.getChannelLabel());
+                    assertEquals("A123456 sle-manager-tools 15 PTFs x86_64 SP2", pr.getChannelName());
+                }
+                else {
+                    fail("Unexpected repository " + pr);
+                }
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+        // test tools ptf repositories for SAP
+        r = tools.getRepositories().stream()
+            .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
+            .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
+            .collect(Collectors.toList());
+        assertNotEmpty(r);
+        r.forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                // The PTF repo
+                if (pr.getRepository().getSccId().equals(15002L)) {
+                    assertEquals("a123456-sle-manager-tools-15-ptfs-x86_64-sap-sp2", pr.getChannelLabel());
+                    assertEquals("A123456 sle-manager-tools 15 PTFs x86_64 SAP SP2", pr.getChannelName());
+                }
+                else {
+                    fail("Unexpected repository " + pr);
+                }
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
                 ContentSource cs = bestAuth.getContentSource();
                 assertNotNull(cs);
@@ -1775,6 +1986,64 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         ManagerInfoFactory.setLastMgrSyncRefresh(System.currentTimeMillis() - (48 * 60 * 60 * 1000));
         assertTrue(csm.isRefreshNeeded(null));
+    }
+
+    /**
+     * Test generation of channels for PTF repositories per module
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testUpdateChannelsWithPtfReposUbuntuWithTools() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+            "/com/redhat/rhn/manager/content/test/data3", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        //  Ubuntu 20.04
+        SUSEProduct rootUbuntu = SUSEProductFactory.lookupByProductId(-18L);
+        SUSEProductTestUtils.addChannelsForProduct(rootUbuntu);
+        // sle-manager-tools 20.04 with PTF repos
+        SUSEProductTestUtils.addChannelsForProductAndParent(SUSEProductFactory.lookupByProductId(2113L),
+            rootUbuntu, true, Arrays.asList(15004L, 15005L));
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Initialization complete
+
+        SUSEProduct ubuntu = SUSEProductFactory.lookupByProductId(-18L);
+        ubuntu.getRepositories().stream()
+              .filter(pr -> pr.isMandatory())
+              .forEach(pr -> {
+                  assertNotNull(pr.getRepository());
+                  SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                  ContentSource cs = bestAuth.getContentSource();
+                  assertNotNull(cs);
+                  assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+              });
+
+        SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(15004L).orElse(null);
+        assertNotNull(ptfRepo, "PTF repo not found");
+
+        SUSEProduct tools = SUSEProductFactory.lookupByProductId(2113L);
+        tools.getRepositories().stream()
+             .filter(pr -> pr.getRootProduct().equals(ubuntu))
+             .filter(pr -> Arrays.asList(15004L, 15005L).contains(pr.getRepository().getSccId()))
+             .forEach(pr -> {
+                 assertNotNull(pr.getRepository());
+                 // The PTF repo
+                 if (pr.getRepository().getSccId().equals(15004L)) {
+                     assertEquals("a123456-ubuntu-manager-client-2004-ptfs-amd64", pr.getChannelLabel());
+                     assertEquals("A123456 ubuntu-manager-client 2004 PTFs amd64", pr.getChannelName());
+                 }
+                 else {
+                     fail("Unexpected repository " + pr);
+                 }
+                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                 ContentSource cs = bestAuth.getContentSource();
+                 assertNotNull(cs);
+                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+             });
     }
 
     /**

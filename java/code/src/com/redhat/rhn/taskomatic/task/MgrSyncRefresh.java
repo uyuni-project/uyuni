@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -100,9 +101,17 @@ public class MgrSyncRefresh extends RhnJavaJob {
                 try {
                     ContentSyncManager csm = new ContentSyncManager();
                     csm.updateChannelFamilies(csm.readChannelFamilies());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
                     csm.updateSUSEProducts(csm.getProducts());
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
                     csm.updateRepositories(null);
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
                     csm.updateSubscriptions();
+                    HibernateFactory.commitTransaction();
+                    HibernateFactory.closeSession();
                 }
                 catch (ContentSyncException e) {
                     log.error("Error during mgr-sync refresh", e);

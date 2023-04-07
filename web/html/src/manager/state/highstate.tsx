@@ -61,13 +61,14 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
-              {t("Action has been successfully added to the ")}
-              <ActionChainLink id={data}>{this.state.actionChain ? this.state.actionChain.text : ""}</ActionChainLink>
+              {t(
+                "Action has been successfully added to the action chain '{0}'.",
+                <ActionChainLink id={data}>{this.state.actionChain.text}</ActionChainLink>
+              )}
             </span>
           ) : (
             <span>
-              {t("Applying the highstate has been ")}
-              <ActionLink id={data}>{t("scheduled.")}</ActionLink>
+              {t("Applying the highstate has been {0}.", <ActionLink id={data}>{t("scheduled")}</ActionLink>)}
             </span>
           )
         );

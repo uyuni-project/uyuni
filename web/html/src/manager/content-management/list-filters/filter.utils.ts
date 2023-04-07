@@ -58,6 +58,8 @@ export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, proj
     const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : "";
     requestForm.criteriaValue = `${filterForm.moduleName || ""}${streamName}`;
     requestForm.rule = "allow";
+  } else if (filterForm.type === clmFilterOptions.PTF_ALL.key) {
+    requestForm.criteriaValue = "all";
   }
 
   return requestForm;

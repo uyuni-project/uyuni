@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
-import java.util.Optional;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -28,7 +26,7 @@ import javax.persistence.Transient;
  * {@link com.redhat.rhn.domain.rhnpackage.Package} objects instead, these filters must be replaced with
  * {@link PackageFilter} counterparts.
  *
- * @see com.redhat.rhn.manager.contentmgmt.DependencyResolver#resolveModularDependencies
+ * @see com.redhat.rhn.manager.contentmgmt.DependencyResolver
  */
 @Entity
 @DiscriminatorValue("module")
@@ -66,20 +64,5 @@ public class ModuleFilter extends ContentFilter<Module> {
     @Transient
     public EntityType getEntityType() {
         return EntityType.MODULE;
-    }
-
-    @Override
-    public Optional<PackageFilter> asPackageFilter() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ErrataFilter> asErrataFilter() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ModuleFilter> asModuleFilter() {
-        return Optional.of(this);
     }
 }

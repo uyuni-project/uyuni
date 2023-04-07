@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PTF;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_EQ_EVR;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS_PKG_GE_EVR;
@@ -35,6 +36,10 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MODULE_NONE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PTF_ALL;
+import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_ALL;
+import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_NUMBER;
+import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_PACKAGE;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -100,7 +105,16 @@ public class FilterCriteria {
         Triple.of(MODULE, EQUALS, "module_stream"),
         Triple.of(MODULE, MODULE_NONE, "module_stream"),
         Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"),
-        Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name")
+        Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name"),
+        Triple.of(PTF, PTF_ALL, FIELD_PTF_ALL),
+        Triple.of(PTF, LOWER, FIELD_PTF_NUMBER),
+        Triple.of(PTF, LOWEREQ, FIELD_PTF_NUMBER),
+        Triple.of(PTF, EQUALS, FIELD_PTF_NUMBER),
+        Triple.of(PTF, GREATEREQ, FIELD_PTF_NUMBER),
+        Triple.of(PTF, GREATER, FIELD_PTF_NUMBER),
+        Triple.of(PTF, EQUALS, FIELD_PTF_PACKAGE),
+        Triple.of(PTF, MATCHES, FIELD_PTF_PACKAGE),
+        Triple.of(PTF, CONTAINS, FIELD_PTF_PACKAGE)
     );
 
     /**
@@ -123,9 +137,10 @@ public class FilterCriteria {
         MATCHES("matches"),
         PROVIDES_NAME("provides_name"),
         CONTAINS_PROVIDES_NAME("contains_provides_name"),
-        MODULE_NONE("module_none");
+        MODULE_NONE("module_none"),
+        PTF_ALL("ptf_all");
 
-        private String label;
+        private final String label;
 
         Matcher(String labelIn) {
             this.label = labelIn;

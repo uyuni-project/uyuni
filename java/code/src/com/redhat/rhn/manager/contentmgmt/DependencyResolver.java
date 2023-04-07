@@ -73,8 +73,8 @@ import java.util.stream.Stream;
  */
 public class DependencyResolver {
 
-    private ContentProject project;
-    private ModulemdApi modulemdApi;
+    private final ContentProject project;
+    private final ModulemdApi modulemdApi;
 
     /**
      * Initialize a new instance with a content project and a {@link ModulemdApi} instance

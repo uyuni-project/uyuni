@@ -109,6 +109,24 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
+     * Check if this package is the main one of a PTF.
+     *
+     * @return true if the package is PTF master package
+     */
+    public boolean isMasterPtfPackage() {
+        return provides.stream().anyMatch(p -> SpecialCapabilityNames.PTF.equals(p.getCapability().getName()));
+    }
+
+    /**
+     * Check if the package is part of a PTF.
+     *
+     * @return true if the package is part of PTF
+     */
+    public boolean isPartOfPtf() {
+        return provides.stream().anyMatch(p -> SpecialCapabilityNames.PTF_PACKAGE.equals(p.getCapability().getName()));
+    }
+
+    /**
      * @return Returns the provides.
      */
     public Set<PackageProvides> getProvides() {

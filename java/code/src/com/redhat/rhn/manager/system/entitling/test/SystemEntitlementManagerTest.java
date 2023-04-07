@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.system.entitling.test;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -17,17 +17,22 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
- * JSON wrapper class to hold paginated data
+ * Immutable JSON wrapper class to hold paginated data.
  *
  * @param <T> the type of the data items
+ * @param <K> the type of the identifiers
  */
-public class PagedDataResultJson<T> {
+public class PagedDataResultJson<T, K> {
 
-    private List<T> items;
-    private long total;
+    private final List<T> items;
+    private final long total;
+
+    private final Set<K> selectedIds;
 
     /**
      * Create an instance from a {@link DataResult}
@@ -35,7 +40,7 @@ public class PagedDataResultJson<T> {
      * @param data the current page of data
      */
     public PagedDataResultJson(DataResult<T> data) {
-        this(data, data.getTotalSize());
+        this(data, data.getTotalSize(), Collections.emptySet());
     }
 
     /**
@@ -45,7 +50,53 @@ public class PagedDataResultJson<T> {
      * @param totalIn total number of items
      */
     public PagedDataResultJson(List<T> data, long totalIn) {
+        this(data, totalIn, Collections.emptySet());
+    }
+
+    /**
+     * Create an instance from a {@link DataResult}
+     *
+     * @param data the current page of data
+     * @param selectedIdsIn the current set of selected identifiers
+     */
+    public PagedDataResultJson(DataResult<T> data, Set<K> selectedIdsIn) {
+        this(data, data.getTotalSize(), selectedIdsIn);
+    }
+
+    /**
+     * Create an instance from a list and the total number of items
+     *
+     * @param data the current page of data
+     * @param totalIn total number of items
+     * @param selectedIdsIn the current set of selected identifiers
+     */
+    public PagedDataResultJson(List<T> data, long totalIn, Set<K> selectedIdsIn) {
         items = data;
         total = totalIn;
+        selectedIds = selectedIdsIn;
+    }
+
+    /**
+     * Return the list of items of this result set. They list may be partial as the full result set is paged.
+     * @return the list of items
+     */
+    public List<T> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+
+    /**
+     * The total items of this result set.
+     * @return the total number of items in the result set.
+     */
+    public long getTotal() {
+        return total;
+    }
+
+    /**
+     * The set of ids of the items current selected.
+     * @return the set of selected item ids
+     */
+    public Set<K> getSelectedIds() {
+        return Collections.unmodifiableSet(selectedIds);
     }
 }

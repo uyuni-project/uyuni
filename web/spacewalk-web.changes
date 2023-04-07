@@ -1,12 +1,20 @@
-- Fix datetime picker appearing behind modal edge
+- Add support to add optional channels via webUI
+- Added pages to install and remove ptf
+- Added CLM filters to match product temporary fixes packages
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
-- Fix datepicker layout shift on Highstate pages
+
+-------------------------------------------------------------------
+Mon Apr 03 07:50:02 UTC 2023 - marina.latini@suse.com
+
+- version 4.3.29-1
+  * Fix datepicker appearing behind modal edge (bsc#1209703)
+  * Fix datepicker layout shift on Highstate pages
 
 -------------------------------------------------------------------
 Wed Feb 22 14:48:24 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.28-1
-  * Deprecate jQuery datepicker, integrate React datepicker
+  * Deprecate jQuery datepicker, integrate React datepicker (bsc#1209689)
   * Fix UI inconsistencies in susemanager-light and susemanager-dark
     theme
   * Fix CLM environments UI for environment labels containing dots (bsc#1207838)

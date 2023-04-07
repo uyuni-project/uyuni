@@ -24,6 +24,9 @@ Feature: Very first settings
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Wait for refresh of list of products to finish
+    When I wait until mgr-sync refresh is finished
+
   Scenario: Create testing username
     When I follow the left menu "Users > User List > Active"
     And I follow "Create User"
@@ -49,9 +52,6 @@ Feature: Very first settings
     And I click on "Update"
     Then I should see a "User information updated" text
     And I should see a "testing" text
-
-  Scenario: Wait for refresh of list of products to finish
-    When I wait until mgr-sync refresh is finished
 
 @server_http_proxy
   Scenario: Setup HTTP proxy

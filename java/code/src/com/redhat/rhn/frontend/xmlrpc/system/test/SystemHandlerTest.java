@@ -1065,8 +1065,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Action action = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
         ActionFactory.save(action);
 
-        // Ensure the other actions are created later
+        // Commit in this test is mandatory as creation date keeps updating while the object is not actually stored
+        // in the database
         commitAndCloseSession();
+        commitHappened();
+
         Thread.sleep(2_000);
         final Date earliestDate = new Date();
 
@@ -1538,7 +1541,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
 
         ActionFactory.save(action);
-        commitAndCloseSession();
+        clearSession();
 
         // Retrieve the action event detail
         final int sid = server.getId().intValue();
@@ -2297,6 +2300,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
         commitAndCloseSession();
+        commitHappened();
         handler.scheduleSyncPackagesWithSystem(admin, s1.getId().
                         intValue(), s2.getId().intValue(), packagesToSync,
                 new Date());
@@ -2875,6 +2879,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testGetInstalledProducts() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        admin = TestUtils.reload(admin);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         assertNotNull(server);

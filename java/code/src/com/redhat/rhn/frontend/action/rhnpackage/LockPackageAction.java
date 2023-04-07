@@ -119,8 +119,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
 
         SessionSetHelper helper = new SessionSetHelper(request);
-        if (isSubmitted(form)) {
-            // if its one of the Dispatch actions handle it..
+        if (isSubmitted(form) && request.getParameter("dispatch") != null) {
+            // if its one of the Dispatch actions handle it...
             helper.updateSet(pkgsToSelect, LIST_NAME);
             Date scheduleDate = this.getStrutsDelegate().readScheduleDate(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);

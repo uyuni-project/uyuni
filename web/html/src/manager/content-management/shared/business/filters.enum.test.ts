@@ -223,4 +223,71 @@ describe("Testing filters enum and descriptions", () => {
 
     expect(getClmFilterDescription(filter)).toEqual("my module filter: disable all modules");
   });
+
+  test("test filter ptf all description", () => {
+    const filter = {
+      name: "filter all ptf",
+      criteriaKey: "ptf_all",
+      criteriaValue: "ALL",
+      entityType: "ptf",
+      rule: "deny",
+      matcher: "ptf_all",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter all ptf: deny ptf all program temporary fixes ALL (ptf_all)"
+    );
+  });
+
+  test("test filter ptf number description", () => {
+    const filter = {
+      name: "filter by ptf number",
+      criteriaKey: "ptf_number",
+      criteriaValue: "123456",
+      entityType: "ptf",
+      rule: "deny",
+      matcher: "lower",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual("filter by ptf number: deny ptf lower than 123456 (ptf_number)");
+
+    filter.matcher = "lowereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by ptf number: deny ptf lower or equal than 123456 (ptf_number)"
+    );
+
+    filter.matcher = "equals";
+    expect(getClmFilterDescription(filter)).toEqual("filter by ptf number: deny ptf equal 123456 (ptf_number)");
+
+    filter.matcher = "greater";
+    expect(getClmFilterDescription(filter)).toEqual("filter by ptf number: deny ptf greater than 123456 (ptf_number)");
+
+    filter.matcher = "greatereq";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by ptf number: deny ptf greater or equal than 123456 (ptf_number)"
+    );
+  });
+
+  test("test filter ptf number description", () => {
+    const filter = {
+      name: "filter by fixed package",
+      criteriaKey: "ptf_package",
+      criteriaValue: "vim-data",
+      entityType: "ptf",
+      rule: "deny",
+      matcher: "equals",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual("filter by fixed package: deny ptf equal vim-data (ptf_package)");
+
+    filter.matcher = "contains";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by fixed package: deny ptf containing vim-data (ptf_package)"
+    );
+
+    filter.matcher = "matches";
+    expect(getClmFilterDescription(filter)).toEqual(
+      "filter by fixed package: deny ptf matches regular expression vim-data (ptf_package)"
+    );
+  });
 });
