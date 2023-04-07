@@ -13,11 +13,14 @@ const targetTypeToString = (targetType?: string) => {
 const targetNameLink = (targetName?: string, targetType?: string, targetId?: number) => {
   switch (targetType) {
     case "MINION":
-      return <a href={"/rhn/systems/details/Overview.do?sid=" + targetId}>{targetName}</a>;
+      return <a href={"/rhn/manager/systems/details/recurring-actions?sid=" + targetId}>{targetName}</a>;
     case "GROUP":
-      return <a href={"/rhn/groups/GroupDetail.do?sgid=" + targetId}>{targetName}</a>;
+      return <a href={"/rhn/manager/groups/details/recurring-actions?sgid=" + targetId}>{targetName}</a>;
     case "ORG":
-      return <a href={"/rhn/systems/details/Overview.do?sid=" + targetId}>{targetName}</a>;
+      if (window.JSONMenu.filter((item) => item.label === "Admin").length) {
+        return <a href={"/rhn/manager/multiorg/recurring-actions?oid=" + targetId}>{targetName}</a>;
+      }
+      return <a href={"/rhn/manager/yourorg/recurring-actions"}>{targetName}</a>;
   }
   return null;
 };
