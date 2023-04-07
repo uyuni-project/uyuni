@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:22+0200\n"
+"POT-Creation-Date: 2023-04-07 15:17+0200\n"
 "PO-Revision-Date: 2021-10-15 12:11+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/"
@@ -150,6 +150,8 @@ msgid "Back"
 msgstr ""
 
 #: ../html/src/components/config-channels.tsx:284
+#: ../html/src/components/package/PackageListActionScheduler.tsx:176
+#: ../html/src/manager/admin/setup/products/products.tsx:1160
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
@@ -344,13 +346,65 @@ msgstr ""
 msgid "No flavor"
 msgstr ""
 
+#: ../html/src/components/package/PackageListActionScheduler.tsx:83
+#: ../html/src/manager/state/highstate.tsx:65
+msgid "Action has been successfully added to the action chain '{0}'."
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/state/highstate.tsx:71
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+msgid "scheduled"
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+msgid "The action has been {0}."
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:94
+msgid "Unable to clear selection"
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:103
+msgid "Unable to perform action."
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:185
+#: ../html/src/manager/state/recurring-states-edit.tsx:133
+msgid "Back to list"
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:204
+#: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:143
+msgid "Filter by package name"
+msgstr ""
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:210
+#: ../html/src/components/package/PackageListActionScheduler.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
+#: ../html/src/manager/images/image-view-packages.tsx:49
+#: ../html/src/manager/minion/packages/package-states.tsx:343
+msgid "Package Name"
+msgstr ""
+
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
 msgstr ""
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:403
+#: ../html/src/manager/admin/setup/products/products.tsx:436
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -359,7 +413,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:409
+#: ../html/src/manager/admin/setup/products/products.tsx:442
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -376,7 +430,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:414
+#: ../html/src/manager/admin/setup/products/products.tsx:447
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr ""
@@ -505,7 +559,7 @@ msgid "({0} selected)"
 msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/admin/setup/products/products.tsx:363
 msgid "Clear"
 msgstr ""
 
@@ -515,6 +569,7 @@ msgstr ""
 
 #: ../html/src/components/table/TableDataHandler.tsx:352
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
@@ -825,7 +880,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:262
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Setup Wizard"
 msgstr ""
 
@@ -1000,119 +1055,129 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:145
+#: ../html/src/manager/admin/setup/products/products.tsx:147
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:188
+#: ../html/src/manager/admin/setup/products/products.tsx:190
 msgid "The product catalog refresh is running..."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:214
+#: ../html/src/manager/admin/setup/products/products.tsx:216
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:287
+#: ../html/src/manager/admin/setup/products/products.tsx:261
+msgid "Selected channels were scheduled successfully for syncing."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:270
+msgid ""
+"The following channel installations for '{0}' failed. Please check log files."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:292
+#: ../html/src/manager/admin/setup/products/products.tsx:324
 msgid "The product catalog is still refreshing, please wait."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:294
+#: ../html/src/manager/admin/setup/products/products.tsx:326
 msgid "Select some product first."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:303
-#: ../html/src/manager/admin/setup/products/products.tsx:311
+#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:343
 msgid "Add products"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:330
+#: ../html/src/manager/admin/setup/products/products.tsx:362
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:370
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:373
+#: ../html/src/manager/admin/setup/products/products.tsx:406
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:378
+#: ../html/src/manager/admin/setup/products/products.tsx:411
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:388
+#: ../html/src/manager/admin/setup/products/products.tsx:421
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:464
+#: ../html/src/manager/admin/setup/products/products.tsx:498
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:593
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:629
+#: ../html/src/manager/admin/setup/products/products.tsx:669
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
-#: ../html/src/manager/admin/setup/products/products.tsx:1013
+#: ../html/src/manager/admin/setup/products/products.tsx:675
+#: ../html/src/manager/admin/setup/products/products.tsx:1053
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:637
+#: ../html/src/manager/admin/setup/products/products.tsx:677
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:644
+#: ../html/src/manager/admin/setup/products/products.tsx:684
 #: ../html/src/manager/packages/list.tsx:156
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:815
+#: ../html/src/manager/admin/setup/products/products.tsx:855
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:823
+#: ../html/src/manager/admin/setup/products/products.tsx:863
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:831
+#: ../html/src/manager/admin/setup/products/products.tsx:871
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:856
+#: ../html/src/manager/admin/setup/products/products.tsx:896
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:857
+#: ../html/src/manager/admin/setup/products/products.tsx:897
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:869
+#: ../html/src/manager/admin/setup/products/products.tsx:909
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:898
+#: ../html/src/manager/admin/setup/products/products.tsx:938
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1120,7 +1185,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:916
+#: ../html/src/manager/admin/setup/products/products.tsx:956
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1128,51 +1193,55 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:998
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:961
+#: ../html/src/manager/admin/setup/products/products.tsx:1001
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:964
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:967
+#: ../html/src/manager/admin/setup/products/products.tsx:1007
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1028
+#: ../html/src/manager/admin/setup/products/products.tsx:1067
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1060
+#: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1065
+#: ../html/src/manager/admin/setup/products/products.tsx:1138
+msgid "Select the optional channels you wish to add and confirm."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1072
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1180
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1090
+#: ../html/src/manager/admin/setup/products/products.tsx:1183
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1093
+#: ../html/src/manager/admin/setup/products/products.tsx:1186
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1096
+#: ../html/src/manager/admin/setup/products/products.tsx:1189
 msgid "sync failed"
 msgstr ""
 
@@ -1325,7 +1394,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:129
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
@@ -1740,7 +1809,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:207
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
 msgid "Stream"
 msgstr ""
 
@@ -1820,15 +1889,6 @@ msgstr ""
 msgid "Matcher"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
-#: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/minion/packages/package-states.tsx:343
-msgid "Package Name"
-msgstr ""
-
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 msgid "Epoch"
@@ -1864,7 +1924,7 @@ msgid "Product Enhancement Advisory"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Type"
 msgstr ""
 
@@ -1873,7 +1933,7 @@ msgid "Issued"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:165
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr ""
@@ -1895,21 +1955,26 @@ msgid "Package Provides Name"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:147
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "Number"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:273
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
 msgid "Rule"
 msgstr ""
 
@@ -2012,158 +2077,178 @@ msgstr ""
 msgid "Patch"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
+msgid "Product Temporary Fix"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:42
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "containing"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:50
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:115
 msgid "matches"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 msgid "regular expression matches package name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:55
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:100
 msgid "equals"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 msgid "contains package name equals"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:60
 msgid "version lower than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
 msgid "contains package with epoch/version/release lower than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:65
 msgid "version lower or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "contains package with epoch/version/release lower or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:70
 msgid "version equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
 msgid "contains package with epoch/version/release equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:75
 msgid "version greater or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:76
 msgid "contains package with epoch/version/release greater or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
 msgid "contains package with epoch/version/release greater than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "contains package which provides name equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:90
 msgid "lower"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:95
 msgid "lower or equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:105
 msgid "greater or equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:110
 msgid "greater"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater than"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "matches regular expression"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:120
 msgid "provides name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 msgid "provides name equal"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:122
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
 msgid "none (disable modularity)"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
+msgid "all"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
+msgid "all program temporary fixes"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:153
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
 msgid "Advisory Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:171
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 msgid "Keyword"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:177
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Issue date"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:183
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Contains Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:189
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:195
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+msgid "All"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
+msgid "Fixes Package Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
 msgid "disable all modules"
 msgstr ""
 
@@ -2520,7 +2605,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/state/highstate.tsx:139
+#: ../html/src/manager/state/highstate.tsx:140
 msgid "Highstate"
 msgstr ""
 
@@ -2591,16 +2676,6 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:210
 msgid "Building the image has been "
-msgstr ""
-
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
-msgid "scheduled"
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:241
@@ -3078,6 +3153,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-packages.tsx:54
 #: ../html/src/manager/minion/packages/package-states.tsx:323
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:42
 msgid "Installed"
 msgstr ""
 
@@ -3683,7 +3759,7 @@ msgid "Loading playbook contents.."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/highstate.tsx:119
 #: ../html/src/manager/state/recurring-states-edit.tsx:115
 msgid "Test mode"
 msgstr ""
@@ -3807,6 +3883,71 @@ msgstr ""
 msgid "Applying the packages states has been "
 msgstr ""
 
+#: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
+#: ../html/src/manager/notifications/notification-messages.tsx:520
+msgid "Summary"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
+msgid "Install Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are available for installation "
+"on this system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
+msgid "No Program Temporary Fixes (PTFs) available."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
+msgid "Install PTFs"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
+msgid "Confirm Program Temporary Fixes (PTFs) Installation"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
+msgid "Remove Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
+msgid ""
+"The following Program Temporary Fixes (PTFs) are currently installed on this "
+"system. "
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
+msgid "No Program Temporary Fixes (PTFs) installed."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
+msgid "Remove PTFs"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
+msgid "Confirm Program Temporary Fixes (PTFs) Removal"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
+msgid "Program Temporary Fixes (PTFs)"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
+msgid "There are no relevant actions that can be executed on this system."
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
+msgid "List / Remove Installed PTFs"
+msgstr ""
+
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
+msgid "Install PTF"
+msgstr ""
+
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
 msgstr ""
@@ -3905,10 +4046,6 @@ msgstr ""
 msgid "Severity"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:520
-msgid "Summary"
-msgstr ""
-
 #: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Created"
 msgstr ""
@@ -3975,10 +4112,6 @@ msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:125
 msgid "package"
-msgstr ""
-
-#: ../html/src/manager/packages/list.tsx:143
-msgid "Filter by package name"
 msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:144
@@ -4381,23 +4514,15 @@ msgstr ""
 msgid "System Group"
 msgstr ""
 
-#: ../html/src/manager/state/highstate.tsx:64
-msgid "Action has been successfully added to the "
+#: ../html/src/manager/state/highstate.tsx:71
+msgid "Applying the highstate has been {0}."
 msgstr ""
 
-#: ../html/src/manager/state/highstate.tsx:69
-msgid "Applying the highstate has been "
-msgstr ""
-
-#: ../html/src/manager/state/highstate.tsx:70
-msgid "scheduled."
-msgstr ""
-
-#: ../html/src/manager/state/highstate.tsx:126
+#: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
 msgstr ""
 
-#: ../html/src/manager/state/highstate.tsx:135
+#: ../html/src/manager/state/highstate.tsx:136
 msgid "Create Recurring"
 msgstr ""
 
@@ -4461,10 +4586,6 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:123
 msgid "Create "
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:133
-msgid "Back to list"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:141
