@@ -227,6 +227,8 @@ artifacts:
     repository: Uyuni_Other
   - artifact: salt-netapi-client
     repository: Uyuni
+  - artifact: saxon9
+    repository: Leap
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
@@ -285,12 +287,6 @@ artifacts:
   - artifact: woodstox-core-asl
     package: woodstox
     repository: Uyuni_Other
-  - artifact: xalan-j2
-    jar: xalan-j2-[0-9.]+
-    repository: Leap
-  - artifact: xalan-j2-serializer
-    package: xalan-j2
-    repository: Leap
   - artifact: xerces-j2
     repository: Leap
   - artifact: xmlsec

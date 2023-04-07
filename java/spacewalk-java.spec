@@ -230,7 +230,6 @@ Requires:       system-lock-formula
 Requires:       tomcat-lib >= 7
 Requires:       tomcat-taglibs-standard
 Requires:       woodstox
-Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
@@ -375,7 +374,6 @@ Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
 Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard
-Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)

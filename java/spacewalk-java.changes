@@ -1,3 +1,4 @@
+- sonarlint fix: TransformerFactory requires all external protocol disabled
 - set jasper development mode to false (bsc#1206191)
 - fixed select all for ptf packages list
 - added SLES 12 support for ptf removal

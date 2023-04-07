@@ -446,7 +446,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   timezone-java
   tk
   umoci
-  xalan-j2
   xerces-j2
   xhost
   xkeyboard-config

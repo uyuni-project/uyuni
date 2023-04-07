@@ -70,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -463,9 +464,15 @@ public class ScapManager extends BaseManager {
         StreamSource in = new StreamSource(resultsXml);
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
-            TransformerFactory factory = TransformerFactory.newInstance();
+            TransformerFactory factory = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl",null);
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
+        }
+        catch (java.lang.IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unrecognized configuration feature: " + e.getMessage());
         }
         catch (javax.xml.transform.TransformerException e) {
             throw new RhnRuntimeException("XSL transform failed", e);
