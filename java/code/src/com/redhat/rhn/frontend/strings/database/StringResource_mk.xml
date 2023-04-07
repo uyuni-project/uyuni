@@ -384,7 +384,7 @@
       </trans-unit>
       <trans-unit id="America/Sao_Paulo" xml:space="preserve">
         <source>(GMT-0300) Brazil</source>
-        <target/>
+        <target>(GMT-0300) Бразил</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
