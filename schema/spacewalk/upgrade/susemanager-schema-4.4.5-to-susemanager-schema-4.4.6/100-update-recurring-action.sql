@@ -19,12 +19,44 @@ CREATE TABLE IF NOT EXISTS suseInternalState
 );
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 1, 'certs', 'Update certificates'
+         SELECT 1, 'certs', 'Certificates'
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='certs');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 2, 'channels', 'Update Software Channels'
+         SELECT 2, 'channels', 'Channels'
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='channels');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 3, 'hardware.profileupdate', 'Hardware Profileupdate'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='hardware.profileupdate');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 4, 'packages', 'Packages'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 5, 'packages.profileupdate', 'Package Profileupdate'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages.profileupdate');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 6, 'util.syncbeacons', 'Sync Beacons'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncbeacons');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 7, 'util.synccustomall', 'Sync Custom'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.synccustomall');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 8, 'util.syncgrains', 'Sync Grains'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncgrains');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 9, 'util.syncmodules', 'Sync Modules'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncmodules');
+
+INSERT INTO suseInternalState (id, name, label)
+         SELECT 10, 'util.syncstates', 'Sync States'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncstates');
 
 CREATE TABLE IF NOT EXISTS suseRecurringHighstate
 (
@@ -44,7 +76,7 @@ INSERT INTO suseRecurringHighstate (rec_id, test_mode)
 ALTER TABLE suseRecurringAction DROP COLUMN IF EXISTS test_mode;
 
 ALTER TABLE suseRecurringAction ADD COLUMN IF NOT EXISTS action_type VARCHAR(32) NULL;
-UPDATE suseRecurringAction SET action_type = 'HIGHSTATE' where action_type IS NULL;
+UPDATE suseRecurringAction SET action_type = 'HIGHSTATE' WHERE action_type IS NULL;
 ALTER TABLE suseRecurringAction ALTER COLUMN action_type SET NOT NULL;
 
 CREATE TABLE IF NOT EXISTS suseRecurringState
