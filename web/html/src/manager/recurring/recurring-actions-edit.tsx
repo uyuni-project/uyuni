@@ -242,7 +242,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
               {t("Configure states to execute")}
               &nbsp;
             </h3>
-            <StatesPicker matchUrl={this.matchUrl} saveRequest={this.onSaveStates} />
+            <StatesPicker type={"state"} matchUrl={this.matchUrl} saveRequest={this.onSaveStates} />
           </span>
         )}
       </InnerPanel>
