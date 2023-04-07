@@ -14,7 +14,7 @@ import { Toggler } from "components/toggler";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import { inferEntityParams, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import { inferEntityParams, isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 import { RecurringActionsSearch } from "./search/recurring-actions-search";
 
 type Props = {
@@ -143,7 +143,14 @@ class RecurringActionsList extends React.Component<Props, State> {
               <Column
                 columnKey="active"
                 header={t("Active")}
-                cell={(row) => <Toggler value={row.active} className="btn" handler={() => this.toggleActive(row)} />}
+                cell={(row) => (
+                  <Toggler
+                    value={row.active}
+                    disabled={isReadOnly(row)}
+                    className="btn"
+                    handler={() => (isReadOnly(row) ? null : this.toggleActive(row))}
+                  />
+                )}
               />
               <Column
                 columnClass="text-center"
@@ -201,6 +208,7 @@ class RecurringActionsList extends React.Component<Props, State> {
                     <Button
                       className="btn-default btn-sm"
                       title={t("Edit")}
+                      disabled={isReadOnly(row)}
                       icon="fa-edit"
                       handler={() => {
                         this.props.onEdit(row);
@@ -209,6 +217,7 @@ class RecurringActionsList extends React.Component<Props, State> {
                     <ModalButton
                       className="btn-default btn-sm"
                       title={t("Delete")}
+                      disabled={isReadOnly(row)}
                       icon="fa-trash"
                       target="delete-modal"
                       item={row}

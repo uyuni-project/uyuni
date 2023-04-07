@@ -33,4 +33,9 @@ const inferEntityParams = () => {
   return "";
 };
 
-export { targetTypeToString, targetNameLink, inferEntityParams };
+const isReadOnly = (item) => {
+  const params = inferEntityParams().split("/");
+  return !(params[1] === item.targetType && params[2] === item.targetId.toString());
+};
+
+export { targetTypeToString, targetNameLink, inferEntityParams, isReadOnly };
