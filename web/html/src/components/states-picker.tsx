@@ -2,6 +2,7 @@ import * as React from "react";
 
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
+import _unionBy from "lodash/unionBy";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
@@ -68,11 +69,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
   init = () => {
     Network.get(this.props.matchUrl()).then((data) => {
+      data = this.getSortedList(data);
       this.setState({
         channels: data,
         search: {
           filter: this.state.filter,
-          results: this.getSortedList(data),
+          results: data,
         },
       });
     });
@@ -109,7 +111,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
         this.setState({
           changed: new Map(), // clear changed
-          channels: this.getSortedList(data), // set data for system tab
+          // Update the channels with the new data
+          channels: _unionBy(
+            data,
+            this.state.channels.map((c) => Object.assign(c, { assigned: false, position: undefined })),
+            "name"
+          ),
           search: {
             filter: this.state.search.filter,
             results: this.getSortedList(newSearchResults),
@@ -139,17 +146,30 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   search = () => {
     return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
-        Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
-          this.setState({
-            search: {
-              filter: this.state.filter,
-              results: this.getSortedList(data),
-            },
-          });
-          this.clearMessages();
-        });
+        // Since we don't commit our changes to the backend in case of state type we perform a local search
+        this.props.type === "state"
+          ? this.stateTypeSearch()
+          : Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
+              this.setState({
+                search: {
+                  filter: this.state.filter,
+                  results: this.getSortedList(data),
+                },
+              });
+              this.clearMessages();
+            });
       }
     });
+  };
+
+  stateTypeSearch = () => {
+    this.setState({
+      search: {
+        filter: this.state.filter,
+        results: this.state.channels.filter((c) => c.name.includes(this.state.filter)),
+      },
+    });
+    this.clearMessages();
   };
 
   addChanged = (original, key, selected) => {
