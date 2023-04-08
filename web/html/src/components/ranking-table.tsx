@@ -117,11 +117,9 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
   render() {
     return (
-      <div>
+      <div ref={(node) => (this.node = node)}>
         {this.state.items.length > 0 ? (
-          <div ref={(node) => (this.node = node)} className="list-group">
-            {this.getElements()}
-          </div>
+          <div className="list-group">{this.getElements()}</div>
         ) : (
           <div className="alert alert-info">{this.props.emptyMsg || this.defaultEmptyMsg}</div>
         )}
