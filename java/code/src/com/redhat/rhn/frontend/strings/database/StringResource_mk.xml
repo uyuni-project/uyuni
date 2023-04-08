@@ -293,7 +293,7 @@
       </trans-unit>
       <trans-unit id="Australia/Darwin" xml:space="preserve">
         <source>(GMT+0930) Australia (Central/Darwin)</source>
-        <target/>
+        <target>(GMT+0930) Австралија (Централна/Дарвин)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
