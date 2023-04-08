@@ -96,6 +96,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
   save = () => {
     const channels = this.state.assigned;
+    if (this.props.type === "state" && !channels.length) {
+      this.setMessages(MessagesUtils.error(t("State configuration must not be empty")));
+      this.setState({ changed: new Map() });
+      this.hideRanking();
+      return;
+    }
     const request = this.props.saveRequest(channels).then(
       (data, textStatus, jqXHR) => {
         const newSearchResults = this.state.search.results.map((channel) => {
