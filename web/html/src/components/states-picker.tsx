@@ -1,5 +1,8 @@
 import * as React from "react";
 
+import _partition from "lodash/partition";
+import _sortBy from "lodash/sortBy";
+
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -69,7 +72,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         channels: data,
         search: {
           filter: this.state.filter,
-          results: data,
+          results: this.getSortedList(data),
         },
       });
     });
@@ -95,19 +98,21 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
       (data, textStatus, jqXHR) => {
         const newSearchResults = this.state.search.results.map((channel) => {
           const changed = this.state.changed.get(channelKey(channel));
+          // We want to make sure the search results are updated with the changes. If there was a change
+          // pick the updated value from the response if not we keep the original.
           if (changed !== undefined) {
-            return changed.value;
+            return data.filter((c) => c.label === changed.value.label)[0] || changed.value;
           } else {
-            return channel;
+            return data.filter((c) => c.label === channel.label)[0] || channel;
           }
         });
 
         this.setState({
           changed: new Map(), // clear changed
-          channels: data, // set data for system tab
+          channels: this.getSortedList(data), // set data for system tab
           search: {
             filter: this.state.search.filter,
-            results: newSearchResults,
+            results: this.getSortedList(newSearchResults),
           },
         });
         this.setMessages(MessagesUtils.info(t("State assignments have been saved.")));
@@ -126,6 +131,11 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     });
   };
 
+  getSortedList = (data) => {
+    const [assigned, unassigned] = _partition(data, (d) => d.assigned);
+    return _sortBy(assigned, "position").concat(_sortBy(unassigned, (n) => n.name.toLowerCase()));
+  };
+
   search = () => {
     return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
@@ -133,7 +143,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           this.setState({
             search: {
               filter: this.state.filter,
-              results: data,
+              results: this.getSortedList(data),
             },
           });
           this.clearMessages();
