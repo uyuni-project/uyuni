@@ -135,6 +135,10 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                 </tr>
               )}
               <tr>
+                <td>{t("Action type")}:</td>
+                <td>{data.actionTypeDescription}</td>
+              </tr>
+              <tr>
                 <td>{t("Target type")}:</td>
                 <td>{targetTypeToString(data.targetType)}</td>
               </tr>
