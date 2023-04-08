@@ -203,7 +203,9 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
           content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
           onConfirm={() => this.deleteSchedule(this.props.data)}
         />
-        {window.entityType === "NONE" ? null : <DisplayHighstate minions={this.state.minions} />}
+        {window.entityType === "NONE" || this.props.data.actionType !== "HIGHSTATE" ? null : (
+          <DisplayHighstate minions={this.state.minions} />
+        )}
       </TopPanel>
     );
   }
