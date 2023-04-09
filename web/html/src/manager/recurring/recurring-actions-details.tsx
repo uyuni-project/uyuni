@@ -1,16 +1,37 @@
 import * as React from "react";
 
+import _sortBy from "lodash/sortBy";
+
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, Utils as MessagesUtils } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { Table } from "components/table/Table";
 
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
 import { isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+
+function channelIcon(channel) {
+  let iconClass, iconTitle, iconStyle;
+  if (channel.type === "state") {
+    iconClass = "fa spacewalk-icon-salt-add";
+    iconTitle = t("State Configuration Channel");
+  } else if (channel.type === "internal_state") {
+    iconClass = "fa spacewalk-icon-salt-add";
+    iconTitle = t("Internal State");
+    iconStyle = { border: "1px solid black" };
+  } else {
+    iconClass = "fa spacewalk-icon-software-channels";
+    iconTitle = t("Normal Configuration Channel");
+  }
+
+  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
+}
 
 type RecurringActionsDetailsProps = {
   data?: any;
@@ -209,6 +230,43 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
         />
         {window.entityType === "NONE" || this.props.data.actionType !== "HIGHSTATE" ? null : (
           <DisplayHighstate minions={this.state.minions} />
+        )}
+        {!(this.props.data.actionType === "CUSTOMSTATE" && this.state.details) ? null : (
+          <div className="row">
+            <h3>{t("State configuration for {0}", this.props.data.targetName)}</h3>
+            <Table
+              identifier={(item) => item.position}
+              selectable={false}
+              data={_sortBy(this.state.details.states, "position")}
+              initialItemsPerPage={0}
+            >
+              <Column header={t("Order")} columnKey="position" cell={(row) => row.position} />
+              <Column
+                header={t("State Name")}
+                columnKey="name"
+                cell={(row) => (
+                  <>
+                    {channelIcon(row)}{" "}
+                    {row.type !== "internal_state" ? (
+                      <a href={"/rhn/configuration/ChannelOverview.do?ccid=" + row.id}>{row.name}</a>
+                    ) : (
+                      row.name
+                    )}
+                  </>
+                )}
+              />
+              <Column header={t("State Label")} columnKey="typeName" cell={(row) => row.label} />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                header={t("Description")}
+                columnKey="description"
+                cell={(row) => (
+                  <i className="fa fa-info-circle fa-1-5x" style={{ color: "royalblue" }} title={row.description} />
+                )}
+              />
+            </Table>
+          </div>
         )}
       </TopPanel>
     );
