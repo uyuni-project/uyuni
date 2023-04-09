@@ -266,6 +266,8 @@ public class RecurringActionController {
         }
         else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(action.getActionType())) {
             dto.setTest(((RecurringState) action.getRecurringActionType()).isTestMode());
+            dto.setStates(StateConfigJson.listOrderedStates(
+                    ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
         return dto;
     }

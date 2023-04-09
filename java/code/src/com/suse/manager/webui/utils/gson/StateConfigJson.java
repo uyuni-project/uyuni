@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -84,11 +83,11 @@ public class StateConfigJson extends ConfigChannelJson {
     }
 
     /**
-     * Creates a list of {@link StateConfigJson} objects from a set of {@link RecurringStateConfig}
-     * @param configIn set of states to be included in the list
-     * @return the list of {@link StateConfigJson} objects
+     * Creates a set of {@link StateConfigJson} objects from a set of {@link RecurringStateConfig}
+     * @param configIn set of states to be included in the resulting set
+     * @return the set of {@link StateConfigJson} objects
      */
-    public static List<StateConfigJson> listOrderedStates(Set<RecurringStateConfig> configIn) {
+    public static Set<StateConfigJson> listOrderedStates(Set<RecurringStateConfig> configIn) {
         return configIn.stream().map(config -> {
             if (config instanceof RecurringInternalState) {
                 return new StateConfigJson(
@@ -98,7 +97,7 @@ public class StateConfigJson extends ConfigChannelJson {
                 return new StateConfigJson(
                         ((RecurringConfigChannel) config).getConfigChannel(), config.getPosition().intValue());
             }
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
     }
 
     private static String getDescriptionString(String nameIn) {
