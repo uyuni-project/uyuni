@@ -100,14 +100,21 @@ def parse_command_arguments(command_args, argument_parser, glob=True):
         return leftovers, opts
     except IndexError:
         return None, None
-
-
-# check if any named options were passed to the function, and if so,
-# declare that the function is non-interactive
-# note: because we do it this way, default options are not passed into
-# OptionParser, as it would make determining if any options were passed
-# too complex
+ 
 def is_interactive(options):
+    """
+    check if any named options were passed to the function, and if so,
+    declare that the function is non-interactive
+    note: because we do it this way, default options are not passed into
+    OptionParser, as it would make determining if any options were passed
+    too complex
+
+        Parameters:
+            options (SpacecmdArgumentParser): Object containing the options passed.
+
+        Returns:
+            bool: Returns false if named options were passed
+    """
     for key in options.__dict__:
         if options.__dict__[key]:
             return False
@@ -286,9 +293,8 @@ def prompt_user(prompt, noblank=False, multiline=False):
 
     return userinput
 
-
-# parse time input from the user and return xmlrpclib.DateTime
 def parse_time_input(userinput=''):
+    """Parse time input from the user and return xmlrpclib.DateTime"""
     timestamp = None
 
     if userinput == '' or re.match('now', userinput, re.I):
@@ -370,11 +376,22 @@ def parse_time_input(userinput=''):
     logging.error(_N('Invalid time provided'))
     return None
 
-
-# Compares 2 package objects (dicts) and returns the newest one.
-# If the objects are the same, we return None
 def latest_pkg(pkg1, pkg2, version_key='version',
                release_key='release', epoch_key='epoch'):
+    """
+    Compares 2 package objects (dicts) and returns the newest one.
+
+        Parameters:
+            pkg1 (dict): A dictionary describing a package
+            pkg2 (dict): A dictionary describing a package
+            version_key (str): key to obtain the package version
+            release_key (str): key to obtain the package release
+            epoch_key (str): key to obtain the package epoch
+
+        Returns:
+            pkg (dict): Returns pkg1 if the package passed as first parameter is newer than the package passed as second parameter.
+            Returns pkg2 in case it's the opposite. Finally, returns None if the two packages are the same version
+    """           
     # Sometimes empty epoch is a space, sometimes its an empty string, which
     # breaks the comparison, strip it here to fix
     t1 = (pkg1[epoch_key].strip(), pkg1[version_key], pkg1[release_key])
@@ -388,10 +405,8 @@ def latest_pkg(pkg1, pkg2, version_key='version',
 
     return None
 
-# build a proper RPM name from the various parts
-
-
 def build_package_names(packages):
+    """build a proper RPM name from the various parts"""
     single = False
 
     if not isinstance(packages, list):
@@ -580,14 +595,14 @@ def max_length(items, minimum=0):
 
     return max_size
 
-
-# read in a file
 def read_file(filename):
     """
     Read file.
 
-    :param filename:
-    :return:
+        Parameters:
+            filename (str): A string
+
+        Returns:
     """
     with open(filename, "r") as fhd:
         return fhd.read()
@@ -606,6 +621,12 @@ def parse_str(s, type_to=None):
     >>> d = dict(channelLabel="foo-i386-5")
     >>> d = parse_str('{"channelLabel": "foo-i386-5"}')
     >>> assert d["channelLabel"] == 'foo-i386-5'
+
+        Parameters:
+            s (str): A string that will be parsed as the type type_to
+            type_to (func): An object representing the target type for the argument `str` to be parsed as.
+
+        Returns:
 
     """
     try:
@@ -637,6 +658,13 @@ def parse_list_str(list_s, sep=","):
     >>> assert parse_list_str("a,b,") == ["a", "b", ""]
     >>> assert parse_list_str("a,,b,c") == ["a", "", "b", "c"]
     >>> assert parse_list_str("a:b:", ":") == ["a", "b", ""]
+
+        Parameters:
+            list_s (str): The string to be parsed
+            sep (str): The separator
+
+        Returns:
+            A list with items that correspond to the items in list_s string
     """
     return list_s.split(sep)
 
@@ -644,15 +672,6 @@ def parse_list_str(list_s, sep=","):
 def parse_api_args(args, sep=','):
     """
     Simple JSON-like expression parser.
-
-    :param args: a list of strings may be separated with sep, and each
-                 string represents parameters passed to API later.
-    :type args:  `str`
-
-    :param sep: A char to separate paramters in `args`
-    :type sep:  `str`
-
-    :rtype:  rpc arg objects, [arg] :: [string]
 
     >>> parse_api_args('')
     []
@@ -672,6 +691,14 @@ def parse_api_args(args, sep=','):
     >>> assert i == 1234567
     >>> assert s == "abcXYZ012"
     >>> assert d["channelLabel"] == "foo-i386-5"
+
+        Parameters:
+            args (str): A list of strings may be separated with sep, and each
+                        string represents parameters passed to API later.
+            sep (str): A char to separate parameters in `args`
+
+        Returns:
+            rpc arg objects, [arg] :: [string]
     """
     if not args:
         return []
@@ -750,6 +777,15 @@ def get_string_diff_dicts(string1, string2, sep="-"):
     Result:
     dict1: {'(^|-)dev(-|$)': '\\1DIFF(dev|qas)\\2'}
     dict2: {'(^|-)qas(-|$)': '\\1DIFF(dev|qas)\\2'}
+
+        Parameters:
+            string1 (str): A string
+            string2 (str): A string
+            sep (str): The separator
+
+        Returns:
+            A list of two dictonaries of regular expressions. The first dictionary can be used to transform
+            string1 into string2. The second dictionary can also be used  to transform string2 to string1. 
     """
     replace1 = {}
     replace2 = {}
@@ -848,13 +884,15 @@ def file_is_binary(self, path):
         pass
     return True
 
-
 def string_to_bool(input_string):
     """
     Convert string of "true" or "false", "yes" or "no" to boolean.
 
-    :param input_string:
-    :return:
+        Parameters:
+            input_string (str): The string to be converted to boolean
+        
+        Returns:
+            A boolean value converted from the input_string parameter
     """
     if not isinstance(input_string, str):
         raise IOError(_("Parameter {} not a string type, but {}.").format(
@@ -872,8 +910,13 @@ def is_vendor_channel(self, label):
 class DictToDefault:
     """
     Dict wrapper.
+
     Returns specified string instead of
     default None on .get() method.
+
+        Methods:
+            get(value, default=None):
+                Returns a value from the target dict
     """
     def __init__(self, target, default=None):
         self.__target = target
@@ -883,8 +926,10 @@ class DictToDefault:
         """
         Get a value from the target dict.
 
-        :param value:
-        :param default:
-        :return:
+            Parameters:
+                value:
+                default:
+            Returns:
+                Returns specified string instead of default None
         """
         return self.__target.get(value, default or self.__default)
