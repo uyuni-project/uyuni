@@ -14,8 +14,14 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
+import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
+
+import java.util.Objects;
 
 import javax.persistence.Tuple;
 
@@ -28,6 +34,21 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      * Default constructor
      */
     public RecurringActionScheduleJson() { }
+
+    /**
+     * Create an instance based on an entity and its type
+     * @param recurringActionIn the entity instance to be turned into JSON object
+     */
+    public RecurringActionScheduleJson(RecurringAction recurringActionIn) {
+        setRecurringActionId(recurringActionIn.getId());
+        setScheduleName(recurringActionIn.getName());
+        setCron(recurringActionIn.getCronExpr());
+        setActive(recurringActionIn.isActive());
+        setTargetType(recurringActionIn.getTargetType().toString());
+        setTargetId(recurringActionIn.getEntityId());
+        setTargetName(getEntityName(recurringActionIn));
+        setActionType(recurringActionIn.getActionType());
+    }
 
     /**
      * Constructor used to populate using DTO projection from the data of query that list recurring actions
@@ -241,5 +262,35 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      */
     public void setDetails(RecurringActionDetailsDto detailsIn) {
         details = detailsIn;
+    }
+
+    private static String getEntityName(RecurringAction action) {
+        switch (action.getTargetType()) {
+            case MINION:
+                return ((MinionRecurringAction) action).getMinion().getName();
+            case GROUP:
+                return ((GroupRecurringAction) action).getGroup().getName();
+            case ORG:
+                return ((OrgRecurringAction) action).getOrg().getName();
+            default:
+                throw new IllegalStateException("Unsupported type " + action.getTargetType());
+        }
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+        RecurringActionScheduleJson that = (RecurringActionScheduleJson) oIn;
+        return Objects.equals(recurringActionId, that.recurringActionId) && Objects.equals(targetId, that.targetId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recurringActionId, targetId);
     }
 }
