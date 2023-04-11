@@ -110,9 +110,6 @@ if ($opts{'db-only'}) {
     exit;
 }
 
-print Spacewalk::Setup::loc("* Configuring tomcat.\n");
-setup_tomcat(\%opts, \%answers);
-
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
 
@@ -488,25 +485,6 @@ sub setup_mod_ssl {
 
   system('/usr/bin/spacewalk-setup-httpd');
 
-}
-
-sub setup_tomcat {
-  my $opts = shift;
-  my $answers = shift;
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-tomcat', ''], 43,
-               'Could not setup tomcat.');
-  return;
-}
-
-sub setup_jabberd {
-  my $opts = shift;
-  my $answers = shift;
-
-  system('rpm -q jabberd >& /dev/null');
-  if ($? >> 8 == 0) {
-    system("/usr/bin/spacewalk-setup-jabberd", "--macros", "hostname:$answers->{'hostname'}");
-  }
 }
 
 sub setup_ssl_certs {
