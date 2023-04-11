@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
@@ -24,12 +25,18 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,40 +108,50 @@ public class RecurringActionFactory extends HibernateFactory {
      * belonging to the {@link Org} of given {@link User}.
      *
      * @param user the user
+     * @param pc the page control
+     * @param parser the parser for filters when building query
      * @return the list of {@link RecurringAction}s
      */
-    public static List<? extends RecurringAction> listAllRecurringActions(User user) {
-        Org org = user.getOrg();
-        List<Org> orgs = List.of(org);
-        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
-            orgs = OrgFactory.lookupAllOrgs();
-        }
+    public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(
+            User user, PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+            "ra.id as recurring_action_id, " +
+            "ra.cron_expr as cron, " +
+            "ra.action_type as action_type, " +
+            "ra.name as schedule_name, " +
+            "ra.active as active, " +
+            "case" +
+            "  when ra.target_type = 'organization' then org.id " +
+            "  when ra.target_type = 'group' then sg.id " +
+            "  when ra.target_type = 'minion' then minion.id " +
+            "end as target_id, " +
+            "case" +
+            "  when ra.target_type = 'organization' then org.name " +
+            "  when ra.target_type = 'group' then sg.name " +
+            "  when ra.target_type = 'minion' then minion.name " +
+            "end as target_name, " +
+            "case" +
+            "  when ra.target_type = 'organization' then 'ORG' " +
+            "  else UPPER(ra.target_type) " +
+            "end as target_type, " +
+            "case" +
+            "  when ra.target_type = 'organization' then ra.org_id " +
+            "  when ra.target_type = 'group' then sg.org_id " +
+            "  when ra.target_type = 'minion' then minion.org_id " +
+            "end as target_org " +
+            "from suseRecurringAction ra " +
+            "left join rhnservergroup sg on sg.id = ra.group_id " +
+            "left join rhnserver minion on minion.id = ra.minion_id " +
+            "left join web_customer org on org.id = ra.org_id" +
+            ") ra ";
+        List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
+        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
 
-        Stream<? extends RecurringAction> orgActions = getSession()
-                .createQuery("SELECT orgAction FROM OrgRecurringAction orgAction " +
-                                "WHERE orgAction.org IN :orgs " +
-                                "ORDER by orgAction.id DESC",
-                        OrgRecurringAction.class)
-                .setParameter("orgs", orgs)
-                .stream();
-
-        Stream<? extends RecurringAction> groupActions = getSession()
-                .createQuery("SELECT groupAction FROM GroupRecurringAction groupAction " +
-                                "WHERE groupAction.group.org = :org " +
-                                "ORDER by groupAction.id DESC",
-                        GroupRecurringAction.class)
-                .setParameter("org", org)
-                .stream();
-
-        Stream<? extends RecurringAction> minionActions = getSession()
-                .createQuery("SELECT minionAction FROM MinionRecurringAction minionAction " +
-                        "WHERE minionAction.minion.org = :org " +
-                        "ORDER by minionAction.id DESC",
-                        MinionRecurringAction.class)
-                .setParameter("org", org)
-                .stream();
-
-        return Stream.concat(orgActions, Stream.concat(groupActions, minionActions)).collect(Collectors.toList());
+        return new PagedSqlQueryBuilder("ra.recurring_action_id")
+                .select("ra.*")
+                .from(from)
+                .where("ra.target_org in (:orgsIds)")
+                .run(params, pc, parser, RecurringActionScheduleJson.class);
     }
 
     /**
