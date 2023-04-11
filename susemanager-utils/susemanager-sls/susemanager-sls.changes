@@ -1,3 +1,6 @@
+- to update everything on a debian system, call dist-upgrade to
+  be able to install and remove packages
+
 -------------------------------------------------------------------
 Tue Mar 28 09:41:57 UTC 2023 - marina.latini@suse.com
 
