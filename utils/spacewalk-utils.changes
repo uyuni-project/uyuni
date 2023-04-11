@@ -1,4 +1,5 @@
-* spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
+- Add SLE Micro 5.4 Uyuni Client Tools repositories
+- spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:58:26 CEST 2023 - marina.latini@suse.com
