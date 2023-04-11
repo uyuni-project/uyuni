@@ -30,9 +30,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
-import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
-import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -232,21 +229,8 @@ public class RecurringActionController {
     private static List<RecurringActionScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
         return actions
                 .stream()
-                .map(a -> actionToJson(a, a.getTargetType()))
+                .map(RecurringActionScheduleJson::new)
                 .collect(Collectors.toList());
-    }
-
-    private static RecurringActionScheduleJson actionToJson(RecurringAction a, TargetType targetType) {
-        RecurringActionScheduleJson json = new RecurringActionScheduleJson();
-        json.setRecurringActionId(a.getId());
-        json.setScheduleName(a.getName());
-        json.setCron(a.getCronExpr());
-        json.setActive(a.isActive());
-        json.setTargetType(targetType.toString());
-        json.setTargetId(a.getEntityId());
-        json.setTargetName(getEntityName(a, targetType));
-        json.setActionType(a.getActionType());
-        return json;
     }
 
     private static RecurringActionDetailsDto actionToDetailsDto(RecurringAction action) {
@@ -272,18 +256,6 @@ public class RecurringActionController {
         return dto;
     }
 
-    private static String getEntityName(RecurringAction action, RecurringAction.TargetType type) {
-        switch (type) {
-            case MINION:
-                return ((MinionRecurringAction) action).getMinion().getName();
-            case GROUP:
-                return ((GroupRecurringAction) action).getGroup().getName();
-            case ORG:
-                return ((OrgRecurringAction) action).getOrg().getName();
-            default:
-                throw new IllegalStateException("Unsupported type " + type);
-        }
-    }
 
     /**
      * Creates a new Recurring Action Schedule

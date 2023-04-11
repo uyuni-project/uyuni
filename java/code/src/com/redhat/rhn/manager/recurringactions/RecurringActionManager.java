@@ -60,10 +60,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * RecurringActionManager
@@ -246,44 +244,7 @@ public class RecurringActionManager extends BaseManager {
      */
     public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(
             User user, PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
-        String from = "(select " +
-                "ra.id as recurring_action_id, " +
-                "ra.cron_expr as cron, " +
-                "ra.action_type as action_type, " +
-                "ra.name as schedule_name, " +
-                "ra.active as active, " +
-                "case" +
-                "  when ra.target_type = 'organization' then org.id " +
-                "  when ra.target_type = 'group' then sg.id " +
-                "  when ra.target_type = 'minion' then minion.id " +
-                "end as target_id, " +
-                "case" +
-                "  when ra.target_type = 'organization' then org.name " +
-                "  when ra.target_type = 'group' then sg.name " +
-                "  when ra.target_type = 'minion' then minion.name " +
-                "end as target_name, " +
-                "case" +
-                "  when ra.target_type = 'organization' then 'ORG' " +
-                "  else UPPER(ra.target_type) " +
-                "end as target_type, " +
-                "case" +
-                "  when ra.target_type = 'organization' then ra.org_id " +
-                "  when ra.target_type = 'group' then sg.org_id " +
-                "  when ra.target_type = 'minion' then minion.org_id " +
-                "end as target_org " +
-                "from suseRecurringAction ra " +
-                "left join rhnservergroup sg on sg.id = ra.group_id " +
-                "left join rhnserver minion on minion.id = ra.minion_id " +
-                "left join web_customer org on org.id = ra.org_id" +
-            ") ra ";
-        List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
-        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
-
-        return new PagedSqlQueryBuilder("ra.recurring_action_id")
-                .select("ra.*")
-                .from(from)
-                .where("ra.target_org in (:orgsIds)")
-                .run(params, pc, parser, RecurringActionScheduleJson.class);
+        return RecurringActionFactory.listAllRecurringActions(user, pc, parser);
     }
 
     /**

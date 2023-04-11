@@ -27,9 +27,13 @@ import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 
 import org.junit.jupiter.api.Test;
 
@@ -146,9 +150,17 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         groupAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(groupAction);
 
-        var expectedActions = Set.of(minionAction, userOrgAction, groupAction);
-        var actualActions = new HashSet<>(RecurringActionFactory.listAllRecurringActions(user));
-        assertEquals(expectedActions, actualActions);
+        HibernateFactory.getSession().flush();
+
+        var expectedActions = Set.of(
+            new RecurringActionScheduleJson(minionAction),
+            new RecurringActionScheduleJson(groupAction),
+            new RecurringActionScheduleJson(userOrgAction)
+        );
+        var actualActions = RecurringActionFactory.listAllRecurringActions(
+            user, new PageControl(), PagedSqlQueryBuilder::parseFilterAsText
+        );
+        assertTrue(actualActions.containsAll(expectedActions) && expectedActions.containsAll(actualActions));
     }
 
     @Test
