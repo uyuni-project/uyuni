@@ -91,34 +91,25 @@ def compute_kiwi_profile_version(host)
   end
 end
 
-When(/^I enable repositories before installing branch server$/) do
+When(/^I (enable|disable) repositories (before|after) installing branch server$/) do |action, _when|
   os_version = $proxy.os_version
   os_family = $proxy.os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
+  repos = 'os_pool_repo os_update_repo testing_overlay_devel_repo'
+  log $proxy.run("zypper mr --#{action} #{repos}")
+
+  # Server Applications, proxy product and modules, proxy devel
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = 'proxy_module_pool_repo proxy_module_update_repo ' \
+            'proxy_product_pool_repo proxy_product_update_repo ' \
+            'server_devel_releasenotes_repo server_devel_repo ' \
+            'module_server_applications_pool_repo module_server_applications_update_repo'
+
+  elsif os_family =~ /^opensuse/
+    repos = 'proxy_pool_repo'
+  end
   log $proxy.run("zypper mr --enable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    log $proxy.run("zypper mr --enable #{repos}")
-  end
-end
-
-When(/^I disable repositories after installing branch server$/) do
-  os_version = $proxy.os_version
-  os_family = $proxy.os_family
-
-  # Distribution
-  repos = 'os_pool_repo os_update_repo'
-  log $proxy.run("zypper mr --disable #{repos}")
-
-  # Server Applications
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    log $proxy.run("zypper mr --disable #{repos}")
-  end
 end
 
 When(/^I start tftp on the proxy$/) do
