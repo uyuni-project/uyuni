@@ -35,14 +35,16 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      * @param tuple JPA tuple
      */
     public RecurringActionScheduleJson(Tuple tuple) {
-        setRecurringActionId(getTupleValue(tuple, "recurring_action_id", Number.class).map(Number::longValue).get());
-        setTargetId(getTupleValue(tuple, "target_id", Number.class).map(Number::longValue).get());
-        setTargetName(getTupleValue(tuple, "target_name", String.class).get());
-        setScheduleName(getTupleValue(tuple, "schedule_name", String.class).get());
-        setActive(getTupleValue(tuple, "active", Character.class).get().equals('Y'));
-        setTargetType(getTupleValue(tuple, "target_type", String.class).get());
-        setCron(getTupleValue(tuple, "cron", String.class).get());
-        setActionType(getTupleValue(tuple, "action_type", String.class).get());
+        setRecurringActionId(
+            getTupleValue(tuple, "recurring_action_id", Number.class).map(Number::longValue).orElse(null)
+        );
+        setTargetId(getTupleValue(tuple, "target_id", Number.class).map(Number::longValue).orElse(null));
+        setTargetName(getTupleValue(tuple, "target_name", String.class).orElse("-"));
+        setScheduleName(getTupleValue(tuple, "schedule_name", String.class).orElse("-"));
+        setActive(getTupleValue(tuple, "active", Character.class).orElse('-').equals('Y'));
+        setTargetType(getTupleValue(tuple, "target_type", String.class).orElse("-"));
+        setCron(getTupleValue(tuple, "cron", String.class).orElse("-"));
+        setActionType(getTupleValue(tuple, "action_type", String.class).orElse("-"));
     }
 
     private Long recurringActionId;
