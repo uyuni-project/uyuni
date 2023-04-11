@@ -45,6 +45,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
     When I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    When I select "Server Applications Module 15 SP4 x86_64" as a product
+    Then I should see the "Server Applications Module 15 SP4 x86_64" selected
     And I select "Desktop Applications Module 15 SP4 x86_64" as a product
     And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
     And I select "Development Tools Module 15 SP4 x86_64" as a product
