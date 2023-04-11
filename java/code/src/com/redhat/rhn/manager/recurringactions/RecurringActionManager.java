@@ -59,8 +59,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -277,14 +277,13 @@ public class RecurringActionManager extends BaseManager {
                 "left join web_customer org on org.id = ra.org_id" +
             ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
-        String orgsParam = orgs.stream().map(o -> o.getId().toString()).collect(Collectors.joining(","));
-        String where = String.format("ra.target_org in (%s)", orgsParam);
+        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
 
         return new PagedSqlQueryBuilder("ra.recurring_action_id")
                 .select("ra.*")
                 .from(from)
-                .where(where)
-                .run(new HashMap<>(), pc, parser, RecurringActionScheduleJson.class);
+                .where("ra.target_org in (:orgsIds)")
+                .run(params, pc, parser, RecurringActionScheduleJson.class);
     }
 
     /**
