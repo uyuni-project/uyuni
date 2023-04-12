@@ -146,7 +146,7 @@ export const DateTimePicker = (props: Props) => {
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>
           <ReactDatePicker
-            key="date-picker"
+            key="time-picker"
             portalId="time-picker-portal"
             ref={timePickerRef}
             selected={browserTimezoneValue.toDate()}
