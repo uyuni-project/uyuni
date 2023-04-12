@@ -67,7 +67,6 @@ def main():
     if os.getuid() != 0:
         systemExit(8, 'ERROR: must be root to execute.')
 
-    
 
     parser = OptionParser()
     parser.add_option('-l', '--list', action='store_true', dest='list',
