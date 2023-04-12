@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 # Copyright (c) 2011 SUSE LLC
@@ -69,66 +69,67 @@ def main():
 
     global LOCK
     try:
+        parser = OptionParser()
+        parser.add_option('-l', '--list', action='store_true', dest='list',
+                      help='List the custom channels with the associated repositories.')
+        parser.add_option('-s', '--show-packages', action='store_true', dest='show_packages',
+                      help='List all packages in a specified channel.')
+        parser.add_option('-u', '--url', action='append', dest='url',
+                      default=[], help='The url of the repository. Can be used multiple times.')
+        parser.add_option('-c', '--channel', action='append',
+                      dest='channel_label',
+                      help='The label of the channel to sync packages to. Can be used multiple times.')
+        parser.add_option('-p', '--parent-channel', action='append',
+                      dest='parent_label', default=[],
+                      help='Synchronize the parent channel and all its child channels.')
+        parser.add_option('-d', '--dry-run', action='store_true',
+                      dest='dry_run',
+                      help='Test run. No sync takes place.')
+        parser.add_option('--latest', action='store_true',
+                      dest='latest',
+                      help='Sync latest packages only. Use carefully - you might need to fix some dependencies on your own.')
+        parser.add_option('-g', '--config', action='store', dest='config',
+               help='Configuration file')
+        parser.add_option('-t', '--type', action='store', dest='repo_type',
+                      help='Force type of repository ("yum", "uln" and "deb" are supported)')
+        parser.add_option('-f', '--fail', action='store_true', dest='fail',
+                      default=False,
+                      help="If a package import fails, fail the entire operation")
+        parser.add_option('-n', '--non-interactive', action='store_true',
+                      dest='noninteractive', default=False,
+                      help="Do not ask anything, use default answers")
+        parser.add_option('-i', '--include', action='callback',
+                      callback=reposync.set_filter_opt, type='str', nargs=1,
+                      dest='filters', default=[],
+                      help="Comma or space separated list of included packages or package groups.")
+        parser.add_option('-e', '--exclude', action='callback',
+                      callback=reposync.set_filter_opt,
+                      type='str', nargs=1, dest='filters', default=[],
+                      help="Comma or space separated list of excluded packages or package groups.")
+        parser.add_option('', '--email', action="store_true", help="e-mail a report of what was synced/imported")
+        parser.add_option('', '--traceback-mail', action="store",
+                      help="alternative email address(es) for sync output (--email option)")
+        parser.add_option('', '--no-errata', action='store_true', dest='no_errata',
+                      default=False, help="Do not sync errata")
+        parser.add_option('', '--no-packages', action='store_true', dest='no_packages',
+                      default=False, help="Do not sync packages")
+        parser.add_option('', '--sync-kickstart', action='store_true', dest='sync_kickstart',
+                      default=False, help="Sync kickstartable tree")
+        parser.add_option('', '--force-all-errata', action='store_true', dest='force_all_errata',
+                      default=False, help="Process metadata of all errata, not only missing.")
+        parser.add_option('', '--batch-size', action='store', help="max. batch size for package import (debug only)")
+        parser.add_option('-Y', '--deep-verify', action='store_true',
+                      dest='deep_verify', default=False,
+                      help='Do not use cached package checksums')
+        parser.add_option('-v', '--verbose', action='count',
+                      help="Verbose output. Possible to accumulate: -vvv")
+        (options, args) = parser.parse_args()
         LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
+
     except rhnLockfile.LockfileLockedException:
         systemExit(1, "ERROR: attempting to run more than one instance of "
                       "spacewalk-repo-sync Exiting.")
 
-    parser = OptionParser()
-    parser.add_option('-l', '--list', action='store_true', dest='list',
-                      help='List the custom channels with the associated repositories.')
-    parser.add_option('-s', '--show-packages', action='store_true', dest='show_packages',
-                      help='List all packages in a specified channel.')
-    parser.add_option('-u', '--url', action='append', dest='url',
-                      default=[], help='The url of the repository. Can be used multiple times.')
-    parser.add_option('-c', '--channel', action='append',
-                      dest='channel_label',
-                      help='The label of the channel to sync packages to. Can be used multiple times.')
-    parser.add_option('-p', '--parent-channel', action='append',
-                      dest='parent_label', default=[],
-                      help='Synchronize the parent channel and all its child channels.')
-    parser.add_option('-d', '--dry-run', action='store_true',
-                      dest='dry_run',
-                      help='Test run. No sync takes place.')
-    parser.add_option('--latest', action='store_true',
-                      dest='latest',
-                      help='Sync latest packages only. Use carefully - you might need to fix some dependencies on your own.')
-    parser.add_option('-g', '--config', action='store', dest='config',
-               help='Configuration file')
-    parser.add_option('-t', '--type', action='store', dest='repo_type',
-                      help='Force type of repository ("yum", "uln" and "deb" are supported)')
-    parser.add_option('-f', '--fail', action='store_true', dest='fail',
-                      default=False,
-                      help="If a package import fails, fail the entire operation")
-    parser.add_option('-n', '--non-interactive', action='store_true',
-                      dest='noninteractive', default=False,
-                      help="Do not ask anything, use default answers")
-    parser.add_option('-i', '--include', action='callback',
-                      callback=reposync.set_filter_opt, type='str', nargs=1,
-                      dest='filters', default=[],
-                      help="Comma or space separated list of included packages or package groups.")
-    parser.add_option('-e', '--exclude', action='callback',
-                      callback=reposync.set_filter_opt,
-                      type='str', nargs=1, dest='filters', default=[],
-                      help="Comma or space separated list of excluded packages or package groups.")
-    parser.add_option('', '--email', action="store_true", help="e-mail a report of what was synced/imported")
-    parser.add_option('', '--traceback-mail', action="store",
-                      help="alternative email address(es) for sync output (--email option)")
-    parser.add_option('', '--no-errata', action='store_true', dest='no_errata',
-                      default=False, help="Do not sync errata")
-    parser.add_option('', '--no-packages', action='store_true', dest='no_packages',
-                      default=False, help="Do not sync packages")
-    parser.add_option('', '--sync-kickstart', action='store_true', dest='sync_kickstart',
-                      default=False, help="Sync kickstartable tree")
-    parser.add_option('', '--force-all-errata', action='store_true', dest='force_all_errata',
-                      default=False, help="Process metadata of all errata, not only missing.")
-    parser.add_option('', '--batch-size', action='store', help="max. batch size for package import (debug only)")
-    parser.add_option('-Y', '--deep-verify', action='store_true',
-                      dest='deep_verify', default=False,
-                      help='Do not use cached package checksums')
-    parser.add_option('-v', '--verbose', action='count',
-                      help="Verbose output. Possible to accumulate: -vvv")
-    (options, args) = parser.parse_args()
 
     log_level = options.verbose
     if log_level is None:
