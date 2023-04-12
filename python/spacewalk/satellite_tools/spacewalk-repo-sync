@@ -67,7 +67,7 @@ def main():
     if os.getuid() != 0:
         systemExit(8, 'ERROR: must be root to execute.')
 
-    global LOCK
+    
 
     parser = OptionParser()
     parser.add_option('-l', '--list', action='store_true', dest='list',
@@ -125,6 +125,8 @@ def main():
                       help="Verbose output. Possible to accumulate: -vvv")
     (options, args) = parser.parse_args()
 
+    global LOCK
+    
     try:
         LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
     except rhnLockfile.LockfileLockedException:
