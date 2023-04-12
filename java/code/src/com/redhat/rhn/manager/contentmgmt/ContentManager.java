@@ -769,8 +769,9 @@ public class ContentManager {
     }
 
     private static void stripModuleMetadata(Channel channel) {
-        if (channel != null && channel.isModular()) {
-            channel.getModules().clear();
+        if (channel != null && channel.getModules() != null) {
+            HibernateFactory.getSession().delete(channel.getModules());
+            channel.setModules(null);
         }
     }
 

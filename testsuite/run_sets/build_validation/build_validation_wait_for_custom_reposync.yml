@@ -1,0 +1,7 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## Wait for custom channels synchronization BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/srv_wait_for_custom_reposync.feature
+
+## Wait for custom channels synchronization END ###

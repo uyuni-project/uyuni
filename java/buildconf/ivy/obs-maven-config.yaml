@@ -123,10 +123,10 @@ artifacts:
   - artifact: httpcore
     package: httpcomponents-core
     jar: httpcore.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: httpcore-nio
     package: httpcomponents-core
-    repository: Leap
+    repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
@@ -156,15 +156,15 @@ artifacts:
   - artifact: log4j-core
     jar: log4j-core.jar
     package: log4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: log4j-api
     jar: log4j-api.jar
     package: log4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: log4j-slf4j-impl
     jar: log4j-slf4j-impl.jar
     package: log4j-slf4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: jsch
     repository: Leap
   - artifact: mchange-commons-java
@@ -301,22 +301,22 @@ artifacts:
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: jasper-el
     package: tomcat-lib
-    repository: Leap
+    repository: Leap_sle
   - artifact: tomcat-el-3.0-api
     package: tomcat-el-3_0-api
-    repository: Leap
+    repository: Leap_sle
   - artifact: tomcat-jsp-2.3-api
     package: tomcat-jsp-2_3-api
-    repository: Leap
+    repository: Leap_sle
   - artifact: tomcat-juli
     package: tomcat-lib
-    repository: Leap
+    repository: Leap_sle
   - artifact: tomcat-servlet-4.0-api
     package: tomcat-servlet-4_0-api
-    repository: Leap
+    repository: Leap_sle
 
   - artifact: hamcrest-core
     repository: Leap
@@ -329,7 +329,7 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap
+    repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Uyuni_Other
   - artifact: jaxb-runtime

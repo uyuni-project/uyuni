@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-03-31 15:18+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -247,7 +247,7 @@ msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:123
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -263,6 +263,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/packages/list.tsx:72
+#: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/state/recurring-states-details.tsx:158
 #: ../html/src/manager/state/recurring-states-details.tsx:160
@@ -390,6 +392,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/manager/packages/list.tsx:144
 #, fuzzy
 msgid "Filter by package name"
 msgstr "Filtrar por nombre de sistema"
@@ -518,7 +521,7 @@ msgid "Custom Quartz format:"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:371
+#: ../html/src/components/table/TableDataHandler.tsx:374
 msgid "There are no entries to show."
 msgstr "No hay ninguna entrada que mostrar."
 
@@ -595,7 +598,7 @@ msgstr "Sistema bloqueado"
 msgid "Filter"
 msgstr "Filtros"
 
-#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/SearchField.tsx:53
 #, fuzzy
 msgid "Select a filter"
 msgstr "Crear un filtro nuevo"
@@ -618,7 +621,7 @@ msgstr "Vaciar"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-#: ../html/src/components/table/TableDataHandler.tsx:372
+#: ../html/src/components/table/TableDataHandler.tsx:375
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
@@ -631,7 +634,7 @@ msgstr "Seleccionar todo"
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:405
+#: ../html/src/components/table/TableDataHandler.tsx:408
 msgid "items per page"
 msgstr "elementos por página"
 
@@ -1227,6 +1230,7 @@ msgid "Arch"
 msgstr "Arq."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:684
+#: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Canales"
 
@@ -1542,6 +1546,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
 msgstr "Canal"
 
@@ -2162,6 +2167,7 @@ msgid "Delete Project"
 msgstr "Eliminar proyecto"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
 msgstr "Paquete"
 
@@ -4243,6 +4249,44 @@ msgid ""
 "this organization"
 msgstr ""
 
+#: ../html/src/manager/packages/list.tsx:80
+msgid "Packages in no channel"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:81
+msgid "All managed packages"
+msgstr ""
+
+#: ../html/src/manager/packages/list.tsx:89
+#, fuzzy
+msgid " Package Management "
+msgstr "Se necesita reiniciar el gestor de paquetes"
+
+#: ../html/src/manager/packages/list.tsx:117
+#, fuzzy
+msgid "Binary packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:118
+#, fuzzy
+msgid "Source packages"
+msgstr "Buscar"
+
+#: ../html/src/manager/packages/list.tsx:126
+#, fuzzy
+msgid "package"
+msgstr "Paquete"
+
+#: ../html/src/manager/packages/list.tsx:146
+#, fuzzy
+msgid "No Packages."
+msgstr "Paquetes"
+
+#: ../html/src/manager/packages/list.tsx:172
+#, fuzzy
+msgid "Content Provider"
+msgstr "Proveedor:"
+
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
 msgstr ""
@@ -4895,7 +4939,9 @@ msgid "systems"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
-msgid "shortly"
+msgid ""
+"shortly. If it is a transactional system, please reboot it to finish "
+"registration"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
@@ -6468,9 +6514,6 @@ msgstr "Página {0} de {1}"
 
 #~ msgid "Provider Settings"
 #~ msgstr "Configuración de proveedor"
-
-#~ msgid "Provider:"
-#~ msgstr "Proveedor:"
 
 #~ msgid "Management Node:"
 #~ msgstr "Nodo de gestión:"

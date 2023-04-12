@@ -94,6 +94,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
+Requires(pre):  tomcat
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
@@ -153,32 +154,16 @@ make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
 
-%if 0%{?rhel} == 6
-cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
-%endif
-#if java -version 2>&1 | grep -q IBM ; then
-#    cat share/tomcat.java_opts.ibm >>share/tomcat.java_opts
-#fi
-%if 0%{?suse_version}
-cat share/tomcat.java_opts.suse >>share/tomcat.java_opts | tr '\n' ' '
-# SLES12 tomcat has only tomcat.conf
-cat share/tomcat.1 >share/tomcat.conf.1
-%endif
-rm -f share/tomcat.java_opts.*
-
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
+install -d -m 755 %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
@@ -191,11 +176,9 @@ install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
 # Sphinx built manpage
 %define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
 install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
@@ -206,26 +189,25 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
-#during upgrade, setup new connectionTimeout if the user didn't change it
-    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
-    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml
+if [ $1 == 1 -a -e /etc/tomcat/server.xml ]; then
+#just during new installation. during upgrade the changes are already applied
+    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+    xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
 
-%if 0%{?suse_version}
-if [ $1 = 2 -a -e /etc/sysconfig/tomcat ]; then
-     sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' /etc/sysconfig/tomcat
+if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
+#during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
+    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
-%endif
 
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chmod g+r /etc/zypp/credentials.d/SCCcredentials
 fi
-for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
-  test -f $name \
-  && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
-done
+
 if [ -d /var/cache/salt/master/thin ]; then
   # clean the thin cache
   rm -rf /var/cache/salt/master/thin
@@ -295,14 +277,13 @@ make test
 %doc Changes README answers.txt
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
 %config %{_sysconfdir}/salt/master.d/salt-ssh-logging.conf
+%config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts.conf
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
-%{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/spacewalk-setup-sudoers
-%{_bindir}/spacewalk-setup-ipa-authentication
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/

@@ -1,6 +1,10 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# skip on container. Running actions chains fail on container.
+# This needs to be fixed
+
+@skip_if_container
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions

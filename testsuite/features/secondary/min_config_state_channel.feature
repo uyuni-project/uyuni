@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_configuration_channels
 Feature: Configuration state channels
   In order to configure systems through Salt

@@ -16,5 +16,9 @@ Feature: Wait for reposync activity to finish in CI context
   Scenario: Kill running reposyncs or wait for them to finish
     When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
 
+@uyuni
+  Scenario: Enable SLES15 SP4 Uyuni client tools for creating bootstrap repositories
+    When I use spacewalk-common-channel to add channel "sle-product-sles15-sp4-pool-x86_64 sles15-sp4-uyuni-client" with arch "x86_64"
+
   Scenario: Wait until all synchronized channels have finished
     When I wait until all synchronized channels have finished

@@ -1,10 +1,11 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events
 # available.
-
-# This feature has not dependencies and it can run in parallel with other features.
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+# This feature has no dependencies and it can run in parallel with other features.
 
 @scope_virtualization
 @virthost_kvm
@@ -13,6 +14,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Show the KVM host system overview
     Given I am on the Systems overview page of this "kvm_server"
@@ -23,7 +27,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
-    And I create "test-vm" virtual machine on "kvm_server"
+    And I create a leap virtual machine named "test-vm" without cloudinit on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
 
@@ -58,12 +62,12 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Edit a KVM virtual machine
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    Then I should see "512" in field "memory"
-    And I should see "1" in field "vcpu"
+    Then I should see "1024" in field identified by "memory"
+    And I should see "1" in field identified by "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
     And option "virtio" is selected as "disk0_bus"
-    When I enter "1024" as "memory"
+    When I enter "512" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
     And I select "test-net1" from "network0_source"
@@ -71,7 +75,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "scsi" from "disk0_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have 1024MB memory and 2 vcpus
+    And "test-vm" virtual machine on "kvm_server" should have 512MB memory and 2 vcpus
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address
@@ -310,6 +314,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
+  Scenario: Install TFTP boot package on the server
+    When I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -330,8 +338,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @scc_credentials
   Scenario: Create auto installation distribution
-    And I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP4-KVM" as "label"
@@ -407,6 +413,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "SLE-15-SP4-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-KVM" text
+
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors

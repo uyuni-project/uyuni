@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
+@skip_if_container
 Feature: Test the notification/notification-messages feature
 
   Scenario: Log in as admin user

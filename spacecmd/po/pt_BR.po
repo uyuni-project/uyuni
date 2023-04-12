@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-17 14:28+0100\n"
+"POT-Creation-Date: 2023-03-17 13:42+0100\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -321,72 +321,72 @@ msgstr ""
 msgid "System Groups"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:210
-#: ../src/spacecmd/package.py:268 ../src/spacecmd/softwarechannel.py:1368
+#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
 #: ../src/spacecmd/softwarechannel.py:1558
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1009
+#: ../src/spacecmd/activationkey.py:1012
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1011
+#: ../src/spacecmd/activationkey.py:1014
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1038
+#: ../src/spacecmd/activationkey.py:1041
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1040
+#: ../src/spacecmd/activationkey.py:1043
 msgid "usage: activationkey_disableconfigdeployment KEY"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1067
+#: ../src/spacecmd/activationkey.py:1070
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1069
+#: ../src/spacecmd/activationkey.py:1072
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1118
+#: ../src/spacecmd/activationkey.py:1121
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1120
+#: ../src/spacecmd/activationkey.py:1123
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1121
+#: ../src/spacecmd/activationkey.py:1124
 msgid "usage: activationkey_setusagelimit KEY unlimited "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1153
+#: ../src/spacecmd/activationkey.py:1156
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1175
+#: ../src/spacecmd/activationkey.py:1178
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1177
+#: ../src/spacecmd/activationkey.py:1180
 msgid "usage: activationkey_setuniversaldefault KEY"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1218
+#: ../src/spacecmd/activationkey.py:1221
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1219
+#: ../src/spacecmd/activationkey.py:1222
 msgid ""
 "usage: activationkey_export [options] [<KEY> ...])\n"
 "\n"
@@ -400,71 +400,71 @@ msgid ""
 msgstr ""
 
 #. Get the key details
-#: ../src/spacecmd/activationkey.py:1235
+#: ../src/spacecmd/activationkey.py:1238
 #, python-format
 msgid "Getting activation key details for %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1289
+#: ../src/spacecmd/activationkey.py:1292
 #, python-format
 msgid "Exporting ALL activation keys to %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1298
+#: ../src/spacecmd/activationkey.py:1301
 msgid "Invalid activation key passed"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1313
+#: ../src/spacecmd/activationkey.py:1316
 #, python-format
 msgid "Exporting key %s to %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1322
+#: ../src/spacecmd/activationkey.py:1325
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1327
+#: ../src/spacecmd/activationkey.py:1330
 msgid "Failed to save exported keys to file: {}"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1336
+#: ../src/spacecmd/activationkey.py:1339
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1337
+#: ../src/spacecmd/activationkey.py:1340
 msgid "usage: activationkey_import <JSONFILE ...>"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1346
+#: ../src/spacecmd/activationkey.py:1349
 msgid "No filename passed"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1355
+#: ../src/spacecmd/activationkey.py:1358
 #, python-format
 msgid "Could not read json data from %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1360 ../src/spacecmd/activationkey.py:1404
+#: ../src/spacecmd/activationkey.py:1363 ../src/spacecmd/activationkey.py:1407
 #, python-format
 msgid "Failed to import key %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1374
+#: ../src/spacecmd/activationkey.py:1377
 #, python-format
 msgid "%s already exists! Skipping!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1429
+#: ../src/spacecmd/activationkey.py:1432
 #, python-format
 msgid "System group %s doesn't exist, creating"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1450
+#: ../src/spacecmd/activationkey.py:1453
 msgid "activationkey_clone: Clone an activation key"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1451
+#: ../src/spacecmd/activationkey.py:1454
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -482,121 +482,121 @@ msgid ""
 "                   labels, config-channel names "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1479 ../src/spacecmd/kickstart.py:467
+#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:467
 #: ../src/spacecmd/system.py:3107
 msgid "Activation Keys"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1485
+#: ../src/spacecmd/activationkey.py:1488
 #, python-format
 msgid "Key to clone: %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1489
+#: ../src/spacecmd/activationkey.py:1492
 msgid "Original Key:"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1491
+#: ../src/spacecmd/activationkey.py:1494
 msgid "Cloned Key:"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1494 ../src/spacecmd/configchannel.py:1441
+#: ../src/spacecmd/activationkey.py:1497 ../src/spacecmd/configchannel.py:1441
 msgid "Error - must specify either -c or -x options!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1499
+#: ../src/spacecmd/activationkey.py:1502
 #, python-format
 msgid "Key %s already exists"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1503
+#: ../src/spacecmd/activationkey.py:1506
 msgid "Error no activationkey to clone passed!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1557
+#: ../src/spacecmd/activationkey.py:1560
 #, python-format
 msgid "Found child channel %s key %s, %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1559
+#: ../src/spacecmd/activationkey.py:1562
 msgid " does not exist, skipping!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1566
+#: ../src/spacecmd/activationkey.py:1569
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1582
+#: ../src/spacecmd/activationkey.py:1585
 #, python-format
 msgid "Found config channel %s for key %s, %s "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1584
+#: ../src/spacecmd/activationkey.py:1587
 msgid "does not exist, skipping!"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1602
+#: ../src/spacecmd/activationkey.py:1605
 #, python-format
 msgid "Cloning key %s as %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1606 ../src/spacecmd/configchannel.py:1493
+#: ../src/spacecmd/activationkey.py:1609 ../src/spacecmd/configchannel.py:1493
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1624
+#: ../src/spacecmd/activationkey.py:1627
 msgid "no activationkey label given"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1627
+#: ../src/spacecmd/activationkey.py:1630
 msgid "invalid activationkey label "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1644
+#: ../src/spacecmd/activationkey.py:1647
 msgid "activationkey_diff: Diff activation keys"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1646
+#: ../src/spacecmd/activationkey.py:1649
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1696
+#: ../src/spacecmd/activationkey.py:1699
 msgid "activationkey_disable: Disable an activation key"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1698
+#: ../src/spacecmd/activationkey.py:1701
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1732
+#: ../src/spacecmd/activationkey.py:1735
 msgid "activationkey_enable: Enable an activation key"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1734
+#: ../src/spacecmd/activationkey.py:1737
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1768
+#: ../src/spacecmd/activationkey.py:1771
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1770
+#: ../src/spacecmd/activationkey.py:1773
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1804
+#: ../src/spacecmd/activationkey.py:1807
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1806 ../src/spacecmd/system.py:4411
+#: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4411
 msgid "Available contact methods: "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1807
+#: ../src/spacecmd/activationkey.py:1810
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr ""
 
@@ -3747,12 +3747,12 @@ msgstr ""
 msgid "No packages found to remove"
 msgstr ""
 
-#: ../src/spacecmd/package.py:206 ../src/spacecmd/package.py:264
+#: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
 #: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:211
 msgid "No packages has been removed"
 msgstr ""
 
@@ -3785,7 +3785,7 @@ msgstr ""
 msgid "No orphaned packages"
 msgstr ""
 
-#: ../src/spacecmd/package.py:265
+#: ../src/spacecmd/package.py:269
 msgid "No packages were removed"
 msgstr ""
 

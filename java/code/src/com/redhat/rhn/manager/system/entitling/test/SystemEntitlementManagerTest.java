@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.system.entitling.test;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -182,7 +181,6 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Test stuff!
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-        assertTrue(server.getChannels().contains(rhnTools));
         if (!ConfigDefaults.get().isSpacewalk()) {
             // this is actually Satellite-specific
             // assertTrue(server.getChannels().contains(rhelVirt));

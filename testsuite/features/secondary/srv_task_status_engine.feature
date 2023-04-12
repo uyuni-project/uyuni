@@ -40,6 +40,7 @@ Feature: Task Engine Status
     And I should see the correct timestamp for task "Cobbler Sync:"
     And I should see a "FINISHED" text
 
+@scc_credentials
   Scenario: Resync a product to trigger a new task and check if it is visible on the Runtime Status page
     When I follow the left menu "Admin > Task Engine Status > Runtime Status"
     And I follow the left menu "Admin > Setup Wizard > Products"

@@ -229,7 +229,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testOrphanedChannelTree() throws Exception {
-        user = UserTestUtils.createUserInOrgOne();
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setEndOfLife(new Date(System.currentTimeMillis() + 10000000L));
         user.getOrg().addOwnedChannel(channel);

@@ -6,7 +6,7 @@ require 'pp'
 
 # ct = CobblerTest.new
 # bool = ct.running?
-# bool = ct.system_exists('bla')
+# bool = ct.element_exists('systems', 'bla')
 # any  = ct.system_get_key('vbox-ug', 'uid')
 # list = ct.get_list('systems')
 
@@ -16,8 +16,8 @@ class CobblerTest
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
     server_address = ENV['SERVER']
-    @server = XMLRPC::Client.new2('http://' + server_address + '/cobbler_api', nil, DEFAULT_TIMEOUT)
-    raise 'No running server at found at ' + server_address unless running?
+    @server = XMLRPC::Client.new2("http://#{server_address}/cobbler_api", nil, DEFAULT_TIMEOUT)
+    raise(SystemCallError, "No running server at found at #{server_address}") unless running?
   end
 
   ##
@@ -28,8 +28,17 @@ class CobblerTest
   #   pass: The password for the user.
   def login(user, pass)
     @token = @server.call('login', user, pass)
-  rescue
-    raise 'login to cobbler failed' + $ERROR_INFO.to_s
+  rescue StandardError
+    raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
+  end
+
+  ##
+  # Logs out of Cobbler.
+  #
+  def logout
+    @server.call('logout', @token)
+  rescue StandardError
+    raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
   end
 
   ##
@@ -38,7 +47,7 @@ class CobblerTest
     result = true
     begin
       @server.call('get_profiles')
-    rescue
+    rescue StandardError
       result = false
     end
     result
@@ -54,10 +63,9 @@ class CobblerTest
   #        - distros
   def get_list(what)
     result = []
-    unless %w[systems profiles distros].include?(what)
-      raise "unknown get_list parameter '#{what}'"
-    end
-    ret = @server.call('get_' + what)
+    raise(ArgumentError, "Unknown get_list parameter '#{what}'") unless %w[systems profiles distros].include?(what)
+
+    ret = @server.call("get_#{what}")
     ret.each { |a| result << a['name'] }
     result
   end
@@ -78,8 +86,8 @@ class CobblerTest
       @server.call('modify_distro', distro_id, 'initrd', initrd, @token)
       @server.call('modify_distro', distro_id, 'breed', breed, @token)
       @server.call('save_distro', distro_id, @token)
-    rescue
-      raise 'creating distribution failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Creating distribution failed. #{$ERROR_INFO}")
     end
     distro_id
   end
@@ -94,20 +102,20 @@ class CobblerTest
   def profile_create(name, distro, location)
     begin
       profile_id = @server.call('new_profile', @token)
-    rescue
-      raise 'creating profile failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Creating profile failed. #{$ERROR_INFO}")
     end
     begin
       @server.call('modify_profile', profile_id, 'name', name, @token)
       @server.call('modify_profile', profile_id, 'distro', distro, @token)
       @server.call('modify_profile', profile_id, 'kickstart', location, @token)
-    rescue
-      raise 'modifying profile failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Modifying profile failed. #{$ERROR_INFO}")
     end
     begin
       @server.call('save_profile', profile_id, @token)
-    rescue
-      raise 'saving profile failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Saving profile failed. #{$ERROR_INFO}")
     end
     profile_id
   end
@@ -122,19 +130,19 @@ class CobblerTest
   def system_create(name, profile)
     begin
       system_id = @server.call('new_system', @token)
-    rescue
-      raise 'creating system failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Creating system failed. #{$ERROR_INFO}")
     end
     begin
       @server.call('modify_system', system_id, 'name', name, @token)
       @server.call('modify_system', system_id, 'profile', profile, @token)
-    rescue
-      raise 'modifying system failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Modifying system failed. #{$ERROR_INFO}")
     end
     begin
       @server.call('save_system', system_id, @token)
-    rescue
-      raise 'saving system failed.' + $ERROR_INFO.to_s
+    rescue StandardError
+      raise(StandardError, "Saving system failed. #{$ERROR_INFO}")
     end
     system_id
   end
@@ -148,48 +156,24 @@ class CobblerTest
   # Args:
   #   name: The name of the system to be removed.
   def system_remove(name)
-    raise "system cannot be found. #{$ERROR_INFO}" unless system_exists(name)
+    raise(IndexError, "System cannot be found. #{$ERROR_INFO}") unless element_exists('systems', name)
+
     begin
       @server.call('remove_system', name, @token)
-    rescue
-      raise "deleting system failed. #{$ERROR_INFO}"
+    rescue StandardError
+      raise(StandardError, "Deleting system failed. #{$ERROR_INFO}")
     end
   end
 
   ##
-  # Checks if a distribution exists in the database by using 'distro' as the table name, 'name' as the column and the name of the distro.
+  # Checks if a Cobbler item exists in the database by using
+  # 'distros|profiles|systems|repos' as the table name,
+  # 'name' as the column and the name of the item.
   #
   # Args:
   #   name: The name of the distro.
-  def distro_exists(name)
-    exists('distros', 'name', name)
-  end
-
-  ##
-  # Checks if a profile exists in the database by using 'profiles' as the table name, 'name' as the column and the name of the profile.
-  #
-  # Args:
-  #   name: The name of the profile.
-  def profile_exists(name)
-    exists('profiles', 'name', name)
-  end
-
-  ##
-  # Checks if a system exists in the database by using 'systems' as the table name, 'name' as the column and the name of the system.
-  #
-  # Args:
-  #   name: The name of the system.
-  def system_exists(name)
-    exists('systems', 'name', name)
-  end
-
-  ##
-  # Checks if a repository exists in the database by using 'repos' as the table name, 'name' as the column and the name of the repo.
-  #
-  # Args:
-  #   name: The name of the repository.
-  def repo_exists(name)
-    exists('repos', 'name', name)
+  def element_exists(element_type, name)
+    exists(element_type, 'name', name)
   end
 
   ##
@@ -202,8 +186,8 @@ class CobblerTest
   # Returns:
   #   The value of the key in the repo.
   def repo_get_key(name, key)
-    return get('repo', name, key) if repo_exists(name)
-    raise 'Repo ' + name + ' does not exists' unless repo_exists(name)
+    return get('repo', name, key) if element_exists('repos', name)
+    raise(IndexError, "Repo #{name} does not exist") unless element_exists('repos', name)
   end
 
   ##
@@ -215,7 +199,7 @@ class CobblerTest
   #   value: The value to check for.
   def exists(what, key, value)
     result = false
-    ret = @server.call('get_' + what)
+    ret = @server.call("get_#{what}")
     ret.each do |a|
       result = true if a[key] == value
     end
@@ -231,10 +215,179 @@ class CobblerTest
   #   key: The key to look for in the hash.
   def get(what, name, key)
     result = nil
-    ret = @server.call('get_' + what)
+    ret = @server.call("get_#{what}")
     ret.each do |a|
       result = a[key] if a['name'] == name
     end
     result
+  end
+
+  ##
+  # Modifies a profile and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-profile
+  # Args:
+  #   name: The name of the profile
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def profile_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
+      profile = @server.call('get_profile_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Profile with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_profile', profile, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying profile failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_profile', profile, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving profile failed. #{$ERROR_INFO}")
+    end
+    profile
+  end
+
+  ##
+  # Modifies a distribution and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-distro
+  # Args:
+  #   name: The name of the distribution
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def distro_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
+      distro = @server.call('get_distro_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Distribution with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_distro', distro, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying distribution failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_distro', distro, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving distribution failed. #{$ERROR_INFO}")
+    end
+    distro
+  end
+
+  ##
+  # Modifies a system and saves it afterwards.
+  #
+  # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-system
+  # Args:
+  #   name: The name of the system
+  #   attribute: The attribute you want to modify
+  #   value: The new value you want to set for attribute
+  def system_modify(name, attribute, value)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
+      system = @server.call('get_system_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "System with name #{name} not found. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('modify_system', system, attribute, value, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Modifying system failed. #{$ERROR_INFO}")
+    end
+    begin
+      @server.call('save_system', system, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Saving system failed. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Removes a distribution from the Spacewalk server.
+  #
+  # The first thing this function does is check to see if the distribution exists. If it doesn't, it raises an error.
+  # If it does, it calls the remove_distro function on the Spacewalk server. If that fails, it raises an error.
+  #
+  # Args:
+  #   name: The name of the distribution to be removed.
+  def distro_remove(name)
+    raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless distro_exists(name)
+    begin
+      @server.call('remove_distro', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Deleting distribution failed. #{$ERROR_INFO}")
+    end
+  end
+
+  ##
+  # Removes a profile from the Spacewalk server.
+  #
+  # The first thing this function does is check to see if the profile exists. If it doesn't, it raises an error. If it
+  # does, it calls the remove_profile function on the Spacewalk server. If that fails, it raises an error.
+  #
+  # Args:
+  #   name: The name of the profile to be removed.
+  def profile_remove(name)
+    raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless profile_exists(name)
+    begin
+      @server.call('remove_profile', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Deleting profile failed. #{$ERROR_INFO}")
+    end
+  end
+
+  ##
+  # Get a handle for a system.
+  #
+  # Get a handle for a system which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the system to get the ID of
+  def get_system_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
+      system = @server.call('get_system_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "System with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Get a handle for a profile.
+  #
+  # Get a handle for a profile which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the profile to get the ID of
+  def get_profile_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
+      system = @server.call('get_profile_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Profile with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
+  end
+
+  ##
+  # Get a handle for a distribution.
+  #
+  # Get a handle for a distribution which allows you to use the functions modify_* or save_* to manipulate it.
+  #
+  # Args:
+  #   name: The name of the distribution to get the ID of
+  def get_distro_handle(name)
+    begin
+      # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
+      system = @server.call('get_distro_handle', name, @token)
+    rescue ::StandardError
+      raise(::StandardError, "Distribution with name #{name} not found. #{$ERROR_INFO}")
+    end
+    system
   end
 end

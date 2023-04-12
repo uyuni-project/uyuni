@@ -26,7 +26,7 @@ Feature: Manipulate activation keys
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
-    And I should see "20" in field "usageLimit"
+    And I should see "20" in field identified by "usageLimit"
 
   Scenario: Change the base channel of the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
@@ -65,6 +65,7 @@ Feature: Manipulate activation keys
     And I click on "Delete Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been deleted." text
 
+@scc_credentials
   Scenario: Create an activation key with a channel and a package list for x86_64
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -79,6 +80,7 @@ Feature: Manipulate activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
 
+@scc_credentials
   Scenario: Delete the x86_64 activation key with packages
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area

@@ -142,7 +142,7 @@ public class ChannelManager extends BaseManager {
      * Key used to identify the rhn-tools channel.  Used in searches to find the channel
      */
     public static final String TOOLS_CHANNEL_PACKAGE_NAME =
-        Config.get().getString("tools_channel.package_name", "mgr-cfg");
+        Config.get().getString("tools_channel.package_name", "venv-salt-minion");
 
 
     /**
@@ -151,13 +151,6 @@ public class ChannelManager extends BaseManager {
      */
     public static final String VIRT_CHANNEL_PACKAGE_NAME =
         Config.get().getString("virt_channel.package_name", "libvirt");
-
-    /**
-     * Package name of rhn-virtualization-host
-     */
-    public static final String RHN_VIRT_HOST_PACKAGE_NAME =
-        Config.get().getString("tools_channel.virt_package_name",
-                "mgr-virtualization-host");
 
     /**
      * OS name for the virt child channel.  rhnDistChannelMap.OS field.

@@ -40,8 +40,6 @@ def compute_channels_to_leave_running
     log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP4 8].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
-  do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
-  do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_TO]
   do_not_kill.uniq
 end
 
@@ -71,8 +69,8 @@ def product_version
 end
 
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head and 4.3
-  $product == 'Uyuni' || %w[head 4.3].include?($product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
+  $product == 'Uyuni' || %w[head 4.3 4.2].include?($product_version)
 end
 
 # create salt pillar file in the default pillar_roots location

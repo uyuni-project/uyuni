@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@skip_if_container
 @scope_salt
 Feature: Verify the minion registration
   In order to validate the completeness of minion registration

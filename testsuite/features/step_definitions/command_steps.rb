@@ -80,7 +80,7 @@ Then(/^it should be possible to use the HTTP proxy$/) do
 end
 
 Then(/^it should be possible to use the custom download endpoint$/) do
-  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-suse-channel/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -135,6 +135,11 @@ end
 
 When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
   command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
+  $command_output, _code = $server.run(command)
+end
+
+When(/^I use spacewalk\-repo\-sync to sync channel "([^"]*)"$/) do |channel|
+  command = "spacewalk-repo-sync -c #{channel}"
   $command_output, _code = $server.run(command)
 end
 
@@ -396,7 +401,10 @@ Then(/^"([^"]*)" package should have been stored$/) do |pkg|
 end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
-  $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
+  repeat_until_timeout(timeout: 300, message: "Reference #{pkg} not found in file.") do
+    _result, code = $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", check_errors: false)
+    break if code.zero?
+  end
 end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
@@ -488,8 +496,10 @@ end
 
 When(/^I extract the log files from all our active nodes$/) do
   $nodes.each do |node|
-    next if node.nil?
+    # the salt_migration_minion is not available anymore
+    next if node.nil? || node == $salt_migration_minion
 
+    STDOUT.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
   end
 end
@@ -852,7 +862,6 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   else
     raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
-  pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
@@ -919,7 +928,7 @@ When(/^I install package tftpboot-installation on the server$/) do
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
   package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  $server.run("rpm -i #{package}", check_errors: false)
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -929,7 +938,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-suse-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1057,320 +1066,6 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   $server.run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{system_name}"
   $server.run(command)
-end
-
-When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
-  node = get_target(host)
-  disk_path = "/tmp/#{vm_name}_disk.qcow2"
-
-  # Create the throwable overlay image
-  raise '/var/testsuite-data/leap-disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/leap-disk-image-template.qcow2')
-  node.run("cp /var/testsuite-data/leap-disk-image-template.qcow2 #{disk_path}")
-
-  # Actually define the VM, but don't start it
-  raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  # Use 'ide' bus for Xen and 'virtio' bus for KVM
-  bus_type = 'virtio'
-  node.run(
-    "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
-    "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-    "--serial file,path=/tmp/#{vm_name}.console.log "\
-    "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
-  )
-end
-
-When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
-  node = get_target(host)
-
-  networks = {
-    "test-net0" => { "bridge" => "virbr0", "subnet" => 124 },
-    "test-net1" => { "bridge" => "virbr1", "subnet" => 126 }
-  }
-
-  net = networks[net_name]
-  netdef = "<network>" \
-           "  <name>#{net_name}</name>"\
-           "  <forward mode='nat'/>"\
-           "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>"\
-           "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>"\
-           "    <dhcp>"\
-           "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>"\
-           "    </dhcp>"\
-           "  </ip>"\
-           "</network>"
-
-  # Some networks like the default one may already be defined.
-  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
-  node.run("echo -e \"#{netdef}\" >/tmp/#{net_name}.xml && virsh net-define /tmp/#{net_name}.xml") unless code.zero?
-
-  # Ensure the network is started
-  node.run("virsh net-start #{net_name}", check_errors: false)
-end
-
-When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?)$/) do |net_name, host, error_control|
-  node = get_target(host)
-  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
-  if code.zero?
-    steps %(
-      When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
-      And I run "virsh net-undefine #{net_name}" on "#{host}"#{error_control}
-    )
-  end
-end
-
-When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host|
-  node = get_target(host)
-
-  pool_def = %(<pool type='dir'>
-      <name>#{pool_name}</name>
-      <capacity unit='bytes'>0</capacity>
-      <allocation unit='bytes'>0</allocation>
-      <available unit='bytes'>0</available>
-      <source>
-      </source>
-      <target>
-        <path>/var/lib/libvirt/images/#{pool_name}</path>
-      </target>
-    </pool>
-  )
-
-  # Some pools like the default one may already be defined.
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
-  node.run("echo -e \"#{pool_def}\" >/tmp/#{pool_name}.xml && virsh pool-define /tmp/#{pool_name}.xml") unless code.zero?
-  node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
-
-  # Ensure the pool is started
-  node.run("virsh pool-start #{pool_name}", check_errors: false)
-end
-
-When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
-  node = get_target(host)
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
-  if code.zero?
-    steps %(
-      When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
-      And I run "virsh pool-undefine #{pool_name}" on "#{host}"#{error_control}
-    )
-  end
-
-  # only delete the folders we created
-  step %(I run "rm -rf /var/lib/libvirt/images/#{pool_name}" on "#{host}"#{error_control}) if pool_name.start_with? "test-"
-end
-
-Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never reached state #{state}") do
-    output, _code = node.run("virsh domstate #{vm}")
-    break if output.strip == state
-    sleep 3
-  end
-end
-
-When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
-    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", check_errors: false)
-    break if code.zero?
-    sleep 1
-  end
-end
-
-Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} still exists") do
-    _output, code = node.run("virsh dominfo #{vm}", check_errors: false)
-    break if code == 1
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    has_memory = output.include? "<memory unit='KiB'>#{Integer(mem) * 1024}</memory>"
-    has_vcpus = output.include? ">#{vcpu}</vcpu>"
-    break if has_memory and has_vcpus
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    check_nographics = type == "no" and not output.include? '<graphics'
-    break if output.include? "<graphics type='#{type}'" or check_nographics
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*) NIC using "([^"]*)" network$/) do |vm, host, count, net|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z:]*) MAC address$/) do |vm, host, mac|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    break if output.include? "<mac address='#{mac}'/>"
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) disk$/) do |vm, host, path, bus|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
-    end
-    break unless disks.empty?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) disk from pool "([^"]*)"$/) do |vm, host, vol, bus, pool|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{vol} #{bus} disk from pool #{pool}") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
-        (x.xpath('target/@bus')[0].to_s == bus.downcase)
-    end
-    break unless disks.empty?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk")
-    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
-    break if (disk_index.nil? && presence == 'no') ||
-             (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to a cdrom$/) do |vm, host, path|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} attached to cdrom") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk")
-    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
-    source = !disk_index.nil? && disks[disk_index].xpath('source/@file')[0].to_s || ""
-    break if source == path
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot using autoyast$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml #{vm}")
-  tree = Nokogiri::XML(output)
-  has_kernel = tree.xpath('//os/kernel').size == 1
-  has_initrd = tree.xpath('//os/initrd').size == 1
-  has_autoyast = tree.xpath('//os/cmdline')[0].to_s.include? ' autoyast='
-  unless has_kernel && has_initrd && has_autoyast
-    raise 'Wrong kernel/initrd/cmdline configuration, '\
-          "kernel: #{has_kernel ? '' : 'not'} set, "\
-          "initrd: #{has_initrd ? '' : 'not'} set, "\
-          "autoyast kernel parameter: #{has_autoyast ? '' : 'not'} set"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot on hard disk at next start$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml --inactive #{vm}")
-  tree = Nokogiri::XML(output)
-  has_kernel = tree.xpath('//os/kernel').size == 1
-  has_initrd = tree.xpath('//os/initrd').size == 1
-  has_cmdline = tree.xpath('//os/cmdline').size == 1
-  unless !has_kernel && !has_initrd && !has_cmdline
-    raise 'Virtual machine will not boot on hard disk at next start, '\
-          "kernel: #{has_kernel ? '' : 'not'} set, "\
-          "initrd: #{has_initrd ? '' : 'not'} set, "\
-          "cmdline: #{has_cmdline ? '' : 'not'} set"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((?: at next start)?)$/) do |vm, host, stop, next_start|
-  node = get_target(host)
-  inactive = next_start == ' at next start' ? '--inactive' : ''
-  output, _code = node.run("virsh dumpxml #{inactive} #{vm}")
-  tree = Nokogiri::XML(output)
-  on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
-  unless on_reboot == 'destroy' && stop == 'stop' || on_reboot == 'restart' && stop == 'not stop'
-    raise "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml #{vm}")
-  tree = Nokogiri::XML(output)
-  has_loader = tree.xpath('//os/loader').size == 1
-  has_nvram = tree.xpath('//os/nvram').size == 1
-  unless has_loader && has_nvram
-    raise "No loader and nvram set: not UEFI enabled"
-  end
-end
-
-When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
-  node = get_target(host)
-  node.run("qemu-img create -f qcow2 #{path} 1G")
-end
-
-When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
-  node = get_target(host)
-  output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", check_errors: false)
-  output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", check_errors: false) }
-end
-
-When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
-  node = get_target(host)
-  node.run("virsh pool-refresh #{pool}")
-end
-
-Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
-    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
-    break if code == 1
-    sleep 3
-  end
-end
-
-Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
-    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
-    break if code.zero?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual network on "([^"]*)" should have "([^"]*)" IPv4 address with ([0-9]+) prefix$/) do |net, host, ip, prefix|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{net} virtual net on #{host} never got #{ip}/#{prefix} IPv4 address") do
-    output, _code = node.run("virsh net-dumpxml #{net}")
-    tree = Nokogiri::XML(output)
-    ips = tree.xpath('//ip[@family="ipv4"]')
-    break if !ips.empty? && ips[0]['address'] == ip and ips[0]['prefix'] == prefix
-    sleep 3
-  end
 end
 
 # WORKAROUND
@@ -1721,7 +1416,7 @@ When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
   node = get_target(host)
   node.run('reboot > /dev/null 2> /dev/null &')
   reboot_timeout = 120
-  check_shutdown($node.public_ip, reboot_timeout)
+  check_shutdown(node.public_ip, reboot_timeout)
   check_restart($server.public_ip, node, reboot_timeout)
 end
 
@@ -1736,6 +1431,12 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
   )
+end
+
+When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
+  if slemicro_host?(host)
+    step %(I reboot the "#{host}" minion through SSH)
+  end
 end
 
 When(/^I change the server's short hostname from hosts and hostname files$/) do
@@ -1782,4 +1483,65 @@ end
 When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
+end
+
+When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
+  add_ports = ''
+  for port in [9100, 9117, 9187] do
+    add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
+  end
+  cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
+  node = get_target(host)
+  node.run(cmd)
+  output, _code = node.run('firewall-cmd --list-ports')
+  raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
+    output.include? '9100/tcp 9117/tcp 9187/tcp'
+end
+
+When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl restart #{service}", check_errors: true)
+end
+
+When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|
+  node = get_system_name(minion)
+  command = "spacecmd -u admin -p admin -y system_delete #{node}"
+  $server.run(command, check_errors: true, verbose: true)
+end
+
+When(/^I execute "([^"]*)" on the "([^"]*)"$/) do |command, host|
+  node = get_target(host)
+  command_output, _code = node.run(command, check_errors: true, verbose: true)
+end
+
+When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  _hostname, local, remote, node_code = node.test_and_store_results_together('hostname', 'root', 500)
+  command_output, _code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
+
+  until command_output.include?("done")
+    command_output, code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
+    raise StandardError 'Error during cloud-init.' if code == 1
+  end
+end
+
+When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
+  # special handling for e.g. nested VMs that will only be crated later in the test suite
+  # this step is normally done in twopence_init.rb
+  node = get_target(host)
+
+  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+  node.init_hostname(hostname)
+
+  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  node.init_full_hostname(fqdn)
+
+  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  os_version, os_family = get_os_version(node)
+  node.init_os_family(os_family)
+  node.init_os_version(os_version)
 end

@@ -9,6 +9,11 @@ find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 # Build the schema
 make -f Makefile.schema SCHEMA=susemanager-schema VERSION=4.1 RELEASE=testing
 
+if [ -d /etc/sysconfig/rhn/schema-upgrade ]; then
+    # remove old migration directories before we install the new
+    rm -r /etc/sysconfig/rhn/schema-upgrade
+fi
+
 # Install directories
 install -m 0755 -d /etc/sysconfig/rhn
 install -m 0755 -d /etc/sysconfig/rhn/postgres

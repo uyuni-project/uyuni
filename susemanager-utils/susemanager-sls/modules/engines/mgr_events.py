@@ -145,6 +145,11 @@ class Responder:
                 self.attempt_commit()
             except Exception as err:
                 log.error("%s: %s", __name__, err)
+                try:
+                    self.connection.commit()
+                except Exception as err2:
+                    log.error("%s: Error commiting: %s", __name__, err2)
+                    self.connection.close()
             finally:
                 log.debug("%s: %s", __name__, self.cursor.query)
         else:

@@ -7193,7 +7193,7 @@
            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
       <forward name="default" path="/WEB-INF/pages/channel/manage/delete.jsp"/>
-      <forward name="delete" path="/software/manage/packages/PackageList.do" redirect="true" />
+      <forward name="delete" path="/manager/packages/list" redirect="true" />
       <forward name="success" path="/channels/manage/Manage.do" redirect="true" />
    </action>
 
@@ -7410,24 +7410,6 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/customkey/updatekey.jsp" />
         <forward name="updated" path="/systems/customdata/CustomDataList.do" redirect="true"/>
-      </action>
-
-   <action path="/software/manage/packages/PackageList"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.rhnpackage.CustomPackageListAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default" path="/WEB-INF/pages/channel/manage/package/listremovecustompackages.jsp" />
-        <forward name="confirm" path="/software/manage/packages/ConfirmPackageRemove.do" redirect="true" />
-      </action>
-
-   <action path="/software/manage/packages/ConfirmPackageRemove"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.rhnpackage.CustomPackagesDeleteConfirmAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default" path="/WEB-INF/pages/channel/manage/package/confirmdeletepackages.jsp" />
-        <forward name="deleted" path="/software/manage/packages/PackageList.do" redirect="true" />
       </action>
 
    <action path="/software/packages/Details"

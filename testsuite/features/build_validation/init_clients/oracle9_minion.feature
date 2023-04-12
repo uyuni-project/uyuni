@@ -38,6 +38,10 @@ Feature: Bootstrap a Oracle 9 Salt minion
     And I follow "Proxy" in the content area
     Then I should see "oracle9_minion" hostname
 
+@monitoring_server
+  Scenario: Prepare Oracle 9 Salt minion firewall for monitoring
+    When I enable firewall ports for monitoring on this "oracle9_minion"
+
   Scenario: Check events history for failures on Oracle 9 Salt minion
     Given I am on the Systems overview page of this "oracle9_minion"
     Then I check for failed events on history event page

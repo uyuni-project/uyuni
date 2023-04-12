@@ -122,8 +122,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         MinionActionExecutor actionExecutor = new MinionActionExecutor(saltServerActionService);
         actionExecutor.execute(context);
 
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
+        HibernateFactory.getSession().clear();
 
         sa1 = HibernateFactory.reload(sa1);
         sa2 = HibernateFactory.reload(sa2);

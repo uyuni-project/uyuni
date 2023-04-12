@@ -56,8 +56,8 @@ Feature: Manage users
     And I should see a "Addresses" link
     And I should see a "user1" text
     And option "Mr." is selected as "prefix"
-    And I should see "Test" in field "firstNames"
-    And I should see "User" in field "lastName"
+    And I should see "Test" in field identified by "firstNames"
+    And I should see "User" in field identified by "lastName"
     And I should see a "galaxy-noise@suse.de" link
     And I should see a "Administrative Roles" text
     And I should see a "Roles:" text

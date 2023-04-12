@@ -17,6 +17,7 @@
 
 
 %global debug_package %{nil}
+%define __python /usr/bin/python2
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -52,6 +53,7 @@ Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description

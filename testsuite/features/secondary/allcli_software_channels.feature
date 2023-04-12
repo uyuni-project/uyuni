@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
+@scc_credentials
 Feature: Channel subscription via SSM
 
   Scenario: Log in as admin user
@@ -31,7 +32,6 @@ Feature: Channel subscription via SSM
     And I remember when I scheduled an action
     Then I wait until I see "Channel Changes Actions" text
     And a table line should contain system "sle_minion", "Scheduled"
-    And I click on the clear SSM button
 
 @sle_minion
   Scenario: Check SLES minion is still subscribed to old channels before channel change completes
@@ -142,15 +142,17 @@ Feature: Channel subscription via SSM
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I wait until I do not see "Loading..." text
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

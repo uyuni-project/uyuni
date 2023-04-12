@@ -1,3 +1,10 @@
+- Use context manager for mgr-create-bootstrap-repo.
+- remove dependency to suseRegisterInfo
+- Make python3-ordered-set optional for the SLE15 bootstrap repo as it is
+  not required or present in SLE15SP3 or older
+- Add bootstrap repository definitions for openSUSE Leap 15.5
+- Add bootstrap repository definitions for openEuler 22.03
+- Tune the dabase after copying the old configuration (bsc#1208611)
 - Remove non-salt-bundle packages from repositories for SLE12,
   CentOS7 and clones
 - Replace apache group to root for RHEL.
