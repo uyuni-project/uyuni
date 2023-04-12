@@ -33,8 +33,6 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
-import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
-import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
@@ -44,6 +42,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
+import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
@@ -335,18 +334,18 @@ public class RecurringActionController {
                     "recurring_action.empty_states_config"));
         }
         ConfigurationManager configManager = ConfigurationManager.getInstance();
+        StateConfigFactory stateConfigFactory = new StateConfigFactory();
         Set<RecurringStateConfig> stateConfig = new HashSet<>();
         json.forEach(config -> {
             String type = config.getType();
             if (type.equals("internal_state")) {
-                RecurringActionFactory.lookupInternalStateByName(config.getName()).ifPresent(state -> {
-                    stateConfig.add(new RecurringInternalState(state, config.getPosition().longValue()));
-                });
+                RecurringActionFactory.lookupInternalStateByName(config.getName()).ifPresent(state ->
+                        stateConfig.add(stateConfigFactory.getRecurringState(state, config.getPosition().longValue())));
             }
             else {
                 ConfigChannel channel = configManager.lookupConfigChannel(user, config.getId());
                 if (channel != null) {
-                    stateConfig.add(new RecurringConfigChannel(channel, config.getPosition().longValue()));
+                    stateConfig.add(stateConfigFactory.getRecurringState(channel, config.getPosition().longValue()));
                 }
             }
         });

@@ -16,17 +16,23 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 /**
  * Serializer for {@link com.redhat.rhn.domain.recurringactions.RecurringAction} class and subclasses
  *
  * @apidoc.doc
- * #struct_begin("recurring action information")
+ * #struct_begin("recurring action information (some fields may be absent for some action types)")
  *   #prop("int", "id")
  *   #prop("string", "name")
  *   #prop("int", "entity_id")
@@ -35,6 +41,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop($date, "created")
  *   #prop("string", "creator")
  *   #prop("boolean", "test")
+ *   #prop_array("states", "string", "the ordered list of states to be executed by a custom state action")
  *   #prop("boolean", "active")
  * #struct_end()
  */
@@ -47,17 +54,29 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
 
     @Override
     public SerializedApiResponse serialize(RecurringAction src) {
-        return new SerializationBuilder()
-                .add("id", src.getId())
+        SerializationBuilder builder = new SerializationBuilder();
+        builder.add("id", src.getId())
+                .add("type", src.getActionType().toString())
                 .add("name", src.getName())
                 .add("entity_id", src.getEntityId())
                 .add("entity_type", src.getTargetType().toString())
                 .add("cron_expr", src.getCronExpr())
                 .add("created", src.getCreated())
                 .add("creator", src.getCreator().getLogin())
-                // TODO: Set values depending on action type
-                .add("test", ((RecurringHighstate) src.getRecurringActionType()).isTestMode())
-                .add("active", src.isActive())
-                .build();
+                .add("active", src.isActive());
+
+        if (src.getActionType().equals(RecurringActionType.ActionType.CUSTOMSTATE)) {
+            RecurringState stateAction = (RecurringState) src.getRecurringActionType();
+            builder.add("test", ((RecurringState) src.getRecurringActionType()).isTestMode());
+            builder.add("states", stateAction.getStateConfig().stream()
+                    .sorted(Comparator.comparing(RecurringStateConfig::getPosition))
+                    .map(RecurringStateConfig::getStateName)
+                    .collect(Collectors.toList()));
+        }
+        else if (src.getActionType().equals(RecurringActionType.ActionType.HIGHSTATE)) {
+            builder.add("test", ((RecurringHighstate) src.getRecurringActionType()).isTestMode());
+        }
+
+        return builder.build();
     }
 }
