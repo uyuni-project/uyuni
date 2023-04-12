@@ -84,8 +84,6 @@ export const DateTimePicker = (props: Props) => {
     }
   };
 
-  window.localizedMoment = localizedMoment;
-
   // We use localizedMoment to clone the date so we don't modify the original
   const browserTimezoneValue = localizedMoment(props.value)
     // We convert the date to the users configured timezone because this is what we want to show the user
