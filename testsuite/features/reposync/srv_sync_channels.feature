@@ -48,11 +48,6 @@ Feature: Be able to list available channels and enable them
     And I should see "Total time:" in the output
     And I should see "Repo URL:" in the output
 
-@susemanager
-  Scenario: Enable SLES15 SP4 SUMA client tools for creating bootstrap repositories
-    When I execute mgr-sync "add channel sle-manager-tools15-pool-x86_64-sp4"
-    And I execute mgr-sync "add channel sle-manager-tools15-updates-x86_64-sp4"
-
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
     And I execute mgr-sync refresh
