@@ -203,6 +203,12 @@ if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
 
+%if 0%{?suse_version}
+if [ $1 = 2 -a -e /etc/tomcat/conf.d/tomcat_java_opts.conf ]; then
+     sed -ri '/\-\-add\-modules java\.annotation,com\.sun\.xml\.bind/!s/JAVA_OPTS="(.*)"/JAVA_OPTS="\1 --add-modules java.annotation,com.sun.xml.bind --add-exports java.annotation\/javax.annotation.security=ALL-UNNAMED --add-opens java.annotation\/javax.annotation.security=ALL-UNNAMED"/' %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts.conf
+fi
+%endif
+
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chmod g+r /etc/zypp/credentials.d/SCCcredentials
