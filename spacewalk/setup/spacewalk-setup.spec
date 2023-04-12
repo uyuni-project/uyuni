@@ -94,6 +94,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
+Requires(pre):  tomcat
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
