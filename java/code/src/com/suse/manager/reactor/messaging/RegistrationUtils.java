@@ -363,13 +363,8 @@ public class RegistrationUtils {
                         return Opt.stream(suseProduct);
                     })).collect(toSet());
         }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "almalinux".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "amazon".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "rocky".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
+                .contains(grains.getValueAsString(OS).toLowerCase())) {
 
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
@@ -379,14 +374,13 @@ public class RegistrationUtils {
                             x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
                             x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (rhel.getSuseProduct().isPresent()) {
-                    return Opt.stream(rhel.getSuseProduct());
-                }
-                else {
+
+                if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
                             rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
+                return rhel.getAllSuseProducts().stream();
             }).collect(toSet());
         }
         else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
