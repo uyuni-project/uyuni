@@ -46,7 +46,9 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-type Props = {};
+type Props = {
+  isOrgAdmin: boolean;
+};
 
 type State = {
   messages: any[];
@@ -185,6 +187,7 @@ class RecurringActions extends React.Component<Props, State> {
             onError={this.handleResponseError}
             onSelect={this.handleDetailsAction}
             onSetMessages={this.setMessages}
+            isOrgAdmin={this.props.isOrgAdmin}
           />
         )}
       </div>
@@ -192,5 +195,9 @@ class RecurringActions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<RecurringActions />, document.getElementById("recurring-actions"));
+export const renderer = (id, { isOrgAdmin }) => {
+  SpaRenderer.renderNavigationReact(
+    <RecurringActions isOrgAdmin={isOrgAdmin} />,
+    document.getElementById("recurring-actions")
+  );
+};

@@ -20,6 +20,7 @@ import { RecurringActionsSearch } from "./search/recurring-actions-search";
 type Props = {
   onSetMessages: (arg0: any) => any;
   isFilteredList?: boolean;
+  isOrgAdmin?: boolean;
   onActionChanged: (arg0: any) => any;
   onSelect: (arg0: any) => any;
   onEdit: (arg0: any) => any;
@@ -88,7 +89,7 @@ class RecurringActionsList extends React.Component<Props, State> {
   }
 
   render() {
-    const { isFilteredList } = this.props;
+    const { isFilteredList, isOrgAdmin } = this.props;
     const disableCreate = !isFilteredList;
     const buttons = [
       <div className="btn-group pull-right">
@@ -181,7 +182,7 @@ class RecurringActionsList extends React.Component<Props, State> {
                 columnKey={isFilteredList ? "targetName" : "target_name"}
                 comparator={Utils.sortByText}
                 header={t("Target Name")}
-                cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId)}
+                cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId, isOrgAdmin)}
               />
               <Column
                 columnClass="text-center"

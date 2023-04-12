@@ -17,7 +17,7 @@ const renderSearchField = (props) => {
   return (
     <div className="form-group">
       <input
-        className="form-control table-input-search"
+        className="form-control"
         value={props.criteria || ""}
         placeholder={props.placeholder}
         type="text"
@@ -40,15 +40,18 @@ export const RecurringActionsSearch = (props) => {
   };
 
   return (
-    <Form model={model} onChange={onChange} title={t("Filter")}>
-      <Select
-        name="filter"
-        placeholder={t("Select a filter")}
-        defaultValue={filterValue}
-        options={SEARCH_FIELD_OPTIONS}
-        onChange={(name: string | undefined, value: string) => handleChangeSearchField(value)}
-      />
-      {props.field && renderSearchField(props)}
+    <Form model={model} onChange={onChange} title={t("Filter")} className="row">
+      <div className="col-sm-4">
+        <Select
+          name="filter"
+          placeholder={t("Select a filter")}
+          defaultValue={filterValue}
+          options={SEARCH_FIELD_OPTIONS}
+          inputClass="col-sm-12"
+          onChange={(name: string | undefined, value: string) => handleChangeSearchField(value)}
+        />
+      </div>
+      <div className="col-sm-6">{props.field && renderSearchField(props)}</div>
     </Form>
   );
 };
