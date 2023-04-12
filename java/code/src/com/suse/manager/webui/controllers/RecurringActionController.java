@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -115,7 +116,9 @@ public class RecurringActionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
+        return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
     }
 
     /**
