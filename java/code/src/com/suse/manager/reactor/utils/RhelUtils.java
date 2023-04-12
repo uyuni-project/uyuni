@@ -22,10 +22,12 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utilities related to RHEL minions.
@@ -46,32 +48,43 @@ public class RhelUtils {
      */
     public static class RhelProduct {
 
-        private Optional<SUSEProduct> suseProduct;
+        private Optional<SUSEProduct> suseBaseProduct;
+        private Set<SUSEProduct> suseAdditionalProducts;
         private String name;
         private String version;
         private String release;
 
         /**
          * Constructor.
-         * @param suseProductIn the suse product that corresponds to this OS
+         * @param suseBaseProductIn the suse product that corresponds to this OS
+         * @param suseAdditionalProductsIn any possible additional SUSE products like SLL ones
          * @param nameIn the name of the OS
          * @param versionIn the version
          * @param releaseIn the release name
-         * @param archIn the arch
          */
-        public RhelProduct(Optional<SUSEProduct> suseProductIn, String nameIn,
-                           String versionIn, String releaseIn, String archIn) {
-            this.suseProduct = suseProductIn;
+        public RhelProduct(Optional<SUSEProduct> suseBaseProductIn, Set<SUSEProduct> suseAdditionalProductsIn,
+                           String nameIn, String versionIn, String releaseIn) {
+            this.suseBaseProduct = suseBaseProductIn;
+            this.suseAdditionalProducts = suseAdditionalProductsIn;
             this.name = nameIn;
             this.version = versionIn;
             this.release = releaseIn;
         }
 
         /**
-         * @return the SUSE product, if any.
+         * @return the SUSE base product, if any.
          */
-        public Optional<SUSEProduct> getSuseProduct() {
-            return suseProduct;
+        public Optional<SUSEProduct> getSuseBaseProduct() {
+            return suseBaseProduct;
+        }
+
+        /**
+         * @return all the SUSE products if any.
+         */
+        public Set<SUSEProduct> getAllSuseProducts() {
+            Set<SUSEProduct> set = new HashSet<>(suseAdditionalProducts);
+            suseBaseProduct.ifPresent(set::add);
+            return set;
         }
 
         /**
@@ -239,20 +252,22 @@ public class RhelUtils {
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
 
         Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                        .findSUSEProduct(productName, majorVersion, release, arch, true))
-                .flatMap(resProduct -> {
+                .findSUSEProduct(productName, majorVersion, release, arch, true));
+
+        Optional<SUSEProduct> suseBaseProduct = suseProduct.filter(p -> p.isBase()).isPresent() ? suseProduct :
+                suseProduct.flatMap(resProduct -> {
                     if (resProduct.isBase()) {
                         return Optional.of(resProduct);
                     }
                     else {
                         return Optional.ofNullable(SUSEProductFactory
-                                .findSUSEProduct("rhel-base", majorVersion, release, arch, true));
+                                .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true));
                     }
                 })
                 .filter(SUSEProduct::isBase);
 
-        return Optional.of(new RhelProduct(suseProduct, name,
-                majorVersion, release, arch));
+        return Optional.of(new RhelProduct(suseBaseProduct, suseProduct.stream().collect(Collectors.toSet()), name,
+                majorVersion, release));
     }
 
     /**
@@ -427,6 +442,14 @@ public class RhelUtils {
         );
     }
 
+    private static String getBaseProductName(String majorVersion) {
+        Matcher versionMatcher = Pattern.compile("^(\\d+)").matcher(majorVersion);
+        if (versionMatcher.matches() && Integer.parseInt(versionMatcher.group(1)) >= 9) {
+            return "el-base";
+        }
+        return "rhel-base";
+    }
+
     private static RhelProduct detectPlainRHEL(String releaseFileContent,
                                                String arch, String defaultName) {
         Optional<ReleaseFile> releaseFile = parseReleaseFile(releaseFileContent);
@@ -436,10 +459,10 @@ public class RhelUtils {
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
         Optional<SUSEProduct> suseProduct = defaultName.equals("RedHatEnterprise") ?
                 Optional.ofNullable(SUSEProductFactory
-                        .findSUSEProduct("rhel-base", majorVersion, release, arch, true)) :
+                        .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true)) :
                 Optional.ofNullable(SUSEProductFactory
                         .findSUSEProduct(name, majorVersion, release, arch, true));
-        return new RhelProduct(suseProduct, name, majorVersion, release, arch);
+        return new RhelProduct(suseProduct, Set.of(), name, majorVersion, release);
     }
 
 }

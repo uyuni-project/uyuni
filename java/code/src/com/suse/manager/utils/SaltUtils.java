@@ -1817,7 +1817,7 @@ public class SaltUtils {
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                 rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
-        return rhelProductInfo.get().getSuseProduct().map(product -> {
+        return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
             InstalledProduct installedProduct = new InstalledProduct();
@@ -1827,8 +1827,8 @@ public class SaltUtils {
             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
             installedProduct.setBaseproduct(true);
 
-            return Collections.singleton(installedProduct);
-        }).orElse(Collections.emptySet());
+            return installedProduct;
+        }).collect(Collectors.toSet());
     }
 
     private static Set<InstalledProduct> getInstalledProductsForRhel(
@@ -1859,7 +1859,7 @@ public class SaltUtils {
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                  rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
-         return rhelProductInfo.get().getSuseProduct().map(product -> {
+         return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
 
              InstalledProduct installedProduct = new InstalledProduct();
@@ -1869,8 +1869,8 @@ public class SaltUtils {
              installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
              installedProduct.setBaseproduct(true);
 
-             return Collections.singleton(installedProduct);
-         }).orElse(Collections.emptySet());
+             return installedProduct;
+         }).collect(Collectors.toSet());
      }
 
     /**
