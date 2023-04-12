@@ -1,7 +1,6 @@
 # Copyright (c) 2017-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
 @scope_visualization
 Feature: The system details of each minion and client provides an overview of the system
 
