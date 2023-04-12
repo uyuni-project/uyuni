@@ -178,9 +178,9 @@ public class RhelUtils {
         Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
         if (matcher.matches()) {
             String name =
-                    matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
+                    matcher.group(1).replaceAll("(?i)linux", "").replace(" ", "");
             if (name.startsWith("Alma") || name.startsWith("Amazon") || name.startsWith("Rocky")) {
-                name = matcher.group(1).replaceAll(" ", "");
+                name = matcher.group(1).replace(" ", "");
             }
             String majorVersion = StringUtils.substringBefore(matcher.group(2), ".");
             String minorVersion = StringUtils.substringAfter(matcher.group(2), ".");
@@ -191,7 +191,7 @@ public class RhelUtils {
             Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(releaseFile);
             if (amatcher.matches()) {
                 String name =
-                        amatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
+                        amatcher.group(1).replaceAll("(?i)linux", "").replace(" ", "");
                 String majorVersion = StringUtils.substringBefore(amatcher.group(2), ".");
                 String minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
                 String release = amatcher.group(3);
@@ -201,7 +201,7 @@ public class RhelUtils {
                 Matcher omatcher = ORACLE_RELEASE_MATCHER.matcher(releaseFile);
                 if (omatcher.matches()) {
                     String name =
-                            omatcher.group(1).replaceAll("(?i)server", "").replaceAll(" ", "");
+                            omatcher.group(1).replaceAll("(?i)server", "").replace(" ", "");
                     String majorVersion = StringUtils.substringBefore(omatcher.group(2), ".");
                     String minorVersion = StringUtils.substringAfter(omatcher.group(2), ".");
                     return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, ""));
