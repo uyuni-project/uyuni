@@ -126,7 +126,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      * Sync s the following things:
      *  Distro (if applicable)
      *
-     * then overwrites the 'kickstart' attribute within the cobbler profile
+     * then overwrites the 'autoinstall' attribute within the cobbler profile
      *      (in case they changed it to something spacewalk doesn't know about)
      * @param cobblerProfile
      * @param profile
@@ -151,16 +151,16 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         //Now re-set the filename in case someone set it incorrectly
         Path kickstartPath = Path.of(
                 ConfigDefaults.get().getKickstartConfigDir(),
-                cobblerProfile.get("kickstart").toString()
+                cobblerProfile.get("autoinstall").toString()
         );
         String cobblerKickstartFileName = profile.buildCobblerFileName();
         if (!Path.of(cobblerKickstartFileName).equals(kickstartPath)) {
             try {
-                log.info(String.format("Updating cobbler profile, setting 'kickstart' to: %s",
+                log.info(String.format("Updating cobbler profile, setting 'autoinstall' to: %s",
                         cobblerKickstartFileName));
                 String handle = (String) invokeXMLRPC("get_profile_handle",
                         cobblerProfile.get("name"), xmlRpcToken);
-                invokeXMLRPC("modify_profile", handle, "kickstart", cobblerKickstartFileName,
+                invokeXMLRPC("modify_profile", handle, "autoinstall", cobblerKickstartFileName,
                         xmlRpcToken);
 
                 invokeXMLRPC("save_profile", handle, xmlRpcToken);
