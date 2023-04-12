@@ -124,6 +124,7 @@ def main():
     parser.add_option('-v', '--verbose', action='count',
                       help="Verbose output. Possible to accumulate: -vvv")
     (options, args) = parser.parse_args()
+
     try:
         LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
     except rhnLockfile.LockfileLockedException:
