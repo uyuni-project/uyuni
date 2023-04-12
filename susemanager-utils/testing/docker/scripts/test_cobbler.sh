@@ -19,21 +19,15 @@ cp /root/sample.ks /var/lib/cobbler/kickstarts/sample.ks
 # start apache - required by cobbler tests
 /usr/sbin/start_apache2 -D SYSTEMD  -k start
 
-# start cobbler daemon
-cobblerd
-
 ln -s /usr/share/cobbler/ /code
-
-# Configure DHCP
-sed -i 's/DHCPD_INTERFACE=""/DHCPD_INTERFACE="ANY"/' /etc/sysconfig/dhcpd
-echo "subnet 172.17.0.0 netmask 255.255.255.0 {}"  >> /etc/dhcpd.conf
-sed -i "s/dhcpd -4 -f/dhcpd -f/g" /code/docker/develop/supervisord/conf.d/dhcpd.conf
-sed -i "s/nogroup pxe/nogroup/g" /code/docker/develop/supervisord/conf.d/dhcpd.conf
 
 # Configure PAM
 useradd -p $(perl -e 'print crypt("test", "password")') test
 
 sh /code/docker/develop/scripts/setup-supervisor.sh || true
+
+# Run system-tests bootstrap to prepare dhcpd and expected pxe testing interface
+sh /docker-setup-cobbler-system-tests-env.sh
 
 # execute the tests
 

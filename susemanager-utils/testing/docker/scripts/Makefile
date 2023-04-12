@@ -14,8 +14,8 @@ pull_container ::
 
 cobbler_tests :: pull_container
 	@echo "Running cobbler tests"
-	docker run --rm -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh $(DOCKER_CONTAINER) /test_cobbler.sh
+	docker run --cap-add=NET_ADMIN --rm -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh -v $(CURDIR)/docker-setup-cobbler-system-tests-env.sh:/docker-setup-cobbler-system-tests-env.sh $(DOCKER_CONTAINER) /test_cobbler.sh
 
 cobbler_tests_shell ::
 	@echo "Spawning a shell inside of the cobbler tests container"
-	docker run --rm -ti -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh $(DOCKER_CONTAINER) /bin/bash
+	docker run --cap-add=NET_ADMIN --rm -ti -v $(CURDIR)/../../../../cobbler_reports:/reports -v $(CURDIR)/test_cobbler.sh:/test_cobbler.sh -v $(CURDIR)/docker-setup-cobbler-system-tests-env.sh:/docker-setup-cobbler-system-tests-env.sh $(DOCKER_CONTAINER) /bin/bash
