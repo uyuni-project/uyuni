@@ -487,6 +487,16 @@ sub setup_mod_ssl {
 
 }
 
+sub setup_jabberd {
+  my $opts = shift;
+  my $answers = shift;
+
+  system('rpm -q jabberd >& /dev/null');
+  if ($? >> 8 == 0) {
+    system("/usr/bin/spacewalk-setup-jabberd", "--macros", "hostname:$answers->{'hostname'}");
+  }
+}
+
 sub setup_ssl_certs {
   my $opts = shift;
   my $answers = shift;
