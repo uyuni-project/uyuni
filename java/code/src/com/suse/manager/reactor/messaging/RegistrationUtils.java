@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -165,7 +166,7 @@ public class RegistrationUtils {
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
