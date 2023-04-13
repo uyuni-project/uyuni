@@ -285,11 +285,11 @@ public class PagedSqlQueryBuilder {
      * @param filterParser function converting the PageControl filter into a FilterWithValue
      * @param clazz the class of the row objects
      * @param session the hibernate session to use
-     * @param <T> the type of the returned result
+     * @param <T> the type of the returned result. It needs to have a constructor which receives a tuple
      *
      * @return the DataResult
      */
-    public <T extends BaseTupleDto> DataResult<T> run(Map<String, Object> parameters, PageControl pc,
+    public <T> DataResult<T> run(Map<String, Object> parameters, PageControl pc,
                                                       Function<Optional<PageControl>, FilterWithValue> filterParser,
                                                       Class<T> clazz, Session session) {
         Optional<PageControl> pageControl = Optional.ofNullable(pc);

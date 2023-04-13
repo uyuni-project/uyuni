@@ -83,6 +83,7 @@ public class MenuTree {
             nodes.add(getConfigurationNode(adminRoles));
             nodes.add(getScheduleNode());
             nodes.add(getUsersNode(adminRoles));
+            nodes.add(getReports());
             nodes.add(getAdminNode(adminRoles));
             nodes.add(getHelpNode(docsLocale));
             nodes.add(getExternalLinksNode(docsLocale));
@@ -407,6 +408,11 @@ public class MenuTree {
                     .withAltUrl("/rhn/users/ExtAuthSgDetails.do")
                     .withAltUrl("/rhn/users/ExtAuthSgDelete.do")
                     .withVisibility(adminRoles.get("org")));
+    }
+
+    private MenuItem getReports() {
+        return new MenuItem("Report").withIcon("fa-clipboard")
+                .addChild(new MenuItem("reportInventory.nav.title").withPrimaryUrl("/rhn/manager/report/inventory"));
     }
 
     private MenuItem getAdminNode(Map<String, Boolean> adminRoles) {

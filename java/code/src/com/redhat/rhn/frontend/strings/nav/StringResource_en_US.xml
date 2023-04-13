@@ -38,6 +38,18 @@
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Report" xml:space="preserve">
+        <source>Report</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Report Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reportInventory.nav.title" xml:space="preserve">
+        <source>Inventory Report</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Report Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="action.nav.backout" xml:space="preserve">
         <source>Back Out Patches</source>
         <context-group name="ctx">
