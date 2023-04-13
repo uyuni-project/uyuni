@@ -24,6 +24,7 @@ import static spark.Spark.get;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -222,6 +223,7 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
+        data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/recurring-actions.jade");
@@ -268,6 +270,7 @@ public class MinionController {
         data.put("minions", Json.GSON.toJson(minions));
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
+        data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("entityType", "ORG");
         return new ModelAndView(data, "templates/yourorg/recurring-actions.jade");
     }
@@ -336,6 +339,7 @@ public class MinionController {
         data.put("entityType", "GROUP");
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
+        data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/groups/recurring-actions.jade");
     }
 
@@ -415,6 +419,7 @@ public class MinionController {
     public static ModelAndView recurringActions(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
         data.put("entityType", "MINION");
+        data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 

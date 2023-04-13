@@ -25,4 +25,6 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('recurring/recurring-actions')
-        .then(function(module) { module.renderer('recurring-actions') });
+        .then(function(module) {
+            module.renderer('recurring-actions', { isOrgAdmin: #{is_org_admin}} )
+        });

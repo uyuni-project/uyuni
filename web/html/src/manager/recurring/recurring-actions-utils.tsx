@@ -11,15 +11,15 @@ const targetTypeToString = (targetType?: string) => {
 };
 
 const targetNameLink = (targetName?: string, targetType?: string, targetId?: number, isOrgAdmin?: boolean) => {
+  if (!isOrgAdmin) {
+    return targetName;
+  }
   switch (targetType) {
     case "MINION":
       return <a href={"/rhn/manager/systems/details/recurring-actions?sid=" + targetId}>{targetName}</a>;
     case "GROUP":
       return <a href={"/rhn/manager/groups/details/recurring-actions?sgid=" + targetId}>{targetName}</a>;
     case "ORG":
-      if (!isOrgAdmin) {
-        return targetName;
-      }
       if (window.JSONMenu.filter((item) => item.label === "Admin").length) {
         return <a href={"/rhn/manager/multiorg/recurring-actions?oid=" + targetId}>{targetName}</a>;
       }
