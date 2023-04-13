@@ -24,8 +24,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,14 +43,6 @@ public class TinyUrlAction extends RhnAction {
             HttpServletRequest request, HttpServletResponse response)
         throws Exception {
         String token = request.getParameter(TY_TOKEN);
-        if (log.isDebugEnabled()) {
-            log.debug("token: {}", token);
-            Enumeration e = request.getParameterNames();
-            while (e.hasMoreElements()) {
-                String name = (String) e.nextElement();
-                log.debug("param.name: {} val: {}", name, request.getParameter(name));
-            }
-        }
 
         TinyUrl turl = CommonFactory.lookupTinyUrl(token);
         if (turl != null) {
