@@ -346,8 +346,6 @@ public class SessionManager extends BaseManager {
 
         if (data != null && data.length == 2) {
             String recomputedkey = generateSessionKey(data[0]);
-            logger.debug("recomputed [" + recomputedkey +
-                      "] cookiekey [" + data[1] + "]");
             return recomputedkey.equals(data[1]);
         }
 
