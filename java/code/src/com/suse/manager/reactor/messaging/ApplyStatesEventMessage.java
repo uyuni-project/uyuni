@@ -38,7 +38,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String CHANNELS = "channels";
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
     public static final String REPORTDB_USER = "services.reportdb-user";
-    public static final String SYNC_CUSTOM_ALL = "util.synccustomall";
+    public static final String SYNC_ALL = "util.syncall";
     public static final String SYNC_STATES = "util.syncstates";
     public static final String DISTUPGRADE = "distupgrade";
     public static final String SALTBOOT = "saltboot";

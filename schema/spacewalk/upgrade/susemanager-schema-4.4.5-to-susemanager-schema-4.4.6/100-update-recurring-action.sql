@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS suseInternalState
   label             VARCHAR(128) NOT NULL
 );
 
+DELETE FROM suseInternalState;
+
 INSERT INTO suseInternalState (id, name, label)
          SELECT 1, 'certs', 'Certificates'
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='certs');
@@ -27,7 +29,7 @@ INSERT INTO suseInternalState (id, name, label)
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='channels');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 3, 'hardware.profileupdate', 'Hardware Profileupdate'
+         SELECT 3, 'hardware.profileupdate', 'Hardware Profile Update'
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='hardware.profileupdate');
 
 INSERT INTO suseInternalState (id, name, label)
@@ -35,7 +37,7 @@ INSERT INTO suseInternalState (id, name, label)
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 5, 'packages.profileupdate', 'Package Profileupdate'
+         SELECT 5, 'packages.profileupdate', 'Package Profile Update'
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages.profileupdate');
 
 INSERT INTO suseInternalState (id, name, label)
@@ -43,8 +45,8 @@ INSERT INTO suseInternalState (id, name, label)
          WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncbeacons');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 7, 'util.synccustomall', 'Sync Custom'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.synccustomall');
+         SELECT 7, 'util.syncall', 'Sync All'
+         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncall');
 
 INSERT INTO suseInternalState (id, name, label)
          SELECT 8, 'util.syncgrains', 'Sync Grains'

@@ -15,19 +15,19 @@ INSERT INTO suseInternalState (id, name, label)
          VALUES (2, 'channels', 'Channels');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (3, 'hardware.profileupdate', 'Hardware Profileupdate');
+         VALUES (3, 'hardware.profileupdate', 'Hardware Profile Update');
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (4, 'packages', 'Packages');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (5, 'packages.profileupdate', 'Package Profileupdate');
+         VALUES (5, 'packages.profileupdate', 'Package Profile Update');
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (6, 'util.syncbeacons', 'Sync Beacons');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (7, 'util.synccustomall', 'Sync Custom');
+         VALUES (7, 'util.syncall', 'Sync All');
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (8, 'util.syncgrains', 'Sync Grains');
