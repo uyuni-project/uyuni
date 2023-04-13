@@ -874,7 +874,7 @@ sub postgresql_setup_db {
     write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
 
     postgresql_populate_db($opts, $answers, $populate_db);
-
+    satcon_deploy();
     return 1;
 }
 
@@ -934,6 +934,7 @@ sub postgresql_reportdb_setup {
         ### here we need _ instead of - cause we read them from rhn.conf
         write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled','report_db_sslrootcert');
     }
+    satcon_deploy();
     print loc("** Database: Installation complete.\n");
 
     return 1;

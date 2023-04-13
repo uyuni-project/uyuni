@@ -1,7 +1,6 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
 @scope_cve_audit
 Feature: Support for new CVE-ID syntax
 
