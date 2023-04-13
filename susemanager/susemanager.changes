@@ -1,3 +1,4 @@
+- Add bootstrap repository definitions for openSUSE Leap Micro 5.4
 - Add bootstrap repository definitions for SLE Micro 5.4
 - Ensure installation of make for building.
 - Automatically detect PostgreSQL service and data folder name.
