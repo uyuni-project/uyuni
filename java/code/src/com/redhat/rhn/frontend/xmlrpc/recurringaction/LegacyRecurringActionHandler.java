@@ -41,10 +41,16 @@ import java.util.Map;
 /**
  * Handler for Recurring Actions ({@link RecurringAction})
 
- * @apidoc.namespace recurring
+ * @apidoc.namespace recurringaction
  * @apidoc.doc Provides methods to handle recurring actions for minions, system groups and organizations.
+ * <p>
+ * <strong>Deprecated</strong> - This namespace will be removed in a future API version. To work with recurring actions,
+ * please check out the newer 'recurring' namespace.
+ * @deprecated This namespace will be removed in a future API version. To work with recurring actions, please check out
+ * the newer 'recurring' namespace.
  */
-public class RecurringActionHandler extends BaseHandler {
+@Deprecated
+public class LegacyRecurringActionHandler extends BaseHandler {
 
     /* helper method */
     private RecurringAction.TargetType getEntityType(String entityType) {
@@ -60,37 +66,40 @@ public class RecurringActionHandler extends BaseHandler {
      * Return a list of recurring actions for a given entity.
      *
      * @param loggedInUser The current user
-     * @param id the id of the entity
-     * @param type type of the entity
+     * @param entityId the id of the entity
+     * @param entityType type of the entity
      * @return the list of recurring actions
+     * @deprecated This method will be removed in a future API version. To work with recurring actions, please check
+     * out the newer 'recurring' namespace.
      *
      * @apidoc.doc Return a list of recurring actions for a given entity.
      * @apidoc.param #session_key()
      * @apidoc.param
-     *   #prop_desc("string", "type", "the type of the target entity. One of the following:")
+     *   #prop_desc("string", "entityType", "the type of the target entity. One of the following:")
      *     #options()
-     *       #item("minion")
-     *       #item("group")
-     *       #item("org")
+     *       #item("MINION")
+     *       #item("GROUP")
+     *       #item("ORG")
      *     #options_end()
-     * @apidoc.param #param_desc("int", "id", "the ID of the target entity")
+     * @apidoc.param #param_desc("int", "entityId", "the ID of the target entity")
      * @apidoc.returntype
      *      #return_array_begin()
      *          $RecurringActionSerializer
      *      #array_end()
      */
+    @Deprecated
     @ReadOnly
-    public List<? extends RecurringAction> listByEntity(User loggedInUser, String type, Integer id) {
+    public List<? extends RecurringAction> listByEntity(User loggedInUser, String entityType, Integer entityId) {
         try {
-            switch (getEntityType(type)) {
+            switch (getEntityType(entityType)) {
                 case MINION:
-                    return RecurringActionManager.listMinionRecurringActions(id, loggedInUser);
+                    return RecurringActionManager.listMinionRecurringActions(entityId, loggedInUser);
                 case GROUP:
-                    return RecurringActionManager.listGroupRecurringActions(id, loggedInUser);
+                    return RecurringActionManager.listGroupRecurringActions(entityId, loggedInUser);
                 case ORG:
-                    return RecurringActionManager.listOrgRecurringActions(id, loggedInUser);
+                    return RecurringActionManager.listOrgRecurringActions(entityId, loggedInUser);
                 default:
-                    throw new IllegalStateException("Unsupported type " + type);
+                    throw new IllegalStateException("Unsupported type " + entityType);
             }
         }
         catch (PermissionException e) {
@@ -102,23 +111,58 @@ public class RecurringActionHandler extends BaseHandler {
      * Return recurring action with the given action ID.
      *
      * @param loggedInUser The current user
-     * @param id id of the action
+     * @param actionId id of the action
      * @return the recurring action exception thrown otherwise
+     * @deprecated This method will be removed in a future API version. To work with recurring actions, please check
+     * out the newer 'recurring' namespace.
      *
      * @apidoc.doc Find a recurring action with the given action ID.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "id", "the action ID")
+     * @apidoc.param #param_desc("int", "actionId", "the action ID")
      * @apidoc.returntype $RecurringActionSerializer
      */
+    @Deprecated
     @ReadOnly
-    public RecurringAction lookupById(User loggedInUser, Integer id) {
-        RecurringAction action = RecurringActionFactory.lookupById(id).orElseThrow(
-                () -> new EntityNotExistsFaultException("Action with id: " + id + " does not exist")
+    public RecurringAction lookupById(User loggedInUser, Integer actionId) {
+        RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow(
+                () -> new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist")
         );
         if (!action.canAccess(loggedInUser)) {
             throw new PermissionCheckFailureException("Action not accessible to user: " + loggedInUser);
         }
         return action;
+    }
+
+    /**
+     * Create a new recurring action.
+     *
+     * @param loggedInUser The current user
+     * @param actionProps Map containing action properties
+     * @return action id or exception thrown otherwise
+     * @deprecated This method will be removed in a future API version. To create recurring actions, please use either
+     * 'recurring.highstate.create' or 'recurring.custom.create' instead.
+     *
+     * @apidoc.doc Create a new recurring highstate action.
+     * @apidoc.param #session_key()
+     * @apidoc.param
+     *  #struct_begin("actionProps")
+     *      #prop_desc("string", "entity_type", "the type of the target entity. One of the following:")
+     *        #options()
+     *          #item("minion")
+     *          #item("group")
+     *          #item("org")
+     *        #options_end()
+     *      #prop_desc("int", "entity_id", "the ID of the target entity")
+     *      #prop_desc("string", "name", "the name of the action")
+     *      #prop_desc("string", "cron_expr", "the execution frequency of the action")
+     *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
+     *  #struct_end()
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     */
+    @Deprecated
+    public int create(User loggedInUser, Map<String, Object> actionProps) {
+        RecurringAction action = createAction(RecurringActionType.ActionType.HIGHSTATE, actionProps, loggedInUser);
+        return save(loggedInUser, action);
     }
 
     /* Helper method */
@@ -155,6 +199,33 @@ public class RecurringActionHandler extends BaseHandler {
             }
         }
         return action;
+    }
+
+    /**
+     * Update a recurring action.
+     *
+     * @param loggedInUser The current user
+     * @param actionProps Map containing properties to update
+     * @return action id or exception thrown otherwise
+     * @deprecated This method will be removed in a future API version. To update recurring actions, please use either
+     * 'recurring.highstate.update' or 'recurring.custom.update' instead.
+     *
+     * @apidoc.doc Update a recurring highstate action.
+     * @apidoc.param #session_key()
+     * @apidoc.param
+     *  #struct_begin("actionProps")
+     *      #prop_desc("int", "id", "the ID of the action to update")
+     *      #prop_desc("string", "name", "the name of the action (optional)")
+     *      #prop_desc("string", "cron_expr", "the execution frequency of the action (optional)")
+     *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
+     *      #prop_desc("boolean", "active", "whether the action should be active (optional)")
+     *  #struct_end()
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     */
+    @Deprecated
+    public int update(User loggedInUser, Map<String, Object> actionProps) {
+        RecurringAction action = updateAction(actionProps, loggedInUser);
+        return save(loggedInUser, action);
     }
 
     /* Helper method */
@@ -210,16 +281,19 @@ public class RecurringActionHandler extends BaseHandler {
      * Delete recurring action with the given action ID.
      *
      * @param loggedInUser the current user
-     * @param id the id of the action
+     * @param actionId the id of the action
      * @return the id of deleted action otherwise exception thrown
+     * @deprecated This method will be removed in a future API version. To work with recurring actions, please check
+     * out the newer 'recurring' namespace.
      *
      * @apidoc.doc Delete a recurring action with the given action ID.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "id", "the action ID")
-     * @apidoc.returntype #return_int_success()
+     * @apidoc.param #param_desc("int", "actionId", "the action ID")
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
      */
-    public int delete(User loggedInUser, Integer id) {
-        RecurringAction action = lookupById(loggedInUser, id);
+    @Deprecated
+    public int delete(User loggedInUser, Integer actionId) {
+        RecurringAction action = lookupById(loggedInUser, actionId);
         try {
             RecurringActionManager.deleteAndUnschedule(action, loggedInUser);
         }
