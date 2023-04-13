@@ -202,6 +202,7 @@ class RecurringActionsList extends React.Component<Props, State> {
                       className="btn-default btn-sm"
                       title={t("Details")}
                       icon="fa-list"
+                      disabled={!isFilteredList && !isOrgAdmin}
                       handler={() => {
                         this.props.onSelect(row);
                       }}
