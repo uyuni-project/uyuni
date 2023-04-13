@@ -10,7 +10,7 @@ Thu Apr 06 13:31:42 UTC 2023 - marina.latini@suse.com
 Tue Mar 28 09:48:38 UTC 2023 - marina.latini@suse.com
 
 - version 4.2.48-1
-  * Prevent logging formula data (bsc#1209386)
+  * Prevent logging formula data (bsc#1209386, bsc#1209434, CVE-2023-22644)
   * Use gnu-jaf instead of jaf
   * Use reload4j instead of log4j or log4j12
   * Save scheduler user when creating Patch actions manually (bsc#1208321)
