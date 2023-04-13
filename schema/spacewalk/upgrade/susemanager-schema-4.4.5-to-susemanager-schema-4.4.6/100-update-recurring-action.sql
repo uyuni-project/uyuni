@@ -21,44 +21,37 @@ CREATE TABLE IF NOT EXISTS suseInternalState
 DELETE FROM suseInternalState;
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 1, 'certs', 'Certificates'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='certs');
+         VALUES (1, 'certs', 'Certificates');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 2, 'channels', 'Channels'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='channels');
+         VALUES (2, 'channels', 'Channels');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 3, 'hardware.profileupdate', 'Hardware Profile Update'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='hardware.profileupdate');
+         VALUES (3, 'hardware.profileupdate', 'Hardware Profile Update');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 4, 'packages', 'Packages'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages');
+         VALUES (4, 'packages', 'Packages');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 5, 'packages.profileupdate', 'Package Profile Update'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='packages.profileupdate');
+         VALUES (5, 'packages.profileupdate', 'Package Profile Update');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 6, 'util.syncbeacons', 'Sync Beacons'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncbeacons');
+         VALUES (6, 'uptodate', 'Update System');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 7, 'util.syncall', 'Sync All'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncall');
+         VALUES (7, 'util.syncbeacons', 'Sync Beacons');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 8, 'util.syncgrains', 'Sync Grains'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncgrains');
+         VALUES (8, 'util.syncall', 'Sync All');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 9, 'util.syncmodules', 'Sync Modules'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncmodules');
+         VALUES (9, 'util.syncgrains', 'Sync Grains');
 
 INSERT INTO suseInternalState (id, name, label)
-         SELECT 10, 'util.syncstates', 'Sync States'
-         WHERE NOT EXISTS (SELECT 1 FROM suseInternalState WHERE name='util.syncstates');
+         VALUES (10, 'util.syncmodules', 'Sync Modules');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (11, 'util.syncstates', 'Sync States');
 
 CREATE TABLE IF NOT EXISTS suseRecurringHighstate
 (
