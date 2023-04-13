@@ -1,3 +1,4 @@
+- Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
 - add listSystemEvents missing API endpoint (bsc#1209877)
 
 -------------------------------------------------------------------
