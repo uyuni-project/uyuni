@@ -109,7 +109,9 @@ Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
 if ($opts{'db-only'}) {
     exit;
 }
-Spacewalk::Setup::satcon_deploy();
+
+Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-service', 'restart'], 40,
+      'Could not restart spacewalk services.');
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
 
