@@ -1,3 +1,5 @@
+- remove channels from client after transfer to a different
+  organization (bsc#1209220)
 - fix displaying system channels when no base product is installed
   (bsc#1206423)
 - fix broken ifcfg grub option on reinstallation (bsc#1210232)
