@@ -24,16 +24,19 @@ INSERT INTO suseInternalState (id, name, label)
          VALUES (5, 'packages.profileupdate', 'Package Profile Update');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (6, 'util.syncbeacons', 'Sync Beacons');
+         VALUES (6, 'uptodate', 'Update System');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (7, 'util.syncall', 'Sync All');
+         VALUES (7, 'util.syncbeacons', 'Sync Beacons');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (8, 'util.syncgrains', 'Sync Grains');
+         VALUES (8, 'util.syncall', 'Sync All');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (9, 'util.syncmodules', 'Sync Modules');
+         VALUES (9, 'util.syncgrains', 'Sync Grains');
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (10, 'util.syncstates', 'Sync States');
+         VALUES (10, 'util.syncmodules', 'Sync Modules');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (11, 'util.syncstates', 'Sync States');
