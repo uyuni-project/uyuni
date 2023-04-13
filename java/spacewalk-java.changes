@@ -1,3 +1,7 @@
+- Add more restricted arguments to prevent HTTP API logging
+  sensitive data
+  (CVE-2023-22644, bsc#1209434, bsc#1209386, bsc#1209395)
+
 -------------------------------------------------------------------
 Tue Mar 21 15:23:53 CET 2023 - jgonzalez@suse.com
 
