@@ -9381,7 +9381,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
       </trans-unit>
-      <trans-unit id="internal_state.util_synccustomall" xml:space="preserve">
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
       </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
