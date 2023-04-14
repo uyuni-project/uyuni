@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 13:42+0100\n"
+"POT-Creation-Date: 2023-04-14 15:53+0200\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -3227,8 +3227,8 @@ msgstr ""
 msgid "API (%s) is too old (>= %s required)"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
+#: ../src/spacecmd/utils.py:579
 #, python-format
 msgid "Could not read %s"
 msgstr ""
@@ -6230,7 +6230,7 @@ msgstr ""
 msgid "Scheduled: %i system(s)"
 msgstr ""
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
 #, python-format
 msgid "Could not remove %s"
 msgstr ""
@@ -7907,127 +7907,127 @@ msgstr ""
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:142
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:136
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:141
+#: ../src/spacecmd/utils.py:148
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:162
+#: ../src/spacecmd/utils.py:169
 #, python-format
 msgid "Couldn't write to %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:207
+#: ../src/spacecmd/utils.py:214
 msgid "Could not open the temporary file"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:233
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:235
 #, python-format
 msgid "General failure running editor: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:238
 msgid "No editors found"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:370
+#: ../src/spacecmd/utils.py:376
 msgid "Invalid time provided"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:459
+#: ../src/spacecmd/utils.py:474
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:467
+#: ../src/spacecmd/utils.py:482
 msgid "Security Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:476
+#: ../src/spacecmd/utils.py:491
 msgid "Bug Fix Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:485
+#: ../src/spacecmd/utils.py:500
 msgid "Enhancement Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:510
 msgid "Current Selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:505
+#: ../src/spacecmd/utils.py:520
 msgid "Available Configuration Channels"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
 msgid "Channel:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
+#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
 msgid "Invalid channel"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:518
+#: ../src/spacecmd/utils.py:533
 msgid "New Rank:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
 msgid "Invalid rank"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:539
+#: ../src/spacecmd/utils.py:554
 msgid "Clearing current selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:708
+#: ../src/spacecmd/utils.py:735
 msgid "Could not generate json data object!"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:742
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:726
+#: ../src/spacecmd/utils.py:753
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:728
+#: ../src/spacecmd/utils.py:755
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr ""
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:730
+#: ../src/spacecmd/utils.py:757
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:794
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:810
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:860
+#: ../src/spacecmd/utils.py:898
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 
