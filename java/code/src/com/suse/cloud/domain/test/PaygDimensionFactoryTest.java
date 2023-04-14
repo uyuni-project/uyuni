@@ -42,7 +42,7 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
 
         result.setSuccess(true);
         result.setTimestamp(new Date());
-        result.addDimensionResult(BillingDimension.ENROLLED_SYSTEMS, 4L);
+        result.addDimensionResult(BillingDimension.MANAGED_SYSTEMS, 4L);
 
         factory = new PaygDimensionFactory();
         factory.save(result);
@@ -53,7 +53,7 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(reloaded.isSuccess());
         assertEquals(1, reloaded.getDimensionResults().size());
 
-        PaygDimensionResult dimensionResult = reloaded.getResultForDimension(BillingDimension.ENROLLED_SYSTEMS);
+        PaygDimensionResult dimensionResult = reloaded.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
         assertNotNull(dimensionResult);
         assertEquals(reloaded.getId(), dimensionResult.getComputationId());
         assertEquals(4L, dimensionResult.getCount());
@@ -66,13 +66,13 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
         PaygDimensionComputation result1 = new PaygDimensionComputation();
         result1.setSuccess(true);
         result1.setTimestamp(Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
-        result1.addDimensionResult(BillingDimension.ENROLLED_SYSTEMS, 10);
+        result1.addDimensionResult(BillingDimension.MANAGED_SYSTEMS, 10);
         factory.save(result1);
 
         PaygDimensionComputation result2 = new PaygDimensionComputation();
         result2.setSuccess(true);
         result2.setTimestamp(Date.from(Instant.now().minus(10, ChronoUnit.MINUTES)));
-        result2.addDimensionResult(BillingDimension.ENROLLED_SYSTEMS, 4);
+        result2.addDimensionResult(BillingDimension.MANAGED_SYSTEMS, 4);
         factory.save(result2);
 
         PaygDimensionComputation result3 = new PaygDimensionComputation();
@@ -86,7 +86,7 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(latest.isSuccess());
         assertEquals(1, latest.getDimensionResults().size());
 
-        PaygDimensionResult dimensionResult = latest.getResultForDimension(BillingDimension.ENROLLED_SYSTEMS);
+        PaygDimensionResult dimensionResult = latest.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
         assertNotNull(dimensionResult);
         assertEquals(latest.getId(), dimensionResult.getComputationId());
         assertEquals(10L, dimensionResult.getCount());

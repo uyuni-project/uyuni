@@ -16,29 +16,41 @@
 package com.suse.cloud.domain;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum BillingDimension {
-    ENROLLED_SYSTEMS(1),
-    MONITORING(2);
+    MANAGED_SYSTEMS,
+    MONITORING;
 
-    private final int id;
+    private final String label;
 
-    BillingDimension(int idIn) {
-        this.id = idIn;
-    }
-
-    public int getId() {
-        return id;
+    /**
+     * Default constructor, uses the enum name converted to lowercase as label
+     */
+    BillingDimension() {
+        this(null);
     }
 
     /**
-     * Retrieve the {@link BillingDimension} with the given id
-     * @param id the id of the dimension
-     * @return the enum value corresponding to the specified id
+     * Constructor to explicitly specify a label
+     * @param labelIn the label for this enum value
      */
-    public static BillingDimension byId(int id) {
+    BillingDimension(String labelIn) {
+        this.label = labelIn != null ? labelIn : this.name().toLowerCase();
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Retrieve the {@link BillingDimension} with the given label
+     * @param label the label of the dimension
+     * @return the enum value corresponding to the specified label
+     */
+    public static BillingDimension byLabel(String label) {
         return Arrays.stream(BillingDimension.values())
-                     .filter(e -> e.getId() == id)
+                     .filter(e -> Objects.equals(e.getLabel(), label))
                      .findFirst()
                      .orElse(null);
     }

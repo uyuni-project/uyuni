@@ -17,15 +17,23 @@ package com.suse.cloud.domain;
 
 import com.redhat.rhn.domain.errata.CustomEnumType;
 
+import java.sql.Types;
+
 /**
  * Maps the {@link BillingDimension} enum to its integer id
  */
-public class BillingDimensionEnumType extends CustomEnumType<BillingDimension, Integer> {
+public class BillingDimensionEnumType extends CustomEnumType<BillingDimension, String> {
 
     /**
      * Default Constructor
      */
     public BillingDimensionEnumType() {
-        super(BillingDimension.class, Integer.class, BillingDimension::getId, v -> BillingDimension.byId(v));
+        super(BillingDimension.class, String.class, BillingDimension::getLabel, v -> BillingDimension.byLabel(v));
+    }
+
+    @Override
+    public int getSqlType() {
+        // Returning other, as this is mapped to a PostgreSQL enum, not to a VARCHAR
+        return Types.OTHER;
     }
 }
