@@ -16,7 +16,7 @@ CREATE TABLE susePaygDimensionResult
     computation_id    NUMERIC NOT NULL
                           CONSTRAINT susePaygDimensionResult_computation_fk
                               REFERENCES susePaygDimensionComputation (id),
-    dimension         NUMERIC NOT NULL,
+    dimension         billing_dimension_t NOT NULL,
     count             NUMERIC NOT NULL
 );
 
