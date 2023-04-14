@@ -47,6 +47,7 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
      */
     protected CustomEnumType(Class<T> enumClassIn, Class<K> typeClassIn, Function<T, K> toDbIn,
                              Function<K, T> fromDbIn) {
+        // Enforce type check
         if (!typeClassIn.equals(Integer.class) && !typeClassIn.equals(String.class)) {
             throw new IllegalArgumentException("Unsupported type class " + typeClassIn.getSimpleName());
         }
@@ -57,13 +58,22 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
         this.fromDb = fromDbIn;
     }
 
-    @Override
-    public int[] sqlTypes() {
+    /**
+     * Defines the sql type to use
+     * @return a value from {@link java.sql.SQLType}
+     */
+    public int getSqlType() {
         if (typeClass.equals(String.class)) {
-            return new int[]{Types.VARCHAR};
+            return Types.VARCHAR;
         }
 
-        return new int[] {Types.NUMERIC};
+        // Return numeric as type check is enforced in the constructor
+        return Types.NUMERIC;
+    }
+
+    @Override
+    public int[] sqlTypes() {
+        return new int[]{getSqlType()};
     }
 
     @Override
@@ -102,7 +112,7 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
             statement.setNull(position, 12);
         }
         else {
-            statement.setObject(position, jdbcValue);
+            statement.setObject(position, jdbcValue, getSqlType());
         }
     }
 
