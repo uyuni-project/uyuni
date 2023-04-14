@@ -109,6 +109,11 @@ export const DateTimePicker = (props: Props) => {
     },
   ];
 
+  const previousMonth = t("Previous month");
+  const nextMonth = t("Next month");
+  const previousYear = t("Previous year");
+  const nextYear = t("Next year");
+
   return (
     <>
       <div className="input-group">
@@ -136,17 +141,30 @@ export const DateTimePicker = (props: Props) => {
                 <InputPassthrough
                   data-id={datePickerId}
                   // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
-                  className="form-control"
+                  className="form-control no-right-border"
                   // This is used by Cucumber to interact with the component
                   data-testid="date-picker"
                 />
               }
+              previousMonthAriaLabel={previousMonth}
+              previousMonthButtonLabel={previousMonth}
+              nextMonthAriaLabel={nextMonth}
+              nextMonthButtonLabel={nextMonth}
+              previousYearAriaLabel={previousYear}
+              previousYearButtonLabel={previousYear}
+              nextYearAriaLabel={nextYear}
+              nextYearButtonLabel={nextYear}
             />
           </>
         )}
         {hideTimePicker ? null : (
           <>
-            <span key="clock" className="input-group-addon" data-picker-type="time" onClick={openTimePicker}>
+            <span
+              key="clock"
+              className="input-group-addon no-right-border"
+              data-picker-type="time"
+              onClick={openTimePicker}
+            >
               &nbsp;<i className="fa fa-clock-o"></i>
             </span>
             <ReactDatePicker
