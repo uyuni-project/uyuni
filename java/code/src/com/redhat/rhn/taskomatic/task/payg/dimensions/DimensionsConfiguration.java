@@ -40,7 +40,7 @@ public class DimensionsConfiguration {
      */
     public static final DimensionsConfiguration DEFAULT_CONFIGURATION = new DimensionsConfiguration(
         Map.of(
-            BillingDimension.ENROLLED_SYSTEMS, List.of(
+            BillingDimension.MANAGED_SYSTEMS, List.of(
                 new EntitlementRule(RuleType.INCLUDE, RequirementType.ANY,
                     Set.of(EntitlementManager.SALT, EntitlementManager.MANAGEMENT)),
                 new BaseProductRule(RuleType.EXCLUDE, Set.of("sles_sap"), true)
