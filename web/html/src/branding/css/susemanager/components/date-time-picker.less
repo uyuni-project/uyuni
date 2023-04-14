@@ -3,8 +3,17 @@
   z-index: 1050 !important;
 }
 
-.react-datepicker {
-  font-size: 12px;
+.react-datepicker,
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  font: inherit !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  width: 1rem !important;
+  height: 1rem !important;
+  top: 1rem !important;
 }
 
 .react-datepicker__day--selected,
@@ -32,13 +41,6 @@
   top: 6px;
 }
 
-.react-datepicker__current-month,
-.react-datepicker-time__header,
-.react-datepicker-year-header {
-  font-size: inherit;
-  font-weight: inherit;
-}
-
 .react-datepicker__day-name,
 .react-datepicker__day,
 .react-datepicker__time-name {
@@ -61,4 +63,14 @@
 
 .react-datepicker__header--time {
   display: none !important;
+}
+
+// Only for the time picker, change the triangle color since the colliding box is a different color
+#time-picker-portal .react-datepicker__triangle::after {
+  border-bottom-color: #fff;
+}
+
+// Fix double borders with input-group-addon elements
+.no-right-border {
+  border-right-width: 0 !important;
 }
