@@ -24,10 +24,12 @@ export const toCanonicalRequires = (
     if (isNaN(channelId) || !channel) {
       throw new RangeError("Invalid channel id");
     }
-
     const requiredChannels = rawRequiresMap[channelIdString]
-      ?.map((id) => channelsMap.get(id) as BaseChannelType | ChildChannelType) // We know these values exist
-      .filter((requiredChannel) => requiredChannel.id !== channel.id); // The original data includes the channel's own id, don't include it in the set
+      ?.map((id) => channelsMap.get(id))
+      .filter((requiredChannel) => {
+        // The original data includes the channel's own id, don't include it in the set
+        return requiredChannel && requiredChannel.id !== channel.id;
+      }) as (BaseChannelType | ChildChannelType)[];
     if (requiredChannels?.length) {
       requiresMap.set(channelId, new Set(requiredChannels));
       requiredChannels.forEach((requiredChannel) => {
