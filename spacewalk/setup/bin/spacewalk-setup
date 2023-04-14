@@ -110,9 +110,6 @@ if ($opts{'db-only'}) {
     exit;
 }
 
-print Spacewalk::Setup::loc("* Configuring tomcat.\n");
-setup_tomcat(\%opts, \%answers);
-
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
 
@@ -123,16 +120,18 @@ setup_services();
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
 
-print Spacewalk::Setup::loc("* Performing initial configuration.\n");
-my $config_opts = populate_initial_configs(\%opts, \%answers);
-mkdir_mount_points($config_opts->{'mount_point'},
-        $config_opts->{'mount_point'} . '/packages',
-        $config_opts->{'mount_point'} . '/systems',
-        $config_opts->{'kickstart_mount_point'});
-chmod 0775, $config_opts->{'mount_point'} . '/systems';
-# Check for both potential Apache groups (SUSE/RHEL)
-my $www_gid = (getgrnam("www") // "") . (getgrnam("apache") // "");
-chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
+if(not $opts{"skip-initial-configuration"}) {
+    print Spacewalk::Setup::loc("* Performing initial configuration.\n");
+    my $config_opts = populate_initial_configs(\%opts, \%answers);
+    mkdir_mount_points($config_opts->{'mount_point'},
+            $config_opts->{'mount_point'} . '/packages',
+            $config_opts->{'mount_point'} . '/systems',
+            $config_opts->{'kickstart_mount_point'});
+    chmod 0775, $config_opts->{'mount_point'} . '/systems';
+    # Check for both potential Apache groups (SUSE/RHEL)
+    my $www_gid = (getgrnam("www") // "") . (getgrnam("apache") // "");
+    chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
+}
 
 setup_sudoers();
 
@@ -488,15 +487,6 @@ sub setup_mod_ssl {
 
   system('/usr/bin/spacewalk-setup-httpd');
 
-}
-
-sub setup_tomcat {
-  my $opts = shift;
-  my $answers = shift;
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-tomcat', ''], 43,
-               'Could not setup tomcat.');
-  return;
 }
 
 sub setup_jabberd {

@@ -1,3 +1,7 @@
+- Persist report_db_sslrootcert value (bsc#1210349)
+- Fix migration test
+- Escape `%` in spec file.
+- remove useless tomcat configuration (bsc#1206191)
 - use template for reportdb configuration (bsc#1206783)
 
 -------------------------------------------------------------------

@@ -1,3 +1,14 @@
+- fix credentials and other secrets disclosure when debug log is enabled
+  CVE-2023-22644 (bsc#1210154)
+- Removed the expensive 'diff' column (bsc#1208427)
+- Don't output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
+- Do not log SSL certificate / key file content CVE-2023-22644 (bsc#1210094)
+- Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
+- Fix possible "NullPointerException" when clicking on
+  the "Create PXE installation configuration" button from Provising page
+- Fix possible "NullPointerException" issues when running cobbler-sync-bunch
+- Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
+- Set jasper development mode to false (bsc#1206191)
 - Fixed select all for ptf packages list
 - Added SLES 12 support for ptf removal
 - Fixed issue with checking ptf repositories on cloned channels
@@ -25,7 +36,7 @@ Mon Mar 27 09:06:19 CEST 2023 - jgonzalez@suse.com
 
 - version 4.3.52-1
   * Add more restricted arguments to prevent HTTP API logging
-    sensitive data (bsc#1209386, bsc#1209395)
+    sensitive data (bsc#1209386, bsc#1209395, bsc#1209434, CVE-2023-22644)
 
 -------------------------------------------------------------------
 Tue Mar 21 13:43:03 CET 2023 - jgonzalez@suse.com

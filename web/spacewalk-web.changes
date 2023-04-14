@@ -1,3 +1,4 @@
+- fix an issue where the datetimepicker shows wrong date (bsc#1209231)
 - Add support to add optional channels via webUI
 - Added pages to install and remove ptf
 - Added CLM filters to match product temporary fixes packages
