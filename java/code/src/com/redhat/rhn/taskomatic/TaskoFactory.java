@@ -224,7 +224,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoSchedule> listActiveSchedulesByOrg(Integer orgId) {
         List<TaskoSchedule> schedules;
-        List<String> filter = List.of("recurring-state-apply-bunch");    // List of bunch names to be excluded
+        List<String> filter = List.of("recurring-action-executor-bunch");    // List of bunch names to be excluded
         Map<String, Object> params = new HashMap<>();
 
         params.put("timestamp", new Date());    // use server time, not DB time

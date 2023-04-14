@@ -1,6 +1,6 @@
 include /templates/common.jade
 
-#recurring-states
+#recurring-actions
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -12,5 +12,12 @@ script(type='text/javascript').
 +userPreferences
 
 script(type='text/javascript').
-    spaImportReactPage('state/recurring-states')
-        .then(function (module) { module.renderer('recurring-states') });
+    spaImportReactPage('recurring/recurring-actions')
+        .then(function (module) {
+            module.renderer(
+                'recurring-actions',
+                {
+                    isOrgAdmin: #{is_org_admin}
+                }
+            )
+        });

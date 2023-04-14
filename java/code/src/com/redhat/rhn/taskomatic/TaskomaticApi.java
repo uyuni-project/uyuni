@@ -330,7 +330,7 @@ public class TaskomaticApi {
             throw new PermissionException(String.format("User '%s' can't schedule action '$s'", user, action));
         }
 
-        doScheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch",
+        doScheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-action-executor-bunch",
                 action.getCronExpr());
     }
 
@@ -357,7 +357,7 @@ public class TaskomaticApi {
             throw new PermissionException(String.format("User '%s' can't unschedule action '$s'", user, action));
         }
 
-        doUnscheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch");
+        doUnscheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-action-executor-bunch");
     }
 
     //helper method for unscheduling bunch without permission checking

@@ -5,36 +5,82 @@ import { pageSize } from "core/user-preferences";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { Utils as MessagesUtils } from "components/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
 
-import { targetTypeToString } from "./recurring-states-utils";
+import { Utils } from "utils/functions";
+import Network from "utils/network";
+
+import { inferEntityParams, isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
+import { RecurringActionsSearch } from "./search/recurring-actions-search";
 
 type Props = {
-  data?: any;
-  disableCreate?: boolean;
+  onSetMessages: (arg0: any) => any;
+  isFilteredList?: boolean;
+  isOrgAdmin?: boolean;
   onActionChanged: (arg0: any) => any;
-  onToggleActive: (arg0: any) => any;
   onSelect: (arg0: any) => any;
   onEdit: (arg0: any) => any;
-  onDelete: (arg0: any) => any;
+  onError: (arg0: any) => any;
+  onDeleteError: (arg0: any) => any;
 };
 
 type State = {
   itemsToDelete: any[];
   itemToDelete?: any;
+  schedules: any[];
 };
 
-class RecurringStatesList extends React.Component<Props, State> {
+class RecurringActionsList extends React.Component<Props, State> {
+  tableRef: React.RefObject<any>;
   constructor(props) {
     super(props);
-
+    this.tableRef = React.createRef();
     this.state = {
+      schedules: [],
       itemsToDelete: [],
     };
   }
+
+  componentDidMount = () => {
+    this.getRecurringScheduleList();
+  };
+
+  getRecurringScheduleList = () => {
+    const entityParams = inferEntityParams();
+    const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
+    return Network.get(endpoint)
+      .then((schedules) => {
+        this.setState({
+          schedules: schedules,
+        });
+      })
+      .catch(this.props.onError);
+  };
+
+  deleteSchedule = (item, tableRef) => {
+    return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
+      .then((_) => {
+        this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
+        this.getRecurringScheduleList();
+        if (tableRef) {
+          tableRef.current.refresh();
+        }
+      })
+      .catch(this.props.onDeleteError);
+  };
+
+  toggleActive = (schedule) => {
+    Object.assign(schedule, { active: !schedule.active });
+    return Network.post("/rhn/manager/api/recurringactions/save", schedule)
+      .then((_) => {
+        this.props.onSetMessages(MessagesUtils.info(t("Schedule successfully updated.")));
+      })
+      .catch(this.props.onError);
+  };
 
   selectToDelete(item) {
     this.setState({
@@ -43,13 +89,15 @@ class RecurringStatesList extends React.Component<Props, State> {
   }
 
   render() {
+    const { isFilteredList, isOrgAdmin } = this.props;
+    const disableCreate = !isFilteredList;
     const buttons = [
       <div className="btn-group pull-right">
         <Button
           className="btn-default"
           icon="fa-plus"
           text={t("Create")}
-          title="Schedule a new Recurring States Action"
+          title="Schedule a new Recurring Action"
           handler={() => this.props.onActionChanged("create")}
         />
       </div>,
@@ -57,13 +105,13 @@ class RecurringStatesList extends React.Component<Props, State> {
 
     return (
       <InnerPanel
-        title={t("Recurring States")}
+        title={t("Recurring Actions")}
         icon="spacewalk-icon-salt"
-        buttons={this.props.disableCreate ? [] : buttons}
+        buttons={disableCreate ? [] : buttons}
         summary={
           <>
             <p>{t("The following recurring actions have been created.")}</p>
-            {this.props.disableCreate ? (
+            {disableCreate ? (
               <p>
                 {t(
                   "To create new recurring actions head to the system, group or organization you want to create the action for."
@@ -72,9 +120,9 @@ class RecurringStatesList extends React.Component<Props, State> {
             ) : null}
           </>
         }
-        // We only want to display the help icon in the 'Schedule > Recurring States' page so we use disableCreate as
+        // We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as
         // an indicator whether we currently render this page
-        helpUrl={this.props.disableCreate ? "reference/schedule/recurring-actions.html" : ""}
+        helpUrl={disableCreate ? "reference/schedule/recurring-actions.html" : ""}
       >
         <div className="panel panel-default">
           <div className="panel-heading">
@@ -84,25 +132,32 @@ class RecurringStatesList extends React.Component<Props, State> {
           </div>
           <div>
             <Table
-              data={this.props.data}
+              selectable={false}
+              data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
-              initialItemsPerPage={this.props.disableCreate ? pageSize : 0}
-              emptyText={t(
-                "No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule.")
-              )}
+              initialItemsPerPage={disableCreate ? pageSize : 0}
+              emptyText={t("No schedules created." + (disableCreate ? "" : " Use Create to add a schedule."))}
+              searchField={<RecurringActionsSearch />}
+              ref={this.tableRef}
             >
               <Column
                 columnKey="active"
                 header={t("Active")}
                 cell={(row) => (
-                  <Toggler value={row.active} className="btn" handler={() => this.props.onToggleActive(row)} />
+                  <Toggler
+                    value={row.active}
+                    disabled={isReadOnly(row)}
+                    className="btn"
+                    handler={() => (isReadOnly(row) ? null : this.toggleActive(row))}
+                  />
                 )}
               />
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="scheduleName"
+                columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
+                comparator={Utils.sortByText}
                 header={t("Schedule Name")}
                 cell={(row) => row.scheduleName}
               />
@@ -116,9 +171,26 @@ class RecurringStatesList extends React.Component<Props, State> {
               <Column
                 columnClass="text-center"
                 headerClass="text-center"
-                columnKey="targetType"
+                columnKey={isFilteredList ? "targetType" : "target_type"}
+                comparator={Utils.sortByText}
                 header={t("Target Type")}
                 cell={(row) => targetTypeToString(row.targetType)}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey={isFilteredList ? "targetName" : "target_name"}
+                comparator={Utils.sortByText}
+                header={t("Target Name")}
+                cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId, isOrgAdmin)}
+              />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey={isFilteredList ? "actionType" : "action_type"}
+                comparator={Utils.sortByText}
+                header={t("Action Type")}
+                cell={(row) => row.actionTypeDescription}
               />
               <Column
                 columnClass="text-right"
@@ -130,6 +202,7 @@ class RecurringStatesList extends React.Component<Props, State> {
                       className="btn-default btn-sm"
                       title={t("Details")}
                       icon="fa-list"
+                      disabled={!isFilteredList && !isOrgAdmin}
                       handler={() => {
                         this.props.onSelect(row);
                       }}
@@ -137,6 +210,7 @@ class RecurringStatesList extends React.Component<Props, State> {
                     <Button
                       className="btn-default btn-sm"
                       title={t("Edit")}
+                      disabled={isReadOnly(row)}
                       icon="fa-edit"
                       handler={() => {
                         this.props.onEdit(row);
@@ -145,6 +219,7 @@ class RecurringStatesList extends React.Component<Props, State> {
                     <ModalButton
                       className="btn-default btn-sm"
                       title={t("Delete")}
+                      disabled={isReadOnly(row)}
                       icon="fa-trash"
                       target="delete-modal"
                       item={row}
@@ -156,9 +231,9 @@ class RecurringStatesList extends React.Component<Props, State> {
             </Table>
             <DeleteDialog
               id="delete-modal"
-              title={t("Delete Recurring State Schedule")}
+              title={t("Delete Recurring Action Schedule")}
               content={t("Are you sure you want to delete the selected item?")}
-              onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
+              onConfirm={() => this.deleteSchedule(this.state.itemToDelete, this.tableRef)}
               onClosePopUp={() => this.selectToDelete(null)}
             />
           </div>
@@ -168,4 +243,4 @@ class RecurringStatesList extends React.Component<Props, State> {
   }
 }
 
-export { RecurringStatesList };
+export { RecurringActionsList };

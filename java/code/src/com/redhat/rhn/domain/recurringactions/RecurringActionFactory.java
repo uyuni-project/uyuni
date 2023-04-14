@@ -15,17 +15,28 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.recurringactions.state.InternalState;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,32 +52,38 @@ public class RecurringActionFactory extends HibernateFactory {
     /**
      * List minion recurring actions with minion id.
      *
-     * @param id - id of the minion
+     * @param minion - the minion
      * @return list of minion recurring actions
      */
-    public static List<MinionRecurringAction> listMinionRecurringActions(Long id) {
-       return getSession()
-               .createQuery("SELECT action FROM MinionRecurringAction action " +
-                       "WHERE action.minion.id = :mid " +
+    public static List<RecurringAction> listMinionRecurringActions(Server minion) {
+        return getSession()
+                .createQuery("SELECT action FROM RecurringAction action " +
+                       "WHERE action.minion = :minion " +
+                       "OR action.group in :groups " +
+                       "OR action.org = :org " +
                        "ORDER BY action.id DESC",
-                       MinionRecurringAction.class)
-               .setParameter("mid", id)
+                       RecurringAction.class)
+               .setParameter("minion", minion)
+               .setParameter("groups", minion.getGroups())
+               .setParameter("org", minion.getOrg())
                .list();
     }
 
     /**
      * List group recurring actions with group id.
      *
-     * @param id - id of the group
+     * @param group - the server group
      * @return list of group recurring actions
      */
-    public static List<GroupRecurringAction> listGroupRecurringActions(Long id) {
+    public static List<RecurringAction> listGroupRecurringActions(ServerGroup group) {
         return getSession()
-                .createQuery("SELECT action FROM GroupRecurringAction action " +
-                        "WHERE action.group.id = :gid " +
+                .createQuery("SELECT action FROM RecurringAction action " +
+                        "WHERE action.group = :group " +
+                        "OR action.org = :org " +
                         "ORDER BY action.id DESC",
-                        GroupRecurringAction.class)
-                .setParameter("gid", id)
+                        RecurringAction.class)
+                .setParameter("group", group)
+                .setParameter("org", group.getOrg())
                 .list();
     }
 
@@ -76,12 +93,12 @@ public class RecurringActionFactory extends HibernateFactory {
      * @param id - id of the organization
      * @return list of org recurring actions
      */
-    public static List<OrgRecurringAction> listOrgRecurringActions(Long id) {
+    public static List<RecurringAction> listOrgRecurringActions(Long id) {
         return getSession()
                 .createQuery("SELECT action FROM OrgRecurringAction action " +
                         "WHERE action.org.id = :oid " +
                         "ORDER BY action.id DESC",
-                        OrgRecurringAction.class)
+                        RecurringAction.class)
                 .setParameter("oid", id)
                 .list();
     }
@@ -91,40 +108,77 @@ public class RecurringActionFactory extends HibernateFactory {
      * belonging to the {@link Org} of given {@link User}.
      *
      * @param user the user
+     * @param pc the page control
+     * @param parser the parser for filters when building query
      * @return the list of {@link RecurringAction}s
      */
-    public static List<? extends RecurringAction> listAllRecurringActions(User user) {
-        Org org = user.getOrg();
-        List<Org> orgs = List.of(org);
-        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
-            orgs = OrgFactory.lookupAllOrgs();
-        }
+    public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(
+            User user, PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+            "ra.id as recurring_action_id, " +
+            "ra.cron_expr as cron, " +
+            "ra.action_type as action_type, " +
+            "ra.name as schedule_name, " +
+            "ra.active as active, " +
+            "case" +
+            "  when ra.target_type = 'organization' then org.id " +
+            "  when ra.target_type = 'group' then sg.id " +
+            "  when ra.target_type = 'minion' then minion.id " +
+            "end as target_id, " +
+            "case" +
+            "  when ra.target_type = 'organization' then org.name " +
+            "  when ra.target_type = 'group' then sg.name " +
+            "  when ra.target_type = 'minion' then minion.name " +
+            "end as target_name, " +
+            "case" +
+            "  when ra.target_type = 'organization' then 'ORG' " +
+            "  else UPPER(ra.target_type) " +
+            "end as target_type, " +
+            "case" +
+            "  when ra.target_type = 'organization' then ra.org_id " +
+            "  when ra.target_type = 'group' then sg.org_id " +
+            "  when ra.target_type = 'minion' then minion.org_id " +
+            "end as target_org " +
+            "from suseRecurringAction ra " +
+            "left join rhnservergroup sg on sg.id = ra.group_id " +
+            "left join rhnserver minion on minion.id = ra.minion_id " +
+            "left join web_customer org on org.id = ra.org_id" +
+            ") ra ";
+        List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
+        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
 
-        Stream<? extends RecurringAction> orgActions = getSession()
-                .createQuery("SELECT orgAction FROM OrgRecurringAction orgAction " +
-                                "WHERE orgAction.org IN :orgs " +
-                                "ORDER by orgAction.id DESC",
-                        OrgRecurringAction.class)
-                .setParameter("orgs", orgs)
-                .stream();
+        return new PagedSqlQueryBuilder("ra.recurring_action_id")
+                .select("ra.*")
+                .from(from)
+                .where("ra.target_org in (:orgsIds)")
+                .run(params, pc, parser, RecurringActionScheduleJson.class);
+    }
 
-        Stream<? extends RecurringAction> groupActions = getSession()
-                .createQuery("SELECT groupAction FROM GroupRecurringAction groupAction " +
-                                "WHERE groupAction.group.org = :org " +
-                                "ORDER by groupAction.id DESC",
-                        GroupRecurringAction.class)
-                .setParameter("org", org)
-                .stream();
+    /**
+     * Return a list of recurring actions that use given config channel
+     *
+     * @param channel the config channel
+     * @return list of actions
+     */
+    public static List<RecurringAction> listActionWithConfChannel(ConfigChannel channel) {
+        return getSession().createQuery("SELECT action FROM RecurringAction action " +
+                        "JOIN TREAT(action.recurringActionType AS RecurringState) " +
+                        "type LEFT JOIN type.stateConfig conf " +
+                        "WHERE conf.configChannel = :channel",
+                RecurringAction.class)
+                .setParameter("channel", channel)
+                .list();
+    }
 
-        Stream<? extends RecurringAction> minionActions = getSession()
-                .createQuery("SELECT minionAction FROM MinionRecurringAction minionAction " +
-                        "WHERE minionAction.minion.org = :org " +
-                        "ORDER by minionAction.id DESC",
-                        MinionRecurringAction.class)
-                .setParameter("org", org)
-                .stream();
-
-        return Stream.concat(orgActions, Stream.concat(groupActions, minionActions)).collect(Collectors.toList());
+    /**
+     * Return a list of all internal states
+     *
+     * @return list of internal states
+     */
+    public static List<InternalState> listInternalStates() {
+        return getSession().createQuery("FROM InternalState",
+                InternalState.class)
+                .list();
     }
 
     /**
@@ -159,7 +213,7 @@ public class RecurringActionFactory extends HibernateFactory {
 
         // 2. then we filter out the entity of given type
         List<RecurringAction> matches = stream
-                .filter(entity -> entity.getType() == action.getType())
+                .filter(entity -> entity.getTargetType() == action.getTargetType())
                 .collect(Collectors.toList());
 
         // we can only have either 0 or 1 matches
@@ -182,6 +236,19 @@ public class RecurringActionFactory extends HibernateFactory {
     public static Optional<RecurringAction> lookupByJobName(String scheduleName) {
         long id = Long.parseLong(scheduleName.replace(RecurringAction.RECURRING_ACTION_PREFIX, ""));
         return lookupById(id);
+    }
+
+    /**
+     * Lookup internal state with given state name
+     *
+     * @param stateName the name of the state
+     * @return optional of matching internal state
+     */
+    public static Optional<InternalState> lookupInternalStateByName(String stateName) {
+        return getSession().createQuery("SELECT state FROM InternalState state " +
+                "WHERE state.name = :name", InternalState.class)
+                .setParameter("name", stateName)
+                .uniqueResultOptional();
     }
 
     /**

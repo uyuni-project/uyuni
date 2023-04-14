@@ -6,7 +6,11 @@
     a(href="/docs/#{docsLocale}/reference/home/my-organization-menu.html" target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
 
-#recurring-states
+#recurring-actions
+
+script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/jquery-ui.js?cb=#{webBuildtimestamp}')
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -18,5 +22,7 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
 
 script(type='text/javascript').
-    spaImportReactPage('state/recurring-states')
-        .then(function(module) { module.renderer('recurring-states') });
+    spaImportReactPage('recurring/recurring-actions')
+        .then(function(module) {
+            module.renderer('recurring-actions', { isOrgAdmin: #{is_org_admin} })
+        });

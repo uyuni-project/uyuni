@@ -8,8 +8,7 @@ Feature: Recurring Actions
     Given I am authorized for the "Admin" section
 
   Scenario: Create a minion Recurring Action
-    When I am on the "States" page of this "sle_minion"
-    And I follow "Recurring States" in the content area
+    When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
     Then I should see a "Schedule Name" text
@@ -24,8 +23,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View a minion recurring actions details
-    When I am on the "States" page of this "sle_minion"
-    And I follow "Recurring States" in the content area
+    When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
@@ -33,8 +31,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit a minion Recurring Action
-    When I am on the "States" page of this "sle_minion"
-    And I follow "Recurring States" in the content area
+    When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
@@ -57,8 +54,7 @@ Feature: Recurring Actions
   Scenario: Create a group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
     Then I should see a "Schedule Name" text
@@ -75,8 +71,7 @@ Feature: Recurring Actions
   Scenario: View a group recurring actions details
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
@@ -86,8 +81,7 @@ Feature: Recurring Actions
   Scenario: Edit a group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
@@ -100,7 +94,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Create a yourorg Recurring Action
-    When I follow the left menu "Home > My Organization > Recurring States"
+    When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
     Then I should see a "Schedule Name" text
@@ -115,7 +109,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * *" text
 
   Scenario: View a yourorg recurring actions details
-    When I follow the left menu "Home > My Organization > Recurring States"
+    When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
@@ -123,7 +117,7 @@ Feature: Recurring Actions
     Then I should see a "Schedules" text
 
   Scenario: Edit a yourorg Recurring Action
-    When I follow the left menu "Home > My Organization > Recurring States"
+    When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
@@ -136,10 +130,10 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Delete a yourorg Recurring Action
-    When I follow the left menu "Home > My Organization > Recurring States"
+    When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name_edit" text
     When I click the "schedule_name" item delete button
-    Then I should see a "Delete Recurring State Schedule" text
+    Then I should see a "Delete Recurring Action Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
     Then I should see a "No schedules created. Use Create to add a schedule" text
@@ -147,8 +141,7 @@ Feature: Recurring Actions
   Scenario: Create an admin org Recurring Action
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "No schedules created. Use Create to add a schedule" text
     When I click on "Create"
     Then I should see a "Schedule Name" text
@@ -165,8 +158,7 @@ Feature: Recurring Actions
   Scenario: View an admin org recurring actions details
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
@@ -176,8 +168,7 @@ Feature: Recurring Actions
   Scenario: Edit an admin org Recurring Action
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
@@ -190,7 +181,7 @@ Feature: Recurring Actions
     And I should see a "0 0 0 ? * 1" text
 
   Scenario: Check list of all actions
-    When I follow the left menu "Schedule > Recurring States"
+    When I follow the left menu "Schedule > Recurring Actions"
     Then I should not see a "Create" text
     And I should see a "schedule_name_minion" text
     And I should see a "Minion" text
@@ -200,7 +191,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
 
  Scenario: View details in list of all actions
-    When I follow the left menu "Schedule > Recurring States"
+    When I follow the left menu "Schedule > Recurring Actions"
     And I click the "schedule_name_minion" item details button
     Then I should see a "Every Sunday at 00:00" text
     And I should not see a "Highstate for" text in the content area
@@ -210,7 +201,7 @@ Feature: Recurring Actions
     Then I should see a "schedule_name_group" text
 
   Scenario: Edit in list of all actions
-    When I follow the left menu "Schedule > Recurring States"
+    When I follow the left menu "Schedule > Recurring Actions"
     And I wait until I see "schedule_name_org" text
     And I click the "schedule_name_org" item edit button
     Then I should see a "Update Schedule" text
@@ -223,20 +214,19 @@ Feature: Recurring Actions
     And I should see a "0 0 0 1 * ?" text
 
   Scenario: Delete from list of all actions
-    When I follow the left menu "Schedule > Recurring States"
+    When I follow the left menu "Schedule > Recurring Actions"
     When I click the "schedule_name_edit" item delete button
-    Then I should see a "Delete Recurring State Schedule" text
+    Then I should see a "Delete Recurring Action Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
     And I should not see a "Organization" text in the content area
     And I should see a "schedule_name_group" text
 
   Scenario: Delete a minion Recurring Action
-    When I am on the "States" page of this "sle_minion"
-    And I follow "Recurring States" in the content area
+    When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "schedule_name_minion" text
     When I click the "schedule_name_minion" item delete button
-    Then I should see a "Delete Recurring State Schedule" text
+    Then I should see a "Delete Recurring Action Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_minion' has been deleted." text
     Then I should see a "No schedules created. Use Create to add a schedule" text
@@ -244,11 +234,10 @@ Feature: Recurring Actions
   Scenario: Delete a group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
-    And I follow "States" in the content area
-    And I follow "Recurring States" in the content area
+    And I follow "Recurring Actions" in the content area
     Then I should see a "schedule_name_group" text
     When I click the "schedule_name_group" item delete button
-    Then I should see a "Delete Recurring State Schedule" text
+    Then I should see a "Delete Recurring Action Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_group' has been deleted." text
     Then I should see a "No schedules created. Use Create to add a schedule" text
