@@ -286,6 +286,10 @@ public class SUSEProductFactory extends HibernateFactory {
         if (channel.isCloned()) {
             if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
                 return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
+                    // There is a problem that filtering cloned channels by the unique parts does not filter
+                    // out chained channels created via CLM. If you have a CLM project based on another CLM
+                    // project the names of the chained channels contain all the unique parts and are thus
+                    // not filtered out although they should (See bsc#1204270 for more info).
                     List<String> originalParts = List.of(original.getLabel().split("-"));
                     List<String> selectedParts = List.of(channel.getLabel().split("-"));
                     List<String> uniqueParts = selectedParts.stream()
