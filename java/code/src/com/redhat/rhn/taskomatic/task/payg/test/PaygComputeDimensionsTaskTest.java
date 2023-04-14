@@ -94,7 +94,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         assertTrue(result.isSuccess());
         assertEquals(2, result.getDimensionResults().size());
 
-        PaygDimensionResult enrolledSystems = result.getResultForDimension(BillingDimension.ENROLLED_SYSTEMS);
+        PaygDimensionResult enrolledSystems = result.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
         assertNotNull(enrolledSystems);
         assertEquals(2, enrolledSystems.getCount());
 
