@@ -1,3 +1,4 @@
+- Recurring custom states
 - Fix possible "NullPointerException" when clicking on
   the "Create PXE installation configuration" button from Provising page
 - Fix possible "NullPointerException" issues when running cobbler-sync-bunch

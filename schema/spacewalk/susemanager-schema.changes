@@ -1,3 +1,4 @@
+- Recurring custom states
 - Fix renaming monitoring entitlement
 - fix OL9 schema migration
 - Fix update of sql function create_new_org
