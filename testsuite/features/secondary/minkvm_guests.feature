@@ -1,10 +1,11 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events
 # available.
-
-# This feature has not dependencies and it can run in parallel with other features.
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+# This feature has no dependencies and it can run in parallel with other features.
 
 @scope_virtualization
 @virthost_kvm
@@ -26,7 +27,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
-    And I create "test-vm" virtual machine on "kvm_server"
+    And I create a leap virtual machine named "test-vm" without cloudinit on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
 
@@ -61,12 +62,12 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Edit a KVM virtual machine
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    Then I should see "512" in field identified by "memory"
+    Then I should see "1024" in field identified by "memory"
     And I should see "1" in field identified by "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
     And option "virtio" is selected as "disk0_bus"
-    When I enter "1024" as "memory"
+    When I enter "512" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
     And I select "test-net1" from "network0_source"
@@ -74,7 +75,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "scsi" from "disk0_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have 1024MB memory and 2 vcpus
+    And "test-vm" virtual machine on "kvm_server" should have 512MB memory and 2 vcpus
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address

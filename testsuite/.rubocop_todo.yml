@@ -237,6 +237,7 @@ Lint/NumberConversion:
     - 'features/step_definitions/setup_steps.rb'
     - 'features/support/env.rb'
     - 'features/support/namespaces/activationkey.rb'
+    - 'features/step_definitions/vm_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -287,11 +288,6 @@ Metrics/AbcSize:
 # ExcludedMethods: refine
 Metrics/BlockLength:
   Max: 67
-
-# Offense count: 4
-# Configuration parameters: IgnoredMethods.
-Metrics/CyclomaticComplexity:
-  Max: 12
 
 # Offense count: 21
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -431,6 +427,7 @@ Style/IfUnlessModifier:
     - 'features/step_definitions/setup_steps.rb'
     - 'features/support/cobbler_test.rb'
     - 'features/support/http_client.rb'
+    - 'features/step_definitions/vm_steps.rb'
 
 # Offense count: 343
 Style/ImplicitRuntimeError:
@@ -583,6 +580,7 @@ Style/StringHashKeys:
     - 'features/step_definitions/retail_steps.rb'
     - 'features/support/constants.rb'
     - 'features/support/twopence_init.rb'
+    - 'features/step_definitions/vm_steps.rb' 
 
 # Offense count: 191
 # Cop supports --auto-correct.

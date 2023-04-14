@@ -15,6 +15,8 @@ warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLI
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
+warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
 
 # Preserve FQDN before initialization
 $named_nodes = {}
@@ -53,6 +55,8 @@ if $build_validation
   $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
   $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
   $slemicro53_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO53_SSHMINION']}") if ENV['SLEMICRO53_SSHMINION']
+  $slemicro54_minion = twopence_init("ssh:#{ENV['SLEMICRO54_MINION']}") if ENV['SLEMICRO54_MINION']
+  $slemicro54_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO54_SSHMINION']}") if ENV['SLEMICRO54_SSHMINION']
   $alma9_minion = twopence_init("ssh:#{ENV['ALMA9_MINION']}") if ENV['ALMA9_MINION']
   $alma9_ssh_minion = twopence_init("ssh:#{ENV['ALMA9_SSHMINION']}") if ENV['ALMA9_SSHMINION']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
@@ -91,6 +95,7 @@ if $build_validation
              $slemicro51_minion, $slemicro51_ssh_minion,
              $slemicro52_minion, $slemicro52_ssh_minion,
              $slemicro53_minion, $slemicro53_ssh_minion,
+             $slemicro54_minion, $slemicro54_ssh_minion,
              $alma9_minion, $alma9_ssh_minion,
              $centos7_minion, $centos7_ssh_minion,
              $liberty9_minion, $liberty9_ssh_minion,
@@ -114,7 +119,8 @@ else
   $rhlike_minion = twopence_init("ssh:#{ENV['RHLIKE_MINION']}") if ENV['RHLIKE_MINION']
   $deblike_minion = twopence_init("ssh:#{ENV['DEBLIKE_MINION']}") if ENV['DEBLIKE_MINION']
   $build_host = twopence_init("ssh:#{ENV['BUILD_HOST']}") if ENV['BUILD_HOST']
-  $nodes += [$minion, $ssh_minion, $rhlike_minion, $deblike_minion, $build_host]
+  $salt_migration_minion = twopence_init("ssh:#{ENV['MIN_NESTED']}") if ENV['MIN_NESTED']
+  $nodes += [$minion, $ssh_minion, $rhlike_minion, $deblike_minion, $build_host, $salt_migration_minion]
 end
 
 # Lavanda library module extension
@@ -130,6 +136,10 @@ $nodes.each do |node|
   next if node.nil?
 
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  # special handling for nested VMs since they will only be crated later in the test suite
+  # we to a late hostname initialization in a special step for those
+  next if hostname.empty? || node == $salt_migration_minion
+
   raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
   node.init_hostname(hostname)
@@ -292,6 +302,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
                   'slemicro53_minion'         => $slemicro53_minion,
                   'slemicro53_ssh_minion'     => $slemicro53_ssh_minion,
+                  'slemicro54_minion'         => $slemicro54_minion,
+                  'slemicro54_ssh_minion'     => $slemicro54_ssh_minion,
                   'alma9_minion'              => $alma9_minion,
                   'alma9_ssh_minion'          => $alma9_ssh_minion,
                   'centos7_minion'            => $centos7_minion,
@@ -320,7 +332,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp4_buildhost'        => $sle15sp4_buildhost,
-                  'monitoring_server'         => $monitoring_server }
+                  'monitoring_server'         => $monitoring_server,
+                  'salt_migration_minion'     => $salt_migration_minion }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}
@@ -340,10 +353,11 @@ def client_public_ip(host)
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
     output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
-    if code.zero?
-      node.init_public_interface(dev)
-      return output.split[1].split('/')[0]
-    end
+    next unless code.zero?
+
+    node.init_public_interface(dev)
+    return '' if output.empty?
+    return output.split[1].split('/')[0]
   end
   raise "Cannot resolve public ip of #{host}"
 end
@@ -362,5 +376,6 @@ $nodes.each do |node|
   end
 
   ip = client_public_ip host
+  next if ip.empty?
   node.init_public_ip ip
 end

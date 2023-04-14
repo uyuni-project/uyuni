@@ -42,6 +42,7 @@ Possible values are currently:
 | Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
 | PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
 | KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
+| Salt bundle migration minion (nested VM)  | ```$salt_migration_minion```      | ```$MIN_NESTED```                                        | ```"salt_migration_minion"```       |      ```"virthost"```       |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -413,6 +414,7 @@ Note that the text area variant handles the new lines characters while the other
   When I wait until "salt-minion" service is up and running on "rhlike_minion"
   Then service "bind" is enabled on "proxy"
   Then service "dhcpd" is running on "proxy"
+  When I restart the "bind" service on "sle_minion"
 ```
 
 * File removal
@@ -609,7 +611,8 @@ The virtual machine is created without Uyuni, directly on the virtual host
 using `qemu-img` and `virt-install`
 
 ```gherkin
-  When I create "test-vm" virtual machine on "virt-server"
+  When I create a leap virtual machine named "test-vm" without cloudinit on "virt-server"
+  When I create a sles virtual machine named "test-vm" with cloudinit on "virt-server"
   When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
 ```
 
@@ -645,6 +648,18 @@ Then "test-vm" virtual machine on "virt-server" should boot using autoyast
 Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
 Then "test-vm" virtual machine on "virt-server" should stop on reboot
 Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
+```
+
+* Stop a virtual machine
+
+```gherkin
+  When I stop the virtual machine named "test-vm" on "kvm_server"
+```
+
+* Delete a virtual machine
+
+```gherkin
+  When I delete the virtual machine named "test-vm" on "kvm_server"
 ```
 
 * Remove disk images from a storage pool

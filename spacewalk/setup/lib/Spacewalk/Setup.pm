@@ -129,6 +129,7 @@ $DRY_RUN = 0;
 sub parse_options {
   my @valid_opts = (
             "help",
+            "skip-initial-configuration",
             "skip-system-version-test",
             "skip-selinux-test",
             "skip-fqdn-test",
@@ -165,7 +166,7 @@ sub parse_options {
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [--skip-reportdb-setup ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --skip-services-restart ] [ --clear-db ] [ --re-register ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-postgresql [ --external-postgresql-over-ssl ] ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-initial-configuration ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [--skip-reportdb-setup ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --skip-services-restart ] [ --clear-db ] [ --re-register ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-postgresql [ --external-postgresql-over-ssl ] ] [--scc] [--disconnected]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -874,7 +875,6 @@ sub postgresql_setup_db {
     write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
 
     postgresql_populate_db($opts, $answers, $populate_db);
-
     return 1;
 }
 
@@ -932,7 +932,7 @@ sub postgresql_reportdb_setup {
         ### uyuni-setup-reportdb writes param in rhn.conf. We need to read them and persists them in satellite-local-rules.conf
         read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION, \%dbOptions);
         ### here we need _ instead of - cause we read them from rhn.conf
-        write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled');
+        write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled','report_db_sslrootcert');
     }
     print loc("** Database: Installation complete.\n");
 
