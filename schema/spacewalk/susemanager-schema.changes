@@ -1,3 +1,4 @@
+- Recurring custom states
 - Added view to handle ptf packages and updated the procedures
   to refresh the updatable/installable packages
 - Fix update of sql function create_new_org

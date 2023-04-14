@@ -1,3 +1,4 @@
+- Recurring custom states
 - fix credentials and other secrets disclosure when debug log is enabled
   CVE-2023-22644 (bsc#1210154)
 - Removed the expensive 'diff' column (bsc#1208427)
