@@ -58,5 +58,7 @@
 - features/build_validation/init_clients/slemicro52_ssh_minion.feature
 - features/build_validation/init_clients/slemicro53_minion.feature
 - features/build_validation/init_clients/slemicro53_ssh_minion.feature
+- features/build_validation/init_clients/slemicro54_minion.feature
+- features/build_validation/init_clients/slemicro54_ssh_minion.feature
 
 ## Init clients END ###

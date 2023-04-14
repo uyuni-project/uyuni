@@ -384,6 +384,14 @@ Before('@slemicro53_ssh_minion') do
   skip_this_scenario unless $slemicro53_ssh_minion
 end
 
+Before('@slemicro54_minion') do
+  skip_this_scenario unless $slemicro54_minion
+end
+
+Before('@slemicro54_ssh_minion') do
+  skip_this_scenario unless $slemicro54_ssh_minion
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless $sle12sp5_buildhost
 end
