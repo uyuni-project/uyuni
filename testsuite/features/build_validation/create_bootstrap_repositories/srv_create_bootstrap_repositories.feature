@@ -42,17 +42,9 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLE Micro 5.1 minion
     When I create the bootstrap repository for "slemicro51_minion" on the server
 
-@slemicro51_ssh_minion
-  Scenario: Create the bootstrap repository for a SLE Micro 5.1 SSH minion
-    When I create the bootstrap repository for "slemicro51_ssh_minion" on the server
-
 @slemicro52_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.2 minion
     When I create the bootstrap repository for "slemicro52_minion" on the server
-
-@slemicro52_ssh_minion
-  Scenario: Create the bootstrap repository for a SLE Micro 5.2 SSH minion
-    When I create the bootstrap repository for "slemicro52_ssh_minion" on the server
 
 @slemicro53_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.3 minion
