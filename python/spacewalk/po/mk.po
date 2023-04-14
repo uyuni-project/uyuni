@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-17 13:46+0100\n"
-"PO-Revision-Date: 2023-04-07 07:14+0000\n"
+"PO-Revision-Date: 2023-04-08 03:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -214,7 +214,7 @@ msgstr ""
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Недоволни дозволи за претплата за издание (%s, %s"
 
 #. Various messages that can be reused
 #.

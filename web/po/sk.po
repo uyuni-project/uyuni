@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-07 15:17+0200\n"
-"PO-Revision-Date: 2023-04-01 08:14+0000\n"
+"POT-Creation-Date: 2023-04-14 16:01+0200\n"
+"PO-Revision-Date: 2023-04-08 13:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
 ">\n"
@@ -362,9 +362,8 @@ msgstr "Žiadny druh"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:83
 #: ../html/src/manager/state/highstate.tsx:65
-#, fuzzy
 msgid "Action has been successfully added to the action chain '{0}'."
-msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
+msgstr "Akcia bola úspešne pridaná do reťazca akcií '{0}'."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
 #: ../html/src/manager/images/image-build.tsx:211
@@ -379,18 +378,16 @@ msgid "scheduled"
 msgstr "naplánované"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#, fuzzy
 msgid "The action has been {0}."
-msgstr "Akcia bola "
+msgstr "Akcia bola {0}."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:94
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "Späť na výber systému"
+msgstr "Nie je možné vymazať výber"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr ""
+msgstr "Nie je možné vykonať akciu."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -1111,17 +1108,15 @@ msgstr ""
 "záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "Niektoré zmeny boli úspešne naplánované."
+msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
 msgstr ""
-"Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
-"záznamov."
+"Nasledujúce inštalácie kanálov pre '{0}' zlyhali. Skontrolujte, prosím, "
+"súbory záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1275,7 +1270,7 @@ msgstr "Kanály produktov - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "Vyberte voliteľné kanály, ktoré chcete pridať, a potvrďte."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -2051,7 +2046,7 @@ msgstr "Poskytuje názov"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
-msgstr ""
+msgstr "Číslo"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2169,7 +2164,7 @@ msgstr "Oprava"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Product Temporary Fix"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2292,11 +2287,11 @@ msgstr "žiadne (zakázať modularitu)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
-msgstr ""
+msgstr "všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "všetky dočasné opravy programov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -2327,14 +2322,12 @@ msgid "Contains Package"
 msgstr "Obsahuje balík"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#, fuzzy
 msgid "All"
-msgstr "Umožniť"
+msgstr "Všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "Názov balíka"
+msgstr "Názov balíka opráv"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
@@ -4031,66 +4024,67 @@ msgstr "Súhrn"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Inštalovať Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
 msgstr ""
+"Na inštaláciu v tomto systéme sú k dispozícii nasledujúce Program Temporary "
+"Fixes (PTFs). "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "Nie sú dostupné žiadne Program Temporary Fixes (PTFs)."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
-#, fuzzy
 msgid "Install PTFs"
-msgstr "Nainštalované"
+msgstr "Ištalovať PTFs"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "Potvrďte inštaláciu Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Odstrániť Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
 msgstr ""
+"V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary "
+"Fixes (PTFs). "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "Nie sú nainštalované žiadne Program Temporary Fixes (PTFs)."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
-#, fuzzy
 msgid "Remove PTFs"
-msgstr "Odstrániť"
+msgstr "Odstrániť PTFs"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "Potvrďte odstránenie Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "V tomto systéme nie je možné vykonať žiadne relevantné akcie."
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "Zoznam / Odstránenie nainštalovaných PTFs"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
-#, fuzzy
 msgid "Install PTF"
-msgstr "Nainštalované"
+msgstr "Inštalovať PTF"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
@@ -4667,9 +4661,8 @@ msgid "System Group"
 msgstr "Systémová skupina"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "Použitie highstate bolo "
+msgstr "Použitie highstate bolo {0}."
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
