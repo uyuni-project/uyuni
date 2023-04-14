@@ -66,6 +66,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         (SELECT id FROM rhnTaskoBunch WHERE name='auto-errata-bunch'),
         current_timestamp, '0 5/10 * * * ?');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-payg-default',
+       (SELECT id FROM rhnTaskoBunch WHERE name='update-payg-data-bunch'),
+       current_timestamp, '0 0/10 * * * ?');
+
 -- Every 15 minutes
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
@@ -81,6 +86,21 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 -- Every hour
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'payg-dimension-computation-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='payg-dimension-computation-bunch'),
+        current_timestamp, '0 45 * * * ?');
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'uuid-cleanup-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='uuid-cleanup-bunch'),
+        current_timestamp, '0 0 * * * ?');
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-chain-cleanup-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-chain-cleanup-bunch'),
+        current_timestamp, '0 0 * * * ?');
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'reboot-action-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='reboot-action-cleanup-bunch'),
         current_timestamp, '0 0 * * * ?');
@@ -90,16 +110,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         (SELECT id FROM rhnTaskoBunch WHERE name='minion-checkin-bunch'),
         current_timestamp, '0 0 * * * ?');
 
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-cleanup-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-cleanup-bunch'),
-        current_timestamp, '0 0 0 * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-system-overview-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='update-system-overview-bunch'),
         current_timestamp, '0 0 * * * ?');
-
 -- Once a day at 4:05:00 AM (beware of 2AM cronjobs)
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
@@ -137,6 +152,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 -- Once a day at 00:00
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-cleanup-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-cleanup-bunch'),
+        current_timestamp, '0 0 0 * * ?');
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'mgr-sync-refresh-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-sync-refresh-bunch'),
         current_timestamp, '0 0 0 ? * *');
@@ -147,29 +167,14 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         current_timestamp, '0 0 0 ? * *');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'uuid-cleanup-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='uuid-cleanup-bunch'),
-        current_timestamp, '0 0 * * * ?');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'token-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='token-cleanup-bunch'),
         current_timestamp, '0 0 0 ? * *');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-chain-cleanup-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-chain-cleanup-bunch'),
-        current_timestamp, '0 0 * * * ?');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'notifications-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='notifications-cleanup-bunch'),
         current_timestamp, '0 0 0 ? * *');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-payg-default',
-       (SELECT id FROM rhnTaskoBunch WHERE name='update-payg-data-bunch'),
-       current_timestamp, '0 0/10 * * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-default',
@@ -180,11 +185,6 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-hub-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-hub-bunch'),
         current_timestamp, '0 30 1 ? * *');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'payg-dimension-computation-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='payg-dimension-computation-bunch'),
-        current_timestamp, '0 45 * ? * * *');
 
 -- Once a month at the 15th at 5am
 
