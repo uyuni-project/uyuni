@@ -248,6 +248,25 @@ if [ -d /usr/share/rhn/config-defaults ]; then
     cp -fa /usr/share/rhn/config-defaults/* $DIR/config-defaults
 fi
 
+# clm history
+echo "    * get CLM project history data"
+if [ -f /usr/bin/spacewalk-sql ] ; then
+  mkdir -p $DIR/clm
+  query_projects="SELECT id, name FROM susecontentproject;"
+  temp_query_output="temp_query_output.txt"
+  echo "$query_projects" | spacewalk-sql --select-mode - | tail -n +3 | head -n -2 > "$temp_query_output"
+
+  while IFS=$'|' read -r project_id project_name; do
+    project_id="$(echo "$project_id" | tr -s ' ' | xargs)"  # Remove extra spaces
+    project_name="$(echo "$project_name" | tr -s ' ' | xargs)"  # Remove extra spaces
+    project_history_file="$DIR/clm/${project_name}_history"
+    echo "Project ID: $project_id, Project Name: $project_name" > "$project_history_file"
+    query_project_history="SELECT message, version, created, user_id FROM susecontentprojecthistoryentry WHERE project_id = $project_id;"
+    echo "$query_project_history" | spacewalk-sql --select-mode - >> "$project_history_file"
+  done < "$temp_query_output"
+  rm "$temp_query_output"
+fi
+
 #cobbler stuff
 echo "    * copying cobbler files"
 if [ -d /etc/cobbler ]; then
