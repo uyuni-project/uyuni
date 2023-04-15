@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.recurringactions.state;
 
-import com.google.errorprone.annotations.Immutable;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
