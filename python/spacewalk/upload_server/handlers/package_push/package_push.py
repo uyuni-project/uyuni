@@ -24,10 +24,10 @@ from rhn import rpclib
 
 from spacewalk.common import apache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import InvalidArchError
 from spacewalk.server import rhnPackageUpload, rhnSQL, basePackageUpload
+from uyuni.common.context_managers import cfg_component
 
 
 class PackagePush(basePackageUpload.BasePackageUpload):
@@ -60,17 +60,18 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         if ret != apache.OK:
             return ret
 
-        if CFG.SEND_MESSAGE_TO_ALL:
-            rhnSQL.closeDB()
-            log_debug(1, "send_message_to_all is set")
+        with cfg_component(component=None) as CFG:
+            if CFG.SEND_MESSAGE_TO_ALL:
+                rhnSQL.closeDB()
+                log_debug(1, "send_message_to_all is set")
 
-            rhnFlags.set("apache-return-code", apache.HTTP_NOT_FOUND)
-            try:
-                outage_message = open(CFG.MESSAGE_TO_ALL).read()
-            except IOError:
-                log_error("Missing outage message file")
-                outage_message = "Outage mode"
-            raise rhnFault(20001, outage_message, explain=0)
+                rhnFlags.set("apache-return-code", apache.HTTP_NOT_FOUND)
+                try:
+                    outage_message = open(CFG.MESSAGE_TO_ALL).read()
+                except IOError:
+                    log_error("Missing outage message file")
+                    outage_message = "Outage mode"
+                raise rhnFault(20001, outage_message, explain=0)
 
         # Init the database connection
         rhnSQL.initDB()
@@ -119,7 +120,8 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         self.rel_package_path = rhnPackageUpload.relative_path_from_header(
             a_pkg.header, org_id=self.org_id,
             checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum)
-        self.package_path = os.path.join(CFG.MOUNT_POINT,
+        with cfg_component(component=None) as CFG:
+            self.package_path = os.path.join(CFG.MOUNT_POINT,
                                          self.rel_package_path)
 
         try:
