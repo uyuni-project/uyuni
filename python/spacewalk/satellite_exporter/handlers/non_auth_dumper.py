@@ -29,7 +29,6 @@ import sys
 from rhn.UserDictCase import UserDictCase
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import rhnSQL, rhnLib
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server.importlib.backendLib import localtime
@@ -39,7 +38,7 @@ from spacewalk.common.rhnTranslate import _
 
 from spacewalk.satellite_tools.exporter import exportLib
 from spacewalk.satellite_tools.disk_dumper import dumper
-
+from uyuni.common.context_managers import cfg_component
 
 class InvalidPackageError(Exception):
     pass
@@ -484,7 +483,8 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         row = channel_comps_sth.fetchone_dict()
         if not row:
             raise rhnFault(3015, "No comps/modules file for channel [%s]" % channel)
-        path = os.path.join(CFG.MOUNT_POINT, row['relative_filename'])
+        with cfg_component(component=None) as CFG:
+            path = os.path.join(CFG.MOUNT_POINT, row['relative_filename'])
         if not os.path.exists(path):
             log_error("Missing comps/modules file [%s] for channel [%s]" % (path, channel))
             raise rhnFault(3016, "Unable to retrieve comps/modules file for channel [%s]" % channel)
@@ -503,7 +503,8 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         if not row:
             raise rhnFault(3003, "No such file %s in tree %s" %
                            (relative_path, ks_label))
-        path = os.path.join(CFG.MOUNT_POINT, row['base_path'], relative_path)
+        with cfg_component(component=None) as CFG:
+            path = os.path.join(CFG.MOUNT_POINT, row['base_path'], relative_path)
         if not os.path.exists(path):
             log_error("Missing file for SUSE Manager dumper: %s" % path)
             raise rhnFault(3007, "Unable to retrieve file %s in tree %s" %
@@ -692,7 +693,8 @@ def _get_path_from_cursor(h):
     if max_row['path'] is None:
 
         raise NullPathPackageError(max_row['id'])
-    filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row['path'])
+    with cfg_component(component=None) as CFG:
+        filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row['path'])
     pkgId = max_row['id']
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem

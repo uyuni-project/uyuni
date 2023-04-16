@@ -30,13 +30,13 @@ from spacewalk.common import apache
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error, log_setreq, initLOG
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnException, rhnFault
 from spacewalk.server import rhnSQL, rhnImport
 from spacewalk.satellite_tools.disk_dumper.dumper import ClosedConnectionError
 from spacewalk.satellite_tools import constants
+from uyuni.common.context_managers import cfg_component
 
 
 class BaseApacheServer:
@@ -58,21 +58,21 @@ class BaseApacheServer:
         if "RHNComponentType" not in options:
             # clearly nothing to do
             return apache.OK
-        initCFG(options["RHNComponentType"])
-        initLOG(CFG.LOG_FILE, CFG.DEBUG)
+        with cfg_component('RHNComponentType') as CFG:
+            initLOG(CFG.LOG_FILE, CFG.DEBUG)
         # short-circuit everything if sending a system-wide message.
-        if CFG.SEND_MESSAGE_TO_ALL:
-            # Drop the database connection
-            # pylint: disable=W0702
-            try:
-                rhnSQL.closeDB()
-            except:
-                pass
+            if CFG.SEND_MESSAGE_TO_ALL:
+                # Drop the database connection
+                # pylint: disable=W0702
+                try:
+                    rhnSQL.closeDB()
+                except:
+                    pass
 
             # Fetch global message being sent to clients if applicable.
-            msg = open(CFG.MESSAGE_TO_ALL).read()
-            log_debug(3, "Sending message to all clients: %s" % msg)
-            return self._send_xmlrpc(req, rhnFault(-1,
+                msg = open(CFG.MESSAGE_TO_ALL).read()
+                log_debug(3, "Sending message to all clients: %s" % msg)
+                return self._send_xmlrpc(req, rhnFault(-1,
                                                    _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg, explain=0))
 
         rhnSQL.initDB()
@@ -219,8 +219,9 @@ class ApacheServer(BaseApacheServer):
         return f
 
     def auth_system(self, req):
-        if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this server.'))
+        with cfg_component('RHNComponentType') as CFG:
+            if CFG.DISABLE_ISS:
+                raise rhnFault(2005, _('ISS is disabled on this server.'))
 
         remote_hostname = req.get_remote_host(apache.REMOTE_DOUBLE_REV)
         row = rhnSQL.fetchone_dict("""
