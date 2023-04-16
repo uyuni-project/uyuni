@@ -1,3 +1,4 @@
+- fix broken ifcfg grub option on reinstallation (bsc#1210232)
 - fix NPE in cobbler system sync when server has no creator set
 - fix credentials and other secrets disclosure when debug log is enabled
   CVE-2023-22644 (bsc#1210154)
