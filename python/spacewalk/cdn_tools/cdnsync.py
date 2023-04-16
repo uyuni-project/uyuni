@@ -20,7 +20,7 @@ import fnmatch
 from datetime import datetime, timedelta
 
 from . import constants
-from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 from spacewalk.common import rhnLog
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import channel_info
@@ -53,7 +53,8 @@ class CdnSync(object):
         if log_level is None:
             log_level = 0
         self.log_level = log_level
-        CFG.set('DEBUG', log_level)
+        with cfg_component(component=None) as CFG:
+            CFG.set('DEBUG', log_level)
         self.email = email
         if self.email:
             initEMAIL_LOG()
@@ -61,7 +62,6 @@ class CdnSync(object):
         log2disk(0, "Command: %s" % str(sys.argv))
 
         rhnSQL.initDB()
-        initCFG('server.satellite')
 
         self.cdn_repository_manager = CdnRepositoryManager(mount_point)
         self.no_packages = no_packages
@@ -79,7 +79,8 @@ class CdnSync(object):
             self.mount_point = "file://" + mount_point
             self.consider_full = consider_full
         else:
-            self.mount_point = CFG.CDN_ROOT
+            with cfg_component('server.satellite') as CFG:
+                self.mount_point = CFG.CDN_ROOT
             self.consider_full = True
 
         verify_mappings()
@@ -491,7 +492,8 @@ class CdnSync(object):
         if add_repos:
             repos = set()
             for repo in add_repos:
-                repo = repo.replace(CFG.CDN_ROOT, '')
+                with cfg_component('server.satellite') as CFG:
+                    repo = repo.replace(CFG.CDN_ROOT, '')
                 repo_dirs = self.cdn_repository_manager.repository_tree.normalize_url(repo)
                 repo = os.path.join('/', '/'.join(repo_dirs))
                 repos.add(repo)
@@ -499,7 +501,8 @@ class CdnSync(object):
         if delete_repos:
             repos = set()
             for repo in delete_repos:
-                repo = repo.replace(CFG.CDN_ROOT, '')
+                with cfg_component('server.satellite') as CFG:
+                    repo = repo.replace(CFG.CDN_ROOT, '')
                 repo_dirs = self.cdn_repository_manager.repository_tree.normalize_url(repo)
                 repo = os.path.join('/', '/'.join(repo_dirs))
                 repos.add(repo)

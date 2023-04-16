@@ -4,16 +4,16 @@ import argparse
 import sys
 import os
 
-from spacewalk.common.rhnConfig import CFG, initCFG
-from uyuni.common.fileutils import cleanupAbsPath
 from spacewalk.cdn_tools.common import CustomChannelSyncError, CdnMappingsLoadError, CountingPackagesError
 from spacewalk.cdn_tools.cdnsync import CdnSync
 from spacewalk.server import rhnSQL
-from uyuni.common.usix import raise_with_tb
 from rhn import rhnLockfile
 from rhn.connections import idn_ascii_to_puny
 from spacewalk.server.importlib.importLib import InvalidArchError, \
     InvalidChannelError, InvalidChannelFamilyError, MissingParentChannelError
+from uyuni.common.context_managers import cfg_component
+from uyuni.common.fileutils import cleanupAbsPath
+from uyuni.common.usix import raise_with_tb
 
 
 def system_exit(code, msgs=None):
@@ -30,8 +30,8 @@ def system_exit(code, msgs=None):
 def process_commandline():
     """process the commandline, setting the CFG object"""
 
-    initCFG('server.satellite')
-    CFG.ENABLE_NVREA = 1
+    with cfg_component('server.satellite') as CFG:
+        CFG.ENABLE_NVREA = 1
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--list-channels", action="store_true", help="List channels available to sync.")
     parser.add_argument("-r", "--show-repos", action="store_true",
@@ -71,7 +71,8 @@ def process_commandline():
     cmd_args = parser.parse_args()
 
     if cmd_args.print_configuration:
-        CFG.show()
+        with cfg_component('server.satellite') as CFG:
+            CFG.show()
         sys.exit(0)
 
     if cmd_args.http_proxy:
@@ -79,11 +80,13 @@ def process_commandline():
             int(cmd_args.http_proxy.split(':')[1])
         except ValueError:
             system_exit(1, "Incorrect proxy port number: %s" % cmd_args.http_proxy.split(':')[1])
-        CFG.set("HTTP_PROXY", idn_ascii_to_puny(cmd_args.http_proxy))
-        CFG.set("HTTP_PROXY_USERNAME", cmd_args.http_proxy_username)
-        CFG.set("HTTP_PROXY_PASSWORD", cmd_args.http_proxy_password)
+        with cfg_component('server.satellite') as CFG:
+            CFG.set("HTTP_PROXY", idn_ascii_to_puny(cmd_args.http_proxy))
+            CFG.set("HTTP_PROXY_USERNAME", cmd_args.http_proxy_username)
+            CFG.set("HTTP_PROXY_PASSWORD", cmd_args.http_proxy_password)
 
-    CFG.set("TRACEBACK_MAIL", cmd_args.traceback_mail or CFG.TRACEBACK_MAIL)
+    with cfg_component('server.satellite') as CFG:
+        CFG.set("TRACEBACK_MAIL", cmd_args.traceback_mail or CFG.TRACEBACK_MAIL)
 
     if cmd_args.mount_point:
         cmd_args.mount_point = cleanupAbsPath(cmd_args.mount_point)
@@ -129,15 +132,16 @@ if __name__ == '__main__':
 
         args = process_commandline()
 
-        if CFG.get('disconnected') == 1:
-            system_exit(1, 'ERROR: the Satellite server is installed in disconnected mode, cannot continue syncing '
-                        'from CDN')
+        with cfg_component('server.satellite') as CFG:
+            if CFG.get('disconnected') == 1:
+                system_exit(1, 'ERROR: the Satellite server is installed in disconnected mode, cannot continue syncing '
+                            'from CDN')
 
-        if getDbIssParent() or (CFG.get('iss_parent') and CFG.get('disable_iss') == 0):
-            parent = getDbIssParent()
-            if not parent:
-                parent = CFG.get('iss_parent')
-            system_exit(1, 'ERROR: the Satellite server is registered to a parent Satellite "%s".\nTo sync content '
+            if getDbIssParent() or (CFG.get('iss_parent') and CFG.get('disable_iss') == 0):
+                parent = getDbIssParent()
+                if not parent:
+                    parent = CFG.get('iss_parent')
+                system_exit(1, 'ERROR: the Satellite server is registered to a parent Satellite "%s".\nTo sync content '
                         'from the parent Satellite via Inter-Satellite-Sync, please, use the "satellite-sync" command' %
                         parent)
 

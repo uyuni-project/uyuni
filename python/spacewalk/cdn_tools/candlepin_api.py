@@ -19,9 +19,10 @@ import tempfile
 import requests
 
 from spacewalk.cdn_tools.constants import CA_CERT_PATH
-from uyuni.common.cli import getUsernamePassword
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.satellite_tools.syncLib import log, log2
+from uyuni.common.cli import getUsernamePassword
+from uyuni.common.context_managers import cfg_component
 
 
 class CandlepinApi(object):
@@ -30,9 +31,10 @@ class CandlepinApi(object):
     def __init__(self, current_manifest=None, username=None, password=None,
                  http_proxy=None, http_proxy_username=None, http_proxy_password=None):
         self.base_url = current_manifest.get_api_url()
-        if CFG.CANDLEPIN_SERVER_API:
-            log(0, "Overriding Candlepin server to: '%s'" % CFG.CANDLEPIN_SERVER_API)
-            self.base_url = CFG.CANDLEPIN_SERVER_API
+        with cfg_component(component=None) as CFG:
+            if CFG.CANDLEPIN_SERVER_API:
+                log(0, "Overriding Candlepin server to: '%s'" % CFG.CANDLEPIN_SERVER_API)
+                self.base_url = CFG.CANDLEPIN_SERVER_API
 
         if self.base_url.startswith('https'):
             self.protocol = 'https'
