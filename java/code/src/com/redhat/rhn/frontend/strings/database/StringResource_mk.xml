@@ -314,42 +314,42 @@
       </trans-unit>
       <trans-unit id="Indian/Chagos" xml:space="preserve">
         <source>(GMT+0600) Bangladesh</source>
-        <target/>
+        <target>(GMT+0600) Бангладеш</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Katmandu" xml:space="preserve">
         <source>(GMT+0545) Nepal</source>
-        <target/>
+        <target>(GMT+0545) Непал</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Calcutta" xml:space="preserve">
         <source>(GMT+0530) India (Calcutta)</source>
-        <target/>
+        <target>(GMT+0530) Индија (Калкута)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Maldives" xml:space="preserve">
         <source>(GMT+0500) Pakistan</source>
-        <target/>
+        <target>(GMT+0500) Пакистан</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
-        <target/>
+        <target>(GMT+0430) Авганистан</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Mauritius" xml:space="preserve">
         <source>(GMT+0400) Russia (Samara)</source>
-        <target/>
+        <target>(GMT+0400) Русија (Самара)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
