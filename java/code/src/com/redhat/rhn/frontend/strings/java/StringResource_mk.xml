@@ -473,7 +473,7 @@
       </trans-unit>
       <trans-unit id="audit.nav.logreview" xml:space="preserve">
         <source>Log Review</source>
-        <target/>
+        <target>Преглед на дневник</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -501,42 +501,42 @@
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
-        <target/>
+        <target>Листа на Канали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Client Configuration" xml:space="preserve">
         <source>Client Configuration</source>
-        <target/>
+        <target>Клиент Конфигурација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Guide" xml:space="preserve">
         <source>User Guide</source>
-        <target/>
+        <target>Водич за Корисници</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Getting Started Guide" xml:space="preserve">
         <source>Getting Started Guide</source>
-        <target/>
+        <target>Водич за Започнување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Clone Errata" xml:space="preserve">
         <source>Clone Patches</source>
-        <target/>
+        <target>Клонирај Печови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed Actions" xml:space="preserve">
         <source>Completed Actions</source>
-        <target/>
+        <target>Завршени Акции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
