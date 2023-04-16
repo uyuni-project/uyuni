@@ -7,11 +7,11 @@ import stat
 import shutil
 from optparse import Option, OptionParser
 import tempfile
+from uyuni.common.context_managers import cfg_component
 
 try:
     from uyuni.common import checksum
     from spacewalk.common.rhnLog import initLOG, log_debug
-    from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.server import rhnSQL
     from spacewalk.server.rhnPackage import unlink_package_file
 except:
@@ -19,7 +19,6 @@ except:
     # add to the path if need be
     if _LIBPATH not in sys.path:
         sys.path.append(_LIBPATH)
-    from common import CFG, initCFG, initLOG, log_debug
     from server import rhnSQL
     from server.rhnPackage import unlink_package_file
 
@@ -53,7 +52,6 @@ def is_sha256_capable():
 
 
 def db_init():
-    initCFG('server')
     rhnSQL.initDB()
 
 
@@ -91,7 +89,8 @@ def check_db_vs_disk(options):
     query = package_query(options)
     h = rhnSQL.prepare(query)
 
-    path_prefix = CFG.MOUNT_POINT
+    with cfg_component('server') as CFG:
+        path_prefix = CFG.MOUNT_POINT
 
     h.execute()
 
@@ -207,7 +206,8 @@ def check_disk_nevrao(abs_path, row, restore=None):
 
 
 def restore_file_path(file, row):
-    prefix = CFG.MOUNT_POINT + '/'
+    with cfg_component('server') as CFG:
+        prefix = CFG.MOUNT_POINT + '/'
     new_path = 'packages/' + row['org_id'] + '/' + row['checksum_prefix'] + '/' + row['name'] + \
         '/' + row['evr'] + '/' + row['arch'] + '/' + row['checksum'] + '/' + row['basename']
     query = "update rhnPackage set path=\'" + new_path + "\' where id=" + str(row['id'])
@@ -306,33 +306,34 @@ def check_disk_vs_db(disk_content=None, db_content=None):
         report[k] = 0
     query = package_query(options, bind_path=True)
     h = rhnSQL.prepare(query)
-    for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'packages')):
-        rel_root = root[len(CFG.MOUNT_POINT) + 1:]
-        for f in files:
-            abs_path = os.path.join(root, f)
-            rel_path = os.path.join(rel_root, f)
-            log(3, abs_path)
-            report['file'] += 1
+    with cfg_component('server') as CFG:
+        for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'packages')):
+            rel_root = root[len(CFG.MOUNT_POINT) + 1:]
+            for f in files:
+                abs_path = os.path.join(root, f)
+                rel_path = os.path.join(rel_root, f)
+                log(3, abs_path)
+                report['file'] += 1
 
-            h.execute(path=rel_path)
-            row = h.fetchone_dict()
+                h.execute(path=rel_path)
+                row = h.fetchone_dict()
 
-            if not row:
-                if (not is_srpm(f)) or is_orphaned_srpm(abs_path, f):
-                    if is_srpm(f):
-                        report['srpmexists'] += 1
-                    else:
-                        report['dbexists'] += 1
-                    not_in_db(abs_path, options)
-                continue
+                if not row:
+                    if (not is_srpm(f)) or is_orphaned_srpm(abs_path, f):
+                        if is_srpm(f):
+                            report['srpmexists'] += 1
+                        else:
+                            report['dbexists'] += 1
+                        not_in_db(abs_path, options)
+                    continue
 
-            if options.size and options.fs_only:
-                report['size'] += check_disk_size(abs_path, row['package_size'])
-            if options.nevrao and options.fs_only:
-                report['nevrao'] += check_disk_nevrao(abs_path, row.copy())
-            if options.checksum and options.fs_only:
-                report['checksum'] += check_disk_checksum(abs_path,
-                                                          row['checksum_type'], row['checksum'])
+                if options.size and options.fs_only:
+                    report['size'] += check_disk_size(abs_path, row['package_size'])
+                if options.nevrao and options.fs_only:
+                    report['nevrao'] += check_disk_nevrao(abs_path, row.copy())
+                if options.checksum and options.fs_only:
+                    report['checksum'] += check_disk_checksum(abs_path,
+                                                              row['checksum_type'], row['checksum'])
     h.close()
     error_found = 0
     for i in ['file', 'dbexists', 'srpmexists', 'size', 'nevrao', 'checksum']:

@@ -21,7 +21,7 @@ import os
 
 # rhn imports:
 from spacewalk.common import rhnCache
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.context_managers import cfg_component
 from uyuni.common.rhnLib import hash_object_id
 
 # NOTE: this is a python 2.2-ism
@@ -34,7 +34,8 @@ class BaseCache:
     def __init__(self):
         # Kind of kludgy - this may have weird side-effects if called from
         # within the server code
-        rhnCache.CACHEDIR = CFG.SYNC_CACHE_DIR
+        with cfg_component('server.satellite') as CFG:
+            rhnCache.CACHEDIR = CFG.SYNC_CACHE_DIR
 
     def cache_get(self, object_id, timestamp=None):
         # Get the key
@@ -100,7 +101,6 @@ class KickstartableTreesCache(BaseCache):
                                              object_id))
 
 if __name__ == '__main__':
-    initCFG("server.satellite")
     c = PackageCache()
     pid = 'package-12345'
     c.cache_set(pid, {'a': 1, 'b': 2})

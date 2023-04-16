@@ -30,7 +30,6 @@ from . import dumper
 from uyuni.common.usix import raise_with_tb
 from uyuni.common.checksum import getFileChecksum
 from spacewalk.common import rhnMail
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnTB import Traceback, exitWithTraceback
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
@@ -40,6 +39,7 @@ from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2
 from .iss_ui import UI
 from .iss_actions import ActionDeps
 from . import iss_isos
+from uyuni.common.context_managers import cfg_component
 
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 try:
@@ -752,7 +752,8 @@ class Dumper(dumper.XML_Dumper):
 
     def copy_repomd(self, repomds, channel, get_file_func):
         if channel['channel_id'] in repomds:
-            full_filename = os.path.join(CFG.MOUNT_POINT, repomds[channel['channel_id']])
+            with cfg_component(component=None) as CFG:
+                full_filename = os.path.join(CFG.MOUNT_POINT, repomds[channel['channel_id']])
             target_filename = get_file_func(channel['label'])
             log2email(3, "Need to copy %s to %s" % (full_filename, target_filename))
 
@@ -957,9 +958,10 @@ class Dumper(dumper.XML_Dumper):
             pb.printAll(1)
             for kickstart_file in self.kickstart_files:
                 # get the path to the kickstart files under the satellite's mount point
-                path_to_files = os.path.join(CFG.MOUNT_POINT,
-                                             kickstart_file['base-path'],
-                                             kickstart_file['relative-path'])
+                with cfg_component(component=None) as CFG:
+                    path_to_files = os.path.join(CFG.MOUNT_POINT,
+                                                 kickstart_file['base-path'],
+                                                 kickstart_file['relative-path'])
 
                 # Make sure the path actually exists
                 if not os.path.exists(path_to_files):
@@ -1036,7 +1038,8 @@ class Dumper(dumper.XML_Dumper):
                     raise ISSError("Error: Missing RPM under the satellite mount point. (Package id: %s)" %
                                    rpm['id'], "")
                 # get the path to the rpm from under the satellite's mountpoint
-                satellite_path = os.path.join(CFG.MOUNT_POINT, rpm['path'])
+                with cfg_component(component=None) as CFG:
+                    satellite_path = os.path.join(CFG.MOUNT_POINT, rpm['path'])
 
                 if not os.path.exists(satellite_path):
                     raise ISSError("Error: Missing RPM under mount point: %s" % (satellite_path,), "")
@@ -1059,16 +1062,18 @@ class Dumper(dumper.XML_Dumper):
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise_with_tb(ISSError("Error: Error copying file %s: %s" %
-                                           (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
-                                           tbout.getvalue()), sys.exc_info()[2])
+                    with cfg_component(component=None) as CFG:
+                        raise_with_tb(ISSError("Error: Error copying file %s: %s" %
+                                               (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
+                                               tbout.getvalue()), sys.exc_info()[2])
                 except OSError:
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise_with_tb(ISSError("Error: Could not make hard link %s: %s (different filesystems?)" %
-                                           (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
-                                           tbout.getvalue()), sys.exc_info()[2])
+                    with cfg_component(component=None) as CFG:
+                        raise_with_tb(ISSError("Error: Could not make hard link %s: %s (different filesystems?)" %
+                                               (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
+                                               tbout.getvalue()), sys.exc_info()[2])
 
                 log2email(5, "RPM: %s" % rpm['path'])
 
@@ -1186,7 +1191,6 @@ def handle_error(message, traceback):
 class ExporterMain:
 
     def __init__(self):
-        initCFG('server.iss')
 
         # pylint: disable=E1101
         self.options = UI()
@@ -1195,11 +1199,12 @@ class ExporterMain:
         if self.options.debug_level:
             debug_level = int(self.options.debug_level)
         else:
-            debug_level = int(CFG.DEBUG)
-
-        CFG.set("TRACEBACK_MAIL", self.options.traceback_mail or CFG.TRACEBACK_MAIL)
-        CFG.set("DEBUG", debug_level)
-        CFG.set("ISSEMAIL", self.options.email)
+            with cfg_component('server.iss') as CFG:
+                debug_level = int(CFG.DEBUG)
+        with cfg_component('server.iss') as CFG:
+            CFG.set("TRACEBACK_MAIL", self.options.traceback_mail or CFG.TRACEBACK_MAIL)
+            CFG.set("DEBUG", debug_level)
+            CFG.set("ISSEMAIL", self.options.email)
 
         initEMAIL_LOG()
 
@@ -1216,7 +1221,8 @@ class ExporterMain:
 
         # This was cribbed from satsync.py.
         if self.options.print_configuration:
-            CFG.show()
+            with cfg_component('server.iss') as CFG:
+                CFG.show()
             sys.exit(0)
 
         if self.options.list_channels:

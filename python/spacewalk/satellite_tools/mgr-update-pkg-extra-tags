@@ -7,10 +7,10 @@ import argparse
 from debian import debfile
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server.importlib.backendLib import DBstring, sanitizeValue
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server import taskomatic
+from uyuni.common.context_managers import cfg_component
 
 try:
     #  python 2
@@ -123,7 +123,8 @@ class MetadataRefresh(object):
                 pb.printIncrement()
                 pkg_id = pkg['id']
                 pkg_path = pkg['path']
-                deb_path = os.path.join(CFG.MOUNT_POINT, pkg_path)
+                with cfg_component('server.susemanager') as CFG:
+                    deb_path = os.path.join(CFG.MOUNT_POINT, pkg_path)
                 deb = None
                 try:
                     deb = debfile.DebFile(deb_path)
@@ -164,8 +165,8 @@ def main(args):
         systemExit(1, 'ERROR: attempting to run more than one instance of '
                       'mgr-refresh-pkg-metadata Exiting.')
 
-    initCFG('server.satellite')
-    initCFG('server.susemanager')
+#    initCFG('server.satellite')
+#    initCFG('server.susemanager')
     rhnSQL.initDB()
 
     refresh = MetadataRefresh(args.verbose)

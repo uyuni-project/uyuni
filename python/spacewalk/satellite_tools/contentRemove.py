@@ -20,12 +20,12 @@ try:
 except ImportError:
     import xmlrpclib
 import datetime
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
 from socket import getfqdn
+from uyuni.common.context_managers import cfg_component
 
 class RemoteApi:
 
@@ -374,7 +374,8 @@ def __rmtree_error(op, name, exc):
 
 
 def __deleteRepoData(labels):
-    directory = '/var/cache/' + CFG.repomd_path_prefix
+    with cfg_component(component=None) as CFG:
+        directory = '/var/cache/' + CFG.repomd_path_prefix
     for label in labels:
         if os.path.isdir(directory + '/' + label):
             shutil.rmtree(directory + '/' + label, onerror=__rmtree_error)
@@ -547,7 +548,8 @@ def _delete_rpm_group(packageIds):
 
 def _delete_files(relpaths):
     for relpath in relpaths:
-        path = os.path.join(CFG.MOUNT_POINT, relpath)
+        with cfg_component(component=None) as CFG:
+            path = os.path.join(CFG.MOUNT_POINT, relpath)
         if not os.path.exists(path):
             log_debug(1, "Not removing %s: no such file" % path)
             continue
@@ -598,14 +600,16 @@ def _delete_ks_files(channel_labels):
     """
 
     params, bind_params = _bind_many(channel_labels)
-    params['mnt_point'] = CFG.MOUNT_POINT + '/'
+    with cfg_component(component=None) as CFG:
+        params['mnt_point'] = CFG.MOUNT_POINT + '/'
     bind_params = ', '.join(bind_params)
     h = rhnSQL.prepare(sql % (bind_params, bind_params))
     h.execute(**params)
     kickstart_list = h.fetchall_dict() or []
 
     for kickstart in kickstart_list:
-        path = os.path.join(CFG.MOUNT_POINT, str(kickstart['base_path']))
+        with cfg_component(component=None) as CFG:
+            path = os.path.join(CFG.MOUNT_POINT, str(kickstart['base_path']))
         if not os.path.exists(path):
             log_debug(1, "Not removing %s: no such file" % path)
             continue

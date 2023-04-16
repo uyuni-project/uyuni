@@ -22,14 +22,14 @@ import os
 
 from optparse import Option, OptionParser
 from spacewalk.common.rhnLog import initLOG, log_debug
-from spacewalk.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_packages
 from spacewalk.satellite_tools.progress_bar import ProgressBar
+from uyuni.common.context_managers import cfg_component
 
-initCFG('server.satellite')
-initLOG(CFG.LOG_FILE, CFG.DEBUG)
+with cfg_component('server.satellite') as CFG:
+    initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None
 debug = 0
@@ -57,11 +57,13 @@ def main():
         sys.exit(-1)
 
     if options.verbose:
-        initLOG(CFG.LOG_FILE, 1)
+        with cfg_component('server.satellite') as CFG:
+            initLOG(CFG.LOG_FILE, 1)
         verbose = 1
 
     if options.debug:
-        initLOG(CFG.LOG_FILE, options.debug or 1)
+        with cfg_component('server.satellite') as CFG:
+            initLOG(CFG.LOG_FILE, options.debug or 1)
         debug = 1
 
     rhnSQL.initDB()
@@ -161,7 +163,8 @@ def process_package_data():
 
         if path is None:
             continue
-        full_path = os.path.join(CFG.MOUNT_POINT, path)
+        with cfg_component('server.satellite') as CFG:
+            full_path = os.path.join(CFG.MOUNT_POINT, path)
         checksum_type = pkg['checksum_type']
         checksum = pkg['checksum']
 

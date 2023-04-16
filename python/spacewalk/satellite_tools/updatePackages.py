@@ -22,17 +22,17 @@ import shutil
 
 from optparse import Option, OptionParser
 from spacewalk.common.rhnLog import initLOG, rhnLog
-from spacewalk.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
 from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
 from spacewalk.server import rhnSQL, rhnPackageUpload
 from spacewalk.server.rhnServer import server_packages
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from uyuni.common.checksum import getFileChecksum
+from uyuni.common.context_managers import cfg_component
 from spacewalk.server.importlib import mpmSource
 
-initCFG('server.satellite')
-initLOG(CFG.LOG_FILE, CFG.DEBUG)
+with cfg_component('server.satellite') as CFG:
+    initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None
 debug = 0
@@ -72,7 +72,8 @@ def main():
         verbose = 1
 
     if options.debug:
-        initLOG(CFG.LOG_FILE, options.debug or 0)
+        with cfg_component('server.satellite') as CFG:
+            initLOG(CFG.LOG_FILE, options.debug or 0)
         debug = 1
 
     rhnSQL.initDB()
@@ -164,15 +165,18 @@ def process_package_data():
                 log.writeMessage("Skipping: %s Not a valid rpm"
                                  % old_path_nvrea[-1])
             continue
-        old_abs_path = os.path.join(CFG.MOUNT_POINT, path['path'])
+        with cfg_component('server.satellite') as CFG:
+            old_abs_path = os.path.join(CFG.MOUNT_POINT, path['path'])
 
         checksum_type = path['checksum_type']
         checksum = path['checksum']
         new_path = get_package_path(nevra, org_id, prepend=old_path_nvrea[0],
                                     checksum=checksum)
-        new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
+        with cfg_component('server.satellite') as CFG:
+            new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
 
-        bad_abs_path = os.path.join(CFG.MOUNT_POINT,
+        with cfg_component('server.satellite') as CFG:
+            bad_abs_path = os.path.join(CFG.MOUNT_POINT,
                                     get_package_path(nevra, org_id, prepend=old_path_nvrea[0],
                                                      omit_epoch=True, checksum=checksum))
 
@@ -244,9 +248,10 @@ def process_package_data():
 
 
 def process_kickstart_trees():
-    for root, _dirs, files in os.walk(CFG.MOUNT_POINT + "/rhn/"):
-        for name in files:
-            os.chmod(root + '/' + name, int('0644', 8))
+    with cfg_component('server.satellite') as CFG:
+        for root, _dirs, files in os.walk(CFG.MOUNT_POINT + "/rhn/"):
+            for name in files:
+                os.chmod(root + '/' + name, int('0644', 8))
 
 _get_sha256_packages_query = """
 select p.id, p.path
@@ -331,7 +336,8 @@ def process_sha256_packages():
         pb.addTo(1)
         pb.printIncrement()
 
-        old_abs_path = os.path.join(CFG.MOUNT_POINT, package['path'])
+        with cfg_component('server.satellite') as CFG:
+            old_abs_path = os.path.join(CFG.MOUNT_POINT, package['path'])
         if debug and verbose:
             log.writeMessage("Processing package: %s" % old_abs_path)
         temp_file = open(old_abs_path, 'rb')
@@ -344,7 +350,8 @@ def process_sha256_packages():
         nevra = parseRPMFilename(old_path[-1])
         org_id = old_path[1]
         new_path = get_package_path(nevra, org_id, prepend=old_path[0], checksum=checksum)
-        new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
+        with cfg_component('server.satellite') as CFG:
+            new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
 
         # Filer content relocation
         try:
@@ -509,7 +516,8 @@ def process_package_files():
         if not row:  # No more packages in DB to process
             break
 
-        package_path = os.path.join(CFG.MOUNT_POINT, row['path'])
+        with cfg_component('server.satellite') as CFG:
+            package_path = os.path.join(CFG.MOUNT_POINT, row['path'])
 
         if not os.path.exists(package_path):
             if debug:
@@ -597,10 +605,11 @@ def process_changelog():
                     break
         return u
 
-    if CFG.db_backend == 'postgresql':
-        lengthb = "octet_length(%s)"
-    else:
-        lengthb = "lengthb(%s)"
+    with cfg_component('server.satellite') as CFG:
+        if CFG.db_backend == 'postgresql':
+            lengthb = "octet_length(%s)"
+        else:
+            lengthb = "lengthb(%s)"
     _non_ascii_changelog_data_count = """select count(*) as cnt from rhnpackagechangelogdata
                                           where length(name) <> %s
                                              or length(text) <> %s

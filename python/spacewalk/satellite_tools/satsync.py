@@ -43,13 +43,14 @@ from uyuni.common import usix
 from uyuni.common import rhnLib
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnLog import initLOG
-from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback, fetchTraceback
 from uyuni.common.checksum import getFileChecksum
 from spacewalk.server import rhnSQL, taskomatic
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnLib import get_package_path
 from uyuni.common import fileutils
+from uyuni.common.context_managers import cfg_component
 
 # __rhn sync/import imports__
 from spacewalk.satellite_tools import xmlWireSource
@@ -78,8 +79,8 @@ from spacewalk.satellite_tools import constants
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.gettext
-initCFG('server.satellite')
-initLOG(CFG.LOG_FILE, CFG.DEBUG)
+with cfg_component('server.satellite') as CFG:
+    initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 _DEFAULT_SYSTEMID_PATH = '/etc/sysconfig/rhn/systemid'
 DEFAULT_ORG = 1
@@ -217,13 +218,14 @@ class Runner:
             raise
         except xmlWireSource.rpclib.xmlrpclib.Fault:
             e = sys.exc_info()[1]
-            if CFG.ISS_PARENT:
-                # we met old satellite who do not know ISS
-                log(-1, ['', messages.sw_iss_not_available % e.faultString ], )
-                sys.exit(26)
-            else:
-                log(-1, ['', messages.syncer_error % e.faultString], )
-                sys.exit(9)
+            with cfg_component('server.satellite') as CFG:
+                if CFG.ISS_PARENT:
+                    # we met old satellite who do not know ISS
+                    log(-1, ['', messages.sw_iss_not_available % e.faultString ], )
+                    sys.exit(26)
+                else:
+                    log(-1, ['', messages.syncer_error % e.faultString], )
+                    sys.exit(9)
 
         except Exception:  # pylint: disable=E0012, W0703
             e = sys.exc_info()[1]
@@ -234,7 +236,8 @@ class Runner:
             log(-1, '*** BASIC INFO:\n %s' % str(sys.exc_info()[:2]))
             sys.exit(10)
 
-        log(1, '   db:  %s/<password>@%s' % (CFG.DB_USER, CFG.DB_NAME))
+        with cfg_component('server.satellite') as CFG:
+            log(1, '   db:  %s/<password>@%s' % (CFG.DB_USER, CFG.DB_NAME))
 
         selected = [action for action in list(actionDict) if actionDict[action]]
         log2(-1, 3, "Action list/commandline toggles: %s" % repr(selected),
@@ -243,10 +246,10 @@ class Runner:
         if OPTIONS.mount_point:
             self._xml_file_dir_error_message = messages.file_dir_error % \
                 OPTIONS.mount_point
-
-        if CFG.DB_BACKEND == 'postgresql':
-            import psycopg2 #pylint: disable=F0401
-            exception = psycopg2.IntegrityError
+        with cfg_component('server.satellite') as CFG:
+            if CFG.DB_BACKEND == 'postgresql':
+                import psycopg2 #pylint: disable=F0401
+                exception = psycopg2.IntegrityError
 
         for _try in range(2):
             try:
@@ -442,8 +445,9 @@ def sendMail(forceEmail=0):
                 'Subject' : _('SUSE Manager Inter Server sync. report from %s') % host_label,
             }
             sndr = "root@%s" % host_label
-            if CFG.default_mail_from:
-                sndr = CFG.default_mail_from
+            with cfg_component('server.satellite') as CFG:
+                if CFG.default_mail_from:
+                    sndr = CFG.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
         else:
             print((_("+++ email requested, but there is nothing to send +++")))
@@ -524,23 +528,24 @@ class Syncer:
         else:
             self.xmlDataServer = xmlWireSource.MetadataWireSource(self.systemid,
                                                                   True, self.xml_dump_version)
-            if CFG.ISS_PARENT:
-                sync_parent = CFG.ISS_PARENT
-                self.systemid = 'N/A'   # systemid is not used in ISS auth process
-                is_iss = 1
-            else:
-                log(1, _(PRODUCT_NAME + ' - live synchronization'))
-                log(-1, _("ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "
-                          "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "
-                          "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."),
-                    stream=sys.stderr).format(PRODUCT_NAME=PRODUCT_NAME)
-                sys.exit(1)
+            with cfg_component('server.satellite') as CFG:
+                if CFG.ISS_PARENT:
+                    sync_parent = CFG.ISS_PARENT
+                    self.systemid = 'N/A'   # systemid is not used in ISS auth process
+                    is_iss = 1
+                else:
+                    log(1, _(PRODUCT_NAME + ' - live synchronization'))
+                    log(-1, _("ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "
+                              "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "
+                              "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."),
+                        stream=sys.stderr).format(PRODUCT_NAME=PRODUCT_NAME)
+                    sys.exit(1)
 
-            url = self.xmlDataServer.schemeAndUrl(sync_parent)
-            log(1, [_(PRODUCT_NAME + ' - live synchronization'),
-                    _('   url: %s') % url,
-                    _('   debug/output level: %s') % CFG.DEBUG])
-            self.xmlDataServer.setServerHandler(isIss=is_iss)
+                url = self.xmlDataServer.schemeAndUrl(sync_parent)
+                log(1, [_(PRODUCT_NAME + ' - live synchronization'),
+                        _('   url: %s') % url,
+                        _('   debug/output level: %s') % CFG.DEBUG])
+                self.xmlDataServer.setServerHandler(isIss=is_iss)
 
             if not self.systemid:
                 # check and fetch systemid (NOTE: systemid kept in memory... may or may not
@@ -600,8 +605,9 @@ class Syncer:
                 raise
             else:
                 msg = _('ERROR: exception (during parse) occurred: ')
-            log2stderr(-1, _('   Encountered some errors with %s data '
-                             + '(see logs (%s) for more information)') % (step_name, CFG.LOG_FILE))
+            with cfg_component('server.satellite') as CFG:
+                log2stderr(-1, _('   Encountered some errors with %s data '
+                                 + '(see logs (%s) for more information)') % (step_name, CFG.LOG_FILE))
             log2(-1, 3, [_('   Encountered some errors with %s data:') % step_name,
                          _('   ------- %s PARSE/IMPORT ERROR -------') % step_name,
                          '   %s' % msg,
@@ -626,15 +632,16 @@ class Syncer:
             pass
 
     def _write_repomd(self, repomd_path, getRepomdFunc, repomdFileStreamFunc, label, timestamp):
-        full_path = os.path.join(CFG.MOUNT_POINT, repomd_path)
-        if not os.path.exists(full_path):
-            if self.mountpoint or CFG.ISS_PARENT:
-                stream = getRepomdFunc(label)
-            else:
-                stream = repomdFileStreamFunc(label)
-            f = FileManip(repomd_path, timestamp, None)
-            f.write_file(stream)
-            self.reporegen.add(label)
+        with cfg_component('server.satellite') as CFG:
+            full_path = os.path.join(CFG.MOUNT_POINT, repomd_path)
+            if not os.path.exists(full_path):
+                if self.mountpoint or CFG.ISS_PARENT:
+                    stream = getRepomdFunc(label)
+                else:
+                    stream = repomdFileStreamFunc(label)
+                f = FileManip(repomd_path, timestamp, None)
+                f.write_file(stream)
+                self.reporegen.add(label)
 
     def _process_comps(self, backend, label, timestamp):
         comps_path = 'rhn/comps/%s/comps-%s.xml' % (label, timestamp)
@@ -1005,8 +1012,9 @@ class Syncer:
 
     @staticmethod
     def _get_rel_package_path(nevra, org_id, source, checksum_type, checksum):
-        return get_package_path(nevra, org_id, prepend=CFG.PREPENDED_DIR,
-                                source=source, checksum_type=checksum_type, checksum=checksum)
+        with cfg_component('server.satellite') as CFG:
+            return get_package_path(nevra, org_id, prepend=CFG.PREPENDED_DIR,
+                                    source=source, checksum_type=checksum_type, checksum=checksum)
 
     @staticmethod
     def _verify_file(path, mtime, size, checksum_type, checksum):
@@ -1021,7 +1029,8 @@ class Syncer:
         """
         if not path:
             return 1
-        abs_path = os.path.join(CFG.MOUNT_POINT, path)
+        with cfg_component('server.satellite') as CFG:
+            abs_path = os.path.join(CFG.MOUNT_POINT, path)
         try:
             stat_info = os.stat(abs_path)
         except OSError:
@@ -1393,12 +1402,13 @@ class Syncer:
             s.set_relative_path(relative_path)
             return s.load()
 
-        if CFG.ISS_PARENT:
-            return self.xmlDataServer.getKickstartFile(kstree_label, relative_path)
-        else:
-            srv = xmlWireSource.RPCGetWireSource(self.systemid, True,
-                                                 self.xml_dump_version)
-            return srv.getKickstartFileStream(channel, kstree_label, relative_path)
+        with cfg_component('server.satellite') as CFG:
+            if CFG.ISS_PARENT:
+                return self.xmlDataServer.getKickstartFile(kstree_label, relative_path)
+            else:
+                srv = xmlWireSource.RPCGetWireSource(self.systemid, True,
+                                                     self.xml_dump_version)
+                return srv.getKickstartFileStream(channel, kstree_label, relative_path)
 
     def _compute_missing_ks_files(self):
         coll = sync_handlers.KickstartableTreesCollection()
@@ -1594,8 +1604,9 @@ class Syncer:
                                 process_function_args=()):
         pb = ProgressBar(prompt=prompt, endTag=_(' - complete'),
                          finalSize=size, finalBarLength=40, stream=sys.stdout)
-        if CFG.DEBUG > 2:
-            pb.redrawYN = 0
+        with cfg_component('server.satellite') as CFG:
+            if CFG.DEBUG > 2:
+                pb.redrawYN = 0
         pb.printAll(1)
 
         ss = SequenceServer(batch, nevermorethan=(nevermorethan or self._batch_size))
@@ -1925,12 +1936,13 @@ class Syncer:
             return (rpmFile, stream)
 
         # Wire stream
-        if CFG.ISS_PARENT:
-            stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
-        else:
-            rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, True,
-                                                       self.xml_dump_version)
-            stream = rpmServer.getPackageStream(channel, nvrea, checksum)
+        with cfg_component('server.satellite') as CFG:
+            if CFG.ISS_PARENT:
+                stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
+            else:
+                rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, True,
+                                                           self.xml_dump_version)
+                stream = rpmServer.getPackageStream(channel, nvrea, checksum)
 
         return (None, stream)
 
@@ -2130,20 +2142,21 @@ def _verifyPkgRepMountPoint():
         for rhnpush).
     """
 
-    if not CFG.MOUNT_POINT:
-        # Incomplete configuration
-        log(-1, _("ERROR: server.mount_point not set in the configuration file"))
-        sys.exit(16)
+    with cfg_component('server.satellite') as CFG:
+        if not CFG.MOUNT_POINT:
+            # Incomplete configuration
+            log(-1, _("ERROR: server.mount_point not set in the configuration file"))
+            sys.exit(16)
 
-    if not os.path.exists(fileutils.cleanupAbsPath(CFG.MOUNT_POINT)):
-        log(-1, _("ERROR: server.mount_point %s do not exist")
-            % fileutils.cleanupAbsPath(CFG.MOUNT_POINT))
-        sys.exit(26)
+        if not os.path.exists(fileutils.cleanupAbsPath(CFG.MOUNT_POINT)):
+            log(-1, _("ERROR: server.mount_point %s do not exist")
+                % fileutils.cleanupAbsPath(CFG.MOUNT_POINT))
+            sys.exit(26)
 
-    if not os.path.exists(fileutils.cleanupAbsPath(CFG.MOUNT_POINT + '/' + CFG.PREPENDED_DIR)):
-        log(-1, _("ERROR: path under server.mount_point (%s)  do not exist")
-            % fileutils.cleanupAbsPath(CFG.MOUNT_POINT + '/' + CFG.PREPENDED_DIR))
-        sys.exit(26)
+        if not os.path.exists(fileutils.cleanupAbsPath(CFG.MOUNT_POINT + '/' + CFG.PREPENDED_DIR)):
+            log(-1, _("ERROR: path under server.mount_point (%s)  do not exist")
+                % fileutils.cleanupAbsPath(CFG.MOUNT_POINT + '/' + CFG.PREPENDED_DIR))
+            sys.exit(26)
 
 
 def _validate_package_org(batch):
@@ -2219,72 +2232,73 @@ def processCommandline():
     "process the commandline, setting the OPTIONS object"
 
     log2disk(-1, _("Commandline: %s") % repr(sys.argv))
-    optionsTable = [
-        Option('--batch-size',          action='store',
-               help=_('DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).'
-                      + '"man mgr-inter-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
-        Option('--ca-cert',             action='store',
-               help=_('alternative SSL CA Cert (fullpath to cert file)')),
-        Option('-c', '--channel',             action='append',
-               help=_('process data for this channel only')),
-        Option('--consider-full',       action='store_true',
-               help=_('disk dump will be considered to be a full export; '
-                      'see "man mgr-inter-sync" for more information.')),
-        Option('--include-custom-channels',       action='store_true',
-               help=_('existing custom channels will also be synced (unless -c is used)')),
-        Option('--debug-level',         action='store',
-               help=_('override debug level set in /etc/rhn/rhn.conf (which is currently set at %s).') % CFG.DEBUG),
-        Option('--dump-version',        action='store',
-               help=_("requested version of XML dump (default: %s)") % constants.PROTOCOL_VERSION),
-        Option('--email',               action='store_true',
-               help=_('e-mail a report of what was synced/imported')),
-        Option('--force-all-errata',    action='store_true',
-               help=_('forcibly process all (not a diff of) patch metadata')),
-        Option('--ignore-proxy',          action='store_true',
-               help=_('Do not use an http proxy under any circumstances.')),
-        Option('--http-proxy',          action='store',
-               help=_('alternative http proxy (hostname:port)')),
-        Option('--http-proxy-username', action='store',
-               help=_('alternative http proxy username')),
-        Option('--http-proxy-password', action='store',
-               help=_('alternative http proxy password')),
-        Option('--iss-parent',          action='store',
-               help=_('parent SUSE Manager to import content from')),
-        Option('-l', '--list-channels', action='store_true',
-               help=_('list all available channels and exit')),
-        Option('--list-error-codes',    action='store_true',
-               help=_("help on all error codes mgr-inter-sync returns")),
-        Option('-m', '--mount-point',   action='store',
-               help=_('source mount point for import - disk update only')),
-        Option('--no-errata',           action='store_true',
-               help=_('do not process patch data')),
-        Option('--no-kickstarts',       action='store_true',
-               help=_('do not process kickstart data (provisioning only)')),
-        Option('--no-packages',         action='store_true',
-               help=_('do not process full package metadata')),
-        Option('--no-rpms',             action='store_true',
-               help=_('do not download, or process any RPMs')),
-        Option('--orgid',               action='store',
-               help=_('org to which the sync imports data. defaults to the admin account')),
-        Option('-p', '--print-configuration', action='store_true',
-               help=_('print the configuration and exit')),
-        Option('-s', '--server',        action='store',
-               help=_('alternative server with which to connect (hostname)')),
-        Option('--step',                action='store',
-               help=_('synchronize to this step (man mgr-inter-sync for more info)')),
-        Option('--sync-to-temp',        action='store_true',
-               help=_('write complete data to tempfile before streaming to remainder of app')),
-        Option('--systemid',            action='store',
-               help=_("DEBUG ONLY: alternative path to digital system id")),
-        Option('--traceback-mail',      action='store',
-               help=_('alternative email address(es) for sync output (--email option)')),
-        Option('--keep-rpms',           action='store_true',
-               help=_('do not remove rpms when importing from local dump')),
-        Option('--master',              action='store',
-               help=_('the fully qualified domain name of the master Satellite. '
-                      'Valid with --mount-point only. '
-                      'Required if you want to import org data and channel permissions.')),
-    ]
+    with cfg_component('server.satellite') as CFG:
+        optionsTable = [
+            Option('--batch-size',          action='store',
+                   help=_('DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).'
+                          + '"man mgr-inter-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
+            Option('--ca-cert',             action='store',
+                   help=_('alternative SSL CA Cert (fullpath to cert file)')),
+            Option('-c', '--channel',             action='append',
+                   help=_('process data for this channel only')),
+            Option('--consider-full',       action='store_true',
+                   help=_('disk dump will be considered to be a full export; '
+                          'see "man mgr-inter-sync" for more information.')),
+            Option('--include-custom-channels',       action='store_true',
+                   help=_('existing custom channels will also be synced (unless -c is used)')),
+            Option('--debug-level',         action='store',
+                   help=_('override debug level set in /etc/rhn/rhn.conf (which is currently set at %s).') % CFG.DEBUG),
+            Option('--dump-version',        action='store',
+                   help=_("requested version of XML dump (default: %s)") % constants.PROTOCOL_VERSION),
+            Option('--email',               action='store_true',
+                   help=_('e-mail a report of what was synced/imported')),
+            Option('--force-all-errata',    action='store_true',
+                   help=_('forcibly process all (not a diff of) patch metadata')),
+            Option('--ignore-proxy',          action='store_true',
+                   help=_('Do not use an http proxy under any circumstances.')),
+            Option('--http-proxy',          action='store',
+                   help=_('alternative http proxy (hostname:port)')),
+            Option('--http-proxy-username', action='store',
+                   help=_('alternative http proxy username')),
+            Option('--http-proxy-password', action='store',
+                   help=_('alternative http proxy password')),
+            Option('--iss-parent',          action='store',
+                   help=_('parent SUSE Manager to import content from')),
+            Option('-l', '--list-channels', action='store_true',
+                   help=_('list all available channels and exit')),
+            Option('--list-error-codes',    action='store_true',
+                   help=_("help on all error codes mgr-inter-sync returns")),
+            Option('-m', '--mount-point',   action='store',
+                   help=_('source mount point for import - disk update only')),
+            Option('--no-errata',           action='store_true',
+                   help=_('do not process patch data')),
+            Option('--no-kickstarts',       action='store_true',
+                   help=_('do not process kickstart data (provisioning only)')),
+            Option('--no-packages',         action='store_true',
+                   help=_('do not process full package metadata')),
+            Option('--no-rpms',             action='store_true',
+                   help=_('do not download, or process any RPMs')),
+            Option('--orgid',               action='store',
+                   help=_('org to which the sync imports data. defaults to the admin account')),
+            Option('-p', '--print-configuration', action='store_true',
+                   help=_('print the configuration and exit')),
+            Option('-s', '--server',        action='store',
+                   help=_('alternative server with which to connect (hostname)')),
+            Option('--step',                action='store',
+                   help=_('synchronize to this step (man mgr-inter-sync for more info)')),
+            Option('--sync-to-temp',        action='store_true',
+                   help=_('write complete data to tempfile before streaming to remainder of app')),
+            Option('--systemid',            action='store',
+                   help=_("DEBUG ONLY: alternative path to digital system id")),
+            Option('--traceback-mail',      action='store',
+                   help=_('alternative email address(es) for sync output (--email option)')),
+            Option('--keep-rpms',           action='store_true',
+                   help=_('do not remove rpms when importing from local dump')),
+            Option('--master',              action='store',
+                   help=_('the fully qualified domain name of the master Satellite. '
+                          'Valid with --mount-point only. '
+                          'Required if you want to import org data and channel permissions.')),
+        ]
     optionParser = OptionParser(option_list=optionsTable)
     global OPTIONS
     OPTIONS, args = optionParser.parse_args()
@@ -2306,24 +2320,24 @@ def processCommandline():
         log(-1, _("ERROR: Can't connect to the database: %s") % e, stream=sys.stderr)
         log(-1, _("ERROR: Check if your database is running."), stream=sys.stderr)
         sys.exit(20)
+    with cfg_component('server.satellite') as CFG:
+        CFG.set("ISS_PARENT", getDbIssParent())
+        CFG.set("TRACEBACK_MAIL", OPTIONS.traceback_mail or CFG.TRACEBACK_MAIL)
+        CFG.set("RHN_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or OPTIONS.server or
+                                                CFG.ISS_PARENT or CFG.RHN_PARENT))
+        CFG.set("CA_CHAIN", OPTIONS.ca_cert or getDbCaChain(CFG.RHN_PARENT) or CFG.CA_CHAIN)
+        if OPTIONS.server and not OPTIONS.iss_parent:
+            # server option on comman line should override ISS parent from config
+            CFG.set("ISS_PARENT", None)
+        else:
+            CFG.set("ISS_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or CFG.ISS_PARENT))
 
-    CFG.set("ISS_PARENT", getDbIssParent())
-    CFG.set("TRACEBACK_MAIL", OPTIONS.traceback_mail or CFG.TRACEBACK_MAIL)
-    CFG.set("RHN_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or OPTIONS.server or
-                                            CFG.ISS_PARENT or CFG.RHN_PARENT))
-    CFG.set("CA_CHAIN", OPTIONS.ca_cert or getDbCaChain(CFG.RHN_PARENT) or CFG.CA_CHAIN)
-    if OPTIONS.server and not OPTIONS.iss_parent:
-        # server option on comman line should override ISS parent from config
-        CFG.set("ISS_PARENT", None)
-    else:
-        CFG.set("ISS_PARENT", idn_ascii_to_puny(OPTIONS.iss_parent or CFG.ISS_PARENT))
+        if not OPTIONS.ignore_proxy:
+            CFG.set("HTTP_PROXY", idn_ascii_to_puny(OPTIONS.http_proxy or CFG.HTTP_PROXY))
+            CFG.set("HTTP_PROXY_USERNAME", OPTIONS.http_proxy_username or CFG.HTTP_PROXY_USERNAME)
+            CFG.set("HTTP_PROXY_PASSWORD", OPTIONS.http_proxy_password or CFG.HTTP_PROXY_PASSWORD)
 
-    if not OPTIONS.ignore_proxy:
-        CFG.set("HTTP_PROXY", idn_ascii_to_puny(OPTIONS.http_proxy or CFG.HTTP_PROXY))
-        CFG.set("HTTP_PROXY_USERNAME", OPTIONS.http_proxy_username or CFG.HTTP_PROXY_USERNAME)
-        CFG.set("HTTP_PROXY_PASSWORD", OPTIONS.http_proxy_password or CFG.HTTP_PROXY_PASSWORD)
-
-    CFG.set("SYNC_TO_TEMP", OPTIONS.sync_to_temp or CFG.SYNC_TO_TEMP)
+        CFG.set("SYNC_TO_TEMP", OPTIONS.sync_to_temp or CFG.SYNC_TO_TEMP)
 
     # check the validity of the debug level
     if OPTIONS.debug_level:
@@ -2347,20 +2361,23 @@ def processCommandline():
             log(-1, msg, 1, 1, sys.stderr)
             sys.exit(21)
         else:
-            CFG.set('DEBUG', debugLevel)
-            initLOG(CFG.LOG_FILE, debugLevel)
+            with cfg_component('server.satellite') as CFG:
+                CFG.set('DEBUG', debugLevel)
+                initLOG(CFG.LOG_FILE, debugLevel)
 
     if OPTIONS.print_configuration:
-        CFG.show()
+        with cfg_component('server.satellite') as CFG:
+            CFG.show()
         sys.exit(0)
 
-    if OPTIONS.master:
-        if not OPTIONS.mount_point:
-            msg = _("ERROR: The --master option is only valid with the --mount-point option")
-            log2stderr(-1, msg, cleanYN=1)
-            sys.exit(28)
-    elif CFG.ISS_PARENT:
-        OPTIONS.master = CFG.ISS_PARENT
+    with cfg_component('server.satellite') as CFG:
+        if OPTIONS.master:
+            if not OPTIONS.mount_point:
+                msg = _("ERROR: The --master option is only valid with the --mount-point option")
+                log2stderr(-1, msg, cleanYN=1)
+                sys.exit(28)
+        elif CFG.ISS_PARENT:
+            OPTIONS.master = CFG.ISS_PARENT
 
     if OPTIONS.orgid:
         # verify if its a valid org

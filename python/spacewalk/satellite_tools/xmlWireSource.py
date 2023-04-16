@@ -25,9 +25,9 @@ from rhn import rpclib
 sys.path.append("/usr/share/rhn")
 from up2date_client import config
 
-from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhnLib
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.context_managers import cfg_component
+from uyuni.common.usix import raise_with_tb
 
 # local imports
 from spacewalk.satellite_tools.syncLib import log, log2, RhnSyncException
@@ -64,7 +64,8 @@ class BaseWireSource:
         """ http[s]://BLAHBLAHBLAH/ACKACK --> http[s]://BLAHBLAHBLAH """
 
         if not url:
-            url = CFG.RHN_PARENT  # the default
+            with cfg_component(component=None) as CFG:
+                url = CFG.RHN_PARENT  # the default
         # just make the url complete.
         hostname = rhnLib.parseUrl(url or '')[1]
         hostname = hostname.split(':')[0]  # just in case
@@ -111,9 +112,10 @@ class BaseWireSource:
         "Instantiates a connection object"
 
         proxy, puser, ppass = get_proxy(url)
-        serverObj = connection.StreamConnection(url, proxy=proxy,
-                                                username=puser, password=ppass,
-                                                xml_dump_version=self.xml_dump_version, timeout=CFG.timeout)
+        with cfg_component(component=None) as CFG:
+            serverObj = connection.StreamConnection(url, proxy=proxy,
+                                                    username=puser, password=ppass,
+                                                    xml_dump_version=self.xml_dump_version, timeout=CFG.timeout)
         BaseWireSource.serverObj = serverObj
         return serverObj
 
@@ -122,7 +124,8 @@ class BaseWireSource:
             return None
 
         # Check certificate
-        caChain = CFG.CA_CHAIN
+        with cfg_component(component=None) as CFG:
+            caChain = CFG.CA_CHAIN
         if caChain:
             # require SSL CA file to be able to authenticate the SSL
             # connections.
@@ -157,14 +160,15 @@ class BaseWireSource:
             func = getattr(server, method)
             try:
                 stream = func(*params)
-                if CFG.SYNC_TO_TEMP:
-                    import tempfile
-                    cached = tempfile.NamedTemporaryFile()
-                    stream.read_to_file(cached)
-                    cached.seek(0)
-                    return cached
-                else:
-                    return stream
+                with cfg_component(component=None) as CFG:
+                    if CFG.SYNC_TO_TEMP:
+                        import tempfile
+                        cached = tempfile.NamedTemporaryFile()
+                        stream.read_to_file(cached)
+                        cached.seek(0)
+                        return cached
+                    else:
+                        return stream
             except rpclib.xmlrpclib.ProtocolError:
                 e = sys.exc_info()[1]
                 p = tuple(['<the systemid>'] + list(params[1:]))
@@ -193,10 +197,11 @@ class BaseWireSource:
         return stream
 
     def setServerHandler(self, isIss=0):
-        if isIss:
-            self.server_handler = CFG.RHN_ISS_METADATA_HANDLER
-        else:
-            self.server_handler = CFG.RHN_METADATA_HANDLER
+        with cfg_component(component=None) as CFG:
+            if isIss:
+                self.server_handler = CFG.RHN_ISS_METADATA_HANDLER
+            else:
+                self.server_handler = CFG.RHN_METADATA_HANDLER
 
 
 class MetadataWireSource(BaseWireSource):
@@ -371,7 +376,8 @@ class AuthWireSource(XMLRPCWireSource):
     """Simply authenticate this systemid as a satellite."""
 
     def checkAuth(self):
-        self.setServer(CFG.RHN_XMLRPC_HANDLER)
+        with cfg_component(component=None) as CFG:
+            self.setServer(CFG.RHN_XMLRPC_HANDLER)
         authYN = None
         log(2, '   +++ SUSE Manager Server synchronization tool checking in.')
         try:
@@ -381,9 +387,10 @@ class AuthWireSource(XMLRPCWireSource):
         if authYN:
             log(2, '   +++ Entitled SUSE Manager Server validated.', stream=sys.stderr)
         elif authYN is None:
-            log(-1, '   --- An error occurred upon authentication of this SUSE Manager Server -- '
-                    'review the pertinent log file (%s) and/or submit a service request.' % CFG.LOG_FILE,
-                stream=sys.stderr)
+            with cfg_component(component=None) as CFG:
+                log(-1, '   --- An error occurred upon authentication of this SUSE Manager Server -- '
+                        'review the pertinent log file (%s) and/or submit a service request.' % CFG.LOG_FILE,
+                    stream=sys.stderr)
             sys.exit(-1)
         elif authYN == 0:
             log(-1, '   --- This server is not entitled.', stream=sys.stderr)
@@ -419,9 +426,10 @@ class RPCGetWireSource(BaseWireSource):
         self._set_login_token(self._login())
         url = self.url + self.handler
         proxy, puser, ppass = get_proxy(url)
-        get_server_obj = connection.GETServer(url, proxy=proxy,
-                                              username=puser, password=ppass,
-                                              headers=self.login_token, timeout=CFG.timeout)
+        with cfg_component(component=None) as CFG:
+            get_server_obj = connection.GETServer(url, proxy=proxy,
+                                                  username=puser, password=ppass,
+                                                  headers=self.login_token, timeout=CFG.timeout)
         # Add SSL trusted cert
         self._set_ssl_trusted_certs(get_server_obj)
         self._set_rpc_server(get_server_obj)
@@ -432,7 +440,8 @@ class RPCGetWireSource(BaseWireSource):
             raise Exception("systemid not set!")
 
         # Set the URL to the one for regular XML-RPC calls
-        self.setServer(CFG.RHN_XMLRPC_HANDLER)
+        with cfg_component(component=None) as CFG:
+            self.setServer(CFG.RHN_XMLRPC_HANDLER)
 
         try:
             login_token = self.getServer().authentication.login(self.systemid)

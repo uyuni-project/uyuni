@@ -23,9 +23,9 @@ from xml.sax import make_parser, SAXParseException, ContentHandler, \
 from uyuni.common import usix
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.importlib import importLib, backendLib
+from uyuni.common.context_managers import cfg_component
 
 RHEL234_REGEX = re.compile("rhel-[^-]*-[aew]s-(4|3|2.1)")
 
@@ -585,11 +585,12 @@ class BaseChecksummedItem(BaseItem):
             for csum in item['checksum_list']:
                 item['checksums'][csum['type']] = csum['value']
             del(item['checksum_list'])
-        for ctype in CFG.CHECKSUM_PRIORITY_LIST:
-            if ctype in item['checksums']:
-                item['checksum_type'] = ctype
-                item['checksum'] = item['checksums'][ctype]
-                break
+        with cfg_component(component=None) as CFG:
+            for ctype in CFG.CHECKSUM_PRIORITY_LIST:
+                if ctype in item['checksums']:
+                    item['checksum_type'] = ctype
+                    item['checksum'] = item['checksums'][ctype]
+                    break
         return item
 addItem(BaseChecksummedItem)
 

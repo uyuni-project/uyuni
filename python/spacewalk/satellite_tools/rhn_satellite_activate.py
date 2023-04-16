@@ -32,7 +32,7 @@ except ImportError:
 # common, server imports
 from uyuni.common import fileutils
 from spacewalk.common import rhnLog
-from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnServer import satellite_cert
 # Try to import cdn activation module if available
@@ -47,6 +47,7 @@ except ImportError:
     ManifestValidationError = None
     CdnMappingsLoadError = None
 from spacewalk.satellite_tools.syncLib import log, log2disk, log2
+from uyuni.common.context_managers import cfg_component
 
 
 DEFAULT_RHSM_MANIFEST_LOCATION = '/etc/sysconfig/rhn/rhsm-manifest.zip'
@@ -301,7 +302,8 @@ def processCommandline():
     initCFG('server.satellite')
     if options.verbose is None:
         options.verbose = 0
-    CFG.set('DEBUG', options.verbose)
+    with cfg_component('server.satellite') as CFG:
+        CFG.set('DEBUG', options.verbose)
     rhnLog.initLOG(LOG_PATH, options.verbose)
     log2disk(0, "Command: %s" % str(sys.argv))
 
@@ -319,17 +321,17 @@ def processCommandline():
 
     if options.manifest_refresh:
         options.manifest_download = 1
+    with cfg_component('server.satellite') as CFG:
+        if CFG.DISCONNECTED and not options.disconnected:
+            msg = """Satellite server has been setup to run in disconnected mode.
+           Either correct server configuration in /etc/rhn/rhn.conf
+           or use --disconnected to activate it locally."""
+            writeError(msg)
+            sys.exit(1)
 
-    if CFG.DISCONNECTED and not options.disconnected:
-        msg = """Satellite server has been setup to run in disconnected mode.
-       Either correct server configuration in /etc/rhn/rhn.conf
-       or use --disconnected to activate it locally."""
-        writeError(msg)
-        sys.exit(1)
-
-    options.http_proxy = idn_ascii_to_puny(CFG.HTTP_PROXY)
-    options.http_proxy_username = CFG.HTTP_PROXY_USERNAME
-    options.http_proxy_password = CFG.HTTP_PROXY_PASSWORD
+        options.http_proxy = idn_ascii_to_puny(CFG.HTTP_PROXY)
+        options.http_proxy_username = CFG.HTTP_PROXY_USERNAME
+        options.http_proxy_password = CFG.HTTP_PROXY_PASSWORD
     log(1, 'HTTP_PROXY: %s' % options.http_proxy)
     log(1, 'HTTP_PROXY_USERNAME: %s' % options.http_proxy_username)
     log(1, 'HTTP_PROXY_PASSWORD: <password>')

@@ -44,9 +44,9 @@ def systemExit(code, msg=None):
 try:
     from rhn import rhnLockfile
     from spacewalk.common import rhnLog
-    from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.satellite_tools import reposync
     from spacewalk.satellite_tools.syncLib import log, log2disk
+    from uyuni.common.context_managers import cfg_component
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
@@ -134,9 +134,9 @@ def main():
     if log_level is None:
         log_level = 0
 
-    initCFG('server.satellite')
-    CFG.set('DEBUG', log_level)
-    CFG.set("TRACEBACK_MAIL", options.traceback_mail or CFG.TRACEBACK_MAIL)
+    with cfg_component('server.satellite') as CFG:
+        CFG.set('DEBUG', log_level)
+        CFG.set("TRACEBACK_MAIL", options.traceback_mail or CFG.TRACEBACK_MAIL)
     if options.email:
         initEMAIL_LOG()
     rhnLog.initLOG(log_path, log_level)
