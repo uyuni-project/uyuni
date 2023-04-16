@@ -1,3 +1,4 @@
+- fix NPE in cobbler system sync when server has no creator set
 - remove channels from client after transfer to a different
   organization (bsc#1209220)
 - Fix RHEL9 / SLL9 product discovery (bsc#1209993)
