@@ -27,11 +27,12 @@ except ImportError:
     from io import StringIO
 from rhn.connections import idn_puny_to_unicode
 
-from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 from spacewalk.common.rhnLog import log_error
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnMail
 from spacewalk.common import rhnFlags
+from uyuni.common.context_managers import cfg_component
 
 # Get the hostname for traceback use
 hostname = socket.gethostname()
@@ -117,7 +118,8 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
     if mail:
         # safeguard
         if QUIET_MAIL is None:
-            QUIET_MAIL = CFG.QUIET_MAIL
+            with cfg_component(component=None) as CFG:
+                QUIET_MAIL = CFG.QUIET_MAIL
 
         if QUIET_MAIL < 0:
             QUIET_MAIL = 0
@@ -160,7 +162,8 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
         print_env(exc)
         # and send the mail
         # build the headers
-        to = CFG.TRACEBACK_MAIL
+        with cfg_component(component=None) as CFG:
+            to = CFG.TRACEBACK_MAIL
         from_ = to
         if isinstance(to, type([])):
             from_ = to[0].strip()
