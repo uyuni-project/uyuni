@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.action;
 
+import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -115,13 +122,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -1720,7 +1720,7 @@ public class ActionManager extends BaseManager {
             kad.setVirtBridge(pcmd.getVirtBridge());
         }
 
-        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(
+        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(pcmd.getUser(),
                 pcmd.getServer(), cProfile.getName(), pcmd.getGuestName(),
                 pcmd.getKsdata());
         kad.setCobblerSystemName(vcmd.getCobblerSystemRecordName());

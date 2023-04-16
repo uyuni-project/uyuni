@@ -143,14 +143,16 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     /**
      * Constructor to be used for a system outside tthe context
      * of actually kickstarting it to a specific profile.
-     * @param serverIn profile we want to create in cobbler
+     *
+     * @param userIn             who is requesting the sync
+     * @param serverIn           profile we want to create in cobbler
      * @param cobblerProfileName the name of the cobbler profile
-     * to associate with system
-     * @param ksDataIn the kickstart data to associate the system with
+     *                           to associate with system
+     * @param ksDataIn           the kickstart data to associate the system with
      */
-    public CobblerSystemCreateCommand(Server serverIn, String cobblerProfileName,
-            KickstartData ksDataIn) {
-        super(serverIn.getCreator());
+    public CobblerSystemCreateCommand(User userIn, Server serverIn, String cobblerProfileName,
+                                      KickstartData ksDataIn) {
+        super(userIn);
         this.server = serverIn;
         this.serverName = serverIn.getName();
         this.orgId = serverIn.getOrgId();

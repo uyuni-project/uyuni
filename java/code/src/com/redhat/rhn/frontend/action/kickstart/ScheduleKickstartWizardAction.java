@@ -747,8 +747,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             return mapping.findForward("fifth");
         }
 
-        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(server,
-                profile.getName(), data);
+        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(user, server, profile.getName(), data);
         cmd.store();
         log.debug("cobbler system record created.");
         String[] args = new String[2];
