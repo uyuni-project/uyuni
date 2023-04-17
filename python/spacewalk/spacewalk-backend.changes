@@ -1,4 +1,4 @@
-- Readjusted the code to fix spacewalk-repo-sync --help command
+- Make "spacewalk-repo-sync --help" command to work if reposync is running.
 - Enhance mirrorlist detection for dnf reposync plugin.
 - Add httpd user and group to rhn.conf.
 - Add package details to reposync error logging
