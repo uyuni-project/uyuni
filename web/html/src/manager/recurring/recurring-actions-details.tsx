@@ -165,7 +165,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               </tr>
               <tr>
                 <td>{t("Target name")}:</td>
-                <td>{targetNameLink(data.targetName, data.targetType, data.targetId)}</td>
+                <td>{targetNameLink(data.targetName, data.targetType, data.targetId, data.targetAccessible)}</td>
               </tr>
               <tr>
                 <td>{t("Created by")}:</td>
