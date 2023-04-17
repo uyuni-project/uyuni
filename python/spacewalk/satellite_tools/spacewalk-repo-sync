@@ -125,7 +125,6 @@ def main():
     (options, args) = parser.parse_args()
 
     global LOCK
-    
     try:
         LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
     except rhnLockfile.LockfileLockedException:
