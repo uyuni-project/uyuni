@@ -2558,8 +2558,9 @@ public class ChannelManager extends BaseManager {
         return Opt.fold(baseProductId,
                 () -> {
                     log.info("Server has no base product installed");
-                    if (s.getBaseChannel() != null) {
-                        // but we should return at least the assigned one
+                    if (s.getBaseChannel() != null &&
+                            !s.getBaseChannel().getSuseProductChannels().isEmpty()) {
+                        // but we should return at least the assigned one if it is a SUSE Channel
                         return of(new DataResult(List.of(new EssentialChannelDto(s.getBaseChannel()))));
                     }
                     return empty();
