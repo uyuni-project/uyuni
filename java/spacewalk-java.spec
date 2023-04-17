@@ -143,6 +143,7 @@ BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
+BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
 BuildRequires:  (glassfish-activation-api or jakarta-activation)
 BuildRequires:  (glassfish-jaxb-api or jaxb-api)
