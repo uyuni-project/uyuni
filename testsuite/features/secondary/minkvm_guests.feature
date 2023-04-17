@@ -423,4 +423,4 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then the local logs for Cobbler should not contain errors
 
   Scenario: Cleanup Cobbler after the feature has run
-    When I cleanup Cobbler files
+    When I cleanup Cobbler files and restart apache and cobblerd services

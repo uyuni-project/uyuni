@@ -226,7 +226,7 @@ When(/^I cleanup after Cobbler buildiso$/) do
   raise "Error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
-When(/^I cleanup Cobbler files$/) do
+When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
   cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && ' \
                     'rm -r /srv/tftpboot 2> /dev/null && ' \
                     'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
