@@ -13,6 +13,7 @@ Feature: Recurring Actions
     When I click on "Create"
     Then I should see a "Schedule Name" text
     When I enter "schedule_name" as "scheduleName"
+    And I select "Highstate" from "actionTypeDescription"
     And I check radio button "schedule-daily"
     And I pick "00:00" as time from "time-daily_time"
     And I click on the "disabled" toggler
@@ -59,6 +60,7 @@ Feature: Recurring Actions
     When I click on "Create"
     Then I should see a "Schedule Name" text
     When I enter "schedule_name" as "scheduleName"
+    And I select "Highstate" from "actionTypeDescription"
     And I check radio button "schedule-daily"
     And I pick "00:00" as time from "time-daily_time"
     And I click on the "disabled" toggler
@@ -99,6 +101,7 @@ Feature: Recurring Actions
     When I click on "Create"
     Then I should see a "Schedule Name" text
     When I enter "schedule_name" as "scheduleName"
+    And I select "Highstate" from "actionTypeDescription"
     And I check radio button "schedule-daily"
     And I pick "00:00" as time from "time-daily_time"
     And I click on the "disabled" toggler
@@ -146,6 +149,7 @@ Feature: Recurring Actions
     When I click on "Create"
     Then I should see a "Schedule Name" text
     When I enter "schedule_name" as "scheduleName"
+    And I select "Highstate" from "actionTypeDescription"
     And I check radio button "schedule-daily"
     And I pick "00:00" as time from "time-daily_time"
     And I click on the "disabled" toggler
