@@ -98,6 +98,9 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
     /** Action type description */
     private String actionTypeDescription;
 
+    /** User has permission to access the target */
+    private boolean targetAccessible = true;
+
     /**
      * @return recurring action id
      */
@@ -262,6 +265,22 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
      */
     public void setDetails(RecurringActionDetailsDto detailsIn) {
         details = detailsIn;
+    }
+
+
+    /**
+     * @return whether the user has permission to access the target of a recurring action
+     */
+    public boolean isTargetAccessible() {
+        return targetAccessible;
+    }
+
+    /**
+     * Sets if the user has permission to access the target of the recurring action
+     * @param targetAccessibleIn the boolean indicating if the target is accessible
+    */
+    public void setTargetAccessible(boolean targetAccessibleIn) {
+        targetAccessible = targetAccessibleIn;
     }
 
     private static String getEntityName(RecurringAction action) {

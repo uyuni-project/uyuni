@@ -244,7 +244,23 @@ public class RecurringActionManager extends BaseManager {
      */
     public static DataResult<RecurringActionScheduleJson> listAllRecurringActions(
             User user, PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
-        return RecurringActionFactory.listAllRecurringActions(user, pc, parser);
+
+        DataResult<RecurringActionScheduleJson> allActions =
+                RecurringActionFactory.listAllRecurringActions(user, pc, parser);
+
+        if (user.hasRole(RoleFactory.ORG_ADMIN)) {
+            return allActions;
+        }
+
+        // if the user is not org admin, check if she can access the target.
+        allActions.forEach(a -> {
+            Optional<RecurringAction> action = find(a.getRecurringActionId());
+            a.setTargetAccessible(
+                action.isPresent() && action.get().canAccess(user)
+            );
+        });
+
+        return allActions;
     }
 
     /**

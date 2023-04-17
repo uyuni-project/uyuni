@@ -10,8 +10,8 @@ const targetTypeToString = (targetType?: string) => {
   return null;
 };
 
-const targetNameLink = (targetName?: string, targetType?: string, targetId?: number, isOrgAdmin?: boolean) => {
-  if (!isOrgAdmin) {
+const targetNameLink = (targetName?: string, targetType?: string, targetId?: number, targetAccessible?: boolean) => {
+  if (!targetAccessible) {
     return targetName;
   }
   switch (targetType) {
