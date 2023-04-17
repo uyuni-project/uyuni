@@ -1823,7 +1823,7 @@ public class SaltUtils {
             installedProduct.setVersion(product.getVersion());
             installedProduct.setRelease(product.getRelease());
             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(true);
+            installedProduct.setBaseproduct(product.isBase());
 
             return installedProduct;
         }).collect(Collectors.toSet());
