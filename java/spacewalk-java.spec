@@ -90,6 +90,7 @@ BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
+BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
@@ -151,11 +152,9 @@ BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
-BuildRequires:  classmate
 BuildRequires:  libxml2-tools
 %endif
 %if 0%{?rhel}
-BuildRequires:  glassfish-jaxb-core
 BuildRequires:  libxml2-devel
 %endif
 
@@ -177,9 +176,12 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
+Requires:       glassfish-activation-api
+Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       google-gson >= 2.2.4
@@ -245,15 +247,7 @@ Requires(pre):  salt
 Requires(pre):  tomcat >= 7
 Requires(pre):  uyuni-base-server
 
-%if 0%{?suse_version}
-Requires:       classmate
-Requires:       glassfish-activation-api
-Requires:       glassfish-jaxb-api
-%endif
 %if 0%{?rhel}
-Requires:       glassfish-jaxb-core
-Requires:       jakarta-activation
-Requires:       jaxb-api
 Recommends:     rng-tools
 %endif
 
@@ -355,6 +349,7 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
@@ -381,9 +376,6 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
-%if 0%{?suse_version}
-Requires:       classmate
-%endif
 
 Conflicts:      quartz < 2.0
 

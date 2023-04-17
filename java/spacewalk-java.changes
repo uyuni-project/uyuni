@@ -1,3 +1,4 @@
+- Simplify Java package dependencies.
 - Recurring custom states
 - Update Cobbler profile when a new image is deployed
 - Add mapping of image URLs for containerized proxy
@@ -40,7 +41,6 @@ Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
   * Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
   * Allow single-value lists in query strings in HTTP API (bsc#1207297)
   * Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
-
 
 -------------------------------------------------------------------
 Thu Apr 13 15:22:40 CEST 2023 - marina.latini@suse.com
