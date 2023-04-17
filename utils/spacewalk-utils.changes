@@ -1,3 +1,4 @@
+- change GPG Key URL for openSUSE Leap to local file URL
 - Avoid conflicting names for openSUSE channels
 - Add openEuler 22.03 repositories
 
