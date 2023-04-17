@@ -404,7 +404,7 @@ public abstract class CobblerObject {
         // Split the string on any whitespace character, not enclosed by quotes
         String[] options = kernelOpts.split("\\s(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
         for (String option : options) {
-            String[] split = option.replaceAll("[\",']", "").split("=", 2);
+            String[] split = option.replaceAll("[\"']", "").split("=", 2);
             if (split.length == 1) {
                 toRet.put(split[0], new ArrayList<String>());
             }
