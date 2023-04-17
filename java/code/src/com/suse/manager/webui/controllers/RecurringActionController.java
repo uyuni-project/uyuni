@@ -145,7 +145,7 @@ public class RecurringActionController {
      */
     public static String getDetails(Request request, Response response, User user) {
         long id = Long.parseLong(request.params("id"));
-        Optional<RecurringAction> action = RecurringActionManager.find(id, user);
+        Optional<RecurringAction> action = RecurringActionManager.find(id);
         if (action.isEmpty()) {
             return json(response, HttpStatus.SC_NOT_FOUND);
         }
@@ -198,7 +198,7 @@ public class RecurringActionController {
         Set<StateConfigJson> result = new HashSet<>(); // use a set to avoid duplicates
         if (request.queryParams("id") != null) {
             Long id = Long.parseLong(request.queryParams("id"));
-            Optional<RecurringAction> action = RecurringActionManager.find(id, user);
+            Optional<RecurringAction> action = RecurringActionManager.find(id);
             if (action.isEmpty()) {
                 return json(response, HttpStatus.SC_NOT_FOUND);
             }

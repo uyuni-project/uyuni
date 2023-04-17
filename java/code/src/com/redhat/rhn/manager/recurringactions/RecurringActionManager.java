@@ -250,15 +250,10 @@ public class RecurringActionManager extends BaseManager {
      * Find a recurring action with given id.
      *
      * @param id - id of the recurring action
-     * @param user - the user
      * @return optional of matching recurring action
      */
-    public static Optional<RecurringAction> find(Long id, User user) {
-        Optional<RecurringAction> action = RecurringActionFactory.lookupById(id);
-        if (action.isPresent() && action.get().canAccess(user)) {
-            return action;
-        }
-        return Optional.empty();
+    public static Optional<RecurringAction> find(Long id) {
+        return RecurringActionFactory.lookupById(id);
     }
 
     /**
