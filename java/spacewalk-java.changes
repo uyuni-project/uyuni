@@ -1,3 +1,4 @@
+- Add mapping of image URLs for containerized proxy
 - Fix image size entries in xml-rpc
 - kernel options: only add quotes if there is a space in the value (bsc#1209926)
 - fix displaying system channels when no base product is installed
