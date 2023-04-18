@@ -81,6 +81,22 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private Set<SUSEProductSCCRepository> repositories = new HashSet<>();
 
     /**
+     * Default constructor.
+     */
+    public SUSEProduct() {
+        // Just create an empty object
+    }
+
+    /**
+     * Create a product with the given name. Convenience constructor for unit testing.
+     *
+     * @param nameIn the product name
+     */
+    public SUSEProduct(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
      * Gets the id.
      * @return the id
      */
