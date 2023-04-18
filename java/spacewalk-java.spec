@@ -243,7 +243,7 @@ Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
-Requires:       libtcnative-1-0
+Requires:       tomcat-native
 Requires(pre):  salt
 Requires(pre):  tomcat >= 7
 Requires(pre):  uyuni-base-server
