@@ -605,7 +605,7 @@ elif [ "$INSTALLER" == zypper ]; then
             call_tukit "zypper --non-interactive update {PKG_NAME_VENV_UPDATE} ||:"
         fi
     else
-        if [ -z "$SNAPSHOT_ID"]; then
+        if [ -z "$SNAPSHOT_ID" ]; then
             zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
         else
             call_tukit "zypper --non-interactive update {PKG_NAME_UPDATE} $RHNLIB_PKG ||:"
@@ -896,12 +896,14 @@ if [ -n "$SNAPSHOT_ID" ]; then
 fi
 
 MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
+MINION_PKI_CONF="${{SNAPSHOT_PREFIX}}/etc/salt/pki"
 MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/salt/minion.d"
 SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
     MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion_id"
+    MINION_PKI_CONF="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/pki"
     MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
     SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
@@ -950,6 +952,11 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
+
+# Remove old minion keys so reregistration do different master works
+if [ -d "$MINION_PKI_CONF" ]; then
+    rm -r "$MINION_PKI_CONF"
+fi
 
 if [ -n "$SNAPSHOT_ID" ]; then
     cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
