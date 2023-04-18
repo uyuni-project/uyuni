@@ -101,6 +101,6 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
 
         Optional<PaygDimensionResult> monitoringSystems = result.getResultForDimension(BillingDimension.MONITORING);
         assertTrue(monitoringSystems.isPresent());
-        managedSystems.ifPresent(dimensionResult -> assertEquals(0L, dimensionResult.getCount()));
+        monitoringSystems.ifPresent(dimensionResult -> assertEquals(0L, dimensionResult.getCount()));
     }
 }
