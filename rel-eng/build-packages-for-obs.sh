@@ -92,17 +92,17 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     if [ -d "$PKG_DIR" ]; then
       cp -r "$PKG_DIR" "$SRPM_DIR/"
       if [ -f "${PKG_DIR}/Chart.yaml" ]; then
-        pushd "${SRPM_DIR}/${CONTAINER_NAME}"
+        pushd "${SRPM_DIR}/${CONTAINER_NAME}" >/dev/null
         CHART_FILES="values.yaml values.schema.json charts crds templates LICENSE README.md"
-        TO_INCLUDE=""
+        TO_INCLUDE=()
         for F in ${CHART_FILES}; do
           if [ -e "${F}" ]; then
-              TO_INCLUDE="${TO_INCLUDE} ${F}"
+              TO_INCLUDE+=("${F}")
           fi
         done
-        tar cf "${SRPM_DIR}/${CONTAINER_NAME}/${CONTAINER_NAME}.tar" "${TO_INCLUDE}"
-        rm -r "${TO_INCLUDE}"
-        popd
+        tar cf "${SRPM_DIR}/${CONTAINER_NAME}/${CONTAINER_NAME}.tar" "${TO_INCLUDE[@]}"
+        rm -r "${TO_INCLUDE[@]}"
+        popd >/dev/null
       fi
       SUCCEED_CNT=$(($SUCCEED_CNT+1))
     else
