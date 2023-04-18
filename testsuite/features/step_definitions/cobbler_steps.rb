@@ -259,11 +259,11 @@ When(/^I start local monitoring of Cobbler$/) do
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
     handler_class = "\"\n[handler_#{handler_name}]\n" \
-                    "class=FileHandler\n" \
-                    "level=DEBUG\n" \
-                    "formatter=#{formatter_name}\n" \
-                    "args=('#{cobbler_log_file}', 'a')\n\n" \
-                    "[formatter_#{formatter_name}]\n"
+                  "class=FileHandler\n" \
+                  "level=DEBUG\n" \
+                  "formatter=#{formatter_name}\n" \
+                  "args=('#{cobbler_log_file}', 'a')\n\n" \
+                  "[formatter_#{formatter_name}]\n"
     if $product == 'Uyuni'
       step %(I install package "python3-python-json-logger" on this "server")
       handler_class += "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
