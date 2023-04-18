@@ -20,6 +20,7 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --rm \
     --sdnotify=conmon \
+    --cap-add NET_RAW \
     -d \
     --replace \
     --tmpfs /run \
@@ -65,7 +66,8 @@ ExecStart=/usr/bin/podman run \
     --env-host \
     --hostname ${UYUNI_FQDN} \
     $EXTRA_POD_ARGS \
-    --name uyuni-server ${NAMESPACE}/server:${TAG}
+    --name uyuni-server ${NAMESPACE}/server:${TAG} \
+    $EXTRA_CMD
 ExecStop=/usr/bin/podman stop \
     --ignore -t 10 \
     --cidfile=%t/%n.ctr-id

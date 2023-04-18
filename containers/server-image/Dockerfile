@@ -16,6 +16,9 @@ COPY uyuni-setup.service /usr/lib/systemd/system/
 
 # Main packages
 COPY remove_unused.sh .
+COPY setup.sh .
+RUN chmod +x /setup.sh
+
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # TODO Remove vi
 RUN zypper ref
