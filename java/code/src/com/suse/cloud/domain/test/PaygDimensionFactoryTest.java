@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 
 public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
 
@@ -53,10 +54,12 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(reloaded.isSuccess());
         assertEquals(1, reloaded.getDimensionResults().size());
 
-        PaygDimensionResult dimensionResult = reloaded.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
-        assertNotNull(dimensionResult);
-        assertEquals(reloaded.getId(), dimensionResult.getComputationId());
-        assertEquals(4L, dimensionResult.getCount());
+        Optional<PaygDimensionResult> managedSystems = reloaded.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
+        assertTrue(managedSystems.isPresent());
+        managedSystems.ifPresent(dimensionResult -> {
+            assertEquals(reloaded.getId(), dimensionResult.getComputationId());
+            assertEquals(4L, dimensionResult.getCount());
+        });
     }
 
     @Test
@@ -80,15 +83,16 @@ public class PaygDimensionFactoryTest extends BaseTestCaseWithUser {
         result3.setTimestamp(Date.from(Instant.now()));
         factory.save(result3);
 
-
         PaygDimensionComputation latest = factory.getLatestSuccessfulComputation();
         assertNotNull(latest);
         assertTrue(latest.isSuccess());
         assertEquals(1, latest.getDimensionResults().size());
 
-        PaygDimensionResult dimensionResult = latest.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
-        assertNotNull(dimensionResult);
-        assertEquals(latest.getId(), dimensionResult.getComputationId());
-        assertEquals(10L, dimensionResult.getCount());
+        Optional<PaygDimensionResult> managedSystems = latest.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
+        assertTrue(managedSystems.isPresent());
+        managedSystems.ifPresent(dimensionResult -> {
+            assertEquals(latest.getId(), dimensionResult.getComputationId());
+            assertEquals(10L, dimensionResult.getCount());
+        });
     }
 }
