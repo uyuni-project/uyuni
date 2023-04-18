@@ -427,7 +427,7 @@ public class MenuTree {
             // External Links
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
-                    .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
+                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager")
                     .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
