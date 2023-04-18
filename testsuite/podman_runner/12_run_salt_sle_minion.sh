@@ -9,5 +9,5 @@ ${CR} run --privileged --rm -d --network uyuni-network-1 -v /tmp/opensuse_produc
 ${CR} exec sle_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
 ${CR} exec sle_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
 
-${CR} exec sle_minion bash -c "echo DEBUG;cat /sys/class/dmi/id/product_uuid;dmidecode | grep 4c4c4544-0037-3710-8047-c7c04f353632;echo FI_DEBUG"
+${CR} exec sle_minion bash -c "echo DEBUG;cat /sys/class/dmi/id/product_uuid;echo AAA;dmidecode | grep opensuseminionproductuuid ;echo FI_DEBUG"
 
