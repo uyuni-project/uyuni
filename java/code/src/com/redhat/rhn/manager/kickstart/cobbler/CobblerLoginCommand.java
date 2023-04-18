@@ -56,7 +56,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We had an error trying to login.", e);
         }
-        log.debug("token received from cobbler: " + retval);
+        log.debug("token received from cobbler");
         return retval;
     }
 
@@ -90,7 +90,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We errored out trying to check the token.", e);
         }
-        log.debug("token received from cobbler: " + retval);
+        log.debug("token received from cobbler");
 
         return retval.booleanValue();
     }
