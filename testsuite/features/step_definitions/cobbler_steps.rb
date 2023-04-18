@@ -258,26 +258,20 @@ When(/^I start local monitoring of Cobbler$/) do
   if !code.zero?
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
+    handler_class = "\"\n[handler_#{handler_name}]\n" \
+                    "class=FileHandler\n" \
+                    "level=DEBUG\n" \
+                    "formatter=#{formatter_name}\n" \
+                    "args=('#{cobbler_log_file}', 'a')\n\n" \
+                    "[formatter_#{formatter_name}]\n"
     if $product == 'Uyuni'
       step %(I install package "python3-python-json-logger" on this "server")
-      handler_class = "\"\n[handler_#{handler_name}]\n" \
-                    "class=FileHandler\n" \
-                    "level=DEBUG\n" \
-                    "formatter=#{formatter_name}\n" \
-                    "args=('#{cobbler_log_file}', 'a')\n\n" \
-                    "[formatter_#{formatter_name}]\n" \
-                    "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
-                    "class = pythonjsonlogger.jsonlogger.JsonFormatter\n\""
+      handler_class += "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
+                      "class = pythonjsonlogger.jsonlogger.JsonFormatter\n\""
     else
-      handler_class = "\"\n[handler_#{handler_name}]\n" \
-                    "class=FileHandler\n" \
-                    "level=DEBUG\n" \
-                    "formatter=#{formatter_name}\n" \
-                    "args=('#{cobbler_log_file}', 'a')\n\n" \
-                    "[formatter_#{formatter_name}]\n" \
-                    "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
-                    "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
-                    "\\''message\\'': \\''%(message)s\\''}\n\""
+      handler_class += "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
+                      "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
+                      "\\''message\\'': \\''%(message)s\\''}\n\""
     end
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
               "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
