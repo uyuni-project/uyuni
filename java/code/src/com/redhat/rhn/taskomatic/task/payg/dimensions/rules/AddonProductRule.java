@@ -16,7 +16,6 @@
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
@@ -54,16 +53,11 @@ public class AddonProductRule implements DimensionRule {
 
     @Override
     public boolean test(Server server) {
-        SUSEProductSet suseProductSet = server.getInstalledProductSet().orElse(null);
-        if (suseProductSet == null) {
-            return false;
-        }
-
-        Set<String> serverAddonProducts = suseProductSet.getAddonProducts()
-                                                        .stream()
-                                                        .map(SUSEProduct::getName)
-                                                        .collect(Collectors.toSet());
-
+        Set<String> serverAddonProducts = server.getInstalledProductSet()
+                                                .stream()
+                                                .flatMap(suseProductSet -> suseProductSet.getAddonProducts().stream())
+                                                .map(SUSEProduct::getName)
+                                                .collect(Collectors.toSet());
         switch (requirementType) {
             case ANY:
                 return addonProducts.stream().anyMatch(e -> serverAddonProducts.contains(e));
