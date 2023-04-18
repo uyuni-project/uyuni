@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -148,11 +149,10 @@ public class PaygDimensionComputation {
      * @param dimension the dimension to retrieve
      * @return the result if present or null
      */
-    public PaygDimensionResult getResultForDimension(BillingDimension dimension) {
+    public Optional<PaygDimensionResult> getResultForDimension(BillingDimension dimension) {
         return dimensionResults.stream()
                                .filter(result -> dimension.equals(result.getDimension()))
-                               .findFirst()
-                               .orElse(null);
+                               .findFirst();
     }
 
     /**
