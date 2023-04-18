@@ -2,6 +2,7 @@
 
 export UYUNI_PROJECT=uyuni-project
 export UYUNI_VERSION=master
+export CR=docker
 
 set -x
 set -e

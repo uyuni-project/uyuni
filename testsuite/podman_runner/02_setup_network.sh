@@ -1,4 +1,5 @@
 #!/bin/bash
 set -ex
-podman network create uyuni-network-1
+export CR=docker
+${CR} network create uyuni-network-1
 

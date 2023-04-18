@@ -1,4 +1,5 @@
 #!/bin/bash
 set -xe
-podman exec controller-test bash -c "cd /testsuite && rake utils:split_secondary_p[5]"
+export CR=docker
+${CR} exec controller-test bash -c "cd /testsuite && rake utils:split_secondary_p[5]"
 
