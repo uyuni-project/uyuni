@@ -18,7 +18,7 @@
 - Fix possible "NullPointerException" issues when running cobbler-sync-bunch
 - Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
 - Set jasper development mode to false (bsc#1206191)
-- Fixed select all for ptf packages list
+- Fixed select all for ptf packages list (bsc#1209143)
 - Added SLES 12 support for ptf removal
 - Fixed issue with checking ptf repositories on cloned channels
 - Add support to add optional channels via webUI
