@@ -56,6 +56,8 @@ public class RecurringActionFactory extends HibernateFactory {
      * @return list of minion recurring actions
      */
     public static List<RecurringAction> listMinionRecurringActions(Server minion) {
+        // HQL 'IN' clause doesn't like empty lists
+        var groups = minion.getGroups().isEmpty() ? null : minion.getGroups();
         return getSession()
                 .createQuery("SELECT action FROM RecurringAction action " +
                        "WHERE action.minion = :minion " +
@@ -64,7 +66,7 @@ public class RecurringActionFactory extends HibernateFactory {
                        "ORDER BY action.id DESC",
                        RecurringAction.class)
                .setParameter("minion", minion)
-               .setParameter("groups", minion.getGroups())
+               .setParameter("groups", groups)
                .setParameter("org", minion.getOrg())
                .list();
     }
