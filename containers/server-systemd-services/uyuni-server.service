@@ -45,7 +45,6 @@ ExecStart=/usr/bin/podman run \
     -v srv-formulametadata:/srv/formula_metadata \
     -v srv-pillar:/srv/pillar \
     -v srv-susemanager:/srv/susemanager \
-    -v srv-susemanager-salt:/srv/susemanager/salt \
     -v srv-spacewalk:/srv/spacewalk \
     -v etc-rhn:/etc/rhn \
     -v etc-systemd:/etc/systemd/system/multi-user.target.wants \
