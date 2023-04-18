@@ -299,12 +299,8 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   return_code = file_extract($server, cobbler_log_file, local_file)
   raise 'File extraction failed' unless return_code.zero?
 
-  file_data =
-    if $product == 'Uyuni'
-      File.read(local_file).gsub!("\n", ',').chop
-    else
-      File.read(local_file).gsub!("\n", ',').chop.gsub('"', " ' ").gsub("\\''", '"')
-    end
+  file_data = File.read(local_file).gsub!("\n", ',').chop
+  file_data = file_data.gsub('"', " ' ").gsub("\\''", '"') unless $product == 'Uyuni'
   file_data = "[#{file_data}]"
   data_hash = JSON.parse(file_data)
   output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
