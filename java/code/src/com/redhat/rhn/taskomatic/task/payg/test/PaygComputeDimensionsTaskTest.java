@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.quartz.JobExecutionContext;
 
 import java.util.Date;
+import java.util.Optional;
 
 public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
 
@@ -94,12 +95,12 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         assertTrue(result.isSuccess());
         assertEquals(2, result.getDimensionResults().size());
 
-        PaygDimensionResult enrolledSystems = result.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
-        assertNotNull(enrolledSystems);
-        assertEquals(2, enrolledSystems.getCount());
+        Optional<PaygDimensionResult> managedSystems = result.getResultForDimension(BillingDimension.MANAGED_SYSTEMS);
+        assertTrue(managedSystems.isPresent());
+        managedSystems.ifPresent(dimensionResult -> assertEquals(2L, dimensionResult.getCount()));
 
-        PaygDimensionResult monitoringSystems = result.getResultForDimension(BillingDimension.MONITORING);
-        assertNotNull(monitoringSystems);
-        assertEquals(0, monitoringSystems.getCount());
+        Optional<PaygDimensionResult> monitoringSystems = result.getResultForDimension(BillingDimension.MONITORING);
+        assertTrue(monitoringSystems.isPresent());
+        managedSystems.ifPresent(dimensionResult -> assertEquals(0L, dimensionResult.getCount()));
     }
 }
