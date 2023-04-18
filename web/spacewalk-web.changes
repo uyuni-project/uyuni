@@ -1,9 +1,9 @@
 - fix an issue where the datetimepicker shows wrong date (bsc#1209231)
-- Fix datetime picker appearing behind modal edge
+- Fix datetime picker appearing behind modal edge (bsc#1209703)
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 - Fix UI inconsistencies in susemanager-light and susemanager-dark
   theme
-- Deprecate jQuery datepicker, integrate React datepicker
+- Deprecate jQuery datepicker, integrate React datepicker (bsc#1209689)
 
 -------------------------------------------------------------------
 Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com
