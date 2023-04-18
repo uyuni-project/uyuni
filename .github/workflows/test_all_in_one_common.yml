@@ -68,7 +68,7 @@ jobs:
       - name: test_from_host
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
       - name: test_from_container
-        run: podman exec opensusessh curl --insecure https://uyuni-server-all-in-one-test:443/rhn/help/Copyright.do
+        run: sudo -i podman exec opensusessh curl --insecure https://uyuni-server-all-in-one-test:443/rhn/help/Copyright.do
       - name: setup_sshd
         run: ./testsuite/podman_runner/10_setup_sshd.sh 
       - name: run_cucumber_core

@@ -1,4 +1,4 @@
 #!/bin/bash
 set -ex
-podman network create uyuni-network-1
+sudo -i podman network create --ipv6 --subnet 2001:db8::/64 uyuni-network-1
 
