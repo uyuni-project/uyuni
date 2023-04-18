@@ -145,8 +145,8 @@ BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
 BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
-BuildRequires:  (glassfish-activation-api or jakarta-activation)
-BuildRequires:  (glassfish-jaxb-api or jaxb-api)
+BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-jaxb-api
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
@@ -633,19 +633,10 @@ mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss
 
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jaf.jar
 mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamail.jar
 mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jta.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation-api.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamaildsn.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailgimap.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailimap.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail-api.jar
 rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmail.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmailapi.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailpop3.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailsmtp.jar
 %endif
 
 # show all JAR symlinks
