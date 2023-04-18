@@ -52,6 +52,6 @@ public enum BillingDimension {
         return Arrays.stream(BillingDimension.values())
                      .filter(e -> Objects.equals(e.getLabel(), label))
                      .findFirst()
-                     .orElse(null);
+                     .orElseThrow(() -> new IllegalArgumentException("Invalid BillingDimension value " + label));
     }
 }

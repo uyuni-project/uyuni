@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
-import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
@@ -51,12 +50,9 @@ public class BaseProductRule implements DimensionRule {
             return false;
         }
 
-        SUSEProductSet suseProductSet = server.getInstalledProductSet().orElse(null);
-        if (suseProductSet == null) {
-            return false;
-        }
-
-        return baseProducts.contains(suseProductSet.getBaseProduct().getName());
+        return server.getInstalledProductSet()
+                     .filter(suseProductSet -> baseProducts.contains(suseProductSet.getBaseProduct().getName()))
+                     .isPresent();
     }
 
     @Override
