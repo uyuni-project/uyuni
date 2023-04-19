@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-04-19 08:14+0000\n"
+"PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4945,17 +4945,17 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムは"
+msgstr "ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
-msgstr "システム"
+msgstr "　"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr "まもなく。トランザクションシステムの場合は、再起動して登録を完了してください"
+msgstr "トランザクションシステムの場合は、再起動して登録を完了してください"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
