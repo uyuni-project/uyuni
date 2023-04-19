@@ -11197,13 +11197,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">您的某些订阅即将失效或已经失效。请查看&lt;a href="/rhn/manager/subscription-matching"&gt;订阅匹配&lt;/a&gt;页面。</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve" approved="yes">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="final">程序临时修复 (PTF) 的软件包组件：{0}</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve" approved="yes">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="final">程序临时修复 (PTF) 软件包：{0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
@@ -11226,12 +11226,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">已禁用模块化。目标软件源中将不会包含任何模块。</target>
       </trans-unit>
-      <trans-unit id="PTF" xml:space="preserve">
+      <trans-unit id="PTF" xml:space="preserve" approved="yes">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">PTF</target>
       </trans-unit>
       <trans-unit approved="yes" id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
