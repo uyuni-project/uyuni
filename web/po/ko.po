@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-02-21 07:14+0000\n"
+"PO-Revision-Date: 2023-04-19 05:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -384,8 +384,9 @@ msgid "Unable to clear selection"
 msgstr "시스템 선택으로 돌아가기"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
+#, fuzzy
 msgid "Unable to perform action."
-msgstr ""
+msgstr "작업을 수행할 수 없습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -1304,8 +1305,9 @@ msgid "Product Channels - "
 msgstr "제품 채널 - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
+#, fuzzy
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "추가할 선택 사항 채널을 선택한 후 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -2064,8 +2066,9 @@ msgstr "이름 제공"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#, fuzzy
 msgid "Number"
-msgstr ""
+msgstr "번호"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2181,8 +2184,9 @@ msgid "Patch"
 msgstr "패치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
+#, fuzzy
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "제품 임시 수정"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2304,12 +2308,14 @@ msgid "none (disable modularity)"
 msgstr "없음(모듈성 비활성화)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
+#, fuzzy
 msgid "all"
-msgstr ""
+msgstr "모두"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
+#, fuzzy
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "모든 프로그램 임시 수정"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -4031,18 +4037,21 @@ msgid "Summary"
 msgstr "요약"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
+#, fuzzy
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
+#, fuzzy
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
-msgstr ""
+msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
+#, fuzzy
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "사용할 수 있는 프로그램 임시 수정(PTF)이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
 #, fuzzy
@@ -4050,22 +4059,26 @@ msgid "Install PTFs"
 msgstr "설치됨"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
+#, fuzzy
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 설치 확인"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
+#, fuzzy
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
+#, fuzzy
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
-msgstr ""
+msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
+#, fuzzy
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "설치된 프로그램 임시 수정(PTF)이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
 #, fuzzy
@@ -4073,20 +4086,24 @@ msgid "Remove PTFs"
 msgstr "제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
+#, fuzzy
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 제거 확인"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
+#, fuzzy
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
+#, fuzzy
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "이 시스템에서 수행할 수 있는 관련 작업이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
+#, fuzzy
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "설치된 PTF 나열/제거"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
 #, fuzzy
@@ -4239,12 +4256,14 @@ msgid ""
 msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/packages/list.tsx:80
+#, fuzzy
 msgid "Packages in no channel"
-msgstr ""
+msgstr "채널이 없는 패키지"
 
 #: ../html/src/manager/packages/list.tsx:81
+#, fuzzy
 msgid "All managed packages"
-msgstr ""
+msgstr "모든 관리형 패키지"
 
 #: ../html/src/manager/packages/list.tsx:89
 #, fuzzy
@@ -4914,10 +4933,11 @@ msgid "systems"
 msgstr "시스템"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
+#, fuzzy
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr ""
+msgstr "잠시 후에. 트랜잭션 시스템인 경우 재부팅하여 등록을 완료하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
