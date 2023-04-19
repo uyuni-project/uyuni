@@ -441,7 +441,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{$server.full_hostname}/#{file}")
+  node.run("curl -s -O http://#{$server.full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
