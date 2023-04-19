@@ -144,7 +144,7 @@ public class RecurringActionController {
         long id = Long.parseLong(request.params("id"));
         Optional<RecurringAction> action = RecurringActionManager.find(id);
         if (action.isEmpty()) {
-            return json(response, HttpStatus.SC_NOT_FOUND);
+            return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
         }
         return json(response, actionToDetailsDto(action.get()));
     }
@@ -197,7 +197,7 @@ public class RecurringActionController {
             Long id = Long.parseLong(request.queryParams("id"));
             Optional<RecurringAction> action = RecurringActionManager.find(id);
             if (action.isEmpty()) {
-                return json(response, HttpStatus.SC_NOT_FOUND);
+                return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
             }
             if (!(action.get().getRecurringActionType() instanceof RecurringState)) {
                 Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(

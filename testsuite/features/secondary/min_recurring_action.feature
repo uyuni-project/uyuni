@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_recurring_actions
@@ -184,16 +184,6 @@ Feature: Recurring Actions
     And I should see a "Organization" text
     And I should see a "0 0 0 ? * 1" text
 
-  Scenario: Delete an admin org Recurring Action
-    When I follow the left menu "Admin > Organizations"
-    And I follow "SUSE Test" in the content area
-    And I follow "Recurring Actions" in the content area
-    Then I should see a "schedule_name_org" text
-    When I click the "schedule_name_org" item delete button
-    Then I should see a "Delete Recurring Action Schedule" text
-    When I click on the red confirmation button
-    Then I wait until I see "Schedule 'schedule_name_org' has been deleted." text
-
   Scenario: Check list of all actions
     When I follow the left menu "Schedule > Recurring Actions"
     Then I should not see a "Create" text
@@ -203,6 +193,16 @@ Feature: Recurring Actions
     And I should see a "Group" text
     And I should see a "schedule_name_org" text
     And I should see a "Organization" text
+
+  Scenario: Delete an admin org Recurring Action
+    When I follow the left menu "Admin > Organizations"
+    And I follow "SUSE Test" in the content area
+    And I follow "Recurring Actions" in the content area
+    Then I should see a "schedule_name_org" text
+    When I click the "schedule_name_org" item delete button
+    Then I should see a "Delete Recurring Action Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'schedule_name_org' has been deleted." text
 
  Scenario: View details in list of all actions
     When I follow the left menu "Schedule > Recurring Actions"
