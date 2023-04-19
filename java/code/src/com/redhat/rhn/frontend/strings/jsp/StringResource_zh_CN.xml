@@ -29819,37 +29819,34 @@ given channel.</source>
         <source>System Profile Refresh</source>
         <target state="final">系统配置文件刷新</target>
       </trans-unit>
-    <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+      <trans-unit id="preferences.subscription-warning.name" xml:space="preserve" approved="yes">
         <source>Subscription Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <target state="final">订阅警告</target>
+      </trans-unit>
+      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve" approved="yes">
         <source> Show expired subscriptions warning.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-
-
- 
-      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <target state="final"> 显示失效的订阅警告。</target>
+      </trans-unit>
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve" approved="yes">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <target state="final">摘要</target>
+      </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve" approved="yes">
         <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">此软件包是某个程序临时修复 (PTF) 的组件，无法直接安装。请选择该临时修复的主软件包查看目标系统。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
