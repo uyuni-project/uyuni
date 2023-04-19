@@ -202,6 +202,9 @@ public class SaltbootUtils {
         if (system == null) {
             system = SystemRecord.create(con, name, profile);
         }
+        else {
+            system.setProfile(profile);
+        }
         system.<String>setKernelOptions(Optional.of(kernelParams));
         List<Network> networks = hwAddresses.stream().map(hw -> {
             Network k = new Network(con, hw);

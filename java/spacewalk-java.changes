@@ -1,3 +1,4 @@
+- Update Cobbler profile when a new image is deployed
 - Add mapping of image URLs for containerized proxy
 - Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
 - remove channels from client after transfer to a different
