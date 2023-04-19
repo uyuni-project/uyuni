@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-04-19 05:14+0000\n"
+"PO-Revision-Date: 2023-04-19 08:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -388,7 +388,7 @@ msgstr "選択を解除できません"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr "アクションを実行できません。"
+msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -1306,7 +1306,7 @@ msgstr "製品チャンネル - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr "追加したいオプションのチャンネルを選択して確定します。"
+msgstr "追加したいオプションのチャンネルを選択して確認します。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -4086,7 +4086,7 @@ msgstr "このシステムには、次のProgram Temporary Fixes (PTFs)をイン
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr "No Program Temporary Fixes (PTFs)を利用できません。"
+msgstr "Program Temporary Fixes (PTFs)を利用できません。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
 msgid "Install PTFs"
@@ -4709,9 +4709,8 @@ msgid "System Group"
 msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "highstate の適用を "
+msgstr "highstateの適用が次のようになりました: {0}。"
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
@@ -4956,7 +4955,7 @@ msgstr "システム"
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr "すぐに。トランザクションシステムの場合は、再起動して登録を完了してください"
+msgstr "まもなく。トランザクションシステムの場合は、再起動して登録を完了してください"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
