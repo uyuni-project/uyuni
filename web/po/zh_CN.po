@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-02-21 07:14+0000\n"
+"PO-Revision-Date: 2023-04-19 05:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -352,9 +352,8 @@ msgstr "无风格"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:83
 #: ../html/src/manager/state/highstate.tsx:65
-#, fuzzy
 msgid "Action has been successfully added to the action chain '{0}'."
-msgstr "操作已成功添加到操作链 "
+msgstr "操作已成功添加到操作链 \"{0}\"。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
 #: ../html/src/manager/images/image-build.tsx:211
@@ -369,18 +368,16 @@ msgid "scheduled"
 msgstr "已安排"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#, fuzzy
 msgid "The action has been {0}."
-msgstr "操作 "
+msgstr "操作已{0}。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:94
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "返回系统选择页"
+msgstr "无法清除选择"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr ""
+msgstr "无法执行操作。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -390,9 +387,8 @@ msgstr "返回列表"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
 #: ../html/src/manager/packages/list.tsx:144
-#, fuzzy
 msgid "Filter by package name"
-msgstr "按名称过滤"
+msgstr "按软件包名称过滤"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:242
@@ -1122,15 +1118,13 @@ msgid "The following product installations failed. Please check log files."
 msgstr "以下产品安装失败。请检查日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "已成功安排某些更改。"
+msgstr "已成功安排同步选定的通道。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
-msgstr "以下产品安装失败。请检查日志文件。"
+msgstr "\"{0}\" 的下列通道安装失败。请检查日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1277,7 +1271,7 @@ msgstr "产品通道 - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "选择您要添加的可选通道并确认。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -2024,7 +2018,7 @@ msgstr "提供名称"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
-msgstr ""
+msgstr "数量"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2141,7 +2135,7 @@ msgstr "补丁"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "产品临时修复"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2264,11 +2258,11 @@ msgstr "无（禁用模块化）"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
-msgstr ""
+msgstr "所有"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "所有程序临时修复"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -2299,14 +2293,12 @@ msgid "Contains Package"
 msgstr "包含软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#, fuzzy
 msgid "All"
-msgstr "允许"
+msgstr "所有"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "软件包名称"
+msgstr "修复软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
@@ -3961,66 +3953,63 @@ msgstr "摘要"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
-msgstr ""
+msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "没有可用的程序临时修复 (PTF)。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
-#, fuzzy
 msgid "Install PTFs"
-msgstr "已安装"
+msgstr "安装 PTF"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "确认安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
-msgstr ""
+msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "未安装任何程序临时修复 (PTF)。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
-#, fuzzy
 msgid "Remove PTFs"
-msgstr "去除"
+msgstr "去除 PTF"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "确认去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "没有可在此系统上执行的相关操作。"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "列出/去除安装的 PTF"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
-#, fuzzy
 msgid "Install PTF"
-msgstr "已安装"
+msgstr "安装 PTF"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
@@ -4166,41 +4155,35 @@ msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
-msgstr ""
+msgstr "不属于任何通道的软件包"
 
 #: ../html/src/manager/packages/list.tsx:81
 msgid "All managed packages"
-msgstr ""
+msgstr "所有管理的软件包"
 
 #: ../html/src/manager/packages/list.tsx:89
-#, fuzzy
 msgid " Package Management "
-msgstr "影响软件包管理堆栈"
+msgstr " 软件包管理 "
 
 #: ../html/src/manager/packages/list.tsx:117
-#, fuzzy
 msgid "Binary packages"
-msgstr "搜索软件包"
+msgstr "二进制软件包"
 
 #: ../html/src/manager/packages/list.tsx:118
-#, fuzzy
 msgid "Source packages"
-msgstr "搜索软件包"
+msgstr "源软件包"
 
 #: ../html/src/manager/packages/list.tsx:126
-#, fuzzy
 msgid "package"
 msgstr "软件包"
 
 #: ../html/src/manager/packages/list.tsx:146
-#, fuzzy
 msgid "No Packages."
-msgstr "软件包"
+msgstr "没有软件包。"
 
 #: ../html/src/manager/packages/list.tsx:172
-#, fuzzy
 msgid "Content Provider"
-msgstr "群集提供程序"
+msgstr "内容提供者"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4597,9 +4580,8 @@ msgid "System Group"
 msgstr "系统组"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "应用 highstate "
+msgstr "应用 highstate 的操作已{0}。"
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
@@ -4835,7 +4817,7 @@ msgstr "系统"
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr ""
+msgstr "中。如果这是事务性系统，请将其重引导以完成注册"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
