@@ -1,6 +1,10 @@
-- change GPG Key URL for openSUSE Leap to local file URL
-- Avoid conflicting names for openSUSE channels
-- Add openEuler 22.03 repositories
+-------------------------------------------------------------------
+Wed Apr 19 12:58:26 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * change GPG Key URL for openSUSE Leap to local file URL
+  * Avoid conflicting names for openSUSE channels
+  * Add openEuler 22.03 repositories
 
 -------------------------------------------------------------------
 Tue Feb 28 11:54:37 CET 2023 - jgonzalez@suse.com
