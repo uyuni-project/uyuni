@@ -45,7 +45,11 @@ class RecurringActionsList extends React.Component<Props, State> {
   }
 
   componentDidMount = () => {
-    this.getRecurringScheduleList();
+    const { isFilteredList } = this.props;
+    // only fetch data if it is a filtered list, otherwise the Table component will fetch the data.
+    if (isFilteredList) {
+      this.getRecurringScheduleList();
+    }
   };
 
   getRecurringScheduleList = () => {
@@ -90,6 +94,7 @@ class RecurringActionsList extends React.Component<Props, State> {
   render() {
     const { isFilteredList } = this.props;
     const disableCreate = !isFilteredList;
+    const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
     const buttons = [
       <div className="btn-group pull-right">
         <Button
@@ -136,7 +141,7 @@ class RecurringActionsList extends React.Component<Props, State> {
               identifier={(action) => action.recurringActionId}
               /* Using 0 to hide table header/footer */
               initialItemsPerPage={disableCreate ? pageSize : 0}
-              emptyText={t("No schedules created." + (disableCreate ? "" : " Use Create to add a schedule."))}
+              emptyText={t(emptyListText)}
               searchField={<RecurringActionsSearch />}
               ref={this.tableRef}
             >
