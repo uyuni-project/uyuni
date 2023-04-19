@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-24 15:29+0100\n"
-"PO-Revision-Date: 2023-02-21 04:14+0000\n"
+"PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-2/ja/"
 ">\n"
@@ -4738,11 +4738,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:324
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムは"
+msgstr "ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:326
 msgid "systems"
-msgstr "システム"
+msgstr "　"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid "shortly"
