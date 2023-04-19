@@ -107,14 +107,17 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
             <td>
               {"Every "}
               <b>
-                {details.cronTimes.dayOfMonth +
-                  (details.cronTimes.dayOfMonth === "1"
-                    ? "st "
-                    : details.cronTimes.dayOfMonth === "2"
-                    ? "nd "
-                    : details.cronTimes.dayOfMonth === "3"
-                    ? "rd "
-                    : "th ")}
+                {
+                  // TODO: Refactor this when https://github.com/SUSE/spacewalk/issues/20449 is implemented
+                  details.cronTimes.dayOfMonth +
+                    (details.cronTimes.dayOfMonth === "1"
+                      ? "st "
+                      : details.cronTimes.dayOfMonth === "2"
+                      ? "nd "
+                      : details.cronTimes.dayOfMonth === "3"
+                      ? "rd "
+                      : "th ")
+                }
               </b>
               {"of the month at "}
               <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
@@ -262,7 +265,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                 header={t("Description")}
                 columnKey="description"
                 cell={(row) => (
-                  <i className="fa fa-info-circle fa-1-5x" style={{ color: "royalblue" }} title={row.description} />
+                  <i className="fa fa-info-circle fa-1-5x text-primary" title={row.description} />
                 )}
               />
             </Table>
