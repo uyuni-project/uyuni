@@ -779,15 +779,18 @@ public class SystemManager extends BaseManager {
     private void removeSaltSSHKnownHosts(Server server) {
         Integer sshPort = server.getProxyInfo() != null ? server.getProxyInfo().getSshPort() : null;
         int port = sshPort != null ? sshPort : SaltSSHService.SSH_DEFAULT_PORT;
-        Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
-            Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                    saltApi.removeSaltSSHKnownHost(hostname, port);
-            boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
-            if (!removed) {
-                log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", hostname, port,
-                        result.map(r -> r.getComment()).orElse(""));
-            }
-        });
+        Optional.ofNullable(server.getHostname()).ifPresentOrElse(
+                hostname -> {
+                    Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                            saltApi.removeSaltSSHKnownHost(hostname, port);
+                    boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+                    if (!removed) {
+                        log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}",
+                                hostname, port, result.map(r -> r.getComment()).orElse(""));
+                    }
+                },
+                () -> log.warn("Unable to remove SSH key for {} from /var/lib/salt/.ssh/known_hosts: unknown hostname",
+                        server.getName()));
     }
 
     /**
