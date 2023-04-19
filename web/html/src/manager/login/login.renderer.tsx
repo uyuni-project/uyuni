@@ -19,6 +19,7 @@ export const renderer = (
     loginLength,
     passwordLength,
     diskspaceSeverity,
+    sccForwardWarning,
   }
 ) => {
   const elementToRender = document.getElementById(id);
@@ -38,6 +39,7 @@ export const renderer = (
         loginLength={loginLength}
         passwordLength={passwordLength}
         diskspaceSeverity={diskspaceSeverity}
+        sccForwardWarning={sccForwardWarning}
       />,
       elementToRender
     );
