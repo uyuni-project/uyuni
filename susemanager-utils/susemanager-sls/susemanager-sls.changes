@@ -1,3 +1,4 @@
+- disable salt-minion and remove its config file on cleanup (bsc#1209277)
 - Add kiwi supported disk images to be collectable (bsc#1208522)
 - Rename internal state 'synccustomall' to 'syncall'
 - Recurring custom states
