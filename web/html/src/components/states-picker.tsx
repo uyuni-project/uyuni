@@ -6,14 +6,12 @@ import _unionBy from "lodash/unionBy";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
-
-import { AsyncButton } from "../components/buttons";
-import { TextField } from "../components/fields";
-import { Messages, MessageType } from "../components/messages";
-import { Utils as MessagesUtils } from "../components/messages";
-import { RankingTable } from "../components/ranking-table";
-import { SaltStatePopup } from "../components/salt-state-popup";
+import { AsyncButton } from "./buttons";
+import { TextField } from "./fields";
+import { Messages, MessageType } from "./messages";
+import { Utils as MessagesUtils } from "./messages";
+import { RankingTable } from "./ranking-table";
+import { SaltStatePopup } from "./salt-state-popup";
 import Network from "../utils/network";
 
 function channelKey(channel) {
@@ -38,7 +36,7 @@ function channelIcon(channel) {
 }
 
 type StatesPickerProps = {
-  type?: string | any;
+  type?: string;
   matchUrl: (filter?: string) => any;
   applyRequest?: () => any;
   saveRequest: (channels: any[]) => any;
@@ -83,7 +81,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   applySaltState = () => {
     if (this.state.changed.size > 0) {
       const response = window.confirm(t("There are unsaved changes. Do you want to proceed?"));
-      if (DEPRECATED_unsafeEquals(response, false)) {
+      if (response === false) {
         return null;
       }
     }
@@ -180,10 +178,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
   addChanged = (original, key, selected) => {
     const currentChannel = this.state.changed.get(key);
-    if (
-      !DEPRECATED_unsafeEquals(currentChannel, undefined) &&
-      DEPRECATED_unsafeEquals(selected, currentChannel.original.assigned)
-    ) {
+    if (selected === currentChannel?.original?.assigned) {
       this.state.changed.delete(key);
     } else {
       this.state.changed.set(key, {
@@ -247,8 +242,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           <td>{currentChannel.label}</td>
           <td>
             <i
-              className="fa fa-info-circle fa-1-5x"
-              style={{ color: "royalblue" }}
+              className="fa fa-info-circle fa-1-5x text-primary"
               title={currentChannel.description}
             />
           </td>
@@ -374,7 +368,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
     return (
       <span>
-        {!this.props.messages ? this.state.messages ? <Messages items={this.state.messages} /> : null : null}
+        {!this.props.messages && this.state.messages ? <Messages items={this.state.messages} /> : null}
         <SectionToolbar>
           <div className="action-button-wrapper">
             <div className="btn-group">{buttons}</div>
