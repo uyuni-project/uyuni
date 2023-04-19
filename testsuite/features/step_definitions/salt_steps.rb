@@ -342,7 +342,11 @@ end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
   output, _code = pillar_get(key, minion)
-  raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "Output has more than one line: #{output}", report_result: true) do
+    break unless output.split("\n").length != 1
+    sleep 1
+    output, _code = pillar_get(key, minion)
+  end
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
