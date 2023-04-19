@@ -1,4 +1,8 @@
-- change backup file extension from .orig to .current_time (bsc#1206783)
+-------------------------------------------------------------------
+Wed Apr 19 12:50:23 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.5-1
+  * change backup file extension from .orig to .current_time (bsc#1206783)
 
 -------------------------------------------------------------------
 Tue Feb 21 12:39:12 CET 2023 - jgonzalez@suse.com
