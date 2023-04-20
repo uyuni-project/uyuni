@@ -88,6 +88,12 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   end
 end
 
+When(/^I wait until no Salt client is active on "([^"]*)"$/) do |minion|
+  salt_minion = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  step %(I wait until "#{salt_minion}" service is active on "#{minion}")
+  sleep 2
+end
+
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
@@ -206,6 +212,24 @@ end
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run("salt #{system_name} saltutil.sync_all")
+end
+
+When(/^I configure salt minion on "([^"]*)"$/) do |host|
+  content = %(
+master: #{$server.full_hostname}
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+start_event_grains:
+  - machine_id
+  - saltboot_initrd
+  - susemanager)
+  step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
+end
+
+When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
+  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
