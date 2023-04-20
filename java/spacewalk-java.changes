@@ -1,3 +1,7 @@
+- reduce default salt_batch_size to 150 to match default for apache
+  worker and reduce the load on the server when big expensive jobs
+  needs to be handled (bsc#1210675)
+
 -------------------------------------------------------------------
 Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
 
