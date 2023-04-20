@@ -1,9 +1,9 @@
 {%- set salt_minion_name = 'salt-minion' %}
-{%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
+{%- set salt_config_dir = '/etc/salt' %}
 {# Prefer venv-salt-minion if installed #}
 {%- if salt['pkg.version']('venv-salt-minion') %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
-{%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
+{%- set salt_config_dir = '/etc/venv-salt-minion' %}
 {%- endif -%}
 
 {%- if grains['os_family'] == 'RedHat' %}
@@ -35,7 +35,23 @@ mgr_mark_no_longer_managed:
 
 mgr_remove_salt_config:
   file.absent:
-    - name: {{ susemanager_minion_config }}
+    - name: {{ salt_config_dir }}/minion.d/susemanager.conf
+
+mgr_remove_salt_config_altname:
+  file.absent:
+     - name: {{ salt_config_dir }}/minion.d/master.conf
+
+mgr_remove_salt_priv_key:
+  file.absent:
+     - name: {{ salt_config_dir }}/pki/minion.pem
+
+mgr_remove_salt_pub_key:
+  file.absent:
+     - name: {{ salt_config_dir }}/pki/minion.pub
+
+mgr_remove_salt_master_key:
+  file.absent:
+     - name: {{ salt_config_dir }}/pki/minion_master.pub
 
 mgr_disable_salt:
   cmd.run:
