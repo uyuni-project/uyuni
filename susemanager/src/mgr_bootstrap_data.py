@@ -1272,19 +1272,19 @@ DATA = {
     },
     'SLE-15-SP5-aarch64' : {
         'PDID' : [2471, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/5/bootstrap/'
     },
     'SLE-15-SP5-ppc64le' : {
         'PDID' : [2472, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/5/bootstrap/'
     },
     'SLE-15-SP5-s390x' : {
         'PDID' : [2473, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/5/bootstrap/'
     },
     'SLE-15-SP5-x86_64' : {
         'PDID' : [2474, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/5/bootstrap/'
     },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
     'SUMA-43-PROXY-x86_64' : {
@@ -1357,11 +1357,11 @@ DATA = {
     },    
     'openSUSE-Leap-15.5-x86_64' : {
         'PDID' : [2588, 1712], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/5/bootstrap/'
     },
     'openSUSE-Leap-15.5-aarch64' : {
         'PDID' : [2585, 1709], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/5/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/5/bootstrap/'
     },
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
