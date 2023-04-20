@@ -114,7 +114,7 @@ public class RecurringActionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(Collections.emptyMap(), "templates/schedule/recurring-actions.jade");
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
     }
 
     /**
