@@ -27288,9 +27288,6 @@ given channel.</source>
       <trans-unit id="Highstate" xml:space="preserve">
         <source>Highstate</source>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
       </trans-unit>
@@ -27808,6 +27805,10 @@ given channel.</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
       <target state="new"/>
   </trans-unit>
       </body>

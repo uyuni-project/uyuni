@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 16:01+0200\n"
-"PO-Revision-Date: 2023-02-21 07:14+0000\n"
+"POT-Creation-Date: 2023-04-21 15:36+0200\n"
+"PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -113,111 +113,26 @@ msgstr "以下に追加:"
 msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
-#: ../html/src/components/config-channels.tsx:23
-#: ../html/src/components/ranking-table.tsx:20
-#: ../html/src/components/salt-state-popup.tsx:11
-msgid "State Configuration Channel"
-msgstr "状態設定チャンネル"
-
-#: ../html/src/components/config-channels.tsx:26
-#: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/salt-state-popup.tsx:14
-msgid "Normal Configuration Channel"
-msgstr "通常設定チャンネル"
-
-#: ../html/src/components/config-channels.tsx:74
-msgid "There are unsaved changes. Do you want to proceed?"
-msgstr "保存されていない変更があります。続行してもよろしいですか？"
-
-#: ../html/src/components/config-channels.tsx:109
-msgid "State assignments have been saved."
-msgstr "状態の割り当てが保存されました。"
-
-#: ../html/src/components/config-channels.tsx:116
-msgid "An error occurred on save."
-msgstr "保存時にエラーが発生しました。"
-
-#: ../html/src/components/config-channels.tsx:230
-msgid "No states assigned. Use search to find and assign states."
-msgstr ""
-"状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
-"てください。"
-
-#: ../html/src/components/config-channels.tsx:282
-#: ../html/src/manager/images/image-view.tsx:816
-#: ../html/src/manager/images/image-view.tsx:818
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/state/recurring-states-details.tsx:144
-#: ../html/src/manager/state/recurring-states-details.tsx:146
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
-msgid "Back"
-msgstr "戻る"
-
-#: ../html/src/components/config-channels.tsx:284
-#: ../html/src/components/package/PackageListActionScheduler.tsx:176
-#: ../html/src/manager/admin/setup/products/products.tsx:1160
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:661
-msgid "Confirm"
-msgstr "確認"
-
-#: ../html/src/components/config-channels.tsx:292
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
-msgid "Save Changes"
-msgstr "変更点の保存"
-
-#: ../html/src/components/config-channels.tsx:305
-msgid "Execute States"
-msgstr "状態の実行"
-
-#: ../html/src/components/config-channels.tsx:312
-msgid "Reorder"
-msgstr "並べ替え"
-
-#: ../html/src/components/config-channels.tsx:324
+#: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
 msgstr "設定チャンネル"
 
-#: ../html/src/components/config-channels.tsx:333
-msgid "Search in configuration channels"
-msgstr "設定チャンネル内での検索"
+#: ../html/src/components/datetime/DateTimePicker.tsx:112
+msgid "Previous month"
+msgstr ""
 
-#: ../html/src/components/config-channels.tsx:338
-#: ../html/src/manager/header/search/search.tsx:81
-#: ../html/src/manager/header/search/search.tsx:90
-#: ../html/src/manager/minion/packages/package-states.tsx:214
-#: ../html/src/manager/minion/packages/package-states.tsx:247
-msgid "Search"
-msgstr "検索"
+#: ../html/src/components/datetime/DateTimePicker.tsx:113
+msgid "Next month"
+msgstr ""
 
-#: ../html/src/components/config-channels.tsx:349
-msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "設定チャンネルの順位を変更するには、それらをドラッグしてください。"
+#: ../html/src/components/datetime/DateTimePicker.tsx:114
+msgid "Previous year"
+msgstr ""
 
-#: ../html/src/components/config-channels.tsx:353
-msgid "There are no states assigned."
-msgstr "状態が何も割り当てられていません。"
-
-#: ../html/src/components/config-channels.tsx:361
-msgid "Channel Name"
-msgstr "チャンネル名"
-
-#: ../html/src/components/config-channels.tsx:362
-msgid "Channel Label"
-msgstr "チャンネルラベル"
-
-#: ../html/src/components/config-channels.tsx:363
-msgid "Assign"
-msgstr "割り当て"
+#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#, fuzzy
+msgid "Next year"
+msgstr "次へ"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "
@@ -270,10 +185,10 @@ msgstr "取り消し"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:71
 #: ../html/src/manager/packages/list.tsx:124
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:214
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:217
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:224
 #: ../html/src/manager/salt/keys/key-management.tsx:54
-#: ../html/src/manager/state/recurring-states-details.tsx:158
-#: ../html/src/manager/state/recurring-states-details.tsx:160
-#: ../html/src/manager/state/recurring-states-list.tsx:147
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
@@ -364,9 +279,8 @@ msgstr "フレーバー無し"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:83
 #: ../html/src/manager/state/highstate.tsx:65
-#, fuzzy
 msgid "Action has been successfully added to the action chain '{0}'."
-msgstr "動作を動作チェーンに追加しました "
+msgstr "動作を動作チェーン「{0}」に追加しました 。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
 #: ../html/src/manager/images/image-build.tsx:211
@@ -381,30 +295,37 @@ msgid "scheduled"
 msgstr "スケジュールしました"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#, fuzzy
 msgid "The action has been {0}."
-msgstr "動作を "
+msgstr "動作は {0} でした。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:94
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "システム選択に戻る"
+msgstr "選択を解除できません"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr ""
+msgstr "動作を実行できません。"
+
+#: ../html/src/components/package/PackageListActionScheduler.tsx:176
+#: ../html/src/components/states-picker.tsx:329
+#: ../html/src/manager/admin/setup/products/products.tsx:1160
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:661
+msgid "Confirm"
+msgstr "確認"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
-#: ../html/src/manager/state/recurring-states-edit.tsx:133
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
 msgid "Back to list"
 msgstr "一覧に戻る"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
 #: ../html/src/manager/packages/list.tsx:143
-#, fuzzy
 msgid "Filter by package name"
-msgstr "名前でフィルタ"
+msgstr "パッケージ名でフィルタ"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:242
@@ -487,10 +408,12 @@ msgstr "金曜"
 msgid "Saturday"
 msgstr "土曜"
 
+#. Field options for filtering in recurring actions list.
 #: ../html/src/components/picker/recurring-event-picker.tsx:325
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:106
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:165
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 msgid "Schedule Name"
 msgstr "スケジュール名"
 
@@ -528,7 +451,28 @@ msgstr "日は必ず毎月実行できるよう、最大でも 28 までの範�
 msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
-#: ../html/src/components/ranking-table.tsx:40
+#: ../html/src/components/ranking-table.tsx:20
+#: ../html/src/components/salt-state-popup.tsx:11
+#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:23
+msgid "State Configuration Channel"
+msgstr "状態設定チャンネル"
+
+#: ../html/src/components/ranking-table.tsx:23
+#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:26
+#, fuzzy
+msgid "Internal State"
+msgstr "内部状態"
+
+#: ../html/src/components/ranking-table.tsx:27
+#: ../html/src/components/salt-state-popup.tsx:14
+#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:30
+msgid "Normal Configuration Channel"
+msgstr "通常設定チャンネル"
+
+#: ../html/src/components/ranking-table.tsx:44
 #: ../html/src/components/table/TableDataHandler.tsx:351
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
@@ -546,9 +490,9 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:151
-#: ../html/src/manager/state/recurring-states-details.tsx:153
-#: ../html/src/manager/state/recurring-states-list.tsx:139
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:215
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
@@ -560,6 +504,156 @@ msgstr "編集"
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
 msgstr "設定チャンネルの編集"
+
+#: ../html/src/components/states-picker.tsx:83
+msgid "There are unsaved changes. Do you want to proceed?"
+msgstr "保存されていない変更があります。続行してもよろしいですか？"
+
+#: ../html/src/components/states-picker.tsx:98
+#, fuzzy
+msgid "State configuration must not be empty"
+msgstr "状態設定チャンネル"
+
+#: ../html/src/components/states-picker.tsx:129
+msgid "State assignments have been saved."
+msgstr "状態の割り当てが保存されました。"
+
+#: ../html/src/components/states-picker.tsx:133
+msgid "An error occurred on save."
+msgstr "保存時にエラーが発生しました。"
+
+#: ../html/src/components/states-picker.tsx:268
+msgid "No states assigned. Use search to find and assign states."
+msgstr ""
+"状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
+"てください。"
+
+#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/manager/images/image-view.tsx:816
+#: ../html/src/manager/images/image-view.tsx:818
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:199
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:201
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
+msgid "Back"
+msgstr "戻る"
+
+#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
+msgid "Save Changes"
+msgstr "変更点の保存"
+
+#: ../html/src/components/states-picker.tsx:351
+msgid "Execute States"
+msgstr "状態の実行"
+
+#: ../html/src/components/states-picker.tsx:359
+msgid "Reorder"
+msgstr "並べ替え"
+
+#: ../html/src/components/states-picker.tsx:386
+#: ../html/src/components/states-picker.tsx:406
+#, fuzzy
+msgid "states"
+msgstr "都道府県"
+
+#: ../html/src/components/states-picker.tsx:386
+#: ../html/src/components/states-picker.tsx:406
+#, fuzzy
+msgid "configuration channels"
+msgstr "設定チャンネル"
+
+#: ../html/src/components/states-picker.tsx:385
+#, fuzzy
+msgid "Search in {0}"
+msgstr "検索"
+
+#: ../html/src/components/states-picker.tsx:392
+#: ../html/src/manager/header/search/search.tsx:81
+#: ../html/src/manager/header/search/search.tsx:90
+#: ../html/src/manager/minion/packages/package-states.tsx:214
+#: ../html/src/manager/minion/packages/package-states.tsx:247
+msgid "Search"
+msgstr "検索"
+
+#: ../html/src/components/states-picker.tsx:402
+#: ../html/src/manager/minion/packages/package-states.tsx:344
+#: ../html/src/manager/proxy/container-config.tsx:318
+#: ../html/src/manager/salt/keys/key-management.tsx:188
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
+msgid "State"
+msgstr "都道府県"
+
+#: ../html/src/components/states-picker.tsx:402
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
+#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:101
+msgid "Channel"
+msgstr "チャンネル"
+
+#: ../html/src/components/states-picker.tsx:402
+msgid "Edit {0} Ranks"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:405
+#, fuzzy
+msgid "Edit the ranking of the {0} by dragging them."
+msgstr "設定チャンネルの順位を変更するには、それらをドラッグしてください。"
+
+#: ../html/src/components/states-picker.tsx:412
+msgid "There are no states assigned."
+msgstr "状態が何も割り当てられていません。"
+
+#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#, fuzzy
+msgid "State Name"
+msgstr "姓"
+
+#: ../html/src/components/states-picker.tsx:420
+msgid "Channel Name"
+msgstr "チャンネル名"
+
+#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:261
+#, fuzzy
+msgid "State Label"
+msgstr "状態チャンネル"
+
+#: ../html/src/components/states-picker.tsx:421
+msgid "Channel Label"
+msgstr "チャンネルラベル"
+
+#: ../html/src/components/states-picker.tsx:422
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
+#: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
+msgid "Description"
+msgstr "説明"
+
+#: ../html/src/components/states-picker.tsx:423
+msgid "Assign"
+msgstr "割り当て"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
@@ -879,7 +973,7 @@ msgstr "従量課金制のsshデータを追加"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/state/recurring-states-list.tsx:51
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:103
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
@@ -891,20 +985,6 @@ msgstr "作成"
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "Pay-as-you-go connection Description"
 msgstr "従量課金制の接続の説明"
-
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
-#: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
-#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-msgid "Description"
-msgstr "説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
@@ -1018,8 +1098,8 @@ msgstr "ユーザ"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:68
-#: ../html/src/manager/login/uyuni/login.tsx:65
+#: ../html/src/manager/login/susemanager/login.tsx:90
+#: ../html/src/manager/login/uyuni/login.tsx:86
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -1087,7 +1167,7 @@ msgstr "操作は成功しませんでした: サーバからの応答が空で�
 #: ../html/src/manager/images/image-view.tsx:687
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:131
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:207
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
@@ -1111,16 +1191,15 @@ msgstr ""
 "次の製品のインストールに失敗しました。 ログファイルを確認してください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "いくつかの変更をスケジュールしました。"
+msgstr "選択されたチャンネルは同期のスケジュールに成功しました。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
 msgstr ""
-"次の製品のインストールに失敗しました。 ログファイルを確認してください。"
+"「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してく"
+"ださい。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1271,7 +1350,7 @@ msgstr "製品チャンネル - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "追加したいオプションのチャンネルを選択して確認します。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -1475,8 +1554,8 @@ msgstr "名前"
 #: ../html/src/manager/images/image-view.tsx:681
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:202
 #: ../html/src/manager/salt/keys/key-management.tsx:195
-#: ../html/src/manager/state/recurring-states-list.tsx:126
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
@@ -1514,14 +1593,6 @@ msgstr "再ビルド"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
-#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
-#: ../html/src/manager/packages/list.tsx:101
-msgid "Channel"
-msgstr "チャンネル"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
@@ -2043,7 +2114,7 @@ msgstr "名前を指定する"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
-msgstr ""
+msgstr "番号"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2162,7 +2233,7 @@ msgstr "パッチ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Product Temporary Fix"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2289,11 +2360,11 @@ msgstr "なし (モジュール化を無効にする)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
-msgstr ""
+msgstr "すべて"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "すべてのプログラムの一時的な修正"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -2323,15 +2394,15 @@ msgstr "名前を指定したパッケージを含むもの"
 msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#, fuzzy
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
 msgid "All"
-msgstr "許可"
+msgstr "すべて"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "パッケージ名"
+msgstr "修正パッケージ名"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
@@ -2706,10 +2777,12 @@ msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
 
+#. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
 #: ../html/src/manager/state/highstate.tsx:140
 msgid "Highstate"
 msgstr "Highstate"
@@ -2996,7 +3069,7 @@ msgid "Use credentials"
 msgstr "資格情報の使用"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:58
+#: ../html/src/manager/login/susemanager/login.tsx:79
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3466,8 +3539,8 @@ msgstr ""
 msgid "Signing in ..."
 msgstr "サインインしています..."
 
-#: ../html/src/manager/login/susemanager/login.tsx:38
-#: ../html/src/manager/login/uyuni/login.tsx:34
+#: ../html/src/manager/login/susemanager/login.tsx:40
+#: ../html/src/manager/login/uyuni/login.tsx:36
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3475,14 +3548,14 @@ msgstr ""
 "Discover はサーバやパッケージ、パッチなどを 1 つのインターフェイスから管理で"
 "きる新しい方式です。"
 
-#: ../html/src/manager/login/susemanager/login.tsx:42
+#: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "_blank"
 msgstr "_blank"
 
-#: ../html/src/manager/login/susemanager/login.tsx:57
-#: ../html/src/manager/login/susemanager/login.tsx:82
-#: ../html/src/manager/login/uyuni/login.tsx:46
-#: ../html/src/manager/login/uyuni/login.tsx:73
+#: ../html/src/manager/login/susemanager/login.tsx:78
+#: ../html/src/manager/login/susemanager/login.tsx:104
+#: ../html/src/manager/login/uyuni/login.tsx:48
+#: ../html/src/manager/login/uyuni/login.tsx:94
 msgid "Sign In"
 msgstr "サインイン"
 
@@ -3504,11 +3577,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
-#: ../html/src/manager/login/uyuni/login.tsx:37
+#: ../html/src/manager/login/uyuni/login.tsx:39
 msgid "Learn more about"
 msgstr "下記についてさらに詳しく"
 
-#: ../html/src/manager/login/uyuni/login.tsx:54
+#: ../html/src/manager/login/uyuni/login.tsx:74
 msgid "Login"
 msgstr "ログイン"
 
@@ -3549,7 +3622,7 @@ msgstr "メンテナンスカレンダーの削除"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:160
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:238
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "選択した項目を削除してよろしいですか？"
@@ -3620,7 +3693,7 @@ msgid "Multi"
 msgstr "マルチ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/state/recurring-states-details.tsx:94
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:147
 msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
@@ -3686,7 +3759,7 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/state/recurring-states-edit.tsx:123
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3906,8 +3979,8 @@ msgid "Loading playbook contents.."
 msgstr "playbook の内容を読み込んでいます.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
 #: ../html/src/manager/state/highstate.tsx:119
-#: ../html/src/manager/state/recurring-states-edit.tsx:115
 msgid "Test mode"
 msgstr "テストモード"
 
@@ -4013,15 +4086,6 @@ msgstr "削除済み"
 msgid "Package States"
 msgstr "パッケージの状態"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:318
-#: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
-msgid "State"
-msgstr "都道府県"
-
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:37
 msgid "Package states have been saved."
 msgstr "パッケージの状態を保存しました。"
@@ -4037,66 +4101,66 @@ msgstr "概要"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)のインストール"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
 msgstr ""
+"このシステムには、次のProgram Temporary Fixes (PTFs)をインストールできます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)を利用できません。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
-#, fuzzy
 msgid "Install PTFs"
-msgstr "インストール済み"
+msgstr "PTFsのインストール"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)インストールの確認"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)の削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
 msgstr ""
+"現在このシステムには次のProgram Temporary Fixes (PTFs)がインストールされてい"
+"ます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)がインストールされていません。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
-#, fuzzy
 msgid "Remove PTFs"
-msgstr "削除"
+msgstr "PTFsの削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)削除の確認"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "このシステムで実行できる関連アクションはありません。"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "インストールされているPTFsの一覧表示/削除"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
-#, fuzzy
 msgid "Install PTF"
-msgstr "インストール済み"
+msgstr "PTFのインストール"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
@@ -4245,41 +4309,35 @@ msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:79
 msgid "Packages in no channel"
-msgstr ""
+msgstr "チャンネルのないパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "All managed packages"
-msgstr ""
+msgstr "すべての管理パッケージ"
 
 #: ../html/src/manager/packages/list.tsx:88
-#, fuzzy
 msgid " Package Management "
-msgstr "パッケージ管理スタックに影響があります"
+msgstr " パッケージ管理 "
 
 #: ../html/src/manager/packages/list.tsx:116
-#, fuzzy
 msgid "Binary packages"
-msgstr "パッケージの検索"
+msgstr "バイナリパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:117
-#, fuzzy
 msgid "Source packages"
-msgstr "パッケージの検索"
+msgstr "ソースパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:125
-#, fuzzy
 msgid "package"
 msgstr "パッケージ"
 
 #: ../html/src/manager/packages/list.tsx:144
-#, fuzzy
 msgid "No Packages."
-msgstr "パッケージ"
+msgstr "パッケージがありません。"
 
 #: ../html/src/manager/packages/list.tsx:170
-#, fuzzy
 msgid "Content Provider"
-msgstr "クラスタのプロバイダ"
+msgstr "コンテンツプロバイダ"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4428,8 +4486,9 @@ msgid "City"
 msgstr "市区町村"
 
 #: ../html/src/manager/proxy/container-config.tsx:320
+#: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 #: ../html/src/manager/state/highstate-summary.tsx:169
-#: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -4467,6 +4526,192 @@ msgstr "PEM形式"
 #: ../html/src/manager/proxy/container-config.tsx:370
 msgid "Proxy SSL private key"
 msgstr "プロキシSSL機密鍵"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:88
+msgid "Execution time"
+msgstr "実行時間"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:152
+msgid "State:"
+msgstr "状態:"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:150
+msgid "Active"
+msgstr "有効"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+msgid "Inactive"
+msgstr "無効"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:157
+msgid "Test"
+msgstr "テスト"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:158
+msgid "True"
+msgstr "はい"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
+#, fuzzy
+msgid "Action type"
+msgstr "動作"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
+msgid "Target type"
+msgstr "ターゲットタイプ"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:170
+#, fuzzy
+msgid "Target name"
+msgstr "ターゲットホスト名"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:174
+msgid "Created by"
+msgstr "作成者"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
+msgid "Created at"
+msgstr "作成日時"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:185
+msgid "Quartz format string"
+msgstr "クォーツ書式文字列"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:230
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:237
+#, fuzzy
+msgid "Delete Recurring Action Schedule"
+msgstr "繰り返し状態スケジュールの削除"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:231
+msgid "Are you sure you want to delete this schedule?"
+msgstr "このスケジュールを削除してよろしいですか？"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:239
+#, fuzzy
+msgid "State configuration for {0}"
+msgstr "状態設定チャンネル"
+
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:246
+#, fuzzy
+msgid "Order"
+msgstr "並べ替え"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:83
+#, fuzzy
+msgid "Schedule successfully updated."
+msgstr "スケジュールしました"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
+#, fuzzy
+msgid "Schedule successfully created."
+msgstr "スケジュールしました"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+msgid "Update "
+msgstr "更新 "
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+msgid "Create "
+msgstr "作成 "
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+msgid "Schedule Recurring Highstate"
+msgstr "繰り返しの Highstate のスケジュール"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:196
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#, fuzzy
+msgid "Action Type"
+msgstr "動作"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+msgid "Configure states to execute"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:112
+#, fuzzy
+msgid "Recurring Actions"
+msgstr "繰り返し状態"
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:117
+msgid "The following recurring actions have been created."
+msgstr "繰り返し動作が作成されました。"
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:121
+msgid ""
+"To create new recurring actions head to the system, group or organization "
+"you want to create the action for."
+msgstr ""
+"新しい定期的なアクションを作成するには、アクションを作成するシステム、グルー"
+"プ、または組織に移動します。"
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:172
+msgid "Frequency"
+msgstr "頻度"
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:180
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+msgid "Target Type"
+msgstr "ターゲットタイプ"
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:188
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#, fuzzy
+msgid "Target Name"
+msgstr "ターゲットホスト名"
+
+#: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+msgid "Minion"
+msgstr "minion"
+
+#: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+msgid "Group"
+msgstr "グループ"
+
+#: ../html/src/manager/recurring/recurring-actions.tsx:133
+msgid "Error when deleting the action. Check if Taskomatic is running"
+msgstr ""
+"動作の削除時にエラーが発生しました。 Taskomatic が動作しているかご確認くださ"
+"い"
+
+#: ../html/src/manager/recurring/recurring-actions.tsx:148
+msgid ""
+"The below times are displayed in the server time zone {0}. The scheduled "
+"time will be the server time."
+msgstr ""
+"サーバのタイムゾーン {0} には、以下の時間が表示されます。スケジュールされた時"
+"間はサーバ時間になります。"
+
+#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
+#, fuzzy
+msgid "Select an Action Type"
+msgstr "独自の info 鍵の選択"
+
+#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
+#, fuzzy
+msgid "Select a Target Type"
+msgstr "ターゲットタイプ"
+
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#, fuzzy
+msgid "Custom State"
+msgstr "カスタムチャンネル"
+
+#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
+#, fuzzy
+msgid "Filter"
+msgstr "フィルタ"
+
+#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
+#, fuzzy
+msgid "Select a filter"
+msgstr "スケジュールの選択:"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4679,9 +4924,8 @@ msgid "System Group"
 msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "highstate の適用を "
+msgstr "highstateの適用が次のようになりました: {0}。"
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
@@ -4690,126 +4934,6 @@ msgstr "highstate の適用"
 #: ../html/src/manager/state/highstate.tsx:136
 msgid "Create Recurring"
 msgstr "繰り返し作成"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:42
-msgid "Execution time"
-msgstr "実行時間"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:99
-msgid "State:"
-msgstr "状態:"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:100
-#: ../html/src/manager/state/recurring-states-list.tsx:97
-msgid "Active"
-msgstr "有効"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:100
-msgid "Inactive"
-msgstr "無効"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:104
-msgid "Test"
-msgstr "テスト"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:105
-msgid "True"
-msgstr "はい"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:109
-msgid "Target type"
-msgstr "ターゲットタイプ"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:114
-msgid "Organization name"
-msgstr "組織名"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:119
-msgid "Created by"
-msgstr "作成者"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:124
-msgid "Created at"
-msgstr "作成日時"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:130
-msgid "Quartz format string"
-msgstr "クォーツ書式文字列"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:173
-#: ../html/src/manager/state/recurring-states-list.tsx:159
-msgid "Delete Recurring State Schedule"
-msgstr "繰り返し状態スケジュールの削除"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:174
-msgid "Are you sure you want to delete this schedule?"
-msgstr "このスケジュールを削除してよろしいですか？"
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:123
-msgid "Update "
-msgstr "更新 "
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:123
-msgid "Create "
-msgstr "作成 "
-
-#: ../html/src/manager/state/recurring-states-edit.tsx:141
-msgid "Schedule Recurring Highstate"
-msgstr "繰り返しの Highstate のスケジュール"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:60
-msgid "Recurring States"
-msgstr "繰り返し状態"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:65
-msgid "The following recurring actions have been created."
-msgstr "繰り返し動作が作成されました。"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:69
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
-msgstr ""
-"新しい定期的なアクションを作成するには、アクションを作成するシステム、グルー"
-"プ、または組織に移動します。"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:92
-msgid "No schedules created."
-msgstr "スケジュールは作成されていません。"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:113
-msgid "Frequency"
-msgstr "頻度"
-
-#: ../html/src/manager/state/recurring-states-list.tsx:120
-msgid "Target Type"
-msgstr "ターゲットタイプ"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:4
-msgid "Minion"
-msgstr "minion"
-
-#: ../html/src/manager/state/recurring-states-utils.tsx:6
-msgid "Group"
-msgstr "グループ"
-
-#: ../html/src/manager/state/recurring-states.tsx:142
-msgid "Schedule successfully"
-msgstr "スケジュールしました"
-
-#: ../html/src/manager/state/recurring-states.tsx:168
-msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
-"動作の削除時にエラーが発生しました。 Taskomatic が動作しているかご確認くださ"
-"い"
-
-#: ../html/src/manager/state/recurring-states.tsx:212
-msgid ""
-"The below times are displayed in the server time zone {0}. The scheduled "
-"time will be the server time."
-msgstr ""
-"サーバのタイムゾーン {0} には、以下の時間が表示されます。スケジュールされた時"
-"間はサーバ時間になります。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -4862,17 +4986,18 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムは"
+msgstr ""
+"ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
-msgstr "システム"
+msgstr "　"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr ""
+msgstr "トランザクションシステムの場合は、再起動して登録を完了してください"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
@@ -6413,6 +6538,15 @@ msgstr "未定義"
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
 
+#~ msgid "Search in configuration channels"
+#~ msgstr "設定チャンネル内での検索"
+
+#~ msgid "Organization name"
+#~ msgstr "組織名"
+
+#~ msgid "No schedules created."
+#~ msgstr "スケジュールは作成されていません。"
+
 #~ msgid "Action has been successfully added to the "
 #~ msgstr "アクションを追加しました "
 
@@ -6436,9 +6570,6 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "First Name"
 #~ msgstr "名"
-
-#~ msgid "Last Name"
-#~ msgstr "姓"
 
 #~ msgid "Minimum 4 characters"
 #~ msgstr "最低 4 文字"
@@ -6716,6 +6847,3 @@ msgstr "foo {0} tea {1}"
 
 #~ msgid "Select an image store"
 #~ msgstr "イメージストアの選択"
-
-#~ msgid "Select a custom info key"
-#~ msgstr "独自の info 鍵の選択"

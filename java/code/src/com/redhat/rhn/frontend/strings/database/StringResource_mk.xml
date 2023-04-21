@@ -300,84 +300,84 @@
       </trans-unit>
       <trans-unit id="Asia/Jakarta" xml:space="preserve">
         <source>(GMT+0700) Thailand</source>
-        <target/>
+        <target>(GMT+0700) Тајланд</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Cocos" xml:space="preserve">
         <source>(GMT+0630) Burma</source>
-        <target/>
+        <target>(GMT+0630) Бурма</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Chagos" xml:space="preserve">
         <source>(GMT+0600) Bangladesh</source>
-        <target/>
+        <target>(GMT+0600) Бангладеш</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Katmandu" xml:space="preserve">
         <source>(GMT+0545) Nepal</source>
-        <target/>
+        <target>(GMT+0545) Непал</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Calcutta" xml:space="preserve">
         <source>(GMT+0530) India (Calcutta)</source>
-        <target/>
+        <target>(GMT+0530) Индија (Калкута)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Maldives" xml:space="preserve">
         <source>(GMT+0500) Pakistan</source>
-        <target/>
+        <target>(GMT+0500) Пакистан</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
-        <target/>
+        <target>(GMT+0430) Авганистан</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Mauritius" xml:space="preserve">
         <source>(GMT+0400) Russia (Samara)</source>
-        <target/>
+        <target>(GMT+0400) Русија (Самара)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/Azores" xml:space="preserve">
         <source>(GMT-0100) Azores</source>
-        <target/>
+        <target>(GMT-0100) Азори</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
         <source>(GMT-0200) Sandwich Islands</source>
-        <target/>
+        <target>(GMT-0200) Сендвич Острови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Midway" xml:space="preserve">
         <source>(GMT-1100) Midway</source>
-        <target/>
+        <target>(GMT-1100) Мидвеј</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Santiago" xml:space="preserve">
         <source>(GMT-0300) Chile (Continental)</source>
-        <target/>
+        <target>(GMT-0300) Чиле (Континентално)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
