@@ -55,26 +55,26 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
               <Messages items={errorMessages} />
             </div>
           </div>
-            <form
-               className={styles.loginForm}
-               onSubmit={async (event) => {
-                  event.preventDefault();
-                  if (isLoading) {
-                    return;
-                  }
+          <form
+            className={styles.loginForm}
+            onSubmit={async (event) => {
+              event.preventDefault();
+              if (isLoading) {
+                return;
+              }
 
-                  setIsLoading(true);
-                  const success = await onLogin({
-                    login: loginInput.value,
-                    password: passwordInput.value,
-                  });
-                  if (success) {
-                    window.location.replace(props.bounce);
-                  }
-                  setIsLoading(false);
-                }}
-                name="loginForm"
-                >
+              setIsLoading(true);
+              const success = await onLogin({
+                login: loginInput.value,
+                password: passwordInput.value,
+              });
+              if (success) {
+                window.location.replace(props.bounce);
+              }
+              setIsLoading(false);
+            }}
+            name="loginForm"
+          >
             <h1 className={flatten([styles.title, styles.loginTitle])}>{t("Sign In")}</h1>
             <label htmlFor="username">{t("Username")}</label>
             <input
@@ -114,9 +114,9 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             </span>
             {props.customFooter && <span>{props.customFooter}</span>}
           </div>
+        </div>
+      </section>
     </div>
-   </section>
-  </div>
   );
 };
 
