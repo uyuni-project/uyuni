@@ -28,9 +28,9 @@ Add more tasks if needed.
 - [ ] Lock the `Manager-X.Y` branch
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-X.Y` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] Ask the Doc Squad to submit an update of the doc package to the relevant `Devel:Galaxy:Manager:X.Y` project, and ask them to warn the translators so they can start their work. A Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) should get created a few days before the release
-- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91.
+- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
 - [ ] Confirm that the SR for the documentation is merged, and translators warned
-- [ ] Confirm that the translations are merged
+- [ ] Merge the PR for the translations with Confirm that the translations are merged with the option `Merge pull request`
 - [ ] Ask the Ion Squad to promote all salt versions that have updates, including bundle (not needed for MUs without salt/client tools)
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Check all the [tests for the relevant version](https://ci.suse.de/view/Manager/): everything should be green, or otherwise submission must be approved by the RRTG

@@ -22,7 +22,8 @@ Add more tasks if needed.
 - [ ] Confirm that the documentation is ready.
 - [ ] [Lock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `master` branch (check the checkbox for `Restrict who can push to matching branches`)
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
-- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations from `master-weblate` to `master`. If nobody from Orion is available, ask @parlt91.
+- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations from `master-weblate` to `master`. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
+- [ ] Merge the PR for the translations with Confirm that the translations are merged with the option `Merge pull request`
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Adjust the version number in `web/conf/rhn_web.conf` (`web.version.uyuni`)
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
