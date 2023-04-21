@@ -356,28 +356,28 @@
       </trans-unit>
       <trans-unit id="Atlantic/Azores" xml:space="preserve">
         <source>(GMT-0100) Azores</source>
-        <target/>
+        <target>(GMT-0100) Азори</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
         <source>(GMT-0200) Sandwich Islands</source>
-        <target/>
+        <target>(GMT-0200) Сендвич Острови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Midway" xml:space="preserve">
         <source>(GMT-1100) Midway</source>
-        <target/>
+        <target>(GMT-1100) Мидвеј</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Santiago" xml:space="preserve">
         <source>(GMT-0300) Chile (Continental)</source>
-        <target/>
+        <target>(GMT-0300) Чиле (Континентално)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
