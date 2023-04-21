@@ -62,6 +62,25 @@ export function SystemsInventory(props: Props) {
           cell={(item) => item.kernelVersion || "-"}
         />
         <Column
+        columnKey="entitlementLevel"
+        comparator={Utils.sortByText}
+                header={t("System Type")}
+                cell={(item) => item.entitlement}
+                />
+        <Column
+          columnKey="virtualized"
+          comparator={Utils.sortByText}
+          header={t("Virtualized")}
+          cell={(item) => {
+            if (item.isVirtualized) {
+              return item.virtType;
+            } else{
+              return "-";
+            }
+          }}
+        />
+
+        <Column
           columnKey="totalErrataCount"
           comparator={Utils.sortByText}
           header={t("Patches")}

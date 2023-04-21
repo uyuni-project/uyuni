@@ -48,6 +48,10 @@ public class SystemInventoryOverview extends BaseTupleDto implements Serializabl
     private String organization;
     private String architecture;
 
+    private String entitlement;
+    private Boolean isVirtualized;
+    private String virtType;
+
 
     /**
      * Default constructor
@@ -83,6 +87,10 @@ public class SystemInventoryOverview extends BaseTupleDto implements Serializabl
 
         organization = getTupleValue(tuple, "organization", String.class).orElse(null);
         architecture = getTupleValue(tuple, "architecture", String.class).orElse(null);
+
+        entitlement = getTupleValue(tuple, "entitlements", String.class).orElse(null);
+        isVirtualized = getTupleValue(tuple, "is_virtualized", Boolean.class).orElse(false);
+        virtType = getTupleValue(tuple, "virt_type", String.class).orElse(null);
     }
 
 
@@ -193,5 +201,29 @@ public class SystemInventoryOverview extends BaseTupleDto implements Serializabl
 
     public void setArchitecture(String architectureIn) {
         architecture = architectureIn;
+    }
+
+    public String getEntitlement() {
+        return entitlement;
+    }
+
+    public void setEntitlement(String entitlementIn) {
+        entitlement = entitlementIn;
+    }
+
+    public void setVirtualized(Boolean virtualizedIn) {
+        isVirtualized = virtualizedIn;
+    }
+
+    public Boolean getVirtualized() {
+        return isVirtualized;
+    }
+
+    public void setVirtType(String virtTypeIn) {
+        virtType = virtTypeIn;
+    }
+
+    public String getVirtType() {
+        return virtType;
     }
 }

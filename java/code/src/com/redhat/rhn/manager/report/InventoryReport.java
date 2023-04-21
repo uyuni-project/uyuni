@@ -69,6 +69,70 @@ public class InventoryReport {
                             "    systemoutdated.packages_out_of_date,\n" +
                             "    systemoutdated.errata_out_of_date,\n" +
                             "    system.organization,\n" +
+                            "    entitlements.entitlements,\n" +
+                            "    systemvirtualdata.virtual_system_id IS NOT NULL AS is_virtualized,\n" +
+                            "    systemvirtualdata.instance_type_name AS virt_type,\n" +
+                            "    system.architecture")
+                    .from("system \n" +
+                            "     LEFT JOIN systemoutdated " +
+                            " ON system.mgm_id = systemoutdated.mgm_id " +
+                            " AND system.system_id = systemoutdated.system_id " +
+                            " left join " +
+                            "(SELECT systementitlement.mgm_id, " +
+                                "systementitlement.system_id, " +
+                                "string_agg((systementitlement.system_group_id || ' - '::::text)" +
+                                    " || systementitlement.name::::text, ';'::::text) AS entitlements " +
+                                "FROM systementitlement " +
+                                "GROUP BY systementitlement.mgm_id, systementitlement.system_id) as entitlements " +
+                            "on system.system_id=entitlements.system_id and system.mgm_id=entitlements.mgm_id" +
+                            " LEFT JOIN systemvirtualdata " +
+                                " ON system.mgm_id = systemvirtualdata.mgm_id " +
+                                " AND system.system_id = systemvirtualdata.virtual_system_id"
+                    )
+                    .where("system.organization = :user_org and system.mgm_id = 1")
+                    .run(Map.of("user_org", user.getOrg().getName()),
+                            pc, parser, SystemInventoryOverview.class, rh.getSession());
+        }
+        catch (RuntimeException ex) {
+            try {
+                rh.rollbackTransaction();
+            }
+            catch (RuntimeException rollbackException) {
+                log.warn("Unable to rollback transaction", rollbackException);
+            }
+
+            throw new RuntimeException("Unable to get data from reporting db", ex);
+        }
+        finally {
+            rh.closeSession();
+            rh.closeSessionFactory();
+        }
+    }
+
+    public static DataResult<SystemInventoryOverview> getSecurityReport(User user,
+                                                                          Function<Optional<PageControl>,
+                                                                          PagedSqlQueryBuilder.FilterWithValue> parser,
+                                                                          PageControl pc) {
+        ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
+        ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
+
+        try {
+            return new PagedSqlQueryBuilder("profile_name")
+                    .select("system.mgm_id,\n" +
+                            "    system.system_id,\n" +
+                            "    system.minion_id,\n" +
+                            "    system.machine_id,\n" +
+                            "    system.profile_name,\n" +
+                            "    system.hostname,\n" +
+                            "    system.last_checkin_time,\n" +
+                            "    system.synced_date,\n" +
+                            "    system.kernel_version,\n" +
+                            "    systemoutdated.packages_out_of_date,\n" +
+                            "    systemoutdated.errata_out_of_date,\n" +
+                            "    system.organization,\n" +
+                            "    system.entitlements,\n" +
+                            "    system.is_virtualized,\n" +
+                            "    system.virt_type,\n" +
                             "    system.architecture")
                     .from("system \n" +
                             "     LEFT JOIN systemoutdated " +
