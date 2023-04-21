@@ -24,21 +24,33 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
-import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
+import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
+import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
+import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,11 +60,14 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -77,26 +92,29 @@ public class RecurringActionController {
      * @param jade the template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/schedule/recurring-states",
-                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringStates))),
+        get("/manager/schedule/recurring-actions",
+                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
                 jade);
 
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
+        get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
+        get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
         delete("/manager/api/recurringactions/:id/delete", asJson(withUser(RecurringActionController::deleteSchedule)));
+
     }
 
     /**
-     * Handler for the Recurring States schedule page.
+     * Handler for the Recurring Actions schedule page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringStates(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-states.jade");
+    public static ModelAndView recurringActions(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
     }
 
     /**
@@ -108,10 +126,27 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listAll(Request request, Response response, User user) {
-        List<RecurringStateScheduleJson> schedules =
-                actionsToJson(RecurringActionManager.listAllRecurringActions(user));
+        PageControlHelper pageHelper = new PageControlHelper(request, "scheduleName");
+        PageControl pc = pageHelper.getPageControl();
+        DataResult<RecurringActionScheduleJson> schedules =
+                RecurringActionManager.listAllRecurringActions(user, pc, PagedSqlQueryBuilder::parseFilterAsText);
+        return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
+    }
 
-        return json(response, schedules);
+    /**
+     * Processes a GET request to get the details of a recurring action based on its id.
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return JSON representing the action details object
+     */
+    public static String getDetails(Request request, Response response, User user) {
+        long id = Long.parseLong(request.params("id"));
+        Optional<RecurringAction> action = RecurringActionManager.find(id);
+        if (action.isEmpty()) {
+            return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
+        }
+        return json(response, actionToDetailsDto(action.get()));
     }
 
     /**
@@ -123,7 +158,7 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listByEntity(Request request, Response response, User user) {
-        Type type = Type.valueOf(request.params("type"));
+        TargetType type = TargetType.valueOf(request.params("type"));
         long id = Long.parseLong(request.params("id"));
 
         List<? extends RecurringAction> schedules;
@@ -144,43 +179,85 @@ public class RecurringActionController {
         return json(response, actionsToJson(schedules));
     }
 
-    private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
+    /**
+     * Get a list of all available internal states and config channels as well as the current assignments for
+     * a given recurring states action
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return JSON result of the API call
+     */
+    public static String getStatesConfig(Request request, Response response, User user) {
+        String target = request.queryParams("target");
+        String targetLowerCase = target != null ? target.toLowerCase() : "";
+
+        Set<StateConfigJson> result = new HashSet<>(); // use a set to avoid duplicates
+        if (request.queryParams("id") != null) {
+            Long id = Long.parseLong(request.queryParams("id"));
+            Optional<RecurringAction> action = RecurringActionManager.find(id);
+            if (action.isEmpty()) {
+                return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
+            }
+            if (!(action.get().getRecurringActionType() instanceof RecurringState)) {
+                Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
+                        LocalizationService.getInstance().getMessage("recurring_action_invalid_action_type"))));
+            }
+            result.addAll(StateConfigJson.listOrderedStates(
+                    ((RecurringState)action.get().getRecurringActionType()).getStateConfig())
+                    .stream().filter(config -> config.getName().toLowerCase().contains(targetLowerCase))
+                    .collect(Collectors.toList())
+            );
+        }
+
+        // Add available config channels
+        ConfigurationManager.getInstance().listGlobalChannels(user).stream()
+                .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
+                .map(StateConfigJson::new)
+                .forEach(result::add);
+
+        // Add internal states
+        RecurringActionFactory.listInternalStates().stream()
+                .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
+                .map(StateConfigJson::new)
+                .forEach(result::add);
+
+        return json(response, result);
+    }
+
+    private static List<RecurringActionScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
         return actions
                 .stream()
-                .map(a -> actionToJson(a, a.getType()))
+                .map(RecurringActionScheduleJson::new)
                 .collect(Collectors.toList());
     }
 
-    private static RecurringStateScheduleJson actionToJson(RecurringAction a, Type targetType) {
-        RecurringStateScheduleJson json = new RecurringStateScheduleJson();
-        json.setRecurringActionId(a.getId());
-        json.setScheduleName(a.getName());
-
-        String cronExpr = a.getCronExpr();
-        json.setCron(cronExpr);
-        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
+    private static RecurringActionDetailsDto actionToDetailsDto(RecurringAction action) {
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, action.getCronExpr());
         Map<String, String> cronTimes = new HashMap<>();
         cronTimes.put("minute", picker.getMinute());
         cronTimes.put("hour", picker.getHour());
         cronTimes.put("dayOfMonth", picker.getDayOfMonth());
         cronTimes.put("dayOfWeek", picker.getDayOfWeek());
-
-        json.setType(picker.getStatus());
-        json.setCronTimes(cronTimes);
-        json.setActive(a.isActive());
-        json.setTest(a.isTestMode());
-        json.setTargetType(targetType.toString());
-        json.setTargetId(a.getEntityId());
-        json.setCreated(a.getCreated());
-        json.setCreatorLogin(a.getCreator().getLogin());
-        if (a instanceof OrgRecurringAction) {
-            json.setOrgName(OrgFactory.lookupById(a.getEntityId()).getName());
+        RecurringActionDetailsDto dto = new RecurringActionDetailsDto();
+        dto.setCreated(action.getCreated());
+        dto.setCreatorLogin(action.getCreator().getLogin());
+        dto.setType(picker.getStatus());
+        dto.setCronTimes(cronTimes);
+        if (RecurringActionType.ActionType.HIGHSTATE.equals(action.getActionType())) {
+            dto.setTest(((RecurringHighstate) action.getRecurringActionType()).isTestMode());
         }
-        return json;
+        else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(action.getActionType())) {
+            dto.setTest(((RecurringState) action.getRecurringActionType()).isTestMode());
+            dto.setStates(StateConfigJson.listOrderedStates(
+                    ((RecurringState) action.getRecurringActionType()).getStateConfig()));
+        }
+        return dto;
     }
 
+
     /**
-     * Creates a new Recurring State Schedule
+     * Creates a new Recurring Action Schedule
      *
      * @param request the request
      * @param response the response
@@ -190,7 +267,7 @@ public class RecurringActionController {
     public static String save(Request request, Response response, User user) {
         List<String> errors = new LinkedList<>();
 
-        RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
+        RecurringActionScheduleJson json = GSON.fromJson(request.body(), RecurringActionScheduleJson.class);
 
         try {
             RecurringAction action = createOrGetAction(user, json);
@@ -212,10 +289,10 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
-    private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
+    private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {
         if (json.getRecurringActionId() == null) {
-            Type type = Type.valueOf(json.getTargetType().toUpperCase());
-            return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
+            RecurringAction.TargetType type = RecurringAction.TargetType.valueOf(json.getTargetType().toUpperCase());
+            return RecurringActionManager.createRecurringAction(type, json.getActionType(), json.getTargetId(), user);
         }
         else {
             return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
@@ -248,15 +325,56 @@ public class RecurringActionController {
         return json(response, ResultJson.success());
     }
 
-    private static void mapJsonToAction(RecurringStateScheduleJson json, RecurringAction action) {
+    private static Set<RecurringStateConfig> getStateConfigFromJson(Set<StateConfigJson> json, User user) {
+        if (json == null) {
+            throw new ValidatorException(LocalizationService.getInstance().getMessage(
+                    "recurring_action.empty_states_config"));
+        }
+        ConfigurationManager configManager = ConfigurationManager.getInstance();
+        StateConfigFactory stateConfigFactory = new StateConfigFactory();
+        Set<RecurringStateConfig> stateConfig = new HashSet<>();
+        json.forEach(config -> {
+            String type = config.getType();
+            if (type.equals("internal_state")) {
+                RecurringActionFactory.lookupInternalStateByName(config.getName()).ifPresent(state ->
+                        stateConfig.add(stateConfigFactory.getRecurringState(state, config.getPosition().longValue())));
+            }
+            else {
+                ConfigChannel channel = configManager.lookupConfigChannel(user, config.getId());
+                if (channel != null) {
+                    stateConfig.add(stateConfigFactory.getRecurringState(channel, config.getPosition().longValue()));
+                }
+            }
+        });
+        return stateConfig;
+    }
+
+    private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
-        action.setTestMode(json.isTest());
+
+        RecurringActionDetailsDto details = json.getDetails();
+        if (details == null) {
+            return;
+        }
+
+        if (action.getRecurringActionType() instanceof RecurringHighstate) {
+            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(details.isTest());
+        }
+        else if (action.getRecurringActionType() instanceof RecurringState) {
+            RecurringState stateType = (RecurringState) action.getRecurringActionType();
+            stateType.setTestMode(details.isTest());
+            if (json.getRecurringActionId() == null ||
+                    (json.getRecurringActionId() != null && details.getStates() != null)) {
+                Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
+                ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
+            }
+        }
 
         String cron = json.getCron();
         if (StringUtils.isBlank(cron)) {
             cron = RecurringEventPicker
-                    .prepopulatePicker("date", json.getType(), json.getCronTimes(), null)
+                    .prepopulatePicker("date", details.getType(), details.getCronTimes(), null)
                     .getCronEntry();
         }
         action.setCronExpr(cron);

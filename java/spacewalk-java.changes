@@ -1,3 +1,13 @@
+- Update Cobbler profile when a new image is deployed
+- Add mapping of image URLs for containerized proxy
+- Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
+- remove channels from client after transfer to a different
+  organization (bsc#1209220)
+- Fix RHEL9 / SLL9 product discovery (bsc#1209993)
+- fix displaying system channels when no base product is installed
+  (bsc#1206423)
+- fix NPE in cobbler system sync when server has no creator set
+- Recurring custom states
 - fix credentials and other secrets disclosure when debug log is enabled
   CVE-2023-22644 (bsc#1210154)
 - Removed the expensive 'diff' column (bsc#1208427)
@@ -9,7 +19,7 @@
 - Fix possible "NullPointerException" issues when running cobbler-sync-bunch
 - Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
 - Set jasper development mode to false (bsc#1206191)
-- Fixed select all for ptf packages list
+- Fixed select all for ptf packages list (bsc#1209143)
 - Added SLES 12 support for ptf removal
 - Fixed issue with checking ptf repositories on cloned channels
 - Add support to add optional channels via webUI

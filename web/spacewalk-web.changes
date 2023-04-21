@@ -1,3 +1,7 @@
+- Disable login button with empty password
+- Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+- Increase datetimepicker font sizes (bsc#1210437)
+- Recurring custom states
 - fix an issue where the datetimepicker shows wrong date (bsc#1209231)
 - Add support to add optional channels via webUI
 - Added pages to install and remove ptf

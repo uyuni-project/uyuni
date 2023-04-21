@@ -31,22 +31,15 @@ public class ConfigChannelJson {
     private Long id;
     private String name;
     private String label;
+    private String description;
     private String type;
     private Integer position;
     private boolean assigned;
 
     /**
-     * @return the id
+     * Default constructor
      */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn the id
-     */
-    public void setId(Long idIn) {
-        this.id = idIn;
+    public ConfigChannelJson() {
     }
 
     /**
@@ -58,6 +51,7 @@ public class ConfigChannelJson {
         this.id = channelIn.getId();
         this.name = channelIn.getName();
         this.label = channelIn.getLabel();
+        this.description = channelIn.getDescription();
         this.type = channelIn.getConfigChannelType().getLabel();
         this.position = null;
         this.assigned = false;
@@ -73,6 +67,20 @@ public class ConfigChannelJson {
         this(channelIn);
         this.position = positionIn;
         this.assigned = true;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the id
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
@@ -101,6 +109,20 @@ public class ConfigChannelJson {
      */
     public void setLabel(String labelIn) {
         this.label = labelIn;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param descriptionIn the description
+     */
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
     }
 
     /**

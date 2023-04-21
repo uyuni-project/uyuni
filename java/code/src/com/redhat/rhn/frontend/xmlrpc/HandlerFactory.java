@@ -54,7 +54,10 @@ import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.LegacyRecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringCustomStateHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -185,7 +188,11 @@ public class HandlerFactory {
         factory.addHandler("packages.search", new PackagesSearchHandler());
         factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
         factory.addHandler("proxy", proxyHandler);
-        factory.addHandler("recurringaction", new RecurringActionHandler());
+        // TODO: 'recurringaction' is deprecated in favor of the 'recurring' namespace. Remove this after 4.3.6
+        factory.addHandler("recurringaction", new LegacyRecurringActionHandler());
+        factory.addHandler("recurring", new RecurringActionHandler());
+        factory.addHandler("recurring.highstate", new RecurringHighstateHandler());
+        factory.addHandler("recurring.custom", new RecurringCustomStateHandler());
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());

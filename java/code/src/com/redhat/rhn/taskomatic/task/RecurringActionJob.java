@@ -14,10 +14,17 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
@@ -26,12 +33,13 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * Used to run a scheduled Recurring Highstate Apply action
+ * Used to schedule actions from Recurring action schedules
  */
-public class RecurringStateApplyJob extends RhnJavaJob {
+public class RecurringActionJob extends RhnJavaJob {
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
@@ -68,8 +76,20 @@ public class RecurringStateApplyJob extends RhnJavaJob {
         List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         try {
-            ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
-                    Optional.of(action.isTestMode()), context.getFireTime(), null);
+            RecurringActionType actionType = action.getRecurringActionType();
+            if (actionType instanceof RecurringHighstate) {
+                ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
+                        Optional.of(((RecurringHighstate) actionType).isTestMode()), context.getFireTime(), null);
+            }
+            else if (actionType instanceof RecurringState) {
+                Action a = ActionManager.scheduleApplyStates(action.getCreator(),
+                        minionIds, List.of("recurring"),
+                        Optional.of(Map.of("rec_id", action.getId().toString())),
+                        context.getFireTime(),
+                        Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()));
+                ActionFactory.save(a);
+                new TaskomaticApi().scheduleActionExecution(a);
+            }
         }
         catch (TaskomaticApiException e) {
             log.error("Error scheduling states application for recurring action {}", action, e);

@@ -1,3 +1,4 @@
+- Show only cobbler menu entries for given branch
 - Fix handling of http 404 (bsc#1208624)
 
 -------------------------------------------------------------------

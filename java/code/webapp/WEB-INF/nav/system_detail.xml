@@ -197,9 +197,6 @@
     <rhn-tab name="Highstate">
       <rhn-tab-url>/rhn/manager/systems/details/highstate</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Recurring States">
-      <rhn-tab-url>/rhn/manager/systems/details/recurring-states</rhn-tab-url>
-    </rhn-tab>
     <rhn-tab name="Packages">
       <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
     </rhn-tab>
@@ -217,6 +214,10 @@
     <rhn-tab name="Ansible Control Node" url="/rhn/manager/systems/details/ansible/control-node" acl="system_has_ansible_control_node_entitlement()"/>
     <rhn-tab name="Playbooks" url="/rhn/manager/systems/details/ansible/playbooks" acl="system_has_ansible_control_node_entitlement()"/>
     <rhn-tab name="Inventories" url="/rhn/manager/systems/details/ansible/inventories" acl="system_has_ansible_control_node_entitlement()"/>
+  </rhn-tab>
+
+  <rhn-tab name="Recurring Actions" acl="system_has_salt_entitlement()">
+    <rhn-tab-url>/rhn/manager/systems/details/recurring-actions</rhn-tab-url>
   </rhn-tab>
 
   <rhn-tab name="Events" acl="system_has_management_entitlement() or system_has_salt_entitlement()">

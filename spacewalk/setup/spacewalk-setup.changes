@@ -1,3 +1,4 @@
+- Enable netapi clients in master configuration (required for Salt 3006)
 - Persist report_db_sslrootcert value (bsc#1210349)
 - Fix migration test
 - Escape `%` in spec file.
