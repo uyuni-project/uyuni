@@ -6,13 +6,13 @@ import _unionBy from "lodash/unionBy";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
+import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
 import { Messages, MessageType } from "./messages";
 import { Utils as MessagesUtils } from "./messages";
 import { RankingTable } from "./ranking-table";
 import { SaltStatePopup } from "./salt-state-popup";
-import Network from "../utils/network";
 
 function channelKey(channel) {
   return channel.label;
@@ -241,10 +241,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           </td>
           <td>{currentChannel.label}</td>
           <td>
-            <i
-              className="fa fa-info-circle fa-1-5x text-primary"
-              title={currentChannel.description}
-            />
+            <i className="fa fa-info-circle fa-1-5x text-primary" title={currentChannel.description} />
           </td>
           <td>
             <div className="form-group">
