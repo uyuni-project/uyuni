@@ -30,7 +30,7 @@ Add more tasks if needed.
 - [ ] Ask the Doc Squad to submit an update of the doc package to the `Devel:Galaxy:Manager:Head` project, and ask them to warn the translators so they can start their work. A Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) should get created a few days before the release
 - [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
 - [ ] Confirm that the SR for the documentation is merged, and translators warned
-- [ ] Merge the PR for the translations with Confirm that the translations are merged with the option `Merge pull request`
+- [ ] Merge the PR for the translations with the option `Merge pull request`
 - [ ] Ask the Ion Squad to promote all salt versions that have updates, including bundle
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Check all the [tests](https://ci.suse.de/view/Manager/view/Manager-Head/): everything should be green, or otherwise submission must be approved by QA
