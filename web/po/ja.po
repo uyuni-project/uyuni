@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:18+0200\n"
+"POT-Creation-Date: 2023-04-21 15:19+0200\n"
 "PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -1155,7 +1155,9 @@ msgstr "選択されたチャンネルは同期のスケジュールに成功し
 #: ../html/src/manager/admin/setup/products/products.tsx:270
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
-msgstr "「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してください。"
+msgstr ""
+"「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してく"
+"ださい。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -4082,7 +4084,8 @@ msgstr "Program Temporary Fixes (PTFs)のインストール"
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
-msgstr "このシステムには、次のProgram Temporary Fixes (PTFs)をインストールできます。 "
+msgstr ""
+"このシステムには、次のProgram Temporary Fixes (PTFs)をインストールできます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -4104,7 +4107,9 @@ msgstr "Program Temporary Fixes (PTFs)の削除"
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
-msgstr "現在このシステムには次のProgram Temporary Fixes (PTFs)がインストールされています。 "
+msgstr ""
+"現在このシステムには次のProgram Temporary Fixes (PTFs)がインストールされてい"
+"ます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -4945,7 +4950,8 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
+msgstr ""
+"ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
