@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 15:29+0100\n"
+"POT-Creation-Date: 2023-04-21 15:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,6 +213,22 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:363
 msgid "Assign"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:112
+msgid "Previous month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:113
+msgid "Next month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:114
+msgid "Previous year"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:115
+msgid "Next year"
 msgstr ""
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72

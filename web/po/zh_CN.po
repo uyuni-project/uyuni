@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 15:29+0100\n"
+"POT-Creation-Date: 2023-04-21 15:33+0200\n"
 "PO-Revision-Date: 2023-02-21 04:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -218,6 +218,23 @@ msgstr "通道标签"
 #: ../html/src/components/config-channels.tsx:363
 msgid "Assign"
 msgstr "指派"
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:112
+msgid "Previous month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:113
+msgid "Next month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:114
+msgid "Previous year"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#, fuzzy
+msgid "Next year"
+msgstr "下一页"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "
