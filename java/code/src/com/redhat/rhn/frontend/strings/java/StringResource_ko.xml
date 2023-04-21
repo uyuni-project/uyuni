@@ -11314,21 +11314,77 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">가장 빠른 실행 날짜가 너무 오래되어 이 작업이 실행되지 않았습니다. 예약과 픽업 사이 시간이 {0}시간 이상 경과하면 작업이 더 이상 관련이 없는 것으로 간주되어 삭제됩니다.
            이 작업을 실행하려면 다시 예약하십시오.</target>
       </trans-unit>
-      <trans-unit id="PTF" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
         <target state="final">PTF</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfpackage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
         <target state="final">프로그램 임시 수정(PTF)의 일부인 패키지: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfmaster" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.package.ptfmaster" xml:space="preserve">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
         <target state="final">프로그램 임시 수정(PTF) 패키지: {0}</target>
       </trans-unit>
-    </body>
+    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+        <source>Recurring Action type must be provided</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
+        <source>States configuration must be provided</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
+        <source>Recurring action has invalid type.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.uptodate" xml:space="preserve">
+        <source>Update the system, rebooting if required</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
