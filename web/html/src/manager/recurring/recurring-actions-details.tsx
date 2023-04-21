@@ -264,9 +264,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                 headerClass="text-center"
                 header={t("Description")}
                 columnKey="description"
-                cell={(row) => (
-                  <i className="fa fa-info-circle fa-1-5x text-primary" title={row.description} />
-                )}
+                cell={(row) => <i className="fa fa-info-circle fa-1-5x text-primary" title={row.description} />}
               />
             </Table>
           </div>
