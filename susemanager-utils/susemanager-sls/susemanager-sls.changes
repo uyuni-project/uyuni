@@ -1,3 +1,5 @@
+- disable salt-minion and remove its config file on cleanup (bsc#1209277)
+
 -------------------------------------------------------------------
 Wed Apr 19 12:56:27 CEST 2023 - marina.latini@suse.com
 
