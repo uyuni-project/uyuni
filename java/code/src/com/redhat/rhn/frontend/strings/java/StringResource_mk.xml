@@ -543,42 +543,42 @@
       </trans-unit>
       <trans-unit id="Config Channels" xml:space="preserve">
         <source>Config Channels</source>
-        <target/>
+        <target>Канали за конфигурација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Create Account" xml:space="preserve">
         <source>Create Account</source>
-        <target/>
+        <target>Создадете Акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom System Info" xml:space="preserve">
         <source>Custom System Info</source>
-        <target/>
+        <target>Персонални информации за системот</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="date" xml:space="preserve">
         <source>Date</source>
-        <target/>
+        <target>Датум</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Emails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Details" xml:space="preserve">
         <source>Details</source>
-        <target/>
+        <target>Детали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
-        <target/>
+        <target>Гости</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
