@@ -28,7 +28,6 @@ import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,8 +120,8 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         assertEquals(Distro.BOOTSTRAP_NAME, newProfile.get("distro"));
         String activationKeyToken = user.getOrg().getId() + "-" +
             ActivationKey.BOOTSTRAP_TOKEN;
-        String expectedOptions = "spacewalk_activationkey='" + activationKeyToken + "' spacewalk_hostname='"
-                + config.getHostname() + "' ROOTFS_FSCK='0'";
+        String expectedOptions = "spacewalk_activationkey=" + activationKeyToken + " spacewalk_hostname="
+                + config.getHostname() + " ROOTFS_FSCK=0";
         assertEquals(expectedOptions, ((String) newProfile.get("kernel_options")).trim());
 
         criteria.put("name", SystemRecord.BOOTSTRAP_NAME);

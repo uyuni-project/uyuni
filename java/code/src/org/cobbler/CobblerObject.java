@@ -366,7 +366,14 @@ public abstract class CobblerObject {
             }
             else {
                 for (String value : keyList) {
-                    string.append(key + "='"  + value + "' ");
+                    string.append(key).append("=");
+                    if (value != null && value.contains(" ")) {
+                        string.append("'").append(value).append("'");
+                    }
+                    else {
+                        string.append(value);
+                    }
+                    string.append(" ");
                 }
             }
         }

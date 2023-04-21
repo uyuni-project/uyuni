@@ -1,3 +1,4 @@
+- kernel options: only add quotes if there is a space in the value (bsc#1209926)
 - fix link to Knowledge Base articles (bsc#1210311)
 - Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
 - remove channels from client after transfer to a different
