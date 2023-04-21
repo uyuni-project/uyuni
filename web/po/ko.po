@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 15:29+0100\n"
+"POT-Creation-Date: 2023-04-21 15:33+0200\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/"
@@ -223,6 +223,23 @@ msgstr "채널 레이블"
 #: ../html/src/components/config-channels.tsx:363
 msgid "Assign"
 msgstr "할당"
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:112
+msgid "Previous month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:113
+msgid "Next month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:114
+msgid "Previous year"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#, fuzzy
+msgid "Next year"
+msgstr "다음"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "

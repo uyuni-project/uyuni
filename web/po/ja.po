@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 15:29+0100\n"
+"POT-Creation-Date: 2023-04-21 15:33+0200\n"
 "PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-2/ja/"
@@ -226,6 +226,23 @@ msgstr "チャンネルラベル"
 #: ../html/src/components/config-channels.tsx:363
 msgid "Assign"
 msgstr "割り当て"
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:112
+msgid "Previous month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:113
+msgid "Next month"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:114
+msgid "Previous year"
+msgstr ""
+
+#: ../html/src/components/datetime/DateTimePicker.tsx:115
+#, fuzzy
+msgid "Next year"
+msgstr "次へ"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "
@@ -4738,7 +4755,8 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:324
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
+msgstr ""
+"ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:326
 msgid "systems"
