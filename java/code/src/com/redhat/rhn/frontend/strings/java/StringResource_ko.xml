@@ -11195,11 +11195,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfpackage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
         <target state="final">프로그램 임시 수정(PTF)의 일부인 패키지: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfmaster" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.package.ptfmaster" xml:space="preserve">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
         <target state="final">프로그램 임시 수정(PTF) 패키지: {0}</target>
       </trans-unit>
@@ -11224,7 +11224,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">모듈성이 비활성화되었습니다. 대상 리포지토리에 모듈이 포함되지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="PTF" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
