@@ -19,10 +19,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-21 15:36+0200\n"
-"PO-Revision-Date: 2023-04-08 13:14+0000\n"
+"PO-Revision-Date: 2023-04-21 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4595,14 +4595,12 @@ msgstr "Preusporiadať"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:83
-#, fuzzy
 msgid "Schedule successfully updated."
-msgstr "Naplánované úspešne"
+msgstr "Naplánované úspešne."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
-#, fuzzy
 msgid "Schedule successfully created."
-msgstr "Naplánované úspešne"
+msgstr "Naplánované úspešne."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
 msgid "Update "
