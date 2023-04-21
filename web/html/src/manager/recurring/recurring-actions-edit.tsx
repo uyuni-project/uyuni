@@ -75,7 +75,9 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   updateSchedule = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
       .then((_) => {
-        const successMsg = <span>{this.isEdit() ? t("Schedule successfully updated.") : t("Schedule successfully created.")}</span>;
+        const successMsg = (
+          <span>{this.isEdit() ? t("Schedule successfully updated.") : t("Schedule successfully created.")}</span>
+        );
         this.props.onSetMessages(MessagesUtils.info(successMsg));
         this.props.onActionChanged("back");
       })
