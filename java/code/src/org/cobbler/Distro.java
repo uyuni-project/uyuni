@@ -17,6 +17,7 @@
  */
 package org.cobbler;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -248,7 +249,7 @@ public class Distro extends CobblerObject {
         private String name;
         private String kernel;
         private String initrd;
-        private Map<String, ? extends Object> ksmeta;
+        private Map<String, ? extends Object> ksmeta = new HashMap<>();
         private String breed;
         private String osVersion;
         private String arch;
