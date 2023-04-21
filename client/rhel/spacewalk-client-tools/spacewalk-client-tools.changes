@@ -1,5 +1,9 @@
-- remove mgr-virtualization usage
-- remove dependency to suseRegisterInfo
+-------------------------------------------------------------------
+Wed Apr 19 12:53:02 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.5-1
+  * remove mgr-virtualization usage
+  * remove dependency to suseRegisterInfo
 
 -------------------------------------------------------------------
 Tue Feb 21 12:32:57 CET 2023 - jgonzalez@suse.com

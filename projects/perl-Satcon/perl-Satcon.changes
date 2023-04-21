@@ -1,4 +1,8 @@
-- accept keys with dots
+-------------------------------------------------------------------
+Wed Apr 19 12:46:08 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.2-1
+  * accept keys with dots
 
 -------------------------------------------------------------------
 Wed Sep 28 11:14:34 CEST 2022 - jgonzalez@suse.com
