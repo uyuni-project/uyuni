@@ -1,3 +1,5 @@
+- remove channels from client after transfer to a different
+  organization (bsc#1209220)
 - Fix RHEL9 / SLL9 product discovery (bsc#1209993)
 
 -------------------------------------------------------------------
