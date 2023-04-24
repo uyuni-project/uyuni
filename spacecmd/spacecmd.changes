@@ -1,5 +1,9 @@
-- Display activation key details after executing the corresponding command (bsc#1208719)
-- Show targetted packages before actually removing them (bsc#1207830)
+-------------------------------------------------------------------
+Mon Apr 24 09:13:06 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Display activation key details after executing the corresponding command (bsc#1208719)
+  * Show targetted packages before actually removing them (bsc#1207830)
 
 -------------------------------------------------------------------
 Wed Feb 22 14:43:37 CET 2023 - jgonzalez@suse.com
