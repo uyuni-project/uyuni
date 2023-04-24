@@ -278,7 +278,7 @@ while read PKG_NAME; do
       fi
 
       # Add version from rhn_web on top of version from tito to have a continuity with already relased versions
-      sed "/^#\!BuildTag:/s/$/${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Dockerfile
+      sed "/^#\!BuildTag:/s/$/ ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
@@ -299,7 +299,7 @@ while read PKG_NAME; do
           NAME="uyuni\/${NAME}"
       fi
 
-      sed "/^#\!BuildTag:/ s/$/${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Chart.yaml
+      sed "/^#\!BuildTag:/ s/$/ ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)
