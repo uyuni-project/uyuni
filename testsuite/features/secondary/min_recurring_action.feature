@@ -7,6 +7,62 @@ Feature: Recurring Actions
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Create a minion Custom state Recurring Action
+    When I am on the "Recurring Actions" page of this "sle_minion"
+    Then I should see a "No schedules created. Use Create to add a schedule" text
+    When I click on "Create"
+    Then I should see a "Action Type" text
+    When I select "Custom state" from "actionTypeDescription"
+    Then I wait until I see a "Configure states to execute" text
+    When I check "Update certificates-cbox"
+    And I check "Sync States-cbox"
+    And I click on "Save Changes"
+    Then I shuould see a "Edit State Ranks" text
+    And I should see a "Update certificates" text
+    And I should see a "Sync States" text
+    And I should not see a "Sync Grains" text
+    And I should not see a "Update Software Channels" text
+    When I click on "Confirm"
+    Then I shuould see a "State assignments have been saved" text
+    And I enter "custom_state_schedule_name" as "scheduleName"
+    And I check radio button "schedule-daily"
+    And I pick "00:00" as time from "time-daily_time"
+    And I click on "Create Schedule"
+    Then I wait until I see "Schedule successfully created" text
+    Then I should see a "custom_state_schedule_name" text
+    And I should see a "Minion" text
+    And I should see a "0 0 0 ? * *" text
+
+  Scenario: Edit a minion Custom state Recurring Action
+    When I am on the "Recurring Actions" page of this "sle_minion"
+    Then I should see a "custom_state_schedule_name" text
+    When I click the "custom_state_schedule_name" item edit button
+    Then I should see a "Update Schedule" text
+    And I should see a "Reorder" text
+    When I uncheck "Update certificates-cbox"
+    And I uncheck "Sync States-cbox"
+    And I click on "Save Changes"
+    Then I should see a "There are no states assigned" text
+    When I click on "Confirm"
+    Then I should see a "State configuration must not be empty" text
+    And I uncheck "Update certificates-cbox"
+    And I click on "Save Changes"
+    Then I should not see a "Update certificates" text
+    When I click on "Confirm"
+    Then I should see a "State assignments have been saved" text
+    When I enter "custom_state_schedule_name_changed" as "scheduleName"
+    And I click on "Update Schedule"
+    Then I wait until I see "Schedule successfully updated" text
+    Then I should see a "custom_state_schedule_name_changed" text
+
+  Scenario: Delete a minion Custom state Recurring Action
+    When I am on the "Recurring Actions" page of this "sle_minion"
+    Then I should see a "custom_state_schedule_name_changed" text
+    When I click the "custom_state_schedule_name_changed" item delete button
+    Then I should see a "Delete Recurring Action Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'custom_state_schedule_name_changed' has been deleted." text
+
   Scenario: Create a minion Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "No schedules created. Use Create to add a schedule" text
