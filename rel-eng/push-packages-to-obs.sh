@@ -242,10 +242,10 @@ FAILED_PKG=
 
 # check which endpoint we are using to match the product
 if [ "${OSCAPI}" == "https://api.suse.de" ]; then
-    PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+    PRODUCT_VERSION="susemanager-$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)"
 else
     # Uyuni settings
-    PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+    PRODUCT_VERSION="uyuni-$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)"
 fi
 # to lowercase with ",," and replace spaces " " with "-"
 PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
