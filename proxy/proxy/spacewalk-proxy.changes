@@ -1,4 +1,8 @@
-- Better error message on missing systemid file (bsc#1209119)
+-------------------------------------------------------------------
+Mon Apr 24 09:13:26 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.16-1
+  * Better error message on missing systemid file (bsc#1209119)
 
 -------------------------------------------------------------------
 Wed Feb 22 14:44:05 CET 2023 - jgonzalez@suse.com
