@@ -1,10 +1,14 @@
-- Add package details to reposync error logging
-- Fix the mgr-inter-sync not creating valid repository metadata when dealing 
-  with empty channels (bsc#1207829)
-- Filter CLM modular packages using release strings (bsc#1207814)
-- Fix issues with kickstart syncing on mirrorlist repositories
-- Do not sync .mirrorlist and other non needed files
-- reposync: catch local file not found urlgrabber error properly (bsc#1208288)
+-------------------------------------------------------------------
+Mon Apr 24 09:16:25 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.21-1
+  * Add package details to reposync error logging
+  * Fix the mgr-inter-sync not creating valid repository metadata when dealing 
+    with empty channels (bsc#1207829)
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * Fix issues with kickstart syncing on mirrorlist repositories
+  * Do not sync .mirrorlist and other non needed files
+  * reposync: catch local file not found urlgrabber error properly (bsc#1208288)
 
 -------------------------------------------------------------------
 Tue Mar 21 13:39:32 CET 2023 - jgonzalez@suse.com
