@@ -1,5 +1,9 @@
-- Show only cobbler menu entries for given branch
-- Fix handling of http 404 (bsc#1208624)
+-------------------------------------------------------------------
+Mon Apr 24 07:22:35 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 4.3.6:
+  * Show only cobbler menu entries for given branch
+  * Fix handling of http 404 (bsc#1208624)
 
 -------------------------------------------------------------------
 Wed Feb 22 13:50:19 UTC 2023 - Julio González Gil <jgonzalez@suse.com>

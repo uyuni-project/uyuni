@@ -1,4 +1,8 @@
-- Redirect /saltboot to the server
+-------------------------------------------------------------------
+Mon Apr 24 07:21:25 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 4.3.6:
+  * Redirect /saltboot to the server
 
 -------------------------------------------------------------------
 Wed Feb 22 13:49:35 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
