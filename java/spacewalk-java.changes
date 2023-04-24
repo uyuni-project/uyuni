@@ -1,4 +1,8 @@
-- kernel options: only add quotes if there is a space in the value (bsc#1209926)
+-------------------------------------------------------------------
+Mon Apr 24 12:31:55 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.54-1
+  * kernel options: only add quotes if there is a space in the value (bsc#1209926)
 
 -------------------------------------------------------------------
 Mon Apr 24 09:18:29 CEST 2023 - jgonzalez@suse.com
