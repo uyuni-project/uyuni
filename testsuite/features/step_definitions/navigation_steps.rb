@@ -238,6 +238,12 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
+When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
+  future_time = Time.now + 60 * minutes_to_add.to_i
+  future_time.strftime('%l:%M %P').to_s.strip
+  fill_in(field, with: future_time, fill_options: { clear: :backspace })
+end
+
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
   execute_script("document.getElementsByName('#{arg2}')[0].value = '#{arg1}'")
 end
