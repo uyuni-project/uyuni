@@ -1,4 +1,8 @@
-- Add maxPoolSize option  to search
+-------------------------------------------------------------------
+Mon Apr 24 09:19:12 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Add maxPoolSize option  to search
 
 -------------------------------------------------------------------
 Wed Jan 11 12:50:05 CET 2023 - jgonzalez@suse.com
