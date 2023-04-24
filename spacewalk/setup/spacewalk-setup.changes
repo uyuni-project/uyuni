@@ -1,9 +1,13 @@
-- Enable netapi clients in master configuration (required for Salt 3006)
-- Persist report_db_sslrootcert value (bsc#1210349)
-- Fix migration test
-- Escape `%` in spec file.
-- remove useless tomcat configuration (bsc#1206191)
-- use template for reportdb configuration (bsc#1206783)
+-------------------------------------------------------------------
+Mon Apr 24 09:12:31 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.16-1
+  * Enable netapi clients in master configuration (required for Salt 3006)
+  * Persist report_db_sslrootcert value (bsc#1210349)
+  * Fix migration test
+  * Escape `%` in spec file.
+  * remove useless tomcat configuration (bsc#1206191)
+  * use template for reportdb configuration (bsc#1206783)
 
 -------------------------------------------------------------------
 Wed Feb 22 14:43:11 CET 2023 - jgonzalez@suse.com
