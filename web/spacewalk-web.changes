@@ -1,9 +1,16 @@
-- fix an issue where the datetimepicker shows wrong date (bsc#1209231)
-- Fix datetime picker appearing behind modal edge
-- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
-- Fix UI inconsistencies in susemanager-light and susemanager-dark
-  theme
-- Deprecate jQuery datepicker, integrate React datepicker
+- Increase datetimepicker font sizes (bsc#1210437)
+- Disable login button with empty password
+
+-------------------------------------------------------------------
+Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.10-1
+  * fix an issue where the datetimepicker shows wrong date (bsc#1209231)
+  * Fix datetime picker appearing behind modal edge
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+  * Fix UI inconsistencies in susemanager-light and susemanager-dark
+    theme
+  * Deprecate jQuery datepicker, integrate React datepicker
 
 -------------------------------------------------------------------
 Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com

@@ -2,6 +2,12 @@
 - Fix handling of http 404 (bsc#1208624)
 
 -------------------------------------------------------------------
+Wed Apr 19 18:15:40 UTC 2023 - Marina Latini <marina.latini@suse.com>
+
+- Update the image version to 2023.04:
+  * Fix handling of http 404 (bsc#1208624)
+
+-------------------------------------------------------------------
 Tue Feb 21 13:16:11 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2023.03:

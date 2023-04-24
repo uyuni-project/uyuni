@@ -1,7 +1,13 @@
-- fix OL9 schema migration
-- Fix update of sql function create_new_org
-- Filter CLM modular packages using release strings (bsc#1207814)
-- merge multiple older schema upgrade directories together
+-------------------------------------------------------------------
+Wed Apr 19 12:57:12 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.6-1
+  * change GPG Key URL for openSUSE Leap to local file URL
+  * Fix renaming monitoring entitlement
+  * fix OL9 schema migration
+  * Fix update of sql function create_new_org
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * merge multiple older schema upgrade directories together
 
 -------------------------------------------------------------------
 Tue Feb 21 12:32:15 CET 2023 - jgonzalez@suse.com

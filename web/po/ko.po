@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-02-21 07:14+0000\n"
+"POT-Creation-Date: 2023-04-21 15:19+0200\n"
+"PO-Revision-Date: 2023-04-19 08:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -357,9 +357,8 @@ msgstr "특징 없음"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:83
 #: ../html/src/manager/state/highstate.tsx:65
-#, fuzzy
 msgid "Action has been successfully added to the action chain '{0}'."
-msgstr "작업이 작업 체인에 추가되었습니다. "
+msgstr "작업이 작업 체인 '{0}'에 추가되었습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
 #: ../html/src/manager/images/image-build.tsx:211
@@ -374,18 +373,16 @@ msgid "scheduled"
 msgstr "예약됨"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#, fuzzy
 msgid "The action has been {0}."
-msgstr "작업이 "
+msgstr "작업이 {0}되었습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:94
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "시스템 선택으로 돌아가기"
+msgstr "선택을 취소할 수 없음"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr ""
+msgstr "작업을 수행할 수 없습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -395,9 +392,8 @@ msgstr "목록으로 돌아가기"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
 #: ../html/src/manager/packages/list.tsx:144
-#, fuzzy
 msgid "Filter by package name"
-msgstr "이름을 기준으로 필터링"
+msgstr "패키지 이름을 기준으로 필터링"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:242
@@ -1146,15 +1142,13 @@ msgid "The following product installations failed. Please check log files."
 msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "일부 변경이 예약되었습니다."
+msgstr "선택한 채널의 동기화가 예정되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
-msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
+msgstr "'{0}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1305,7 +1299,7 @@ msgstr "제품 채널 - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "추가하고 확인하려는 선택 채널을 선택합니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -2065,7 +2059,7 @@ msgstr "이름 제공"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
-msgstr ""
+msgstr "번호"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2182,7 +2176,7 @@ msgstr "패치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "제품 임시 수정"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2305,11 +2299,11 @@ msgstr "없음(모듈성 비활성화)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
-msgstr ""
+msgstr "모두"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "모든 프로그램 임시 수정"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -2340,14 +2334,12 @@ msgid "Contains Package"
 msgstr "패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#, fuzzy
 msgid "All"
-msgstr "허용"
+msgstr "모두"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "패키지 이름"
+msgstr "패키지 이름 수정"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
@@ -4032,66 +4024,63 @@ msgstr "요약"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
-msgstr ""
+msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "사용할 수 있는 프로그램 임시 수정(PTF)이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
-#, fuzzy
 msgid "Install PTFs"
-msgstr "설치됨"
+msgstr "PTF 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 설치 확인"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
-msgstr ""
+msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "설치된 프로그램 임시 수정(PTF)이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
-#, fuzzy
 msgid "Remove PTFs"
-msgstr "제거"
+msgstr "PTF 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF) 제거 확인"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "프로그램 임시 수정(PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "이 시스템에서 수행할 수 있는 관련 작업이 없습니다."
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "설치된 PTF 나열/제거"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
-#, fuzzy
 msgid "Install PTF"
-msgstr "설치됨"
+msgstr "PTF 설치"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
@@ -4240,41 +4229,35 @@ msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되�
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
-msgstr ""
+msgstr "채널이 없는 패키지"
 
 #: ../html/src/manager/packages/list.tsx:81
 msgid "All managed packages"
-msgstr ""
+msgstr "모든 관리형 패키지"
 
 #: ../html/src/manager/packages/list.tsx:89
-#, fuzzy
 msgid " Package Management "
-msgstr "패키지 관리 스택에 영향을 줌"
+msgstr " 패키지 관리 "
 
 #: ../html/src/manager/packages/list.tsx:117
-#, fuzzy
 msgid "Binary packages"
-msgstr "패키지 검색"
+msgstr "바이너리 패키지"
 
 #: ../html/src/manager/packages/list.tsx:118
-#, fuzzy
 msgid "Source packages"
-msgstr "패키지 검색"
+msgstr "소스 패키지"
 
 #: ../html/src/manager/packages/list.tsx:126
-#, fuzzy
 msgid "package"
 msgstr "패키지"
 
 #: ../html/src/manager/packages/list.tsx:146
-#, fuzzy
 msgid "No Packages."
-msgstr "패키지"
+msgstr "패키지 없음"
 
 #: ../html/src/manager/packages/list.tsx:172
-#, fuzzy
 msgid "Content Provider"
-msgstr "클러스터 공급자"
+msgstr "컨텐트 제공자"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4672,9 +4655,8 @@ msgid "System Group"
 msgstr "시스템 그룹"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "highstate 적용이 "
+msgstr "highstate 적용이 {0}되었습니다."
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
@@ -4917,7 +4899,7 @@ msgstr "시스템"
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr ""
+msgstr "잠시 후에. 트랜잭션 시스템인 경우 재부팅하여 등록을 완료하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"

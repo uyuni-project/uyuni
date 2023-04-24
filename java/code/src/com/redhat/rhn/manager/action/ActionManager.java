@@ -1709,7 +1709,7 @@ public class ActionManager extends BaseManager {
             kad.setVirtBridge(pcmd.getVirtBridge());
         }
 
-        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(
+        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(pcmd.getUser(),
                 pcmd.getServer(), cProfile.getName(), pcmd.getGuestName(),
                 pcmd.getKsdata());
         kad.setCobblerSystemName(vcmd.getCobblerSystemRecordName());

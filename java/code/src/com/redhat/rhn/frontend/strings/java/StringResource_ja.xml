@@ -11192,13 +11192,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">間もなく期限切れになるサブスクリプション、またはすでに期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+      <trans-unit approved="yes" id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="final">Program Temporary Fix (PTF)のパッケージの一部: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+      <trans-unit approved="yes" id="api.package.ptfmaster" xml:space="preserve">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="final">Program Temporary Fixes (PTFs)パッケージ: {0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
@@ -11221,12 +11221,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">モジュール化は無効になっています。ターゲットリポジトリに含まれるモジュールはありません。</target>
       </trans-unit>
-      <trans-unit id="PTF" xml:space="preserve">
+      <trans-unit approved="yes" id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">PTFs</target>
       </trans-unit>
       <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>

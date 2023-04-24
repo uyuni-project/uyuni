@@ -29831,19 +29831,19 @@ given channel.</source>
         </context-group>
         <target state="final">시스템 재부팅 예약됨</target>
       </trans-unit>
-      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+      <trans-unit approved="yes" id="packagelist.jsp.packagesummary" xml:space="preserve">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">요약</target>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+      <trans-unit approved="yes" id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
         <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">이 패키지는 제품 임시 수정(PTF)의 일부이며 직접 설치할 수 없습니다. 임시 수정의 기본 패키지를 선택하여 대상 시스템을 검토하십시오.</target>
       </trans-unit>
       <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
         <source>System Overview Update Queue</source>
@@ -29882,23 +29882,20 @@ given channel.</source>
         <source>System Profile Refresh</source>
         <target state="final">시스템 프로파일 새로 고침</target>
       </trans-unit>
-    <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+      <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
         <source>Subscription Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <target state="translated">구독 경고</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="preferences.subscription-warning.description" xml:space="preserve">
         <source> Show expired subscriptions warning.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-
-
- 
-      </body>
+        <target state="final"> 만료된 구독 경고를 표시합니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
