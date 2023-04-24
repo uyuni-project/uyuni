@@ -294,9 +294,9 @@ while read PKG_NAME; do
           sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
           tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
           rm -rf ${SRPM_PKG_DIR}/tar
-          NAME="suse/manager/${VERSION}/${NAME}"
+          NAME="suse\/manager\/${VERSION}\/${NAME}"
       else
-          NAME="uyuni/${NAME}"
+          NAME="uyuni\/${NAME}"
       fi
 
       sed "/^#\!BuildTag:/ s/$/${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Chart.yaml
