@@ -1,3 +1,4 @@
+- Update Cobbler profile when a new image is deployed
 - Add mapping of image URLs for containerized proxy
 - Fix image size entries in xml-rpc
 - kernel options: only add quotes if there is a space in the value (bsc#1209926)
