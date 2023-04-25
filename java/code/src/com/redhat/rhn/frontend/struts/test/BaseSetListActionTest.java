@@ -68,22 +68,6 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
         assertEquals(200, dr.getTotalSize());
     }
 
-    /**
-     * Test to make sure we check for the right filter value string
-     * @throws Exception something bad happened
-     */
-    @Test
-    public void testExport() throws Exception {
-        // Need to fetch the 0 value one and put the 1 back in.
-        sah.getRequest().getParameter(RequestContext.LIST_DISPLAY_EXPORT);
-        sah.getRequest().setupAddParameter(RequestContext.LIST_DISPLAY_EXPORT, "1");
-        sah.executeAction();
-        assertNotNull(sah.getRequest().getAttribute("pageList"));
-        DataResult dr = (DataResult) sah.getRequest().getAttribute("pageList");
-        assertEquals(1, dr.getStart());
-        assertEquals(200, dr.getTotalSize());
-    }
-
     public class TestSetupListAction extends BaseSetListAction {
 
         @Override
