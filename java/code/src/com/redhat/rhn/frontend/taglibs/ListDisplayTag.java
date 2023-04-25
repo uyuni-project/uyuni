@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
-import com.redhat.rhn.common.util.ExportWriter;
-import com.redhat.rhn.common.util.ServletExportHandler;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.frontend.dto.UserOverview;
@@ -30,19 +28,15 @@ import com.redhat.rhn.frontend.taglibs.list.DataSetManipulator;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyContent;
@@ -60,7 +54,6 @@ import javax.servlet.jsp.tagext.BodyContent;
  * <code>filterBy</code>
  * <code>set</code>
  * <code>hiddenvars</code>
- * <code>exportColumns</code>
  * <code>renderDisabled</code>
  * <code>mixins</code>
  * <code>button</code>
@@ -441,24 +434,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
     // RENDER methods
     //////////////////////////////////////////////////////////////////////////
 
-    private void renderExport(JspWriter out) throws IOException {
-        HttpServletRequest request =
-            (HttpServletRequest) pageContext.getRequest();
-
-        StringBuilder page =
-            new StringBuilder((String) request.getAttribute("requestedUri"));
-
-        page.append("?" + RequestContext.LIST_DISPLAY_EXPORT + "=1");
-        if (request.getQueryString() != null) {
-            page.append("&" + request.getQueryString());
-        }
-        IconTag i = new IconTag("item-download-csv");
-        out.println("<div class=\"spacewalk-csv-download\"><a class=\"btn btn-link\"" +
-              " href=\"" + page + "\">" + i.render() +
-              LocalizationService.getInstance().getMessage("listdisplay.csv") +
-              "</a></div>");
-    }
-
     private void renderBoundsVariables(Writer out) throws IOException {
         StringBuilder target = new StringBuilder();
         // pagination formvars
@@ -762,16 +737,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
     }
 
     /**
-     * If the User requested an Export or not.
-     * @return boolean if export or not
-     */
-    public boolean isExport() {
-        RequestContext ctx = new RequestContext((HttpServletRequest)
-                pageContext.getRequest());
-        return (ctx.isRequestedExport() && this.getExportColumns() != null);
-    }
-
-    /**
      * Build a set of all URL variables that are pagination-specific
      * and should not be part of the URL's in the Alphabar
      * @return a set of all URL variables that are pagination-specific
@@ -794,19 +759,13 @@ public class ListDisplayTag extends ListDisplayTagBase {
     public int doStartTag() throws JspException {
         rowCnt = 0;
         numItemsChecked = 0;
-        JspWriter out = null;
+        JspWriter out;
         showSetButtons = false;
 
         try {
             out = pageContext.getOut();
 
             setupPageList();
-
-            // Now that we have setup the proper tag state we
-            // need to return if this is an export render.
-            if (isExport()) {
-                return SKIP_PAGE;
-            }
 
             String sortedColumn = getSortedColumn();
             if (sortedColumn != null) {
@@ -888,21 +847,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
         try {
             if (getPageList().isEmpty()) {
                 return EVAL_PAGE;
-            }
-
-            if (isExport()) {
-                ExportWriter eh = createExportWriter();
-                String[] columns = StringUtils.split(this.getExportColumns(),
-                        ',');
-                eh.setColumns(Arrays.asList(columns));
-                ServletExportHandler seh = new ServletExportHandler(eh);
-                pageContext.getOut().clear();
-                pageContext.getOut().clearBuffer();
-                pageContext.getResponse().reset();
-                seh.writeExporterToOutput(
-                        (HttpServletResponse) pageContext.getResponse(),
-                        getPageList());
-                return SKIP_PAGE;
             }
 
             // Get the JSPWriter that the body used, then pop the
@@ -1008,12 +952,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
 
             // close list
             out.println("</div>");
-
-            // export button goes outside of the list because in the new
-            // implementation it is data-set dependent and not list dependent
-            if (getExportColumns() != null) {
-                renderExport(out);
-            }
 
             setColumnCount(0);
             setNumberOfColumns(0);
