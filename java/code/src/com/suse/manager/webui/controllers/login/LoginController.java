@@ -24,11 +24,14 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.utils.Json;
 
@@ -38,10 +41,12 @@ import com.onelogin.saml2.exception.SettingsException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jetty.util.security.Credential;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -133,6 +138,18 @@ public class LoginController {
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
         model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
+
+        // Pay as you go code
+        boolean sccForwardWarning = false;
+        CloudPaygManager couldPaygManager = new CloudPaygManager();
+
+        if (couldPaygManager.isPaygInstance() && CredentialsFactory.listSCCCredentials().size() > 0 &&
+                !ConfigDefaults.get().isForwardRegistrationEnabled()) {
+            sccForwardWarning = true;
+        }
+
+        model.put("sccForwardWarning", Json.GSON.toJson(sccForwardWarning));
+
 
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
