@@ -26,7 +26,8 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
   const globalMessages = getGlobalMessages(
     props.validationErrors,
     props.schemaUpgradeRequired,
-    props.diskspaceSeverity
+    props.diskspaceSeverity,
+    props.sccForwardWarning
   );
   const formMessages = getFormMessages(success, messages);
   const errorMessages = globalMessages.concat(formMessages).filter((item) => item.severity !== "success");
