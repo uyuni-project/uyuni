@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Messages, MessageType } from "components/messages";
 
-export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSeverity) => {
+export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSeverity, sccForwardWarning) => {
   let messages: MessageType[] = [];
 
   if (validationErrors && validationErrors.length > 0) {
@@ -46,6 +46,13 @@ export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, disks
       Loggerhead.warn("Unknown disk space severity level: " + diskspaceSeverity);
       messages = messages.concat(severity_messages["undefined"]);
     }
+  }
+
+  if (sccForwardWarning) {
+    const sccForwardWarningMessage = t(
+      "Forward registration data to SCC must be enabled for Pay As You Go instances."
+    );
+    messages = messages.concat({ severity: "warning", text: sccForwardWarningMessage });
   }
 
   return messages;
