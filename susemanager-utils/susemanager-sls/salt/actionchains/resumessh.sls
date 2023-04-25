@@ -9,4 +9,4 @@ resumessh:
 {%- endif %}
 
 include:
-  - util.synccustomall
+  - util.syncall

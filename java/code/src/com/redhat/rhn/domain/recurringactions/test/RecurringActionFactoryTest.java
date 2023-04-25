@@ -25,10 +25,15 @@ import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,9 +57,10 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setMinion(minion);
         action.setName("test-recurring-action-1");
         action.setCronExpr(CRON_EXPR);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion));
     }
 
     @Test
@@ -64,15 +70,17 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         var action2 = new MinionRecurringAction();
         action2.setName("action name 2");
         action2.setCronExpr(CRON_EXPR);
         action2.setMinion(minion);
+        action2.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action2);
 
-        var actualSet = new HashSet<>(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        var actualSet = new HashSet<>(RecurringActionFactory.listMinionRecurringActions(minion));
         assertEquals(Set.of(action, action2), actualSet);
     }
 
@@ -84,9 +92,10 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setGroup(group);
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group.getId()));
+        assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group));
     }
 
     @Test
@@ -100,6 +109,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setOrg(org);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionFactory.listOrgRecurringActions(org.getId()));
@@ -112,6 +122,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         minionAction.setName("action name 1");
         minionAction.setCronExpr(CRON_EXPR);
         minionAction.setMinion(minion);
+        minionAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(minionAction);
 
         var org = OrgFactory.createOrg();
@@ -121,12 +132,14 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         otherOrgAction.setName("action name 1");
         otherOrgAction.setCronExpr(CRON_EXPR);
         otherOrgAction.setOrg(org);
+        otherOrgAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(otherOrgAction);
 
         var userOrgAction = new OrgRecurringAction();
         userOrgAction.setName("action name 1");
         userOrgAction.setCronExpr(CRON_EXPR);
         userOrgAction.setOrg(user.getOrg());
+        userOrgAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(userOrgAction);
 
         var group = ServerGroupTestUtils.createManaged(user);
@@ -134,11 +147,20 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         groupAction.setName("action name 1");
         groupAction.setCronExpr(CRON_EXPR);
         groupAction.setGroup(group);
+        groupAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(groupAction);
 
-        var expectedActions = Set.of(minionAction, userOrgAction, groupAction);
-        var actualActions = new HashSet<>(RecurringActionFactory.listAllRecurringActions(user));
-        assertEquals(expectedActions, actualActions);
+        HibernateFactory.getSession().flush();
+
+        var expectedActions = Set.of(
+            new RecurringActionScheduleJson(minionAction),
+            new RecurringActionScheduleJson(groupAction),
+            new RecurringActionScheduleJson(userOrgAction)
+        );
+        var actualActions = RecurringActionFactory.listAllRecurringActions(
+            user, new PageControl(), PagedSqlQueryBuilder::parseFilterAsText
+        );
+        assertTrue(actualActions.containsAll(expectedActions) && expectedActions.containsAll(actualActions));
     }
 
     @Test
@@ -148,6 +170,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
@@ -159,6 +182,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setGroup(group);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
@@ -169,6 +193,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setOrg(user.getOrg());
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
@@ -185,6 +210,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         assertEquals(
@@ -199,6 +225,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
             orgAction.setOrg(user.getOrg());
             orgAction.setName("already-existing-action");
             orgAction.setCronExpr(CRON_EXPR);
+            orgAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
             RecurringActionFactory.save(orgAction);
 
             var minAction1 = new MinionRecurringAction();
@@ -206,6 +233,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
             minAction1.setMinion(minion1);
             minAction1.setName("already-existing-action");
             minAction1.setCronExpr(CRON_EXPR);
+            minAction1.setActionType(RecurringActionType.ActionType.HIGHSTATE);
             RecurringActionFactory.save(minAction1);
 
             var minAction2 = new MinionRecurringAction();
@@ -213,6 +241,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
             minAction2.setMinion(minion2);
             minAction2.setName("already-existing-action");
             minAction2.setCronExpr(CRON_EXPR);
+            minAction2.setActionType(RecurringActionType.ActionType.HIGHSTATE);
             RecurringActionFactory.save(minAction2);
 
             // we want to make sure multiple actions with the name can co-exist and can be persisted
@@ -231,13 +260,14 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setMinion(minion);
         action.setName("already-existing-action");
         action.setCronExpr(CRON_EXPR);
-
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
-        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+
+        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion));
 
         RecurringActionFactory.delete(action);
 
-        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion.getId()).isEmpty());
+        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
     }
 
     @Test
@@ -248,12 +278,14 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setMinion(minion);
         action.setName(name);
         action.setCronExpr(CRON_EXPR);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         var orgAction = new OrgRecurringAction();
         orgAction.setOrg(user.getOrg());
         orgAction.setName(name);
         orgAction.setCronExpr(CRON_EXPR);
+        orgAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(orgAction);
 
         assertEquals(action.getId(), RecurringActionFactory.lookupEqualEntityId(action).get());
@@ -267,6 +299,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setMinion(minion);
         action.setName("already-existing-action");
         action.setCronExpr(CRON_EXPR);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         // we don't save the 2nd object -> it's just an object, no entity, but it has same properties as the 1st object
@@ -274,6 +307,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action2.setMinion(minion);
         action2.setName("already-existing-action");
         action2.setCronExpr(CRON_EXPR);
+        action2.setActionType(RecurringActionType.ActionType.HIGHSTATE);
 
         assertEquals(action.getId(), RecurringActionFactory.lookupEqualEntityId(action2).get());
     }
@@ -285,6 +319,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setMinion(minion);
         action.setName("already-existing-action");
         action.setCronExpr(CRON_EXPR);
+        action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
         // we don't save the 2nd object -> it's just an object, no entity
@@ -292,6 +327,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action2.setMinion(minion);
         action2.setName("already-existing-action2");
         action2.setCronExpr(CRON_EXPR);
+        action2.setActionType(RecurringActionType.ActionType.HIGHSTATE);
 
         assertFalse(RecurringActionFactory.lookupEqualEntityId(action2).isPresent());
     }
