@@ -148,7 +148,11 @@ public class RegistrationUtils {
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                    minion.getId(),
+                    minion.getCreator() != null ? minion.getCreator().getId() : null,
+                    true,
+                    emptyList()));
         }
         SystemManager.setReportDbUser(minion, false);
 
