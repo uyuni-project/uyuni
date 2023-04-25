@@ -1,3 +1,5 @@
+- execute highstate on registration with a user if available
+
 -------------------------------------------------------------------
 Mon Apr 24 12:31:55 CEST 2023 - jgonzalez@suse.com
 
