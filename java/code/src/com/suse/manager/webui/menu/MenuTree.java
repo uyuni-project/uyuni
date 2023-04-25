@@ -432,7 +432,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/admin/multiorg/DeleteOrg.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgCreate.do")
                     .withAltUrl("/rhn/manager/multiorg/details/custom")
-                    .withAltUrl("/rhn/manager/multiorg/details/recurring-actions")
+                    .withAltUrl("/rhn/manager/multiorg/recurring-actions")
                     .withVisibility(adminRoles.get("satellite")))
             .addChild(new MenuItem("Users")
                     .withPrimaryUrl("/rhn/admin/multiorg/Users.do")
