@@ -57,7 +57,11 @@ public class SystemDetailsMessageFilter implements Filter {
         chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         RequestContext rctx = new RequestContext(req);
-        Long sid = rctx.getRequiredParam("sid");
+        Long sid = rctx.getParamAsLong("sid");
+        if (sid == null) {
+            return;
+        }
+
         User user = rctx.getCurrentUser();
         try {
             Server s = SystemManager.lookupByIdAndUser(sid, user);
