@@ -332,7 +332,13 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     kernelOptions = kernelOptions + " install=http://" + kickstartHost +
                             mediaPath;
                 }
-                if (!kernelOptions.contains("self_update=") && ksData != null) {
+
+                Map<String, Object> resKopts = recProfile.getResolvedKernelOptions();
+                boolean selfUpdateDisabled = false;
+                if (resKopts.getOrDefault("self_update", "Enabled").equals("0")) {
+                    selfUpdateDisabled = true;
+                }
+                if (!(selfUpdateDisabled || kernelOptions.contains("self_update=") || ksData == null)) {
                     Optional<Channel> installerUpdated = ksData.getTree().getChannel()
                             .getAccessibleChildrenFor(user)
                             .stream()

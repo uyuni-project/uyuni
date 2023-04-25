@@ -1,3 +1,6 @@
+- only set self_update URL if functionality is not disabled in
+  distro or profile
+
 -------------------------------------------------------------------
 Mon Apr 24 12:31:55 CEST 2023 - jgonzalez@suse.com
 
