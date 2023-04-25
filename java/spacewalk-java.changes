@@ -1,3 +1,5 @@
+- only set self_update URL if functionality is not disabled in
+  distro or profile
 - execute highstate on registration with a user if available
 - Ensure installation of 'xalan-j2' for building.
 - Simplify Java package dependencies.
