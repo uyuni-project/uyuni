@@ -1,4 +1,8 @@
-- Fix breadcrumbs on recurring actions pages
+-------------------------------------------------------------------
+Tue Apr 25 15:37:48 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.55-1
+  * Fix breadcrumbs on recurring actions pages
 
 -------------------------------------------------------------------
 Mon Apr 24 12:31:55 CEST 2023 - jgonzalez@suse.com
