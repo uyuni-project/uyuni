@@ -1,3 +1,4 @@
+- fix ISE when neither SCC credentials nor a local mirror is configured
 - only set self_update URL if functionality is not disabled in
   distro or profile
 - execute highstate on registration with a user if available
