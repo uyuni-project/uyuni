@@ -1,3 +1,4 @@
+- Show loading indicator on formula details pages (bsc#1179747)
 - Increase datetimepicker font sizes (bsc#1210437)
 - fix an issue where the datetimepicker shows wrong date (bsc#1209231)
 
