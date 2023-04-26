@@ -1,0 +1,19 @@
+include ../common.jade
+#report-cveSearch
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('reporting/cveSearch')
+        .then(function(module) {
+            module.renderer(
+                'report-cveSearch', '#{docsLocale}',
+                {
+                    query: !{query}
+                }
+            )
+        });

@@ -71,7 +71,7 @@ import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
-import com.suse.manager.webui.controllers.reports.ReportsController;
+import com.suse.manager.webui.controllers.reporting.ReportsController;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
