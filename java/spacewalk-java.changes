@@ -1,3 +1,4 @@
+- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - Filter CLM modular packages using release strings (bsc#1207814)
 - Allow processing big state results (bsc#1210957)
 - Use glassfish-activation-api instead of gnu-jaf
