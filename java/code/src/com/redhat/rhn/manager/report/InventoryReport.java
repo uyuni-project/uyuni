@@ -80,8 +80,7 @@ public class InventoryReport {
                             " left join " +
                             "(SELECT systementitlement.mgm_id, " +
                                 "systementitlement.system_id, " +
-                                "string_agg((systementitlement.system_group_id || ' - '::::text)" +
-                                    " || systementitlement.name::::text, ';'::::text) AS entitlements " +
+                                "string_agg(systementitlement.name::::text, ';'::::text) AS entitlements " +
                                 "FROM systementitlement " +
                                 "GROUP BY systementitlement.mgm_id, systementitlement.system_id) as entitlements " +
                             "on system.system_id=entitlements.system_id and system.mgm_id=entitlements.mgm_id" +

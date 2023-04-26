@@ -412,7 +412,8 @@ public class MenuTree {
 
     private MenuItem getReports() {
         return new MenuItem("Report").withIcon("fa-clipboard")
-                .addChild(new MenuItem("reportInventory.nav.title").withPrimaryUrl("/rhn/manager/report/inventory"));
+                .addChild(new MenuItem("reportInventory.nav.title").withPrimaryUrl("/rhn/manager/report/inventory"))
+                .addChild(new MenuItem("reportCvesearch.nav.title").withPrimaryUrl("/rhn/manager/report/cvesearch"));
     }
 
     private MenuItem getAdminNode(Map<String, Boolean> adminRoles) {
