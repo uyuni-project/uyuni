@@ -1,4 +1,4 @@
-- Corrected tomcat requirement.
+- Corrected requirement to install Tomcat before spacewalk-setup.
 
 -------------------------------------------------------------------
 Wed Apr 19 13:00:08 CEST 2023 - marina.latini@suse.com
