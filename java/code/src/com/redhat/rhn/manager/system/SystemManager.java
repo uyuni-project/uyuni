@@ -911,7 +911,7 @@ public class SystemManager extends BaseManager {
     public static DataResult<SystemOverview> systemListNew(User user,
                       Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser, PageControl pc) {
         return new PagedSqlQueryBuilder()
-                .select("O.*")
+                .select("O.*, (O.enhancement_errata + O.security_errata + O.bug_errata) as totalErrataCount")
                 .from("suseSystemOverview O, rhnUserServerPerms USP")
                 .where("O.id = USP.server_id AND USP.user_id = :user_id")
                 .run(Map.of("user_id", user.getId()), pc, parser, SystemOverview.class);
