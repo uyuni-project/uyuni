@@ -431,11 +431,13 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     if (n.isPublic()) {
                         Network net = new Network(getCobblerConnection(),
                                 n.getName());
-                        net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
+                        if (!n.getIPv4Addresses().isEmpty()) {
+                            net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
+                            net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
+                        }
                         net.setMacAddress(n.getHwaddr());
-                        net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
-                        if (!StringUtils.isBlank(networkInterface) &&
-                                n.getName().equals(networkInterface)) {
+
+                        if (!StringUtils.isBlank(networkInterface) && n.getName().equals(networkInterface)) {
                             net.setStaticNetwork(!isDhcp);
                         }
 
