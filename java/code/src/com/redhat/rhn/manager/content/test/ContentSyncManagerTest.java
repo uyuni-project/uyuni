@@ -1989,6 +1989,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests {@link ContentSyncManager#isRefreshNeeded} when neither scc creds nor fromdir is configured
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testIsRefreshNeededNothingConfigured() throws Exception {
+        ContentSyncManager csm = new ContentSyncManager();
+        assertFalse(csm.isRefreshNeeded(null));
+    }
+
+    /**
      * Test generation of channels for PTF repositories per module
      * @throws Exception if anything goes wrong
      */
