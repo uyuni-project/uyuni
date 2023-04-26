@@ -1,3 +1,5 @@
+- Bypass traditional systems check on older SUMA instances (bsc#1208612)
+
 -------------------------------------------------------------------
 Wed Apr 26 10:34:39 CEST 2023 - jgonzalez@suse.com
 
