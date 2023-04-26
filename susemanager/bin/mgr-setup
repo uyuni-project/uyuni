@@ -226,8 +226,9 @@ exists_user() {
 
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
-        DATADIR="/var/lib/pgsql/data" 
-        systemctl --quiet enable postgresql 2>&1
+        POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+        DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
+        systemctl --quiet enable ${POSTGRESQLSERVICE} 2>&1
         if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
             # Create the PostgreSQL data folder, should it not exist.
             if [ ! -f $DATADIR/PG_VERSION ]; then
@@ -265,11 +266,11 @@ setup_db_postgres() {
                 fi
             fi
         fi
-        systemctl start postgresql
+        systemctl start ${POSTGRESQLSERVICE}
         if ! exists_db $MANAGER_DB_NAME; then
             # required for postgresql <= 13 before creating the user
-            echo "password_encryption = 'scram-sha-256'" >> /var/lib/pgsql/data/postgresql.conf
-            systemctl restart postgresql
+            echo "password_encryption = 'scram-sha-256'" >> ${DATADIR}/postgresql.conf
+            systemctl restart ${POSTGRESQLSERVICE}
             su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
             echo "local $MANAGER_DB_NAME postgres peer
@@ -277,12 +278,12 @@ setup_db_postgres() {
     host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
     " > /tmp/pg_hba.conf
-            cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
-            mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
-            mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
-            chmod 600 /var/lib/pgsql/data/pg_hba.conf
-            chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
-            systemctl restart postgresql
+            cat ${DATADIR}/pg_hba.conf >> /tmp/pg_hba.conf
+            mv ${DATADIR}/pg_hba.conf ${DATADIR}/pg_hba.conf.bak
+            mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf
+            chmod 600 ${DATADIR}/pg_hba.conf
+            chown postgres:postgres ${DATADIR}/pg_hba.conf
+            systemctl restart ${POSTGRESQLSERVICE}
         else
             echo "Database exists. Preparing for resetup. All data will be removed."
         fi
@@ -678,17 +679,21 @@ check_remote_type() {
 }
 
 postgres_fast() {
-    cp -a /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.migrate
-    echo "fsync = off" >> /var/lib/pgsql/data/postgresql.conf
-    echo "full_page_writes = off" >> /var/lib/pgsql/data/postgresql.conf
-    echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
-    systemctl restart postgresql
+    DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
+    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+    cp -a ${DATADIR}/postgresql.conf ${DATADIR}/postgresql.conf.migrate
+    echo "fsync = off" >> ${DATADIR}/postgresql.conf
+    echo "full_page_writes = off" >> ${DATADIR}/postgresql.conf
+    echo "checkpoint_completion_target = 0.9" >> ${DATADIR}/postgresql.conf
+    systemctl restart ${POSTGRESQLSERVICE}
 }
 
 postgres_safe() {
-    if [ -f /var/lib/pgsql/data/postgresql.conf.migrate ]; then
-        mv /var/lib/pgsql/data/postgresql.conf.migrate /var/lib/pgsql/data/postgresql.conf
-        systemctl restart postgresql
+    DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
+    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+    if [ -f ${DATADIR}/postgresql.conf.migrate ]; then
+        mv ${DATADIR}/postgresql.conf.migrate ${DATADIR}/postgresql.conf
+        systemctl restart ${POSTGRESQLSERVICE}
     fi
 }
 
