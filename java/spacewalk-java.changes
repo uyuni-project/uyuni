@@ -1,3 +1,4 @@
+- Ensure installation of 'xalan-j2' for building.
 - Simplify Java package dependencies.
 - Recurring custom states
 - Update Cobbler profile when a new image is deployed
