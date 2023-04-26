@@ -967,7 +967,7 @@ EOQ
         exit 24;
     }
 
-    my $pgdata=`sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=`;
+    my $pgdata=`runuser -l postgres -c env | grep PGDATA | cut -f2- -d=`;
 
     if (-d "$pgdata/base" and
         ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {

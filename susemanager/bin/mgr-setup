@@ -227,7 +227,7 @@ exists_user() {
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
         POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
-        DATADIR=$(sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=)
+        DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
         systemctl --quiet enable ${POSTGRESQLSERVICE} 2>&1
         if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
             # Create the PostgreSQL data folder, should it not exist.
@@ -679,7 +679,7 @@ check_remote_type() {
 }
 
 postgres_fast() {
-    DATADIR=$(sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=)
+    DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
     POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
     cp -a ${DATADIR}/postgresql.conf ${DATADIR}/postgresql.conf.migrate
     echo "fsync = off" >> ${DATADIR}/postgresql.conf
@@ -689,7 +689,7 @@ postgres_fast() {
 }
 
 postgres_safe() {
-    DATADIR=$(sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=)
+    DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
     POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
     if [ -f ${DATADIR}/postgresql.conf.migrate ]; then
         mv ${DATADIR}/postgresql.conf.migrate ${DATADIR}/postgresql.conf

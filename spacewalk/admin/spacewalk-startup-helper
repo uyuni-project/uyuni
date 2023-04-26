@@ -74,7 +74,7 @@ parse_rhn_property() {
 
 
 db_migrate_md5_to_scram() {
-    PGDATAVAR=$(sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=)
+    PGDATAVAR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
     if ! grep "md5" ${PGDATAVAR}/pg_hba.conf >/dev/null; then
         return
     fi

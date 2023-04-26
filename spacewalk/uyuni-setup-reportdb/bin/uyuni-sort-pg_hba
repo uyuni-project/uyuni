@@ -4,7 +4,7 @@ import sys
 import os
 import time
 
-stream = os.popen('sudo -Hiu postgres env | grep PGDATA | cut -f2- -d=')
+stream = os.popen('runuser -l postgres -c env | grep PGDATA | cut -f2- -d=')
 pgdata = stream.read().strip()
 
 pg_hba_conf = pgdata + '/pg_hba.conf'
