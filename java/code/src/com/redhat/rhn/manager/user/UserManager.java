@@ -530,6 +530,10 @@ public class UserManager extends BaseManager {
      * @throws LoginException if login fails.  The message is a string resource key.
      */
     public static User loginUser(String username, String password) throws LoginException {
+        if (username == null) {
+            throw new LoginException("error.invalid_login");
+        }
+
         String exceptionType = null;
         try {
             User user = UserFactory.lookupByLogin(username);

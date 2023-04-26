@@ -194,6 +194,9 @@ public class LoginController {
      */
     public static class LoginCredentials {
         private String login;
+
+        // You can choose to use either login and username, both should work equally.
+        private String username;
         private String password;
 
         /**
@@ -209,6 +212,7 @@ public class LoginController {
          */
         public LoginCredentials(String loginIn, String passwordIn) {
             this.login = loginIn;
+            this.username = loginIn;
             this.password = passwordIn;
         }
 
@@ -216,7 +220,7 @@ public class LoginController {
          * @return the login
          */
         public String getLogin() {
-            return login;
+            return login != null ? login : username;
         }
 
         /**
