@@ -77,7 +77,7 @@ export function AllSystems(props: Props) {
           cell={(item) => Systems.iconAndName(item)}
         />
         <Column
-          columnKey="statusType"
+          columnKey="status_type"
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
@@ -101,7 +101,7 @@ export function AllSystems(props: Props) {
         />
 
         <Column
-          columnKey="outdatedPackages"
+          columnKey="outdated_packages"
           comparator={Utils.sortByText}
           header={t("Packages")}
           cell={(item) => {
@@ -115,7 +115,7 @@ export function AllSystems(props: Props) {
         />
 
         <Column
-          columnKey="extraPkgCount"
+          columnKey="extra_pkg_count"
           comparator={Utils.sortByText}
           header={t("Extra Packages")}
           cell={(item) => {
@@ -129,7 +129,7 @@ export function AllSystems(props: Props) {
         />
 
         <Column
-          columnKey="configFilesWithDifferences"
+          columnKey="config_files_with_differences"
           comparator={Utils.sortByText}
           header={t("Config Diffs")}
           cell={(item) => {
@@ -144,7 +144,7 @@ export function AllSystems(props: Props) {
           }}
         />
         <Column
-          columnKey="channelLabels"
+          columnKey="channel_labels"
           comparator={Utils.sortByText}
           header={t("Base Channel")}
           cell={(item) => {
@@ -155,7 +155,7 @@ export function AllSystems(props: Props) {
           }}
         />
         <Column
-          columnKey="entitlementLevel"
+          columnKey="entitlement_level"
           comparator={Utils.sortByText}
           header={t("System Type")}
           cell={(item) => item.entitlementLevel}
