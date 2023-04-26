@@ -680,12 +680,19 @@ public class ContentSyncManager {
     public boolean isRefreshNeeded(String mirrorUrl) {
         for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
             ContentSource cs = a.getContentSource();
-            String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
-            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
-                    cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
-            if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
-                return true;
+            try {
+                String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
+                log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
+                        cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
+                if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                    log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
+                    return true;
+                }
+            }
+            catch (ContentSyncException e) {
+                // Can happen when neither SCC Credentials nor fromdir is configured
+                // in such a case, refresh makes no sense.
+                return false;
             }
         }
 
@@ -703,6 +710,11 @@ public class ContentSyncManager {
                         return t.after(modifiedCache) ? true : false;
                     }
             );
+        }
+        else if (CredentialsFactory.lookupSCCCredentials().isEmpty()) {
+            // Can happen when neither SCC Credentials nor fromdir is configured
+            // in such a case, refresh makes no sense.
+            return false;
         }
         return SCCCachingFactory.refreshNeeded(lastRefreshDate);
     }
