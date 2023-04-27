@@ -1,3 +1,4 @@
+- Refresh pillars after setting custom values via SSM (bsc#1210659)
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - Allow processing big state results (bsc#1210957)
 - Fix server error in HTTP API authentication (bsc#1210394)
