@@ -1,3 +1,4 @@
+- Do not throw on missing saltboot group
 - Fix server error in HTTP API authentication (bsc#1210394)
 - Fix Internal Server Error when downloading static assets (bsc#1207691)
 - Add systems and hibernate metrics collectors
