@@ -137,7 +137,6 @@ public class KickstartHelper {
             KickstartSessionUpdateCommand cmd = new KickstartSessionUpdateCommand(kssid);
             ksdata = cmd.getKsdata();
             retval.put(SESSION, cmd.getKickstartSession());
-            log.debug("session: {}", retval.get(SESSION));
             cmd.setSessionState(KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);
             cmd.store();
             mode = SESSION;
@@ -183,7 +182,6 @@ public class KickstartHelper {
 
 
             if (log.isDebugEnabled()) {
-                log.debug("session                        : {}", retval.get(SESSION));
                 log.debug("options.containsKey(VIEW_LABEL): {}", options.containsKey(VIEW_LABEL));
                 log.debug("ksdata                         : {}", ksdata);
             }
@@ -268,7 +266,6 @@ public class KickstartHelper {
         // gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com
 
         String proxyHeader = request.getHeader(XRHNPROXYAUTH);
-        log.debug("X-RHN-Proxy-Auth : {}", proxyHeader);
 
         if (!StringUtils.isEmpty(proxyHeader)) {
             String[] proxies = StringUtils.split(proxyHeader, ",");
@@ -278,7 +275,6 @@ public class KickstartHelper {
             log.debug("first1: {}", firstProxy);
             String[] chunks = StringUtils.split(firstProxy, ":");
             firstProxy = chunks[chunks.length - 1];
-            log.debug("first2: {}", firstProxy);
             log.debug("Kickstart host from proxy header: {}", firstProxy);
             return firstProxy;
         }

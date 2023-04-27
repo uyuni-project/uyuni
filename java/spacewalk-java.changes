@@ -1,3 +1,5 @@
+- fix session information leak CVE-2023-22644 (bsc#1210107)
+
 -------------------------------------------------------------------
 Tue Apr 25 15:37:48 CEST 2023 - jgonzalez@suse.com
 
