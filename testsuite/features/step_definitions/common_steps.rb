@@ -103,7 +103,7 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
     step %(I should see a "#{rounded_uptime_hours} hours ago" text)
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
     step %(I should see a "an hour ago" text)
-  elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
+  elsif rounded_uptime_minutes > 1 && rounded_uptime_hours <= 1
     step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
     step %(I should see a "a minute ago" text)
