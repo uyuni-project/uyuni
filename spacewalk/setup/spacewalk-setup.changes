@@ -1,4 +1,3 @@
-- Corrected requirement to install Tomcat before spacewalk-setup.
 - Automatically detect PostgreSQL service and data folder name.
 
 -------------------------------------------------------------------
