@@ -1,15 +1,16 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#
-# 1) delete SLES minion and register again with bootstrap script
-# 2) subscribe minion to a base channels
-# 3) install and remove a package
+# This feature depends on:
+# - features/secondary/min_bootstrap_ssh_key.feature : Due to the deletion of the previous SLES Minion
 
 @skip_if_container
 @sle_minion
 @scope_onboarding
 Feature: Register a Salt minion via Bootstrap-script
+  1) delete SLES minion and register again with bootstrap script
+  2) subscribe minion to a base channels
+  3) install and remove a package
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
