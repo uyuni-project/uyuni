@@ -1,5 +1,9 @@
 # Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+# - features/secondary/min_bootstrap_script.feature : Due to the deletion of the previous SLES Minion
+
 @skip_if_container
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
