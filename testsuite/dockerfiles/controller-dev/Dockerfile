@@ -35,5 +35,5 @@ RUN zypper ref -f && \
       iproute2 \
       && \
     zypper clean -a
-COPY etc_pam.d_sshd /etc/pamd.d/sshd
+COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
