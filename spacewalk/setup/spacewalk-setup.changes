@@ -1,4 +1,5 @@
 - Corrected requirement to install Tomcat before spacewalk-setup.
+- Automatically detect PostgreSQL service and data folder name.
 
 -------------------------------------------------------------------
 Wed Apr 19 13:00:08 CEST 2023 - marina.latini@suse.com

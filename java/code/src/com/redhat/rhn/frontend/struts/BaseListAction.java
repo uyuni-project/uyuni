@@ -77,9 +77,6 @@ public abstract class BaseListAction extends RhnListAction {
      * @return a PageControl if one is necessary
      */
     protected PageControl getNewPageControl(RequestContext rctx) {
-        if (rctx.isRequestedExport()) {
-            return null;
-        }
         PageControl pc =  new PageControl();
         pc.setPageSize(rctx.getCurrentUser().getPageSize());
         return pc;
