@@ -10,17 +10,17 @@ gem 'cucumber-html-formatter', "~> 17.0"
 gem 'selenium-webdriver', "~> 3.142"
 gem 'rack', "~> 3.0"
 gem 'rack-test', "~> 2.0"
-gem 'nokogiri', "~> 1.12"
+gem 'nokogiri', "~> 1.12.0"
 gem 'rake', "~> 13.0"
 gem 'jwt', "~> 2.6"
 gem 'mime-types', "~> 3.4"
 gem 'xmlrpc', "~> 0.3"
 gem 'faraday', '1.10.0'
-gem 'minitest', "~> 5.15"
+gem 'minitest', "~> 5.15.0"
 gem 'websocket', "~> 1.2"
 gem 'websocket-driver', "~> 0.7"
 gem 'syntax', "~> 1.2"
-gem 'parallel_tests', "~> 3.12"
+gem 'parallel_tests', "~> 3.12.0"
 gem 'simplecov', "~> 0.22"
 gem 'rubocop', '0.83.0'
 gem 'redis', '~> 5.0'
@@ -29,3 +29,4 @@ gem 'redis', '~> 5.0'
 # or build and install from https://github.com/openSUSE/twopence
 gem 'twopence', "~> 0.4"
 gem 'pg', "~> 1.4"
+gem 'public_suffix', '~> 4.0'
