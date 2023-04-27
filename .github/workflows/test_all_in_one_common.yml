@@ -10,7 +10,7 @@ env:
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 jobs:
-  test-uyuni:
+  acceptance-tests:
     runs-on: ubuntu-22.04
     # create a PR to add yourself if you want to be a beta user and
     # run this action in your Pull Requests
