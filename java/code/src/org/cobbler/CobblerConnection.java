@@ -109,8 +109,17 @@ public class CobblerConnection {
      * @param args to pass to method
      * @return Object returned.
      */
-    private Object invokeMethod(String procedureName, List args) {
-        log.debug("procedure: " + procedureName + " args: " + args);
+    private Object invokeMethod(String procedureName, List<Object> args) {
+        if (log.isDebugEnabled()) {
+            List<Object> dbgArgs = new LinkedList<>(args);
+            String lastArg = (String) dbgArgs.get(dbgArgs.size() - 1);
+            if (lastArg.length() == 36 && lastArg.endsWith("==")) {
+                // probably a base64 token
+                dbgArgs.remove(dbgArgs.size() - 1);
+                dbgArgs.add("<token>");
+            }
+            log.debug(String.format("procedure: {} args: {}", procedureName, dbgArgs));
+        }
         Object retval;
         try {
             retval = client.invoke(procedureName, args);
@@ -170,6 +179,6 @@ public class CobblerConnection {
      * @return the server version
      */
     public Double getVersion() {
-        return (Double) invokeMethod("version", new LinkedList());
+        return (Double) invokeMethod("version", new LinkedList<>());
     }
 }
