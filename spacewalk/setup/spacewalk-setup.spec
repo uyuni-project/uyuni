@@ -56,6 +56,7 @@ BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
+BuildRequires:  tomcat
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
