@@ -921,7 +921,7 @@ public class HardwareMapper {
 
         // set primary FQDN to hostname if no primary FQDN is specified
         if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
-                .filter(ServerFQDN::isPrimary).findFirst().isEmpty()) {
+               .noneMatch(ServerFQDN::isPrimary)) {
 
             server.setPrimaryFQDNWithName(server.getHostname());
         }
