@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
@@ -229,6 +230,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             .ifPresent(result-> {
                                 SystemInfo systemInfo = Json.GSON.fromJson(result, SystemInfo.class);
                                 saltUtils.updateSystemInfo(systemInfo, minion);
+                                SystemManager.updateSystemOverview(minion.getId());
                             }));
 
             /* Check in case any Action update it could complete any ActionChain that is still pending on that action.
