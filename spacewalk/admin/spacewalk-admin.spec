@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       procps
+Requires:       python3-websockify
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 BuildRequires:  make
