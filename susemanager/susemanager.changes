@@ -1,3 +1,7 @@
+- Ensure installation of make for building.
+- Automatically detect PostgreSQL service and data folder name.
+- Adjust product name in setup script output (bsc#1195380)
+
 -------------------------------------------------------------------
 Wed Apr 19 12:48:42 CEST 2023 - marina.latini@suse.com
 

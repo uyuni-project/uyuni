@@ -185,21 +185,6 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
     with open("/etc/apache2/conf.d/susemanager-pub.conf", "w") as file:
         file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
 
-    with open("/etc/apache2/conf.d/saltboot.conf", "w") as file:
-        # Saltboot uses the same URL regardles containerized or normal proxy
-        # here we rewrite URL so upstream server understands it
-
-        # First condition/rule removes double arch rule for backward compatility
-        # second changes /saltboot/image/..?orgid=<org> to /os-images/<org>/
-        file.write('''
-RewriteEngine on
-RewriteCond %{REQUEST_URI} ^/saltboot/(image|boot).*x86_64.*x86_64
-RewriteRule ^(.*)\.x86_64(.*\.x86_64-.*) $1$2 [N]
-
-RewriteCond %{QUERY_STRING} orgid=(\d+)
-RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
-''')
-
     with open("/etc/apache2/vhosts.d/ssl.conf", "w") as file:
         file.write(f'''
 <IfDefine SSL>
@@ -244,6 +229,13 @@ RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
         "/etc/apache2/conf.d/spacewalk-proxy.conf",
         '<Directory "/srv/www/htdocs/docs/*">',
         'SetEnv HANDLER_TYPE "proxy-docs"'
+    )
+
+    # redirect /saltboot to the server
+    insert_under_line(
+        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
+        "WSGIScriptAlias /tftp /usr/share/rhn/wsgi/xmlrpc.py",
+        "WSGIScriptAlias /saltboot /usr/share/rhn/wsgi/xmlrpc.py"
     )
 
     os.system('chown root:www /etc/rhn/rhn.conf')

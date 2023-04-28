@@ -83,6 +83,11 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   end
 end
 
+When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
+  salt_minion = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
+end
+
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
@@ -219,6 +224,19 @@ When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |
   file_delete(node, "#{salt_config}#{filename}")
 end
 
+When(/^I configure salt minion on "([^"]*)"$/) do |host|
+  content = %(
+master: #{$server.full_hostname}
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+start_event_grains:
+  - machine_id
+  - saltboot_initrd
+  - susemanager)
+  step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
+end
+
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
   salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
@@ -323,8 +341,12 @@ Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/
 end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
-  output, _code = pillar_get(key, minion)
-  raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+  output = ''
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "Output has more than one line: #{output}", report_result: true) do
+    output, _code = pillar_get(key, minion)
+    break if output.split("\n").length == 1
+    sleep 1
+  end
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|

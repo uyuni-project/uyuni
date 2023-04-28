@@ -6,7 +6,6 @@ import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
 import { Utils } from "utils/functions";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import {
@@ -17,6 +16,7 @@ import {
   text,
 } from "./formulas/FormulaComponentGenerator";
 import { SearchField } from "./table/SearchField";
+import { Loading } from "./utils";
 
 const capitalize = Utils.capitalize;
 
@@ -72,6 +72,7 @@ type State = {
   errors: string[];
   sectionsExpanded: SectionState;
   searchCriteria: string;
+  loading: boolean;
 };
 
 class FormulaForm extends React.Component<Props, State> {
@@ -90,6 +91,7 @@ class FormulaForm extends React.Component<Props, State> {
       errors: [],
       sectionsExpanded: SectionState.Collapsed,
       searchCriteria: "",
+      loading: true,
     };
 
     window.addEventListener(
@@ -115,38 +117,42 @@ class FormulaForm extends React.Component<Props, State> {
       dataPromise = Network.get(this.props.dataUrl);
     }
 
-    dataPromise.then((data) => {
-      if (data === null)
-        this.setState({
-          formulaName: "",
-          formulaList: [],
-          formulaRawLayout: {},
-          systemData: {},
-          groupData: {},
-          formulaChanged: false,
-          metadata: {},
-        });
-      else {
-        if (data.formula_list.filter((formula) => DEPRECATED_unsafeEquals(formula, data.formula_name)).length > 1) {
-          this.state.warnings.push(
-            t(
-              'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
-              capitalize(data.formula_name)
-            )
-          );
+    this.setState({ loading: true });
+
+    dataPromise
+      .then((data) => {
+        if (data === null)
+          this.setState({
+            formulaName: "",
+            formulaList: [],
+            formulaRawLayout: {},
+            systemData: {},
+            groupData: {},
+            formulaChanged: false,
+            metadata: {},
+          });
+        else {
+          if (data.formula_list.filter((formula) => formula === data.formula_name).length > 1) {
+            this.state.warnings.push(
+              t(
+                'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
+                capitalize(data.formula_name)
+              )
+            );
+          }
+          const rawLayout = data.layout;
+          this.setState({
+            formulaName: data.formula_name,
+            formulaList: data.formula_list,
+            formulaRawLayout: rawLayout,
+            systemData: get(data.system_data, {}),
+            groupData: get(data.group_data, {}),
+            formulaChanged: false,
+            formulaMetadata: data.metadata,
+          });
         }
-        const rawLayout = data.layout;
-        this.setState({
-          formulaName: data.formula_name,
-          formulaList: data.formula_list,
-          formulaRawLayout: rawLayout,
-          systemData: get(data.system_data, {}),
-          groupData: get(data.group_data, {}),
-          formulaChanged: false,
-          formulaMetadata: data.metadata,
-        });
-      }
-    });
+      })
+      .then(() => this.setState({ loading: false }));
   };
 
   saveFormula = (data) => {
@@ -226,7 +232,13 @@ class FormulaForm extends React.Component<Props, State> {
     );
     const messages = <Messages items={messageItems} />;
 
-    if (
+    if (this.state.loading) {
+      return (
+        <div className="panel panel-default">
+          <Loading />
+        </div>
+      );
+    } else if (
       this.state.formulaRawLayout === undefined ||
       this.state.formulaRawLayout === null ||
       jQuery.isEmptyObject(this.state.formulaRawLayout)

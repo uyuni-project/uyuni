@@ -940,8 +940,9 @@ sub postgresql_reportdb_setup {
 }
 
 sub postgresql_start {
-    system('service postgresql status >&/dev/null');
-    system('service postgresql start >&/dev/null') if ($? >> 8);
+    my $pgservice=`systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n'`;
+    system("service $pgservice status >&/dev/null");
+    system("service $pgservice start >&/dev/null") if ($? >> 8);
     return ($? >> 8);
 }
 
@@ -966,7 +967,9 @@ EOQ
         exit 24;
     }
 
-    if (-d "/var/lib/pgsql/data/base" and
+    my $pgdata=`runuser -l postgres -c env | grep PGDATA | cut -f2- -d=`;
+
+    if (-d "$pgdata/base" and
         ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {
         my $shared_dir = SHARED_DIR;
         print loc(<<EOQ);
@@ -981,7 +984,7 @@ EOQ
 
     if (not $opts->{"skip-db-diskspace-check"}) {
         system_or_exit(['python3', SHARED_DIR .
-            '/embedded_diskspace_check.py', '/var/lib/pgsql/data', '12288'], 14,
+            '/embedded_diskspace_check.py', '$pgdata', '12288'], 14,
             'There is not enough space available for the embedded database.');
     }
     else {

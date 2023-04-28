@@ -131,7 +131,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     ];
 
     const loc = window.location;
-    const createLink = loc.pathname.replace("/highstate", "/recurring-states") + loc.search + "#/create";
+    const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
       <LinkButton icon="fa-plus" href={createLink} className="btn-default" text={t("Create Recurring")} />,
     ];

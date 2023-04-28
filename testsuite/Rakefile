@@ -56,7 +56,7 @@ namespace :parallel do
       tags = ENV['TAGS']
       include_tags =  tags.nil? ? '' : "--tags #{tags}"
       cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} " \
-                      '-f PrettyFormatterExtended::PrettyFormatter -r features '
+                      '-f CustomFormatter::PrettyFormatter -r features '
       sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
     end
   end

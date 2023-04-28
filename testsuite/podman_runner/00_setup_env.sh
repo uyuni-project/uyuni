@@ -14,15 +14,21 @@ fi
 echo "Killing old containers"
 containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
 for i in ${containers};do
-    podman kill ${i}
+    sudo -i podman kill ${i}
 done
-
-echo "Remove network"
-podman network rm uyuni-network-1
 
 echo "Wait for the containers to stop"
 for i in ${containers};do
-    podman wait ${i}
+    sudo -i podman wait ${i}
 done
+
+echo "Force remove containers"
+containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
+for i in ${containers};do
+    sudo -i podman rm ${i}
+done
+
+echo "Remove network"
+sudo -i podman network rm uyuni-network-1
 
 sleep 10

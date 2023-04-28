@@ -27,6 +27,7 @@ import Notifications from "./notifications";
 import Organizations from "./organizations";
 import Packages from "./packages";
 import Proxy from "./proxy";
+import RecurringActions from "./recurring";
 import Salt from "./salt";
 import Shared from "./shared";
 import Highstate from "./state";
@@ -42,6 +43,7 @@ const pages = {
   ...Groups,
   ...Header,
   ...Highstate,
+  ...RecurringActions,
   ...Images,
   ...Login,
   ...MaintenanceWindows,

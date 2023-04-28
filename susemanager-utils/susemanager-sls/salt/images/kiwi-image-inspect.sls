@@ -4,7 +4,7 @@
 {%- set dest_dir   = root_dir + '/images.build' %}
 {%- set bundle_dir = root_dir + '/images/' %}
 {%- set build_id  = pillar.get('build_id') %}
-{%- set use_bundle_build = pillar.get('use_bundle_build') %}
+{%- set use_bundle_build = pillar.get('use_bundle_build', salt['pillar.get']('custom_info:use_bundle_build', False)) %}
 
 # the goal is to collect all information required for
 # saltboot image pillar

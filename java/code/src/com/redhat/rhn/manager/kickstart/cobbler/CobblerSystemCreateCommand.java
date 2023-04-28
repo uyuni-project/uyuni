@@ -144,14 +144,16 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     /**
      * Constructor to be used for a system outside tthe context
      * of actually kickstarting it to a specific profile.
-     * @param serverIn profile we want to create in cobbler
+     *
+     * @param userIn             who is requesting the sync
+     * @param serverIn           profile we want to create in cobbler
      * @param cobblerProfileName the name of the cobbler profile
-     * to associate with system
-     * @param ksDataIn the kickstart data to associate the system with
+     *                           to associate with system
+     * @param ksDataIn           the kickstart data to associate the system with
      */
-    public CobblerSystemCreateCommand(Server serverIn, String cobblerProfileName,
-            KickstartData ksDataIn) {
-        super(serverIn.getCreator());
+    public CobblerSystemCreateCommand(User userIn, Server serverIn, String cobblerProfileName,
+                                      KickstartData ksDataIn) {
+        super(userIn);
         this.server = serverIn;
         this.serverName = serverIn.getName();
         this.orgId = serverIn.getOrgId();
@@ -330,7 +332,13 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     kernelOptions = kernelOptions + " install=http://" + kickstartHost +
                             mediaPath;
                 }
-                if (!kernelOptions.contains("self_update=") && ksData != null) {
+
+                Map<String, Object> resKopts = recProfile.getResolvedKernelOptions();
+                boolean selfUpdateDisabled = false;
+                if (resKopts.getOrDefault("self_update", "Enabled").equals("0")) {
+                    selfUpdateDisabled = true;
+                }
+                if (!(selfUpdateDisabled || kernelOptions.contains("self_update=") || ksData == null)) {
                     Optional<Channel> installerUpdated = ksData.getTree().getChannel()
                             .getAccessibleChildrenFor(user)
                             .stream()
@@ -423,11 +431,13 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     if (n.isPublic()) {
                         Network net = new Network(getCobblerConnection(),
                                 n.getName());
-                        net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
+                        if (!n.getIPv4Addresses().isEmpty()) {
+                            net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
+                            net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
+                        }
                         net.setMacAddress(n.getHwaddr());
-                        net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
-                        if (!StringUtils.isBlank(networkInterface) &&
-                                n.getName().equals(networkInterface)) {
+
+                        if (!StringUtils.isBlank(networkInterface) && n.getName().equals(networkInterface)) {
                             net.setStaticNetwork(!isDhcp);
                         }
 

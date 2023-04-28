@@ -164,10 +164,16 @@ _compression_types = [
     { 'suffix': '.gz', 'compression': 'gzip' },
     { 'suffix': '.bz', 'compression': 'bzip' },
     { 'suffix': '.xz', 'compression': 'xz' },
-    { 'suffix': '.install.iso',    'compression': None },
-    { 'suffix': '.iso',            'compression': None },
-    { 'suffix': '.qcow2',          'compression': None },
-    { 'suffix': '.raw',            'compression': None },
+    { 'suffix': '.install.iso', 'compression': None },
+    { 'suffix': '.iso',         'compression': None },
+    { 'suffix': '.qcow2',       'compression': None },
+    { 'suffix': '.ova',         'compression': None },
+    { 'suffix': '.vmdk',        'compression': None },
+    { 'suffix': '.vmx',         'compression': None },
+    { 'suffix': '.vhd',         'compression': None },
+    { 'suffix': '.vhdx',        'compression': None },
+    { 'suffix': '.vdi',         'compression': None },
+    { 'suffix': '.raw',         'compression': None },
     { 'suffix': '',    'compression': None }
     ]
 

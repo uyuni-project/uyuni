@@ -1,3 +1,10 @@
+- Show loading indicator on formula details pages (bsc#1179747)
+- Fix systems list sorting buttons
+- Fix wrong credentials error message (bsc#1210456)
+- Recurring custom states
+- Increase datetimepicker font sizes (bsc#1210437)
+- Disable login button with empty password
+
 -------------------------------------------------------------------
 Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com
 

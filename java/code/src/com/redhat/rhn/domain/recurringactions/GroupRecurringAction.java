@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -58,13 +59,13 @@ public class GroupRecurringAction extends RecurringAction {
     /**
      * Constructor
      *
-     * @param testMode if action is in test mode
+     * @param actionType the recurring action type
      * @param active if action is active
      * @param serverGroup group affiliated with the action
      * @param creator the creator User
      */
-    public GroupRecurringAction(boolean testMode, boolean active, ServerGroup serverGroup, User creator) {
-        super(testMode, active, creator);
+    public GroupRecurringAction(RecurringActionType actionType, boolean active, ServerGroup serverGroup, User creator) {
+        super(actionType, active, creator);
         this.group = serverGroup;
     }
 
@@ -105,8 +106,8 @@ public class GroupRecurringAction extends RecurringAction {
 
     @Override
     @Transient
-    public Type getType() {
-        return Type.GROUP;
+    public TargetType getTargetType() {
+        return TargetType.GROUP;
     }
 
     /**
