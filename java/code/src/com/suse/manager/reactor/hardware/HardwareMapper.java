@@ -107,6 +107,13 @@ public class HardwareMapper {
     }
 
     /**
+     * @return the value of the 'swap_total' grain
+     */
+    public long getTotalSwapMemory() {
+        return grains.getValueAsLong("swap_total").orElse(0L);
+    }
+
+    /**
      * Store CPU information given as a {@link ValueMap}.
      *
      * @param cpuinfo Salt returns /proc/cpuinfo data
