@@ -32,6 +32,9 @@ end
 # Channels triggered by our tests to be synchronized
 $channels_synchronized = Set[]
 
+# Context per feature
+$context = {}
+
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 STDOUT.sync = true
@@ -103,6 +106,11 @@ enable_assertions
 
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
+
+# Define the current feature scope
+Before do |scenario|
+  $feature_scope = scenario.location.file.split(%r{(\.feature|\/)})[-2]
+end
 
 # embed a screenshot after each failed scenario
 After do |scenario|
@@ -390,6 +398,14 @@ end
 
 Before('@slemicro53_ssh_minion') do
   skip_this_scenario unless $slemicro53_ssh_minion
+end
+
+Before('@slemicro54_minion') do
+  skip_this_scenario unless $slemicro54_minion
+end
+
+Before('@slemicro54_ssh_minion') do
+  skip_this_scenario unless $slemicro54_ssh_minion
 end
 
 Before('@sle12sp5_buildhost') do

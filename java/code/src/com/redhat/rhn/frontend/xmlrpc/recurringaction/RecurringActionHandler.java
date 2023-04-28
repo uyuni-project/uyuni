@@ -20,6 +20,9 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
@@ -38,18 +41,18 @@ import java.util.Map;
 /**
  * Handler for Recurring Actions ({@link RecurringAction})
 
- * @apidoc.namespace recurringaction
- * @apidoc.doc Provides methods to handle Recurring Actions for Minions, Groups and Organizations.
+ * @apidoc.namespace recurring
+ * @apidoc.doc Provides methods to handle recurring actions for minions, system groups and organizations.
  */
 public class RecurringActionHandler extends BaseHandler {
 
     /* helper method */
-    private RecurringAction.Type getEntityType(String entityType) {
+    private RecurringAction.TargetType getEntityType(String entityType) {
         try {
-            return RecurringAction.Type.valueOf(entityType.toUpperCase());
+            return RecurringAction.TargetType.valueOf(entityType.toUpperCase());
         }
         catch (IllegalArgumentException e) {
-            throw new InvalidArgsException("Type \"" + entityType + "\" does not exist");
+            throw new InvalidArgsException("TargetType \"" + entityType + "\" does not exist");
         }
     }
 
@@ -57,31 +60,37 @@ public class RecurringActionHandler extends BaseHandler {
      * Return a list of recurring actions for a given entity.
      *
      * @param loggedInUser The current user
-     * @param entityId the id of the entity
-     * @param entityType type of the entity
+     * @param id the id of the entity
+     * @param type type of the entity
      * @return the list of recurring actions
      *
      * @apidoc.doc Return a list of recurring actions for a given entity.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "entityType", "type of the target entity. Can be MINION, GROUP or ORG.")
-     * @apidoc.param #param_desc("int", "entityId", "ID of the target entity")
+     * @apidoc.param
+     *   #prop_desc("string", "type", "the type of the target entity. One of the following:")
+     *     #options()
+     *       #item("minion")
+     *       #item("group")
+     *       #item("org")
+     *     #options_end()
+     * @apidoc.param #param_desc("int", "id", "the ID of the target entity")
      * @apidoc.returntype
      *      #return_array_begin()
      *          $RecurringActionSerializer
      *      #array_end()
      */
     @ReadOnly
-    public List<? extends RecurringAction> listByEntity(User loggedInUser, String entityType, Integer entityId) {
+    public List<? extends RecurringAction> listByEntity(User loggedInUser, String type, Integer id) {
         try {
-            switch (getEntityType(entityType)) {
+            switch (getEntityType(type)) {
                 case MINION:
-                    return RecurringActionManager.listMinionRecurringActions(entityId, loggedInUser);
+                    return RecurringActionManager.listMinionRecurringActions(id, loggedInUser);
                 case GROUP:
-                    return RecurringActionManager.listGroupRecurringActions(entityId, loggedInUser);
+                    return RecurringActionManager.listGroupRecurringActions(id, loggedInUser);
                 case ORG:
-                    return RecurringActionManager.listOrgRecurringActions(entityId, loggedInUser);
+                    return RecurringActionManager.listOrgRecurringActions(id, loggedInUser);
                 default:
-                    throw new IllegalStateException("Unsupported type " + entityType);
+                    throw new IllegalStateException("Unsupported type " + type);
             }
         }
         catch (PermissionException e) {
@@ -90,21 +99,21 @@ public class RecurringActionHandler extends BaseHandler {
     }
 
     /**
-     * Return recurring action with given action id.
+     * Return recurring action with the given action ID.
      *
      * @param loggedInUser The current user
-     * @param actionId id of the action
+     * @param id id of the action
      * @return the recurring action exception thrown otherwise
      *
-     * @apidoc.doc Return recurring action with given action ID.
+     * @apidoc.doc Find a recurring action with the given action ID.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "actionId", "ID of the action")
+     * @apidoc.param #param_desc("int", "id", "the action ID")
      * @apidoc.returntype $RecurringActionSerializer
      */
     @ReadOnly
-    public RecurringAction lookupById(User loggedInUser, Integer actionId) {
-        RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow(
-                () -> new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist")
+    public RecurringAction lookupById(User loggedInUser, Integer id) {
+        RecurringAction action = RecurringActionFactory.lookupById(id).orElseThrow(
+                () -> new EntityNotExistsFaultException("Action with id: " + id + " does not exist")
         );
         if (!action.canAccess(loggedInUser)) {
             throw new PermissionCheckFailureException("Action not accessible to user: " + loggedInUser);
@@ -112,37 +121,9 @@ public class RecurringActionHandler extends BaseHandler {
         return action;
     }
 
-    /**
-     * Create a new recurring action.
-     *
-     * @param loggedInUser The current user
-     * @param actionProps Map containing action properties
-     * @return action id or exception thrown otherwise
-     *
-     * @apidoc.doc Create a new recurring action.
-     * @apidoc.param #session_key()
-     * @apidoc.param
-     *  #struct_begin("actionProps")
-     *      #prop_desc("string", "entity_type", "the type of the target entity. One of the following:")
-     *        #options()
-     *          #item("MINION")
-     *          #item("GROUP")
-     *          #item("ORG")
-     *        #options_end()
-     *      #prop_desc("int", "entity_id", "the ID of the target entity")
-     *      #prop_desc("string", "name", "the name of the action")
-     *      #prop_desc("string", "cron_expr", "the execution frequency of the action")
-     *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
-     *  #struct_end()
-     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
-     */
-    public int create(User loggedInUser, Map<String, Object> actionProps) {
-        RecurringAction action = createAction(actionProps, loggedInUser);
-        return save(loggedInUser, action);
-    }
-
     /* Helper method */
-    private RecurringAction createAction(Map<String, Object> actionProps, User user) {
+    RecurringAction createAction(RecurringActionType.ActionType actionType, Map<String, Object> actionProps,
+            User user) {
         if (actionProps.containsKey("id") || !actionProps.containsKey("entity_type") ||
                 !actionProps.containsKey("entity_id") || !actionProps.containsKey("cron_expr") ||
                 !actionProps.containsKey("name")) {
@@ -152,6 +133,7 @@ public class RecurringActionHandler extends BaseHandler {
         try {
             action = RecurringActionManager.createRecurringAction(
                     getEntityType((String) actionProps.get("entity_type")),
+                    actionType,
                     ((Integer) actionProps.get("entity_id")).longValue(),
                     user
             );
@@ -162,37 +144,21 @@ public class RecurringActionHandler extends BaseHandler {
         action.setName((String) actionProps.get("name"));
         action.setCronExpr((String) actionProps.get("cron_expr"));
         if (actionProps.containsKey("test")) {
-            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+            boolean testMode = Boolean.parseBoolean(actionProps.get("test").toString());
+            RecurringActionType recurringActionType = action.getRecurringActionType();
+
+            if (RecurringActionType.ActionType.HIGHSTATE.equals(actionType)) {
+                ((RecurringHighstate) recurringActionType).setTestMode(testMode);
+            }
+            else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType)) {
+                ((RecurringState) recurringActionType).setTestMode(testMode);
+            }
         }
         return action;
     }
 
-    /**
-     * Update a recurring action.
-     *
-     * @param loggedInUser The current user
-     * @param actionProps Map containing properties to update
-     * @return action id or exception thrown otherwise
-     *
-     * @apidoc.doc Update a recurring action.
-     * @apidoc.param #session_key()
-     * @apidoc.param
-     *  #struct_begin("actionProps")
-     *      #prop_desc("int", "id", "the ID of the action to update")
-     *      #prop_desc("string", "name", "the name of the action (optional)")
-     *      #prop_desc("string", "cron_expr", "the execution frequency of the action (optional)")
-     *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
-     *      #prop_desc("boolean", "active", "whether the action should be active (optional)")
-     *  #struct_end()
-     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
-     */
-    public int update(User loggedInUser, Map<String, Object> actionProps) {
-        RecurringAction action = updateAction(actionProps, loggedInUser);
-        return save(loggedInUser, action);
-    }
-
     /* Helper method */
-    private  RecurringAction updateAction(Map<String, Object> actionProps, User user) {
+    RecurringAction updateAction(Map<String, Object> actionProps, User user) {
         if (!actionProps.containsKey("id")) {
             throw new InvalidArgsException("No action id provided");
         }
@@ -207,7 +173,16 @@ public class RecurringActionHandler extends BaseHandler {
             action.setCronExpr((String) actionProps.get("cron_expr"));
         }
         if (actionProps.containsKey("test")) {
-            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+            if (actionProps.containsKey("test")) {
+                boolean testMode = Boolean.parseBoolean(actionProps.get("test").toString());
+                RecurringActionType actionType = action.getRecurringActionType();
+                if (RecurringActionType.ActionType.HIGHSTATE.equals(actionType.getActionType())) {
+                    ((RecurringHighstate) action.getRecurringActionType()).setTestMode(testMode);
+                }
+                else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType.getActionType())) {
+                    ((RecurringState) action.getRecurringActionType()).setTestMode(testMode);
+                }
+            }
         }
         if (actionProps.containsKey("active")) {
             action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
@@ -217,7 +192,7 @@ public class RecurringActionHandler extends BaseHandler {
     }
 
     /* Helper method */
-    private int save(User loggedInUser, RecurringAction action) {
+    int save(User loggedInUser, RecurringAction action) {
         try {
             RecurringAction saved = RecurringActionManager.saveAndSchedule(action, loggedInUser);
             // let's throw an exeption on integer overflow
@@ -232,25 +207,25 @@ public class RecurringActionHandler extends BaseHandler {
     }
 
     /**
-     * Delete recurring action with given action id.
+     * Delete recurring action with the given action ID.
      *
-     * @param loggedInUser The current user
-     * @param actionId id of the action
-     * @return id of deleted action otherwise exception thrown
+     * @param loggedInUser the current user
+     * @param id the id of the action
+     * @return the id of deleted action otherwise exception thrown
      *
-     * @apidoc.doc Delete recurring action with given action id.
+     * @apidoc.doc Delete a recurring action with the given action ID.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "actionId", "ID of the action")
-     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     * @apidoc.param #param_desc("int", "id", "the action ID")
+     * @apidoc.returntype #return_int_success()
      */
-    public int delete(User loggedInUser, Integer actionId) {
-        RecurringAction action = lookupById(loggedInUser, actionId);
+    public int delete(User loggedInUser, Integer id) {
+        RecurringAction action = lookupById(loggedInUser, id);
         try {
             RecurringActionManager.deleteAndUnschedule(action, loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
-        return actionId;
+        return 1;
     }
 }

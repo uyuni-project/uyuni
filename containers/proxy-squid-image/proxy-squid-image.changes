@@ -1,3 +1,6 @@
+- Add squid configuration for /saltboot
+- Integrate the containerized proxy into the usual rel-eng workflow
+
 -------------------------------------------------------------------
 Tue Feb 21 13:15:38 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 

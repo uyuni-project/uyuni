@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-31 15:17+0200\n"
-"PO-Revision-Date: 2023-04-07 07:14+0000\n"
+"PO-Revision-Date: 2023-04-21 07:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -214,7 +214,7 @@ msgstr ""
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Недоволни дозволи за претплата за издание (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -249,6 +249,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Овој систем е успешно регистриран, но нема право\n"
+"  на сервис.  За да дадете право на осој систем, логирајте се на веб "
+"страната на:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -260,21 +266,27 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Овој систем е успешно регистриран, но сервисни права\n"
+"  не беа достапни.  За да дадете права на овој систем, логирајте се на веб "
+"страната на:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Ве молиме извршете го rhn_register како root на овој клиент"
 
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Сервисот не е овозможен за системскиот профил: \"%s\""
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "Се бара невалиден RPM пакет %s"
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
@@ -283,7 +295,7 @@ msgstr "Пакетот не е најден"
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "Архитектурата \"%s\" не е поддржана"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format

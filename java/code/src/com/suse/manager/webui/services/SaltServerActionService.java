@@ -1260,7 +1260,7 @@ public class SaltServerActionService {
         }
         if (!regularMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+                    ApplyStatesEventMessage.SYNC_ALL,
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
                     Optional.empty()), minionSummaries);
         }

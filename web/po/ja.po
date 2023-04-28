@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:18+0200\n"
-"PO-Revision-Date: 2023-02-21 07:14+0000\n"
+"POT-Creation-Date: 2023-04-21 15:19+0200\n"
+"PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -363,9 +363,8 @@ msgstr "フレーバー無し"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:83
 #: ../html/src/manager/state/highstate.tsx:65
-#, fuzzy
 msgid "Action has been successfully added to the action chain '{0}'."
-msgstr "動作を動作チェーンに追加しました "
+msgstr "動作を動作チェーン「{0}」に追加しました 。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
 #: ../html/src/manager/images/image-build.tsx:211
@@ -380,18 +379,16 @@ msgid "scheduled"
 msgstr "スケジュールしました"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#, fuzzy
 msgid "The action has been {0}."
-msgstr "動作を "
+msgstr "動作は {0} でした。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:94
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "システム選択に戻る"
+msgstr "選択を解除できません"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:103
 msgid "Unable to perform action."
-msgstr ""
+msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:185
 #: ../html/src/manager/state/recurring-states-edit.tsx:133
@@ -401,9 +398,8 @@ msgstr "一覧に戻る"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:204
 #: ../html/src/components/package/PackageListActionScheduler.tsx:237
 #: ../html/src/manager/packages/list.tsx:144
-#, fuzzy
 msgid "Filter by package name"
-msgstr "名前でフィルタ"
+msgstr "パッケージ名でフィルタ"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:242
@@ -1153,16 +1149,15 @@ msgstr ""
 "次の製品のインストールに失敗しました。 ログファイルを確認してください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:261
-#, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr "いくつかの変更をスケジュールしました。"
+msgstr "選択されたチャンネルは同期のスケジュールに成功しました。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{0}' failed. Please check log files."
 msgstr ""
-"次の製品のインストールに失敗しました。 ログファイルを確認してください。"
+"「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してく"
+"ださい。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1313,7 +1308,7 @@ msgstr "製品チャンネル - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "追加したいオプションのチャンネルを選択して確認します。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1142
 msgid "Mandatory Channels"
@@ -2085,7 +2080,7 @@ msgstr "名前を指定する"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
-msgstr ""
+msgstr "番号"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2204,7 +2199,7 @@ msgstr "パッチ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Product Temporary Fix"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2331,11 +2326,11 @@ msgstr "なし (モジュール化を無効にする)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
-msgstr ""
+msgstr "すべて"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "すべてのプログラムの一時的な修正"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
@@ -2366,14 +2361,12 @@ msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#, fuzzy
 msgid "All"
-msgstr "許可"
+msgstr "すべて"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "パッケージ名"
+msgstr "修正パッケージ名"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
@@ -4085,66 +4078,66 @@ msgstr "概要"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)のインストール"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are available for installation "
 "on this system. "
 msgstr ""
+"このシステムには、次のProgram Temporary Fixes (PTFs)をインストールできます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)を利用できません。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
-#, fuzzy
 msgid "Install PTFs"
-msgstr "インストール済み"
+msgstr "PTFsのインストール"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:36
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)インストールの確認"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)の削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid ""
 "The following Program Temporary Fixes (PTFs) are currently installed on this "
 "system. "
 msgstr ""
+"現在このシステムには次のProgram Temporary Fixes (PTFs)がインストールされてい"
+"ます。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)がインストールされていません。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
-#, fuzzy
 msgid "Remove PTFs"
-msgstr "削除"
+msgstr "PTFsの削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:37
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)削除の確認"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "このシステムで実行できる関連アクションはありません。"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "インストールされているPTFsの一覧表示/削除"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
-#, fuzzy
 msgid "Install PTF"
-msgstr "インストール済み"
+msgstr "PTFのインストール"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:30
 msgid "Onboarding failed"
@@ -4293,41 +4286,35 @@ msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
-msgstr ""
+msgstr "チャンネルのないパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:81
 msgid "All managed packages"
-msgstr ""
+msgstr "すべての管理パッケージ"
 
 #: ../html/src/manager/packages/list.tsx:89
-#, fuzzy
 msgid " Package Management "
-msgstr "パッケージ管理スタックに影響があります"
+msgstr " パッケージ管理 "
 
 #: ../html/src/manager/packages/list.tsx:117
-#, fuzzy
 msgid "Binary packages"
-msgstr "パッケージの検索"
+msgstr "バイナリパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:118
-#, fuzzy
 msgid "Source packages"
-msgstr "パッケージの検索"
+msgstr "ソースパッケージ"
 
 #: ../html/src/manager/packages/list.tsx:126
-#, fuzzy
 msgid "package"
 msgstr "パッケージ"
 
 #: ../html/src/manager/packages/list.tsx:146
-#, fuzzy
 msgid "No Packages."
-msgstr "パッケージ"
+msgstr "パッケージがありません。"
 
 #: ../html/src/manager/packages/list.tsx:172
-#, fuzzy
 msgid "Content Provider"
-msgstr "クラスタのプロバイダ"
+msgstr "コンテンツプロバイダ"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4727,9 +4714,8 @@ msgid "System Group"
 msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been {0}."
-msgstr "highstate の適用を "
+msgstr "highstateの適用が次のようになりました: {0}。"
 
 #: ../html/src/manager/state/highstate.tsx:127
 msgid "Apply Highstate"
@@ -4964,17 +4950,18 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr "ホストをブートストラップしました。システムは"
+msgstr ""
+"ホストをブートストラップしました。システムはまもなくシステム内に表示されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
-msgstr "システム"
+msgstr "　"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid ""
 "shortly. If it is a transactional system, please reboot it to finish "
 "registration"
-msgstr ""
+msgstr "トランザクションシステムの場合は、再起動して登録を完了してください"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"

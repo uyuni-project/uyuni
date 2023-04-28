@@ -17,10 +17,6 @@ const SEARCH_TYPES = [
     value: "errata",
     name: t("Patches"),
   },
-  {
-    value: "docs",
-    name: t("Documentation"),
-  },
 ];
 
 export class HeaderSearch extends React.PureComponent {

@@ -690,15 +690,22 @@ public abstract class CobblerObject {
                 keyList.add((String) map.get(key));
             }
             if (keyList.isEmpty()) {
-                string.append(key + " ");
+                string.append(key).append(" ");
             }
             else {
                 for (String value : keyList) {
-                    string.append(key + "=" + value + " ");
+                    string.append(key).append("=");
+                    if (value != null && value.contains(" ")) {
+                        string.append('"').append(value).append('"');
+                    }
+                    else {
+                        string.append(value);
+                    }
+                    string.append(" ");
                 }
             }
         }
-        return string.toString();
+        return string.toString().strip();
     }
 
     /**

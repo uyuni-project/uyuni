@@ -1,26 +1,60 @@
-- set jasper development mode to false (bsc#1206191)
-- fixed select all for ptf packages list
-- added SLES 12 support for ptf removal
-- fixed issue with checking ptf repositories on cloned channels
-- remove spacewalk-koan and mgr-virtualization usage
-- disable gpgckeck when building docker containers as we
-  work with trusted content and the repos are served via SSL
-- Fix deleting custom info pillar (bsc#1209253)
-- Update report outdated system query to de-duplicate errata id's
-- change jar versions in ivy configuration file
-- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
-- support multiple gpgkey urls for a channel (bsc#1208540)
-- Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
-- Filter CLM modular packages using release strings (bsc#1207814)
-- Fix systems subscribed to channel CSV download (bsc#1201063)
-- Save scheduler user when creating Patch actions manually (bsc#1208321)
-- Fix cobbler system entries for retail terminals (bsc#1208661)
-- Add missing text for user preferenaces page
-- Hide install option for RHEL9+ kickstarts
-- Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
-- Allow single-value lists in query strings in HTTP API (bsc#1207297)
-- Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+- only set self_update URL if functionality is not disabled in
+  distro or profile
+- execute highstate on registration with a user if available
+- Ensure installation of 'xalan-j2' for building.
+- Simplify Java package dependencies.
+- Safe XSLT processing in SCAP transformations
+- Fix Internal Server Error when downloading static assets (bsc#1207691)
+- Recurring custom states
+- Update Cobbler profile when a new image is deployed
+- Add mapping of image URLs for containerized proxy
+- Fix image size entries in xml-rpc
+- kernel options: only add quotes if there is a space in the value (bsc#1209926)
+- fix displaying system channels when no base product is installed
+  (bsc#1206423)
+- fix NPE in cobbler system sync when server has no creator set
+- remove channels from client after transfer to a different
+  organization (bsc#1209220)
+- Fix RHEL9 / SLL9 product discovery (bsc#1209993)
 
+-------------------------------------------------------------------
+Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.17-1
+  * Fix possible "NullPointerException" when clicking on
+    the "Create PXE installation configuration" button from Provising page
+  * Fix possible "NullPointerException" issues when running cobbler-sync-bunch
+  * Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
+  * set jasper development mode to false (bsc#1206191)
+  * fixed select all for ptf packages list
+  * added SLES 12 support for ptf removal
+  * fixed issue with checking ptf repositories on cloned channels
+  * remove spacewalk-koan and mgr-virtualization usage
+  * disable gpgckeck when building docker containers as we
+    work with trusted content and the repos are served via SSL
+  * Fix deleting custom info pillar (bsc#1209253)
+  * Update report outdated system query to de-duplicate errata id's
+  * change jar versions in ivy configuration file
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+  * support multiple gpgkey urls for a channel (bsc#1208540)
+  * Refactor Java notification synchronize to avoid dead locks (bsc#1209369)
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * Fix systems subscribed to channel CSV download (bsc#1201063)
+  * Save scheduler user when creating Patch actions manually (bsc#1208321)
+  * Fix cobbler system entries for retail terminals (bsc#1208661)
+  * Add missing text for user preferenaces page
+  * Hide install option for RHEL9+ kickstarts
+  * Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
+  * Allow single-value lists in query strings in HTTP API (bsc#1207297)
+  * Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+
+-------------------------------------------------------------------
+Thu Apr 13 15:22:40 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.16-1
+  * Add more restricted arguments to prevent HTTP API logging
+    sensitive data
+    (CVE-2023-22644, bsc#1209434, bsc#1209386, bsc#1209395)
 
 -------------------------------------------------------------------
 Tue Mar 21 15:23:53 CET 2023 - jgonzalez@suse.com

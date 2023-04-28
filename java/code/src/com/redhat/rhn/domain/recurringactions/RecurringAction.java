@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -25,9 +26,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,6 +39,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -52,16 +58,17 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private Long id;
     private String name;
     private String cronExpr;
-    private boolean testMode;
     private boolean active;
     private User creator;
+    private RecurringActionType recurringActionType;
+    private RecurringActionType.ActionType actionType;
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
     /**
-     * Recurring action types
+     * Recurring action target types
      */
-    public enum Type {
+    public enum TargetType {
         MINION,
         GROUP,
         ORG
@@ -75,14 +82,17 @@ public abstract class RecurringAction extends BaseDomainHelper {
     /**
      * Constructor
      *
-     * @param test if action is in testMode
+     * @param recurringActionTypeIn the recurring action type
      * @param isActive if action is active
      * @param creatorIn the creator User
      */
-    protected RecurringAction(boolean test, boolean isActive, User creatorIn) {
-        this.testMode = test;
+    protected RecurringAction(RecurringActionType recurringActionTypeIn, boolean isActive, User creatorIn) {
         this.active = isActive;
         this.creator = creatorIn;
+
+        this.recurringActionType = recurringActionTypeIn;
+        this.recurringActionType.setRecurringAction(this);
+        this.actionType = recurringActionTypeIn.getActionType();
     }
 
     /**
@@ -114,7 +124,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return the type of the entitiy
      */
     @Transient
-    public abstract Type getType();
+    public abstract TargetType getTargetType();
 
     /**
      * Gets the name of the TaskoSchedule entry based on the entity id.
@@ -189,26 +199,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
     }
 
     /**
-     * Gets if action is testMode.
-     *
-     * @return testMode - if action is testMode
-     */
-    @Column(name = "test_mode")
-    @org.hibernate.annotations.Type(type = "yes_no")
-    public boolean isTestMode() {
-        return testMode;
-    }
-
-    /**
-     * Sets testMode.
-     *
-     * @param test - testMode
-     */
-    public void setTestMode(boolean test) {
-        this.testMode = test;
-    }
-
-    /**
      * Gets if action is active.
      *
      * @return active - if action is active
@@ -246,6 +236,46 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     public void setCreator(User creatorIn) {
         creator = creatorIn;
+    }
+
+    /**
+     * Gets the RecurringActionType object
+     *
+     * @return the RecurringActionType
+     */
+    @OneToOne(mappedBy = "recurringAction", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public RecurringActionType getRecurringActionType() {
+        return recurringActionType;
+    }
+
+    /**
+     * Sets the RecurringActionType
+     *
+     * @param recurringActionTypeIn the recurring action type
+     */
+    public void setRecurringActionType(RecurringActionType recurringActionTypeIn) {
+        this.recurringActionType = recurringActionTypeIn;
+    }
+
+    /**
+     * Gets the type of the Action
+     *
+     * @return the RecurringActionType.ActionType
+     */
+    @Column(name = "action_type")
+    @Enumerated(EnumType.STRING)
+    public RecurringActionType.ActionType getActionType() {
+        return actionType;
+    }
+
+    /**
+     * Sets the action type
+     *
+     * @param actionTypeIn the action type
+     */
+    public void setActionType(RecurringActionType.ActionType actionTypeIn) {
+        actionType = actionTypeIn;
     }
 
     @Override

@@ -50,6 +50,15 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     }
 
     /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void setHeader(String key, String value) {
+        header.put(key, value);
+    }
+
+    /**
      * Returns the String value matching the given key
      * @param key the header name
      * @return header value or null...

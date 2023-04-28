@@ -71,7 +71,6 @@ public class RequestContext {
     public static final String COBBLER_ID = "cobbler_id";
     public static final String FILTER_STRING = "filter_string";
     public static final String PREVIOUS_FILTER_STRING = "prev_filter_value";
-    public static final String LIST_DISPLAY_EXPORT = "lde";
     public static final String TOKEN_ID = "tid";
 
     public static final String LIST_SORT = "sort";
@@ -508,21 +507,6 @@ public class RequestContext {
             " is required.");
         }
         return p;
-    }
-
-    /**
-     * If this current Request includes a parameter to indicate the User is attempting
-     * to produce an export of viewable data then return true.
-     *
-     * Only for use with the Old list tag's exporter.  The new list tag doesn't use
-     *      "lde" as a parameter, it uses   lde_unique(listName).
-     *
-     * @return if this request includes an export param
-     */
-    // TODO Write unit tests for isRequestedExport()
-    public boolean isRequestedExport() {
-        String lde = request.getParameter(LIST_DISPLAY_EXPORT);
-        return (lde != null && lde.equals("1"));
     }
 
     /**
