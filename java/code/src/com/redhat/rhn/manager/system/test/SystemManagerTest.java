@@ -1944,6 +1944,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String proxyName = "pxy.mgr.lab";
         String serverName = "srv.mgr.lab";
         long maxCache = 4096;
+        long bandwidthLimit = 512;
         String email = "admin@mgr.lab";
         String rootCA = "Dummy Root CA";
         List<String> otherCAs = List.of("CA 1", "CA 2");
@@ -1965,8 +1966,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(apacheCert));
         }});
 
-        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache,
+                bandwidthLimit, email, rootCA, otherCAs, new SSLCertPair(cert, key), null, null,
+                null);
         Map<String, String> content = readTarData(actual);
 
         Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));

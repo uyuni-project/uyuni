@@ -11,6 +11,7 @@ data:
     email: {{ .Values.email }}
     max_cache_size_mb: {{ .Values.max_cache_size_mb }}
     log_level: {{ .Values.log_level | default 1 }}
+    bandwidth_limit_kbps: {{ .Values.delay | bandwidth_limit_kbps 512 }}
     ca_crt: |
 {{ .Values.ca_crt | indent 6 }}
 ---

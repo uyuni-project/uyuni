@@ -15,6 +15,7 @@ import Validation from "components/validation";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
+import {Check, Select} from "components/input";
 
 enum SSLMode {
   UseSSL = "use-ssl",
@@ -37,6 +38,8 @@ const initialModel = {
   proxyAdminEmail: "",
   sslMode: SSLMode.CreateSSL,
   maxSquidCacheSize: "",
+  setBandwidthLimit: false,
+  bandWidthLimitKbps: 0,
   proxyFQDN: "",
   serverFQDN: "",
   proxyPort: "8022",
@@ -94,6 +97,7 @@ export function ProxyConfig() {
         proxyPort: model.proxyPort ? parseInt(model.proxyPort, 10) : 8022,
         serverFQDN: model.serverFQDN,
         maxSquidCacheSize: parseInt(model.maxSquidCacheSize, 10),
+        bandWidthLimit: parseInt(model.bandWidthLimitKbps, 10),
         proxyAdminEmail: model.proxyAdminEmail,
         sslMode: model.sslMode,
       };
@@ -233,6 +237,24 @@ export function ProxyConfig() {
           divClass="col-md-6"
           type="number"
         />
+        <Check
+            name="setBandwidthLimit"
+            label="Set bandwidth limit"
+            divClass="col-md-6 col-md-offset-3"
+        />
+        {model.setBandwidthLimit &&
+            <Text
+                name="bandWidthLimitKbps"
+                label={t("Bandwidth limit in Kbps")}
+                hint={t("The maximum available bandwidth for download in Kbps")}
+                required
+                validators={[Validation.isInt({ gt: 0 })]}
+                placeholder={t("e.g., 512")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                type="number"
+            />
+        }
         <Text
           name="proxyAdminEmail"
           label={t("Proxy admin email")}

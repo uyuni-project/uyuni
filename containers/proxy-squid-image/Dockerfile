@@ -23,11 +23,12 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
+COPY conf.d /etc/squid/conf.d.backup
 COPY squid.conf /etc/squid/squid.conf
 # Ensure every run / exec uses the squid user to avoid errors like
 #    FATAL: Cannot open '/proc/self/fd/1' for writing.
 # For this we need to give the squid user access to squid.conf and squid.pid
-RUN chown squid:squid /etc/squid/squid.conf
+RUN chown -R squid:squid /etc/squid/
 RUN mkdir -p /run/squid && chown squid:squid /run/squid
 
 # Ensure the cache is owned by squid user

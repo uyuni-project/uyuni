@@ -284,7 +284,7 @@ public class ProxyHandler extends BaseHandler {
      *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
-                                  Integer maxCache, String email,
+                                  Integer maxCache, Integer bandwidthLimit, String email,
                                   String rootCA, List<String> intermediateCAs, String proxyCrt, String proxyKey) {
         try {
             SSLCertPair proxyCrtKey = new SSLCertPair(proxyCrt, proxyKey);
@@ -293,7 +293,8 @@ public class ProxyHandler extends BaseHandler {
             }
 
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                    maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null);
+                    maxCache.longValue(), bandwidthLimit.longValue(), email, rootCA, intermediateCAs, proxyCrtKey,
+                    null, null, null);
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);
@@ -351,7 +352,7 @@ public class ProxyHandler extends BaseHandler {
      *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
-                                  Integer maxCache, String email,
+                                  Integer maxCache, Integer bandwidthLimit, String email,
                                   String caCrt, String caKey, String caPassword,
                                   List<String> cnames, String country, String state, String city,
                                   String org, String orgUnit, String sslEmail) {
@@ -364,7 +365,8 @@ public class ProxyHandler extends BaseHandler {
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                    maxCache.longValue(), email, null, Collections.emptyList(), null, caCrtKey, caPassword, certData);
+                    maxCache.longValue(), bandwidthLimit.longValue(), email, null, Collections.emptyList(),
+                    null, caCrtKey, caPassword, certData);
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);

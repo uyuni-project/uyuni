@@ -2203,6 +2203,7 @@ public class SystemManager extends BaseManager {
      * @param proxyPort  the SSH port the proxy listens on
      * @param server the FQDN of the server the proxy uses
      * @param maxCache the maximum memory cache size
+     * @param bandWidthLimit the bandwidth limit in Kbps
      * @param email the email of proxy admin
      * @param rootCA root CA used to sign the SSL certificate in PEM format
      * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
@@ -2216,7 +2217,7 @@ public class SystemManager extends BaseManager {
      * @return the configuration file
      */
     public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
-                                             Long maxCache, String email,
+                                             Long maxCache, Long bandWidthLimit, String email,
                                              String rootCA, List<String> intermediateCAs,
                                              SSLCertPair proxyCertKey,
                                              SSLCertPair caPair, String caPassword, SSLCertData certData)
@@ -2234,6 +2235,7 @@ public class SystemManager extends BaseManager {
 
         config.put("server", server);
         config.put("max_cache_size_mb", maxCache);
+        config.put("bandwidth_limit_kbps", bandWidthLimit);
         config.put("email", email);
         config.put("server_version", ConfigDefaults.get().getProductVersion());
         config.put("proxy_fqdn", proxyName);
