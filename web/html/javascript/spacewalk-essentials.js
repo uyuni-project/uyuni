@@ -273,56 +273,6 @@ function onDocumentReadyAutoBootstrapGrid() {
   });
 }
 
-// Humanizes all the time elements with the human class
-function humanizeDates() {
-  // should be consistent with UserPreferencesUtils.java
-  moment.lang(window.preferredLocale, {
-    longDateFormat : {
-      LT: "HH:mm",
-      LTS: "HH:mm:ss",
-      L: "YYYY-MM-DD",
-      LL: "YYYY-MM-DD",
-      LLL: "YYYY-MM-DD",
-      LLLL: "YYYY-MM-DD"
-    },
-  });
-
-  jQuery("time.human-from, time.human-calendar").each(function (index) {
-    var datetime = jQuery(this).attr('datetime');
-    if (datetime == undefined) {
-      // if the attribute is not set, the content
-      // should be a valid date
-      datetime = jQuery(this).html();
-    }
-    var parsed = moment(datetime);
-    if (parsed.isValid()) {
-      var originalContent = jQuery(this).html();
-      if (jQuery(this).hasClass("human-from")) {
-        var ref = jQuery(this).attr("data-reference-date");
-        if (ref) {
-          var refParsed = moment(ref);
-          if (refParsed.isValid()) {
-            jQuery(this).html(parsed.from(refParsed));
-          }
-        }
-        else {
-          jQuery(this).html(parsed.fromNow());
-        }
-      }
-      if (jQuery(this).hasClass("human-calendar")) {
-        jQuery(this).html(parsed.calendar());
-      }
-      // if the original did not had a datetime attribute, add it
-      var datetimeAttr = jQuery(this).attr('datetime');
-      if (datetimeAttr == undefined) {
-        jQuery(this).attr('datetime', datetime);
-      }
-      // add a tooltip
-      jQuery(this).attr('title', originalContent);
-    }
-  });
-}
-
 /**
  * Setups ACE editor in a textarea element
  * textarea is a jQuery object
@@ -546,7 +496,6 @@ function onDocumentReadyInitOldJS() {
   sstScrollBehaviorSetupIsDone = false;
   onDocumentReadyGeneral();
   onDocumentReadyAutoBootstrapGrid();
-  humanizeDates();
   initIEWarningUse();
   listenForGlobalNotificationChanges();
 }
@@ -555,7 +504,6 @@ jQuery(document).ready(function() {
   onDocumentReadyGeneral();
   onDocumentReadyAutoBootstrapGrid();
   registerSpacewalkContentObservers();
-  humanizeDates();
   initIEWarningUse();
   listenForGlobalNotificationChanges();
 });

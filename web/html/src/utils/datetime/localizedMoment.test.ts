@@ -59,10 +59,27 @@ describe("localizedMoment", () => {
   });
 
   test("full server string keeps offset", () => {
-    expect(localizedMoment().toServerString()).toContain("Asia/Tokyo");
+    expect(localizedMoment().toServerString()).toContain("JST");
   });
 
   test("full user string keeps offset", () => {
-    expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
+    expect(localizedMoment().toUserString()).toContain("PDT");
+  });
+
+  test("calendar output uses config formats", () => {
+    expect(localizedMoment().subtract(1, "day").calendar()).toContain("Yesterday at");
+    expect(localizedMoment().add(1, "day").calendar()).toContain("Tomorrow at");
+
+    const twoDaysAgo = localizedMoment().subtract(2, "day");
+    expect(twoDaysAgo.calendar()).toEqual(twoDaysAgo.format("YYYY-MM-DD"));
+
+    const inTwoDays = localizedMoment().add(2, "day");
+    expect(inTwoDays.calendar()).toEqual(inTwoDays.format("YYYY-MM-DD"));
+
+    const lastWeek = localizedMoment().subtract(1, "week");
+    expect(lastWeek.calendar()).toEqual(lastWeek.format("YYYY-MM-DD"));
+
+    const nextWeek = localizedMoment().add(1, "week");
+    expect(nextWeek.calendar()).toEqual(nextWeek.format("YYYY-MM-DD"));
   });
 });

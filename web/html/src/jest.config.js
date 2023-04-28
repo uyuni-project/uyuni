@@ -28,6 +28,7 @@ module.exports = {
     userTimeZone: "America/Los_Angeles", // GMT-7
     userDateFormat: "YYYY-MM-DD",
     userTimeFormat: "HH:mm",
+    preferredLocale: "en",
   },
   // Until tests with `async (done) => ...` are fixed, we need to use a custom runner, see https://github.com/facebook/jest/issues/11404
   testRunner: "jest-jasmine2",
