@@ -104,7 +104,7 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  gnu-jaf
+BuildRequires:  glassfish-activation-api
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  apache-commons-el
 BuildRequires:  %{apache_commons_fileupload}
@@ -186,7 +186,7 @@ Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       %{ehcache}
-Requires:       gnu-jaf
+Requires:       glassfish-activation-api
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       (glassfish-jaxb-api or jaxb-api)
 Requires:       glassfish-jaxb-core
