@@ -148,7 +148,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         kernelOptions.put("option1", "val1");
         distro.setKernelOptions(kernelOptions);
         Map<String, Object> kernelOptionsPost = new HashMap<>();
-        kernelOptionsPost.put("otherOption", "val2");
+        kernelOptionsPost.put("otherOption", "val2 with space");
         distro.setKernelOptionsPost(kernelOptionsPost);
 
         // backsync
@@ -159,8 +159,8 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
                 .lookupKickstartTreeByCobblerIdOrXenId(cobblerId);
         // after the backsync command, the kickstartable tree in the db should have
         // the kernel options updated
-        assertEquals("option1='val1'", fromDb.getKernelOptions().trim());
-        assertEquals("otherOption='val2'", fromDb.getKernelOptionsPost().trim());
+        assertEquals("option1=val1", fromDb.getKernelOptions().trim());
+        assertEquals("otherOption='val2 with space'", fromDb.getKernelOptionsPost().trim());
     }
 
     /**

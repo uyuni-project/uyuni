@@ -1,3 +1,5 @@
+- fix argument parsing of distribution_update (bsc#1210458)
+
 -------------------------------------------------------------------
 Tue Mar 28 09:45:02 UTC 2023 - marina.latini@suse.com
 

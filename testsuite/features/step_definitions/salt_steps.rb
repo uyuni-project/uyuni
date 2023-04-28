@@ -88,10 +88,9 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   end
 end
 
-When(/^I wait until no Salt client is active on "([^"]*)"$/) do |minion|
+When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
   salt_minion = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
-  step %(I wait until "#{salt_minion}" service is active on "#{minion}")
-  sleep 2
+  step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|

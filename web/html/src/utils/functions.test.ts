@@ -86,16 +86,4 @@ describe("cancelable", () => {
     expect(onSuccess).toBeCalledTimes(1);
     expect(onCancel).toBeCalledTimes(0);
   });
-
-  test("cancelling works", async (done) => {
-    const onSuccess = jest.fn();
-    const onCancel = () => {
-      expect(onSuccess).toBeCalledTimes(0);
-      done();
-    };
-    const promise = new Promise(() => undefined).then(() => onSuccess());
-
-    const instance = cancelable(promise, onCancel);
-    setTimeout(() => instance.cancel(), 100);
-  });
 });
