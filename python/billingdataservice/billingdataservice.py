@@ -34,9 +34,8 @@ def index():
         return "online"
     abort(503) #Service Unavailable
 
-@app.route("/metering")
-def metering():
-    st = rhnSQL.Statement("""
+
+_query_metering_data = rhnSQL.Statement("""
     SELECT r.dimension, r.count
       FROM susePaygDimensionResult r
      WHERE r.computation_id = (SELECT c.id
@@ -44,6 +43,11 @@ def metering():
                                 WHERE c.success = true
                              ORDER BY c.timestamp DESC
                                 LIMIT 1)
-    """)
-    result = rhnSQL.fetchall_dict(st) or []
+""")
+
+@app.route("/metering")
+def metering():
+    h = rhnSQL.prepare(_query_metering_data)
+    h.execute()
+    result = h.fetchall_dict() or []
     return json.dumps({ "dimensions" : result})
