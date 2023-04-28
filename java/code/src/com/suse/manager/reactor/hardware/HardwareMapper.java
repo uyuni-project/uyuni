@@ -911,6 +911,12 @@ public class HardwareMapper {
         // primary IPv4/v6 addr, make it primary
         primaryNetIf.ifPresent(server::setPrimaryInterface);
 
+        // set primary FQDN to hostname if no primary FQDN is specified
+        if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
+                .filter(ServerFQDN::isPrimary).findFirst().isEmpty()) {
+
+            server.setPrimaryFQDNWithName(server.getHostname());
+        }
     }
 
     private Optional<NetworkInterface> firstNetIf(Server serverIn) {
