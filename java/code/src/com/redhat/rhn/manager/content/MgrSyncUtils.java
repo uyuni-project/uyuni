@@ -240,6 +240,9 @@ public class MgrSyncUtils {
             log.warn("Unable to parse URL: {}", urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        if (sccDataPath == null) {
+            throw new ContentSyncException("No local mirror path configured");
+        }
         File dataPath = new File(sccDataPath);
         // Case 4
         File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
