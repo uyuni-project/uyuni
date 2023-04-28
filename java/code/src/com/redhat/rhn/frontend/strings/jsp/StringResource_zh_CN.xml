@@ -29325,10 +29325,6 @@ given channel.</source>
         <source>Highstate</source>
         <target>Highstate</target>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target>重复性状态</target>
-      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
         <target>配置通道</target>
@@ -29911,6 +29907,10 @@ given channel.</source>
         </context-group>
         <target state="final"> 显示失效的订阅警告。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
