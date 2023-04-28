@@ -1,3 +1,4 @@
+- set swap memory value if available
 - set primary FQDN to hostname if none is set (bsc#1209156)
 - Do not throw on missing saltboot group
 - fix ISE when neither SCC credentials nor a local mirror is configured

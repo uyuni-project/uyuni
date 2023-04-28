@@ -1678,6 +1678,7 @@ public class SaltUtils {
                 new ValueMap(result.getGrains()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
         server.setRam(hwMapper.getTotalMemory());
+        server.setSwap(hwMapper.getTotalSwapMemory());
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
                     result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
