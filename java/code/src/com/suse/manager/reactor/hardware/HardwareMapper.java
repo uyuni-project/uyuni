@@ -221,7 +221,7 @@ public class HardwareMapper {
 
         ValueMap bios = new ValueMap(smbiosRecordsBios);
         ValueMap system = new ValueMap(smbiosRecordsSystem);
-        ValueMap baseboard = new ValueMap(smbiosRecordsChassis);
+        ValueMap baseboard = new ValueMap(smbiosRecordsBaseboard);
         ValueMap chassis = new ValueMap(smbiosRecordsChassis);
 
         biosVendor = bios.getOptionalAsString("vendor").orElse(null);
