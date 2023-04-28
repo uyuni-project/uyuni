@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 13:48+0100\n"
+"POT-Creation-Date: 2023-04-28 14:54+0200\n"
 "PO-Revision-Date: 2021-03-25 12:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Description [None]:"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
+#: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:96
 #: ../src/spacecmd/softwarechannel.py:895
 msgid "Base Channels"
 msgstr ""
@@ -883,7 +883,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:475 ../src/spacecmd/custominfo.py:55
-#: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:72
+#: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:89
 #: ../src/spacecmd/filepreservation.py:70 ../src/spacecmd/group.py:179
 #: ../src/spacecmd/repo.py:350 ../src/spacecmd/repo.py:462
 #: ../src/spacecmd/softwarechannel.py:768
@@ -909,7 +909,7 @@ msgstr ""
 msgid "Only [normal/state] values are acceptable for type"
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:489 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/configchannel.py:489 ../src/spacecmd/distribution.py:127
 #: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
 msgid "A name is required"
 msgstr ""
@@ -1536,103 +1536,103 @@ msgstr ""
 msgid "The name of the distribution is required"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:74
+#: ../src/spacecmd/distribution.py:91
 msgid "Path to Kickstart Tree:"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:84
+#: ../src/spacecmd/distribution.py:101
 msgid "Base Channel:"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:87
+#: ../src/spacecmd/distribution.py:104
 msgid "Invalid channel label"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:98
+#: ../src/spacecmd/distribution.py:115
 msgid "Install Types"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:103
+#: ../src/spacecmd/distribution.py:120
 msgid "Install Type:"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:106
+#: ../src/spacecmd/distribution.py:123
 msgid "Invalid install type"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:114
+#: ../src/spacecmd/distribution.py:131
 msgid "A path is required"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2586
+#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2586
 msgid "A base channel is required"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:122
+#: ../src/spacecmd/distribution.py:139
 msgid "An install type is required"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:144
+#: ../src/spacecmd/distribution.py:161
 msgid "distribution_list: List the available autoinstall trees"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:145
+#: ../src/spacecmd/distribution.py:162
 msgid "usage: distribution_list"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:169
+#: ../src/spacecmd/distribution.py:186
 msgid "distribution_delete: Delete a Kickstart tree"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:170
+#: ../src/spacecmd/distribution.py:187
 msgid "usage: distribution_delete LABEL"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
+#: ../src/spacecmd/distribution.py:211 ../src/spacecmd/distribution.py:250
 #, python-format
 msgid "No distributions matched argument %s"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:200
+#: ../src/spacecmd/distribution.py:217
 msgid "Delete distribution tree(s) [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:210
+#: ../src/spacecmd/distribution.py:227
 msgid "distribution_details: Show the details of a Kickstart tree"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:211
+#: ../src/spacecmd/distribution.py:228
 msgid "usage: distribution_details LABEL"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:249
+#: ../src/spacecmd/distribution.py:266
 #, python-format
 msgid "Name:    %s"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:250
+#: ../src/spacecmd/distribution.py:267
 #, python-format
 msgid "Path:    %s"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:624
+#: ../src/spacecmd/distribution.py:268 ../src/spacecmd/softwarechannel.py:624
 #, python-format
 msgid "Channel: %s"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:259
+#: ../src/spacecmd/distribution.py:276
 msgid "distribution_rename: Rename a Kickstart tree"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:260
+#: ../src/spacecmd/distribution.py:277
 msgid "usage: distribution_rename OLDNAME NEWNAME"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:289
+#: ../src/spacecmd/distribution.py:306
 msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:290
+#: ../src/spacecmd/distribution.py:307
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
