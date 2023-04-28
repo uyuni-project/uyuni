@@ -29310,10 +29310,6 @@ given channel.</source>
         <source>Highstate</source>
         <target>Highstate</target>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target>반복 상태</target>
-      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
         <target>구성 채널</target>
@@ -29896,6 +29892,10 @@ given channel.</source>
         </context-group>
         <target state="final"> 만료된 구독 경고를 표시합니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

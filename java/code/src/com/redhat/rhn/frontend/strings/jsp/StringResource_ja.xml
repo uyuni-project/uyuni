@@ -29324,10 +29324,6 @@ given channel.</source>
         <source>Highstate</source>
         <target>Highstate</target>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target>繰り返し状態</target>
-      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
         <target>設定チャンネル</target>
@@ -29910,6 +29906,10 @@ given channel.</source>
         </context-group>
         <target state="final"> 期限切れのサブスクライブに関する警告を表示します。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
