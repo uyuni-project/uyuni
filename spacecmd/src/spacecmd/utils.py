@@ -52,6 +52,7 @@ from tempfile import mkstemp
 from textwrap import wrap
 from subprocess import Popen, PIPE
 from dateutil.parser import isoparse
+from collections import namedtuple
 
 try:
     import json
@@ -244,6 +245,7 @@ def editor(template='', delete=False):
             handle = open(file_name, 'r')
             contents = handle.read()
             handle.close()
+            File = namedtuple("file", ("contents", "file_name"))
 
             if delete:
                 try:
@@ -252,7 +254,7 @@ def editor(template='', delete=False):
                 except OSError:
                     logging.error(_N('Could not remove %s'), file_name)
 
-            return contents, file_name
+            return File(contents, file_name)
         except IOError:
             logging.error(_N('Could not read %s'), file_name)
             return [], ''
