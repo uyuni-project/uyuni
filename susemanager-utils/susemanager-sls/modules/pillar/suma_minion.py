@@ -288,7 +288,8 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
         formula_metadata = load_formula_metadata(formula_name)
         if formula_name in out_formulas:
             continue # already processed
-        out_formulas.append(formula_name)
+        if not formula_metadata.get('pillar_only', False):
+            out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
                        load_formula_pillar(system_formulas.get(formula_name, {}),
                            group_formulas[formula_name],
@@ -300,16 +301,18 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
     for formula_name in system_formulas:
         if formula_name in out_formulas:
             continue # already processed
-        out_formulas.append(formula_name)
+        formula_metadata = load_formula_metadata(formula_name)
+        if not formula_metadata.get('pillar_only', False):
+            out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
                 load_formula_pillar(system_formulas[formula_name], {}, formula_name), strategy='recurse')
 
     # Loading the formula order
     order = get_formula_order(all_pillar)
     if order:
-        pillar["formulas"] = [formula for formula in order if formula in out_formulas]
-    else:
-        pillar["formulas"] = out_formulas
+        out_formulas = [formula for formula in order if formula in out_formulas]
+
+    pillar['formulas'] = out_formulas
 
     return pillar
 

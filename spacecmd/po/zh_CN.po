@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 13:42+0100\n"
+"POT-Creation-Date: 2023-04-28 14:48+0200\n"
 "PO-Revision-Date: 2023-01-06 05:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -216,7 +216,7 @@ msgstr "名称（留空会自动生成）："
 msgid "Description [None]:"
 msgstr "说明 [None]："
 
-#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:79
+#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:96
 #: ../src/spacecmd/softwarechannel.py:903
 msgid "Base Channels"
 msgstr "基础通道"
@@ -949,7 +949,7 @@ msgstr ""
 "  -t 类型 ('normal,'state')"
 
 #: ../src/spacecmd/configchannel.py:480 ../src/spacecmd/custominfo.py:55
-#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:72
+#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:89
 #: ../src/spacecmd/filepreservation.py:71 ../src/spacecmd/group.py:185
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:469
 #: ../src/spacecmd/softwarechannel.py:776
@@ -975,7 +975,7 @@ msgstr "类型 [normal, state]："
 msgid "Only [normal/state] values are acceptable for type"
 msgstr "类型仅接受 [normal/state] 值"
 
-#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:127
 #: ../src/spacecmd/repo.py:361 ../src/spacecmd/repo.py:475
 msgid "A name is required"
 msgstr "必须指定名称"
@@ -1667,103 +1667,103 @@ msgstr ""
 msgid "The name of the distribution is required"
 msgstr "必须指定发行套件的名称"
 
-#: ../src/spacecmd/distribution.py:74
+#: ../src/spacecmd/distribution.py:91
 msgid "Path to Kickstart Tree:"
 msgstr "Kickstart 树的路径："
 
-#: ../src/spacecmd/distribution.py:84
+#: ../src/spacecmd/distribution.py:101
 msgid "Base Channel:"
 msgstr "基础通道："
 
-#: ../src/spacecmd/distribution.py:87
+#: ../src/spacecmd/distribution.py:104
 msgid "Invalid channel label"
 msgstr "无效通道标签"
 
-#: ../src/spacecmd/distribution.py:98
+#: ../src/spacecmd/distribution.py:115
 msgid "Install Types"
 msgstr "安装类型"
 
-#: ../src/spacecmd/distribution.py:103
+#: ../src/spacecmd/distribution.py:120
 msgid "Install Type:"
 msgstr "安装类型："
 
-#: ../src/spacecmd/distribution.py:106
+#: ../src/spacecmd/distribution.py:123
 msgid "Invalid install type"
 msgstr "无效安装类型"
 
-#: ../src/spacecmd/distribution.py:114
+#: ../src/spacecmd/distribution.py:131
 msgid "A path is required"
 msgstr "必须指定路径"
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2600
+#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2600
 msgid "A base channel is required"
 msgstr "必须指定基础通道"
 
-#: ../src/spacecmd/distribution.py:122
+#: ../src/spacecmd/distribution.py:139
 msgid "An install type is required"
 msgstr "必须指定安装类型"
 
-#: ../src/spacecmd/distribution.py:144
+#: ../src/spacecmd/distribution.py:161
 msgid "distribution_list: List the available autoinstall trees"
 msgstr "distribution_list：列出可用的自动安装树"
 
-#: ../src/spacecmd/distribution.py:145
+#: ../src/spacecmd/distribution.py:162
 msgid "usage: distribution_list"
 msgstr "用法：distribution_list"
 
-#: ../src/spacecmd/distribution.py:170
+#: ../src/spacecmd/distribution.py:187
 msgid "distribution_delete: Delete a Kickstart tree"
 msgstr "distribution_delete：删除 Kickstart 树"
 
-#: ../src/spacecmd/distribution.py:171
+#: ../src/spacecmd/distribution.py:188
 msgid "usage: distribution_delete LABEL"
 msgstr "用法：distribution_delete LABEL"
 
-#: ../src/spacecmd/distribution.py:197 ../src/spacecmd/distribution.py:236
+#: ../src/spacecmd/distribution.py:214 ../src/spacecmd/distribution.py:253
 #, python-format
 msgid "No distributions matched argument %s"
 msgstr "没有与参数 %s 匹配的发行套件"
 
-#: ../src/spacecmd/distribution.py:203
+#: ../src/spacecmd/distribution.py:220
 msgid "Delete distribution tree(s) [y/N]:"
 msgstr "删除分发树 [y/N]："
 
-#: ../src/spacecmd/distribution.py:213
+#: ../src/spacecmd/distribution.py:230
 msgid "distribution_details: Show the details of a Kickstart tree"
 msgstr "distribution_details：显示 Kickstart 树的细节"
 
-#: ../src/spacecmd/distribution.py:214
+#: ../src/spacecmd/distribution.py:231
 msgid "usage: distribution_details LABEL"
 msgstr "用法：distribution_details LABEL"
 
-#: ../src/spacecmd/distribution.py:252
+#: ../src/spacecmd/distribution.py:269
 #, python-format
 msgid "Name:    %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/distribution.py:253
+#: ../src/spacecmd/distribution.py:270
 #, python-format
 msgid "Path:    %s"
 msgstr "路径：%s"
 
-#: ../src/spacecmd/distribution.py:254 ../src/spacecmd/softwarechannel.py:632
+#: ../src/spacecmd/distribution.py:271 ../src/spacecmd/softwarechannel.py:632
 #, python-format
 msgid "Channel: %s"
 msgstr "通道：%s"
 
-#: ../src/spacecmd/distribution.py:262
+#: ../src/spacecmd/distribution.py:279
 msgid "distribution_rename: Rename a Kickstart tree"
 msgstr "distribution_rename：重命名 Kickstart 树"
 
-#: ../src/spacecmd/distribution.py:263
+#: ../src/spacecmd/distribution.py:280
 msgid "usage: distribution_rename OLDNAME NEWNAME"
 msgstr "用法：distribution_rename OLDNAME NEWNAME"
 
-#: ../src/spacecmd/distribution.py:294
+#: ../src/spacecmd/distribution.py:311
 msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update：更新 Kickstart 树的路径"
 
-#: ../src/spacecmd/distribution.py:295
+#: ../src/spacecmd/distribution.py:312
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -3459,8 +3459,8 @@ msgstr "无法连接到 %s"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
+#: ../src/spacecmd/utils.py:579
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -6691,7 +6691,7 @@ msgstr "无法安排 %s"
 msgid "Scheduled: %i system(s)"
 msgstr "已安排：%i 个系统"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
 #, python-format
 msgid "Could not remove %s"
 msgstr "无法去除 %s"
@@ -8518,127 +8518,127 @@ msgstr "用法：user_setpassword USER PASSWORD"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:142
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "装载缓存文件 %s 失败"
 
-#: ../src/spacecmd/utils.py:136
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "缓存生成可能已中断，正在去除损坏的 %s"
 
-#: ../src/spacecmd/utils.py:141
+#: ../src/spacecmd/utils.py:148
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "无法从 %s 装载缓存"
 
-#: ../src/spacecmd/utils.py:162
+#: ../src/spacecmd/utils.py:169
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "无法写入 %s"
 
-#: ../src/spacecmd/utils.py:207
+#: ../src/spacecmd/utils.py:214
 msgid "Could not open the temporary file"
 msgstr "无法打开临时文件"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:233
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "编辑器 \"%s\" 已退出并返回代码 %i"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:235
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "运行编辑器时发生常规失败：%s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:238
 msgid "No editors found"
 msgstr "未找到编辑器"
 
-#: ../src/spacecmd/utils.py:370
+#: ../src/spacecmd/utils.py:376
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:459
+#: ../src/spacecmd/utils.py:474
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:467
+#: ../src/spacecmd/utils.py:482
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:476
+#: ../src/spacecmd/utils.py:491
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:485
+#: ../src/spacecmd/utils.py:500
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:510
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:505
+#: ../src/spacecmd/utils.py:520
 msgid "Available Configuration Channels"
 msgstr "可用配置通道"
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
+#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
 msgid "Invalid channel"
 msgstr "无效通道"
 
-#: ../src/spacecmd/utils.py:518
+#: ../src/spacecmd/utils.py:533
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:539
+#: ../src/spacecmd/utils.py:554
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:708
+#: ../src/spacecmd/utils.py:735
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:742
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:726
+#: ../src/spacecmd/utils.py:753
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:728
+#: ../src/spacecmd/utils.py:755
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:730
+#: ../src/spacecmd/utils.py:757
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:794
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:810
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:860
+#: ../src/spacecmd/utils.py:898
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 

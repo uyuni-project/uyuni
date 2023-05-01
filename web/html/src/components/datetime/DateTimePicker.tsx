@@ -6,6 +6,9 @@ import ReactDatePicker from "react-datepicker";
 
 import { localizedMoment } from "utils";
 
+// Turn this on to view internal state under the picker in the UI
+const SHOW_DEBUG_VALUES = false;
+
 type InputPassthroughProps = {
   "data-id": string | undefined;
 };
@@ -66,11 +69,33 @@ export const DateTimePicker = (props: Props) => {
     if (newDateValue === null) {
       return;
     }
-    const newValue = localizedMoment(newDateValue).tz(timeZone);
+    // The date we get here is now in the browsers local timezone but with values that should be reinterpreted
+    // as the users configured timezone.
+    const newValue =
+      // We wrap everything in localizedMoment again to have a consistent internal value in utc.
+      localizedMoment(
+        // We first clone the date again to not modify the original. This has the unintended side effect of converting to
+        // UTC and adjusting the values.
+        localizedMoment(newDateValue)
+          // To get back to the values we want we just convert back to the browsers local timezone as it was before.
+          .local()
+          // Then we set the timezone of the date to the users configured timezone without adjusting the values.
+          .tz(timeZone, true)
+      );
     if (props.value.valueOf() !== newValue.valueOf()) {
       props.onChange(newValue);
     }
   };
+
+  // We use localizedMoment to clone the date so we don't modify the original
+  const browserTimezoneValue = localizedMoment(props.value)
+    // We convert the date to the users configured timezone because this is what we want to show the user
+    .tz(localizedMoment.userTimeZone)
+    // The react-datepicker component only shows the browsers local timezone and will convert any date to that
+    // before showing so since we already got the date with the right values we now pretend the date we have is in
+    // the browsers local timezone but without changing its values. This will prevent the react component from
+    // converting it again.
+    .local(true);
 
   // Fix https://github.com/Hacker0x01/react-datepicker/issues/3176#issuecomment-1262100937
   const popperModifiers = [
@@ -84,74 +109,103 @@ export const DateTimePicker = (props: Props) => {
     },
   ];
 
+  const previousMonth = t("Previous month");
+  const nextMonth = t("Next month");
+  const previousYear = t("Previous year");
+  const nextYear = t("Next year");
+
   return (
-    <div className="input-group">
-      {hideDatePicker ? null : (
-        <>
-          <span key="calendar" className="input-group-addon" data-picker-type="date" onClick={() => openDatePicker()}>
-            &nbsp;<i className="fa fa-calendar"></i>
-          </span>
-          <ReactDatePicker
-            key="date-picker"
-            /**
-             * Here and below, since an element with this id doesn't exist it will be created for the portal in the document
-             * body. Please don't remove this as it otherwise breaks z-index stacking.
-             */
-            portalId="date-picker-portal"
-            ref={datePickerRef}
-            selected={props.value.toDate()}
-            onChange={onChange}
-            dateFormat={DATE_FORMAT}
-            wrapperClassName="form-control date-time-picker-wrapper"
-            popperModifiers={popperModifiers}
-            // This is used by Cucumber to check whether the picker is open
-            popperClassName="date-time-picker-popup"
-            customInput={
-              <InputPassthrough
-                data-id={datePickerId}
-                // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
-                className="form-control"
-                // This is used by Cucumber to interact with the component
-                data-testid="date-picker"
-              />
-            }
-          />
-        </>
-      )}
-      {hideTimePicker ? null : (
-        <>
-          <span key="clock" className="input-group-addon" data-picker-type="time" onClick={openTimePicker}>
-            &nbsp;<i className="fa fa-clock-o"></i>
-          </span>
-          <ReactDatePicker
-            key="date-picker"
-            portalId="time-picker-portal"
-            ref={timePickerRef}
-            selected={props.value.toDate()}
-            onChange={onChange}
-            showTimeSelect
-            showTimeSelectOnly
-            // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
-            dateFormat={TIME_FORMAT}
-            timeFormat={TIME_FORMAT}
-            wrapperClassName="form-control date-time-picker-wrapper"
-            popperModifiers={popperModifiers}
-            // This is used by Cucumber to check whether the picker is open
-            popperClassName="date-time-picker-popup"
-            customInput={
-              <InputPassthrough
-                data-id={timePickerId}
-                className="form-control"
-                // This is used by Cucumber to interact with the component
-                data-testid="time-picker"
-              />
-            }
-          />
-        </>
-      )}
-      <span className="input-group-addon" key="tz">
-        {timeZone}
-      </span>
-    </div>
+    <>
+      <div className="input-group">
+        {hideDatePicker ? null : (
+          <>
+            <span key="calendar" className="input-group-addon" data-picker-type="date" onClick={() => openDatePicker()}>
+              &nbsp;<i className="fa fa-calendar"></i>
+            </span>
+            <ReactDatePicker
+              key="date-picker"
+              /**
+               * Here and below, since an element with this id doesn't exist it will be created for the portal in the document
+               * body. Please don't remove this as it otherwise breaks z-index stacking.
+               */
+              portalId="date-picker-portal"
+              ref={datePickerRef}
+              selected={browserTimezoneValue.toDate()}
+              onChange={onChange}
+              dateFormat={DATE_FORMAT}
+              wrapperClassName="form-control date-time-picker-wrapper"
+              popperModifiers={popperModifiers}
+              // This is used by Cucumber to check whether the picker is open
+              popperClassName="date-time-picker-popup"
+              customInput={
+                <InputPassthrough
+                  data-id={datePickerId}
+                  // TODO: The styling logic here is hacky, would be nice to clean it up once everything works
+                  className="form-control no-right-border"
+                  // This is used by Cucumber to interact with the component
+                  data-testid="date-picker"
+                />
+              }
+              previousMonthAriaLabel={previousMonth}
+              previousMonthButtonLabel={previousMonth}
+              nextMonthAriaLabel={nextMonth}
+              nextMonthButtonLabel={nextMonth}
+              previousYearAriaLabel={previousYear}
+              previousYearButtonLabel={previousYear}
+              nextYearAriaLabel={nextYear}
+              nextYearButtonLabel={nextYear}
+            />
+          </>
+        )}
+        {hideTimePicker ? null : (
+          <>
+            <span
+              key="clock"
+              className="input-group-addon no-right-border"
+              data-picker-type="time"
+              onClick={openTimePicker}
+            >
+              &nbsp;<i className="fa fa-clock-o"></i>
+            </span>
+            <ReactDatePicker
+              key="time-picker"
+              portalId="time-picker-portal"
+              ref={timePickerRef}
+              selected={browserTimezoneValue.toDate()}
+              onChange={onChange}
+              showTimeSelect
+              showTimeSelectOnly
+              // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
+              dateFormat={TIME_FORMAT}
+              timeFormat={TIME_FORMAT}
+              wrapperClassName="form-control date-time-picker-wrapper"
+              popperModifiers={popperModifiers}
+              // This is used by Cucumber to check whether the picker is open
+              popperClassName="date-time-picker-popup"
+              customInput={
+                <InputPassthrough
+                  data-id={timePickerId}
+                  className="form-control"
+                  // This is used by Cucumber to interact with the component
+                  data-testid="time-picker"
+                />
+              }
+            />
+          </>
+        )}
+        <span className="input-group-addon" key="tz">
+          {timeZone}
+        </span>
+      </div>
+      {process.env.NODE_ENV !== "production" && SHOW_DEBUG_VALUES ? (
+        <pre>
+          user:{"   "}
+          {props.value.toUserDateTimeString()} ({localizedMoment.userTimeZone})<br />
+          server: {props.value.toServerDateTimeString()} ({localizedMoment.serverTimeZone})<br />
+          iso:{"    "}
+          {props.value.toISOString()}
+        </pre>
+      ) : null}
+    </>
   );
 };

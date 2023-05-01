@@ -1,4 +1,8 @@
-- Ignore extra metadata fields for Liberty Linux (bsc#1208908)
+-------------------------------------------------------------------
+Wed Apr 19 12:44:34 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.2-1
+  * Ignore extra metadata fields for Liberty Linux (bsc#1208908)
 
 -------------------------------------------------------------------
 Wed Sep 28 11:01:48 CEST 2022 - jgonzalez@suse.com

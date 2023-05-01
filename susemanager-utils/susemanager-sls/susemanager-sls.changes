@@ -1,9 +1,22 @@
-- to update everything on a debian system, call dist-upgrade to
-  be able to install and remove packages
-- Add openEuler 22.03 support
-- support multiple gpgkey urls for a channel (bsc#1208540)
-- make SUSE Addon GPG key available on all instance (bsc#1208540)
-- Improve error handling in mgr_events.py (bsc#1208687)
+- fix duplicate packages in state
+- Fix enabling bundle build via custom info
+- Rename internal state 'synccustomall' to 'syncall'
+- Recurring custom states
+- Do not include pillar_only formulas in highstate
+- Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
+- Add kiwi supported disk images to be collectable (bsc#1208522)
+- disable salt-minion and remove its config file on cleanup (bsc#1209277)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:56:27 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * to update everything on a debian system, call dist-upgrade to
+    be able to install and remove packages
+  * Add openEuler 22.03 support
+  * support multiple gpgkey urls for a channel (bsc#1208540)
+  * make SUSE Addon GPG key available on all instance (bsc#1208540)
+  * Improve error handling in mgr_events.py (bsc#1208687)
 
 -------------------------------------------------------------------
 Tue Feb 21 14:10:36 CET 2023 - jgonzalez@suse.com

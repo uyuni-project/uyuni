@@ -65,7 +65,24 @@ def do_distribution_create(self, args, update=False):
             options.name = args[0]
         elif not options.name:
             logging.error(_N('The name of the distribution is required'))
+            self.help_distribution_update()
             return 1
+        details = self.client.kickstart.tree.getDetails(self.session, options.name)
+        channel = \
+            self.client.channel.software.getDetails(self.session,
+                                                    details.get('channel_id'))
+
+        if not options.path:
+            options.path = details.get('abs_path')
+
+        if not options.base_channel:
+            options.base_channel = channel.get('label')
+
+        if not options.install_type:
+            inst_type = details.get('install_type')
+            if inst_type:
+                options.install_type = inst_type.get('label')
+
 
     if is_interactive(options):
         if not update:
@@ -309,10 +326,4 @@ def complete_distribution_update(self, text, line, beg, end):
 
 
 def do_distribution_update(self, args):
-    arguments, _ = parse_command_arguments(args, get_argument_parser())
-    if not arguments:
-        self.help_distribution_update()
-    else:
-        return self.do_distribution_create(args, update=True)
-
-    return None
+    return self.do_distribution_create(args, update=True)

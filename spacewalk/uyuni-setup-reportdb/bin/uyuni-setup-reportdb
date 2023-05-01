@@ -93,7 +93,7 @@ def_regexes() {
 def_regexes
 unset -f def_regexes
 
-PG_DATA=/var/lib/pgsql/data
+PG_DATA=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
 PG_HBA="$PG_DATA/pg_hba.conf"
 PG_IDENT="$PG_DATA/pg_ident.conf"
 POSTGRESQL="$PG_DATA/postgresql.conf"
@@ -474,6 +474,7 @@ pg_hba_remove() {
 }
 
 postgresql_service() {
+    POSTGRESQL_SERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
     case $1 in
         initdb)
             if isSUSE ; then
@@ -484,19 +485,19 @@ postgresql_service() {
                     systemctl start postgresql
                 fi
 	    else
-                postgresql-setup initdb
+                ${POSTGRESQL_SERVICE}-setup initdb
 	    fi
 	    ;;
         status)
             if $LOCAL ; then
                 pgrep -x postgresql >/dev/null && return 1 || return 0
             else
-                systemctl $1 postgresql
+                systemctl $1 ${POSTGRESQL_SERVICE}
             fi
             ;;
         enable)
             if ! $LOCAL ; then
-                systemctl $1 postgresql
+                systemctl $1 ${POSTGRESQL_SERVICE}
             fi
             ;;
         *)
@@ -504,7 +505,7 @@ postgresql_service() {
                 echo ">> $1"
                 $RUNUSER - postgres -c "/usr/share/postgresql/postgresql-script $1"
             else
-                systemctl $1 postgresql
+                systemctl $1 ${POSTGRESQL_SERVICE}
             fi
             ;;
     esac

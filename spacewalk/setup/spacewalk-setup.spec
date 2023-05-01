@@ -35,7 +35,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.4.7
+Version:        4.4.8
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -56,6 +56,7 @@ BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
+BuildRequires:  tomcat
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -94,7 +95,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-Requires(pre):  tomcat
+Requires:       tomcat
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
@@ -162,6 +163,9 @@ install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/space
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
+%if 0%{?suse_version}
+install -m 0644 share/tomcat_java_opts_suse.conf %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
+%endif
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -278,6 +282,9 @@ make test
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
 %config %{_sysconfdir}/salt/master.d/salt-ssh-logging.conf
 %config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts.conf
+%if 0%{?suse_version}
+%config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts_suse.conf
+%endif
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd

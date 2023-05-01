@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 13:42+0100\n"
+"POT-Creation-Date: 2023-04-28 14:48+0200\n"
 "PO-Revision-Date: 2022-11-28 20:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
@@ -233,7 +233,7 @@ msgstr "Názov (prázdne na automatické vygenerovanie):"
 msgid "Description [None]:"
 msgstr "Popis [Žiadny]:"
 
-#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:79
+#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:96
 #: ../src/spacecmd/softwarechannel.py:903
 msgid "Base Channels"
 msgstr "Základné kanály"
@@ -982,7 +982,7 @@ msgstr ""
 "  -t TYP('normal,'state')"
 
 #: ../src/spacecmd/configchannel.py:480 ../src/spacecmd/custominfo.py:55
-#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:72
+#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:89
 #: ../src/spacecmd/filepreservation.py:71 ../src/spacecmd/group.py:185
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:469
 #: ../src/spacecmd/softwarechannel.py:776
@@ -1008,7 +1008,7 @@ msgstr "Typ [normal, state]:"
 msgid "Only [normal/state] values are acceptable for type"
 msgstr "Iba hodnoty [normal/state] sú prípustné pre typ"
 
-#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:127
 #: ../src/spacecmd/repo.py:361 ../src/spacecmd/repo.py:475
 msgid "A name is required"
 msgstr "Vyžaduje sa názov"
@@ -1712,104 +1712,104 @@ msgstr ""
 msgid "The name of the distribution is required"
 msgstr "Vyžaduje sa názov distribúcie"
 
-#: ../src/spacecmd/distribution.py:74
+#: ../src/spacecmd/distribution.py:91
 msgid "Path to Kickstart Tree:"
 msgstr "Cesta k stromu Kickstart:"
 
-#: ../src/spacecmd/distribution.py:84
+#: ../src/spacecmd/distribution.py:101
 msgid "Base Channel:"
 msgstr "Základný kanál:"
 
-#: ../src/spacecmd/distribution.py:87
+#: ../src/spacecmd/distribution.py:104
 msgid "Invalid channel label"
 msgstr "Neplatné označenie kanála"
 
-#: ../src/spacecmd/distribution.py:98
+#: ../src/spacecmd/distribution.py:115
 msgid "Install Types"
 msgstr "Inštalované typy"
 
-#: ../src/spacecmd/distribution.py:103
+#: ../src/spacecmd/distribution.py:120
 msgid "Install Type:"
 msgstr "Inštalovaný typ:"
 
-#: ../src/spacecmd/distribution.py:106
+#: ../src/spacecmd/distribution.py:123
 msgid "Invalid install type"
 msgstr "Neplatný inštalovaný typ"
 
-#: ../src/spacecmd/distribution.py:114
+#: ../src/spacecmd/distribution.py:131
 msgid "A path is required"
 msgstr "Vyžaduje sa cesta"
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2600
+#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2600
 msgid "A base channel is required"
 msgstr "Vyžaduje sa základný kanál"
 
-#: ../src/spacecmd/distribution.py:122
+#: ../src/spacecmd/distribution.py:139
 msgid "An install type is required"
 msgstr "Vyžaduje sa inštalovaný typ"
 
-#: ../src/spacecmd/distribution.py:144
+#: ../src/spacecmd/distribution.py:161
 msgid "distribution_list: List the available autoinstall trees"
 msgstr ""
 "distribution_list: Vypísať zoznam dostupných stromov automatickej inštalácie"
 
-#: ../src/spacecmd/distribution.py:145
+#: ../src/spacecmd/distribution.py:162
 msgid "usage: distribution_list"
 msgstr "použitie: distribution_list"
 
-#: ../src/spacecmd/distribution.py:170
+#: ../src/spacecmd/distribution.py:187
 msgid "distribution_delete: Delete a Kickstart tree"
 msgstr "distribution_delete: Vymazať strom Kickstart"
 
-#: ../src/spacecmd/distribution.py:171
+#: ../src/spacecmd/distribution.py:188
 msgid "usage: distribution_delete LABEL"
 msgstr "použitie: distribution_delete OZNAČNIE"
 
-#: ../src/spacecmd/distribution.py:197 ../src/spacecmd/distribution.py:236
+#: ../src/spacecmd/distribution.py:214 ../src/spacecmd/distribution.py:253
 #, python-format
 msgid "No distributions matched argument %s"
 msgstr "Žiadne distribúcie sa nezhodujú s argumentom %s"
 
-#: ../src/spacecmd/distribution.py:203
+#: ../src/spacecmd/distribution.py:220
 msgid "Delete distribution tree(s) [y/N]:"
 msgstr "Vymazať distribučný strom(y) [a/N]:"
 
-#: ../src/spacecmd/distribution.py:213
+#: ../src/spacecmd/distribution.py:230
 msgid "distribution_details: Show the details of a Kickstart tree"
 msgstr "distribution_details: Zobraziť podrobnosti stromu Kickstart"
 
-#: ../src/spacecmd/distribution.py:214
+#: ../src/spacecmd/distribution.py:231
 msgid "usage: distribution_details LABEL"
 msgstr "použitie: distribution_details OZNAČENIE"
 
-#: ../src/spacecmd/distribution.py:252
+#: ../src/spacecmd/distribution.py:269
 #, python-format
 msgid "Name:    %s"
 msgstr "Názov:    %s"
 
-#: ../src/spacecmd/distribution.py:253
+#: ../src/spacecmd/distribution.py:270
 #, python-format
 msgid "Path:    %s"
 msgstr "Cesta:    %s"
 
-#: ../src/spacecmd/distribution.py:254 ../src/spacecmd/softwarechannel.py:632
+#: ../src/spacecmd/distribution.py:271 ../src/spacecmd/softwarechannel.py:632
 #, python-format
 msgid "Channel: %s"
 msgstr "Kanál: %s"
 
-#: ../src/spacecmd/distribution.py:262
+#: ../src/spacecmd/distribution.py:279
 msgid "distribution_rename: Rename a Kickstart tree"
 msgstr "distribution_rename: Premenovať Kickstart strom"
 
-#: ../src/spacecmd/distribution.py:263
+#: ../src/spacecmd/distribution.py:280
 msgid "usage: distribution_rename OLDNAME NEWNAME"
 msgstr "použitie: distribution_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
-#: ../src/spacecmd/distribution.py:294
+#: ../src/spacecmd/distribution.py:311
 msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: Aktualizovať cestu stromu Kickstart"
 
-#: ../src/spacecmd/distribution.py:295
+#: ../src/spacecmd/distribution.py:312
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -3546,8 +3546,8 @@ msgstr "Nepodarilo sa pripojiť k %s"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) je príliš staré ( vyžaduje sa >= %s)"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
+#: ../src/spacecmd/utils.py:579
 #, python-format
 msgid "Could not read %s"
 msgstr "Nepodarilo sa prečítať %s"
@@ -6866,7 +6866,7 @@ msgstr "Nepodarilo sa naplánovať %s"
 msgid "Scheduled: %i system(s)"
 msgstr "Naplánované: %i systém(y)"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
 #, python-format
 msgid "Could not remove %s"
 msgstr "Nepodarilo sa odstrániť %s"
@@ -8747,129 +8747,129 @@ msgstr "použitie: user_setpassword POUŽÍVATEĽ HESLO"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:142
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "Načítanie súboru vyrovnávacej pamäte %s zlyhalo"
 
-#: ../src/spacecmd/utils.py:136
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 "Generovanie vyrovnávacej pamäte bolo pravdepodobne prerušené, odstránenie "
 "poškodeného %s"
 
-#: ../src/spacecmd/utils.py:141
+#: ../src/spacecmd/utils.py:148
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "Nepodarilo sa načítať vyrovnávaciu pamäť z %s"
 
-#: ../src/spacecmd/utils.py:162
+#: ../src/spacecmd/utils.py:169
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "Nepodarilo sa zapísať do %s"
 
-#: ../src/spacecmd/utils.py:207
+#: ../src/spacecmd/utils.py:214
 msgid "Could not open the temporary file"
 msgstr "Dočasný súbor sa nepodarilo otvoriť"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:233
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "Editor \"%s\" skončil s kódom %i"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:235
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "Celkové zlyhanie bežiaceho editora: %s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:238
 msgid "No editors found"
 msgstr "Nenašli sa žiadne editory"
 
-#: ../src/spacecmd/utils.py:370
+#: ../src/spacecmd/utils.py:376
 msgid "Invalid time provided"
 msgstr "Zadaný neplatný čas"
 
-#: ../src/spacecmd/utils.py:459
+#: ../src/spacecmd/utils.py:474
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s je neznámy typ opráv chýb"
 
-#: ../src/spacecmd/utils.py:467
+#: ../src/spacecmd/utils.py:482
 msgid "Security Errata"
 msgstr "Bezpečnostné opravy chýb"
 
-#: ../src/spacecmd/utils.py:476
+#: ../src/spacecmd/utils.py:491
 msgid "Bug Fix Errata"
 msgstr "Opravy chýb odstraňujúce chyby"
 
-#: ../src/spacecmd/utils.py:485
+#: ../src/spacecmd/utils.py:500
 msgid "Enhancement Errata"
 msgstr "Vylepšovacie opravy chýb"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:510
 msgid "Current Selections"
 msgstr "Aktuálne výbery"
 
-#: ../src/spacecmd/utils.py:505
+#: ../src/spacecmd/utils.py:520
 msgid "Available Configuration Channels"
 msgstr "Dostupné konfiguračné kanály"
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
 msgid "Channel:"
 msgstr "Kanál:"
 
-#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
+#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
 msgid "Invalid channel"
 msgstr "Neplatný kanál"
 
-#: ../src/spacecmd/utils.py:518
+#: ../src/spacecmd/utils.py:533
 msgid "New Rank:"
 msgstr "Nové poradie:"
 
-#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
 msgid "Invalid rank"
 msgstr "Neplatné poradie"
 
-#: ../src/spacecmd/utils.py:539
+#: ../src/spacecmd/utils.py:554
 msgid "Clearing current selections"
 msgstr "Vymazanie aktuálnych výberov"
 
-#: ../src/spacecmd/utils.py:708
+#: ../src/spacecmd/utils.py:735
 msgid "Could not generate json data object!"
 msgstr "Nepodarilo sa vygenerovať dátový objekt json!"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:742
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "Nepodarilo sa otvoriť súbor %s pre zápis: %s"
 
-#: ../src/spacecmd/utils.py:726
+#: ../src/spacecmd/utils.py:753
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "Nepodarilo sa otvoriť súbor %s pre čítanie: %s"
 
-#: ../src/spacecmd/utils.py:728
+#: ../src/spacecmd/utils.py:755
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "Nepodarilo sa spracovať dáta JSON z %s: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:730
+#: ../src/spacecmd/utils.py:757
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "Chyba pri spracovaní súboru %s: %s"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:794
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "Preskočenie použitia spoločných reťazcov: oba reťazce sú rovnaké"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:810
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "Preskočenie použitia spoločných reťazcov: počet podreťazcov sa líši"
 
-#: ../src/spacecmd/utils.py:860
+#: ../src/spacecmd/utils.py:898
 msgid "Parameter {} not a string type, but {}."
 msgstr "Parameter {} nie je typ reťazca, ale {}."
 

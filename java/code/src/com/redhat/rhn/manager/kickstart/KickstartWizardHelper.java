@@ -183,7 +183,7 @@ public class KickstartWizardHelper {
         KickstartFactory.saveKickstartData(ksdata);
         log.debug("KSData stored.  Calling cobbler.");
         CobblerProfileCreateCommand cmd =
-                new CobblerProfileCreateCommand(ksdata, currentUser);
+                new CobblerProfileCreateCommand(ksdata, currentUser, false);
         cmd.store();
         log.debug("store() - done.");
     }

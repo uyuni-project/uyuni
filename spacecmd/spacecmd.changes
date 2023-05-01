@@ -2,6 +2,16 @@
 - remove pylint check at build time
 - Display activation key details after executing the corresponding command (bsc#1208719)
 - Show targetted packages before actually removing them (bsc#1207830)
+- fix argument parsing of distribution_update (bsc#1210458)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:49:39 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * remove pylint check at build time
+  * Display activation key details after executing the corresponding command (bsc#1208719)
+  * Show targetted packages before actually removing them (bsc#1207830)
+
 
 -------------------------------------------------------------------
 Tue Feb 21 12:29:28 CET 2023 - jgonzalez@suse.com

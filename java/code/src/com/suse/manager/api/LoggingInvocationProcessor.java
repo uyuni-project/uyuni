@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Base logic for processing logs.
@@ -72,6 +73,8 @@ public abstract class LoggingInvocationProcessor {
                 8, "caPassword"
             )
         );
+        RESTRICTED_ARGS.put("formula.setSystemFormulaData", Map.of(3, "content"));
+        RESTRICTED_ARGS.put("formula.setGroupFormulaData", Map.of(3, "content"));
     }
 
     /**
@@ -140,12 +143,11 @@ public abstract class LoggingInvocationProcessor {
      * @return - whether the value should be hidden from logging based on argName
      */
     protected static boolean preventValueLogging(String handler, String method, String argName) {
-        if (argName.toLowerCase().contains("password")) {
-            return true;
-        }
+        Stream<String> restrictedArguments = Stream.of("password", "key", "content");
         String handlerAndMethod = handler + "." + method;
-        return RESTRICTED_ARGS.containsKey(handlerAndMethod) &&
-                RESTRICTED_ARGS.get(handlerAndMethod).containsValue(argName);
+        return restrictedArguments.anyMatch(s -> argName.toLowerCase().contains(s)) ||
+                (RESTRICTED_ARGS.containsKey(handlerAndMethod) &&
+                RESTRICTED_ARGS.get(handlerAndMethod).containsValue(argName));
     }
 
     protected static StopWatch getStopWatch() {

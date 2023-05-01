@@ -58,8 +58,6 @@ public class ListDisplayTagBase extends BodyTagSupport {
     private String type = "list";
     /** determines whether we should show the disabled CSS */
     private boolean renderDisabled;
-    /** comma separated list of columns to be exported */
-    private String exportColumns;
     /** optional title attribute for displaying a titled list */
     private String title;
     private String hiddenvars;
@@ -227,20 +225,6 @@ public class ListDisplayTagBase extends BodyTagSupport {
         this.columnCount = columnCountIn;
     }
 
-    /**
-     * @return Returns the exportColumns.
-     */
-    public String getExportColumns() {
-        return exportColumns;
-    }
-
-    /**
-     * @param exportIn The export to set.
-     */
-    public void setExportColumns(String exportIn) {
-        this.exportColumns = exportIn;
-    }
-
     protected void setupPageList() throws JspTagException {
         ListTag listTag = (ListTag) findAncestorWithClass(this, ListTag.class);
         if (listTag == null) {
@@ -356,7 +340,6 @@ public class ListDisplayTagBase extends BodyTagSupport {
         iterator = null;
         filterBy = null;
         renderDisabled = false;
-        exportColumns = null;
         title = null;
         columnCount = 0;
         numberOfColumns = 0;

@@ -1,7 +1,6 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
 @scope_reportdb
 Feature: ReportDB
   In order to use reporting tools

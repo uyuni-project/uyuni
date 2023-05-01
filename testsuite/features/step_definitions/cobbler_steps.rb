@@ -223,7 +223,16 @@ end
 # cleanup steps
 When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run('rm -Rf /var/cache/cobbler')
-  raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
+  raise "Error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
+  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && ' \
+                    'rm -r /srv/tftpboot 2> /dev/null && ' \
+                    'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
+  $server.run(cleanup_command.to_s, check_errors: false)
+  result, code = $server.run('systemctl restart apache && systemctl restart cobblerd')
+  raise "Error during Cobbler cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
 # cobbler commands
@@ -256,7 +265,6 @@ When(/^I start local monitoring of Cobbler$/) do
   $server.run("rm #{cobbler_log_file}", check_errors: false)
   _result, code = $server.run("test -f #{cobbler_conf_file}.old", check_errors: false)
   if !code.zero?
-    step %(I install package "python3-python-json-logger" on this "server")
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
     handler_class = "\"\n[handler_#{handler_name}]\n" \
@@ -265,8 +273,9 @@ When(/^I start local monitoring of Cobbler$/) do
                   "formatter=#{formatter_name}\n" \
                   "args=('#{cobbler_log_file}', 'a')\n\n" \
                   "[formatter_#{formatter_name}]\n" \
-                  "format =[%(threadName)s] %(asctime)s - %(levelname)s | %(message)s\n" \
-                  "class = pythonjsonlogger.jsonlogger.JsonFormatter\n\""
+                  "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
+                  "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
+                  "\\''message\\'': \\''%(message)s\\''}\n\""
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
               "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
@@ -287,7 +296,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   return_code = file_extract($server, cobbler_log_file, local_file)
   raise 'File extraction failed' unless return_code.zero?
 
-  file_data = File.read(local_file).gsub!("\n", ',').chop
+  file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', " ' ").gsub("\\''", '"')
   file_data = "[#{file_data}]"
   data_hash = JSON.parse(file_data)
   output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }

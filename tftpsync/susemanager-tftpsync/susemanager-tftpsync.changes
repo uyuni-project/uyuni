@@ -1,4 +1,11 @@
-- Fix removal of proxies section in cobbler settings (bsc#1207063)
+-------------------------------------------------------------------
+Wed Apr 19 12:55:46 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.3-1
+  * Fix server-side cache that's used for only pushing files to
+    proxies that need to be pushed, as well as propagating deletions
+    (bsc#1209215)
+  * Fix removal of proxies section in cobbler settings (bsc#1207063)
 
 -------------------------------------------------------------------
 Mon Jan 23 08:26:55 CET 2023 - jgonzalez@suse.com

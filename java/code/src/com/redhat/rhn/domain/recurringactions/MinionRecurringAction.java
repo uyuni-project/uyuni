@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -49,13 +50,16 @@ public class MinionRecurringAction extends RecurringAction {
     /**
      * Constructor
      *
-     * @param testMode if action is in test mode
+     * @param actionType the recurring action type
      * @param active if action is active
      * @param minionServer minion affiliated with the action
      * @param creator the creator User
      */
-    public MinionRecurringAction(boolean testMode, boolean active, MinionServer minionServer, User creator) {
-        super(testMode, active, creator);
+    public MinionRecurringAction(RecurringActionType actionType,
+                                 boolean active,
+                                 MinionServer minionServer,
+                                 User creator) {
+        super(actionType, active, creator);
         this.minion = minionServer;
     }
 
@@ -85,8 +89,8 @@ public class MinionRecurringAction extends RecurringAction {
 
     @Override
     @Transient
-    public Type getType() {
-        return Type.MINION;
+    public TargetType getTargetType() {
+        return TargetType.MINION;
     }
 
     /**

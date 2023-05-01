@@ -11,7 +11,7 @@ RUN zypper ar -G http://download.opensuse.org/repositories/systemsmanagement:/Uy
 copy setup_env.sh /root/setup_env.sh
 
 RUN zypper ref
-RUN zypper -n in vi
+RUN zypper -n in vi openssh-server
 RUN zypper --non-interactive install --auto-agree-with-licenses --force-resolution patterns-uyuni_server
 RUN zypper mr -d repo-backports-update repo-sle-update
 
@@ -20,6 +20,8 @@ RUN cp /usr/bin/uyuni-setup-reportdb /usr/bin/uyuni-setup-reportdb.original
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 RUN sed -i 's/-a "$PG_SOCKET"//g' /usr/bin/uyuni-setup-reportdb
 
+# hack to fix pam for podman
+COPY etc_pam.d_sshd /etc/pam.d/sshd
 
 EXPOSE 443/tcp
 EXPOSE 80/tcp
