@@ -96,7 +96,7 @@ When(/^I enable repositories before installing branch server$/) do
   os_family = $proxy.os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
+  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $proxy.run("zypper mr --enable #{repos}")
 
   # Server Applications
@@ -111,7 +111,7 @@ When(/^I disable repositories after installing branch server$/) do
   os_family = $proxy.os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
+  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $proxy.run("zypper mr --disable #{repos}")
 
   # Server Applications
