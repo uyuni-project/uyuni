@@ -3,7 +3,8 @@ import axios from "axios";
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 import { showErrorToastr } from "components/toastr";
 
-import { replacer } from "./json";
+// TODO: Make this obsolete
+// import { replacer } from "./json";
 
 declare var csrfToken: string;
 
@@ -39,9 +40,10 @@ function request<Returns>(
   contentType: string,
   processData: boolean = true
 ): NetworkRequest<Returns> {
-  const isRegularObject = typeof data === "object" && !(data instanceof FormData);
-  const isNumber = typeof data === "number";
-  // TODO: Check if we still need this with axios, currently it creates issues due to double handling the data
+  // TODO: Check if we still need this with Axios, currently it creates issues due to double handling the data
+  // TODO: Test if new Map() is handled correctly by Axios without any helpers
+  // const isRegularObject = typeof data === "object" && !(data instanceof FormData);
+  // const isNumber = typeof data === "number";
   // if ((isRegularObject || isNumber) && processData === true) {
   //   data = JSON.stringify(data, replacer);
   // }
