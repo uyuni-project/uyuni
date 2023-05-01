@@ -41,9 +41,10 @@ function request<Returns>(
 ): NetworkRequest<Returns> {
   const isRegularObject = typeof data === "object" && !(data instanceof FormData);
   const isNumber = typeof data === "number";
-  if ((isRegularObject || isNumber) && processData === true) {
-    data = JSON.stringify(data, replacer);
-  }
+  // TODO: Check if we still need this with axios, currently it creates issues due to double handling the data
+  // if ((isRegularObject || isNumber) && processData === true) {
+  //   data = JSON.stringify(data, replacer);
+  // }
 
   // const a = jQuery.ajax({
   //   url: url,
