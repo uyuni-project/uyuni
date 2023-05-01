@@ -11,7 +11,7 @@ jest.mock("../network");
 const MockedNetwork = mocked(Network, true);
 
 const PATH = "/my/test/url";
-const ORIGIN = "https://my.domain";
+const ORIGIN = "https://example.com";
 
 describe("paged data endpoint", () => {
   test("Page query parameters", () => {
@@ -110,7 +110,7 @@ describe("paged data endpoint", () => {
 
   // TODO: Fix the test to work with nodejs17
   // See: https://github.com/SUSE/spacewalk/issues/16912#issuecomment-1033692446
-  //
+
   // test("Cancelling obsolete requests", (done) => {
   //   const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   //   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");

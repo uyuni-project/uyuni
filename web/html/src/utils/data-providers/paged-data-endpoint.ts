@@ -1,7 +1,6 @@
 import { debounce } from "lodash";
 
-import { Cancelable } from "utils/functions";
-import Network from "utils/network";
+import Network, { NetworkRequest } from "utils/network";
 
 import PageControl from "./page-control";
 
@@ -11,7 +10,7 @@ import PageControl from "./page-control";
 export default class PagedDataEndpoint {
   uri: URL;
   get: (callback: (promise: Promise<any>) => any, pageControl: PageControl) => void;
-  curReq: Cancelable | null | undefined;
+  curReq: NetworkRequest | null | undefined;
 
   constructor(uri: URL) {
     this.uri = uri;

@@ -7,9 +7,8 @@ import { Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
 
-import { Cancelable } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import Network from "utils/network";
+import Network, { NetworkRequest } from "utils/network";
 
 import { MatcherRunPanel } from "./subscription-matching-matcher-run-panel";
 import { Messages } from "./subscription-matching-messages";
@@ -24,7 +23,7 @@ type SubscriptionMatchingProps = {
 
 class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   timerId?: number;
-  refreshRequest?: Cancelable;
+  refreshRequest?: NetworkRequest;
   state = {
     serverData: null as any | null,
     error: null as any | null,

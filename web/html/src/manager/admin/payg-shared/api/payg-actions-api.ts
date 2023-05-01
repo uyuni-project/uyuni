@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { Cancelable } from "utils/functions";
-import Network from "utils/network";
+import Network, { NetworkRequest } from "utils/network";
 
 type returnUsePaygActionsApi = {
   onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: String | null) => Promise<any>;
@@ -34,7 +33,7 @@ const getErrorMessage = ({ messages = [], errors = {} }) => ({
 
 const useLifecyclePaygActionsApi = (): returnUsePaygActionsApi => {
   const [isLoading, setIsLoading] = useState(false);
-  const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState<Cancelable | null>(null);
+  const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState<NetworkRequest | null>(null);
 
   const onAction = (actionBodyRequest, action: NetworkActionKey, id) => {
     if (!isLoading) {
@@ -42,7 +41,7 @@ const useLifecyclePaygActionsApi = (): returnUsePaygActionsApi => {
 
       const apiUrl = getApiUrl(id);
 
-      let networkRequest: Cancelable;
+      let networkRequest: NetworkRequest;
       if (action === "get" || !networkAction[action]) {
         networkRequest = networkAction.get(apiUrl);
       } else {
@@ -80,7 +79,7 @@ const useLifecyclePaygActionsApi = (): returnUsePaygActionsApi => {
   };
 
   const cancelAction = () => {
-    onGoingNetworkRequest?.cancel({ status: 0 });
+    onGoingNetworkRequest?.cancel("useLifecyclePaygActionsApi request cancelled");
     setIsLoading(false);
   };
 

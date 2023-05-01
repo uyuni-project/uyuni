@@ -60,6 +60,7 @@
     "@novnc/novnc": "^1.0.0",
     "@spice-project/spice-html5": "^0.2.1",
     "ace-builds": "ajaxorg/ace-builds#v1.3.3",
+    "axios": "^1.4.0",
     "babel-jest": "27.4.6",
     "babel-loader": "^8.0.5",
     "bootstrap": "3.4.1",

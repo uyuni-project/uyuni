@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { Cancelable } from "utils/functions";
-import Network from "utils/network";
+import Network, { NetworkRequest } from "utils/network";
 
 type Props = {
   resource: string;
@@ -43,7 +42,7 @@ const getErrorMessage = ({ messages = [], errors = {} }) => ({
 
 const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
   const [isLoading, setIsLoading] = useState(false);
-  const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState<Cancelable | null>(null);
+  const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState<NetworkRequest | null>(null);
 
   const onAction = (actionBodyRequest, action: NetworkActionKey, id) => {
     if (!isLoading) {
@@ -51,7 +50,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
 
       const apiUrl = getApiUrl(props.resource, props.nestedResource, id);
 
-      let networkRequest: Cancelable;
+      let networkRequest: NetworkRequest;
       if (action === "get" || !networkAction[action]) {
         networkRequest = networkAction.get(apiUrl);
       } else {
@@ -89,7 +88,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
   };
 
   const cancelAction = () => {
-    onGoingNetworkRequest?.cancel({ status: 0 });
+    onGoingNetworkRequest?.cancel("useLifecycleActionsApi request cancelled");
   };
 
   return {
