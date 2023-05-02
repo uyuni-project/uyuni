@@ -1,3 +1,6 @@
+- Add shadow as dependency of osimage certificate package
+  (bsc#1210834 bsc#1204089)
+
 -------------------------------------------------------------------
 Wed Apr 19 12:52:17 CEST 2023 - marina.latini@suse.com
 
