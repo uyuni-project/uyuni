@@ -1798,7 +1798,7 @@ select event_id as id,
          where SH.server_id = :sid
          union
         select SA.action_id event_id,
-               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(system)') as summary,
                SA.created,
                SA.pickup_time as picked_up,
                SA.completion_time as completed,
@@ -1852,7 +1852,7 @@ order by completed desc, picked_up desc, all_events.created desc, event_id desc
                      AND SH.id = :eid
                union
               select SA.action_id event_id,
-                     COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+                     COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(system)') as summary,
                      SA.created,
                      SA.pickup_time as picked_up,
                      SA.completion_time as completed,
@@ -1888,7 +1888,7 @@ select count(action_id) as count
   class="com.redhat.rhn.frontend.dto.SystemPendingEventDto">
   <query params="sid">
   SELECT SA.action_id AS id
-                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') AS summary
+                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(system)') AS summary
                 , A.earliest_action AS scheduled_for
                 , AType.label AS history_type
                 , AType.name AS history_type_name
@@ -1910,7 +1910,7 @@ ORDER BY scheduled_for DESC, prereq_aid NULLS FIRST
   class="com.redhat.rhn.frontend.dto.SystemPendingEventDto">
   <query params="sid, user_id, set_label">
   SELECT SA.action_id AS ID
-                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') AS summary
+                , COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(system)') AS summary
                 , A.earliest_action AS scheduled_for
                 , AType.label AS history_type
                 , AType.name AS history_type_name
