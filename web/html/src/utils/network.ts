@@ -28,7 +28,7 @@ export type JsonResult<T> = {
 type CommonMimeTypes = "application/json" | "application/xml" | "application/x-www-form-urlencoded";
 type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 
-export type NetworkRequest<Returns = any> = Promise<Returns> & {
+export type NetworkRequest<Returns> = Promise<Returns> & {
   cancel: (reason?: string | undefined) => void;
 };
 
@@ -186,7 +186,6 @@ function showResponseErrorToastr(responseOrError: Error | JQueryXHR | JsonResult
   }
 }
 
-// TODO: This should become obsolete, test if it breaks anything
 // TODO: Make this globally automatic and update relevant calls in a follow-up PR
 /** Unwrap the data from a `JsonResult` if the request is a success */
 function unwrap<T>(response: JsonResult<T>) {
