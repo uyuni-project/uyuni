@@ -28,7 +28,7 @@ export type JsonResult<T> = {
 type CommonMimeTypes = "application/json" | "application/xml" | "application/x-www-form-urlencoded";
 type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 
-export type NetworkRequest<Returns> = Promise<Returns> & {
+export type NetworkRequest<Returns = any> = Promise<Returns> & {
   cancel: (reason?: string | undefined) => void;
 };
 
