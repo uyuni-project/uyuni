@@ -196,11 +196,11 @@ Feature: PXE boot a Retail terminal
     When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (none)" is completed
+    And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (system)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
-    And I wait until event "Package List Refresh scheduled by (none)" is completed
+    And I wait until event "Package List Refresh scheduled by (system)" is completed
     Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
