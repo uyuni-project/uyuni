@@ -13,27 +13,28 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
   cloudinit_image = "/var/testsuite-data/cloudinit-disk-#{os_type}.iso"
   memory = '512'
 
-  mac = ENV.fetch('MAC_MIN_NESTED', 'RANDOM')
-  STDOUT.puts 'Random MAC address used' if mac == 'RANDOM'
-
   case os_type
   when 'leap'
     name = 'leap-disk-image-template.qcow2'
     net = 'salt-leap'
     os = 'opensuse15.4'
     memory = '1024'
+    mac = 'RANDOM'
   when 'sles'
     name = 'sles-disk-image-template.qcow2'
     net = 'salt-sles'
     os = 'sle15sp4'
+    mac = ENV.fetch('MAC_MIN_NESTED', 'RANDOM')
   when 'rhlike'
     name = 'rhlike-disk-image-template.qcow2'
     net = 'salt-rhlike'
     os = 'rocky8'
+    mac = 'RANDOM'
   when 'deblike'
     name = 'deblike-disk-image-template.qcow2'
     net = 'salt-deblike'
     os = 'ubuntu2204'
+    mac = 'RANDOM'
   else
     name = 'empty'
   end
