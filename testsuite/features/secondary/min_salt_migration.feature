@@ -97,9 +97,15 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     And I expand the results for "salt_migration_minion"
     Then I should see "/etc/salt: directory" in the command output for "salt_migration_minion"
 
-  Scenario: Migrate the nested VM to the Salt bundle and check the result
-    Then I migrate "salt_migration_minion" from salt-minion to venv-salt-minion
-    And I purge salt-minion on "salt_migration_minion" after a migration
+  Scenario: Migrate the nested VM to the Salt bundle
+    Given the Salt master can reach "salt_migration_minion"
+    When I migrate "salt_migration_minion" from salt-minion to venv-salt-minion
+
+  Scenario: Purge the Minion from the old salt-minion leftovers
+    When I purge salt-minion on "salt_migration_minion" after a migration
+
+  # This will fail until bsc#1209251 will be fixed
+  Scenario: Check if the Salt bundle migration was successful
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "file /etc/salt"
