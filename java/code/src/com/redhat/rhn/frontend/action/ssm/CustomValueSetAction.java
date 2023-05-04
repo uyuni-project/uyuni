@@ -18,13 +18,17 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -84,7 +88,6 @@ public class CustomValueSetAction extends RhnAction {
                         "message.bulkremovecustomdata", key.getLabel(), LocalizationService
                                 .getInstance().formatNumber(updated)));
                 getStrutsDelegate().saveMessages(request, msgs);
-                return mapping.findForward("updated");
             }
             else if (request.getParameter(SET_BTN) != null) {
                 ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
@@ -101,8 +104,14 @@ public class CustomValueSetAction extends RhnAction {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "message.bulksetcustomdata", key.getLabel()));
                 getStrutsDelegate().saveMessages(request, msgs);
-                return mapping.findForward("updated");
             }
+
+            // Generate updated pillars
+            MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
+                    .forEach(m -> MinionPillarManager.INSTANCE.generatePillar(m, false,
+                            MinionPillarManager.PillarSubset.CUSTOM_INFO));
+
+            return mapping.findForward("updated");
         }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
