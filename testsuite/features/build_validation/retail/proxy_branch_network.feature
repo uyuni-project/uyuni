@@ -203,6 +203,3 @@ Feature: Prepare the branch server for PXE booting
 
   Scenario: Also let squid know about the new IP and FQDN of the proxy
     When I restart squid service on the proxy
-
-  Scenario: Install package needed for rebooting terminals
-    When I install package "expect" on this "proxy"
