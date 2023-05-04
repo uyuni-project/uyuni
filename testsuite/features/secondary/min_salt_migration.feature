@@ -98,7 +98,7 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     Then I should see "/etc/salt: directory" in the command output for "salt_migration_minion"
 
   Scenario: Migrate the nested VM to the Salt bundle
-    When the Salt master can reach "salt_migration_minion"
+    Then the Salt master can reach "salt_migration_minion"
     When I migrate "salt_migration_minion" from salt-minion to venv-salt-minion
 
   Scenario: Purge the Minion from the old salt-minion leftovers
