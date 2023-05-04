@@ -1,3 +1,8 @@
+- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+- Allow processing big state results (bsc#1210957)
+- Fix server error in HTTP API authentication (bsc#1210394)
+- set swap memory value if available
+- set primary FQDN to hostname if none is set (bsc#1209156)
 - Do not throw on missing saltboot group
 - fix ISE when neither SCC credentials nor a local mirror is configured
 - only set self_update URL if functionality is not disabled in
