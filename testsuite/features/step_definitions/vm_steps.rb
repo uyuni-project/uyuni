@@ -12,6 +12,7 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
   cloudinit_path = "/tmp/cloudinit-disk-#{os_type}.iso"
   cloudinit_image = "/var/testsuite-data/cloudinit-disk-#{os_type}.iso"
   memory = '512'
+  mac = 'RANDOM'
 
   case os_type
   when 'leap'
@@ -19,7 +20,6 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
     net = 'salt-leap'
     os = 'opensuse15.4'
     memory = '1024'
-    mac = 'RANDOM'
   when 'sles'
     name = 'sles-disk-image-template.qcow2'
     net = 'salt-sles'
@@ -29,12 +29,10 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
     name = 'rhlike-disk-image-template.qcow2'
     net = 'salt-rhlike'
     os = 'rocky8'
-    mac = 'RANDOM'
   when 'deblike'
     name = 'deblike-disk-image-template.qcow2'
     net = 'salt-deblike'
     os = 'ubuntu2204'
-    mac = 'RANDOM'
   else
     name = 'empty'
   end
