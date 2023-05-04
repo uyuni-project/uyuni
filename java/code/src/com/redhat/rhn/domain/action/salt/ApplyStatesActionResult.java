@@ -16,9 +16,10 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import com.suse.manager.webui.utils.YamlHelper;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 import java.io.Serializable;
@@ -121,11 +122,10 @@ public class ApplyStatesActionResult implements Serializable {
      * @return Optional with list of state results or empty
      */
     public Optional<List<StateResult>> getResult() {
-        Yaml yaml = new Yaml();
         List<StateResult> result = new LinkedList<>();
         try {
             @SuppressWarnings("unchecked")
-            Map<String, Map<String, Object>> payload = yaml.loadAs(getOutputContents(), Map.class);
+            Map<String, Map<String, Object>> payload = YamlHelper.loadAs(getOutputContents(), Map.class);
             payload.entrySet().stream().forEach(e -> {
                 result.add(new StateResult(e));
             });
