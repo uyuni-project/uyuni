@@ -1,3 +1,4 @@
+TEST
 These are the scripts to run the tests inside podman containers.
 These scripts are run in order inside a github workflow and can also
 be run manually from your local development workstation.
