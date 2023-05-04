@@ -1,3 +1,4 @@
+- Allow processing big state results (bsc#1210957)
 - Fix server error in HTTP API authentication (bsc#1210394)
 - set swap memory value if available
 - set primary FQDN to hostname if none is set (bsc#1209156)
