@@ -351,8 +351,10 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         assertFalse(acl.evalAcl(context, "is_modular_channel()"));
 
-        Modules mod = new Modules("filename", new Date());
-        chan.addModules(mod);
+        Modules mod = new Modules();
+        mod.setRelativeFilename("filename");
+        chan.setModules(mod);
+        mod.setChannel(chan);
 
         assertTrue(acl.evalAcl(context, "is_modular_channel()"));
 

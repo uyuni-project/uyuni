@@ -36,7 +36,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.log4j.Logger;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -229,9 +228,11 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     public void testIsModular() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
+        assertNull(c.getModules());
         assertFalse(c.isModular());
 
-        c.addModules(new Modules("filename", new Date()));
+        c.setModules(new Modules());
+        assertNotNull(c.getModules());
         assertTrue(c.isModular());
     }
 

@@ -16,8 +16,6 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import java.util.Date;
-
 /**
  *
  * @version $Rev $
@@ -28,7 +26,6 @@ public class RepoMetadata extends BaseDomainHelper {
     private Long id;
     private String relativeFilename;
     private Channel channel;
-    private Date lastModified;
 
     /**
      *
@@ -76,21 +73,5 @@ public class RepoMetadata extends BaseDomainHelper {
      */
     public Channel getChannel() {
         return channel;
-    }
-
-    /**
-     * Gets the last modified date of the underlying comps file
-     * @return the last modified date of the comps file
-     */
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    /**
-     * Sets the last modified date of the underlying comps file
-     * @param lastModifiedIn the last modified date
-     */
-    public void setLastModified(Date lastModifiedIn) {
-        lastModified = lastModifiedIn;
     }
 }
