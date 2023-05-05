@@ -461,6 +461,7 @@ Style/RedundantInterpolation:
 # SupportedStyles: slashes, percent_r, mixed
 Style/RegexpLiteral:
   Exclude:
+    - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/setup_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
 
