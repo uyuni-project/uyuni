@@ -391,14 +391,14 @@
       </trans-unit>
       <trans-unit id="America/Indianapolis" xml:space="preserve">
         <source>(GMT-0500) United States (Indiana)</source>
-        <target/>
+        <target>(GMT-0500) Соединетите Американски Држави (Индијана)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Phoenix" xml:space="preserve">
         <source>(GMT-0700) United States (Arizona)</source>
-        <target/>
+        <target>(GMT-0700) Соединетите Американски Држави (Аризона)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
