@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:48+0200\n"
+"POT-Creation-Date: 2023-05-05 15:16+0200\n"
 "PO-Revision-Date: 2023-01-06 05:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -3542,54 +3542,59 @@ msgstr "사용법: whoamitalkingto"
 msgid "Yourself"
 msgstr "사용자 자신"
 
+#. hasTraditionalSystems endpoint is not available prior to 4.3
+#: ../src/spacecmd/misc.py:475
+msgid "Skipping traditional system check"
+msgstr ""
+
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:543
+#: ../src/spacecmd/misc.py:547
 msgid "** Generating errata cache **"
 msgstr "** 오류 캐시 생성 중 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:593
+#: ../src/spacecmd/misc.py:597
 msgid "** Generating package cache **"
 msgstr "** 패키지 캐시 생성 중 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:702
+#: ../src/spacecmd/misc.py:706
 msgid "** Generating system cache **"
 msgstr "** 시스템 캐시 생성 중 **"
 
-#: ../src/spacecmd/misc.py:737
+#: ../src/spacecmd/misc.py:741
 #, python-format
 msgid "Could not create directory %s"
 msgstr "%s 디렉토리를 생성할 수 없음"
 
-#: ../src/spacecmd/misc.py:809
+#: ../src/spacecmd/misc.py:813
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s에 대한 시스템 ID를 찾을 수 없음"
 
-#: ../src/spacecmd/misc.py:814
+#: ../src/spacecmd/misc.py:818
 msgid "Duplicate system profile names found!"
 msgstr "중복 시스템 프로파일 이름이 발견되었습니다!"
 
-#: ../src/spacecmd/misc.py:815
+#: ../src/spacecmd/misc.py:819
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID로 시스템을 참조하거나 다음을 해결:"
 
-#: ../src/spacecmd/misc.py:816
+#: ../src/spacecmd/misc.py:820
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 또는 'system_rename'의 근본적인 문제"
 
-#: ../src/spacecmd/misc.py:884
+#: ../src/spacecmd/misc.py:888
 #, python-format
 msgid "No systems in group %s"
 msgstr "%s 그룹에 시스템 없음"
 
-#: ../src/spacecmd/misc.py:898
+#: ../src/spacecmd/misc.py:902
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s에 가입한 시스템 없음"
 
-#: ../src/spacecmd/misc.py:958
+#: ../src/spacecmd/misc.py:962
 msgid "Is this ok [y/N]:"
 msgstr "계속하시겠습니까 [y/N]:"
 

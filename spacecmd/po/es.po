@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:48+0200\n"
+"POT-Creation-Date: 2023-05-05 15:16+0200\n"
 "PO-Revision-Date: 2020-10-16 10:51+0200\n"
 "Last-Translator: Pascal Arlt <parlt@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
@@ -3295,54 +3295,59 @@ msgstr ""
 msgid "Yourself"
 msgstr ""
 
+#. hasTraditionalSystems endpoint is not available prior to 4.3
+#: ../src/spacecmd/misc.py:475
+msgid "Skipping traditional system check"
+msgstr ""
+
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:543
+#: ../src/spacecmd/misc.py:547
 msgid "** Generating errata cache **"
 msgstr ""
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:593
+#: ../src/spacecmd/misc.py:597
 msgid "** Generating package cache **"
 msgstr ""
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:702
+#: ../src/spacecmd/misc.py:706
 msgid "** Generating system cache **"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:737
+#: ../src/spacecmd/misc.py:741
 #, python-format
 msgid "Could not create directory %s"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:809
+#: ../src/spacecmd/misc.py:813
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:814
+#: ../src/spacecmd/misc.py:818
 msgid "Duplicate system profile names found!"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:815
+#: ../src/spacecmd/misc.py:819
 msgid "Please reference systems by ID or resolve the"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:816
+#: ../src/spacecmd/misc.py:820
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:884
+#: ../src/spacecmd/misc.py:888
 #, python-format
 msgid "No systems in group %s"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:898
+#: ../src/spacecmd/misc.py:902
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:958
+#: ../src/spacecmd/misc.py:962
 msgid "Is this ok [y/N]:"
 msgstr ""
 
