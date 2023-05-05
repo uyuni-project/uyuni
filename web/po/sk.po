@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:54+0200\n"
+"POT-Creation-Date: 2023-05-05 15:19+0200\n"
 "PO-Revision-Date: 2023-04-23 15:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-2/sk/"
@@ -47,19 +47,19 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
-#: ../html/src/components/FormulaForm.tsx:167
+#: ../html/src/components/FormulaForm.tsx:170
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "Prosím, zadajte požadované polia: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:220
+#: ../html/src/components/FormulaForm.tsx:223
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -67,19 +67,19 @@ msgstr ""
 "Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
 "a konfiguráciu softvéru."
 
-#: ../html/src/components/FormulaForm.tsx:269
+#: ../html/src/components/FormulaForm.tsx:278
 msgid "Expand All Sections"
 msgstr "Rozbaliť všetky sekcie"
 
-#: ../html/src/components/FormulaForm.tsx:276
+#: ../html/src/components/FormulaForm.tsx:285
 msgid "Collapse All Sections"
 msgstr "Zbaliť všetky sekcie"
 
-#: ../html/src/components/FormulaForm.tsx:341
+#: ../html/src/components/FormulaForm.tsx:350
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:359
 msgid "Search by formula's group name"
 msgstr "Hľadať podľa názvu skupiny vzorca"
 
@@ -504,7 +504,7 @@ msgid "Custom Quartz format:"
 msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:338
+#: ../html/src/components/table/TableDataHandler.tsx:340
 msgid "There are no entries to show."
 msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
@@ -562,19 +562,7 @@ msgstr "Vyčistiť"
 msgid "Select All"
 msgstr "Vybrať všetko"
 
-#: ../html/src/components/table/TableDataHandler.tsx:339
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
-msgid "Loading..."
-msgstr "Načítava sa..."
-
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "items per page"
 msgstr "položiek na stránku"
 
@@ -589,6 +577,18 @@ msgstr "Žiadne dáta"
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "Pomocník"
+
+#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
+msgid "Loading..."
+msgstr "Načítava sa..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7

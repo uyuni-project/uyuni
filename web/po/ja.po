@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:54+0200\n"
+"POT-Creation-Date: 2023-05-05 15:19+0200\n"
 "PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-2/ja/"
@@ -48,19 +48,19 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
-#: ../html/src/components/FormulaForm.tsx:167
+#: ../html/src/components/FormulaForm.tsx:170
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "必須の項目に入力を行なってください: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "項目の書式が正しくありません: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:220
+#: ../html/src/components/FormulaForm.tsx:223
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -68,19 +68,19 @@ msgstr ""
 "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
 "を行なうことができます。"
 
-#: ../html/src/components/FormulaForm.tsx:269
+#: ../html/src/components/FormulaForm.tsx:278
 msgid "Expand All Sections"
 msgstr "すべてのセクションを展開"
 
-#: ../html/src/components/FormulaForm.tsx:276
+#: ../html/src/components/FormulaForm.tsx:285
 msgid "Collapse All Sections"
 msgstr "すべてのセクションを折りたたむ"
 
-#: ../html/src/components/FormulaForm.tsx:341
+#: ../html/src/components/FormulaForm.tsx:350
 msgid "Unnamed"
 msgstr "名前なし"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:359
 msgid "Search by formula's group name"
 msgstr "数式のグループ名で検索"
 
@@ -505,7 +505,7 @@ msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:338
+#: ../html/src/components/table/TableDataHandler.tsx:340
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
@@ -563,19 +563,7 @@ msgstr "消去"
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:339
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
-msgid "Loading..."
-msgstr "読み込んでいます..."
-
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
@@ -590,6 +578,18 @@ msgstr "データがありません"
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "ヘルプ"
+
+#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
+msgid "Loading..."
+msgstr "読み込んでいます..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
