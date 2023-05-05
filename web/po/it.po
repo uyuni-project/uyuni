@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:54+0200\n"
+"POT-Creation-Date: 2023-05-05 15:19+0200\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -44,37 +44,37 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:167
+#: ../html/src/components/FormulaForm.tsx:170
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:220
+#: ../html/src/components/FormulaForm.tsx:223
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:269
+#: ../html/src/components/FormulaForm.tsx:278
 msgid "Expand All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:276
+#: ../html/src/components/FormulaForm.tsx:285
 msgid "Collapse All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:341
+#: ../html/src/components/FormulaForm.tsx:350
 msgid "Unnamed"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:359
 msgid "Search by formula's group name"
 msgstr ""
 
@@ -488,7 +488,7 @@ msgid "Custom Quartz format:"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:338
+#: ../html/src/components/table/TableDataHandler.tsx:340
 msgid "There are no entries to show."
 msgstr ""
 
@@ -546,19 +546,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:339
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
-msgid "Loading..."
-msgstr ""
-
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "items per page"
 msgstr ""
 
@@ -572,6 +560,18 @@ msgstr ""
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
+msgstr ""
+
+#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
+msgid "Loading..."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18

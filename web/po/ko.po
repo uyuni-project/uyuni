@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:54+0200\n"
+"POT-Creation-Date: 2023-05-05 15:19+0200\n"
 "PO-Revision-Date: 2023-02-21 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/"
@@ -47,19 +47,19 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
 
-#: ../html/src/components/FormulaForm.tsx:167
+#: ../html/src/components/FormulaForm.tsx:170
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "필수 필드 입력: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "잘못된 필드 유형: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:220
+#: ../html/src/components/FormulaForm.tsx:223
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -67,19 +67,19 @@ msgstr ""
 "이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
 "니다."
 
-#: ../html/src/components/FormulaForm.tsx:269
+#: ../html/src/components/FormulaForm.tsx:278
 msgid "Expand All Sections"
 msgstr "전체 섹션 확장"
 
-#: ../html/src/components/FormulaForm.tsx:276
+#: ../html/src/components/FormulaForm.tsx:285
 msgid "Collapse All Sections"
 msgstr "전체 섹션 축소"
 
-#: ../html/src/components/FormulaForm.tsx:341
+#: ../html/src/components/FormulaForm.tsx:350
 msgid "Unnamed"
 msgstr "이름 없음"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:359
 msgid "Search by formula's group name"
 msgstr "수식 그룹 이름을 기준으로 검색"
 
@@ -499,7 +499,7 @@ msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:338
+#: ../html/src/components/table/TableDataHandler.tsx:340
 msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
@@ -557,19 +557,7 @@ msgstr "지우기"
 msgid "Select All"
 msgstr "모두 선택"
 
-#: ../html/src/components/table/TableDataHandler.tsx:339
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
-msgid "Loading..."
-msgstr "로드하는 중..."
-
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
@@ -584,6 +572,18 @@ msgstr "데이터 없음"
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "도움말"
+
+#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
+msgid "Loading..."
+msgstr "로드하는 중..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
