@@ -585,21 +585,21 @@
       </trans-unit>
       <trans-unit id="Storage" xml:space="preserve">
         <source>Storage</source>
-        <target/>
+        <target>Складиште</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
-        <target/>
+        <target>Мрежи</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="digits" xml:space="preserve">
         <source>0 1 2 3 4 5 6 7 8 9</source>
-        <target/>
+        <target state="needs-translation">0 1 2 3 4 5 6 7 8 9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -608,35 +608,35 @@
       </trans-unit>
       <trans-unit id="Distributions" xml:space="preserve">
         <source>Distributions</source>
-        <target/>
+        <target>Дистрибуции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Edit this address" xml:space="preserve">
         <source>Edit this address</source>
-        <target/>
+        <target>Уредете ја оваа адреса</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target>Печови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="exception" xml:space="preserve">
         <source>Exception</source>
-        <target/>
+        <target>Исклучок</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed Actions" xml:space="preserve">
         <source>Failed Actions</source>
-        <target/>
+        <target>Неуспешни Акции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -11150,62 +11150,62 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           Please reschedule this action if you really want it to be executed.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
         <source>Recurring Action type must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
