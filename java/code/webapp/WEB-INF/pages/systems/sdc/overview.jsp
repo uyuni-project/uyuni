@@ -150,6 +150,21 @@
               <td><c:out value="${system.virtualInstance.type.name}"/></td>
             </tr>
             <tr>
+              <td><bean:message key="sdc.details.overview.virtualization.host"/></td>
+              <c:choose>
+                <c:when test="${system.virtualInstance.hostSystem == null}">
+                  <td><bean:message key="sdc.details.overview.unknown"/></td>
+                </c:when>
+                <c:otherwise>
+                  <td>
+                    <a href="/rhn/systems/details/Overview.do?sid=${system.virtualInstance.hostSystem.id}">
+                      <c:out value="${system.virtualInstance.hostSystem.name}"/>
+                    </a>
+                  </td>
+                </c:otherwise>
+              </c:choose>
+            </tr>
+             <tr>
               <td><bean:message key="sdc.details.overview.uuid"/></td>
               <c:choose>
                 <c:when test="${system.virtualInstance.uuid == null}">

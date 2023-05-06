@@ -1,3 +1,4 @@
+- show virtualization host info in systems overview page
 - OES credentials do not allow access to SCC. Skip them when an
   SCCClientException is thrown and move forward
 - set swap memory value if available
