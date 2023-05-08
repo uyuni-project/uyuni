@@ -59,4 +59,11 @@ insert into rhnUserGroupType (id, label, name) values (
 	'Image Administrator'
 );
 
+insert into rhnUserGroupType (id, label, name) values (
+        sequence_nextval('rhn_usergroup_type_seq'),
+        'org_report',
+        'Organization Report Pages'
+);
+
+
 commit;

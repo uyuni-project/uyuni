@@ -83,7 +83,9 @@ public class MenuTree {
             nodes.add(getConfigurationNode(adminRoles));
             nodes.add(getScheduleNode());
             nodes.add(getUsersNode(adminRoles));
-            nodes.add(getReports());
+            if (checkAcl(user, "user_role(org_report)")) {
+                nodes.add(getReports());
+            }
             nodes.add(getAdminNode(adminRoles));
             nodes.add(getHelpNode(docsLocale));
             nodes.add(getExternalLinksNode(docsLocale));

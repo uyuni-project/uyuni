@@ -253,6 +253,29 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Use in routes to automatically get the current user, which must be an Org
+     * report viewer, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withOrgReport(TemplateViewRouteWithUser route) {
+        return withRole(route, RoleFactory.ORG_REPORT);
+    }
+
+
+    /**
+     * Use in routes to automatically get the current user, which must be the product
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withProductAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withOrgReport(RouteWithUser route) {
+        return withRole(route, RoleFactory.ORG_REPORT);
+    }
+
+    /**
      * Use in routes to automatically get the current user, which must be the product
      * admin, in your controller.
      * Example: <code>Spark.get("/url", withProductAdmin(Controller::method));</code>

@@ -2427,6 +2427,12 @@ and try again.
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="org_report" xml:space="preserve">
+        <source>View Organization Reports</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Admin Access" xml:space="preserve">
         <source>Admin Access</source>
         <context-group name="ctx">

@@ -19,11 +19,12 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgReport;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.report.InventoryReport;
@@ -38,11 +39,15 @@ import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -51,6 +56,7 @@ import java.util.function.Function;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -74,11 +80,13 @@ public class ReportsController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/report/inventory",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::inventoryReportPage)))), jade);
-        get("/manager/api/report/inventory", asJson(withUser(this::inventoryReport)));
-        //get("/manager/api/report/inventory/csv", asJson(withUser(this::inventoryCSV)));
+                withUserPreferences(
+                        withCsrfToken(withDocsLocale(
+                                withOrgReport(this::inventoryReportPage)))), jade);
+        get("/manager/api/report/inventory", asJson(withOrgReport(this::inventoryReport)));
+        get("/manager/api/report/inventory/csv", asJson(withOrgReport(this::inventoryCSV)));
         get("/manager/report/cvesearch",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::cveSearchReportPage)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withOrgReport(this::cveSearchReportPage)))), jade);
     }
 
     private Object inventoryReport(Request request, Response response, User user) {
@@ -107,34 +115,34 @@ public class ReportsController {
         return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), Set.of()));
     }
 
-//    public String inventoryCSV(Request request, Response response, User user) {
-//        // Querying the data again may not be optimal... but caching them in the
-//        // session may grow big!
-//        DataResult<SystemInventoryOverview> systems = InventoryReport.getSystemsInventory(user,
-//                PagedSqlQueryBuilder::parseFilterAsText, null);
-//
-//        List<String> columns = Arrays.asList("mgmId", "systemId", "minionId", "machineId", "profileName",
-//                "hostname", "lastCheckinTime", "syncedDate", "kernelVersion",
-//                "packagesOutOfDate", "errataOutOfDate", "organization", "architecture");
-//        return writeCsv(response, systems, columns, "virtual-systems.csv");
-//    }
-//
-//    private static String writeCsv(Response response, List<?> data, List<String> columns, String filename) {
-//        CSVWriter csvWriterObj = new CSVWriter(new StringWriter());
-//        csvWriterObj.setColumns(columns);
-//        try {
-//            csvWriterObj.write(data);
-//        }
-//        catch (Exception e) {
-//            LOG.error("Failed to write CSV", e);
-//            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-//        }
-//
-//        response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
-//        response.header("Content-Length", Integer.toString(csvWriterObj.getContents().length()));
-//        response.type("text/csv");
-//        return csvWriterObj.getContents();
-//    }
+    private String inventoryCSV(Request request, Response response, User user) {
+        // Querying the data again may not be optimal... but caching them in the
+        // session may grow big!
+        DataResult<SystemInventoryOverview> systems = InventoryReport.getSystemsInventory(user,
+                PagedSqlQueryBuilder::parseFilterAsText, null);
+
+        List<String> columns = Arrays.asList("mgmId", "systemId", "minionId", "machineId", "profileName",
+                "hostname", "lastCheckinTime", "syncedDate", "kernelVersion",
+                "packagesOutOfDate", "errataOutOfDate", "organization", "architecture");
+        return writeCsv(response, systems, columns, "virtual-systems.csv");
+    }
+
+    private static String writeCsv(Response response, List<?> data, List<String> columns, String filename) {
+        CSVWriter csvWriterObj = new CSVWriter(new StringWriter());
+        csvWriterObj.setColumns(columns);
+        try {
+            csvWriterObj.write(data);
+        }
+        catch (Exception e) {
+            LOG.error("Failed to write CSV", e);
+            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        }
+
+        response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
+        response.header("Content-Length", Integer.toString(csvWriterObj.getContents().length()));
+        response.type("text/csv");
+        return csvWriterObj.getContents();
+    }
 
     /**
      * Get the all systems list page

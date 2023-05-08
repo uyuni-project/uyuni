@@ -50,6 +50,12 @@
           <context context-type="sourcefile">Report Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="reportCvesearch.nav.title" xml:space="preserve">
+        <source>Systems CVE Search</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Report Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="action.nav.backout" xml:space="preserve">
         <source>Back Out Patches</source>
         <context-group name="ctx">

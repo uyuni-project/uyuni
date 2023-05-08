@@ -33,7 +33,7 @@ import Highstate from "./state";
 import Systems from "./systems";
 import Virtualization from "./virtualization";
 import Visualization from "./visualization";
-import Report from "./reporting";
+import Reporting from "./reporting";
 
 const pages = {
   ...Admin,
