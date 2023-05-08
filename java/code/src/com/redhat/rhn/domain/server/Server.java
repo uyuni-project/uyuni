@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRenameCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -670,6 +671,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setName(String nameIn) {
         this.name = nameIn;
+        if (getCobblerId() != null) {
+            new CobblerSystemRenameCommand(this, nameIn).store();
+        }
     }
 
     /**

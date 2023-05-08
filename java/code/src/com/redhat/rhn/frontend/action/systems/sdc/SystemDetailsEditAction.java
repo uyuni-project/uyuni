@@ -243,6 +243,7 @@ public class SystemDetailsEditAction extends RhnAction {
 
         if (!success) {
             getStrutsDelegate().saveMessages(request, errors);
+            SystemManager.updateSystemOverview(s.getId());
         }
         return success;
     }
