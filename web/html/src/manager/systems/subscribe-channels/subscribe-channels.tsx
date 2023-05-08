@@ -173,6 +173,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         selectedChildrenIds: this.state.selectedChildrenIds,
       });
       this.enableAllRecommended();
+
+      // force all mandatory channels being selected (bsc#1211062)
+      const availableChildren = this.getAvailableChildren();
+      const mandatoryChannels = this.state.requiredChannels.get(newBaseId);
+      const selectedChildren = this.getSelectedChildren() || [];
+      Array.from(availableChildren.values())
+        .filter(
+          (c) =>
+            mandatoryChannels &&
+            mandatoryChannels.has(c.id) &&
+            selectedChildren &&
+            !selectedChildren.some((child) => child.id === c.id)
+        )
+        .forEach((c) => this.selectChildChannel(c.id, true));
     }
   };
 
