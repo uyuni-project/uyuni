@@ -88,8 +88,21 @@ while read PKG_NAME PKG_VER PKG_DIR; do
 
   if [[ $PKG_DIR == *"containers"* ]]; then
     CONTAINER_NAME=$(basename "$PKG_DIR")
-    echo "=== Building container image [${CONTAINER_NAME}]"
-    if [ -d "$GIT_DIR/$PKG_DIR" ]; then
+    CONTAINS_SPEC_FILE=0
+
+    if ls $GIT_DIR/$PKG_DIR | grep \.spec 1> /dev/null 2>&1; then
+      CONTAINS_SPEC_FILE=1
+    fi
+    if [ ! -d "$GIT_DIR/$PKG_DIR" ]; then
+      FAILED_CNT=$(($FAILED_CNT+1))
+      FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $(basename $PKG_DIR)")"
+      echo "*** FAILED Building package [$(basename $PKG_DIR)] - $PKG_DIR does not exist"
+      continue 2
+    elif [ $CONTAINS_SPEC_FILE == 0 ]; then
+      #check if folder does not contains a spec file, otherwise although it's in containers folder it's a RPM package
+      CONTAINER_NAME=$(basename "$PKG_DIR")
+      echo "=== Building container image [${CONTAINER_NAME}]"
+
       cp -r "$GIT_DIR/$PKG_DIR" "$SRPM_DIR/"
       if [ -f "${PKG_DIR}/Chart.yaml" ]; then
         pushd "${SRPM_DIR}/${CONTAINER_NAME}" >/dev/null
@@ -105,12 +118,10 @@ while read PKG_NAME PKG_VER PKG_DIR; do
         popd >/dev/null
       fi
       SUCCEED_CNT=$(($SUCCEED_CNT+1))
-    else
-      FAILED_CNT=$(($FAILED_CNT+1))
-      FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $(basename $PKG_DIR)")"
-      echo "*** FAILED Building package [$(basename $PKG_DIR)] - $PKG_DIR does not exist"
+      continue 2
+    else # $CONTAINS_SPEC_FILE==1
+      echo "*** [ $PKG_DIR ] contains a spec file"
     fi
-    continue 2
   fi
 
   echo "=== Building package [$PKG_NAME-$PKG_VER] from $PKG_DIR (Try $tries)"
