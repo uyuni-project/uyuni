@@ -89,8 +89,8 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   if [[ $PKG_DIR == *"containers"* ]]; then
     CONTAINER_NAME=$(basename "$PKG_DIR")
     echo "=== Building container image [${CONTAINER_NAME}]"
-    if [ -d "$PKG_DIR" ]; then
-      cp -r "$PKG_DIR" "$SRPM_DIR/"
+    if [ -d "$GIT_DIR/$PKG_DIR" ]; then
+      cp -r "$GIT_DIR/$PKG_DIR" "$SRPM_DIR/"
       if [ -f "${PKG_DIR}/Chart.yaml" ]; then
         pushd "${SRPM_DIR}/${CONTAINER_NAME}" >/dev/null
         CHART_FILES="values.yaml values.schema.json charts crds templates LICENSE README.md"
