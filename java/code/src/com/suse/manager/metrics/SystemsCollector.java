@@ -27,6 +27,7 @@ public class SystemsCollector extends Collector {
     @Override
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> out = new ArrayList<>();
+        long start = System.nanoTime();
         List<Server> servers = ServerFactory.lookupByIds(SystemManager.listSystemIds());
 
         out.add(CustomCollectorUtils.gaugeFor("all_systems", "Number of all systems",
@@ -37,6 +38,8 @@ public class SystemsCollector extends Collector {
                 getNumberOfInactiveSystems(servers), PRODUCT_NAME));
         out.add(CustomCollectorUtils.gaugeFor("outdated_systems", "Number of systems with outdated packages",
                 getNumberOfOutdatedSystems(), PRODUCT_NAME));
+        out.add(CustomCollectorUtils.gaugeFor("systems_scrape_duration_seconds", "Duration of Uyuni systems " +
+                "statistics scrape", (System.nanoTime() - start) / 1.0E9, PRODUCT_NAME));
 
         return out;
     }

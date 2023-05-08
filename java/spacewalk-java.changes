@@ -1,3 +1,4 @@
+- Add uyuni_systems_scrape_duration_seconds metric
 - OES credentials do not allow access to SCC. Skip them when an
   SCCClientException is thrown and move forward
 - show virtualization host info in systems overview page
