@@ -1,3 +1,6 @@
+- force all mandatory channels being selected in software channel
+  change page (bsc#1211062)
+
 -------------------------------------------------------------------
 Tue Apr 25 15:38:09 CEST 2023 - jgonzalez@suse.com
 
