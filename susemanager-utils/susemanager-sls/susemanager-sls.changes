@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 03 09:17:26 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.33-1
+  * fix duplicate packages in state
+
+-------------------------------------------------------------------
 Mon Apr 24 09:17:00 CEST 2023 - jgonzalez@suse.com
 
 - version 4.3.32-1

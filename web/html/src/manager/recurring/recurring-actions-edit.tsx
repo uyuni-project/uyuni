@@ -207,7 +207,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
     return (
       <InnerPanel
-        title={t("Schedule Recurring Highstate")}
+        title={this.isEdit() ? this.state.scheduleName : t("Schedule Recurring Action")}
         icon="spacewalk-icon-salt"
         buttonsLeft={buttonsLeft}
         buttons={buttons}
