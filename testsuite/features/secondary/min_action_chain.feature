@@ -4,7 +4,6 @@
 # skip on container. Running actions chains fail on container.
 # This needs to be fixed
 
-@skip_if_container
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions
