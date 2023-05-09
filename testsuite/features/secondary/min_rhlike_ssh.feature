@@ -4,6 +4,12 @@
 # 1) delete Red Hat-like minion and register as SSH minion
 # 2) run a remote command
 # 3) delete Red Hat-like SSH minion and register as normal minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_rhlike_salt_install_package_and_patch.feature
+# - features/secondary/min_rhlike_monitoring.feature
+# If the cleanup bootstrap scenario fails,
+# the minion will not be reachable in those features
 
 @skip_if_container
 @scope_res

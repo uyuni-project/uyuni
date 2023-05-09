@@ -1,9 +1,12 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) check users page
 #  2) create and delete users
 #  3) Change permissions and roles in web UI
+#
+# This feature can cause failures in the following features:
+# - None
 
 @scope_visualization
 Feature: Manage users

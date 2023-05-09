@@ -1,5 +1,11 @@
 # Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/minssh_action_chain.feature: if the current feature fails on bootstrapping,
+# this feature won't be able to perform actions on it.
+# - features/secondary/minssh_move_from_and_to_proxy.feature: if the current feature fails on bootstrapping,
+# this feature won't be able to delete the minion in its initial setup.
 
 @scope_salt_ssh
 @scope_onboarding

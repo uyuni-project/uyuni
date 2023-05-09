@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature is a dependency for:
+# This feature can cause failures in the following features:
 # - features/secondary/min_bootstrap_script.feature : Due to the registration of a SLES Minion
 
 @skip_if_container
