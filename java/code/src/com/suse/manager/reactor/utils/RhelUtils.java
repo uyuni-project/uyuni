@@ -37,11 +37,11 @@ public class RhelUtils {
     private RhelUtils() { }
 
     private static final Pattern RHEL_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*+\\(([^)]++)\\).*+", Pattern.DOTALL);
     private static final Pattern ORACLE_RELEASE_MATCHER =
             Pattern.compile("(.+)\\srelease\\s([\\d.]+).*", Pattern.DOTALL);
     private static final Pattern ALIBABA_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*LTS\\s*\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*+LTS\\s*+\\(([^)]++)\\).*+", Pattern.DOTALL);
 
     /**
      * Information about RHEL based OSes.
