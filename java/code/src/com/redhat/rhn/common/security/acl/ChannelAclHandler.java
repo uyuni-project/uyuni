@@ -35,6 +35,7 @@ public class ChannelAclHandler extends BaseHandler {
     public static final String NOT_GLOBAL_SUBSCRIBE = "not_globally_subscribable";
     public static final String ERRATA = "errata";
     public static final String RPM = "rpm";
+    public static final String DEB = "deb";
 
     /*
      * Sometimes we have a context where key "cid" is the cid-string (nav-xml)
@@ -122,7 +123,7 @@ public class ChannelAclHandler extends BaseHandler {
         User usr = (User)ctx.get(USER);
         Channel chan = getChannel(usr, ctx);
         String archType = chan.getChannelArch().getArchType().getLabel();
-        return archType.equals(RPM);
+        return archType.equals(RPM) || archType.equals(DEB);
     }
 
     /**
