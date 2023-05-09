@@ -37,7 +37,7 @@
 - features/secondary/srv_reportdb.feature
 - features/secondary/srv_dist_channel_mapping.feature
 - features/secondary/srv_task_status_engine.feature
-- features/secondary/trad_spacewalk_channel.feature
+- features/secondary/srv_scc_user_credentials.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
@@ -72,7 +72,7 @@
 - features/secondary/min_custom_pkg_download_endpoint.feature
 - features/secondary/min_monitoring.feature
 - features/secondary/min_ansible_control_node.feature
-- features/secondary/srv_scc_user_credentials.feature
+- features/secondary/min_project_lotus.feature
 
 - features/secondary/minkvm_guests.feature
 
@@ -84,5 +84,6 @@
 - features/secondary/trad_inst_package_and_patch.feature
 - features/secondary/trad_check_patches_install.feature
 - features/secondary/trad_check_registration.feature
+- features/secondary/trad_spacewalk_channel.feature
 
 ## Parallelizable Secondary features END ##
