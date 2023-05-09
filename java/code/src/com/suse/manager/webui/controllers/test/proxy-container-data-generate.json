@@ -2,7 +2,6 @@
   "proxyFQDN": "pxy.acme.lab",
   "serverFQDN": "srv.acme.lab",
   "maxSquidCacheSize": 2048,
-  "bandwidth_limit_kbps": -1,
   "proxyAdminEmail": "coyote@acme.lab",
   "sslMode": "create-ssl",
   "caCertificate": "CA CERT",

@@ -67,17 +67,14 @@ usage_update() {
   cat <<EOF
 Usage: proxy update command [param...]
 
-Updates the proxy with the new parameters.
+Updates a service with the new parameters.
 
 Available options:
 
-image          Updates the image of a service
+image          Updates the configuration of a service
                   -s name of the service
                   -t image tag
                   -r registry to pull from
-
-config         Updates the configuration of the proxy
-                  -p parameters
 EOF
   exit
 }
@@ -91,10 +88,6 @@ update() {
     image)
       shift
       update_image "$@"
-      ;;
-    config)
-      shift
-      update_config "$@"
       ;;
     *) die "Unknown option for update" ;;
     esac
@@ -147,44 +140,6 @@ EOF
   exit 0
 }
 
-update_config() {
-  BANDWIDTH_LIMIT=''
-  OTHER=''
-  while getopts "l:" opt; do
-    case $opt in
-    l)
-      BANDWIDTH_LIMIT=$OPTARG
-      ;;
-    \?)
-      usage_update
-      die "Invalid option: ${OPTARG}"
-      ;;
-    esac
-  done
-
-  if [ -z "${BANDWIDTH_LIMIT}" ] && [ -z "${OTHER}" ]; then usage_update; fi
-
-  if [ -n "${BANDWIDTH_LIMIT}" ]; then
-
-    SERVICE='squid'
-    echo "updating the proxy cache bandwidth limit with the new value of ${BANDWIDTH_LIMIT} Kbps"
-
-    set_delay_pools "$BANDWIDTH_LIMIT"
-
-    systemctl daemon-reload || die "Cannot reload daemon"
-    systemctl restart uyuni-proxy-"${SERVICE}"-service || die "Cannot restart restart uyuni-proxy-${SERVICE}-service"
-  fi
-
-  exit 0
-}
-
-set_delay_pools() {
-
-  # Add or replace the field with the parameter
-  sed -i -n -e '/^bandwidth_limit_kbps: /!p' -e '$abandwidth_limit_kbps: '"${1}"'' /etc/uyuni/proxy/config.yaml \
-  || die "Cannot adjust config at /etc/uyuni/proxy/config.yaml"
-}
-
 ############################# RESET branch #############################
 
 reset() {
@@ -208,10 +163,6 @@ reset() {
 
   echo "resetting the config for service ${SERVICE} with the default parameters"
   rm -f /etc/sysconfig/uyuni-proxy-"${SERVICE}"-service.config || die "Cannot reset config"
-
-  if [ "${SERVICE}" = "squid" ]; then
-    rm -rf /etc/squid/conf.d/*
-  fi
 
   systemctl daemon-reload || die "Cannot reload daemon"
   systemctl restart uyuni-proxy-"${SERVICE}"-service || die "Cannot restart restart uyuni-proxy-${SERVICE}-service"

@@ -3,7 +3,6 @@
   "proxyPort": 8022,
   "serverFQDN": "srv.acme.lab",
   "maxSquidCacheSize": 2048,
-  "bandwidth_limit_kbps": -1,
   "proxyAdminEmail": "coyote@acme.lab",
   "sslMode": "use-ssl",
   "rootCA": "Root CA",

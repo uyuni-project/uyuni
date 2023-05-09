@@ -60,7 +60,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         context().checking(new Expectations() {{
             oneOf(systemManager).createProxyContainerConfig(
                     with(equal(user)), with(equal("pxy.acme.lab")), with(equal(8022)), with(equal("srv.acme.lab")),
-                    with(equal(2048L)), with(equal(512L)), with(equal("coyote@acme.lab")), with(equal("Root CA")),
+                    with(equal(2048L)), with(equal("coyote@acme.lab")), with(equal("Root CA")),
                     with(equal(List.of("CA1", "CA2"))), with(equal(new SSLCertPair("CERT", "KEY"))),
                     with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)));
             will(returnValue(data));
@@ -82,7 +82,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         context().checking(new Expectations() {{
             oneOf(systemManager).createProxyContainerConfig(
                     with(equal(user)), with(equal("pxy.acme.lab")), with(equal(22)),
-                    with(equal("srv.acme.lab")), with(equal(2048L)), with(equal(512L)), with(equal("coyote@acme.lab")),
+                    with(equal("srv.acme.lab")), with(equal(2048L)), with(equal("coyote@acme.lab")),
                     with(aNull(String.class)), with(aNull(List.class)), with(aNull(SSLCertPair.class)),
                     with(equal(new SSLCertPair("CA CERT", "CA KEY"))), with(equal("secret")),
                     with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"), "DE", "Bavaria", "Nurnberg",

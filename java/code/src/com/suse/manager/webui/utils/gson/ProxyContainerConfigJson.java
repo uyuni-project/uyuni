@@ -37,8 +37,6 @@ public class ProxyContainerConfigJson {
     private String serverFqdn;
     @SerializedName("maxSquidCacheSize")
     private Long maxCache;
-    @SerializedName("bandWidthLimit")
-    private Long bandWidthLimit;
     @SerializedName("proxyAdminEmail")
     private String email;
     private String rootCA;
@@ -100,13 +98,6 @@ public class ProxyContainerConfigJson {
      */
     public Long getMaxCache() {
         return maxCache;
-    }
-
-    /**
-     * @return value of delay
-     */
-    public Long getBandWidthLimit() {
-        return bandWidthLimit;
     }
 
     /**
