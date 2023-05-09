@@ -80,7 +80,7 @@ public class ConfigurationValidation {
         // One or more chars NOT parentheses$1,
         // followed by zero or one "( any-chars$3 ) $2",
         // followed by zero or one "= any-chars$5 $4"
-        String macroStr = "([^()]+)(\\((.*?)\\))?\\s*(=(.*))?";
+        String macroStr = "([^()]++)(\\((.*?)\\))?\\s*+(=(.*+))?";
 
         Pattern findMacro = Pattern.compile(findMacroStr,
                 Pattern.MULTILINE + Pattern.DOTALL);

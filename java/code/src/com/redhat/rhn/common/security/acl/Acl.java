@@ -163,7 +163,7 @@ public class Acl {
     private static final String ACL_SPLIT_REGEX = "\\s*;\\s*";
 
     /** RegEx to split expressions into multiple statements */
-    private static final String EXPR_SPLIT_REGEX = "\\s+or\\s+";
+    private static final String EXPR_SPLIT_REGEX = "\\s++or\\s++";
 
     /** RegEx to parse statement to grab negation, function call, params */
     private static final String STMT_PARSE_REGEX = "^(not +)?(.*)\\((.*)\\)$";

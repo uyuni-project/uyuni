@@ -185,7 +185,7 @@ public class CSVDownloadAction extends DownloadAction {
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
         CSVWriter csvWriter = new CSVWriter(new StringWriter(), user.getCsvSeparator());
-        String[] columns = exportColumns.split("\\s*,\\s*");
+        String[] columns = exportColumns.split("\\s*+,\\s*+");
         csvWriter.setColumns(Arrays.asList(columns));
 
         String header = getHeaderText(request, session);

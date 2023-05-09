@@ -1020,11 +1020,7 @@ public class KickstartData {
             return "grub";
         }
 
-        String regEx = ".*--useLilo.*";
-        Pattern pattern = Pattern.compile(regEx);
-        Matcher matcher = pattern.matcher(bootloaderCommand.getArguments());
-
-        if (matcher.matches()) {
+        if (bootloaderCommand.getArguments().contains("--useLilo")) {
             return "lilo";
         }
         return "grub";

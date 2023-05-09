@@ -240,7 +240,7 @@ public class PowerManagementAction extends RhnAction {
         SortedMap<String, String> types = new TreeMap<>();
         String typeString = ConfigDefaults.get().getCobblerPowerTypes();
         if (typeString != null) {
-            List<String> typeNames = Arrays.asList(typeString.split(" *, *"));
+            List<String> typeNames = Arrays.asList(typeString.split(" *+, *+"));
             for (String typeName : typeNames) {
                 types.put(
                     LocalizationService.getInstance().getPlainText(

@@ -1712,10 +1712,10 @@ public class SaltServerActionService {
         if (tailoringIdMatcher.find()) {
             pillar.put("tailoring_id", tailoringIdMatcher.group(1));
         }
-        if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
+        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
             pillar.put("fetch_remote_resources", true);
         }
-        if (scapActionDetails.getParametersContents().matches(".*--remediate.*")) {
+        if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
 
