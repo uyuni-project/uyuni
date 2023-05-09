@@ -1,3 +1,4 @@
+- Enforce minimum version of 1.11 for byte-buddy.
 - Updated EL9 jaxb-api symlinks to Uyuni provided package.
 - Update system overview in case of manual system reboot
 - Add uyuni_systems_scrape_duration_seconds metric
