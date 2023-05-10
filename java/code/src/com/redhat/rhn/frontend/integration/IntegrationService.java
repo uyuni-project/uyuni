@@ -18,11 +18,12 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -87,19 +88,20 @@ public class IntegrationService {
 
         String passwd;
 
-        //Handle the taskomatic case (Where we can't rely on the tokenStore since it's a completely different VM)
+        // Handle the taskomatic case (Where we can't rely on the tokenStore since it's a completely different VM)
         if (login.equals(ConfigDefaults.get().getCobblerAutomatedUser())) {
-
             passwd = Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1);
         }
         else {
-            String md5random = SessionSwap.computeMD5Hash(
-                    RandomStringUtils.random(10, SessionSwap.HEX_CHARS));
-            // Store the md5random number in our map and send over the encoded version of it.
+            SecureRandom random = new SecureRandom();
+            byte[] bytes = new byte[10];
+            random.nextBytes(bytes);
+            String digestAsHex = new DigestUtils("SHA3-256").digestAsHex(bytes);
+            // Store the digestAsHex number in our map and send over the encoded version of it.
             // On the return checkRandomToken() call we will decode the encoded data to make sure it is the
             // unaltered random number.
-            randomTokenStore.put(login, md5random);
-            passwd  = SessionSwap.encodeData(md5random);
+            randomTokenStore.put(login, digestAsHex);
+            passwd = SessionSwap.encodeData(digestAsHex);
         }
 
         log.debug("Authorize called with username: {}", login);

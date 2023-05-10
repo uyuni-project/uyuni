@@ -35,19 +35,19 @@ public class IntegrationServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testAuth() {
         String login = "test-login-iservice";
-        Map tokens = (Map) TestUtils.getPrivateField(IntegrationService.get(),
+        Map<String, String> tokens = (Map<String, String>) TestUtils.getPrivateField(IntegrationService.get(),
             "randomTokenStore");
         tokens.clear();
         assertNotNull(IntegrationService.get().
                 getAuthToken(login));
-        tokens = (Map) TestUtils.getPrivateField(IntegrationService.get(),
+        tokens = (Map<String, String>) TestUtils.getPrivateField(IntegrationService.get(),
             "randomTokenStore");
         assertNotNull(tokens);
         // Here we do re-implement the guts of what IntegrationService is doing
         // but there really is no other way since we don't want to really expose
         // the methodology of 'how' we are hashing/passing the values to the
         // callers of this API since its not important to a user.
-        String hashedRandom = (String) tokens.get(login);
+        String hashedRandom = tokens.get(login);
         String encodedRandom = SessionSwap.encodeData(hashedRandom);
         assertTrue(IntegrationService.get().checkRandomToken(login,
                 encodedRandom));
