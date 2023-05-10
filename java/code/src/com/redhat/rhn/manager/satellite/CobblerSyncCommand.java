@@ -19,8 +19,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
