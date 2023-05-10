@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.function.Function;
 
 import javax.persistence.DiscriminatorValue;
@@ -53,5 +55,16 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
             Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
             Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return noAuth.apply(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("authType", "none")
+                .toString();
     }
 }

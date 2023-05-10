@@ -21,12 +21,12 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.StringJoiner;
 
 /**
  * POJO for a suseProducts row.
@@ -387,15 +387,19 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
             .toHashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return new StringJoiner(", ", SUSEProduct.class.getSimpleName() + "[", "]")
-                .add(Long.toString(getId()))
-                .add(getName())
-                .add(getVersion())
-                .add(getRelease())
-                .add(getArch().getLabel())
-                .add("SCCid=" + Long.toString(getProductId()))
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("name", getName())
+                .append("version", getVersion())
+                .append("release", getRelease())
+                .append("arch", getArch().getLabel())
+                .append("productId", getProductId())
+                .append("friendlyName", getFriendlyName())
                 .toString();
     }
 }
