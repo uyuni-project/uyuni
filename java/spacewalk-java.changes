@@ -1,3 +1,5 @@
+- Fix issue with `aclChannelTypeCapable` that prevented errata view in
+  deb arch
 - Refresh pillars after setting custom values via SSM (bsc#1210659)
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - Filter CLM modular packages using release strings (bsc#1207814)
