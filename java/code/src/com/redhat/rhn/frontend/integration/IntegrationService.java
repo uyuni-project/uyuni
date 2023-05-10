@@ -94,7 +94,7 @@ public class IntegrationService {
         }
         else {
             SecureRandom random = new SecureRandom();
-            byte[] bytes = new byte[10];
+            byte[] bytes = new byte[512];
             random.nextBytes(bytes);
             String digestAsHex = new DigestUtils("SHA3-256").digestAsHex(bytes);
             // Store the digestAsHex number in our map and send over the encoded version of it.
