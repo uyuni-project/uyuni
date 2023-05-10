@@ -30,7 +30,7 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 /**
  * XMLRPCHelper - class that contains wraps calls to Redstone's XML-RPC client.
- * Intentionally implements the XMLRPCInvoker interface so we can also provide
+ * Intentionally implements the XMLRPCInvoker interface, so we can also provide
  * a mock implementation to our unit tests, so they don't require an actual
  * Cobbler server.
  *
@@ -145,7 +145,6 @@ public class CobblerConnection {
     public boolean tokenCheck(String tokenToCheck) {
         return (boolean) invokeMethod("token_check", tokenToCheck);
     }
-
 
     /**
      * Invoke an XML-RPC method.

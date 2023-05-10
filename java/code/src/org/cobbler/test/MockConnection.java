@@ -105,7 +105,7 @@ public class MockConnection extends CobblerConnection {
 
     /**
      * Mock constructors for Cobbler connection
-     * Don't care..
+     * Don't care.
      *
      * @param urlIn   whatever url
      * @param tokenIn session token.
