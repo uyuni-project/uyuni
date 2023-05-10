@@ -38,11 +38,10 @@ import java.util.Map;
  */
 public class CobblerDistroSyncCommand extends CobblerCommand {
 
-    private Logger log;
+    private final Logger log;
 
     /**
-     * Constructor to create a
-     * DistorSyncCommand
+     * Constructor to create a CobblerDistroSyncCommand
      */
     public CobblerDistroSyncCommand() {
         super();
@@ -59,17 +58,17 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
     }
 
     /**
-     * Sync spacewalk distros that have a null cobblerId
-     *  we do this in store as well, (while doing other syncing
-     *  tasks, but this is needed occasionally outside of store.
+     * Sync spacewalk distros that have a null cobblerId.
+     * <br>
+     * We do this in store as well, while doing other syncing tasks, but this is needed occasionally outside of store.
+     *
      * @return an error if applicable
      */
     public ValidatorError syncNullDistros() {
         List<String> errors = new LinkedList<>();
         List<KickstartableTree> unSynced = KickstartFactory.listUnsyncedKickstartTrees();
-        String err;
         for (KickstartableTree tree : unSynced) {
-
+            String err;
             if (!tree.isPathsValid()) {
                 log.warn("Could not sync tree {}", tree.getLabel());
                 continue;
@@ -106,6 +105,10 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             }
 
         }
+        return buildValidatorError(errors);
+    }
+
+    private ValidatorError buildValidatorError(List<String> errors) {
         StringBuilder messages = new StringBuilder();
         for (String errorIn : errors) {
             messages.append(errorIn);
@@ -139,8 +142,8 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
 
     private static boolean hasDistroKernelOptions(Distro distro) {
         return distro != null &&
-                (distro.getKernelOptions() != null ||
-                        distro.getKernelOptionsPost() != null);
+                (distro.getKernelOptions().isPresent() ||
+                        distro.getKernelOptionsPost().isPresent());
     }
 
     /**
@@ -201,15 +204,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                 }
             }
         }
-        StringBuilder messages = new StringBuilder();
-        for (String errorIn : errors) {
-            messages.append(errorIn);
-            messages.append("\n");
-        }
-        if (messages.length() == 0) {
-            return null;
-        }
-        return new ValidatorError("kickstart.cobbler.distro.syncfail", messages);
+        return buildValidatorError(errors);
     }
 
 

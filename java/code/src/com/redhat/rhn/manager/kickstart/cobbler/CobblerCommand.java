@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.kickstart.cobbler;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -23,33 +22,27 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.integration.IntegrationService;
-import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
+import org.cobbler.Network;
 import org.cobbler.SystemRecord;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 
-import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * CobblerCommand - class to contain logic to communicate with cobbler
  */
 public abstract class CobblerCommand {
 
-    private static Logger log = LogManager.getLogger(CobblerCommand.class);
+    private static final Logger LOG = LogManager.getLogger(CobblerCommand.class);
 
-    protected String xmlRpcToken;
     protected User user;
-    private XMLRPCInvoker invoker;
+    protected final CobblerConnection cobblerConnection;
 
 
     /**
@@ -57,21 +50,15 @@ public abstract class CobblerCommand {
      * @param userIn - xmlrpc token for cobbler
      */
     protected CobblerCommand(User userIn) {
-        if (userIn == null) {
-            xmlRpcToken = IntegrationService.get().getAuthToken(
-                ConfigDefaults.get().getCobblerAutomatedUser());
-            log.debug("Unauthenticated Cobbler call");
+        user = userIn;
+        if (user == null) {
+            cobblerConnection = CobblerXMLRPCHelper.getAutomatedConnection();
+            LOG.debug("Cobbler XML-RPC session created for taskomatic_user");
         }
         else {
-            xmlRpcToken =
-                IntegrationService.get().getAuthToken(userIn.getLogin());
-            log.debug("xmlrpc token for cobbler: {}", xmlRpcToken);
+            cobblerConnection = CobblerXMLRPCHelper.getConnection(userIn);
+            LOG.debug("Cobbler XML-RPC session created for user \"{}\"", user.getId());
         }
-        // We abstract this fetch of the class so a test class
-        // can override the invoker with a mock xmlrpc invoker.
-        invoker = (XMLRPCInvoker)
-            MethodUtil.getClassFromConfig(CobblerXMLRPCHelper.class.getName());
-        user = userIn;
     }
 
     /**
@@ -88,39 +75,6 @@ public abstract class CobblerCommand {
      * @return ValidatorError if there is any errors
      */
     public abstract ValidatorError store();
-
-
-    /**
-     * Invoke an XMLRPC method.
-     * @param procedureName to invoke
-     * @param args to pass to method
-     * @return Object returned.
-     */
-    protected Object invokeXMLRPC(String procedureName, List args) {
-        if (this.xmlRpcToken == null) {
-            log.error("error, no cobbler token.  " +
-                "spacewalk and cobbler will no longer be in sync");
-            throw new NoCobblerTokenException("Tried to call: " + procedureName +
-                    " but we don't have a cobbler token");
-        }
-        try {
-            return invoker.invokeMethod(procedureName, args);
-        }
-        catch (XmlRpcFault e) {
-            log.error("Error calling cobbler.", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Invoke an XMLRPC method.
-     * @param procedureName to invoke
-     * @param args to pass to method
-     * @return Object returned.
-     */
-    protected Object invokeXMLRPC(String procedureName, Object ... args) {
-        return invokeXMLRPC(procedureName, Arrays.asList(args));
-    }
 
     /**
      * Makes a simple profile or distro object
@@ -145,14 +99,12 @@ public abstract class CobblerCommand {
 
     /**
      * Makes a local file path out of the cobbler name.
-     *
-     * Currently ends up in :
-     *
-     * /var/lib/rhn/kickstarts/label--orgid--orgname.cfg
+     * <br>
+     * Currently ends up in: {@code /var/lib/rhn/kickstarts/label--orgid--orgname.cfg}
      *
      * @param label the distro or profile label
      * @param org the org to appropriately add the org info
-     * @return the cobbler file name in /var/lib/rhn/kickstarts/label--orgid--orgname.cfg
+     * @return the cobbler file name in {@code /var/lib/rhn/kickstarts/label--orgid--orgname.cfg}
      */
     public static String makeCobblerFileName(String label, Org org) {
         if (org == null) {
@@ -200,20 +152,18 @@ public abstract class CobblerCommand {
      */
     protected SystemRecord lookupExisting(Server server) {
         if (server.getCobblerId() != null) {
-            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), server.getCobblerId());
+            SystemRecord rec = SystemRecord.lookupById(cobblerConnection, server.getCobblerId());
             if (rec != null) {
                 return rec;
             }
         }
         //lookup by ID failed, so lets try by mac
 
-        Map sysmap = getSystemMapByMac(server);
-        if (sysmap != null) {
-            log.debug("getSystemHandleByMAC.found match.");
-            String uid = (String) sysmap.get("uid");
-            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), uid);
-            if (rec != null) {
-                return rec;
+        SystemRecord system = getSystemByMac(server);
+        if (system != null) {
+            LOG.debug("getSystemHandleByMAC.found match.");
+            if (!Objects.equals(system.getId(), "")) {
+                return system;
             }
         }
         return null;
@@ -223,13 +173,13 @@ public abstract class CobblerCommand {
      * @return system Map
      * @param server server
      */
-    protected Map getSystemMapByMac(Server server) {
+    protected SystemRecord getSystemByMac(Server server) {
         // Build up list of mac addrs
-        List macs = new LinkedList<>();
+        List<String> macs = new LinkedList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
-            // Skip localhost and non real interfaces
+            // Skip localhost and non-real interfaces
             if (!n.isMacValid()) {
-                log.debug("Skipping.  not a real interface");
+                LOG.debug("Interface \"{}\" not a real interface. Skipping!", n.getName());
             }
             else {
                 macs.add(n.getHwaddr().toLowerCase());
@@ -237,25 +187,14 @@ public abstract class CobblerCommand {
 
         }
 
-        List<String> args = new ArrayList<>();
-        args.add(xmlRpcToken);
-        List<Map> systems = (List) invokeXMLRPC("get_systems", args);
-        for (Map row : systems) {
-            Set ifacenames = ((Map) row.get("interfaces")).keySet();
-            log.debug("Ifacenames: {}", ifacenames);
-            Map ifaces = (Map) row.get("interfaces");
-            log.debug("ifaces: {}", ifaces);
-            for (Object ifacenameIn : ifacenames) {
-                String name = (String) ifacenameIn;
-                log.debug("Name: {}", name);
-                Map iface = (Map) ifaces.get(name);
-                log.debug("iface: {}", iface);
-                String mac = (String) iface.get("mac_address");
-                log.debug("getSystemMapByMac.ROW: {} looking for: {}", row, macs);
-
-                if (mac != null &&
-                        macs.contains(mac.toLowerCase())) {
-                    log.debug("getSystemMapByMac.found match.");
+        List<SystemRecord> systems = SystemRecord.list(cobblerConnection);
+        for (SystemRecord row : systems) {
+            List<Network> ifacenames = row.getNetworkInterfaces();
+            LOG.debug("Found \"{}\" interfaces in Cobbler System \"{}\"", ifacenames.size(), row.getId());
+            for (Network networkInterface : ifacenames) {
+                if (networkInterface.getMacAddress() != null &&
+                        macs.contains(networkInterface.getMacAddress().toLowerCase())) {
+                    LOG.debug("getSystemByMac found match for interface \"{}\".", networkInterface.getName());
                     return row;
                 }
             }

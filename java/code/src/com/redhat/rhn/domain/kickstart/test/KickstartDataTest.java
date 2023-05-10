@@ -61,7 +61,6 @@ import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -93,8 +92,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     private static final String KERNEL_PARAMS = "ide0=ata66";
 
     public static void setupTestConfiguration(User u) throws Exception {
-        Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                MockXMLRPCInvoker.class.getName());
         Config.get().setString(ConfigDefaults.KICKSTART_COBBLER_DIR,
                 "/tmp/kickstart/");
         Config.get().setString(ConfigDefaults.COBBLER_SNIPPETS_DIR,

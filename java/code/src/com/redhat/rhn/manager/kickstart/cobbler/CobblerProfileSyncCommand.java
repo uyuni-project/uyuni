@@ -24,6 +24,8 @@ import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -31,16 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import redstone.xmlrpc.XmlRpcFault;
-
 
 /**
  * This command finds profiles that have been changed on the cobbler server and syncs
- *  those changes to the satellite
+ * those changes to the satellite
  */
 public class CobblerProfileSyncCommand extends CobblerCommand {
 
-    private Logger log;
+    private final Logger log;
 
     /**
      * Command to sync unsynced Kickstart profiles to cobbler.
@@ -50,23 +50,19 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         log = LogManager.getLogger(this.getClass());
     }
 
-
-
-
-
     /**
-     *  Get a map of CobblerID -> profileMap from cobbler
-     * @return a list of cobbler profile names
+     * Get a map of CobblerID -> profileMap from cobbler
+     *
+     * @return a map of cobbler profile uid with the profile object as a value
      */
-    private Map<String, Map> getModifiedProfileNames() {
-        Map<String, Map> toReturn = new HashMap<>();
-        List<Map> profiles = (List<Map>)invokeXMLRPC("get_profiles", xmlRpcToken);
-        for (Map profile : profiles) {
-                toReturn.put((String)profile.get("uid"), profile);
+    private Map<String, Profile> getModifiedProfiles() {
+        Map<String, Profile> toReturn = new HashMap<>();
+        List<Profile> profiles = Profile.list(cobblerConnection);
+        for (Profile profile : profiles) {
+                toReturn.put(profile.getUid(), profile);
         }
         return toReturn;
     }
-
 
     /**
      * {@inheritDoc}
@@ -74,44 +70,41 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
     @Override
     public ValidatorError store() {
         //First are there any profiles within spacewalk that aren't within cobbler
-        List<KickstartData> profiles = KickstartFactory.listAllKickstartData();
-        Map<String, Map> profileNames = getModifiedProfileNames();
-        for (KickstartData profile : profiles) {
-            /**
-             * workaround for bad data left in the DB (bz 525561)
-             */
-            if (profile.getKickstartDefaults() == null) {
+        List<KickstartData> ksDataList = KickstartFactory.listAllKickstartData();
+        Map<String, Profile> cobblerProfilesMap = getModifiedProfiles();
+        for (KickstartData kickstartData : ksDataList) {
+            // workaround for bad data left in the DB (bz 525561)
+            // https://bugzilla.redhat.com/show_bug.cgi?id=525561
+            if (kickstartData.getKickstartDefaults() == null) {
                 continue;
             }
 
-            if (!profileNames.containsKey(profile.getCobblerId())) {
-                  if (profile.getKickstartDefaults().getKstree().getCobblerId() == null) {
+            if (!cobblerProfilesMap.containsKey(kickstartData.getCobblerId())) {
+                  if (kickstartData.getKickstartDefaults().getKstree().getCobblerId() == null) {
                       log.warn("Kickstart profile {} could not be synced to cobbler, due to it's tree " +
-                              "being unsynced. Please edit the tree url to correct this.", profile.getLabel());
+                              "being unsynced. Please edit the tree url to correct this.", kickstartData.getLabel());
                   }
                   else {
-                      createProfile(profile);
-                      profile.setModified(new Date());
+                      createProfile(kickstartData);
+                      kickstartData.setModified(new Date());
                   }
             }
         }
 
-
-        log.debug(profiles);
-        log.debug(profileNames);
+        log.debug(ksDataList);
+        log.debug(cobblerProfilesMap);
         //Are there any profiles on cobbler that have changed
-        for (KickstartData profile : profiles) {
-            if (profileNames.containsKey(profile.getCobblerId())) {
-                Map cobProfile = profileNames.get(profile.getCobblerId());
-                log.debug("{}: {} - {}", profile.getLabel(), cobProfile.get("mtime"), profile.getModified().getTime());
-                if (((Double)cobProfile.get("mtime")).longValue() >
-                      profile.getModified().getTime() / 1000) {
-                    syncProfileToSpacewalk(cobProfile, profile);
+        for (KickstartData profile : ksDataList) {
+            if (cobblerProfilesMap.containsKey(profile.getCobblerId())) {
+                Profile cobProfile = cobblerProfilesMap.get(profile.getCobblerId());
+                log.debug("{}: {} - {}", profile.getLabel(), cobProfile.getModified(), profile.getModified().getTime());
+                if (cobProfile.getModified().getTime() > profile.getModified().getTime()) {
+                    syncProfileToUyuni(cobProfile, profile);
                 }
             }
         }
 
-
+        // This is triggering a FULL "cobbler sync"!
         return new CobblerSyncCommand(user).store();
     }
 
@@ -123,62 +116,42 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
 
 
     /**
-     * Sync s the following things:
-     *  Distro (if applicable)
+     * Sync's a Distro if applicable. Then overwrites the 'autoinstall' attribute within the Cobbler profile
+     * (in case they changed it to something spacewalk doesn't know about).
      *
-     * then overwrites the 'autoinstall' attribute within the cobbler profile
-     *      (in case they changed it to something spacewalk doesn't know about)
-     * @param cobblerProfile
-     * @param profile
+     * @param cobblerProfile The profile that should be synced to Uyuni
+     * @param kickstartData The kickstart data that Uyuni is aware of
      */
-    private void syncProfileToSpacewalk(Map cobblerProfile, KickstartData profile) {
-        log.debug("Syncing profile: {} known in cobbler as: {}", profile.getLabel(), cobblerProfile.get("name"));
+    private void syncProfileToUyuni(Profile cobblerProfile, KickstartData kickstartData) {
+        log.debug("Syncing profile: {} known in cobbler as: {}", kickstartData.getLabel(), cobblerProfile.getName());
         //Do we need to sync the distro?
-        Map distro = (Map) invokeXMLRPC("get_distro", cobblerProfile.get("distro"));
-        if (!distro.get("uid").equals(profile.getTree().getCobblerId()) &&
-               !distro.get("uid").equals(profile.getTree().getCobblerXenId())) {
+        Distro distro = cobblerProfile.getDistro();
+        if (!distro.getUid().equals(kickstartData.getTree().getCobblerId()) &&
+               !distro.getUid().equals(kickstartData.getTree().getCobblerXenId())) {
             //lookup the distro locally:
             KickstartableTree tree = KickstartFactory.
-                    lookupKickstartTreeByCobblerIdOrXenId((String)distro.get("uid"));
+                    lookupKickstartTreeByCobblerIdOrXenId(distro.getUid());
             if (tree == null) {
-                log.error("Kickstartable tree was not found for Cobbler id:{}", (String) distro.get("uid"));
+                log.error("Kickstartable tree was not found for Cobbler id:{}", distro.getUid());
             }
             else {
-                profile.setTree(tree);
+                kickstartData.setTree(tree);
             }
         }
 
         //Now re-set the filename in case someone set it incorrectly
         Path kickstartPath = Path.of(
                 ConfigDefaults.get().getKickstartConfigDir(),
-                cobblerProfile.get("autoinstall").toString()
+                cobblerProfile.getKickstart()
         );
-        String cobblerKickstartFileName = profile.buildCobblerFileName();
+        String cobblerKickstartFileName = kickstartData.buildCobblerFileName();
         if (!Path.of(cobblerKickstartFileName).equals(kickstartPath)) {
-            try {
-                log.info("Updating cobbler profile, setting 'autoinstall' to: {}", cobblerKickstartFileName);
-                String handle = (String) invokeXMLRPC("get_profile_handle",
-                        cobblerProfile.get("name"), xmlRpcToken);
-                invokeXMLRPC("modify_profile", handle, "autoinstall", cobblerKickstartFileName,
-                        xmlRpcToken);
-
-                invokeXMLRPC("save_profile", handle, xmlRpcToken);
-
-                //Lets update the modified date just to make sure
-                profile.setModified(new Date());
-            }
-            catch (RuntimeException re) {
-                if (re.getCause() instanceof XmlRpcFault) {
-                    XmlRpcFault xrf = (XmlRpcFault)re.getCause();
-                    if (xrf.getMessage().contains("unknown profile name")) {
-                        log.error("Cobbler doesn't know about this profile any more!");
-                    }
-                }
-                else {
-                    throw re;
-                }
-            }
+            log.info("Updating cobbler profile, setting 'autoinstall' to: {}", cobblerKickstartFileName);
+            cobblerProfile.setKickstart(cobblerKickstartFileName);
+            cobblerProfile.save();
+            cobblerProfile.reload();
+            // Let's update the modified date just to make sure
+            kickstartData.setModified(cobblerProfile.getModified());
         }
     }
-
 }

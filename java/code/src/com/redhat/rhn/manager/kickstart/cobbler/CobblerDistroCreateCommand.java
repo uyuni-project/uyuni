@@ -24,9 +24,6 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.List;
 
 /**
@@ -34,7 +31,6 @@ import java.util.List;
  */
 public class CobblerDistroCreateCommand extends CobblerDistroCommand {
 
-    private static Logger log = LogManager.getLogger(CobblerDistroCreateCommand.class);
     private boolean syncProfiles;
     /**
      * Constructor
@@ -49,8 +45,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
      * @param ksTreeIn to sync
      * @param userIn - user wanting to sync with cobbler
      */
-    public CobblerDistroCreateCommand(KickstartableTree ksTreeIn,
-            User userIn) {
+    public CobblerDistroCreateCommand(KickstartableTree ksTreeIn, User userIn) {
         super(ksTreeIn, userIn);
     }
 
@@ -74,11 +69,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
      */
     @Override
     public ValidatorError store() {
-        log.debug("Token : [{}]", xmlRpcToken);
-
-        CobblerDistroHelper.getInstance().createDistroFromTree(
-                CobblerXMLRPCHelper.getConnection(user),
-                tree);
+        CobblerDistroHelper.getInstance().createDistroFromTree(cobblerConnection, tree);
 
         if (tree.doesParaVirt()) {
             CobblerDistroHelper.getInstance().createXenDistroFromTree(

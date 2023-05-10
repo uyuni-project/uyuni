@@ -28,7 +28,6 @@ import org.cobbler.Network;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -131,8 +130,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
                     .getKickstartGuestActionDetails();
             String newMac = details.getMacAddress();
             if (newMac == null || newMac.equals("")) {
-                newMac = (String) invokeXMLRPC("get_random_mac",
-                        Collections.emptyList());
+                newMac = cobblerConnection.getRandomMac();
             }
             Network net = new Network(getCobblerConnection(), "eth0");
             net.setMacAddress(newMac);

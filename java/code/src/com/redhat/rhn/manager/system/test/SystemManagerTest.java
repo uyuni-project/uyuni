@@ -108,7 +108,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
@@ -197,8 +196,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                MockXMLRPCInvoker.class.getName());
         MockConnection.clear();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);

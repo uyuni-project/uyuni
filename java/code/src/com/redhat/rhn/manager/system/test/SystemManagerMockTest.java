@@ -27,8 +27,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -57,8 +55,6 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                MockXMLRPCInvoker.class.getName());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
     }

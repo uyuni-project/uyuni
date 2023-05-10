@@ -14,12 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroSyncCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
@@ -27,15 +25,12 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileSyncCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cobbler.CobblerConnection;
 import org.quartz.JobExecutionContext;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-
-import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * CobblerSyncTask
@@ -67,20 +62,8 @@ public class CobblerSyncTask extends RhnJavaJob {
     public void execute(JobExecutionContext ctxIn) {
 
         try {
-            XMLRPCInvoker invoker = (XMLRPCInvoker)
-                    MethodUtil.getClassFromConfig(CobblerXMLRPCHelper.class.getName());
-
-            Double mtime = null;
-            try {
-                mtime = (Double)invoker.invokeMethod("last_modified_time",
-                        new ArrayList<>());
-            }
-            catch (XmlRpcFault e) {
-                log.error("Error calling cobbler.", e);
-            }
-            catch (NumberFormatException e) {
-                log.error("Error converting cobbler response", e);
-            }
+            CobblerConnection cobblerConnection = CobblerXMLRPCHelper.getAutomatedConnection();
+            double mtime = cobblerConnection.lastModifiedTime();
 
             CobblerDistroSyncCommand distSync = new CobblerDistroSyncCommand();
             distSync.backsyncKernelOptions();
@@ -111,11 +94,10 @@ public class CobblerSyncTask extends RhnJavaJob {
                 }
             });
 
-            Long mtimeLong = Optional.ofNullable(mtime).map(t -> t.longValue()).orElse(null);
+            long mtimeLong = (long) mtime;
             log.debug("mtime: {}, last modified: {}", mtimeLong, LAST_UPDATED.get());
-            //If we got an mtime from cobbler and that mtime is before our last update
-            // Then don't update anything
-            if (Optional.ofNullable(mtimeLong).map(t -> t < CobblerSyncTask.LAST_UPDATED.get()).orElse(false)) {
+            // If we got an mtime from cobbler or that mtime is before our last update. Then don't update anything
+            if (mtimeLong < CobblerSyncTask.LAST_UPDATED.get()) {
                 log.debug("Cobbler mtime is less than last change, skipping");
                 return;
             }
@@ -133,7 +115,7 @@ public class CobblerSyncTask extends RhnJavaJob {
         }
         catch (RuntimeException re) {
             log.error("RuntimeExceptionError trying to sync to cobbler: {}", re.getMessage(), re);
-            // Only throw up one error.  Otherwise if say cobblerd is shutoff you can
+            // Only throw up one error. Otherwise, if say cobblerd is shutoff you can
             // possibly generate 1 stacktrace email per minute which is quite spammy.
             if (errorCount < 1) {
                 errorCount++;

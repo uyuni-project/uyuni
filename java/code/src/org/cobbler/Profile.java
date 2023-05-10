@@ -280,7 +280,7 @@ public class Profile extends CobblerObject {
      * reloads the kickstart profile.
      */
     @Override
-    protected void reload() {
+    public void reload() {
         Profile newProfile = lookupById(client, getId());
         dataMap = newProfile.dataMap;
         dataMapResolved = newProfile.dataMapResolved;

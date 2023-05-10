@@ -17,18 +17,14 @@ package com.redhat.rhn.manager.kickstart.cobbler.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroDeleteCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroSyncCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileDeleteCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
@@ -208,17 +204,6 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         CobblerDistroDeleteCommand cmd = new
             CobblerDistroDeleteCommand(ksdata.getTree(), user);
         assertNull(cmd.store());
-    }
-
-    @Test
-    public void testLogin() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-        user = reload(user);
-        CobblerLoginCommand cmd = new CobblerLoginCommand();
-        String cobblertoken = cmd.login(user.getLogin(), "password");
-        assertNotNull(cobblertoken);
-        assertTrue(cmd.checkToken(cobblertoken));
     }
 
 }

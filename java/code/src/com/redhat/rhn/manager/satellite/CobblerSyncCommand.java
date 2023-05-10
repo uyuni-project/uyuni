@@ -40,10 +40,7 @@ public class CobblerSyncCommand extends CobblerCommand {
      */
     @Override
     public ValidatorError store() {
-        Map<String, Object> args = new HashMap<>();
-        args.put("verbose", Boolean.TRUE);
-        // background_sync return the event_id and not a boolean
-        invokeXMLRPC("background_sync", args, xmlRpcToken);
+        cobblerConnection.backgroundSync();
         return null;
     }
 

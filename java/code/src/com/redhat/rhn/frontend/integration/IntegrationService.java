@@ -17,11 +17,11 @@ package com.redhat.rhn.frontend.integration;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cobbler.CobblerConnection;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,9 +35,9 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class IntegrationService {
 
-    private static Logger log = LogManager.getLogger(IntegrationService.class);
+    private final Logger log = LogManager.getLogger(IntegrationService.class);
     // private instance of the service.
-    private static IntegrationService instance = new IntegrationService();
+    private static final IntegrationService INSTANCE = new IntegrationService();
     private final ConcurrentMap<String, String> cobblerAuthTokenStore;
     private final ConcurrentMap<String, String> randomTokenStore;
 
@@ -51,7 +51,7 @@ public class IntegrationService {
      * @return IntegrationService instance.
      */
     public static IntegrationService get() {
-        return instance;
+        return INSTANCE;
     }
 
     /**
@@ -67,10 +67,9 @@ public class IntegrationService {
             token = this.authorize(login);
         }
         else {
-            // Need to re-check cobbler to make sure the token
-            // is still valid.  If not valid, re-auth.
-            CobblerLoginCommand cmd = new CobblerLoginCommand();
-            if (!cmd.checkToken(token)) {
+            // Need to re-check cobbler to make sure the token is still valid. If not valid, re-auth.
+            CobblerConnection cobblerConnection = new CobblerConnection(ConfigDefaults.get().getCobblerServerUrl());
+            if (!cobblerConnection.tokenCheck(token)) {
                 token = this.authorize(login);
             }
         }
@@ -78,20 +77,17 @@ public class IntegrationService {
     }
 
     /**
-     * Authorize Spacewalk to defined set of services.  If we need to
-     * we can eventually make this pluggable to go through a list of
-     * things that need to setup authorization.
+     * Authorize Spacewalk to defined set of services. If we need to we can eventually make this pluggable to go
+     * through a list of things that need to setup authorization.
      *
-     * @param username to authorize with
-     * @param password to authorize with
+     * @param login to authorize with
      * @return token created during authorization
      */
     private String authorize(String login) {
 
         String passwd;
 
-        //Handle the taskomatic case (Where we can't rely on the tokenStore since it's
-        //  a completely different VM)
+        //Handle the taskomatic case (Where we can't rely on the tokenStore since it's a completely different VM)
         if (login.equals(ConfigDefaults.get().getCobblerAutomatedUser())) {
 
             passwd = Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1);
@@ -99,10 +95,8 @@ public class IntegrationService {
         else {
             String md5random = SessionSwap.computeMD5Hash(
                     RandomStringUtils.random(10, SessionSwap.HEX_CHARS));
-            // Store the md5random number in our map
-            // and send over the encoded version of it.
-            // On the return checkRandomToken() call
-            // we will decode the encoded data to make sure it is the
+            // Store the md5random number in our map and send over the encoded version of it.
+            // On the return checkRandomToken() call we will decode the encoded data to make sure it is the
             // unaltered random number.
             randomTokenStore.put(login, md5random);
             passwd  = SessionSwap.encodeData(md5random);
@@ -110,8 +104,8 @@ public class IntegrationService {
 
         log.debug("Authorize called with username: {}", login);
         // Get the cobbler ticket
-        CobblerLoginCommand lcmd = new CobblerLoginCommand();
-        String token =  lcmd.login(login, passwd);
+        CobblerConnection cobblerConnection = new CobblerConnection(ConfigDefaults.get().getCobblerServerUrl());
+        String token = cobblerConnection.login(login, passwd);
         log.debug("Cobbler returned non-null token? :: {}", token == null);
         if (token != null) {
             this.setAuthorizationToken(login, token);

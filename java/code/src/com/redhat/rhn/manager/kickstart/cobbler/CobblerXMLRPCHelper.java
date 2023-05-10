@@ -15,21 +15,11 @@
 package com.redhat.rhn.manager.kickstart.cobbler;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.integration.IntegrationService;
-import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
-import java.net.MalformedURLException;
-import java.util.List;
-
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcFault;
 
 /**
  *
@@ -39,44 +29,15 @@ import redstone.xmlrpc.XmlRpcFault;
  * server.
  *
  */
-public class CobblerXMLRPCHelper implements XMLRPCInvoker {
+public final class CobblerXMLRPCHelper {
 
-    private XmlRpcClient client;
-    private static Logger log = LogManager.getLogger(CobblerXMLRPCHelper.class);
     /**
      * Constructor
      */
-    public CobblerXMLRPCHelper() {
-        try {
-            client = new XmlRpcClient(getCobblerUrl(), false);
-        }
-        catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private CobblerXMLRPCHelper() { }
 
     /**
-     * Invoke an XMLRPC method.
-     * @param procedureName to invoke
-     * @param args to pass to method
-     * @return Object returned.
-     * @throws XmlRpcFault if expected error occurs
-     */
-    @Override
-    public Object invokeMethod(String procedureName, List args) throws XmlRpcFault {
-        log.debug("procedure: {} Orig args: {}", procedureName, args);
-        Object retval;
-        try {
-            retval = client.invoke(procedureName, args);
-        }
-        catch (XmlRpcException e) {
-            throw new RuntimeException("XmlRpcException calling cobbler.", e);
-        }
-        return retval;
-    }
-
-    /**
-     * Returns the a new cobbler connection object
+     * Returns a new cobbler connection object
      * @param user the logged in user to ge the auth token
      * @return the authenticated cobbler connection.
      */
@@ -90,37 +51,16 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      * @return the autehnticated cobbler connection
      */
     public static CobblerConnection getConnection(String userName) {
-        String token =
-            IntegrationService.get().getAuthToken(userName);
-        return (CobblerConnection)MethodUtil.getClassFromConfig(
-                                CobblerConnection.class.getName(),
-                                ConfigDefaults.get().getCobblerServerUrl(), token);
-    }
-
-    private static String getCobblerUrl() {
-        CobblerConnection conn = (CobblerConnection)MethodUtil.getClassFromConfig(
-                CobblerConnection.class.getName(),
-                ConfigDefaults.get().getCobblerServerUrl());
-        return conn.getUrl();
+        String token = IntegrationService.get().getAuthToken(userName);
+        return new CobblerConnection(ConfigDefaults.get().getCobblerServerUrl(), token);
     }
 
     /**
-     * Returns the cobbler anonymous/automated using the connection
-     * cobbler automated user config entry..
+     * Returns the cobbler anonymous/automated using the connection cobbler automated user config entry.
      * @return the cobbler connection..
      */
     public static CobblerConnection getAutomatedConnection() {
         return getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
     }
 
-    /**
-     * Returns the cobbler version number
-     * @return the cobbler version number
-     */
-    public static Double getCobblerVersion() {
-        CobblerConnection connection =
-            getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
-
-        return connection.getVersion();
-    }
 }

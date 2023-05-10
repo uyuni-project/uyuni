@@ -20,14 +20,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 /**
- * XMLRPCHelper - class that contains wraps calls to Redstone's XMLRPC client.
+ * XMLRPCHelper - class that contains wraps calls to Redstone's XML-RPC client.
  * Intentionally implements the XMLRPCInvoker interface so we can also provide
  * a mock implementation to our unit tests, so they don't require an actual
  * Cobbler server.
@@ -35,6 +37,8 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
  * @author paji
  */
 public class CobblerConnection {
+    // FIXME: Provide interface to abstract real and test implementation
+
     /**
      * Encapsulated Redstone XML-RPC client
      */
@@ -46,7 +50,7 @@ public class CobblerConnection {
     /**
      * Logger that is responsible to write the called methods to the Cobbler API
      */
-    private static Logger log = LogManager.getLogger(CobblerConnection.class);
+    private static final Logger LOG = LogManager.getLogger(CobblerConnection.class);
     /**
      * Contains the currently valid token
      */
@@ -108,7 +112,7 @@ public class CobblerConnection {
      * This constructor creates the connection but does not authentication
      * against the Cobbler server.
      *
-     * @param urlIn cobbler base url, example {@code http://localhost}
+     * @param urlIn    cobbler base url, example {@code http://localhost}
      * @param clientIn The XML-RPC Client that will be used to connect to Cobbler.
      */
     public CobblerConnection(String urlIn, XmlRpcInvocationHandler clientIn) {
@@ -131,6 +135,17 @@ public class CobblerConnection {
         return token;
     }
 
+    /**
+     * Check to see if the passed in token is still valid from Cobbler's perspective. If it is, return true,
+     * else return false.
+     *
+     * @param tokenToCheck to check
+     * @return boolean indicating validity
+     */
+    public boolean tokenCheck(String tokenToCheck) {
+        return (boolean) invokeMethod("token_check", tokenToCheck);
+    }
+
 
     /**
      * Invoke an XML-RPC method.
@@ -139,8 +154,8 @@ public class CobblerConnection {
      * @param args          to pass to method
      * @return Object returned.
      */
-    private Object invokeMethod(String procedureName, List args) {
-        log.debug("procedure: {} args: {}", procedureName, args);
+    private Object invokeMethod(String procedureName, List<Object> args) throws XmlRpcException {
+        LOG.debug("procedure: {} args: {}", procedureName, args);
         Object retval;
         try {
             retval = client.invoke(procedureName, args);
@@ -158,7 +173,7 @@ public class CobblerConnection {
      * @param args          to pass to method
      * @return Object returned.
      */
-    public Object invokeMethod(String procedureName, Object... args) {
+    public Object invokeMethod(String procedureName, Object... args) throws XmlRpcException {
         return invokeMethod(procedureName, Arrays.asList(args));
     }
 
@@ -173,7 +188,7 @@ public class CobblerConnection {
      * @throws XmlRpcException if any unexpected error occurs
      */
     public Object invokeTokenMethod(String procedureName,
-                                    Object... args) {
+                                    Object... args) throws XmlRpcException {
         List<Object> params = new LinkedList<>(Arrays.asList(args));
         params.add(token);
         return invokeMethod(procedureName, params);
@@ -205,4 +220,63 @@ public class CobblerConnection {
     public Double getVersion() {
         return (Double) invokeMethod("version", new LinkedList<>());
     }
+
+    /**
+     * Executes a synchronous "cobbler sync".
+     */
+    public void sync() {
+        invokeTokenMethod("sync");
+    }
+
+    /**
+     * Executes a "cobbler sync" but returns an event id
+     *
+     * @return The Cobbler event ID.
+     */
+    public String backgroundSync() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("verbose", Boolean.TRUE);
+        return (String) invokeTokenMethod("background_sync", args);
+    }
+
+    /**
+     * Generate a random MAC address that doesn't conflict with an existing object in Cobbler.
+     *
+     * @return A random MAC address that is not yet used inside Cobbler.
+     */
+    public String getRandomMac() {
+        // argument is corresponding to virt_type
+        // Valid value prefixes are: vmware, xen, qemu, kvm
+        return (String) invokeTokenMethod("get_random_mac", "xenpv");
+    }
+
+    /**
+     * Returns the last time in Cobbler any object received an update.
+     *
+     * @return The time that the last object was modified. In case the functionality is disabled or not working 0.0
+     * is returned by Cobbler.
+     */
+    public double lastModifiedTime() {
+        double result = 0.0;
+        try {
+            result = (Double) invokeTokenMethod("last_modified_time");
+        }
+        catch (XmlRpcException e) {
+            LOG.error("Error calling cobbler.", e);
+        }
+        catch (NumberFormatException e) {
+            LOG.error("Error converting cobbler response", e);
+        }
+        return result;
+    }
+
+    /**
+     * Uptime check if the API is responsive.
+     *
+     * @return True if API is available, error in any other case.
+     */
+    public boolean ping() {
+        return (boolean) invokeMethod("ping");
+    }
+
 }
