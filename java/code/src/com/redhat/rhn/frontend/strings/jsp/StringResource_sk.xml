@@ -1468,39 +1468,39 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.lang" xml:space="preserve">
         <source>Interface Language</source>
-        <target/>
+        <target>Jazyk rozhrania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.langs" xml:space="preserve">
         <source>Please select your preferred language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ interface.</source>
-        <target/>
+        <target>Prosím, vyberte si preferovaný jazyk z nižšie uvedeného zoznamu aktuálne podporovaných jazykov. Zvolený jazyk sa stane predvoleným jazykom pre rozhranie @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
-        <target/>
+        <target>Úvodná stránka "Prehľad"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc" xml:space="preserve">
         <source>Display the following information on my "Overview" page upon login:</source>
-        <target/>
+        <target>Zobraziť nasledujúce informácie na mojej stránke "Prehľad" po prihlásení:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle" xml:space="preserve">
         <source>CSV Files</source>
-        <target/>
+        <target>Súbory CSV</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvdesc" xml:space="preserve">
         <source>Configure a separator character to be used in downloadable CSV files:</source>
-        <target/>
+        <target>Konfigurovať oddeľovací znak, ktorý sa má používať v súboroch CSV na stiahnutie:</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvcomma" xml:space="preserve">
         <source>Comma (",", default)</source>
