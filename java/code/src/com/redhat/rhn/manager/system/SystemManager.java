@@ -3934,7 +3934,7 @@ public class SystemManager extends BaseManager {
         }
         Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
                 .orElse(CredentialsFactory.createCredentials(
-                        "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom()),
+                        "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
                         RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
                         Credentials.TYPE_REPORT_CREDS, null));
         if (forcePwChange) {
