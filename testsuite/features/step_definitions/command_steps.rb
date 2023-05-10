@@ -226,9 +226,7 @@ end
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
-    if $is_cloud_provider
-      "salt-common"
-    elsif $use_salt_bundle
+    if $use_salt_bundle
       "venv-salt-minion"
     else
       "salt"

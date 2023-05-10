@@ -260,7 +260,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
