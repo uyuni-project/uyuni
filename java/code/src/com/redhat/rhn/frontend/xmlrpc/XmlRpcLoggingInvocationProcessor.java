@@ -24,7 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import redstone.xmlrpc.XmlRpcInvocation;
 import redstone.xmlrpc.XmlRpcInvocationInterceptor;
@@ -39,6 +45,22 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     private static Logger log = LogManager.getLogger(XmlRpcLoggingInvocationProcessor.class);
 
     private static ThreadLocal<User> caller = new ThreadLocal<>();
+    private static ThreadLocal<Method> calledMethod = new ThreadLocal<>();
+
+    /**
+     * This is a hack to determine the actual method BaseHandler called and recover the
+     * parameter names for filtering sensitive parameters from logging.
+     * @param method the method the BaseHandler called in this request thread.
+     */
+    public static void setCalledMethod(Method method) {
+        calledMethod.set(method);
+    }
+
+    private Optional<Method> getAndResetMethod() {
+        Method method = calledMethod.get();
+        calledMethod.remove();
+        return Optional.ofNullable(method);
+    }
 
     /**
      * {@inheritDoc}
@@ -52,7 +74,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         getStopWatch().reset();
         getStopWatch().start();
 
-        List arguments = invocation.getArguments();
+        List<Object> arguments = invocation.getArguments();
         // HACK ALERT!  We need the caller, would be better in
         // the postProcess, but that works for ALL methods except
         // logout.  So we do it here.
@@ -75,22 +97,40 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         return true;
     }
 
+    private Map<String, String> getParamMap(XmlRpcInvocation invocation, Method method) {
+        List<Object> rawArguments = invocation.getArguments();
+        List<String> paramNames = Arrays
+                .stream(method.getParameters())
+                .map(p -> p.getName())
+                .collect(Collectors.toList());
+        return IntStream.range(0, rawArguments.size()).boxed().collect(
+                Collectors.toMap(
+                        i -> paramNames.get(i),
+                        i -> {
+                            Object arg = rawArguments.get(i);
+                            if (arg instanceof User) {
+                                return ((User) arg).getLogin();
+                            }
+                            else {
+                                return (String) Translator.convert(arg, String.class);
+                            }
+                        }
+
+                )
+        );
+    }
+
     /**
      * {@inheritDoc}
      */
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
-        StringBuffer arguments = processArguments(
-            invocation.getHandlerName(),
-            invocation.getMethodName(),
-            invocation.getArguments()
-        );
         afterProcess(
             invocation.getHandlerName(),
             invocation.getMethodName(),
-            arguments,
+            getAndResetMethod().map(m -> getParamMap(invocation, m)),
+            Optional.ofNullable(getCaller()),
             RhnXmlRpcServer.getCallerIp()
         );
-
         return returnValue;
     }
 
@@ -98,63 +138,14 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
      * {@inheritDoc}
      */
     public void onException(XmlRpcInvocation invocation, Throwable exception) {
-        StringBuffer buf = new StringBuffer();
-        try {
-            buf.append("REQUESTED FROM: ");
-            buf.append(RhnXmlRpcServer.getCallerIp());
-            buf.append(" CALL: ");
-            buf.append(invocation.getHandlerName());
-            buf.append(".");
-            buf.append(invocation.getMethodName());
-            buf.append("(");
-            buf.append(processArguments(invocation.getHandlerName(),
-                    invocation.getMethodName(), invocation.getArguments()));
-            buf.append(") CALLER: (");
-            buf.append(getCallerLogin());
-            buf.append(") TIME: ");
-
-            getStopWatch().stop();
-
-            buf.append(getStopWatch().getTime() / 1000.00);
-            buf.append(" seconds");
-
-            buf.append(System.lineSeparator());
-            buf.append(exception);
-
-            log.info(buf);
-        }
-        catch (RuntimeException e) {
-            log.error("postProcess error CALL: {} {}", invocation.getHandlerName(), invocation.getMethodName(), e);
-        }
-    }
-
-    private StringBuffer processArguments(String handler, String method,
-                                  List arguments) {
-        StringBuffer ret = new StringBuffer();
-        if (arguments != null) {
-            int size = arguments.size();
-            for (int i = 0; i < size; i++) {
-                String arg;
-                if (arguments.get(i) instanceof User) {
-                    arg = ((User)arguments.get(i)).getLogin();
-                }
-                else {
-                    if (preventValueLogging(handler, method, i)) {
-                        arg = "******";
-                    }
-                    else {
-                        arg = (String) Translator.convert(arguments.get(i), String.class);
-                    }
-                }
-
-                ret.append(arg);
-
-                if ((i + 1) < size) {
-                    ret.append(", ");
-                }
-            }
-        }
-        return ret;
+        processException(
+            invocation.getHandlerName(),
+            invocation.getMethodName(),
+            getAndResetMethod().map(m -> getParamMap(invocation, m)),
+            Optional.ofNullable(getCaller()),
+            RhnXmlRpcServer.getCallerIp(),
+            exception
+        );
     }
 
     /**
@@ -165,10 +156,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
      */
     private User getLoggedInUser(String key) {
         try {
-            User user = BaseHandler.getLoggedInUser(key);
-            if (user != null) {
-                return user;
-            }
+            return BaseHandler.getLoggedInUser(key);
         }
         catch (LookupException le) {
             // do nothing
@@ -176,7 +164,6 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         catch (Exception e) {
             log.error("problem with getting logged in user for logging", e);
         }
-
         return null;
     }
 
@@ -199,13 +186,8 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         return StringUtils.isNumeric(keyParts[0]);
     }
 
-    @Override
-    protected String getCallerLogin() {
-        return getCallerLogin(getCaller());
-    }
-
     private static User getCaller() {
-        return (User) caller.get();
+        return caller.get();
     }
 
     private static void setCaller(User c) {
