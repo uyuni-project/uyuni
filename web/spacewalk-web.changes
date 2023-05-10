@@ -1,3 +1,4 @@
+- Fix spelling on monitoring-admin page.
 - Show loading indicator on formula details pages (bsc#1179747)
 - force all mandatory channels being selected in software channel
   change page (bsc#1211062)
