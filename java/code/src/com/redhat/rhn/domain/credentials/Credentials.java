@@ -227,10 +227,12 @@ public class Credentials extends BaseDomainHelper {
         }
         Credentials otherCredentials = (Credentials) other;
         return new EqualsBuilder()
-            .append(getType(), otherCredentials.getType())
-            .append(getUsername(), otherCredentials.getUsername())
-            .append(getPassword(), otherCredentials.getPassword())
-            .isEquals();
+                .append(getType(), otherCredentials.getType())
+                .append(getUsername(), otherCredentials.getUsername())
+                .append(getPassword(), otherCredentials.getPassword())
+                .append(getUrl(), otherCredentials.getUrl())
+                .append(getExtraAuthData(), otherCredentials.getExtraAuthData())
+                .isEquals();
     }
 
     /**

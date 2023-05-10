@@ -115,6 +115,7 @@ public class PaygAuthDataProcessor {
 
         final String username = paygData.getBasicAuth().get("username");
         final String password = paygData.getBasicAuth().get("password");
+        Credentials credentialsIn = instance.getCredentials();
         Credentials credentials = Optional.ofNullable(instance.getCredentials()).orElseGet(() ->
                 CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT));
 
@@ -132,7 +133,12 @@ public class PaygAuthDataProcessor {
         }
         credentials.setPaygSshData(instance);
 
-        CredentialsFactory.storeCredentials(credentials);
+        if (credentialsIn == null || !credentialsIn.equals(credentials)) {
+            // storeCredentials update the modified date which should only be
+            // done when the data really change as it would force a full
+            // scc product refresh
+            CredentialsFactory.storeCredentials(credentials);
+        }
 
         instance.setCredentials(credentials);
         PaygSshDataFactory.savePaygSshData(instance);
