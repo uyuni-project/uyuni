@@ -1,3 +1,5 @@
+- Refresh pillars after setting custom values via SSM (bsc#1210659)
+- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - show virtualization host info in systems overview page
 - OES credentials do not allow access to SCC. Skip them when an
   SCCClientException is thrown and move forward

@@ -74,6 +74,7 @@ public class SsmPowerManagementAction implements MessageAction {
                         "ssm.provisioning.powermanagement.cobbler_error");
                 }
                 if (error != null) {
+                    log.error(error.getLocalizedMessage());
                     SsmOperationManager.addNoteToOperationOnServer(operationId,
                         server.getId(), error.getKey());
                 }
