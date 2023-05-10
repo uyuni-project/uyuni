@@ -575,19 +575,21 @@ public class ContentSyncManager {
         for (Credentials c : credentials) {
             List<SCCRepositoryJson> repos = new LinkedList<>();
             LOG.debug("Getting repos for: {}", c);
-            try {
-                SCCClient scc = getSCCClient(c);
-                repos = scc.listRepositories();
-            }
-            catch (SCCClientException e) {
-                // test for OES credentials
-                if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
-                    LOG.info("Credential is not an OES credentials");
+            if (c == null || c.isTypeOf(Credentials.TYPE_SCC)) {
+                try {
+                    SCCClient scc = getSCCClient(c);
+                    repos = scc.listRepositories();
+                }
+                catch (SCCClientException e) {
+                    // test for OES credentials
+                    if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                        LOG.info("Credential is not an OES credentials");
+                        throw new ContentSyncException(e);
+                    }
+                }
+                catch (URISyntaxException e) {
                     throw new ContentSyncException(e);
                 }
-            }
-            catch (URISyntaxException e) {
-                throw new ContentSyncException(e);
             }
             repos.addAll(getAdditionalRepositories());
             refreshRepositoriesAuthentication(repos, c, mirrorUrl);
@@ -948,8 +950,9 @@ public class ContentSyncManager {
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
         authList.stream()
-            .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
-            .forEach(SCCCachingFactory::deleteRepositoryAuth);
+                .filter(repoAuth -> repoAuth.cloudRmtAuth().isEmpty()) // rmtAuth is handled elsewhere
+                .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
+                .forEach(SCCCachingFactory::deleteRepositoryAuth);
 
         if (withFix) {
             SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst()
@@ -1353,6 +1356,10 @@ public class ContentSyncManager {
         List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
+            if (c != null && c.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+                // RMT report always empty subscriptions
+                continue;
+            }
             try {
                 subscriptions.addAll(updateSubscriptions(c));
             }
