@@ -77,7 +77,7 @@ public class SystemsCollector extends Collector {
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
         long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
-        long secondsInDay = 60 * 60 * 24;
+        long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)
                 .setParameter("checkin_threshold", threshold * secondsInDay)
