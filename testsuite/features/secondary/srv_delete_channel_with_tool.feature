@@ -3,6 +3,7 @@
 #
 # This feature can cause failures in the following features:
 # - features/secondary/srv_handle_software_channels_with_ISS_v2.feature:
+# - features/secondary/srv_clone_channel_npn.feature
 # If the deletion of "Clone of Fake-RPM-SUSE-Channel" fails, this feature will have a failing scenario.
 
 @scope_configuration_channels

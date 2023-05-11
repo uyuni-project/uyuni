@@ -1,6 +1,10 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+#
+# This feature can cause failures in the following features:
+# - features/secondary/allcli_action_chain.feature
+# If the action chain fails to be completed and run.
+#
 # Skip if container because the action chain fails
 # This needs to be fixed
 

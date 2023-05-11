@@ -3,7 +3,11 @@
 #
 # This feature can cause failures in the following features:
 # - features/secondary/srv_delete_channel_with_tool.feature:
+# - features/secondary/srv_handle_software_channels_with_ISS_v2.feature:
+# - features/secondary/srv_clone_channel_npn.feature
 # If the deletion of "Clone of Fake-RPM-SUSE-Channel" fails, this feature will have a failing scenario.
+# - features/secondary/srv_dist_channel_mapping.feature
+# If the deletion of "Clone of Fake Base Channel" fails, this feature will have a failing scenario
 
 @scope_configuration_channels
 Feature: Delete channels with child or clone is not allowed
