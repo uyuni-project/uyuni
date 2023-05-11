@@ -20,6 +20,7 @@
 #
 
 """ spacecmd - a command line interface to Spacewalk """
+from configparser import ConfigParser
 from spacecmd.i18n import _N
 
 import errno
@@ -35,10 +36,6 @@ except ImportError:
 import codecs
 import locale
 import argparse
-try: # python 3
-    from configparser import SafeConfigParser
-except ImportError: # python 2
-    from ConfigParser import SafeConfigParser
 import socket
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -139,7 +136,7 @@ if __name__ == '__main__':
         user_conf_file = os.path.join(conf_dir, 'config')
 
         # server-specifics will be loaded from the configuration file later
-        config = SafeConfigParser()
+        config = ConfigParser()
 
         # prevent readline from outputting escape sequences to non-terminals
         if not sys.stdout.isatty():

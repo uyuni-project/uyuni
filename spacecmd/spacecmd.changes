@@ -1,3 +1,4 @@
+- Updated deprecated "SafeConfigParser" in spacecmd.
 - Bypass traditional systems check on older SUMA instances (bsc#1208612)
 - fix argument parsing of distribution_update (bsc#1210458)
 
