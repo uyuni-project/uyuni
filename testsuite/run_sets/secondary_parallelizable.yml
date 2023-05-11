@@ -75,6 +75,7 @@
 - features/secondary/min_cve_audit.feature
 - features/secondary/min_cve_id_new_syntax.feature
 - features/secondary/min_check_patches_install.feature
+- features/secondary/min_project_lotus.feature
 
 - features/secondary/minkvm_guests.feature
 

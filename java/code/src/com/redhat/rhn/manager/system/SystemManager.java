@@ -2193,7 +2193,8 @@ public class SystemManager extends BaseManager {
         server.setMachineId(uniqueId);
         server.setOs("(unknown)");
         server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
+                null, new SecureRandom()));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         server.setLastBoot(System.currentTimeMillis() / 1000);
@@ -3933,7 +3934,7 @@ public class SystemManager extends BaseManager {
         }
         Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
                 .orElse(CredentialsFactory.createCredentials(
-                        "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
+                        "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom()),
                         RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
                         Credentials.TYPE_REPORT_CREDS, null));
         if (forcePwChange) {

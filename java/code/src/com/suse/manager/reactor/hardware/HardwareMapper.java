@@ -50,6 +50,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -478,7 +479,7 @@ public class HardwareMapper {
 
                 zhost.setDigitalServerId(identifier);
                 zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
-                zhost.setSecret(RandomStringUtils.randomAlphanumeric(64));
+                zhost.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
                 zhost.setAutoUpdate("N");
                 zhost.setContactMethod(ServerFactory
                         .findContactMethodByLabel("default"));
