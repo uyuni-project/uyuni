@@ -2662,9 +2662,9 @@ public class ContentSyncManager {
     public boolean canSyncToolsChannelViaCloudRMT() {
         return SCCCachingFactory.lookupRepositoryAuth().stream()
                 .filter(a -> a.cloudRmtAuth().isPresent())
-                .map(a -> a.getRepo())
+                .map(SCCRepositoryAuth::getRepo)
                 .flatMap(r -> r.getProducts().stream())
-                .map(pr -> pr.getProduct())
+                .map(SUSEProductSCCRepository::getProduct)
                 .filter(p -> p.getChannelFamily() != null)
                 .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
     }
