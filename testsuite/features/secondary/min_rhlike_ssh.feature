@@ -10,7 +10,7 @@
 # - features/secondary/min_rhlike_salt_install_with_staging.feature
 # - features/secondary/min_rhlike_monitoring.feature
 # If the cleanup bootstrap scenario fails,
-# the minion will not be reachable in those features
+# The minion will not be reachable in those features
 
 @skip_if_container
 @scope_res
