@@ -95,7 +95,7 @@ fi
 %config(noreplace) %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 %defattr(-,root,root,-)
-%doc answers.txt COPYING README
+%doc answers.txt COPYING README.md
 %dir /srv/www/tftpsync
 %dir /%{_datadir}/rhn
 /srv/www/tftpsync/add

@@ -89,7 +89,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING.LIB README
+%doc COPYING.LIB README.md
 %{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py*
 %{python_sitelib}/cobbler/MultipartPostHandler.py*
 %{_sbindir}/configure-tftpsync.sh
