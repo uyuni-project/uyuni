@@ -2596,7 +2596,7 @@ public class ContentSyncManager {
         String username = null;
         String password = null;
         if (credentials != null) {
-            if (credentials.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
+            if (credentials.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
                 URI uri = new URI(credentials.getUrl());
                 url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
             }
