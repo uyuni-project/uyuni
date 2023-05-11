@@ -8,7 +8,6 @@
 # This feature can cause failures in the following features:
 # All features following this one if the server fails to restart.
 
-
 Feature: Restart the spacewalk services via UI
 
   Scenario: Restart the SUSE Manager through the WebUI Admin option
