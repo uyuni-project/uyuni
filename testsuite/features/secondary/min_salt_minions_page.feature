@@ -3,7 +3,7 @@
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_salt_mgrcompat_state.feature
-# If the minion fails to bootstrap
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @scope_salt

@@ -4,6 +4,7 @@
 # This feature can cause failures in the following features:
 # - features/secondary/proxy_as_pod_basic_tests.feature:
 # If the minion is not properly bootstrapped again.
+
 @sle_minion
 @proxy
 Feature: Move a minion from a proxy to direct connection

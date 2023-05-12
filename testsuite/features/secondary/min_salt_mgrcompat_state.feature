@@ -10,7 +10,7 @@
 # - features/secondary/min_retracted_patches.feature
 # - features/secondary/min_timezone.feature
 # - features/secondary/min_move_from_and_to_proxy.feature
-# If the minion fails to bootstrap
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @sle_minion

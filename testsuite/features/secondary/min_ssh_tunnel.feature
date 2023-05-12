@@ -2,7 +2,8 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_activationkey.feature: if the minion fails to bootstrap
+# - features/secondary/min_activationkey.feature
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @scope_salt_ssh

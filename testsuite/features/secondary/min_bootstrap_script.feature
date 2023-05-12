@@ -2,7 +2,8 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature: if the minion fails to bootstrap
+# - features/secondary/min_ssh_tunnel.feature
+# If the minion fails to bootstrap
 
 @skip_if_container
 @sle_minion
