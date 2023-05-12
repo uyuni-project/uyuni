@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-05 15:19+0200\n"
+"POT-Creation-Date: 2023-05-12 15:03+0200\n"
 "PO-Revision-Date: 2023-04-19 13:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-2/ja/"
@@ -48,19 +48,19 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "必須の項目に入力を行なってください: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:173
+#: ../html/src/components/FormulaForm.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "項目の書式が正しくありません: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:223
+#: ../html/src/components/FormulaForm.tsx:226
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -68,19 +68,19 @@ msgstr ""
 "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
 "を行なうことができます。"
 
-#: ../html/src/components/FormulaForm.tsx:278
+#: ../html/src/components/FormulaForm.tsx:281
 msgid "Expand All Sections"
 msgstr "すべてのセクションを展開"
 
-#: ../html/src/components/FormulaForm.tsx:285
+#: ../html/src/components/FormulaForm.tsx:288
 msgid "Collapse All Sections"
 msgstr "すべてのセクションを折りたたむ"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:353
 msgid "Unnamed"
 msgstr "名前なし"
 
-#: ../html/src/components/FormulaForm.tsx:359
+#: ../html/src/components/FormulaForm.tsx:362
 msgid "Search by formula's group name"
 msgstr "数式のグループ名で検索"
 

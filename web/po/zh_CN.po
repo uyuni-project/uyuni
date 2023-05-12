@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-05 15:19+0200\n"
+"POT-Creation-Date: 2023-05-12 15:03+0200\n"
 "PO-Revision-Date: 2023-02-21 04:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -45,37 +45,37 @@ msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "请输入必填字段：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:173
+#: ../html/src/components/FormulaForm.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "无效的字段格式：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:223
+#: ../html/src/components/FormulaForm.tsx:226
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
-#: ../html/src/components/FormulaForm.tsx:278
+#: ../html/src/components/FormulaForm.tsx:281
 msgid "Expand All Sections"
 msgstr "展开所有部分"
 
-#: ../html/src/components/FormulaForm.tsx:285
+#: ../html/src/components/FormulaForm.tsx:288
 msgid "Collapse All Sections"
 msgstr "折叠所有部分"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:353
 msgid "Unnamed"
 msgstr "未命名"
 
-#: ../html/src/components/FormulaForm.tsx:359
+#: ../html/src/components/FormulaForm.tsx:362
 msgid "Search by formula's group name"
 msgstr "按公式的组名称搜索"
 
