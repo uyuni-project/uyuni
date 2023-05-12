@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-05 15:19+0200\n"
+"POT-Creation-Date: 2023-05-12 15:03+0200\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -48,19 +48,19 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 "Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "Insira os campos obrigatórios: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:173
+#: ../html/src/components/FormulaForm.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "Formato inválido de campos: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:223
+#: ../html/src/components/FormulaForm.tsx:226
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -68,19 +68,19 @@ msgstr ""
 "Nesta página você pode configurar o Salt Formulas para instalar e configurar "
 "o software automaticamente."
 
-#: ../html/src/components/FormulaForm.tsx:278
+#: ../html/src/components/FormulaForm.tsx:281
 msgid "Expand All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:285
+#: ../html/src/components/FormulaForm.tsx:288
 msgid "Collapse All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:353
 msgid "Unnamed"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:359
+#: ../html/src/components/FormulaForm.tsx:362
 msgid "Search by formula's group name"
 msgstr ""
 

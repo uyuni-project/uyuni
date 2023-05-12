@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-05 15:19+0200\n"
+"POT-Creation-Date: 2023-05-12 15:03+0200\n"
 "PO-Revision-Date: 2023-04-23 15:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-2/sk/"
@@ -47,19 +47,19 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
-#: ../html/src/components/FormulaForm.tsx:170
+#: ../html/src/components/FormulaForm.tsx:173
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:66
 msgid "Please input required fields: {0}"
 msgstr "Prosím, zadajte požadované polia: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:173
+#: ../html/src/components/FormulaForm.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:56
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:69
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:223
+#: ../html/src/components/FormulaForm.tsx:226
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -67,19 +67,19 @@ msgstr ""
 "Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
 "a konfiguráciu softvéru."
 
-#: ../html/src/components/FormulaForm.tsx:278
+#: ../html/src/components/FormulaForm.tsx:281
 msgid "Expand All Sections"
 msgstr "Rozbaliť všetky sekcie"
 
-#: ../html/src/components/FormulaForm.tsx:285
+#: ../html/src/components/FormulaForm.tsx:288
 msgid "Collapse All Sections"
 msgstr "Zbaliť všetky sekcie"
 
-#: ../html/src/components/FormulaForm.tsx:350
+#: ../html/src/components/FormulaForm.tsx:353
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: ../html/src/components/FormulaForm.tsx:359
+#: ../html/src/components/FormulaForm.tsx:362
 msgid "Search by formula's group name"
 msgstr "Hľadať podľa názvu skupiny vzorca"
 
