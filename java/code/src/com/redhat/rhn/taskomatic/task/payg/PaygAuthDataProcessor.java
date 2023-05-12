@@ -39,6 +39,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -153,8 +154,17 @@ public class PaygAuthDataProcessor {
                         return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
                                 product.getName(), product.getVersion(), product.getArch());
                     }
+
                     return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
-                            product.getName(), product.getArch());
+                            product.getName(), product.getArch())
+                            .stream()
+                            // We add Tools Channels directly to SLE12 products, but they are not accessible
+                            // via the SLES credentials. We need to remove them from all except the sle-manager-tools
+                            // product
+                            .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
+                                           r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")))
+                            .collect(Collectors.toSet());
+
                 })
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());
