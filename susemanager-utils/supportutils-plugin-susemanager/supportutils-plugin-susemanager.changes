@@ -1,3 +1,5 @@
+- Fixed property name to tune for salt events queue processing
+
 -------------------------------------------------------------------
 Tue Mar 28 09:57:17 UTC 2023 - marina.latini@suse.com
 
