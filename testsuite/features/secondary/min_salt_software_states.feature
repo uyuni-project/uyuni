@@ -125,7 +125,7 @@ Feature: Salt package states
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
-@skip_if_container
+@skip_if_container    
   Scenario: Cleanup: restart the salt service on SLES minion
     When I restart salt-minion on "sle_minion"
 
