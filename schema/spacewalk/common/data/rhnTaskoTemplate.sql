@@ -79,6 +79,13 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name='repo-sync-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='ubuntu-errata'),
+                        1,
+                        'FINISHED');
+
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+             VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
                         (SELECT id FROM rhnTaskoBunch WHERE name='package-cleanup-bunch'),
                         (SELECT id FROM rhnTaskoTask WHERE name='package-cleanup'),
                         0,
