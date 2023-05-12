@@ -48,17 +48,20 @@ public class SystemsCollector extends Collector {
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> out = new ArrayList<>();
         long start = System.nanoTime();
+        long numberOfSystems = getNumberOfSystems();
 
-        out.add(CustomCollectorUtils.gaugeFor("all_systems", "Number of all systems",
-                getNumberOfSystems(), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("virtual_systems", "Number of virtual systems",
-                getNumberOfVirtualSystems(), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("inactive_systems", "Number of inactive systems",
-                getNumberOfInactiveSystems(), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("outdated_systems", "Number of systems with outdated packages",
-                getNumberOfOutdatedSystems(), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("systems_scrape_duration_seconds", "Duration of Uyuni systems " +
-                "statistics scrape", (System.nanoTime() - start) / 1.0E9, PRODUCT_NAME));
+        if (numberOfSystems > 0) {
+            out.add(CustomCollectorUtils.gaugeFor("all_systems", "Number of all systems",
+                    numberOfSystems, PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("virtual_systems", "Number of virtual systems",
+                    getNumberOfVirtualSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("inactive_systems", "Number of inactive systems",
+                    getNumberOfInactiveSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("outdated_systems", "Number of systems with outdated packages",
+                    getNumberOfOutdatedSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("systems_scrape_duration_seconds", "Duration of Uyuni systems " +
+                    "statistics scrape", (System.nanoTime() - start) / 1.0E9, PRODUCT_NAME));
+        }
 
         return out;
     }
