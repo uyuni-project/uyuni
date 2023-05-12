@@ -22,6 +22,9 @@ Feature: Register a Salt minion via Bootstrap-script
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script
+    # WORKAROUND: Adding a small delay before onboarding the minion again
+    # See bsc#1211326
+    Given I wait for "5" seconds
     When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I accept "sle_minion" key in the Salt master
