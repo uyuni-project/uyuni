@@ -11331,62 +11331,62 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
         <target state="translated">Balíky Program Temporary Fixes (PTFs): {0}</target>
       </trans-unit>
-    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
         <source>Recurring Action type must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Musí byť uvedený typ opakujúcej sa akcie</target>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Musí byť poskytnutá konfigurácia stavov</target>
+      </trans-unit>
       <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Opakujúca sa akcia má neplatný typ.</target>
+      </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Inštalovať certifikát SSL servera a dôverovať mu v cieľovom systéme</target>
+      </trans-unit>
       <trans-unit id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Uistite sa, že predplatné kanálov sú synchronizované s konfiguráciou na strane servera</target>
+      </trans-unit>
       <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizovať informácie o nainštalovanom hardvéri</target>
+      </trans-unit>
       <trans-unit id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Použiť stavy balíkov nakonfigurované pre cieľový systém</target>
+      </trans-unit>
       <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizovať informácie o nainštalovanom softvéri (balíky a produkty)</target>
+      </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizovať systém a v prípade potreby reštartovať</target>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia položiek Salt beacons s cieľovým systémom</target>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia všetkých artefaktov Salt (modulov, stavov, grains a beacons) s cieľovým systémom</target>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia položiek Salt grains s cieľovým systémom</target>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia modulov Salt s cieľovým systémom</target>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Synchronizácia stavov Salt s cieľovým systémom</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-17 13:46+0100\n"
-"PO-Revision-Date: 2023-04-21 07:14+0000\n"
+"PO-Revision-Date: 2023-05-06 01:40+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -300,21 +300,21 @@ msgstr "Архитектурата \"%s\" не е поддржана"
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "Токен '%s' има повеќе од еден назначен базен канал"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Конфликтни базни канали"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Не успеа да се додаде сервер во групата %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Достигнат е максимален број на користење од %s"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""

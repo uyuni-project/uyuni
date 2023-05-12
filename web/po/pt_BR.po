@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-21 15:36+0200\n"
+"POT-Creation-Date: 2023-05-12 15:06+0200\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -47,15 +47,15 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 "Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
 
-#: ../html/src/components/FormulaForm.tsx:163
+#: ../html/src/components/FormulaForm.tsx:169
 msgid "Please input required fields: {0}"
 msgstr "Insira os campos obrigatórios: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:166
+#: ../html/src/components/FormulaForm.tsx:172
 msgid "Invalid format of fields: {0}"
 msgstr "Formato inválido de campos: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:211
+#: ../html/src/components/FormulaForm.tsx:217
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -63,19 +63,19 @@ msgstr ""
 "Nesta página você pode configurar o Salt Formulas para instalar e configurar "
 "o software automaticamente."
 
-#: ../html/src/components/FormulaForm.tsx:260
+#: ../html/src/components/FormulaForm.tsx:272
 msgid "Expand All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:267
+#: ../html/src/components/FormulaForm.tsx:279
 msgid "Collapse All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:332
+#: ../html/src/components/FormulaForm.tsx:344
 msgid "Unnamed"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:341
+#: ../html/src/components/FormulaForm.tsx:353
 msgid "Search by formula's group name"
 msgstr ""
 
@@ -291,7 +291,7 @@ msgstr ""
 #: ../html/src/manager/state/highstate.tsx:71
 #: ../html/src/manager/systems/proxy.tsx:70
 #: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:368
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:382
 msgid "scheduled"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:661
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:675
 msgid "Confirm"
 msgstr "Confirmar"
 
@@ -351,7 +351,7 @@ msgstr "Primeiro"
 #: ../html/src/manager/admin/setup/products/products.tsx:436
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:668
 msgid "Prev"
 msgstr ""
 
@@ -360,7 +360,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.tsx:442
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:565
 msgid "Next"
 msgstr "Próximo"
 
@@ -478,7 +478,7 @@ msgid "Normal Configuration Channel"
 msgstr "Canal de configuração normal"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:351
+#: ../html/src/components/table/TableDataHandler.tsx:353
 msgid "There are no entries to show."
 msgstr "Não há entradas para mostrar."
 
@@ -580,8 +580,8 @@ msgid "Search in {0}"
 msgstr "Buscar"
 
 #: ../html/src/components/states-picker.tsx:392
-#: ../html/src/manager/header/search/search.tsx:81
-#: ../html/src/manager/header/search/search.tsx:90
+#: ../html/src/manager/header/search/search.tsx:77
+#: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
@@ -685,20 +685,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:352
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
-msgid "Loading..."
-msgstr ""
-
-#: ../html/src/components/table/TableDataHandler.tsx:383
+#: ../html/src/components/table/TableDataHandler.tsx:384
 msgid "items per page"
 msgstr ""
 
@@ -712,6 +699,19 @@ msgstr ""
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
+msgstr ""
+
+#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:632
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:633
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
+msgid "Loading..."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
@@ -750,7 +750,7 @@ msgid "Restart is needed for the configuration changes to take effect."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
-msgid "An internal error has occured. See the server logs for details."
+msgid "An internal error has occurred. See the server logs for details."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
@@ -808,7 +808,7 @@ msgid "Monitoring status hasn't changed."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
-msgid "An error occured. Monitoring status unknown. Refresh the page."
+msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:61
@@ -874,7 +874,7 @@ msgid "documentation"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
-msgid " to learn how to to consume these metrics."
+msgid " to learn how to consume these metrics."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:256
@@ -1288,7 +1288,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:531
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:545
 msgid "recommended"
 msgstr ""
 
@@ -1296,7 +1296,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:578
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:592
 msgid "include recommended"
 msgstr ""
 
@@ -2598,7 +2598,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:603
 msgid "Child Channels"
 msgstr ""
 
@@ -2624,7 +2624,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:536
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:550
 msgid "mandatory"
 msgstr ""
 
@@ -2752,11 +2752,7 @@ msgstr ""
 msgid "Patches"
 msgstr ""
 
-#: ../html/src/manager/header/search/search.tsx:22
-msgid "Documentation"
-msgstr ""
-
-#: ../html/src/manager/header/search/search.tsx:56
+#: ../html/src/manager/header/search/search.tsx:52
 msgid "Open search"
 msgstr ""
 
@@ -2777,7 +2773,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:359
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:373
 msgid "Action has been successfully added to the Action Chain "
 msgstr ""
 
@@ -4505,7 +4501,7 @@ msgid "Create "
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
-msgid "Schedule Recurring Highstate"
+msgid "Schedule Recurring Action"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
@@ -5111,7 +5107,7 @@ msgid "System Default Base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:577
 msgid "Base Channel"
 msgstr ""
 
@@ -5139,12 +5135,12 @@ msgid "Desired base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:449
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:463
 msgid "SUSE Channels"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:475
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:489
 msgid "Custom Channels"
 msgstr ""
 
@@ -5238,37 +5234,37 @@ msgstr ""
 msgid "Channel changes scheduled."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:438
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:238
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:452
 msgid "(none, disable service)"
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:367
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:381
 msgid "Changing the channels has been "
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:568
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:582
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:608
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:613
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:614
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:692
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:693
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:627
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:628
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:706
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:707
 msgid "No child channels available."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:646
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:660
 msgid "Confirm Software Channel Change"
 msgstr ""
 

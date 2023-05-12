@@ -29359,6 +29359,13 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <source>Recurring Actions</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
