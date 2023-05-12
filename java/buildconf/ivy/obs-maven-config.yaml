@@ -248,6 +248,9 @@ artifacts:
   - artifact: simpleclient_common
     package: prometheus-client-java
     repository: 4.3
+  - artifact: simpleclient_hibernate
+    package: prometheus-client-java
+    repository: 4.3
   - artifact: simpleclient_httpserver
     package: prometheus-client-java
     repository: 4.3

@@ -200,6 +200,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnpackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -213,6 +214,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnactionpackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -228,6 +230,7 @@ with sub as (
          join rhnserverarch pa on s.server_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnactionpackageremovalfailure
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -254,6 +257,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnpackagenevra
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -267,6 +271,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnserverpackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -283,6 +288,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update suseproductfile
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -296,6 +302,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update suseimageinfopackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -326,6 +333,7 @@ with sub as (
          join rhnserverarch pa on s.server_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.proxy_evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnproxyinfo
 set proxy_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -351,6 +359,7 @@ DO $$
                  join rhnserverarch pa on s.server_arch_id = pa.id
                  join rhnarchtype t on pa.arch_type_id = t.id
                  join rhnpackageevr pe on p.evr_id = pe.id
+		where t.label <> 'rpm'
         )
         update rhnsatelliteinfo
         set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -368,6 +377,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnserverprofilepackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -394,6 +404,7 @@ DO $$
                  join rhnpackagearch pa on p.package_arch_id = pa.id
                  join rhnarchtype t on pa.arch_type_id = t.id
                  join rhnpackageevr pe on p.package_evr_id = pe.id
+		where t.label <> 'rpm'
         )
         update rhnservercrash
         set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -412,6 +423,7 @@ with sub as (
          join rhnpackagearch pa on p.arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnlockedpackages
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -429,6 +441,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update susepackagestate
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -443,6 +456,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.package_evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnserveractionverifymissing
 set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -462,6 +476,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.package_evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhnserveractionverifyresult
 set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
@@ -481,6 +496,7 @@ with sub as (
          join rhnpackagearch pa on p.package_arch_id = pa.id
          join rhnarchtype t on pa.arch_type_id = t.id
          join rhnpackageevr pe on p.evr_id = pe.id
+	where t.label <> 'rpm'
 )
 update rhntransactionpackage
 set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)

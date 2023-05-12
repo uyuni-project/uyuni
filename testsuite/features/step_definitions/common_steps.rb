@@ -21,9 +21,14 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
 end
 
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
-  iso_path = "/tmp/#{name}.iso"
+  # When using a mirror it is automatically mounted at /mirror
+  if $mirror
+    iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
+  else
+    iso_path = "/tmp/#{name}.iso"
+    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
+  end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 700)
   $server.run("mkdir -p #{mount_point}")
   $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
@@ -255,7 +260,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')

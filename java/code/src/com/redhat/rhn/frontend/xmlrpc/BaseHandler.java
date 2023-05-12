@@ -126,6 +126,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             foundMethod = fallbackMethod.getA();
             converted = fallbackMethod.getB();
         }
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(foundMethod);
 
         if (user != null && user.isReadOnly()) {
             if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {

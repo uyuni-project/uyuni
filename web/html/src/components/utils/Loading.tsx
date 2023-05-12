@@ -13,13 +13,8 @@ export function Loading({ withBorders, text }: LoadingProps) {
     <div className="panel-body text-center">
       {withBorders ? <div className="line-separator" /> : null}
       <i className="fa fa-spinner fa-spin fa-1-5x" />
-      <h4>{text}</h4>
+      <h4>{text || t("Loading...")}</h4>
       {withBorders ? <div className="line-separator" /> : null}
     </div>
   );
 }
-
-Loading.defaultProps = {
-  text: undefined,
-  withBorders: false,
-};

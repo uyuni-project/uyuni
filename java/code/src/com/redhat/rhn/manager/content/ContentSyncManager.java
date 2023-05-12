@@ -255,24 +255,32 @@ public class ContentSyncManager {
         // stop as soon as a credential pair works
         while (i.hasNext() && productList.size() == 0) {
             Credentials c = i.next();
+            List<SCCProductJson> products = new LinkedList<>();
             try {
                 SCCClient scc = getSCCClient(c);
-                List<SCCProductJson> products = scc.listProducts();
-                for (SCCProductJson product : products) {
-                    // Check for missing attributes
-                    String missing = verifySCCProduct(product);
-                    if (!StringUtils.isBlank(missing)) {
-                        log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
-                                "### Missing attributes: {}", product.getName(), product.getVersion(),
-                                product.getIdentifier(), product.getId(), missing);
-                    }
-
-                    // Add product in any case
-                    productList.add(product);
-                }
+                products = scc.listProducts();
             }
-            catch (SCCClientException | URISyntaxException e) {
+            catch (SCCClientException e) {
+                // test for OES credentials
+                if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                    throw new ContentSyncException(e);
+                }
+                continue;
+            }
+            catch (URISyntaxException e) {
                 throw new ContentSyncException(e);
+            }
+            for (SCCProductJson product : products) {
+                // Check for missing attributes
+                String missing = verifySCCProduct(product);
+                if (!StringUtils.isBlank(missing)) {
+                    log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
+                                    "### Missing attributes: {}", product.getName(), product.getVersion(),
+                            product.getIdentifier(), product.getId(), missing);
+                }
+
+                // Add product in any case
+                productList.add(product);
             }
         }
 
@@ -535,16 +543,24 @@ public class ContentSyncManager {
 
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
+            List<SCCRepositoryJson> repos = new LinkedList<>();
+            log.debug("Getting repos for: {}", c);
             try {
-                log.debug("Getting repos for: {}", c);
                 SCCClient scc = getSCCClient(c);
-                List<SCCRepositoryJson> repos = scc.listRepositories();
-                repos.addAll(getAdditionalRepositories());
-                refreshRepositoriesAuthentication(repos, c, mirrorUrl);
+                repos = scc.listRepositories();
             }
-            catch (SCCClientException | URISyntaxException e) {
+            catch (SCCClientException e) {
+                // test for OES credentials
+                if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                    log.info("Credential is not an OES credentials");
+                    throw new ContentSyncException(e);
+                }
+            }
+            catch (URISyntaxException e) {
                 throw new ContentSyncException(e);
             }
+            repos.addAll(getAdditionalRepositories());
+            refreshRepositoriesAuthentication(repos, c, mirrorUrl);
         }
         ensureSUSEProductChannelData();
         linkAndRefreshContentSource(mirrorUrl);
@@ -680,12 +696,19 @@ public class ContentSyncManager {
     public boolean isRefreshNeeded(String mirrorUrl) {
         for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
             ContentSource cs = a.getContentSource();
-            String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
-            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
-                    cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
-            if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
-                return true;
+            try {
+                String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
+                log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
+                        cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
+                if (!cs.getSourceUrl().equals(overwriteUrl)) {
+                    log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
+                    return true;
+                }
+            }
+            catch (ContentSyncException e) {
+                // Can happen when neither SCC Credentials nor fromdir is configured
+                // in such a case, refresh makes no sense.
+                return false;
             }
         }
 
@@ -703,6 +726,11 @@ public class ContentSyncManager {
                         return t.after(modifiedCache) ? true : false;
                     }
             );
+        }
+        else if (CredentialsFactory.lookupSCCCredentials().isEmpty()) {
+            // Can happen when neither SCC Credentials nor fromdir is configured
+            // in such a case, refresh makes no sense.
+            return false;
         }
         return SCCCachingFactory.refreshNeeded(lastRefreshDate);
     }
@@ -1259,20 +1287,26 @@ public class ContentSyncManager {
      * @return list of subscriptions as received from SCC.
      * @throws SCCClientException in case of an error
      */
-    public List<SCCSubscriptionJson> updateSubscriptions(Credentials credentials)
-            throws SCCClientException {
+    public List<SCCSubscriptionJson> updateSubscriptions(Credentials credentials) throws SCCClientException {
+        List<SCCSubscriptionJson> subscriptions = new LinkedList<>();
         try {
             SCCClient scc = this.getSCCClient(credentials);
-            List<SCCSubscriptionJson> subscriptions = scc.listSubscriptions();
-            refreshSubscriptionCache(subscriptions, credentials);
-            refreshOrderItemCache(credentials);
-            generateOEMOrderItems(subscriptions, credentials);
-            return subscriptions;
+            subscriptions = scc.listSubscriptions();
+        }
+        catch (SCCClientException e) {
+            // test for OES credentials
+            if (!accessibleUrl(OES_URL, credentials.getUsername(), credentials.getPassword())) {
+                throw new ContentSyncException(e);
+            }
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:{}", e.getMessage());
             return new ArrayList<>();
         }
+        refreshSubscriptionCache(subscriptions, credentials);
+        refreshOrderItemCache(credentials);
+        generateOEMOrderItems(subscriptions, credentials);
+        return subscriptions;
     }
 
     /**
@@ -1309,26 +1343,33 @@ public class ContentSyncManager {
      * @throws SCCClientException  in case of an error
      */
     public void refreshOrderItemCache(Credentials c) throws SCCClientException  {
+        List<SCCOrderJson> orders = new LinkedList<>();
         try {
             SCCClient scc = this.getSCCClient(c);
-            List<SCCOrderJson> orders = scc.listOrders();
-            List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(c);
-            for (SCCOrderJson order : orders) {
-                for (SCCOrderItemJson j : order.getOrderItems()) {
-                    SCCOrderItem oi = SCCCachingFactory.lookupOrderItemBySccId(j.getSccId())
-                            .orElse(new SCCOrderItem());
-                    oi.update(j, c);
-                    SCCCachingFactory.saveOrderItem(oi);
-                    existingOI.remove(oi);
-                }
+            orders = scc.listOrders();
+        }
+        catch (SCCClientException e) {
+            // test for OES credentials
+            if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                throw new ContentSyncException(e);
             }
-            existingOI.stream()
-                .filter(item -> item.getSccId() >= 0)
-                .forEach(SCCCachingFactory::deleteOrderItem);
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:{}", e.getMessage());
         }
+        List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(c);
+        for (SCCOrderJson order : orders) {
+            for (SCCOrderItemJson j : order.getOrderItems()) {
+                SCCOrderItem oi = SCCCachingFactory.lookupOrderItemBySccId(j.getSccId())
+                        .orElse(new SCCOrderItem());
+                oi.update(j, c);
+                SCCCachingFactory.saveOrderItem(oi);
+                existingOI.remove(oi);
+            }
+        }
+        existingOI.stream()
+                .filter(item -> item.getSccId() >= 0)
+                .forEach(SCCCachingFactory::deleteOrderItem);
     }
 
     /**

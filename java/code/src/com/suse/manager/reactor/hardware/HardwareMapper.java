@@ -107,6 +107,13 @@ public class HardwareMapper {
     }
 
     /**
+     * @return the value of the 'swap_total' grain
+     */
+    public long getTotalSwapMemory() {
+        return grains.getValueAsLong("swap_total").orElse(0L);
+    }
+
+    /**
      * Store CPU information given as a {@link ValueMap}.
      *
      * @param cpuinfo Salt returns /proc/cpuinfo data
@@ -214,27 +221,24 @@ public class HardwareMapper {
             Map<String, Object> smbiosRecordsSystem,
             Map<String, Object> smbiosRecordsBaseboard,
             Map<String, Object> smbiosRecordsChassis) {
-        String biosVendor = null, biosVersion = null, biosReleseDate = null,
-                productName = null, systemVersion = null, systemSerial = null,
-                chassisSerial = null, chassisTag = null, boardSerial = null;
 
         ValueMap bios = new ValueMap(smbiosRecordsBios);
         ValueMap system = new ValueMap(smbiosRecordsSystem);
-        ValueMap baseboard = new ValueMap(smbiosRecordsChassis);
+        ValueMap baseboard = new ValueMap(smbiosRecordsBaseboard);
         ValueMap chassis = new ValueMap(smbiosRecordsChassis);
 
-        biosVendor = bios.getOptionalAsString("vendor").orElse(null);
-        biosVersion = bios.getOptionalAsString("version").orElse(null);
-        biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
+        String biosVendor = bios.getOptionalAsString("vendor").orElse(null);
+        String biosVersion = bios.getOptionalAsString("version").orElse(null);
+        String biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
 
-        productName = system.getOptionalAsString("product_name").orElse(null);
-        systemVersion = system.getOptionalAsString("version").orElse(null);
-        systemSerial = system.getOptionalAsString("serial_number").orElse(null);
+        String productName = system.getOptionalAsString("product_name").orElse(null);
+        String systemVersion = system.getOptionalAsString("version").orElse(null);
+        String systemSerial = system.getOptionalAsString("serial_number").orElse(null);
 
-        boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+        String boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
 
-        chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
-        chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
+        String chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
+        String chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
 
         Dmi dmi = server.getDmi();
         if (dmi == null) {
@@ -307,75 +311,80 @@ public class HardwareMapper {
                 if (StringUtils.isBlank(device.getDriver())) {
                     device.setDriver("unknown");
                 }
-                if (subsys.equals("block")) {
-                    if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
-                        device.setBus(props.getValueAsString("ID_BUS"));
-                    }
-                    // the sysname is the part after the last "/"
-                    // see libudev/libudev-device.c, udev_device_set_syspath(...)
-                    String name = StringUtils.substringAfterLast(devpath, "/");
-                    device.setDevice(name);
+                switch (subsys) {
+                    case "block":
+                        if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
+                            device.setBus(props.getValueAsString("ID_BUS"));
+                        }
+                        // the sysname is the part after the last "/"
+                        // see libudev/libudev-device.c, udev_device_set_syspath(...)
+                        String name = StringUtils.substringAfterLast(devpath, "/");
+                        device.setDevice(name);
 
-                    if (props.getValueAsString("DEVTYPE").equals("partition")) {
-                        // do not report partitions, just whole disks
-                        return;
-                    }
-                    if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
-                        // LVM device
-                        return;
-                    }
-                    if (props.getValueAsString("MAJOR").equals("1")) {
-                        // ram device
-                        return;
-                    }
-                    if (props.getValueAsString("MAJOR").equals("7")) {
-                        // character devices for virtual console terminals
-                        return;
-                    }
-                    // This is interpreted as Physical. But what to do with it?
-                    // result_item['prop1'] = ''
-                    // This is interpreted as Logical. But what to do with it?
-                    // result_item['prop2'] = ''
-                }
-                else if (subsys.equals("pci")) {
-                    String pciClass = props.getValueAsString("PCI_ID");
-                    if (StringUtils.isNotBlank(pciClass)) {
-                        String[] ids = pciClass.split(":");
-                        device.setProp1(ids.length > 0 ? ids[0] : null);
-                        device.setProp2(ids.length > 1 ? ids[1] : null);
-                    }
-                    String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
-                    if (StringUtils.isNotBlank(pciSubsys)) {
-                        String[] ids = pciSubsys.split(":");
-                        device.setProp3(ids.length > 0 ? ids[0] : null);
-                        device.setProp4(ids.length > 1 ? ids[1] : null);
-                    }
-                }
-                else if (subsys.equals("usb")) {
-                    String vendorId = props.getValueAsString("ID_VENDOR_ID");
-                    if (StringUtils.isNotBlank(vendorId)) {
-                        device.setProp1(vendorId);
-                    }
-                    String modelId = props.getValueAsString("ID_MODEL_ID");
-                    if (StringUtils.isNotBlank(modelId)) {
-                        device.setProp2(modelId);
-                    }
-                }
-                else if (subsys.equals("scsi")) {
-                    // skip scsi hosts and targets
-                    if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                        return;
-                    }
-                    // check if this scsi device is already listed as a block device
-                    if (udevdb.stream().anyMatch(dev ->
-                        Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
-                            Optional.ofNullable(dev.get(ENTRIES))
-                                .filter(Map.class::isInstance)
-                                .map(Map.class::cast)
-                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
-                                ).isPresent())) {
-                        return;
-                    }
+                        if (props.getValueAsString("DEVTYPE").equals("partition")) {
+                            // do not report partitions, just whole disks
+                            return;
+                        }
+                        if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
+                            // LVM device
+                            return;
+                        }
+                        if (props.getValueAsString("MAJOR").equals("1")) {
+                            // ram device
+                            return;
+                        }
+                        if (props.getValueAsString("MAJOR").equals("7")) {
+                            // character devices for virtual console terminals
+                            return;
+                        }
+                        // This is interpreted as Physical. But what to do with it?
+                        // result_item['prop1'] = ''
+                        // This is interpreted as Logical. But what to do with it?
+                        // result_item['prop2'] = ''
+                        break;
+                    case "pci":
+                        String pciClass = props.getValueAsString("PCI_ID");
+                        if (StringUtils.isNotBlank(pciClass)) {
+                            String[] ids = pciClass.split(":");
+                            device.setProp1(ids.length > 0 ? ids[0] : null);
+                            device.setProp2(ids.length > 1 ? ids[1] : null);
+                        }
+                        String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
+                        if (StringUtils.isNotBlank(pciSubsys)) {
+                            String[] ids = pciSubsys.split(":");
+                            device.setProp3(ids.length > 0 ? ids[0] : null);
+                            device.setProp4(ids.length > 1 ? ids[1] : null);
+                        }
+                        break;
+                    case "usb":
+                        String vendorId = props.getValueAsString("ID_VENDOR_ID");
+                        if (StringUtils.isNotBlank(vendorId)) {
+                            device.setProp1(vendorId);
+                        }
+                        String modelId = props.getValueAsString("ID_MODEL_ID");
+                        if (StringUtils.isNotBlank(modelId)) {
+                            device.setProp2(modelId);
+                        }
+                        break;
+                    case "scsi":
+                        // skip scsi hosts and targets
+                        if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
+                            return;
+                        }
+                        // check if this scsi device is already listed as a block device
+                        if (udevdb.stream().anyMatch(dev ->
+                                Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
+                                        Optional.ofNullable(dev.get(ENTRIES))
+                                                .filter(Map.class::isInstance)
+                                                .map(Map.class::cast)
+                                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
+                                                ).isPresent())) {
+                            return;
+                        }
+                        break;
+                    default:
+                        LOG.warn("ignore unknown subsystem {}", subsys);
+                        break;
                 }
 
                 if (props.getValueAsString("ID_BUS").equals("scsi")) {
@@ -434,8 +443,7 @@ public class HardwareMapper {
             String os = "z/OS";
             String name = String.format("IBM Mainframe %s %s", sysvalues.get("Type"),
                     sysvalues.get("Sequence Code"));
-            String arch = cpuarch;
-            Long totalIfls = null;
+            long totalIfls = 0L;
             try {
                 totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs Total", "0"));
             }
@@ -503,7 +511,7 @@ public class HardwareMapper {
                 hostcpu.setArch(ServerFactory.lookupCPUArchByName(cpuarch));
                 hostcpu.setFlags(null);
                 hostcpu.setStepping(null);
-                hostcpu.setModel(arch);
+                hostcpu.setModel(cpuarch);
                 hostcpu.setVendor(type);
                 zhost.setCpu(hostcpu); // TODO test if this deletes any existing CPU
                 hostcpu.setServer(zhost);
@@ -895,15 +903,15 @@ public class HardwareMapper {
         Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
             server.getNetworkInterfaces().stream()
                 .filter(netIf -> netIf.getIPv4Addresses().stream()
-                        .anyMatch(addr -> ObjectUtils.equals(pipv4, addr.getAddress())))
+                        .anyMatch(addr -> Objects.equals(pipv4, addr.getAddress())))
                 .findFirst());
 
-        if (!primaryNetIf.isPresent()) {
+        if (primaryNetIf.isEmpty()) {
             // no primary IPv4, fallback to IPv6
             primaryNetIf = primaryIPv6.flatMap(pipv6 ->
                 server.getNetworkInterfaces().stream()
                     .filter(netIf -> netIf.getIPv6Addresses().stream()
-                            .anyMatch(addr -> ObjectUtils.equals(pipv6, addr.getAddress())))
+                            .anyMatch(addr -> Objects.equals(pipv6, addr.getAddress())))
                     .findFirst());
         }
 
@@ -911,6 +919,12 @@ public class HardwareMapper {
         // primary IPv4/v6 addr, make it primary
         primaryNetIf.ifPresent(server::setPrimaryInterface);
 
+        // set primary FQDN to hostname if no primary FQDN is specified
+        if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
+               .noneMatch(ServerFQDN::isPrimary)) {
+
+            server.setPrimaryFQDNWithName(server.getHostname());
+        }
     }
 
     private Optional<NetworkInterface> firstNetIf(Server serverIn) {
@@ -980,27 +994,12 @@ public class HardwareMapper {
         String vendorFromDb = attrs.getValueAsString("ID_VENDOR_FROM_DATABASE");
         String modelFromDb = attrs.getValueAsString("ID_MODEL_FROM_DATABASE");
 
-        if (subsys.equals("pci")) {
-            String pciId = attrs.getValueAsString("PCI_ID");
-            String[] ids = pciId.split(":");
-            String vendorDesc = ids.length > 0 ? ids[0] : "";
-            String deviceDesc = ids.length > 1 ? ids[1] : "";
-
-            if (StringUtils.isNotBlank(vendorFromDb) ||
-                    StringUtils.isNotBlank(modelFromDb)) {
-                result = String.format("%s|%s", vendorFromDb, modelFromDb);
-            }
-            else {
-                // TODO lookup in hwdata
-                result = String.format("%s|%s", vendorDesc, deviceDesc);
-            }
-        }
-        else if (subsys.equals("usb")) {
-            String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
-            String product = attrs.getValueAsString("PRODUCT");
-            if (StringUtils.isNotBlank(vendorId)) {
-                String vendorDesc = vendorId;
-                String deviceDesc = attrs.getValueAsString("ID_MODEL_ID");
+        switch (subsys) {
+            case "pci":
+                String pciId = attrs.getValueAsString("PCI_ID");
+                String[] ids = pciId.split(":");
+                String pciVendorDesc = ids.length > 0 ? ids[0] : "";
+                String pciDeviceDesc = ids.length > 1 ? ids[1] : "";
 
                 if (StringUtils.isNotBlank(vendorFromDb) ||
                         StringUtils.isNotBlank(modelFromDb)) {
@@ -1008,37 +1007,56 @@ public class HardwareMapper {
                 }
                 else {
                     // TODO lookup in hwdata
-                    result = String.format("%s|%s", vendorDesc, deviceDesc);
+                    result = String.format("%s|%s", pciVendorDesc, pciDeviceDesc);
                 }
-            }
-            else {
-                String devtype = attrs.getValueAsString("DEVTYPE");
-                if (devtype.equals("usb_interface")) {
-                    String driver = attrs.getValueAsString("DRIVER");
-                    if (driver.equals("usbhid")) {
-                        result = "USB HID Interface";
-                    }
-                    else if (driver.equals("hub")) {
-                        result = "USB Hub Interface";
+                break;
+            case "usb":
+                String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
+                String product = attrs.getValueAsString("PRODUCT");
+                if (StringUtils.isNotBlank(vendorId)) {
+                    String usbDeviceDesc = attrs.getValueAsString("ID_MODEL_ID");
+
+                    if (StringUtils.isNotBlank(vendorFromDb) ||
+                            StringUtils.isNotBlank(modelFromDb)) {
+                        result = String.format("%s|%s", vendorFromDb, modelFromDb);
                     }
                     else {
-                        result = "USB Interface";
+                        // TODO lookup in hwdata
+                        result = String.format("%s|%s", vendorId, usbDeviceDesc);
                     }
                 }
-                else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
-                    String[] p = product.split("/");
-                    String vendorDesc = p.length > 0 ?
-                            String.format("%04x", Integer.parseInt(p[0], 16)) : "";
-                    String deviceDesc = p.length > 1 ?
-                            String.format("%04x", Integer.parseInt(p[1], 16)) : "";
+                else {
+                    String devtype = attrs.getValueAsString("DEVTYPE");
+                    if (devtype.equals("usb_interface")) {
+                        String driver = attrs.getValueAsString("DRIVER");
+                        if (driver.equals("usbhid")) {
+                            result = "USB HID Interface";
+                        }
+                        else if (driver.equals("hub")) {
+                            result = "USB Hub Interface";
+                        }
+                        else {
+                            result = "USB Interface";
+                        }
+                    }
+                    else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
+                        String[] p = product.split("/");
+                        String usbVendorDesc = p.length > 0 ?
+                                String.format("%04x", Integer.parseInt(p[0], 16)) : "";
+                        String usbDeviceDesc = p.length > 1 ?
+                                String.format("%04x", Integer.parseInt(p[1], 16)) : "";
 
-                    // TODO lookup in hwdata
-                    result = String.format("%s|%s", vendorDesc, deviceDesc);
+                        // TODO lookup in hwdata
+                        result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
+                    }
                 }
-            }
-        }
-        else if (subsys.equals("block")) {
-            result = attrs.getValueAsString("ID_MODEL");
+                break;
+            case "block":
+                result = attrs.getValueAsString("ID_MODEL");
+                break;
+            default:
+                LOG.info("ignore unknown subsystem {}", subsys);
+                break;
         }
 
         return StringUtils.isNotBlank(result) ? result : null;
@@ -1048,12 +1066,9 @@ public class HardwareMapper {
         String sysfsPath = (String)device.get(SYSFS_PATH);
         @SuppressWarnings("unchecked")
         ValueMap attrs = new ValueMap((Map<String, Object>) device.get(ENTRIES));
-        ValueMap extraAttrs = null;
+        ValueMap extraAttrs = new ValueMap();
         if (device.get(EXTRA_ENTRIES) != null) {
             extraAttrs = new ValueMap((Map<String, Object>) device.get(EXTRA_ENTRIES));
-        }
-        else {
-            extraAttrs = new ValueMap();
         }
 
         String subsys = attrs.getValueAsString("SUBSYSTEM");
@@ -1123,7 +1138,7 @@ public class HardwareMapper {
                     .getCode().equals(subClass)) {
                 return Device.CLASS_MODEM;
             }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT) &&
+            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT.getCode()) &&
                     PciClassCodes.PCI_CLASS_INPUT_SCANNER.getCode().equals(subClass)) {
                 return Device.CLASS_SCANNER;
             }
@@ -1157,8 +1172,7 @@ public class HardwareMapper {
         }
 
         if (subsys.equals("scsi")) {
-            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device") &&
-                    extraAttrs != null) {
+            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
                 long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
                 if (devType == 0 || devType == 14) {
                     return Device.CLASS_HD;

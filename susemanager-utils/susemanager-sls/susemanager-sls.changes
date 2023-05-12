@@ -1,12 +1,22 @@
-- disable salt-minion and remove its config file on cleanup (bsc#1209277)
-- Add kiwi supported disk images to be collectable (bsc#1208522)
-- Rename internal state 'synccustomall' to 'syncall'
-- Recurring custom states
-- to update everything on a debian system, call dist-upgrade to
-  be able to install and remove packages
-- Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
-- Enforce installation of the PTF GPG key package
-- Improve error handling in mgr_events.py (bsc#1208687)
+-------------------------------------------------------------------
+Wed May 03 09:17:26 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.33-1
+  * fix duplicate packages in state
+
+-------------------------------------------------------------------
+Mon Apr 24 09:17:00 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.32-1
+  * disable salt-minion and remove its config file on cleanup (bsc#1209277)
+  * Add kiwi supported disk images to be collectable (bsc#1208522)
+  * Rename internal state 'synccustomall' to 'syncall'
+  * Recurring custom states
+  * to update everything on a debian system, call dist-upgrade to
+    be able to install and remove packages
+  * Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
+  * Enforce installation of the PTF GPG key package
+  * Improve error handling in mgr_events.py (bsc#1208687)
 
 -------------------------------------------------------------------
 Tue Mar 21 13:39:57 CET 2023 - jgonzalez@suse.com

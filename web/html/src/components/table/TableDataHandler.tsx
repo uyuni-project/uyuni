@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { pageSize } from "core/user-preferences";
 
+import { Loading } from "components/utils";
+
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
 import { Comparator, PagedData } from "utils/data-providers";
 import { Utils } from "utils/functions";
@@ -349,7 +351,6 @@ export class TableDataHandler extends React.Component<Props, State> {
     };
 
     const emptyText = this.props.emptyText || t("There are no entries to show.");
-    const loadingText = this.props.loadingText || t("Loading...");
     const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
 
     return (
@@ -387,10 +388,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             </div>
           ) : null}
           {this.state.loading ? (
-            <div className="panel-body text-center">
-              <i className="fa fa-spinner fa-spin fa-1-5x"></i>
-              <h4>{loadingText}</h4>
-            </div>
+            <Loading text={this.props.loadingText} />
           ) : isEmpty ? (
             <div className="panel-body">
               <div className="subheadline">{emptyText}</div>

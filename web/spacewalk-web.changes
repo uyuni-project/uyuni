@@ -1,12 +1,27 @@
-- Disable login button with empty password
-- Ignore mandatory channels results that don't match list of channels (bsc#1204270)
-- Increase datetimepicker font sizes (bsc#1210437)
-- Recurring custom states
-- fix an issue where the datetimepicker shows wrong date (bsc#1209231)
-- Add support to add optional channels via webUI
-- Added pages to install and remove ptf
-- Added CLM filters to match product temporary fixes packages
-- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+- Fix spelling on monitoring-admin page.
+- Show loading indicator on formula details pages (bsc#1179747)
+- force all mandatory channels being selected in software channel
+  change page (bsc#1211062)
+
+-------------------------------------------------------------------
+Tue Apr 25 15:38:09 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.31-1
+  * Fix title on recurring actions edit page
+
+-------------------------------------------------------------------
+Mon Apr 24 09:18:54 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.30-1
+  * Disable login button with empty password
+  * Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+  * Increase datetimepicker font sizes (bsc#1210437)
+  * Recurring custom states
+  * fix an issue where the datetimepicker shows wrong date (bsc#1209231)
+  * Add support to add optional channels via webUI
+  * Added pages to install and remove ptf
+  * Added CLM filters to match product temporary fixes packages
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 
 -------------------------------------------------------------------
 Mon Apr 03 07:50:02 UTC 2023 - marina.latini@suse.com

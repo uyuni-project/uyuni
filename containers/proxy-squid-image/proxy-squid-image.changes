@@ -1,4 +1,8 @@
-- Add squid configuration for /saltboot
+-------------------------------------------------------------------
+Mon Apr 24 07:21:56 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 4.3.6:
+  * Add squid configuration for /saltboot
 
 -------------------------------------------------------------------
 Wed Feb 22 13:49:56 UTC 2023 - Julio González Gil <jgonzalez@suse.com>

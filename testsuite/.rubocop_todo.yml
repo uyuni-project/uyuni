@@ -564,6 +564,7 @@ Style/RedundantReturn:
 Style/RegexpLiteral:
   Exclude:
     - 'ext-tools/maintenance_crawler.rb'
+    - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/setup_steps.rb'
     - 'features/step_definitions/smdba_steps.rb'
 

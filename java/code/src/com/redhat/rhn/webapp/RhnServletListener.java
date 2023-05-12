@@ -20,6 +20,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.StartupTasksCommand;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
+import com.suse.manager.metrics.PrometheusExporter;
+import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.reactor.SaltReactor;
 
 import org.apache.logging.log4j.LogManager;
@@ -121,8 +123,11 @@ public class RhnServletListener implements ServletContextListener {
         startMessaging();
         logStart("Messaging");
 
+        HibernateFactory.registerComponentName(SystemsCollector.PRODUCT_NAME);
         startHibernate();
         logStart("Hibernate");
+
+        PrometheusExporter.INSTANCE.registerSystemsCollector();
 
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs

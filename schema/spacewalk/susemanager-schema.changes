@@ -1,8 +1,14 @@
-- Recurring custom states
-- Added view to handle ptf packages and updated the procedures
-  to refresh the updatable/installable packages
-- Fix update of sql function create_new_org
-- Filter CLM modular packages using release strings (bsc#1207814)
+- speedup old schema migration
+
+-------------------------------------------------------------------
+Mon Apr 24 09:14:00 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Recurring custom states
+  * Added view to handle ptf packages and updated the procedures
+    to refresh the updatable/installable packages
+  * Fix update of sql function create_new_org
+  * Filter CLM modular packages using release strings (bsc#1207814)
 
 -------------------------------------------------------------------
 Wed Feb 22 14:44:44 CET 2023 - jgonzalez@suse.com

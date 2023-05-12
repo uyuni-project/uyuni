@@ -54,7 +54,7 @@ def genCaRpm(options):
         OSIMAGE_RPM_REQUIRES = ["openssl-certs", "coreutils"]
     else:
         CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage"
-        OSIMAGE_RPM_REQUIRES = ["ca-certificates"]
+        OSIMAGE_RPM_REQUIRES = ["ca-certificates", "shadow"]
 
     ca_cert_name = os.path.basename(options.ca_cert_full_path)
     ca_cert = options.ca_cert_full_path

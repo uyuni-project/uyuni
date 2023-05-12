@@ -1,5 +1,9 @@
-- Add /saltboot directory
-- Mark /os-images and /tftp as static content
+-------------------------------------------------------------------
+Mon Apr 24 09:15:48 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * Add /saltboot directory
+  * Mark /os-images and /tftp as static content
 
 -------------------------------------------------------------------
 Wed Jul 27 14:16:23 CEST 2022 - jgonzalez@suse.com

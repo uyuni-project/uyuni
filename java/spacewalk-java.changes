@@ -1,45 +1,83 @@
-- Update Cobbler profile when a new image is deployed
-- Add mapping of image URLs for containerized proxy
-- Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
-- remove channels from client after transfer to a different
-  organization (bsc#1209220)
-- Fix RHEL9 / SLL9 product discovery (bsc#1209993)
-- fix displaying system channels when no base product is installed
-  (bsc#1206423)
-- fix NPE in cobbler system sync when server has no creator set
-- Recurring custom states
-- fix credentials and other secrets disclosure when debug log is enabled
-  CVE-2023-22644 (bsc#1210154)
-- Removed the expensive 'diff' column (bsc#1208427)
-- Don't output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
-- Do not log SSL certificate / key file content CVE-2023-22644 (bsc#1210094)
-- Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
-- Fix possible "NullPointerException" when clicking on
-  the "Create PXE installation configuration" button from Provising page
-- Fix possible "NullPointerException" issues when running cobbler-sync-bunch
-- Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
-- Set jasper development mode to false (bsc#1206191)
-- Fixed select all for ptf packages list (bsc#1209143)
-- Added SLES 12 support for ptf removal
-- Fixed issue with checking ptf repositories on cloned channels
-- Add support to add optional channels via webUI
-- Added APIs to allow frontend to install and remove ptf
-- Show the package summary where applicable to better describe PTF packages
-- Added CLM filters to match product temporary fixes packages
-- Restrict product temporary fixes visibility in the UI and in the
-  APIs responses
-- Fixed empty selection warning in the lock/unlock page
-- Set GPG Key Url for PTF repositories
-- Fix deleting custom info pillar (bsc#1209253)
-- Update report outdated system query to de-duplicate errata id's
-- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
-- Filter CLM modular packages using release strings (bsc#1207814)
-- Fix systems subscribed to channel CSV download (bsc#1201063)
-- Fix cobbler system entries for retail terminals (bsc#1208661)
-- Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
-- Add missing text for user preferenaces page
-- Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
-- Save scheduler user when creating Patch actions manually (bsc#1208321)
+- Add systems and hibernate metrics collectors
+- Allow processing big state results (bsc#1210957)
+- Fix issue with `aclChannelTypeCapable` that prevented errata view in
+  deb arch
+- Refresh pillars after setting custom values via SSM (bsc#1210659)
+- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+- show virtualization host info in systems overview page
+- OES credentials do not allow access to SCC. Skip them when an
+  SCCClientException is thrown and move forward
+- set swap memory value if available
+- set primary FQDN to hostname if none is set (bsc#1209156)
+- fix ISE when neither SCC credentials nor a local mirror is configured
+- only set self_update URL if functionality is not disabled in
+  distro or profile
+- execute highstate on registration with a user if available
+
+-------------------------------------------------------------------
+Thu Apr 27 15:33:10 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.56-1
+  * fix session information leak CVE-2023-22644 (bsc#1210107)
+
+-------------------------------------------------------------------
+Tue Apr 25 15:37:48 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.55-1
+  * Fix breadcrumbs on recurring actions pages
+
+-------------------------------------------------------------------
+Mon Apr 24 12:31:55 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.54-1
+  * kernel options: only add quotes if there is a space in the value (bsc#1209926)
+
+-------------------------------------------------------------------
+Mon Apr 24 09:18:29 CEST 2023 - jgonzalez@suse.com
+
+- version 4.3.53-1
+  * Update Cobbler profile when a new image is deployed
+  * Add mapping of image URLs for containerized proxy
+  * Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
+  * remove channels from client after transfer to a different
+    organization (bsc#1209220)
+  * Fix RHEL9 / SLL9 product discovery (bsc#1209993)
+  * fix displaying system channels when no base product is installed
+    (bsc#1206423)
+  * fix NPE in cobbler system sync when server has no creator set
+  * Recurring custom states
+  * fix credentials and other secrets disclosure when debug log is enabled
+    CVE-2023-22644 (bsc#1210154)
+  * Removed the expensive 'diff' column (bsc#1208427)
+  * Don't output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
+  * Do not log SSL certificate / key file content CVE-2023-22644 (bsc#1210094)
+  * Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
+  * Fix possible "NullPointerException" when clicking on
+    the "Create PXE installation configuration" button from Provising page
+  * Fix possible "NullPointerException" issues when running cobbler-sync-bunch
+  * Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
+  * Set jasper development mode to false (bsc#1206191)
+  * Fixed select all for ptf packages list (bsc#1209143)
+  * Added SLES 12 support for ptf removal
+  * Fixed issue with checking ptf repositories on cloned channels
+  * Add support to add optional channels via webUI
+  * Added APIs to allow frontend to install and remove ptf
+  * Show the package summary where applicable to better describe PTF packages
+  * Added CLM filters to match product temporary fixes packages
+  * Restrict product temporary fixes visibility in the UI and in the
+    APIs responses
+  * Fixed empty selection warning in the lock/unlock page
+  * Set GPG Key Url for PTF repositories
+  * Fix deleting custom info pillar (bsc#1209253)
+  * Update report outdated system query to de-duplicate errata id's
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * Fix systems subscribed to channel CSV download (bsc#1201063)
+  * Fix cobbler system entries for retail terminals (bsc#1208661)
+  * Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
+  * Add missing text for user preferenaces page
+  * Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
+  * Save scheduler user when creating Patch actions manually (bsc#1208321)
 
 -------------------------------------------------------------------
 Mon Mar 27 09:06:19 CEST 2023 - jgonzalez@suse.com
