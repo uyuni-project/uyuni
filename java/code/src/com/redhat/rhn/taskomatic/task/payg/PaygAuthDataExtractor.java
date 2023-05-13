@@ -179,8 +179,14 @@ public class PaygAuthDataExtractor {
         }
     }
 
-
-    private PaygInstanceInfo extractAuthDataLocal() {
+    /**
+     * This method will use the local instance
+     * and extract all authentication data and cryptographic material needed to connect to the cloud rmt servers.
+     * To do that, a python script will be executed on this instance.
+     * (Just public to be able to mock this method in tests)
+     * @return Authentication data and cryptographic material to connect to cloud rmt host
+     */
+    protected PaygInstanceInfo extractAuthDataLocal() {
         String[] cmd = {"python3"};
         InputStream programStream = PaygAuthDataExtractor.class
                 .getResourceAsStream("script/payg_extract_repo_data.py");
