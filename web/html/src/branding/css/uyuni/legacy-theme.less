@@ -18,9 +18,6 @@ input.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 }
 
 header {
-  position: fixed;
-  top: 0;
-  height:auto;
   z-index: 1000;
   width: 100%;
   border: none;
@@ -128,6 +125,8 @@ section {
   margin-left: 0;
    aside {
     .make-xs-column(2);
+    min-width: 16.66667%;
+    max-width: 16.66667%;
     background: @aside;
     border-right: 1px solid @aside-border;
     /* erasing the predefined paddings in the columns */
@@ -178,13 +177,10 @@ section {
 }
 
 .navbar-collapse.in {
-  display: block !important;
+  display: flex !important;
 }
 .navbar-collapse.collapse {
   display: none !important;
-}
-.navbar-collapse.collapse + div section {
-  width: 100%;
 }
 
 header, nav.navbar-pf {
