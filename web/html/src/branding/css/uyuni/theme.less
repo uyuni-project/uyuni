@@ -28,7 +28,21 @@ body {
     flex-direction: column;
 
     #nav {
-      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      overflow: hidden;
+  
+      nav {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+  
+        > ul {
+          flex: 1 1 auto;
+          margin: 0 !important;
+        }
+      }
     }
 
     footer {
