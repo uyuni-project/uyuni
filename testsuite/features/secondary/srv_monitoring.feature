@@ -11,7 +11,7 @@
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_monitoring.feature
-# Ff this feature fails,
+# If this feature fails,
 # It could let the monitoring feature disabled for the SLE minion
 # - features/secondary/min_rhlike_monitoring.feature
 # If this feature fails,

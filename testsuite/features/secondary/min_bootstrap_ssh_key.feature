@@ -3,7 +3,7 @@
 #
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/min_bootstrap_script.feature
 # If the minion fails to bootstrap again.
 
 @skip_if_container
