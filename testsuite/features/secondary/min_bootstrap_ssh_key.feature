@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
+#
 # This feature can cause failures in the following features:
 # - features/secondary/min_bootstrap_script.feature
 # If the minion fails to bootstrap again.
