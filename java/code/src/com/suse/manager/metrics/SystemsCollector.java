@@ -14,9 +14,14 @@ package com.suse.manager.metrics;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jfree.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Tuple;
 
 import io.prometheus.client.Collector;
@@ -24,6 +29,8 @@ import io.prometheus.client.Collector;
 public class SystemsCollector extends Collector {
 
     public static final String PRODUCT_NAME = "uyuni";
+
+    private static final Logger LOG = LogManager.getLogger(SystemsCollector.class);
 
     private static long getCountFromNativeQuery(String selectCountQuery) {
         return HibernateFactory.getSession()
@@ -40,7 +47,12 @@ public class SystemsCollector extends Collector {
      */
     public static long getNumberOfOutdatedSystems() {
         String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
-        return getCountFromNativeQuery(selectCountQuery);
+        try {
+            return getCountFromNativeQuery(selectCountQuery);
+        } catch (PersistenceException e) {
+            LOG.warn("Failed to get count of outdated packages.", e);
+            return 0L;
+        }
     }
 
     @Override
