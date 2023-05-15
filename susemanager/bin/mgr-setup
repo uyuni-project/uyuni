@@ -996,7 +996,9 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/sbin/spacewalk-service stop
 
         if [ "$EXTERNALDB" = "0" ]; then
-            systemctl restart postgresql
+            # Find PostgreSQL service name.
+            POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+            systemctl restart $POSTGRESQLSERVICE
         fi
         /usr/sbin/spacewalk-service start
         systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
