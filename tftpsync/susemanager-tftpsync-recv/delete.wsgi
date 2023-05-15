@@ -16,6 +16,8 @@ import os
 import re
 import logging
 import logging.handlers
+from uuid import UUID
+
 try:
     import urlparse
 except:
@@ -29,18 +31,29 @@ logger = logging.getLogger('tftpsync_delete')
 logger.setLevel(logging.INFO)
 
 # create RotatingFileHandler handler and set level to INFO
-ch = logging.handlers.RotatingFileHandler("/var/log/tftpsync/tftpsync.log",
-                                          mode='a', maxBytes=1048576, backupCount=10)
+ch = logging.handlers.RotatingFileHandler("/var/log/tftpsync/tftpsync.log", mode='a', maxBytes=1048576, backupCount=10)
 ch.setLevel(logging.INFO)
-
-# create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-# add formatter to ch
 ch.setFormatter(formatter)
-
-# add ch to logger
 logger.addHandler(ch)
+
+
+def validate_uuid(possible_uuid: str) -> bool:
+    """
+    Validate if the handed string is a valid UUIDv4 hex representation.
+
+    :param possible_uuid: The str with the UUID.
+    :return: True in case it is one, False otherwise.
+    """
+    if not isinstance(possible_uuid, str):
+        return False
+    # Taken from: https://stackoverflow.com/a/33245493/4730773
+    try:
+        uuid_obj = UUID(possible_uuid, version=4)
+    except ValueError:
+        return False
+    return uuid_obj.hex == possible_uuid
+
 
 def application(environ, start_response):
     status = '500 Server Error'
@@ -56,18 +69,18 @@ def application(environ, start_response):
         elif key == "directory":
             directory = value
 
-    if not (CFG.TFTPBOOT and re.match('^/[\w]+.*$', CFG.TFTPBOOT) and
+    if not (CFG.TFTPBOOT and re.match(r'^/\w+.*$', CFG.TFTPBOOT) and
               os.path.exists(CFG.TFTPBOOT)):
         logger.error("Invalid tftp directory configuration")
         content = 'Invalid tftp directory configuration'
     elif not (file_name and file_type and directory):
         logger.error("'file_name', 'directory' or 'file_type' not specified")
         content = "please provide the parameters 'file_name', 'directory' and 'file_type'"
-    elif ".." in directory or not re.match('^[/\:a-zA-Z0-9._-]+$', directory):
+    elif ".." in directory or not re.match(r'^[/:a-zA-Z0-9._-]+$', directory):
         # don't print the parameter because of security concerns
         logger.error("Insecure directory parameter given")
         content = 'Insecure directory'
-    elif ".." in file_name or not re.match('^[\:a-zA-Z0-9._-]+$', file_name):
+    elif ".." in file_name or not re.match(r'^[:a-zA-Z0-9._-]+$', file_name):
         # don't print the parameter because of security concerns
         logger.error("Insecure file_name parameter given")
         content = 'Insecure file_name'
