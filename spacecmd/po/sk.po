@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-12 15:06+0200\n"
-"PO-Revision-Date: 2022-12-02 20:13+0000\n"
+"PO-Revision-Date: 2023-05-15 18:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "sk/>\n"
@@ -3618,7 +3618,7 @@ msgstr "Vy sami"
 #. hasTraditionalSystems endpoint is not available prior to 4.3
 #: ../src/spacecmd/misc.py:476
 msgid "Skipping traditional system check"
-msgstr ""
+msgstr "Vynechanie tradičnej kontroly systému"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:548
