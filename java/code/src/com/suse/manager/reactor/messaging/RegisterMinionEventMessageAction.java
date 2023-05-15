@@ -28,6 +28,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -59,6 +60,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
@@ -115,6 +117,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private final SystemQuery systemQuery;
     private final SystemEntitlementManager entitlementManager;
 
+    private CloudPaygManager cloudPaygManager = new CloudPaygManager();
+
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
@@ -134,6 +138,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
         );
+    }
+
+    /**
+     * @param mgrIn overwrite default {@link CloudPaygManager}
+     */
+    public void setCloudPaygManager(CloudPaygManager mgrIn) {
+        cloudPaygManager = mgrIn;
     }
 
     /**
@@ -435,6 +446,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .orElseThrow(() -> new SaltException("Missing systeminfo result. Aborting registration."));
 
             ValueMap grains = systemInfo.getGrains();
+
+            if (cloudPaygManager.isPaygInstance() && CredentialsFactory.listSCCCredentials().size() == 0 &&
+                    !RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains)) {
+                // BYOS or DC Instance is not allowed to register on a pure SUMA PAYG
+                // exception: free products or SUSE Manager Proxy
+                throw new RegisterMinionException(minionId, org, String.format(
+                        "Registration of '%s' on SUSE Manager Server rejected. \n" +
+                        "To manage BYOS (Bring-your-own-Subscription) or Datacenter clients you have to configure " +
+                        "SCC Credentials at Admin => Setup Wizard => Organization Credentials.", minionId));
+            }
             MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
 
             minion.setMachineId(machineId);
@@ -547,6 +568,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             systemInfo.getUptimeSeconds().ifPresent(us -> SaltUtils.handleUptimeUpdate(minion, us.longValue()));
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH, isSaltSSH);
+        }
+        catch (RegisterMinionException rme) {
+            LOG.error("Error registering minion id: {}", minionId, rme);
+            throw rme;
         }
         catch (Exception t) {
             LOG.error("Error registering minion id: {}", minionId, t);
