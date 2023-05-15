@@ -77,6 +77,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -150,6 +151,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private Path metadataDirOfficial;
     private SaltService saltServiceMock;
     private SystemManager systemManager;
+    private CloudPaygManager cloudManager4Test;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -294,6 +296,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
        saltServiceMock = mock(SaltService.class);
        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
+       cloudManager4Test = new CloudPaygManager() {
+           @Override
+           public boolean isPaygInstance() {
+               return false;
+           }
+       };
 
        context().checking(new Expectations() {{
            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -375,6 +383,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock,
                 saltServiceMock);
+        action.setCloudPaygManager(cloudManager4Test);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -1790,6 +1799,153 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 cleanup -> { },
                 DEFAULT_CONTACT_METHOD,
                 Optional.of(minionStartUpGrains));
+    }
+
+    /**
+     * Test a registration of a non-free BYOS client at a PAYG SUMA Server.
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterMinionBYOSonPAYG() throws Exception {
+        cloudManager4Test = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        product.setFree(false);
+        try {
+            executeTest(
+                    (key) -> new Expectations() {{
+                        allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                        will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                        List<ProductInfo> pil = new ArrayList<>();
+                        ProductInfo pi = new ProductInfo(
+                                product.getName(),
+                                product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                                true, true, "productline", Optional.of("registerrelease"),
+                                "test", "repo", "shortname", "summary", "vendor",
+                                product.getVersion());
+                        pil.add(pi);
+                        allowing(saltServiceMock).getProducts(with(any(String.class)));
+                        will(returnValue(Optional.of(pil)));
+                    }},
+                    ACTIVATION_KEY_SUPPLIER,
+                    (optMinion, machineId, key) -> assertTrue(optMinion.isEmpty()),
+                    DEFAULT_CONTACT_METHOD);
+        }
+        catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            assertContains(e.getMessage(), MINION_ID);
+            assertContains(e.getMessage(), "To manage BYOS (Bring-your-own-Subscription) or Datacenter clients " +
+                    "you have to configure SCC Credentials");
+            return;
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+        fail("Expected Exception not thrown");
+    }
+
+    /**
+     * Test registration of a free BYOS client at a SUMA PAYG Server
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterMinionFreeBYOSonPAYG() throws Exception {
+        cloudManager4Test = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        product.setFree(true);
+        executeTest(
+                (key) -> new Expectations() {{
+                    allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                    will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    List<ProductInfo> pil = new ArrayList<>();
+                    ProductInfo pi = new ProductInfo(
+                            product.getName(),
+                            product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                            true, true, "productline", Optional.of("registerrelease"),
+                            "test", "repo", "shortname", "summary", "vendor",
+                            product.getVersion());
+                    pil.add(pi);
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
+                    will(returnValue(Optional.of(pil)));
+                }},
+                ACTIVATION_KEY_SUPPLIER,
+                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registration of a SUSE Manager Proxy at a SUMA PAYG Server
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterMinionSumaProxyOnPAYG() throws Exception {
+        cloudManager4Test = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        ChannelFamily channelFamily = createTestChannelFamily();
+        channelFamily.setName("SUSE Manager Proxy");
+        channelFamily.setLabel("SMP");
+
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        product.setName("suse-manager-proxy");
+        product.setVersion("4.3");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setFree(false);
+        SUSEProductFactory.save(product);
+
+        executeTest(
+                (key) -> new Expectations() {{
+                    allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                    will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    List<ProductInfo> pil = new ArrayList<>();
+                    ProductInfo pi = new ProductInfo(
+                            product.getName(),
+                            product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                            true, true, "productline", Optional.of("registerrelease"),
+                            "test", "repo", "shortname", "summary", "vendor",
+                            product.getVersion());
+                    pil.add(pi);
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
+                    will(returnValue(Optional.of(pil)));
+                }},
+                ACTIVATION_KEY_SUPPLIER,
+                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test registration of a PAYG Client at a SUMA PAYG Server
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterMinionPAYGonPAYG() throws Exception {
+        cloudManager4Test = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        executeTest(
+                (key) -> new Expectations() {{
+                    allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                    will(returnValue(getSystemInfo(MINION_ID, "slespayg", key)));
+                }},
+                ACTIVATION_KEY_SUPPLIER,
+                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
