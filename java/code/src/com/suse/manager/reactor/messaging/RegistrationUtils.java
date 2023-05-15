@@ -26,6 +26,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -350,10 +351,44 @@ public class RegistrationUtils {
         );
     }
 
+    /**
+     * Check if the products installed on the minion are allowed for free
+     * use on a SUSE Manager PAYG Server
+     * @param systemQuery query api
+     * @param minionId the minionId
+     * @param channels assigned channels
+     * @param grains the system grains
+     * @return true if the use is allowed
+     */
+    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId,
+                                          Set<Channel> channels, ValueMap grains) {
+        boolean isPaygClient = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
+        if (isPaygClient) {
+            return true;
+        }
+        return identifyProduct(systemQuery, minionId, grains.getValueAsString("osarch"), channels, grains)
+                .stream()
+                .allMatch(p -> {
+                    if (p.getFree()) {
+                        return true;
+                    }
+                    ChannelFamily cf = p.getChannelFamily();
+                    if (cf != null) {
+                        return cf.getLabel().equals("SMP") || cf.getLabel().equals("SLE-M-T");
+                    }
+                    return false;
+                });
+    }
+
     private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, MinionServer server, ValueMap grains) {
+        return identifyProduct(systemQuery, server.getMinionId(), server.getServerArch().getLabel(),
+                server.getChannels(), grains);
+    }
+    private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, String minionId, String arch,
+                                                    Set<Channel> channels, ValueMap grains) {
         if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
-                    systemQuery.getProducts(server.getMinionId());
+                    systemQuery.getProducts(minionId);
             return Opt.stream(productList).flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();
@@ -372,18 +407,18 @@ public class RegistrationUtils {
         else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
                 .contains(grains.getValueAsString(OS).toLowerCase())) {
 
-            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(minionId);
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
+                            channels, arch, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
                             x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
                             x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
 
                 if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
-                            rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
+                            rhel.getRelease(), arch);
                     return Stream.empty();
                 }
                 return rhel.getAllSuseProducts().stream();
