@@ -205,6 +205,10 @@ end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
+  # Remove automatically installed dependency if needed
+  if package == 'uyuni-config'
+    $server.run("zypper --non-interactive remove #{package}-modules")
+  end
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
