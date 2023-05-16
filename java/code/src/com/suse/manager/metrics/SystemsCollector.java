@@ -40,7 +40,7 @@ public class SystemsCollector extends Collector {
      * @return number of systems with outdated packages
      */
     public static long getNumberOfOutdatedSystems() {
-        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
+        String selectCountQuery = "SELECT COUNT(DISTINCT(server_id)) FROM rhnServerNeededCache";
         return getCountFromNativeQuery(selectCountQuery);
     }
 
