@@ -119,11 +119,11 @@ public class ResetPasswordFactory extends HibernateFactory {
     /**
      * Create a unique one-use token for a specified User
      * @param u User whose password is to be reset
-     * @return unique SHA1 hash
+     * @return unique SHA256 hash
      */
     public static String generatePasswordToken(User u) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             // What matters is that the token cannot be guessed from publically-available
             // info (like timestamp or login or uid). A random UUID is 'something only
             // the server knows'
@@ -136,7 +136,7 @@ public class ResetPasswordFactory extends HibernateFactory {
             return hash;
         }
         catch (NoSuchAlgorithmException e) {
-            log.error("Failed to find SHA-1?!?", e);
+            log.error("Failed to find SHA-256?!?", e);
             return null;
         }
     }
