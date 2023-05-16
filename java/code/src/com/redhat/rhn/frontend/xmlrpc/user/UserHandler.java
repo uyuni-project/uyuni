@@ -15,10 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.user;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -48,7 +48,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -494,7 +493,7 @@ public class UserHandler extends BaseHandler {
                 usePamAuth, Integer.valueOf(1), Integer.valueOf(0));
 
         if (pamAuth) {
-            password = getDefaultPasswordForPamAuth();
+            password = CryptHelper.getRandomPasswordForPamAuth();
         }
 
         CreateUserCommand command = new CreateUserCommand();
@@ -645,16 +644,6 @@ public class UserHandler extends BaseHandler {
             throw new FaultException(-501, "passwordRequiredOrUsePam",
                     "Password is required if not using PAM authentication");
         }
-    }
-
-    private String getDefaultPasswordForPamAuth() {
-        // taken from line 169 of CreateUserAction
-        // this is utter crap.  We don't require a password when
-        // we set use pam authentication, yet the password field
-        // in the database is NOT NULL.  So we have to create this
-        // stupid HACK!  Actually this is beyond HACK.
-        return RandomStringUtils.random(UserDefaults.get().getMinPasswordLength());
-
     }
 
     private void prepareAttributeUpdate(String attrName, UpdateUserCommand cmd,

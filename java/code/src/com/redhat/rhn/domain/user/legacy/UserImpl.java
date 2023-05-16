@@ -40,6 +40,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -368,8 +369,13 @@ public class UserImpl extends BaseDomainHelper implements User {
          * If we have a valid pamAuthService and the user uses pam authentication,
          * authenticate via pam, otherwise, use the db.
          */
-        if (pamAuthService != null && pamAuthService.trim().length() > 0 &&
-                this.getUsePamAuthentication()) {
+        if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
+            if (password.startsWith(CryptHelper.getMD5Prefix())) {
+                // password field in DB is NOT NULL, so we set a random password
+                // when using PAM authentication. Here the password is still MD5
+                // based. Just set a new one with SHA256crypt
+                setPassword(CryptHelper.getRandomPasswordForPamAuth());
+            }
             Pam pam = new Pam(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
@@ -378,7 +384,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
         }
         else {
-            /**
+            /*
              * If we're using encrypted passwords, check
              * thePassword encrypted, otherwise just do
              * a straight clear-text comparison.
