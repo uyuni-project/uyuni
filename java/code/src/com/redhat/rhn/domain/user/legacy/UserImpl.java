@@ -19,7 +19,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
@@ -414,13 +413,6 @@ public class UserImpl extends BaseDomainHelper implements User {
                 // user uses SHA-256 encrypted password
                 if (password.startsWith(CryptHelper.getSHA256Prefix())) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
-                }
-                // user still uses MD5 encrypted password
-                else if (password.startsWith(CryptHelper.getMD5Prefix()) &&
-                        MD5Crypt.crypt(thePassword, password).equals(password)) {
-                    // if authenticated with md5 pass, convert it to sha-256
-                    setPassword(thePassword);
-                    result = true;
                 }
             }
             else {
