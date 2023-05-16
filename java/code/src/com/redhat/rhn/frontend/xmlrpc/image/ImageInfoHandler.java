@@ -46,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
+import com.redhat.rhn.frontend.xmlrpc.util.PillarUtils;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -123,7 +124,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @param imageId the Image id
      * @return the pillar
      *
-     * @apidoc.doc Get pillar data of an image
+     * @apidoc.doc Get pillar data of an image. The "size" entries are converted to string.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "imageId")
      * @apidoc.returntype #param("struct", "the pillar data")
@@ -136,7 +137,8 @@ public class ImageInfoHandler extends BaseHandler {
         if (!opt.isPresent()) {
             throw new NoSuchImageException();
         }
-        return Optional.ofNullable(opt.get().getPillar()).map(p -> p.getPillar())
+        return Optional.ofNullable(opt.get().getPillar())
+                       .map(p -> PillarUtils.convertSizeToString(p.getPillar()))
                        .orElseGet(() -> new HashMap<String, Object>());
     }
 
@@ -147,7 +149,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @param pillarData the new pillar
      * @return 1 on success
      *
-     * @apidoc.doc Set pillar data of an image
+     * @apidoc.doc Set pillar data of an image. The "size" entries should be passed as string.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "imageId")
      * @apidoc.param #param("struct", "pillarData")
@@ -160,10 +162,11 @@ public class ImageInfoHandler extends BaseHandler {
         if (!imageOpt.isPresent()) {
             throw new NoSuchImageException();
         }
+        Map<String, Object> pillarDataFixed = PillarUtils.convertSizeToLong(pillarData);
         Optional.ofNullable(imageOpt.get().getPillar()).ifPresentOrElse(
-            p -> p.setPillar(pillarData),
+            p -> p.setPillar(pillarDataFixed),
             () -> {
-                Pillar newPillar = new Pillar("Image" + imageId, pillarData, loggedInUser.getOrg());
+                Pillar newPillar = new Pillar("Image" + imageId, pillarDataFixed, loggedInUser.getOrg());
                 HibernateFactory.getSession().save(newPillar);
                 imageOpt.get().setPillar(newPillar);
             });
