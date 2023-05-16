@@ -17,6 +17,8 @@ package com.redhat.rhn.common.client;
 import com.redhat.rhn.frontend.html.XmlTag;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -38,6 +40,7 @@ public class ClientCertificate {
     private final Map<String, String[]> byName;
     private final Map<String, String> checksumFields;
 
+    private static final Logger LOG = LogManager.getLogger(ClientCertificate.class);
 
     /**
      * Default Constructor
@@ -152,11 +155,12 @@ public class ClientCertificate {
 
         try {
             MessageDigest md = null;
-            if (secret.length() == 32) {
-                md = MessageDigest.getInstance("MD5");
-            }
-            else if (secret.length() == 64) {
+            if (secret.length() == 64) {
                 md = MessageDigest.getInstance("SHA-256");
+            }
+            else {
+                LOG.error("Unsupported message digest requested");
+                throw new InvalidCertificateException("Unsupported message digest requested");
             }
 
             // I'm not one to loop through things more than once
@@ -188,7 +192,7 @@ public class ClientCertificate {
         }
         catch (NoSuchAlgorithmException e) {
             throw new InvalidCertificateException(
-                    "Problem getting MD5 message digest.", e);
+                    "Problem getting SHA-256 message digest.", e);
         }
 
         return signature;
