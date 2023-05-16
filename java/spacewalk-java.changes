@@ -1,3 +1,4 @@
+- Reimplement queries for system metrics
 - Enforce minimum version of 1.11 for byte-buddy.
 - Updated EL9 jaxb-api symlinks to Uyuni provided package.
 - Fix issue with `aclChannelTypeCapable` that prevented errata view in
