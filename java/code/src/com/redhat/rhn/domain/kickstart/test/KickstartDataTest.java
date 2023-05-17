@@ -24,7 +24,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -531,7 +531,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         KickstartCommand root = new KickstartCommand();
         root.setCommandName(rootName);
-        root.setArguments(MD5Crypt.crypt("testing123"));
+        root.setArguments(SHA256Crypt.crypt("testing123"));
         root.setKickstartData(k);
         root.setCreated(created);
         root.setModified(modified);
