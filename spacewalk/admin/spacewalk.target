@@ -1,5 +1,6 @@
 [Unit]
 Description=Spacewalk
+Requires=mgr-check-payg.service
 Requires=uyuni-update-config.service
 Requires=uyuni-check-database.service
 Requires=jabberd.service
