@@ -1,3 +1,4 @@
+- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
 - Fix image size entries in xml-rpc
 - Do not throw on missing saltboot group
 - Fix server error in HTTP API authentication (bsc#1210394)
