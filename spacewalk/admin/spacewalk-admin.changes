@@ -1,3 +1,4 @@
+- add mgr-check-payg service
 - Fix to detect correct Apache group instead of assuming it (gh#7092).
 - Added missing python3-websockify runtime requirement.
 
