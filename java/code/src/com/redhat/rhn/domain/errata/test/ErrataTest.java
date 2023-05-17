@@ -144,7 +144,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         ErrataFile ef;
         ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
-                    "SOME FAKE CHECKSUM",
+                    "SOME FAKE CHECKSUM: 123456789012",
                     "testAddChannelsToErrata" + TestUtils.randomString(), new HashSet<>());
         ef.addPackage(p);
         e.addFile(ef);
