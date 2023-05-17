@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.configuration.file;
 
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumFactory;
@@ -143,7 +143,7 @@ public class BinaryFileData extends ConfigFileData {
         }
         byte[] bContent = ConfigurationFactory.bytesFromStream(getContents(),
                 getContentSize());
-        Checksum checksum = ChecksumFactory.safeCreate(MD5Crypt.md5Hex(bContent), "md5");
+        Checksum checksum = ChecksumFactory.safeCreate(SHA256Crypt.sha256Hex(bContent), "sha256");
         return checksum.equals(cRevision.getConfigContent().getChecksum());
     }
 }
