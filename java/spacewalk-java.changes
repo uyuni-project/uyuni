@@ -1,3 +1,4 @@
+- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
 - Fix issue with `aclChannelTypeCapable` that prevented errata view in
   deb arch
 - Refresh pillars after setting custom values via SSM (bsc#1210659)
