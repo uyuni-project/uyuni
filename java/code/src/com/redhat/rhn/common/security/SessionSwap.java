@@ -17,7 +17,7 @@ package com.redhat.rhn.common.security;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.SHA256Sum;
+import com.redhat.rhn.common.util.SHA256Crypt;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -120,7 +120,7 @@ public class SessionSwap {
                 c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_3) +
                 ":" +
                 c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4);
-        return SHA256Sum.sha256Sum(swapKey.getBytes());
+        return SHA256Crypt.sha256Hex(swapKey);
     }
 
     /**

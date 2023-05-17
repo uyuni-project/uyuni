@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.common.util.MD5Sum;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.util.download.ByteArrayStreamInfo;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -781,7 +781,7 @@ public class DownloadFile extends DownloadAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return getStream(new byte[0], CONTENT_TYPE_TEXT_PLAIN);
             }
-            checksum = MD5Sum.getFileMD5Sum(f);
+            checksum = SHA256Crypt.getFileSHA256Sum(f);
             response.setHeader("Content-Length", String.valueOf(f.length()));
         }
         // Create some headers.
