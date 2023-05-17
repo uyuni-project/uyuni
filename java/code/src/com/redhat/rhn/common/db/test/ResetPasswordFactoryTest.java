@@ -40,7 +40,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
     public void testToken() {
         String tok = ResetPasswordFactory.generatePasswordToken(user);
         assertNotNull(tok);
-        assertEquals(40, tok.length());
+        assertEquals(64, tok.length());
     }
 
     @Test
