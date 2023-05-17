@@ -4,7 +4,7 @@
 # Idempotency note:
 # This feature depends on a JeOS image present on the proxy
 # Please make sure that the feature
-#     features/buildhost_osimage_build_image.feature
+#     features/secondary/buildhost_osimage_build_image.feature
 # has been tested previously
 #
 # The scenarios in this feature are skipped:

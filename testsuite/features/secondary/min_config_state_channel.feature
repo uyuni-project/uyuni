@@ -1,5 +1,9 @@
 # Copyright (c) 2018-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features when running in sequential:
+# - features/secondary/min_config_state_channel_subscriptions.feature
+# If the state channel fails to be deleted.
 
 @skip_if_container
 @scope_configuration_channels
