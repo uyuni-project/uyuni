@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.SHA256Sum;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -145,11 +145,11 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.setBuildHost("foo2");
         p.setBuildTime(new Date());
         p.setChecksum(ChecksumFactory.safeCreate(
-                SHA256Sum.sha256Sum(TestUtils.randomString().getBytes()), "sha256"));
+                SHA256Crypt.sha256Hex(TestUtils.randomString()), "sha256"));
         p.setVendor("Rhn-Java");
         p.setPayloadFormat("testpayloadformat");
         p.setCompat(0L);
-        p.setPath(SHA256Sum.sha256Sum(TestUtils.randomString().getBytes()));
+        p.setPath(SHA256Crypt.sha256Hex(TestUtils.randomString()));
         p.setHeaderSignature("Rhn-Java Unit Test");
         p.setCopyright("Red Hat - RHN - 2005");
         p.setCookie("Chocolate Chip");

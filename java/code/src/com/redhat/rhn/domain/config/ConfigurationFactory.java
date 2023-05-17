@@ -836,7 +836,7 @@ public class ConfigurationFactory extends HibernateFactory {
          * 1. increment the revision number
          * 2. replace the content
          * 3. magic-decide whether this revision is binary
-         * 4. compute the md5sum
+         * 4. compute the checksum
          * 5. give it a new id
          */
 

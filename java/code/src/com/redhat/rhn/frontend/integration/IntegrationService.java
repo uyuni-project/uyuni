@@ -17,13 +17,14 @@ package com.redhat.rhn.frontend.integration;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
-import com.redhat.rhn.common.util.SHA256Sum;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -97,8 +98,8 @@ public class IntegrationService {
             passwd = Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1);
         }
         else {
-            String sha256random = SHA256Sum.sha256Sum(
-                    RandomStringUtils.random(10, SessionSwap.HEX_CHARS).getBytes());
+            String sha256random = SHA256Crypt.sha256Hex(RandomStringUtils.random(64, 0, 0,
+                    false, false, SessionSwap.HEX_CHARS, new SecureRandom()));
             // Store the sha256random number in our map
             // and send over the encoded version of it.
             // On the return checkRandomToken() call
