@@ -151,10 +151,11 @@ Version for PostgreSQL database backend.
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
 SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
+SUMA_FULL_REL=$(grep -F 'web.version' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
 UYUNI_REL=$(grep -F 'web.version.uyuni' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
 echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
 if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
-  echo "SUSE Manager release $SUMA_REL ($UYUNI_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
 fi
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do

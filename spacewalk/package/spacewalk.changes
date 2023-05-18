@@ -1,3 +1,4 @@
+- For SUSE Manager, add MU or Milestone to /etc/susemanager-release
 - Link /usr/bin/initdb for Enterprise Linux.
 
 -------------------------------------------------------------------
