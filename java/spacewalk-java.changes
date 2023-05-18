@@ -1,3 +1,5 @@
+- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+  Management Management/Operations on SSM -> Provisioning
 - Fix misleading error message regarding SCC credentials removal (bsc#1207941)
 - Reimplement queries for system metrics
 - Enforce minimum version of 1.11 for byte-buddy.
