@@ -1,0 +1,2 @@
+- Stop the taskomatic bunch execution if it was not possible to
+  execute one of the tasks

@@ -110,8 +110,6 @@ public class TaskoJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext context) {
-        TaskoRun previousRun = null;
-
         TaskoSchedule schedule = TaskoFactory.lookupScheduleById(scheduleId);
         if (schedule == null) {
             // means, that schedule was deleted (in the DB), but quartz still schedules it
@@ -123,15 +121,23 @@ public class TaskoJob implements Job {
         Instant start = Instant.now();
         log.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
 
+        String previousRunStatus = null;
         for (TaskoTemplate template : schedule.getBunch().getTemplates()) {
-            if ((previousRun != null) &&    // first run
-                    (template.getStartIf() != null) &&  // do not care
-                    !previousRun.getStatus().equals(template.getStartIf())) {
+            // If it's not the first run and the template requires a previous state, check for it
+            if (previousRunStatus != null &&
+                    template.getStartIf() != null && !template.getStartIf().equals(previousRunStatus)) {
                 log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
             TaskoTask task = template.getTask();
-            previousRun = runTask(schedule, task, template, context);
+            TaskoRun runResult = runTask(schedule, task, template, context);
+            if (runResult == null) {
+                // Null result means it was not possible to execute the template. Interrupt the bunch execution
+                log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
+                break;
+            }
+
+            previousRunStatus = runResult.getStatus();
         }
         HibernateFactory.closeSession();
         log.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
