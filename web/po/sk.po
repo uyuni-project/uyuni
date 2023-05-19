@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-12 15:06+0200\n"
-"PO-Revision-Date: 2023-04-29 17:14+0000\n"
+"POT-Creation-Date: 2023-05-19 15:36+0200\n"
+"PO-Revision-Date: 2023-05-15 18:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
 ">\n"
@@ -30,11 +30,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:511
+#: ../html/javascript/spacewalk-essentials.js:486
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:531
+#: ../html/javascript/spacewalk-essentials.js:506
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -737,7 +737,6 @@ msgid "Restart is needed for the configuration changes to take effect."
 msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
-#, fuzzy
 msgid "An internal error has occurred. See the server logs for details."
 msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
@@ -809,7 +808,6 @@ msgid "Monitoring status hasn't changed."
 msgstr "Stav monitorovania sa nezmenil."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
-#, fuzzy
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
@@ -876,7 +874,6 @@ msgid "documentation"
 msgstr "dokumentácia"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
-#, fuzzy
 msgid " to learn how to consume these metrics."
 msgstr " naučiť sa, ako tieto metriky využívať."
 
@@ -4596,9 +4593,8 @@ msgid "Create "
 msgstr "Vytvoriť "
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
-#, fuzzy
 msgid "Schedule Recurring Action"
-msgstr "Opakujúce sa akcie"
+msgstr "Naplánovať opakujúcu sa akciu"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
