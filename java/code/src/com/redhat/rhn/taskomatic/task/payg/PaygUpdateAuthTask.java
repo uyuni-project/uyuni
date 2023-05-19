@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.taskomatic.task.payg;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -45,8 +46,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
     private final PaygAuthDataProcessor paygDataProcessor = new PaygAuthDataProcessor();
     private PaygAuthDataExtractor paygDataExtractor = new PaygAuthDataExtractor();
 
-    // TODO: detection of isPAYG happens only on taskomatic start. Is this ok?
-    private CloudPaygManager cloudPaygManager = new CloudPaygManager();
+    private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     private static final Logger LOG = LogManager.getLogger(PaygUpdateAuthTask.class);
 

@@ -382,8 +382,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock,
-                saltServiceMock);
-        action.setCloudPaygManager(cloudManager4Test);
+                saltServiceMock, cloudManager4Test);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -1996,7 +1995,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         } });
 
         RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock);
+                new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock, cloudManager4Test);
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
     }
 
