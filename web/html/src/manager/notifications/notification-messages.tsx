@@ -351,9 +351,22 @@ class NotificationMessages extends React.Component<Props, State> {
     return escapeHtml(summary);
   };
 
+  /**
+   * Sometimes, in reposync failed messages, the details text may contain an email address
+   * enclosed within angle brackets, like this: <linux-bugs@nvidia.com>. In such cases,
+   * this email address is mistakenly interpreted as an HTML tag, which causes issues when
+   * parsing it into React elements. To resolve this problem, the following function replaces
+   * the angle brackets with parentheses in such cases.
+   * See bsc#1211469
+   */
+  replaceInvalidEmailTag = (text) => {
+    const regex = /<([^\s<>]+@[^\s<>]+)>/;
+    return regex.test(text) ? text.replace(regex, "($1)") : text;
+  };
+
   buildPopupDetails = () => {
     const details = (this.state.popupItem || {}).details || "";
-    return escapeHtml(details);
+    return escapeHtml(this.replaceInvalidEmailTag(details));
   };
 
   retryOnboarding = (minionId) => {
