@@ -501,6 +501,7 @@
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
+        <target>Kanalliste</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -577,12 +578,14 @@
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
+        <target>Gäste</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Storage" xml:space="preserve">
         <source>Storage</source>
+        <target>Speicher</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -675,6 +678,7 @@
       </trans-unit>
       <trans-unit id="Documentation_version" xml:space="preserve">
         <source>Documentation {0}</source>
+        <target>Dokumentation {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -737,6 +741,7 @@
       </trans-unit>
       <trans-unit id="Manage" xml:space="preserve">
         <source>Manage</source>
+        <target>Verwalten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1056,6 +1061,7 @@
       </trans-unit>
       <trans-unit id="System List" xml:space="preserve">
         <source>System List</source>
+        <target>Systemliste</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1076,12 +1082,14 @@
       </trans-unit>
       <trans-unit id="Last Execution Times" xml:space="preserve">
         <source>Last Execution Times</source>
+        <target>Letzte Ausführungszeiten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Runtime Status" xml:space="preserve">
         <source>Runtime Status</source>
+        <target>Laufzeit-Status</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1259,14 +1267,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation">Satellite-Administrator Rolle von {0} entfernt</target>
+        <target state="translated">@@PRODUCT_NAME@@ Administrator-Rolle von {0} entfernt</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add" xml:space="preserve">
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation">Satellite-Administrator Rolle zu {0} hinzugefügt</target>
+        <target state="translated">@@PRODUCT_NAME@@ Administrator Rolle zu {0} hinzugefügt</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin" xml:space="preserve">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1280,7 +1288,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="needs-adaptation">Letzter verbleibender Satellite-Administrator kann nicht gelöscht werden.</target>
+        <target state="translated">Letzter verbleibender @@PRODUCT_NAME@@-Administrator kann nicht gelöscht werden.</target>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
@@ -1323,34 +1331,39 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="needs-adaptation">RHN TASKOMATIC BENACHRICHTIGUNG</target>
+        <target state="translated">@@PRODUCT_NAME@@ TASKOMATIC-BENACHRICHTIGUNG</target>
       </trans-unit>
       <trans-unit id="Notification Messages" xml:space="preserve">
         <source>Notification Messages</source>
+        <target>Benachrichtigungsmeldungen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Account" xml:space="preserve">
         <source>User Account</source>
+        <target>Benutzerkonto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Account" xml:space="preserve">
         <source>My Account</source>
+        <target>Mein Konto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Preferences" xml:space="preserve">
         <source>My Preferences</source>
+        <target>Meine Einstellungen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Organization" xml:space="preserve">
         <source>My Organization</source>
+        <target>Meine Organisation</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1537,6 +1550,7 @@
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
+        <target>Passwörter dürfen nicht mehr als {0} Zeichen haben.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1811,7 +1825,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Primäre Netzwerkschnittstelle auf &lt;strong&gt;{0}&lt;/strong&gt; gesetzt.</target>
+        <target state="translated">Netzwerkeigenschaften aktualisiert.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2158,6 +2172,7 @@
       </trans-unit>
       <trans-unit id="configfiles.deployed" xml:space="preserve">
         <source>Files successfully deployed</source>
+        <target>Dateien erfolgreich bereitgestellt</target>
       </trans-unit>
       <trans-unit id="configfiles.verify" xml:space="preserve">
         <source>Verify deployed config files</source>
@@ -2175,6 +2190,7 @@
       </trans-unit>
       <trans-unit id="configfiles.diffed" xml:space="preserve">
         <source>Files successfully compared</source>
+        <target>Dateien erfolgreich verglichen</target>
       </trans-unit>
       <trans-unit id="config.actionnote" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
@@ -2337,6 +2353,7 @@ and try again.
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile" xml:space="preserve">
         <source>Please specify only file contents or a file to upload but not both.</source>
+        <target>Bitte geben Sie nur den Inhalt der Datei oder eine Datei zum Hochladen an, aber nicht beides.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -2671,6 +2688,7 @@ and try again.
       </trans-unit>
       <trans-unit id="Package List" xml:space="preserve">
         <source>Package List</source>
+        <target>Paketliste</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -2806,7 +2824,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">Kickstart-Profil hochladen</target>
+        <target state="translated">Kickstart/AutoYaST-Datei hochladen</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -2824,12 +2842,14 @@ and try again.
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart" xml:space="preserve">
         <source>Clone Autoinstallation</source>
+        <target>Autoinstallation klonen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.CryptoKeyDelete" xml:space="preserve">
         <source>Delete Key</source>
+        <target>Schlüssel löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyEdit</context>
         </context-group>
@@ -2871,54 +2891,63 @@ and try again.
       </trans-unit>
       <trans-unit id="toolbar.delete.user" xml:space="preserve">
         <source>Delete User</source>
+        <target>Benutzer löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum" xml:space="preserve">
         <source>Delete Patch</source>
+        <target>Patch löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.system" xml:space="preserve">
         <source>Delete System</source>
+        <target>System löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Package list pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.systemgroup" xml:space="preserve">
         <source>Delete Group</source>
+        <target>Gruppe löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.work.with.group" xml:space="preserve">
         <source>Work With Group</source>
+        <target>Mit Gruppe arbeiten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata" xml:space="preserve">
         <source>Delete Patch</source>
+        <target>Patch löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart" xml:space="preserve">
         <source>Delete Autoinstallation</source>
+        <target>Autoinstallation löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree" xml:space="preserve">
         <source>Delete Distribution</source>
+        <target>Distribution löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile" xml:space="preserve">
         <source>Delete Profile</source>
+        <target>Profil löschen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
@@ -9791,7 +9820,7 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10857,139 +10886,139 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <target state="needs-adaptation"/>
+      </trans-unit>
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="cluster_admin" xml:space="preserve">
         <source>Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="clusters.nav.title" xml:space="preserve">
         <source>Clusters</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="clusters.nav.overview" xml:space="preserve">
         <source>Overview</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
         <source>Package {0} not found in subscribed channels</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
         <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
         <source>Modularity is disabled. No modules will be included in the target repositories.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.reason" xml:space="preserve">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
