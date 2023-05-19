@@ -34,6 +34,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
   Scenario: Update a package on the Debian-like minion
     And I follow "Software" in the content area
     And I follow "Upgrade" in the content area
+    And I wait until I see "virgo-dummy" text, refreshing the page
     And I check "virgo-dummy-2.0-X" in the list
     And I click on "Upgrade Packages"
     And I click on "Confirm"

@@ -299,9 +299,10 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
     }
 
+    @Test
     public final void testImportOSImage() throws Exception {
         Integer id1 = handler.importOSImage(admin, "testimg", "1.0.0", "x86_64-redhat-linux").intValue();
-        handler.setPillar(admin, id1, Map.of("name1", "val1", "name2", "val2"));
+        handler.setPillar(admin, id1, Map.of("name1", "val1", "name2", "val2", "size", "10000000000"));
         handler.addImageFile(admin, id1, "testimg.tgz", "bundle", false);
 
         try {
@@ -320,6 +321,12 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         Map<String, Object> pillar1 = handler.getPillar(admin, id1);
         assertEquals("val1", pillar1.get("name1"));
+        assertEquals("10000000000", pillar1.get("size"));
+
+        // image size is stored as Long, but sent through the xml-rpc API as String
+        Optional<ImageInfo> info = ImageInfoFactory.lookupById(id1.longValue());
+        assertEquals(10000000000L, info.get().getPillar().getPillar().get("size"));
+
 
         ImageOverview details2 = handler.getDetails(admin, id2);
         System.out.println("details" + details2.getCurrRevisionNum());

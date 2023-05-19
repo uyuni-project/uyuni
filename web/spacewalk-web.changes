@@ -1,3 +1,5 @@
+- Fix font contrast in dark theme search field (bsc#1201337)
+- Fix wrong credentials error message (bsc#1210456)
 - Fix spelling on monitoring-admin page.
 - Show loading indicator on formula details pages (bsc#1179747)
 - force all mandatory channels being selected in software channel

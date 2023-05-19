@@ -114,7 +114,12 @@ public class SCCSystemRegistrationManager {
                         SCCCachingFactory.deleteRegCacheItem(cacheItem);
                     }
                     catch (SCCClientException e) {
-                        LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
+                        if (e.getHttpStatusCode() == 404) {
+                            LOG.info("System {} not found in SCC", cacheItem.getId());
+                        }
+                        else {
+                            LOG.error("SCC error while deregistering system {}", cacheItem.getId(), e);
+                        }
                         if (forceDBDeletion || e.getHttpStatusCode() == 404) {
                             SCCCachingFactory.deleteRegCacheItem(cacheItem);
                         }
