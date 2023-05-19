@@ -87,7 +87,7 @@ BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  byte-buddy
+BuildRequires:  byte-buddy >= 1.11
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
@@ -174,7 +174,7 @@ Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy >= 1.11
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
@@ -347,7 +347,7 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy >= 1.11
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate

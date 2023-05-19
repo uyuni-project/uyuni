@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcLoggingInvocationProcessor;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import redstone.xmlrpc.XmlRpcInvocation;
@@ -48,6 +50,25 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
         lip = new XmlRpcLoggingInvocationProcessor();
         writer = new StringWriter();
     }
+
+    private class TestHandler extends BaseHandler {
+
+        public Method getMethodArg1() throws NoSuchMethodException {
+            return testHandler.getClass().getMethod("testMethod1Arg", String.class);
+        }
+
+        public Method getMethodArg2() throws NoSuchMethodException {
+            return testHandler.getClass().getMethod("testMethod2Arg", String.class, String.class);
+        }
+
+        public void testMethod1Arg(String arg1) {
+        }
+
+        public void testMethod2Arg(String arg1, String arg2) {
+        }
+    }
+
+    private TestHandler testHandler = new TestHandler();
 
     @Test
     public void testPreProcess() {
@@ -96,10 +117,11 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPostProcess() {
+    public void testPostProcess() throws NoSuchMethodException {
         String[] args = {"<?xml version=\"1.0\"?><somestuff>foo</somestuff>",
                 "password"};
 
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(testHandler.getMethodArg2());
         Object rc = lip.after(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer), "returnthis");
         assertEquals("returnthis", rc);
@@ -107,7 +129,7 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPostProcessValidSession() {
+    public void testPostProcessValidSession() throws NoSuchMethodException {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         // create a web session indicating a logged in user.
@@ -118,21 +140,24 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
         assertNotNull(s.getId());
 
         String[] args = {s.getKey()};
-
         lip.before(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer));
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(testHandler.getMethodArg1());
         Object rc = lip.after(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer), "returnthis");
         assertEquals("returnthis", rc);
         assertEquals("", writer.toString());
     }
 
+
+
     @Test
-    public void testPostProcessInvalidSession() {
+    public void testPostProcessInvalidSession() throws NoSuchMethodException {
         String[] args = {"12312312xFFFFFABABABFFFCD01"};
 
         lip.before(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer));
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(testHandler.getMethodArg1());
         Object rc = lip.after(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer), "returnthis");
         assertEquals("returnthis", rc);
@@ -140,9 +165,10 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPostProcessWhereFirstArgHasNoX() {
+    public void testPostProcessWhereFirstArgHasNoX() throws NoSuchMethodException {
         String[] args = {"abcdefghijklmnopqrstuvwyz", "password"};
 
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(testHandler.getMethodArg2());
         Object rc = lip.after(new XmlRpcInvocation(10, "handler", "method",
                 null, Arrays.asList(args), writer), "returnthis");
         assertEquals("returnthis", rc);
@@ -150,9 +176,10 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testAuthLogin() {
+    public void testAuthLogin() throws NoSuchMethodException {
         String[] args = {"user", "password"};
 
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(testHandler.getMethodArg2());
         Object rc = lip.after(new XmlRpcInvocation(10, "auth", "login",
                 null, Arrays.asList(args), writer), "returnthis");
         assertEquals("returnthis", rc);

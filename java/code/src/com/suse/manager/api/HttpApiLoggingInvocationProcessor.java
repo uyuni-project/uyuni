@@ -15,7 +15,6 @@
 package com.suse.manager.api;
 
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
@@ -27,6 +26,7 @@ import com.google.gson.JsonElement;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import spark.Request;
@@ -69,47 +69,17 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
             afterProcess(
                 handler,
                 methodName,
-                processParams(request, handler, methodName),
+                Optional.of(getParamMap(request)),
+                Optional.ofNullable(caller.get()),
                 request.ip()
             );
         });
     }
 
-    /**
-     * Extracts params from request.queryMap() and request.body()
-     *
-     * @param request - the spark request being processed
-     * @param handler - the name of the handler
-     * @param methodName - the name of the method
-     * @return the params as a StringBuilder ready to be logged
-     */
-    public StringBuilder processParams(Request request, String handler, String methodName) {
+    private Map<String, String> getParamMap(Request request) {
         Map<String, String> paramsMap = getQueryMapParams(request);
         paramsMap.putAll(parseBody(request.body()));
-        return processParams(paramsMap, handler, methodName);
-    }
-
-    /**
-     * Convert the params from a Map to a StringBuilder with format of a method call
-     * @param paramsMap the Map containing the parameters
-     * @param handler name of the handler
-     * @param methodName name of the method
-     * @return the params as a StringBuilder ready to be logged
-     */
-    public StringBuilder processParams(Map<String, String> paramsMap, String handler, String methodName) {
-        StringBuilder params = new StringBuilder();
-        for (String key : paramsMap.keySet()) {
-            params.append(key);
-            params.append("=");
-            params.append(getParamValueToLog(handler, methodName, key, paramsMap.get(key)));
-            params.append(", ");
-        }
-
-        // Removes trailing comma
-        if (params.length() > 1) {
-            params.delete(params.length() - 2, params.length());
-        }
-        return params;
+        return paramsMap;
     }
 
     /**
@@ -148,23 +118,6 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
     }
 
     /**
-     * Translate the param value and hide it if necessary
-     * @param handler - the name of the handler
-     * @param methodName - the name of the method
-     * @param key is the param name
-     * @param value param value
-     * @return param value ready to be logged
-     */
-    public String getParamValueToLog(String handler, String methodName, String key, String value) {
-        if (preventValueLogging(handler, methodName, key)) {
-            return "******";
-        }
-        else {
-            return (String) Translator.convert(value, String.class);
-        }
-    }
-
-    /**
      * Extracts the handler name from URL tokens.
      * Basically, it concatenates all the tokens, except the last one
      * that is the methodName, connecting them through a dot.
@@ -196,11 +149,6 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
             // As this code is just for logging, it could keep going when no session is found.
             return null;
         }
-    }
-
-    @Override
-    public String getCallerLogin() {
-        return getCallerLogin(caller.get());
     }
 
 }

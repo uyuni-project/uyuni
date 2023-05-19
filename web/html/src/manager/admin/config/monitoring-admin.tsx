@@ -23,7 +23,7 @@ const { capitalize } = Utils;
 const msgRestart = t("Restart is needed for the configuration changes to take effect.");
 
 const msgMap = {
-  internal_error: t("An internal error has occured. See the server logs for details."),
+  internal_error: t("An internal error has occurred. See the server logs for details."),
   enabling_failed: t("Enabling monitoring failed. See the server logs for details."),
   enabling_failed_partially: t(
     "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
@@ -54,7 +54,7 @@ const msgMap = {
   taskomatic_msg_restart: msgRestart,
   self_monitoring_msg_restart: msgRestart,
   no_change: t("Monitoring status hasn't changed."),
-  unknown_status: t("An error occured. Monitoring status unknown. Refresh the page."),
+  unknown_status: t("An error occurred. Monitoring status unknown. Refresh the page."),
 };
 
 const exporterMap = {
@@ -171,7 +171,7 @@ const HelpPanel = (props: HelpPanelProps) => {
         >
           {t("documentation")}
         </a>
-        {t(" to learn how to to consume these metrics.")}
+        {t(" to learn how to consume these metrics.")}
       </p>
     </div>
   );

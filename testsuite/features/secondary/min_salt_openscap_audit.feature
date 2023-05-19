@@ -12,7 +12,6 @@ Feature: OpenSCAP audit of Salt minion
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
 
-  @skip_if_container
   Scenario: Install the OpenSCAP packages on the SLE minion
     When I refresh the metadata for "sle_minion"
     And I install OpenSCAP dependencies on "sle_minion"
@@ -83,6 +82,5 @@ Feature: OpenSCAP audit of Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  @skip_if_container
   Scenario: Cleanup: remove the OpenSCAP packages from the SLE minion
     When I remove OpenSCAP dependencies from "sle_minion"

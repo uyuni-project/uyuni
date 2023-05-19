@@ -1,3 +1,14 @@
+- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
+- Reimplement queries for system metrics
+- Enforce minimum version of 1.11 for byte-buddy.
+- Updated EL9 jaxb-api symlinks to Uyuni provided package.
+- Fix issue with `aclChannelTypeCapable` that prevented errata view in
+  deb arch
+- Update system overview in case of manual system reboot
+- Add uyuni_systems_scrape_duration_seconds metric
+- OES credentials do not allow access to SCC. Skip them when an
+  SCCClientException is thrown and move forward
+- show virtualization host info in systems overview page
 - Refresh pillars after setting custom values via SSM (bsc#1210659)
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - Allow processing big state results (bsc#1210957)

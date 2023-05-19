@@ -148,12 +148,11 @@ public class MinionActionManager {
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction))) {
                     Map<Long, ZonedDateTime>  scheduleActionData = minionSummaries.stream()
-                            .collect(Collectors.toMap(MinionSummary::getServerId, s -> {
-                                ZonedDateTime stagingTime = stagingWindowStartTime.plus(
+                            .collect(Collectors.toMap(MinionSummary::getServerId,
+                                    s -> stagingWindowStartTime.plus(
                                                     (long) (SECONDS.between(stagingWindowStartTime,
-                                                            stagingWindowEndTime) * Math.random()), SECONDS);
-                                return stagingTime;
-                            }));
+                                                            stagingWindowEndTime) * Math.random()), SECONDS)
+                            ));
                         if (log.isDebugEnabled()) {
                             scheduleActionData.forEach((id, stagingTime) -> log.info(
                                     "Detected install/update action (id={}): scheduling staging job for minion " +

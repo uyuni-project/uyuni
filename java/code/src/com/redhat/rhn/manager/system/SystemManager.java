@@ -176,8 +176,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-
 
 /**
  * SystemManager
@@ -1079,20 +1077,6 @@ public class SystemManager extends BaseManager {
         pc.setFilterColumn("outdated_packages");
         pc.setFilterData(">0");
         return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
-    }
-
-    /**
-     * Returns the number of systems with outdated packages
-     *
-     * @return number of systems with outdated packages
-     */
-    public static long countOutdatedSystems() {
-        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
-        return HibernateFactory.getSession()
-                .createNativeQuery(selectCountQuery, Tuple.class)
-                .getSingleResult()
-                .get(COUNT, Number.class)
-                .longValue();
     }
 
     /**
@@ -2193,7 +2177,8 @@ public class SystemManager extends BaseManager {
         server.setMachineId(uniqueId);
         server.setOs("(unknown)");
         server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
+                null, new SecureRandom()));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         server.setLastBoot(System.currentTimeMillis() / 1000);
@@ -3933,7 +3918,7 @@ public class SystemManager extends BaseManager {
         }
         Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
                 .orElse(CredentialsFactory.createCredentials(
-                        "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
+                        "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom()),
                         RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
                         Credentials.TYPE_REPORT_CREDS, null));
         if (forcePwChange) {

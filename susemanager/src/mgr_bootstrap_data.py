@@ -1045,6 +1045,18 @@ DATA = {
         'PDID' : [2428, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
     },
+    'SLE-MICRO-5.4-aarch64' : {
+        'PDID' : [2572, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/4/bootstrap/'
+    },
+    'SLE-MICRO-5.4-s390x' : {
+        'PDID' : [2573, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/4/bootstrap/'
+    },
+    'SLE-MICRO-5.4-x86_64' : {
+        'PDID' : [2574, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/4/bootstrap/'
+    },
     'openSUSE-Leap-15-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/0/bootstrap/'
@@ -1128,6 +1140,14 @@ DATA = {
     'openSUSE-Leap-Micro-5.3-aarch64-uyuni' : {
         'BASECHANNEL' : 'opensuse_micro5_3-aarch64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/3/bootstrap/'
+    },
+    'openSUSE-Leap-Micro-5.4-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_4-x86_64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/4/bootstrap/'
+    },
+    'openSUSE-Leap-Micro-5.4-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_4-aarch64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/4/bootstrap/'
     },
     'openSUSE-MicroOS-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_microos-x86_64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
