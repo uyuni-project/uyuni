@@ -159,8 +159,7 @@ public class TaskoJob implements Job {
         if (!isTaskThreadAvailable(job, task)) {
             int rescheduleSeconds = job.getRescheduleTime();
             log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
-            TaskoQuartzHelper.rescheduleJob(schedule,
-                    ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
+            TaskoQuartzHelper.rescheduleJob(schedule, ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
             return false;
         }
         return true;
@@ -169,51 +168,60 @@ public class TaskoJob implements Job {
     private TaskoRun runTask(TaskoSchedule schedule, TaskoTask task, TaskoTemplate template,
                              JobExecutionContext context) {
         TaskoRun result = null;
-        if (!isTaskRunning(schedule, task)) {
-            try {
-                Class<RhnJob> jobClass = (Class<RhnJob>) Class.forName(template.getTask().getTaskClass());
-                RhnJob job = jobClass.getDeclaredConstructor().newInstance();
+        if (isTaskRunning(schedule, task)) {
+            return result;
+        }
 
-                if (checkThreadAvailable(schedule, job, task)) {
-                    markTaskRunning(task);
-
-                    try {
-                        log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
-                        TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
-                        TaskoFactory.save(taskRun);
-                        HibernateFactory.commitTransaction();
-                        HibernateFactory.closeSession();
-
-                        doExecute(job, context, taskRun);
-
-                        // rollback everything, what the application changed and didn't committed
-                        if (HibernateFactory.getSession().getTransaction().isActive()) {
-                            HibernateFactory.rollbackTransaction();
-                            HibernateFactory.closeSession();
-                        }
-
-                        if (log.isDebugEnabled()) {
-                            log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
-                                    taskRun.getStatus().toLowerCase());
-                        }
-                        if (List.of(TaskoRun.STATUS_FINISHED, TaskoRun.STATUS_FAILED)
-                                .contains(taskRun.getStatus()) &&
-                                !Objects.equals(taskRun.getStatus(), lastStatus.get(task.getName()))) {
-                            sendStatusMail(schedule, taskRun, task);
-                            lastStatus.put(task.getName(), taskRun.getStatus());
-                        }
-                        result = taskRun;
-                    }
-                    finally {
-                        unmarkTaskRunning(task);
-                    }
-                }
+        try {
+            RhnJob job = createJob(template.getTask().getTaskClass());
+            if (!checkThreadAvailable(schedule, job, task)) {
+                return result;
             }
-            catch (Exception e) {
-                log.error(e.getMessage(), e);
+
+            markTaskRunning(task);
+
+            try {
+                log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
+                TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
+                TaskoFactory.save(taskRun);
+                HibernateFactory.commitTransaction();
+                HibernateFactory.closeSession();
+
+                doExecute(job, context, taskRun);
+
+                // rollback everything, what the application changed and didn't committed
+                if (HibernateFactory.getSession().getTransaction().isActive()) {
+                    HibernateFactory.rollbackTransaction();
+                    HibernateFactory.closeSession();
+                }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
+                            taskRun.getStatus().toLowerCase());
+                }
+
+                if (List.of(TaskoRun.STATUS_FINISHED, TaskoRun.STATUS_FAILED).contains(taskRun.getStatus()) &&
+                        !Objects.equals(taskRun.getStatus(), lastStatus.get(task.getName()))) {
+                    sendStatusMail(schedule, taskRun, task);
+                    lastStatus.put(task.getName(), taskRun.getStatus());
+                }
+
+                result = taskRun;
+            }
+            finally {
+                unmarkTaskRunning(task);
             }
         }
+        catch (Exception e) {
+            log.error("Unable to run task", e);
+        }
+
         return result;
+    }
+
+    private static RhnJob createJob(String jobClassName) throws ReflectiveOperationException {
+        Class<? extends RhnJob> jobClass = Class.forName(jobClassName).asSubclass(RhnJob.class);
+        return jobClass.getDeclaredConstructor().newInstance();
     }
 
     private void doExecute(RhnJob job, JobExecutionContext context, TaskoRun taskRun) {
