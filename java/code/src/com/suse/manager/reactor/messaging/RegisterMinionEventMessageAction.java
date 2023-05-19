@@ -115,7 +115,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private final SystemQuery systemQuery;
     private final SystemEntitlementManager entitlementManager;
 
-    private CloudPaygManager cloudPaygManager = new CloudPaygManager();
+    private final CloudPaygManager cloudPaygManager;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -125,10 +125,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      *
      * @param systemQueryIn systemQuery instance for gathering data from a system.
      * @param saltApiIn saltApi instance for gathering data from a system.
+     * @param paygMgrIn {@link CloudPaygManager} instance
      */
-    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
+        cloudPaygManager = paygMgrIn;
         VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
@@ -136,13 +138,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
         );
-    }
-
-    /**
-     * @param mgrIn overwrite default {@link CloudPaygManager}
-     */
-    public void setCloudPaygManager(CloudPaygManager mgrIn) {
-        cloudPaygManager = mgrIn;
     }
 
     /**
