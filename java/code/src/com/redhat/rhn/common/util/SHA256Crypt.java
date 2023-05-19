@@ -79,7 +79,8 @@ public class SHA256Crypt {
      * @throws SHA256CryptException SHA256Crypt exception
      */
     public static String crypt(String key, String s) {
-        s = "$5$" + s; //$5$ takes care that sha256 is used
+        //$5$ takes care that sha256 is used
+        s = "$5$" + CryptHelper.getSalt(s, CryptHelper.getSHA256Prefix(), SALT_LENGTH);
         return Crypt.crypt(key, s);
     }
 

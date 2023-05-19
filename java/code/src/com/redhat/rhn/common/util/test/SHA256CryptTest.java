@@ -100,6 +100,12 @@ public class SHA256CryptTest {
         assertTrue(c2.startsWith("$5$testsalttestsalt"));
         c2 = c2.substring(20); //get encoded password
         assertNotNull(c2);
+
+        String password = "password";
+        String newSalt = "tests.l/t3stSALTtest";
+        String c4 = SHA256Crypt.crypt(password, newSalt);
+        String c5 = SHA256Crypt.crypt(password, c4);
+        assertEquals(c4, c5);
     }
 
 }
