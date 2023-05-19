@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.taskomatic.task.payg;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -53,7 +54,8 @@ public class PaygComputeDimensionsTask extends RhnJavaJob {
      * Default constructor.
      */
     public PaygComputeDimensionsTask() {
-        this(DimensionsConfiguration.DEFAULT_CONFIGURATION, new PaygDimensionFactory(), new CloudPaygManager());
+        this(DimensionsConfiguration.DEFAULT_CONFIGURATION, new PaygDimensionFactory(),
+                GlobalInstanceHolder.PAYG_MANAGER);
     }
 
     /**

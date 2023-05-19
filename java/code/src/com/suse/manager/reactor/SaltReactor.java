@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
@@ -91,6 +92,7 @@ public class SaltReactor {
     private final SystemQuery systemQuery;
     private final SaltServerActionService saltServerActionService;
     private final SaltUtils saltUtils;
+    private final CloudPaygManager paygMgr;
 
     // The event stream object
     private EventStream eventStream;
@@ -106,13 +108,15 @@ public class SaltReactor {
      * @param systemQueryIn instance to get system information.
      * @param saltServerActionServiceIn
      * @param saltUtilsIn
+     * @param paygMgrIn
      */
     public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn, SaltServerActionService saltServerActionServiceIn,
-                       SaltUtils saltUtilsIn) {
+                       SaltUtils saltUtilsIn, CloudPaygManager paygMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.saltServerActionService = saltServerActionServiceIn;
         this.saltUtils = saltUtilsIn;
+        this.paygMgr = paygMgrIn;
     }
 
     /**
@@ -122,7 +126,7 @@ public class SaltReactor {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr),
                 RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);

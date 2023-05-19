@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -65,14 +66,17 @@ public class NotificationMessageController {
 
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
+    private final CloudPaygManager paygManager;
 
     /**
      * @param systemQueryIn instance for getting information from a system.
      * @param saltApiIn instance for getting information from a system.
+     * @param paygMgrIn instance of {@link CloudPaygManager}
      */
-    public NotificationMessageController(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+    public NotificationMessageController(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
+        this.paygManager = paygMgrIn;
     }
 
     /**
@@ -216,7 +220,8 @@ public class NotificationMessageController {
         String severity = "success";
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(systemQuery, saltApi);
+        RegisterMinionEventMessageAction action =
+                new RegisterMinionEventMessageAction(systemQuery, saltApi, paygManager);
         action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         Map<String, String> data = new HashMap<>();

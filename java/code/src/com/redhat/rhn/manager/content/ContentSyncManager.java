@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -152,8 +153,7 @@ public class ContentSyncManager {
 
     private Optional<File> sumaProductTreeJson = Optional.empty();
 
-    // TODO: detection of isPAYG happens only on taskomatic start. Is this ok?
-    private CloudPaygManager cloudPaygManager = new CloudPaygManager();
+    private CloudPaygManager cloudPaygManager;
 
     private Path tmpLoggingDir;
 
@@ -161,17 +161,19 @@ public class ContentSyncManager {
      * Default constructor.
      */
     public ContentSyncManager() {
+        cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
     }
 
     /**
      * Constructor for testing
      * @param tmpLogDir overwrite logdir for credential output
-     * @param mgr overwrite default {@link CloudPaygManager}
+     * @param paygMgrIn {@link CloudPaygManager} to use
      */
-    public ContentSyncManager(Path tmpLogDir, CloudPaygManager mgr) {
+    public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
+        super();
         tmpLoggingDir = tmpLogDir;
-        if (mgr != null) {
-            cloudPaygManager = mgr;
+        if (paygMgrIn != null) {
+            cloudPaygManager = paygMgrIn;
         }
     }
 
