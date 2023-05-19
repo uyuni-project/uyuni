@@ -20,15 +20,15 @@ Feature: Management of minion keys
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Completeness of the onboarding page
-    And I follow the left menu "Salt > Keys"
+    When I follow the left menu "Salt > Keys"
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
     When I configure salt minion on "sle_minion"
-    And I wait until Salt client is inactive on "sle_minion"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
@@ -43,12 +43,12 @@ Feature: Management of minion keys
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "rejected"
     Then I should see a "rejected" text
     # we stop the service so the minion does not resubmit its key spontaneously
-    When I stop "venv-salt-minion" service on "sle_minion"
+    When I stop salt-minion on "sle_minion"
     And I delete "sle_minion" from the Rejected section
     And I refresh page until I do not see "sle_minion" hostname as text
 
   Scenario: Accepted minion shows up as a registered system
-    When I start "venv-salt-minion" service on "sle_minion"
+    When I start salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     Then "sle_minion" should not be registered
     When I follow the left menu "Salt > Keys"
@@ -62,11 +62,10 @@ Feature: Management of minion keys
     Then the Salt master can reach "sle_minion"
     When I get OS information of "sle_minion" from the Master
     Then it should contain the OS of "sle_minion"
-    When I start "salt-minion" service on "sle_minion"
 
   Scenario: Delete profile of unreacheable minion
     Given I am on the Systems overview page of this "sle_minion"
-    When I stop "venv-salt-minion" service on "sle_minion"
+    When I stop salt-minion on "sle_minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
