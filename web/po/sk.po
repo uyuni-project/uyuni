@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-19 15:31+0200\n"
-"PO-Revision-Date: 2023-04-29 17:14+0000\n"
+"PO-Revision-Date: 2023-05-20 13:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -774,7 +774,6 @@ msgid "Restart is needed for the configuration changes to take effect."
 msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
-#, fuzzy
 msgid "An internal error has occurred. See the server logs for details."
 msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
@@ -846,7 +845,6 @@ msgid "Monitoring status hasn't changed."
 msgstr "Stav monitorovania sa nezmenil."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
-#, fuzzy
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
@@ -915,7 +913,6 @@ msgid "documentation"
 msgstr "dokumentácia"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
-#, fuzzy
 msgid " to learn how to consume these metrics."
 msgstr " naučiť sa, ako tieto metriky využívať."
 
