@@ -10,7 +10,7 @@
 
 # these features sync real channels (last core features)
 - features/reposync/srv_sync_products-reference.feature
-
+- features/reposync/reference_srv_check_reposync.feature
 
 #- features/reposync/srv_wait_for_reposync.feature
 
