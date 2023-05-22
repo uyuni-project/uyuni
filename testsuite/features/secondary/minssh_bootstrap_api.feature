@@ -7,7 +7,7 @@
 # this feature won't be able to perform actions on it.
 # - features/secondary/minssh_move_from_and_to_proxy.feature
 # If the current feature fails on bootstrapping,
-# This feature won't be able to delete the minion in its initial setup.
+# this feature won't be able to delete the minion in its initial setup.
 
 @scope_salt_ssh
 @scope_onboarding

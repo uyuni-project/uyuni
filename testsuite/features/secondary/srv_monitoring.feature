@@ -12,13 +12,13 @@
 # This feature can cause failures in the following features:
 # - features/secondary/min_monitoring.feature
 # If this feature fails,
-# It could let the monitoring feature disabled for the SLE minion
+# it could let the monitoring feature disabled for the SLE minion
 # - features/secondary/min_rhlike_monitoring.feature
 # If this feature fails,
-# It could let the monitoring feature disabled for the Red Hat-like minion
+# it could let the monitoring feature disabled for the Red Hat-like minion
 # - features/secondary/min_deblike_monitoring.feature
 # If this feature fails,
-# It could let the monitoring feature disabled for the Debian-like minion
+# it could let the monitoring feature disabled for the Debian-like minion
 
 @skip_if_container
 @scope_monitoring

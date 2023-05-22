@@ -8,7 +8,7 @@
 # - features/secondary/minssh_salt_install_package.feature
 # - features/secondary/minssh_ansible_control_node.feature
 # If the current feature fails on bootstrapping,
-# These features won't be able to perform actions on it.
+# these features won't be able to perform actions on it.
 
 @ssh_minion
 @scope_salt_ssh
