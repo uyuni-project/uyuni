@@ -33,10 +33,10 @@ When(/^I kill the salt-minion process running on "([^"]*)"$/) do |minion|
   node = get_target(minion)
   process = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   if process == "venv-salt-minion"
-    step %(I run "pkill -f #{process}" on "#{node}")
+    node.run("pkill -f #{process}")
   else
     # if we run pkill -f salt-minion, it will also kill the venv-salt-minion, which we want to avoid
-    step %(I run "pkill #{process}" on "#{node}")
+    node.run("pkill #{process}")
   end
 end
 
