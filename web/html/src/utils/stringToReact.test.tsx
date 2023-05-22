@@ -7,12 +7,8 @@ describe("stringToReact", () => {
     a: string | JSX.Element | (string | JSX.Element)[],
     b: string | JSX.Element | (string | JSX.Element)[]
   ) => {
-    // We don't care about rendering and React key errors here, swallow them silently to reduce noise
-    const error = console.error;
-    console.error = () => {};
     const aResult = ReactDOMServer.renderToStaticMarkup(<>{a}</>);
     const bResult = ReactDOMServer.renderToStaticMarkup(<>{b}</>);
-    console.error = error;
 
     return expect(aResult).toEqual(bResult);
   };
