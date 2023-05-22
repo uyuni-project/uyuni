@@ -439,7 +439,7 @@ function refresh_pillar {
         then
             SIDS="$SIDS,$ID"
         else
-            SIDS="$SID"
+            SIDS="$ID"
         fi
     done
     SKIPPED=`spacecmd -q api system.refreshPillar -- -A "[\\\\\"general\\\\\",[$SIDS]]"`
