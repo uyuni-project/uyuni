@@ -1,5 +1,6 @@
 import * as React from "react";
 
+// TODO: Replace this with `import { stringToReact } from "utils";` and verify it works correctly
 import ReactHtmlParser from "html-react-parser";
 
 import { isOrgAdmin } from "core/auth/auth.utils";

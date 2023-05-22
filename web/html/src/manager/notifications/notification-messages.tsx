@@ -2,6 +2,7 @@ import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
 
+// TODO: Replace this with `import { stringToReact } from "utils";` and verify it works correctly
 import escapeHtml from "html-react-parser";
 
 import { AsyncButton } from "components/buttons";
