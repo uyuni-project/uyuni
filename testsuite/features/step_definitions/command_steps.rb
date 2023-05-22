@@ -1637,7 +1637,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   command = "spacewalk-hostname-rename #{$server.public_ip}
             --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
             --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
-            --ssl-ca-password=spacewalk -u admin -p admin"
+            --ssl-ca-password=spacewalk"
   out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out_spacewalk}"
 
