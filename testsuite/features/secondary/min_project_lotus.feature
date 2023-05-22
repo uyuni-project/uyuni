@@ -45,8 +45,8 @@ Feature: Project Lotus
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I follow "Sync"
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled" text
+    # no need to click on "Sync Now" as it's automatically enabled by default on Uyuni
+    Then I should see a "Repository sync is running" text
 
   Scenario: Pre-requisite: Wait for reposync to finish
     Then I wait until all spacewalk-repo-sync finished
