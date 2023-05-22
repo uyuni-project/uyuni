@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-httpd:latest uyuni/proxy-httpd:%PKG_VERSION% uyuni/proxy-httpd:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/proxy-httpd:latest uyuni/proxy-httpd:4.3.6 uyuni/proxy-httpd:4.3.6.%RELEASE%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS base
@@ -49,9 +49,10 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%PKG_VERSION%"
+LABEL org.opencontainers.image.name=proxy-httpd-image
+LABEL org.opencontainers.image.version=4.3.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:4.3.6.%RELEASE%"
 # endlabelprefix
 
 # http(s)
