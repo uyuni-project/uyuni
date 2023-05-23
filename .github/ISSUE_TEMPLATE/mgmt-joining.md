@@ -25,7 +25,7 @@ General template for new joiners of the SUSE Manager team.
   - According to the role and squad, others could be needed:
     - [ ] [galaxy-alerts](https://mailman.suse.de/mailman/admindb/galaxy-alerts)
     - [ ] [galaxy-bugs](https://mailman.suse.de/mailman/admindb/galaxy-bugs)
-    - [ ] [galaxy-cil](https://mailman.suse.de/mailman/admindb/galaxy-ci)
+    - [ ] [galaxy-ci](https://mailman.suse.de/mailman/admindb/galaxy-ci)
     - [ ] [galaxy-docs](https://mailman.suse.de/mailman/admindb/galaxy-docs)
     - [ ] [galaxy-infra](https://mailman.suse.de/mailman/admindb/galaxy-infra)
     - [ ] [galaxy-noise](https://mailman.suse.de/mailman/admindb/galaxy-noise)
