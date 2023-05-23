@@ -119,9 +119,7 @@ public class DownloadFile extends DownloadAction {
         if (url == null) {
             return mapping.findForward("error");
         }
-        if (log.isDebugEnabled()) {
-            log.debug("url : [{}]", url);
-        }
+        log.debug("url : [{}]", url);
         if (url.startsWith("/ty/")) {
             url = url.replaceFirst("/ty/", "");
             String[] splits = url.split("/");
@@ -133,8 +131,7 @@ public class DownloadFile extends DownloadAction {
         }
         if (url.startsWith("/ks/dist")) {
             log.debug("URL is ks dist..");
-            ActionForward error = handleKickstartDownload(request, response,
-                    url, mapping);
+            ActionForward error = handleKickstartDownload(request, response, url, mapping);
             log.debug("Done handling ks download");
             if (error != null) {
                 log.debug("returning null");
@@ -199,7 +196,6 @@ public class DownloadFile extends DownloadAction {
     public static Map<String, String> parseDistUrl(String url) {
         Map<String, String> ret = new HashMap<>();
 
-
         if (url.charAt(0) == '/') {
             url = url.substring(1);
         }
@@ -212,21 +208,21 @@ public class DownloadFile extends DownloadAction {
                 ret.put("orgId",  split[3]);
                 labelPos = 4;
             }
-            else if (split[2].equals("session")) {
-                ret.put("session", split[3]);
+            else if (split[2].equals(SESSION)) {
+                ret.put(SESSION, split[3]);
                 labelPos = 4;
             }
-            else if (split[2].equals("child")) {
-                ret.put("child", split[3]);
+            else if (split[2].equals(CHILD)) {
+                ret.put(CHILD, split[3]);
                 labelPos = 4;
             }
 
             ret.put("label", split[labelPos]);
-            String path = "";
+            StringBuilder path = new StringBuilder();
             for (int i = labelPos + 1; i < split.length; i++) {
-                path += "/" + split[i];
+                path.append("/").append(split[i]);
             }
-            ret.put("path", path);
+            ret.put("path", path.toString());
         }
         catch (ArrayIndexOutOfBoundsException e) {
             return null;
@@ -234,13 +230,10 @@ public class DownloadFile extends DownloadAction {
         return ret;
     }
 
-    private ActionForward handleKickstartDownload(HttpServletRequest request,
-            HttpServletResponse response, String url,
-            ActionMapping mapping) throws IOException {
+    private ActionForward handleKickstartDownload(HttpServletRequest request, HttpServletResponse response,
+                                                  String url, ActionMapping mapping) throws IOException {
 
-        if (log.isDebugEnabled()) {
-            log.debug("URL : {}", url);
-        }
+        log.debug("URL : {}", url);
 
         Map<String, String> map = DownloadFile.parseDistUrl(url);
 
@@ -261,20 +254,15 @@ public class DownloadFile extends DownloadAction {
             }
         }
 
-
         KickstartSession ksession = null;
-        if (map.containsKey("session")) {
-            String sessionId = SessionSwap.extractData(map.get("session"))[0];
+        if (map.containsKey(SESSION)) {
+            String sessionId = SessionSwap.extractData(map.get(SESSION))[0];
             ksession = KickstartFactory.
             lookupKickstartSessionById(Long.valueOf(sessionId));
-
         }
 
-
-        if (log.isDebugEnabled()) {
-            log.debug("computed path to just the file: {}", path);
-            log.debug("Tree label to lookup: {}", label);
-        }
+        log.debug("computed path to just the file: {}", path);
+        log.debug("Tree label to lookup: {}", label);
 
         KickstartableTree tree = null;
         if (orgId != null) {
@@ -290,11 +278,9 @@ public class DownloadFile extends DownloadAction {
             tree = KickstartFactory.lookupKickstartTreeByLabel(label);
         }
 
-        if (map.containsKey("child") &&
-                      !Config.get().getBoolean("ks_restrict_child_channels")) {
-            Channel child = ChannelFactory.lookupByLabel(map.get("child"));
-            if (child == null || tree == null ||
-                    !child.getParentChannel().equals(tree.getChannel())) {
+        if (map.containsKey(CHILD) && !Config.get().getBoolean("ks_restrict_child_channels")) {
+            Channel child = ChannelFactory.lookupByLabel(map.get(CHILD));
+            if (child == null || tree == null || !child.getParentChannel().equals(tree.getChannel())) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return mapping.findForward("error");
             }
@@ -305,9 +291,7 @@ public class DownloadFile extends DownloadAction {
             params.put(FILENAME, path);
             request.setAttribute(PARAMS, params);
             return null;
-
         }
-
 
         if (tree == null) {
             log.error("Tree not found.");
@@ -365,8 +349,7 @@ public class DownloadFile extends DownloadAction {
         }
 
         User user = UserFactory.lookupById(userId);
-        if (!hash.equals(DownloadManager.getFileSHA1Token(fileId,
-                filename, user, expire, type))) {
+        if (hash == null || !hash.equals(DownloadManager.getFileSHA1Token(fileId, filename, user, expire, type))) {
             log.error("Invalid hash on file download url: {}", url);
             return mapping.findForward("error");
         }
@@ -375,24 +358,23 @@ public class DownloadFile extends DownloadAction {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String path = "";
-        Map params = (Map) request.getAttribute(PARAMS);
+        String path;
+        Map<String, Object> params = (Map<String, Object>) request.getAttribute(PARAMS);
         String type = (String) params.get(TYPE);
         User currentUser = new RequestContext(request).getCurrentUser();
         if (type.equals(DownloadManager.DOWNLOAD_TYPE_KICKSTART)) {
-            return getStreamInfoKickstart(mapping, form, request, response, path);
+            return getStreamInfoKickstart(request, response);
         }
         else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER)) {
-            String url = ConfigDefaults.get().getCobblerServerUrl() +
-                        (String) params.get(URL_STRING);
+            String url = ConfigDefaults.get().getCobblerServerUrl() + params.get(URL_STRING);
             KickstartHelper helper = new KickstartHelper(request);
-            String data = "";
+            String data;
             if (helper.isProxyRequest()) {
-                data = KickstartManager.getInstance().renderKickstart(
-                        helper.getKickstartHost(), url);
+                data = KickstartManager.getInstance().renderKickstart(helper.getKickstartHost(), url);
             }
             else {
                 data = KickstartManager.getInstance().renderKickstart(url);
@@ -402,11 +384,11 @@ public class DownloadFile extends DownloadAction {
         }
         else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER_API)) {
             // read data from POST body
-            String postData = new String();
-            String line = null;
+            StringBuilder postData = new StringBuilder();
+            String line;
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null) {
-                postData += line;
+                postData.append(line);
             }
 
             // Send data
@@ -416,29 +398,28 @@ public class DownloadFile extends DownloadAction {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             // this will write POST /download//cobbler_api instead of
             // POST /cobbler_api, but cobbler do not mind
-            wr.write(postData, 0, postData.length());
+            wr.write(postData.toString(), 0, postData.length());
             wr.flush();
             conn.connect();
 
             // Get the response
-            String output = new String();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(
-                conn.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             while ((line = rd.readLine()) != null) {
-                output += line;
+                output.append(line);
             }
             wr.close();
 
             KickstartHelper helper = new KickstartHelper(request);
+            String outputStr = output.toString();
             if (helper.isProxyRequest()) {
                 // Search/replacing all instances of cobbler host with host
                 // we pass in, for use with Spacewalk Proxy.
-                output = output.replaceAll(ConfigDefaults.get().getCobblerHost(),
-                    helper.getForwardedHost());
+                outputStr = outputStr.replaceAll(ConfigDefaults.get().getCobblerHost(), helper.getForwardedHost());
             }
 
-            setContentInfo(response, output.length(), CONTENT_TYPE_TEXT_XML);
-            return getStream(output.getBytes(), CONTENT_TYPE_TEXT_XML);
+            setContentInfo(response, outputStr.length(), CONTENT_TYPE_TEXT_XML);
+            return getStream(outputStr.getBytes(), CONTENT_TYPE_TEXT_XML);
         }
         else {
             Long fileId = (Long) params.get(FILEID);
@@ -447,18 +428,15 @@ public class DownloadFile extends DownloadAction {
             if (type.equals(DownloadManager.DOWNLOAD_TYPE_PACKAGE)) {
                 Package pack = PackageFactory.lookupByIdAndOrg(fileId, user.getOrg());
                 setContentInfo(response, pack.getPackageSize(), CONTENT_TYPE_OCTET_STREAM);
-                path = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    "/" + pack.getPath();
+                path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + pack.getPath();
                 return getStreamForPath(path, CONTENT_TYPE_OCTET_STREAM);
             }
             else if (type.equals(DownloadManager.DOWNLOAD_TYPE_SOURCE)) {
                 Package pack = PackageFactory.lookupByIdAndOrg(fileId, user.getOrg());
                 List<PackageSource> src = PackageFactory.lookupPackageSources(pack);
                 if (!src.isEmpty()) {
-                    setContentInfo(response, src.get(0).getPackageSize(),
-                            CONTENT_TYPE_OCTET_STREAM);
-                    path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
-                        src.get(0).getPath();
+                    setContentInfo(response, src.get(0).getPackageSize(), CONTENT_TYPE_OCTET_STREAM);
+                    path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + src.get(0).getPath();
                     return getStreamForPath(path, CONTENT_TYPE_OCTET_STREAM);
                 }
             }
@@ -467,22 +445,22 @@ public class DownloadFile extends DownloadAction {
                 ChannelManager.verifyChannelAdmin(user, fileId);
                 StringBuilder output = new StringBuilder();
                 for (String fileName : ChannelManager.getLatestSyncLogFiles(c)) {
-                    RandomAccessFile file = new RandomAccessFile(fileName, "r");
-                    long fileLength = file.length();
-                    if (fileLength > DOWNLOAD_REPO_LOG_LENGTH) {
-                        file.seek(fileLength - DOWNLOAD_REPO_LOG_LENGTH);
-                        // throw away text till end of the actual line
-                        file.readLine();
+                    try (RandomAccessFile file = new RandomAccessFile(fileName, "r")) {
+                        long fileLength = file.length();
+                        if (fileLength > DOWNLOAD_REPO_LOG_LENGTH) {
+                            file.seek(fileLength - DOWNLOAD_REPO_LOG_LENGTH);
+                            // throw away text till end of the actual line
+                            file.readLine();
+                        }
+                        else {
+                            file.seek(0);
+                        }
+                        String line;
+                        while ((line = file.readLine()) != null) {
+                            output.append(line);
+                            output.append("\n");
+                        }
                     }
-                    else {
-                        file.seek(0);
-                    }
-                    String line;
-                    while ((line = file.readLine()) != null) {
-                        output.append(line);
-                        output.append("\n");
-                    }
-                    file.close();
                      if (output.length() > DOWNLOAD_REPO_LOG_MIN_LENGTH) {
                         break;
                     }
@@ -495,34 +473,29 @@ public class DownloadFile extends DownloadAction {
                 if (!user.equals(currentUser)) {
                     throw new PermissionException("missing permission for download link");
                 }
-                ScriptRunAction action =
-                        (ScriptRunAction) ActionManager.lookupAction(user, fileId);
+                ScriptRunAction action = (ScriptRunAction) ActionManager.lookupAction(user, fileId);
                 ScriptActionDetails details = action.getScriptActionDetails();
 
-                String results = "";
+                StringBuilder results = new StringBuilder();
                 if (details.getResults() != null) {
                     for (ScriptResult r : details.getResults()) {
-                        results += r.getOutputContents();
+                        results.append(r.getOutputContents());
                     }
                 }
-                return getStream(results.getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+                return getStream(results.toString().getBytes(), CONTENT_TYPE_TEXT_PLAIN);
             }
         }
 
-        throw new UnknownDownloadTypeException("The specified download type " + type +
-                " is not currently supported");
-
+        throw new UnknownDownloadTypeException("The specified download type " + type + " is not currently supported");
     }
 
-    private StreamInfo getStreamInfoKickstart(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response,
-                String path) throws Exception {
+    @SuppressWarnings("unchecked")
+    private StreamInfo getStreamInfoKickstart(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
-        Map params = (Map) request.getAttribute(PARAMS);
-        path = (String) params.get(FILENAME);
-        if (log.isDebugEnabled()) {
-            log.debug("getStreamInfo KICKSTART type, path: {}", path);
-        }
+        Map<String, Object> params = (Map<String, Object>) request.getAttribute(PARAMS);
+        String path = (String) params.get(FILENAME);
+        log.debug("getStreamInfo KICKSTART type, path: {}", path);
         String diskPath = null;
         String kickstartMount = Config.get().getString(ConfigDefaults.MOUNT_POINT);
         String fileName;
@@ -533,14 +506,13 @@ public class DownloadFile extends DownloadAction {
         Channel child = (Channel) params.get(CHILD);
 
         if (tree.getBasePath().indexOf(kickstartMount) == 0) {
-            log.debug("Trimming mount because tree is" +
-                " explicitly rooted to the mount point");
+            log.debug("Trimming mount because tree is explicitly rooted to the mount point");
             kickstartMount = "";
         }
         // If the tree is rooted somewhere other than
         // /var/satellite then no need to prepend it.
-        if (tree.getBasePath().startsWith("/")) {
-            log.debug("Tree isnt rooted at /var/satellite, lets just use basepath");
+        if (tree.getBasePath().startsWith(File.separator)) {
+            log.debug("Tree isn't rooted at /var/satellite, lets just use basepath");
             kickstartMount = "";
         }
         // Searching for RPM
@@ -551,11 +523,9 @@ public class DownloadFile extends DownloadAction {
             if (checksum.matches("^[0-9a-f]{32,}$")) {
                 // ChannelFactory.lookupPackageByFilename* uses "like" for the path
                 // this works also with checksum/fileName
-                fileName = checksum + "/" + fileName;
+                fileName = checksum + File.separator + fileName;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("RPM filename: {}", fileName);
-            }
+            log.debug("RPM filename: {}", fileName);
             Channel channel = tree.getChannel();
             if (child != null) {
                 channel = child;
@@ -565,8 +535,7 @@ public class DownloadFile extends DownloadAction {
                     tree.getKernelOptions().contains("useonlinerepo")) {
                 String byteRange = request.getHeader("Range");
                 if (byteRange != null) {
-                    Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)",
-                            Pattern.CASE_INSENSITIVE);
+                    Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)", Pattern.CASE_INSENSITIVE);
                     Matcher match = rangeRegex.matcher(byteRange);
                     int newHeaderEnd = 0;
                     int newHeaderStart = 0;
@@ -588,34 +557,26 @@ public class DownloadFile extends DownloadAction {
             }
 
             if (rpmPackage != null) {
-                diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
-                    rpmPackage.getPath();
-                if (log.isDebugEnabled()) {
-                    log.debug("found package :: diskPath path: {}", diskPath);
-                }
-                newState = KickstartFactory.
-                    lookupSessionStateByLabel(KickstartSessionState.IN_PROGRESS);
+                diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + rpmPackage.getPath();
+                log.debug("found package :: diskPath path: {}", diskPath);
+                newState = KickstartFactory.lookupSessionStateByLabel(KickstartSessionState.IN_PROGRESS);
             }
             else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Package was not in channel, looking in distro path.");
-                }
+                log.debug("Package was not in channel, looking in distro path.");
             }
         }
         // either it's not an rpm, or we didn't find it in the channel
         // check for dir pings, virt manager or install, bz #345721
         if (diskPath == null) {
-            // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
-
             if (child == null) {
                 if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
                     if (path.endsWith("/comps.xml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            "/" + tree.getChannel().getComps().getRelativeFilename();
+                            File.separator + tree.getChannel().getComps().getRelativeFilename();
                     }
                     else if (path.endsWith("/modules.yaml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            "/" + tree.getChannel().getModules().getRelativeFilename();
+                            File.separator + tree.getChannel().getModules().getRelativeFilename();
                     }
                     else {
                         String[] split = StringUtils.split(path, '/');
@@ -627,29 +588,28 @@ public class DownloadFile extends DownloadAction {
                                 File.separator + StringUtils.join(split, '/');
                     }
                 }
-                else if (tree.getKernelOptions().contains("useonlinerepo") &&
-                         path.endsWith("/media.1/products")) {
+                else if (tree.getKernelOptions().contains("useonlinerepo") && path.endsWith("/media.1/products")) {
                     MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
                             .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());
                     if (mediaProducts != null) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                                "/" + mediaProducts.getRelativeFilename();
+                                File.separator + mediaProducts.getRelativeFilename();
                     }
                     else {
-                        diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                        diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
                     }
                 }
                 else {
-                    diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                    diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
                 }
             }
             else if (path.endsWith("/comps.xml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    "/" + child.getComps().getRelativeFilename();
+                    File.separator + child.getComps().getRelativeFilename();
             }
             else if (path.endsWith("/modules.yaml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    "/" + child.getModules().getRelativeFilename();
+                    File.separator + child.getModules().getRelativeFilename();
             }
             else {
                 String[] split = StringUtils.split(path, '/');
@@ -661,9 +621,7 @@ public class DownloadFile extends DownloadAction {
                         File.separator + StringUtils.join(split, File.separator);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("DirCheck path: {}", diskPath);
-            }
+            log.debug("DirCheck path: {}", diskPath);
             File actualFile = new File(diskPath);
             if (actualFile.exists() && actualFile.isDirectory()) {
                 log.debug("Directory hit.  just return 200");
@@ -673,8 +631,7 @@ public class DownloadFile extends DownloadAction {
             }
             else if (actualFile.exists()) {
                 log.debug("Looks like it is an actual file and it exists.");
-                newState = KickstartFactory.
-                    lookupSessionStateByLabel(KickstartSessionState.STARTED);
+                newState = KickstartFactory.lookupSessionStateByLabel(KickstartSessionState.STARTED);
 
             }
             else {
@@ -682,15 +639,12 @@ public class DownloadFile extends DownloadAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return getStream("".getBytes(), CONTENT_TYPE_TEXT_PLAIN);
             }
-
         }
+        log.debug("Final path before returning getStreamForPath(): {}", diskPath);
         if (log.isDebugEnabled()) {
-            log.debug("Final path before returning getStreamForPath(): {}", diskPath);
-        }
-        if (log.isDebugEnabled()) {
-            Enumeration e = request.getHeaderNames();
+            Enumeration<String> e = request.getHeaderNames();
             while (e.hasMoreElements()) {
-                String name = (String) e.nextElement();
+                String name = e.nextElement();
                 log.debug("header: [{}]: {}", name, request.getHeader(name));
             }
         }
@@ -701,7 +655,7 @@ public class DownloadFile extends DownloadAction {
         else if (request.getHeader("Range") != null) {
             log.debug("range detected.  serving chunk of file");
             String range = request.getHeader("Range");
-            return manualServeByteRange(request, response, diskPath, range);
+            return manualServeByteRange(response, diskPath, range);
         }
         // Update kickstart session
         if (ksession != null &&
@@ -725,8 +679,7 @@ public class DownloadFile extends DownloadAction {
 
         File actualFile = new File(diskPath);
         Date mtime = new Date(actualFile.lastModified());
-        SimpleDateFormat formatter = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         setContentInfo(response, actualFile.length(), CONTENT_TYPE_OCTET_STREAM);
         response.addHeader("last-modified", formatter.format(mtime));
@@ -750,7 +703,6 @@ public class DownloadFile extends DownloadAction {
         return new FileStreamInfo(type, file);
     }
 
-
     private String getNextValue(Iterator<String> it) {
         while (it.hasNext()) {
             String next = it.next();
@@ -769,11 +721,9 @@ public class DownloadFile extends DownloadAction {
         String checksum;
         // Obtain the checksum for the file in question and stick it in the
         // outgoing HTTP headers under "X-RHN-Checksum".
-        if (rpmPackage != null && rpmPackage.getChecksum() != null &&
-                    rpmPackage.getChecksum().getChecksum() != null) {
+        if (rpmPackage != null && rpmPackage.getChecksum() != null && rpmPackage.getChecksum().getChecksum() != null) {
             checksum = rpmPackage.getChecksum().getChecksum();
-            response.setHeader("Content-Length",
-                String.valueOf(rpmPackage.getPackageSize()));
+            response.setHeader("Content-Length", String.valueOf(rpmPackage.getPackageSize()));
         }
         else {
             File f = new File(diskPath);
@@ -792,9 +742,7 @@ public class DownloadFile extends DownloadAction {
     }
 
     // Ported from perl - needed for yum's requests for byte ranges
-    private StreamInfo manualServeByteRange(HttpServletRequest request,
-            HttpServletResponse response,
-            String diskPath, String range) {
+    private StreamInfo manualServeByteRange(HttpServletResponse response, String diskPath, String range) {
 
         // bytes=440-25183
         Pattern rangePattern = Pattern.compile("bytes=(\\d*)-(\\d*)");
@@ -820,15 +768,11 @@ public class DownloadFile extends DownloadAction {
         else {
             end = Long.parseLong(rangeMatcher.group(2));
         }
-        if (log.isDebugEnabled()) {
-            log.debug("manualServeByteRange Start    : {}", start);
-            log.debug("manualServeByteRange End      : {}", end);
-        }
+        log.debug("manualServeByteRange Start    : {}", start);
+        log.debug("manualServeByteRange End      : {}", end);
         long size = end - start + 1;
 
-        if (log.isDebugEnabled()) {
-            log.debug("manualServeByteRange totalsize: {}", totalSize);
-        }
+        log.debug("manualServeByteRange totalsize: {}", totalSize);
 
         if (size <= 0) {
             return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM);
@@ -836,21 +780,16 @@ public class DownloadFile extends DownloadAction {
         setContentInfo(response, size, CONTENT_TYPE_OCTET_STREAM);
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
         Date mtime = new Date(actualFile.lastModified());
-        // "EEE, dd MMM yyyy HH:mm:ss zzz";
-        SimpleDateFormat formatter = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         String fdate = formatter.format(mtime);
         response.addHeader("last-modified", fdate);
-        response.addHeader("Content-Range", "bytes " + start + "-" + end +
-                "/" + totalSize);
+        response.addHeader("Content-Range", "bytes " + start + "-" + end + "/" + totalSize);
         response.addHeader("Accept-Ranges", "bytes");
-        if (log.isDebugEnabled()) {
-            log.debug("Added header last-modified: {}", fdate);
-            log.debug("Added header Content-Length: {}", size);
-            log.debug("Added header Content-Range: bytes {}-{}/{}", start, end, totalSize);
-            log.debug("Added header Accept-Ranges: bytes");
-        }
+        log.debug("Added header last-modified: {}", fdate);
+        log.debug("Added header Content-Length: {}", size);
+        log.debug("Added header Content-Range: bytes {}-{}/{}", start, end, totalSize);
+        log.debug("Added header Accept-Ranges: bytes");
         // TODO: it's a bad idea to read file from filesystem into memory.
         // We have to implement copying from InputStream to OutputStream by chunks in this
         // class instead of using parent execute() (and copy()).
@@ -860,11 +799,8 @@ public class DownloadFile extends DownloadAction {
 
         // gotta make sure it is end + 1
         byte[] chunk = FileUtils.readByteArrayFromFile(actualFile, start, end + 1);
-        if (log.isDebugEnabled()) {
-            log.debug("chunk size: {}", chunk.length);
-            log.debug("read chunk into byte array.  returning ByteArrayStreamInfo");
-        }
+        log.debug("chunk size: {}", chunk.length);
+        log.debug("read chunk into byte array.  returning ByteArrayStreamInfo");
         return new ByteArrayStreamInfo(CONTENT_TYPE_OCTET_STREAM, chunk);
     }
-
 }
