@@ -54,8 +54,9 @@ def _get_suse_cloud_info():
     full_output = auth_data_output.split("\n")
     _, header_auth, _, repository_url = full_output
     repository_url_parsed = urlparse(repository_url)
+    k, v = header_auth.split(":", 1)
 
-    return SuseCloudInfo(header_auth, repository_url_parsed.netloc)
+    return SuseCloudInfo({ k: v }, repository_url_parsed.netloc)
 
 def _extract_http_auth(credentials):
     credentials_file = '/etc/zypp/credentials.d/' + credentials
@@ -114,7 +115,8 @@ def load_instance_info():
     credentials_data = _extract_http_auth(CREDENTIALS_NAME)
     products = _get_installed_suse_products()
 
-    return { "products": products,
+    return { "type": "CLOUDRMT",
+             "products": products,
              "basic_auth": credentials_data,
              "header_auth": header_auth,
              "rmt_host": rmt_host_data}

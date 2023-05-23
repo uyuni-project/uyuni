@@ -149,6 +149,17 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new RHUI {@link Credentials}
+     * @return new credential with type RHUI
+     */
+    public static Credentials createRhuiCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_RHUI));
+        return creds;
+    }
+
+    /**
      * Helper method for creating new Virtual Host Manager {@link Credentials}
      * @return new credential with type Virtual Host Manager
      */
@@ -186,6 +197,9 @@ public class CredentialsFactory extends HibernateFactory {
         else if (credentialsType.equals(Credentials.TYPE_CLOUD_RMT)) {
             credentials = CredentialsFactory.createCloudRmtCredentials();
         }
+        else if (credentialsType.equals(Credentials.TYPE_RHUI)) {
+            credentials = CredentialsFactory.createRhuiCredentials();
+        }
         else if (credentialsType.equals(Credentials.TYPE_REPORT_CREDS)) {
             credentials = CredentialsFactory.createReportCredentials();
         }
@@ -198,6 +212,7 @@ public class CredentialsFactory extends HibernateFactory {
 
         return credentials;
     }
+
 
     @Override
     protected Logger getLogger() {

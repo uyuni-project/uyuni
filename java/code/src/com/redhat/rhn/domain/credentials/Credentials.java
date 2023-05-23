@@ -39,6 +39,7 @@ public class Credentials extends BaseDomainHelper {
     public static final String TYPE_REGISTRY = "registrycreds";
     public static final String TYPE_CLOUD_RMT = "cloudrmt";
     public static final String TYPE_REPORT_CREDS = "reportcreds";
+    public static final String TYPE_RHUI = "rhui";
 
     private Long id;
     private User user;

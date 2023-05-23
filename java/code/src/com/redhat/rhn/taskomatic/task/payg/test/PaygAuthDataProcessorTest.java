@@ -229,7 +229,8 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         basicAuth.put("username", "SCC_05c394f");
         basicAuth.put("password", "0e248802");
 
-        String headerAuth = "X-Instance-Data:PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN";
+        Map<String, String> headerAuth = new HashMap<>();
+        headerAuth.put("X-Instance-Data", "PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN");
 
         Map<String, String> rmtHost = new HashMap<>();
         rmtHost.put("hostname", "smt-ec2.susecloud.net");
