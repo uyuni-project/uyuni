@@ -54,7 +54,7 @@ public class TaskoJob implements Job {
             .withZone(ZoneId.systemDefault());
 
 
-    private Long scheduleId;
+    private final long scheduleId;
 
     static {
         for (TaskoTask task : TaskoFactory.listTasks()) {
@@ -69,8 +69,8 @@ public class TaskoJob implements Job {
      * job is always associated with a schedule
      * @param scheduleIdIn schedule id
      */
-    public TaskoJob(Long scheduleIdIn) {
-        setScheduleId(scheduleIdIn);
+    public TaskoJob(long scheduleIdIn) {
+        this.scheduleId = scheduleIdIn;
     }
 
     private boolean isTaskSingleThreaded(TaskoTask task) {
@@ -253,21 +253,5 @@ public class TaskoJob implements Job {
         }
         log.info("Sending e-mail ... {}", task.getName());
         TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
-    }
-
-    /**
-     * setter for scheduleId
-     * @param scheduleIdIn The scheduleId to set.
-     */
-    public void setScheduleId(Long scheduleIdIn) {
-        this.scheduleId = scheduleIdIn;
-    }
-
-    /**
-     * getter for scheduleId
-     * @return Returns the scheduleId.
-     */
-    public Long getScheduleId() {
-        return scheduleId;
     }
 }
