@@ -211,7 +211,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             return candidates.get(0);
         }
         else  {
-            throw new TranslationException("more then one method candidate found during conversion fallback");
+            throw new TranslationException("more than one method candidate found during conversion fallback");
         }
     }
 
