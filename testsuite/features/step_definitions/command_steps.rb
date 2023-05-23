@@ -248,14 +248,16 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
-When(/^I wait until "([^"]*)" service is (active|inactive) on "([^"]*)"$/) do |service, status, host|
+When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
-  repeat_until_timeout do
-    out, _err, _code = node.run(cmd, check_errors: false, separated_results: true)
-    break if out.strip == status
-    sleep 2
-  end
+  node.run_until_ok(cmd)
+end
+
+When(/^I wait until "([^"]*)" service is inactive on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  cmd = "systemctl is-active #{service}"
+  node.run_until_fail(cmd)
 end
 
 When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
