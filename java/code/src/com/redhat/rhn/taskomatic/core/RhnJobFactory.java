@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.core;
 import com.redhat.rhn.taskomatic.TaskoJob;
 
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.Scheduler;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
@@ -33,8 +34,11 @@ public class RhnJobFactory implements JobFactory {
      */
     @Override
     public synchronized Job newJob(TriggerFiredBundle trigger, Scheduler s) {
-        Long scheduleId = trigger.getJobDetail().getJobDataMap().getLong("schedule_id");
+        final JobDataMap jobDataMap = trigger.getJobDetail().getJobDataMap();
 
-        return new TaskoJob(scheduleId);
+        long scheduleId = jobDataMap.getLong("schedule_id");
+        long bunchStart = jobDataMap.containsKey("bunch_start_index") ? jobDataMap.getLong("bunch_start_index") : 0L;
+
+        return new TaskoJob(scheduleId, bunchStart);
     }
 }

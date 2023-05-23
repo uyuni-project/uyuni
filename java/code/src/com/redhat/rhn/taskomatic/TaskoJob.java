@@ -33,10 +33,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -55,6 +57,8 @@ public class TaskoJob implements Job {
 
     private final long scheduleId;
 
+    private final long bunchStartIndex;
+
     static {
         for (TaskoTask task : TaskoFactory.listTasks()) {
             TASKS.put(task.getName(), 0);
@@ -67,9 +71,11 @@ public class TaskoJob implements Job {
      * default constructor
      * job is always associated with a schedule
      * @param scheduleIdIn schedule id
+     * @param bunchStartIndexIn the index of the task within the bunch from where the execution should start
      */
-    public TaskoJob(long scheduleIdIn) {
+    public TaskoJob(long scheduleIdIn, long bunchStartIndexIn) {
         this.scheduleId = scheduleIdIn;
+        this.bunchStartIndex = bunchStartIndexIn;
     }
 
     private boolean isTaskSingleThreaded(TaskoTask task) {
@@ -119,8 +125,16 @@ public class TaskoJob implements Job {
         Instant start = Instant.now();
         LOG.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
 
+        // Get from the bunch the task templated we need to process
+        List<TaskoTemplate> bunchTemplates = schedule.getBunch()
+                                                     .getTemplates()
+                                                     .stream()
+                                                     .sorted(Comparator.comparing(TaskoTemplate::getOrdering))
+                                                     .filter(template -> template.getOrdering() >= bunchStartIndex)
+                                                     .collect(Collectors.toList());
+
         String previousRunStatus = null;
-        for (TaskoTemplate template : schedule.getBunch().getTemplates()) {
+        for (TaskoTemplate template : bunchTemplates) {
             // If it's not the first run and the template requires a previous state, check for it
             if (previousRunStatus != null &&
                     template.getStartIf() != null && !template.getStartIf().equals(previousRunStatus)) {
@@ -153,16 +167,6 @@ public class TaskoJob implements Job {
         return false;
     }
 
-    private boolean checkThreadAvailable(TaskoSchedule schedule, RhnJob job, TaskoTask task) throws SchedulerException {
-        if (!isTaskThreadAvailable(job, task)) {
-            int rescheduleSeconds = job.getRescheduleTime();
-            LOG.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
-            TaskoQuartzHelper.rescheduleJob(schedule, ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
-            return false;
-        }
-        return true;
-    }
-
     private TaskoRun runTemplate(TaskoSchedule schedule, TaskoTemplate template, JobExecutionContext context) {
         TaskoTask task = template.getTask();
         if (isTaskRunning(schedule, task)) {
@@ -171,7 +175,8 @@ public class TaskoJob implements Job {
 
         try {
             RhnJob job = createJob(task.getTaskClass());
-            if (!checkThreadAvailable(schedule, job, task)) {
+            if (!isTaskThreadAvailable(job, task)) {
+                rescheduleBunchFromTask(schedule, template, job.getRescheduleTime());
                 return null;
             }
 
@@ -214,6 +219,15 @@ public class TaskoJob implements Job {
             LOG.error("Unable to run task", e);
             return null;
         }
+    }
+
+    private static void rescheduleBunchFromTask(TaskoSchedule schedule, TaskoTemplate template, int rescheduleSeconds)
+        throws SchedulerException {
+        LOG.info("Cannot find a thread for {} of {}. Rescheduling starting from {} in {} seconds",
+            template.getTask().getName(), schedule.getJobLabel(), template.getOrdering(), rescheduleSeconds);
+
+        Instant newScheduledTime = ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant();
+        TaskoQuartzHelper.rescheduleJob(schedule, newScheduledTime, template.getOrdering());
     }
 
     private static RhnJob createJob(String jobClassName) throws ReflectiveOperationException {
