@@ -20,5 +20,6 @@ DOMPurify.addHook("uponSanitizeElement", (node, data) => {
 
 /** Convert a HTML string to React elements */
 export const stringToReact = (input: string | null | undefined) => {
+  // TODO: Check if we can drop using `parse()` altogether by setting `RETURN_DOM_FRAGMENT: true` for DOMPurify
   return parse(DOMPurify.sanitize(input ?? ""));
 };
