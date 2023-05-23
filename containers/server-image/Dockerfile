@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/server:latest uyuni/server:%PKG_VERSION% uyuni/server:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/server:latest uyuni/server:4.4.0 uyuni/server:4.4.0.%RELEASE%
 
 ARG INIT_BASE=registry.suse.com/bci/bci-base:15.4
 FROM $INIT_BASE
@@ -76,9 +76,9 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%PKG_VERSION%"
+LABEL org.opencontainers.image.version="4.4.0"
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.0.%RELEASE%"
 # endlabelprefix
 
 CMD ["/usr/lib/systemd/systemd"]
