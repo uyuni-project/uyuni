@@ -1468,39 +1468,39 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.lang" xml:space="preserve">
         <source>Interface Language</source>
-        <target/>
+        <target>Jazyk rozhrania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.langs" xml:space="preserve">
         <source>Please select your preferred language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ interface.</source>
-        <target/>
+        <target>Prosím, vyberte si preferovaný jazyk z nižšie uvedeného zoznamu aktuálne podporovaných jazykov. Zvolený jazyk sa stane predvoleným jazykom pre rozhranie @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
-        <target/>
+        <target>Úvodná stránka "Prehľad"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc" xml:space="preserve">
         <source>Display the following information on my "Overview" page upon login:</source>
-        <target/>
+        <target>Zobraziť nasledujúce informácie na mojej stránke "Prehľad" po prihlásení:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle" xml:space="preserve">
         <source>CSV Files</source>
-        <target/>
+        <target>Súbory CSV</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvdesc" xml:space="preserve">
         <source>Configure a separator character to be used in downloadable CSV files:</source>
-        <target/>
+        <target>Konfigurovať oddeľovací znak, ktorý sa má používať v súboroch CSV na stiahnutie:</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvcomma" xml:space="preserve">
         <source>Comma (",", default)</source>
@@ -29100,10 +29100,6 @@ given channel.</source>
         <source>Highstate</source>
         <target/>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
         <target/>
@@ -29585,48 +29581,56 @@ given channel.</source>
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+      <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
         <source>CPUs:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
         <source>Threads per Core:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
         <source>Schedule System Profile refresh on all managed systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
         <source>System Profile Refresh</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
         <source>Subscription Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
         <source> Show expired subscriptions warning.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
-
-
- 
       </body>
   </file>
 </xliff>

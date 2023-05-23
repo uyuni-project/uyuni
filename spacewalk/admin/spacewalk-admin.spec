@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       procps
+Requires:       python3-websockify
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 BuildRequires:  make
@@ -45,9 +46,7 @@ Provides:       satellite-utils = 5.3.0
 Obsoletes:      rhn-satellite-admin < 5.3.0
 Provides:       rhn-satellite-admin = 5.3.0
 BuildArch:      noarch
-%if 0%{?suse_version}
 BuildRequires:  spacewalk-config
-%endif
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
 Requires:       susemanager-schema-utility

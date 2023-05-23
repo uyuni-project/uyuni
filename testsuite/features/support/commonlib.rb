@@ -315,3 +315,16 @@ def get_gpg_keys(node, target = $server)
   end
   gpg_keys.lines.map(&:strip)
 end
+
+# Retrieve the value defined in the current feature scope context
+def get_context(key)
+  return unless $context.key?($feature_scope)
+
+  $context[$feature_scope][key]
+end
+
+# Define or replace a key-value in the current feature scope context
+def add_context(key, value)
+  $context[$feature_scope] = {} unless $context.key?($feature_scope)
+  $context[$feature_scope].merge!({ key => value })
+end

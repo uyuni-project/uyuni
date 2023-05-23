@@ -1,7 +1,1937 @@
 [
     {
+        "id" : -41,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Oracle Linux 9 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -488,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/RDMA/x86_64/",
+                "name" : "oraclelinux9-rdma",
+                "distro_target" : "x86_64",
+                "description" : "Latest RDMA packages on Oracle Linux 9 for the Oracle Integrated Stack.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -489,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/UEKR7/x86_64/",
+                "name" : "oraclelinux9-uek-r7",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 7 for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -490,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/baseos/latest/x86_64/",
+                "name" : "oraclelinux9",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 9",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -491,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/appstream/x86_64/",
+                "name" : "oraclelinux9-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -492,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/addons/x86_64/",
+                "name" : "oraclelinux9-addons",
+                "distro_target" : "x86_64",
+                "description" : "Addons for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -493,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/codeready/builder/x86_64/",
+                "name" : "oraclelinux9-codereadybuilder",
+                "distro_target" : "x86_64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -494,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/developer/UEKR7/x86_64/",
+                "name" : "oraclelinux9-developer-uek-r7",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 7 for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -495,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/developer/x86_64/",
+                "name" : "oraclelinux9-developer",
+                "distro_target" : "x86_64",
+                "description" : "Packages for test and development - Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -40,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 9 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -481,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/UEKR7/aarch64/",
+                "name" : "oraclelinux9-uek-r7",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 7 for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -482,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/baseos/latest/aarch64/",
+                "name" : "oraclelinux9",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 9",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -483,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/appstream/aarch64/",
+                "name" : "oraclelinux9-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -484,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/addons/aarch64/",
+                "name" : "oraclelinux9-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -485,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/codeready/builder/aarch64/",
+                "name" : "oraclelinux9-codereadybuilder",
+                "distro_target" : "aarch64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -486,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/developer/UEKR7/aarch64/",
+                "name" : "oraclelinux9-developer-uek-r7",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 7 for Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -487,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL9/developer/aarch64/",
+                "name" : "oraclelinux9-developer",
+                "distro_target" : "aarch64",
+                "description" : "Packages for test and development - Oracle Linux 9",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -39,
+        "name" : "AlmaLinux",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "AlmaLinux 9 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -471,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/baseos",
+                "name" : "almalinux9",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -472,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/appstream",
+                "name" : "almalinux9-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -473,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/extras",
+                "name" : "almalinux9-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -474,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/powertools",
+                "name" : "almalinux9-powertools",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -475,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/ha",
+                "name" : "almalinux9-ha",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -38,
+        "name" : "AlmaLinux",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "AlmaLinux 9 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -476,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/baseos",
+                "name" : "almalinux9",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -477,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/appstream",
+                "name" : "almalinux9-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -478,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/extras",
+                "name" : "almalinux9-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -479,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/powertools",
+                "name" : "almalinux9-powertools",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -480,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/ha",
+                "name" : "almalinux9-ha",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -37,
+        "name" : "Rocky Linux",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Rocky Linux 9 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -466,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-9&arch=aarch64",
+                "name" : "rockylinux-9",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 9",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -467,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-9&arch=aarch64",
+                "name" : "rockylinux-9-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -468,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-9&arch=aarch64",
+                "name" : "rockylinux-9-extras",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 9 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -470,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-9&arch=aarch64",
+                "name" : "rockylinux-9-ha",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 9 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -36,
+        "name" : "Rocky Linux",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Rocky Linux 9 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -461,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-9&arch=x86_64",
+                "name" : "rockylinux-9",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 9",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -462,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-9&arch=x86_64",
+                "name" : "rockylinux-9-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 9 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -463,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-9&arch=x86_64",
+                "name" : "rockylinux-9-extras",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 9 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -465,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-9&arch=x86_64",
+                "name" : "rockylinux-9-ha",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 9 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -35,
+        "name" : "RHEL and Liberty Base",
+        "identifier" : "el-base",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL and Liberty 9 Base",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -460,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "EL9-Pool",
+                "distro_target" : "x86_64",
+                "description" : "EL9-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -34,
+        "name" : "Open Enterprise Server",
+        "identifier" : "Open_Enterprise_Server",
+        "former_identifier" : "",
+        "version" : "2023",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 2023",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            -21
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -401,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-Pool/sle-15-x86_64/",
+                "name" : "OES2023-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 2023",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -402,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-Updates/sle-15-x86_64/",
+                "name" : "OES2023-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 2023",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -403,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Basesystem15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Basesystem15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -404,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Basesystem15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Basesystem15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -405,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Product-SLES15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Product-SLES15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -406,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Product-SLES15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Product-SLES15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -407,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Server-Applications15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Server-Applications15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -408,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Server-Applications15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Server-Applications15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -409,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Containers15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Containers15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -410,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Containers15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Containers15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -411,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Basesystem15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Basesystem15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -412,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Basesystem15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Basesystem15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -413,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Basesystem15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Basesystem15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -414,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Product-SLES15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Product-SLES15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -415,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Product-SLES15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Product-SLES15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -416,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Product-SLES15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Product-SLES15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -417,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Server-Applications15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Server-Applications15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -418,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Server-Applications15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Server-Applications15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -419,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Server-Applications15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Server-Applications15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -420,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Containers15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Containers15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -421,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Containers15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Containers15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -422,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Containers15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Containers15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -423,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-DevTools15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-DevTools15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -424,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-DevTools15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-DevTools15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -425,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-DevTools15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-DevTools15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -426,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-DevTools15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-DevTools15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -427,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-DevTools15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-DevTools15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -428,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Desktop-Applications15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Desktop-Applications15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -429,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Desktop-Applications15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Desktop-Applications15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -430,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Desktop-Applications15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Desktop-Applications15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -431,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -432,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -433,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Web-Scripting15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Web-Scripting15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -434,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Web-Scripting15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Web-Scripting15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -435,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Web-Scripting15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Web-Scripting15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -436,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -437,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -438,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Public-Cloud15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Public-Cloud15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -439,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Public-Cloud15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Public-Cloud15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -440,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Public-Cloud15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Public-Cloud15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -441,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -442,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -443,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Python3-15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Python3-15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -444,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Python3-15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Python3-15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -445,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Python3-15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Python3-15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -446,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Python3-15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Python3-15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -447,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Python3-15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Python3-15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -448,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Manager-Tools15-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Manager-Tools15-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -449,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Manager-Tools15-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Manager-Tools15-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -450,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Manager-Tools15-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Manager-Tools15-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -451,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Manager-Tools15-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Manager-Tools15-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -452,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Manager-Tools15-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Manager-Tools15-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -453,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -454,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -455,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -456,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -457,
+                "url" : "https://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -33,
+        "name" : "Ubuntu",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "22.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 22.04",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -385,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -386,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -387,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -388,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -389,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -390,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -391,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -392,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -393,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -394,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -395,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -396,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -397,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -398,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -399,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -400,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -32,
+        "name" : "Debian",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "11",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 11",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -380,
+                "url" : "http://deb.debian.org/debian/dists/bullseye/main/binary-amd64/",
+                "name" : "debian-11-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -381,
+                "url" : "http://deb.debian.org/debian/dists/bullseye-updates/main/binary-amd64/",
+                "name" : "debian-11-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -382,
+                "url" : "http://security.debian.org/debian-security/dists/bullseye-security/updates/main/binary-amd64/",
+                "name" : "debian-11-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 11 (bullseye) AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -31,
+        "name" : "CentOS",
+        "identifier" : "centos",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "CentOS 7 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -334,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=os",
+                "name" : "centos7",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -336,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=centosplus",
+                "name" : "centos7-centosplus",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -337,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=cr",
+                "name" : "centos7-cr",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -338,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=extras",
+                "name" : "centos7-extras",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -339,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=fasttrack",
+                "name" : "centos7-fasttrack",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -341,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=aarch64&repo=updates",
+                "name" : "centos7-updates",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 7 Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -342,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=aarch64",
+                "name" : "epel7",
+                "distro_target" : "aarch64",
+                "description" : "EPEL 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -30,
+        "name" : "CentOS",
+        "identifier" : "centos",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "CentOS 8 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -372,
+                "url" : "https://vault.centos.org/centos/8/BaseOS/aarch64/os/",
+                "name" : "centos8",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -373,
+                "url" : "https://vault.centos.org/centos/8/AppStream/aarch64/os/",
+                "name" : "centos8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -374,
+                "url" : "https://vault.centos.org/centos/8/centosplus/aarch64/os/",
+                "name" : "centos8-centosplus",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -375,
+                "url" : "https://vault.centos.org/centos/8/cr/aarch64/os/",
+                "name" : "centos8-cr",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -376,
+                "url" : "https://vault.centos.org/centos/8/extras/aarch64/os/",
+                "name" : "centos8-extras",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -377,
+                "url" : "https://vault.centos.org/centos/8/fasttrack/aarch64/os/",
+                "name" : "centos8-fasttrack",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -378,
+                "url" : "https://vault.centos.org/centos/8/PowerTools/aarch64/os/",
+                "name" : "centos8-powertools",
+                "distro_target" : "aarch64",
+                "description" : "CentOS 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -351,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-8&arch=aarch64",
+                "name" : "epel8",
+                "distro_target" : "aarch64",
+                "description" : "EPEL 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -29,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 8 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -316,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/aarch64/",
+                "name" : "oraclelinux8",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -317,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/appstream/aarch64/",
+                "name" : "oraclelinux8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -318,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/addons/aarch64/",
+                "name" : "oraclelinux8-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -319,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/codeready/builder/aarch64/",
+                "name" : "oraclelinux8-codereadybuilder",
+                "distro_target" : "aarch64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -320,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/UEKR6/aarch64/",
+                "name" : "oraclelinux8-developer-uek-r6",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -321,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/aarch64/",
+                "name" : "oraclelinux8-developer",
+                "distro_target" : "aarch64",
+                "description" : "Packages for test and development - Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -28,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 7 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -297,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/latest/aarch64/",
+                "name" : "oraclelinux7",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -298,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/addons/aarch64/",
+                "name" : "oraclelinux7-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -301,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/aarch64/",
+                "name" : "oraclelinux7-uek-r6",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -312,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/SoftwareCollections/aarch64/",
+                "name" : "oraclelinux7-scl",
+                "distro_target" : "aarch64",
+                "description" : "Software Collection Library packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -27,
+        "name" : "Rocky Linux",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Rocky Linux 8 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -329,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-8&arch=aarch64",
+                "name" : "rockylinux-8",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -330,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-8&arch=aarch64",
+                "name" : "rockylinux-8-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -331,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-8&arch=aarch64",
+                "name" : "rockylinux-8-extras",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -332,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=PowerTools-8&arch=aarch64",
+                "name" : "rockylinux-8-powertools",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -333,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-8&arch=aarch64",
+                "name" : "rockylinux-8-ha",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 8 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -26,
+        "name" : "AlmaLinux",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "AlmaLinux 8 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
+                "name" : "almalinux8",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
+                "name" : "almalinux8-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
+                "name" : "almalinux8-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
+                "name" : "almalinux8-powertools",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
+                "name" : "almalinux8-ha",
+                "distro_target" : null,
+                "description" : "AlmaLinux 8 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -25,
+        "name" : "Amazon Linux",
+        "identifier" : "amazonlinux",
+        "former_identifier" : "",
+        "version" : "2",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Amazon Linux 2 aarch64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -322,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/core/latest/aarch64/mirror.list",
+                "name" : "amazonlinux2-core",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Linux 2 Core",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -323,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/extras/docker/latest/aarch64/mirror.list",
+                "name" : "amazonlinux2-extras-docker",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Extras 2 repo for Docker",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -24,
-        "name" : "Rocky Linux 8",
+        "name" : "Rocky Linux",
         "identifier" : "rockylinux",
         "former_identifier" : "",
         "version" : "8",
@@ -12,7 +1942,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -78,7 +2008,7 @@
     },
     {
         "id" : -23,
-        "name" : "AlmaLinux 8",
+        "name" : "AlmaLinux",
         "identifier" : "almalinux",
         "former_identifier" : "",
         "version" : "8",
@@ -89,7 +2019,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -102,50 +2032,50 @@
         ],
         "repositories" : [
             {
-                "id" : -287,
-                "url" : "https://repo.almalinux.org/almalinux/8/BaseOS/x86_64/os/",
+                "id" : -360,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/baseos",
                 "name" : "almalinux8",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -288,
-                "url" : "https://repo.almalinux.org/almalinux/8/AppStream/x86_64/os/",
+                "id" : -361,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/appstream",
                 "name" : "almalinux8-appstream",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 AppStream",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -289,
-                "url" : "https://repo.almalinux.org/almalinux/8/extras/x86_64/os/",
+                "id" : -362,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/extras",
                 "name" : "almalinux8-extras",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 Extras",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -290,
-                "url" : "https://repo.almalinux.org/almalinux/8/PowerTools/x86_64/os/",
+                "id" : -363,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/powertools",
                 "name" : "almalinux8-powertools",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 PowerTools",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -291,
-                "url" : "https://repo.almalinux.org/almalinux/8/HighAvailability/x86_64/os/",
+                "id" : -364,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/8/ha",
                 "name" : "almalinux8-ha",
-                "distro_target" : "x86_64",
+                "distro_target" : null,
                 "description" : "AlmaLinux 8 HighAvailability",
                 "enabled" : false,
                 "autorefresh" : true,
@@ -155,7 +2085,7 @@
     },
     {
         "id" : -22,
-        "name" : "Amazon Linux 2",
+        "name" : "Amazon Linux",
         "identifier" : "amazonlinux",
         "former_identifier" : "",
         "version" : "2",
@@ -166,7 +2096,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -202,7 +2132,7 @@
     },
     {
         "id" : -21,
-        "name" : "Open Enterprise Server 2018 SP3",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.3",
@@ -530,7 +2460,7 @@
     },
     {
         "id" : -20,
-        "name" : "Debian 10",
+        "name" : "Debian",
         "identifier" : "Debian-Client",
         "former_identifier" : "",
         "version" : "10",
@@ -541,7 +2471,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -579,7 +2509,7 @@
                 "name" : "debian-10-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -587,7 +2517,7 @@
     },
     {
         "id" : -19,
-        "name" : "Debian 9",
+        "name" : "Debian",
         "identifier" : "Debian-Client",
         "former_identifier" : "",
         "version" : "9",
@@ -598,7 +2528,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -636,7 +2566,7 @@
                 "name" : "debian-9-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 9 (stretch) AMD64 Main Security",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             }
@@ -644,7 +2574,7 @@
     },
     {
         "id" : -18,
-        "name" : "Ubuntu 20.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "20.04",
@@ -831,7 +2761,7 @@
     },
     {
         "id" : -17,
-        "name" : "Oracle Linux 8",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "8",
@@ -938,7 +2868,7 @@
     },
     {
         "id" : -16,
-        "name" : "Oracle Linux 6",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
@@ -949,7 +2879,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1015,7 +2945,7 @@
     },
     {
         "id" : -15,
-        "name" : "Oracle Linux 6",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
@@ -1026,7 +2956,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1074,16 +3004,6 @@
                 "name" : "oraclelinux6-uek-r3",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -175,
-                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/x86_64/",
-                "name" : "oraclelinux6-uek-r4",
-                "distro_target" : "x86_64",
-                "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 6",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -1142,7 +3062,7 @@
     },
     {
         "id" : -14,
-        "name" : "Oracle Linux 7",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "7",
@@ -1339,7 +3259,7 @@
     },
     {
         "id" : -13,
-        "name" : "CentOS 8",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "8",
@@ -1350,7 +3270,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1363,8 +3283,8 @@
         ],
         "repositories" : [
             {
-                "id" : -145,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock",
+                "id" : -365,
+                "url" : "https://vault.centos.org/centos/8/BaseOS/x86_64/os/",
                 "name" : "centos8",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8",
@@ -1373,8 +3293,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -146,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock",
+                "id" : -366,
+                "url" : "https://vault.centos.org/centos/8/AppStream/x86_64/os/",
                 "name" : "centos8-appstream",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 AppStream",
@@ -1383,8 +3303,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -147,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=centosplus&infra=stock",
+                "id" : -367,
+                "url" : "https://vault.centos.org/centos/8/centosplus/x86_64/os/",
                 "name" : "centos8-centosplus",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 Plus",
@@ -1393,8 +3313,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -148,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=cr&infra=stock",
+                "id" : -368,
+                "url" : "https://vault.centos.org/centos/8/cr/x86_64/os/",
                 "name" : "centos8-cr",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 CR",
@@ -1403,8 +3323,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -149,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=extras&infra=stock",
+                "id" : -369,
+                "url" : "https://vault.centos.org/centos/8/extras/x86_64/os/",
                 "name" : "centos8-extras",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 Extras",
@@ -1413,8 +3333,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -150,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=fasttrack&infra=stock",
+                "id" : -370,
+                "url" : "https://vault.centos.org/centos/8/fasttrack/x86_64/os/",
                 "name" : "centos8-fasttrack",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 FastTrack",
@@ -1423,8 +3343,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -151,
-                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=PowerTools&infra=stock",
+                "id" : -371,
+                "url" : "https://vault.centos.org/centos/8/PowerTools/x86_64/os/",
                 "name" : "centos8-powertools",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 8 PowerTools",
@@ -1446,7 +3366,7 @@
     },
     {
         "id" : -12,
-        "name" : "CentOS 7",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "7",
@@ -1457,7 +3377,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1563,7 +3483,7 @@
     },
     {
         "id" : -11,
-        "name" : "CentOS 6",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
@@ -1574,7 +3494,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1660,7 +3580,7 @@
     },
     {
         "id" : -10,
-        "name" : "CentOS 6",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
@@ -1671,7 +3591,7 @@
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -1757,7 +3677,7 @@
     },
     {
         "id" : -9,
-        "name" : "Open Enterprise Server 2018 SP2",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.2",
@@ -2085,7 +4005,7 @@
     },
     {
         "id" : -8,
-        "name" : "RHEL or SLES ES or CentOS 8 Base",
+        "name" : "RHEL or SLES ES or CentOS Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "8",
@@ -2122,7 +4042,7 @@
     },
     {
         "id" : -7,
-        "name" : "RHEL7 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "7",
@@ -2159,7 +4079,7 @@
     },
     {
         "id" : -6,
-        "name" : "RHEL6 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "6",
@@ -2196,7 +4116,7 @@
     },
     {
         "id" : -5,
-        "name" : "RHEL6 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "6",
@@ -2233,7 +4153,7 @@
     },
     {
         "id" : -4,
-        "name" : "RHEL5 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "5",
@@ -2270,7 +4190,7 @@
     },
     {
         "id" : -3,
-        "name" : "RHEL5 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "5",
@@ -2307,7 +4227,7 @@
     },
     {
         "id" : -2,
-        "name" : "Ubuntu 16.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "16.04",
@@ -2344,7 +4264,7 @@
     },
     {
         "id" : -1,
-        "name" : "Ubuntu 18.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "18.04",
@@ -2381,7 +4301,7 @@
     },
     {
         "id" : 42,
-        "name" : "Open Enterprise Server 2015",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2015",
@@ -2428,7 +4348,7 @@
     },
     {
         "id" : 43,
-        "name" : "Open Enterprise Server 2015 SP1",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2015.1",
@@ -2476,7 +4396,7 @@
     },
     {
         "id" : 44,
-        "name" : "Open Enterprise Server 11 SP3",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.3",
@@ -2524,7 +4444,7 @@
     },
     {
         "id" : 45,
-        "name" : "Open Enterprise Server 2018",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018",
@@ -2751,7 +4671,7 @@
     },
     {
         "id" : 46,
-        "name" : "Open Enterprise Server 2018 SP1",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.1",
@@ -2762,7 +4682,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -3079,7 +4999,7 @@
     },
     {
         "id" : 1232,
-        "name" : "Novell Open Enterprise Server 2 11",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11",
@@ -3126,7 +5046,7 @@
     },
     {
         "id" : 1241,
-        "name" : "Novell Open Enterprise Server 2 11.1",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.1",
@@ -3174,7 +5094,7 @@
     },
     {
         "id" : 1242,
-        "name" : "Novell Open Enterprise Server 2 11.2",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.2",

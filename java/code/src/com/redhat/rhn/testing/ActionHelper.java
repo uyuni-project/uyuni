@@ -202,7 +202,6 @@ public class ActionHelper  {
      * @param filterString the filter string we want to test out.
      */
     public void setupClampListBounds(String filterString) {
-        getRequest().setupAddParameter(RequestContext.LIST_DISPLAY_EXPORT, "0");
         getRequest().setupAddParameter(RequestContext.FILTER_STRING, filterString);
         getRequest().setupAddParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
         getRequest().setupAddParameter("newset", (String)null);

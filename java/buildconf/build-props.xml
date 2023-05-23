@@ -103,8 +103,11 @@
   <condition property="jaxb-api" value="jaxb-api" else="">
     <available file="${java.lib.dir}/jaxb-api.jar" />
   </condition>
-  <condition property="jaxb-core" value="glassfish-jaxb/jaxb-core" else="">
-    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-core.jar" />
+  <condition property="glassfish-jaxb-api" value="glassfish-jaxb-api" else="">
+    <available file="${java.lib.dir}/glassfish-jaxb-api.jar" />
+  </condition>
+  <condition property="jaxb-impl" value="glassfish-jaxb/jaxb-impl" else="">
+    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-impl.jar" />
   </condition>
   <condition property="jaxb-runtime" value="glassfish-jaxb/jaxb-runtime" else="">
     <available file="${java.lib.dir}/glassfish-jaxb/jaxb-runtime.jar" />
@@ -115,7 +118,7 @@
   <condition property="istack-commons" value="istack-commons-runtime" else="">
     <available file="${java.lib.dir}/istack-commons-runtime.jar" />
   </condition>
-  <property name="jaxb" value="${jaxb-api} ${jaxb-core} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
+  <property name="jaxb" value="${jaxb-api} ${glassfish-jaxb-api} ${jaxb-impl} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
 
 
   <condition property="hibernate5files" value="hibernate5/hibernate-core hibernate5/hibernate-c3p0 hibernate5/hibernate-ehcache" else="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5">

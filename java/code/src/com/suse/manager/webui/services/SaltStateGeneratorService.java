@@ -18,6 +18,8 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_RECURRING_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_RECURRING_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
@@ -39,6 +41,10 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
@@ -50,6 +56,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 
 import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -66,7 +73,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -390,6 +399,25 @@ public enum SaltStateGeneratorService {
     }
 
     /**
+     * Remove recurring state files for given entity
+     *
+     * @param o the entity
+     */
+    private void removeRecurringStateFiles(Object o) {
+        List<RecurringAction> actions = new ArrayList<>();
+        if (o instanceof MinionServer) {
+            actions = RecurringActionFactory.listMinionRecurringActions((MinionServer) o);
+        }
+        else if (o instanceof ServerGroup) {
+            actions = RecurringActionFactory.listGroupRecurringActions((ServerGroup) o);
+        }
+        else if (o instanceof Org) {
+            actions = RecurringActionFactory.listOrgRecurringActions(((Org) o).getId());
+        }
+        actions.forEach(RecurringActionManager::removeStateFile);
+    }
+
+    /**
      * Generate .sls file to assign config channels to a configurable entity.
      * @param revision the state revision of the configurable
      */
@@ -411,6 +439,23 @@ public enum SaltStateGeneratorService {
         }
         else if (revision instanceof OrgStateRevision) {
             generateOrgConfigState((OrgStateRevision) revision, statePath);
+        }
+    }
+
+    /**
+     * Generate a .sls file to assign recurring states to an entity
+     *
+     * @param action the recurring action
+     */
+    public void generateRecurringState(RecurringAction action) {
+        Set<RecurringStateConfig> config = ((RecurringState) action.getRecurringActionType()).getStateConfig();
+        if (config != null) {
+            List<String> statesList = config.stream()
+                    .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
+                    .map(RecurringStateConfig::getStateName)
+                    .collect(Collectors.toList());
+            generateStateAssignmentFile(SALT_RECURRING_STATE_FILE_PREFIX + action.getId(),
+                    statesList, suseManagerStatesFilesRoot.resolve(SALT_RECURRING_STATES_DIR));
         }
     }
 
@@ -453,15 +498,14 @@ public enum SaltStateGeneratorService {
     }
 
     private void generateConfigStates(StateRevision stateRevision, String fileName, Path statePath) {
-        generateStateAssignmentFile(fileName, stateRevision.getConfigChannels(), statePath);
+        ConfigChannelSaltManager confChannelSaltManager = ConfigChannelSaltManager.getInstance();
+        List<String> stateNames = stateRevision.getConfigChannels().stream().map(
+                confChannelSaltManager::getChannelStateName)
+                .collect(Collectors.toList());
+        generateStateAssignmentFile(fileName, stateNames, statePath.resolve(SALT_CONFIG_STATES_DIR));
     }
 
-    private void generateStateAssignmentFile(String fileName, List<ConfigChannel> states, Path statePath) {
-        ConfigChannelSaltManager confChannelSaltManager =
-                ConfigChannelSaltManager.getInstance();
-        Path baseDir = statePath.resolve(SALT_CONFIG_STATES_DIR);
-        List<String> stateNames =
-                states.stream().map(confChannelSaltManager::getChannelStateName).collect(Collectors.toList());
+    private void generateStateAssignmentFile(String fileName, List<String> stateNames, Path baseDir) {
         try {
             Files.createDirectories(baseDir);
             if (!skipSetOwner) {
@@ -490,6 +534,7 @@ public enum SaltStateGeneratorService {
     public void removeServer(MinionServer minion) {
         MinionPillarManager.INSTANCE.removePillar(minion);
         StatesAPI.removePackageState(minion.getMachineId());
+        removeRecurringStateFiles(minion);
         removeConfigChannelAssignmentsByMachineId(minion.getMachineId());
         removeActionChains(minion.getMachineId());
     }
@@ -499,6 +544,7 @@ public enum SaltStateGeneratorService {
      * @param group the group
      */
     public void removeServerGroup(ServerGroup group) {
+        removeRecurringStateFiles(group);
         removeConfigChannelAssignments(group);
     }
 
@@ -509,6 +555,7 @@ public enum SaltStateGeneratorService {
     public void removeOrg(Org org) {
         MinionServerFactory.lookupByOrg(org.getId())
                 .forEach(this::removeServer);
+        removeRecurringStateFiles(org);
         removeConfigChannelAssignments(org);
     }
 
@@ -532,6 +579,15 @@ public enum SaltStateGeneratorService {
         usage.getServerStateRevisions().forEach(this::generateConfigState);
         usage.getServerGroupStateRevisions().forEach(this::generateConfigState);
         usage.getOrgStateRevisions().forEach(this::generateConfigState);
+    }
+
+    /**
+     * Regenerate recurring state files for given recurring actions
+     *
+     * @param actions the recurring action
+     */
+    public void regenerateRecurringStates(List<RecurringAction> actions) {
+        actions.forEach(this::generateRecurringState);
     }
 
     /**
@@ -560,11 +616,9 @@ public enum SaltStateGeneratorService {
         return "org_" + orgId;
     }
 
-
     private String getServerStateFileName(String digitalServerId) {
         return SALT_SERVER_STATE_FILE_PREFIX + digitalServerId;
     }
-
 
     /**
      * @param groupId the id of the server group
@@ -587,7 +641,7 @@ public enum SaltStateGeneratorService {
      */
     public void createServerGroup(ServerGroup serverGroup) {
         generateStateAssignmentFile(getGroupStateFileName(serverGroup.getId()), Collections.emptyList(),
-                suseManagerStatesFilesRoot);
+                suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
     /**
@@ -596,9 +650,8 @@ public enum SaltStateGeneratorService {
      */
     public void createOrg(Org org) {
         generateStateAssignmentFile(getOrgStateFileName(org.getId()), Collections.emptyList(),
-                suseManagerStatesFilesRoot);
+                suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
-
 
     /**
      * Expose some global configuration options as pillar data.

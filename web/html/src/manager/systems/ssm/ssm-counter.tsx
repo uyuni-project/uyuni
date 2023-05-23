@@ -1,9 +1,10 @@
-/* eslint-disable simple-import-sort/imports */
 import * as React from "react";
 
-import { useWebSocket } from "../../shared/websocket/useWebSocket";
 import { Button } from "components/buttons";
+
 import Network from "utils/network";
+
+import { useWebSocket } from "../../shared/websocket/useWebSocket";
 
 type Props = {
   count?: number;

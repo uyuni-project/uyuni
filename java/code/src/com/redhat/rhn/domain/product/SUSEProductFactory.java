@@ -237,7 +237,7 @@ public class SUSEProductFactory extends HibernateFactory {
                 .sorted((a, b) ->  rpmVersionComparator.compare(b.getProduct().getVersion(),
                         a.getProduct().getVersion()))
 
-                // We take the first item since there can be more then one entry.
+                // We take the first item since there can be more than one entry.
                 // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
                 .findFirst();
     }
@@ -264,7 +264,7 @@ public class SUSEProductFactory extends HibernateFactory {
             return Optional.empty();
         }
         else {
-            // We take the first item since there can be more then one entry.
+            // We take the first item since there can be more than one entry.
             // All entries should point to the same "product" with only arch differences.
             // The only exception to this is sles11 sp1/2 but they are out of maintenance
             // and we decided to ignore this inconsistency until the great rewrite.
@@ -286,6 +286,10 @@ public class SUSEProductFactory extends HibernateFactory {
         if (channel.isCloned()) {
             if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
                 return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
+                    // There is a problem that filtering cloned channels by the unique parts does not filter
+                    // out chained channels created via CLM. If you have a CLM project based on another CLM
+                    // project the names of the chained channels contain all the unique parts and are thus
+                    // not filtered out although they should (See bsc#1204270 for more info).
                     List<String> originalParts = List.of(original.getLabel().split("-"));
                     List<String> selectedParts = List.of(channel.getLabel().split("-"));
                     List<String> uniqueParts = selectedParts.stream()

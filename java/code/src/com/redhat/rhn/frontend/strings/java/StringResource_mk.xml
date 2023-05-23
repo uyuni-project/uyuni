@@ -473,133 +473,133 @@
       </trans-unit>
       <trans-unit id="audit.nav.logreview" xml:space="preserve">
         <source>Log Review</source>
-        <target/>
+        <target>Преглед на дневник</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel Management" xml:space="preserve">
         <source>Channel Management</source>
-        <target/>
+        <target>Управување на Канали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel Permissions" xml:space="preserve">
         <source>Channel Permissions</source>
-        <target/>
+        <target>Дозволи за канал</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target>Канали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
-        <target/>
+        <target>Листа на Канали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Client Configuration" xml:space="preserve">
         <source>Client Configuration</source>
-        <target/>
+        <target>Клиент Конфигурација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Guide" xml:space="preserve">
         <source>User Guide</source>
-        <target/>
+        <target>Водич за Корисници</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Getting Started Guide" xml:space="preserve">
         <source>Getting Started Guide</source>
-        <target/>
+        <target>Водич за Започнување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Clone Errata" xml:space="preserve">
         <source>Clone Patches</source>
-        <target/>
+        <target>Клонирај Печови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed Actions" xml:space="preserve">
         <source>Completed Actions</source>
-        <target/>
+        <target>Завршени Акции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Config Channels" xml:space="preserve">
         <source>Config Channels</source>
-        <target/>
+        <target>Канали за конфигурација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Create Account" xml:space="preserve">
         <source>Create Account</source>
-        <target/>
+        <target>Создадете Акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom System Info" xml:space="preserve">
         <source>Custom System Info</source>
-        <target/>
+        <target>Персонални информации за системот</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="date" xml:space="preserve">
         <source>Date</source>
-        <target/>
+        <target>Датум</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Emails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Details" xml:space="preserve">
         <source>Details</source>
-        <target/>
+        <target>Детали</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
-        <target/>
+        <target>Гости</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Storage" xml:space="preserve">
         <source>Storage</source>
-        <target/>
+        <target>Складиште</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
-        <target/>
+        <target>Мрежи</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="digits" xml:space="preserve">
         <source>0 1 2 3 4 5 6 7 8 9</source>
-        <target/>
+        <target state="translated">0 1 2 3 4 5 6 7 8 9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -608,84 +608,84 @@
       </trans-unit>
       <trans-unit id="Distributions" xml:space="preserve">
         <source>Distributions</source>
-        <target/>
+        <target>Дистрибуции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Edit this address" xml:space="preserve">
         <source>Edit this address</source>
-        <target/>
+        <target>Уредете ја оваа адреса</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target>Печови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="exception" xml:space="preserve">
         <source>Exception</source>
-        <target/>
+        <target>Исклучок</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed Actions" xml:space="preserve">
         <source>Failed Actions</source>
-        <target/>
+        <target>Неуспешни Акции</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FAQ" xml:space="preserve">
         <source>FAQ</source>
-        <target/>
+        <target>ЧПП</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fax" xml:space="preserve">
         <source>Fax</source>
-        <target/>
+        <target>Факс</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="File Preservation" xml:space="preserve">
         <source>File Preservation</source>
-        <target/>
+        <target>Конзервациа на Фајлови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Go" xml:space="preserve">
         <source>Go</source>
-        <target/>
+        <target>Оди</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Used in filters as the "do it" button</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GPG and SSL Keys" xml:space="preserve">
         <source>GPG and SSL Keys</source>
-        <target/>
+        <target>GPG и SSL Клучеви</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Help" xml:space="preserve">
         <source>Help</source>
-        <target/>
+        <target>Помош</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Documentation_version" xml:space="preserve">
         <source>Documentation {0}</source>
-        <target/>
+        <target>Документација {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -11148,6 +11148,62 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.action.rejection.reason" xml:space="preserve">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+        <source>Recurring Action type must be provided</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
+        <source>States configuration must be provided</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
+        <source>Recurring action has invalid type.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.uptodate" xml:space="preserve">
+        <source>Update the system, rebooting if required</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
         <target state="new"/>
       </trans-unit>
     </body>

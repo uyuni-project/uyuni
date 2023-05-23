@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task.checkin;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -25,7 +26,7 @@ public class SystemCheckinUtils {
     public static final int CHECK_INTERVAL = 20;
 
     // Random number generator
-    private static Random rand = new Random();
+    private static final Random RAND = new SecureRandom();
 
     /**
      * Private constructor.
@@ -41,7 +42,7 @@ public class SystemCheckinUtils {
      * @return random integer from interval
      */
     public static int nextRandom(int min, int max) {
-        return rand.nextInt(max - min + 1) + min;
+        return RAND.nextInt(max - min + 1) + min;
     }
 
     /**
@@ -53,7 +54,7 @@ public class SystemCheckinUtils {
      */
     public static int getRandomGaussian(double mean, double stddev) {
         double val = 0;
-        val = rand.nextGaussian() * stddev + mean;
+        val = RAND.nextGaussian() * stddev + mean;
         return (int) Math.round(val);
     }
 

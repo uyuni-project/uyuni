@@ -176,8 +176,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-
 
 /**
  * SystemManager
@@ -790,15 +788,18 @@ public class SystemManager extends BaseManager {
     private void removeSaltSSHKnownHosts(Server server) {
         Integer sshPort = server.getProxyInfo() != null ? server.getProxyInfo().getSshPort() : null;
         int port = sshPort != null ? sshPort : SaltSSHService.SSH_DEFAULT_PORT;
-        Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
-            Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                    saltApi.removeSaltSSHKnownHost(hostname, port);
-            boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
-            if (!removed) {
-                log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", hostname, port,
-                        result.map(r -> r.getComment()).orElse(""));
-            }
-        });
+        Optional.ofNullable(server.getHostname()).ifPresentOrElse(
+                hostname -> {
+                    Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                            saltApi.removeSaltSSHKnownHost(hostname, port);
+                    boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+                    if (!removed) {
+                        log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}",
+                                hostname, port, result.map(r -> r.getComment()).orElse(""));
+                    }
+                },
+                () -> log.warn("Unable to remove SSH key for {} from /var/lib/salt/.ssh/known_hosts: unknown hostname",
+                        server.getName()));
     }
 
     /**
@@ -908,7 +909,7 @@ public class SystemManager extends BaseManager {
     public static DataResult<SystemOverview> systemListNew(User user,
                       Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser, PageControl pc) {
         return new PagedSqlQueryBuilder()
-                .select("O.*")
+                .select("O.*, (O.enhancement_errata + O.security_errata + O.bug_errata) as totalErrataCount")
                 .from("suseSystemOverview O, rhnUserServerPerms USP")
                 .where("O.id = USP.server_id AND USP.user_id = :user_id")
                 .run(Map.of("user_id", user.getId()), pc, parser, SystemOverview.class);
@@ -1076,20 +1077,6 @@ public class SystemManager extends BaseManager {
         pc.setFilterColumn("outdated_packages");
         pc.setFilterData(">0");
         return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
-    }
-
-    /**
-     * Returns the number of systems with outdated packages
-     *
-     * @return number of systems with outdated packages
-     */
-    public static long countOutdatedSystems() {
-        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
-        return HibernateFactory.getSession()
-                .createNativeQuery(selectCountQuery, Tuple.class)
-                .getSingleResult()
-                .get(COUNT, Number.class)
-                .longValue();
     }
 
     /**
@@ -2190,7 +2177,8 @@ public class SystemManager extends BaseManager {
         server.setMachineId(uniqueId);
         server.setOs("(unknown)");
         server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
+                null, new SecureRandom()));
         server.setAutoUpdate("N");
         server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         server.setLastBoot(System.currentTimeMillis() / 1000);
@@ -3930,7 +3918,7 @@ public class SystemManager extends BaseManager {
         }
         Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
                 .orElse(CredentialsFactory.createCredentials(
-                        "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
+                        "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom()),
                         RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
                         Credentials.TYPE_REPORT_CREDS, null));
         if (forcePwChange) {

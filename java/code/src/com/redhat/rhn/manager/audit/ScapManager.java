@@ -70,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -464,6 +465,7 @@ public class ScapManager extends BaseManager {
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
             TransformerFactory factory = TransformerFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
         }

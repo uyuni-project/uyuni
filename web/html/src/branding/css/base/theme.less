@@ -2,26 +2,32 @@
  * This file is the old core theme file, over time we can hopefully clean this up and separate the logic accordingly
  */
 
+html,
 body {
-  background: @body-background;
-  width: auto;
-  -webkit-font-smoothing: antialiased;
-  font-family: @lato;
-}
-html, body {
-  height: auto;
+  height: 100%;
+  min-height: 100%;
+  min-width: fit-content;
+  margin: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  background: @body-background;
+  font-family: @lato;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+ 
 a {
   color: @link-color;
   cursor: pointer;
 }
 
 header {
-  position: fixed;
-  top: 0;
   height:auto;
-  z-index: 1000;
   width: 100%;
   border: none;
   border-radius: 0;
@@ -31,6 +37,7 @@ header {
 
   .header-content {
     padding: 12px 10px;
+    height: 50px;
   }
 
   a {
@@ -43,6 +50,34 @@ header {
 
   img {
     float: left;
+  }
+}
+
+.spacewalk-main-column-layout {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  aside {
+    overflow: auto !important;
+    float: none !important;
+    position: relative !important;
+
+    footer {
+      position: -webkit-sticky;
+      position: sticky;
+      bottom: 0;
+    }
+  }
+
+  section {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  #page-body {
+    flex: 1 1 auto;
+    overflow: auto;
   }
 }
 
@@ -105,6 +140,8 @@ section {
   margin-left: 0;
    aside {
     .make-xs-column(2);
+    min-width: 16.66667%;
+    max-width: 16.66667%;
     background: @aside;
     border-right: 1px solid @aside-border;
     /* erasing the predefined paddings in the columns */
@@ -155,18 +192,33 @@ section {
 }
 
 .navbar-collapse {
-  max-height: none;
+  display: flex;
+  flex-direction: column;
+
+  #nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      > ul {
+        flex: 1 1 auto;
+        margin: 0 !important;
+      }
+    }
+  }
 
   &.in {
-    display: block !important;
+    display: flex !important;
   }
 
   &.collapse {
     display: none !important;
-
-    & + div section {
-      width: 100%;
-    }
   }
 }
 
@@ -344,7 +396,7 @@ header, nav.navbar-pf {
       border-width: 0 0 1px 0;
       padding-right: 3em;
       height: 3em;
-      color: @eos-bc-gray-1000;
+      color: @aside-menu-search-text-color;
 
       &::placeholder {
         color: @eos-bc-gray-900;

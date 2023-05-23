@@ -20772,6 +20772,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.uuid" xml:space="preserve">
         <source>UUID:</source>
         <context-group name="ctx">
@@ -25306,8 +25312,8 @@ given channel.</source>
       <trans-unit id="Highstate" xml:space="preserve">
         <source>Highstate</source>
       </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
+      <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>

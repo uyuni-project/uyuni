@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 15:17+0200\n"
-"PO-Revision-Date: 2023-04-08 03:14+0000\n"
+"POT-Creation-Date: 2023-04-28 14:47+0200\n"
+"PO-Revision-Date: 2023-05-06 01:40+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -249,6 +249,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Овој систем е успешно регистриран, но нема право\n"
+"  на сервис.  За да дадете право на осој систем, логирајте се на веб "
+"страната на:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -260,21 +266,27 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Овој систем е успешно регистриран, но сервисни права\n"
+"  не беа достапни.  За да дадете права на овој систем, логирајте се на веб "
+"страната на:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Ве молиме извршете го rhn_register како root на овој клиент"
 
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Сервисот не е овозможен за системскиот профил: \"%s\""
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "Се бара невалиден RPM пакет %s"
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
@@ -283,26 +295,26 @@ msgstr "Пакетот не е најден"
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "Архитектурата \"%s\" не е поддржана"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "Токен '%s' има повеќе од еден назначен базен канал"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Конфликтни базни канали"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Не успеа да се додаде сервер во групата %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Достигнат е максимален број на користење од %s"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""

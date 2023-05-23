@@ -61,6 +61,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  gettext
 %endif
 
+BuildRequires:  make
+
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
 %else

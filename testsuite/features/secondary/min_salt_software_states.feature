@@ -114,6 +114,9 @@ Feature: Salt package states
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
+# When run inside containers, we can't kill salt-minion or the
+# container will stop
+@skip_if_container
   Scenario: Use Salt presence mechanism on an unreachable minion
     When I follow "States" in the content area
     And I run "pkill salt-minion" on "sle_minion" without error control
@@ -122,6 +125,7 @@ Feature: Salt package states
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
+@skip_if_container    
   Scenario: Cleanup: restart the salt service on SLES minion
     When I restart salt-minion on "sle_minion"
 

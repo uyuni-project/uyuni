@@ -462,13 +462,17 @@ def do_whoamitalkingto(self, args):
 ####################
 
 def _show_traditional_stack_message(self):
-    has_traditional_systems = self.client.system.hasTraditionalSystems(self.session)
+    try:
+        has_traditional_systems = self.client.system.hasTraditionalSystems(self.session)
 
-    if has_traditional_systems:
-        logging.warning((
-            'The traditional stack is unsupported and scheduled for removal. '
-            'Consider migrating to salt minions.'
-        ))
+        if has_traditional_systems:
+            logging.warning((
+                'The traditional stack is unsupported and scheduled for removal. '
+                'Consider migrating to salt minions.'
+            ))
+    except xmlrpclib.Fault:
+        # hasTraditionalSystems endpoint is not available prior to 4.3
+        logging.debug(_N("Skipping traditional system check"))
 
 def tab_complete_errata(self, text):
     options = self.do_errata_list('', True)

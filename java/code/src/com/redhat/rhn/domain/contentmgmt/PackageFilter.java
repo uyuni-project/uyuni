@@ -87,11 +87,17 @@ public class PackageFilter extends ContentFilter<Package> {
 
     private static boolean checkNameAndArch(String field, String value, Package pack) {
         if (field.equals("nevr")) {
-            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$1").equals(pack.getPackageName().getName());
+            int relIdx = value.lastIndexOf('-');
+            int verIdx = value.lastIndexOf('-', relIdx - 1);
+            return (verIdx > 0) && value.substring(0, verIdx).equals(pack.getPackageName().getName());
         }
         else if (field.equals("nevra")) {
-            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$1$5")
-                    .equals(pack.getPackageName().getName() + pack.getPackageArch().getLabel());
+            int relIdx = value.lastIndexOf('-');
+            int verIdx = value.lastIndexOf('-', relIdx - 1);
+            int archIdx = value.lastIndexOf('.');
+            return (verIdx > 0) && (archIdx > 0) &&
+                   value.substring(0, verIdx).equals(pack.getPackageName().getName()) &&
+                   value.substring(archIdx + 1).equals(pack.getPackageArch().getLabel());
         }
         else {
             throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");
@@ -100,10 +106,15 @@ public class PackageFilter extends ContentFilter<Package> {
 
     private static String getEvr(String field, String value) {
         if (field.equals("nevr")) {
-            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)", "$2$3-$4");
+            int relIdx = value.lastIndexOf('-');
+            int verIdx = value.lastIndexOf('-', relIdx - 1);
+            return value.substring(verIdx + 1);
         }
         else if (field.equals("nevra")) {
-            return value.replaceAll("(.*)-(.*:)?(.*)-(.*)\\.(.*)", "$2$3-$4");
+            int relIdx = value.lastIndexOf('-');
+            int verIdx = value.lastIndexOf('-', relIdx - 1);
+            int archIdx = value.lastIndexOf('.');
+            return value.substring(verIdx + 1, archIdx);
         }
         else {
             throw new UnsupportedOperationException("Field " + field + " not supported for filter Package (NEVRA)");

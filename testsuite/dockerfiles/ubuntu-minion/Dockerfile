@@ -5,5 +5,6 @@ RUN apt-get update && \
   apt-get clean
 RUN echo "deb [trusted=yes] https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/deb/ /" > /etc/apt/sources.list.d/test_repo_deb_pool.list
 RUN mkdir /run/sshd
+COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
 

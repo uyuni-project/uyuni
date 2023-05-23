@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -147,7 +148,11 @@ public class RegistrationUtils {
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                    minion.getId(),
+                    minion.getCreator() != null ? minion.getCreator().getId() : null,
+                    true,
+                    emptyList()));
         }
         SystemManager.setReportDbUser(minion, false);
 
@@ -165,7 +170,7 @@ public class RegistrationUtils {
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -364,13 +369,8 @@ public class RegistrationUtils {
                         return Opt.stream(suseProduct);
                     })).collect(toSet());
         }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "almalinux".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "amazon".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "rocky".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
+                .contains(grains.getValueAsString(OS).toLowerCase())) {
 
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
@@ -380,14 +380,13 @@ public class RegistrationUtils {
                             x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
                             x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (rhel.getSuseProduct().isPresent()) {
-                    return Opt.stream(rhel.getSuseProduct());
-                }
-                else {
+
+                if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
                             rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
+                return rhel.getAllSuseProducts().stream();
             }).collect(toSet());
         }
         else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {

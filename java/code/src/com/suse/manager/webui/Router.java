@@ -52,6 +52,7 @@ import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SaltbootController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -229,6 +230,9 @@ public class Router implements SparkApplication {
 
         // HTTP API
         httpApiRegistry.initRoutes();
+
+        // Saltboot
+        SaltbootController.initRoutes();
     }
 
     private void initNotFoundRoutes(JadeTemplateEngine jade) {

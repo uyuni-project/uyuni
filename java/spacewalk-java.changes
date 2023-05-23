@@ -1,3 +1,42 @@
+- Do not use regex in PackageFilter
+- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
+- Reimplement queries for system metrics
+- Enforce minimum version of 1.11 for byte-buddy.
+- Updated EL9 jaxb-api symlinks to Uyuni provided package.
+- Fix issue with `aclChannelTypeCapable` that prevented errata view in
+  deb arch
+- Update system overview in case of manual system reboot
+- Add uyuni_systems_scrape_duration_seconds metric
+- OES credentials do not allow access to SCC. Skip them when an
+  SCCClientException is thrown and move forward
+- show virtualization host info in systems overview page
+- Refresh pillars after setting custom values via SSM (bsc#1210659)
+- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+- Allow processing big state results (bsc#1210957)
+- Fix server error in HTTP API authentication (bsc#1210394)
+- set swap memory value if available
+- set primary FQDN to hostname if none is set (bsc#1209156)
+- Do not throw on missing saltboot group
+- fix ISE when neither SCC credentials nor a local mirror is configured
+- only set self_update URL if functionality is not disabled in
+  distro or profile
+- execute highstate on registration with a user if available
+- Ensure installation of 'xalan-j2' for building.
+- Simplify Java package dependencies.
+- Safe XSLT processing in SCAP transformations
+- Fix Internal Server Error when downloading static assets (bsc#1207691)
+- Recurring custom states
+- Update Cobbler profile when a new image is deployed
+- Add mapping of image URLs for containerized proxy
+- Fix image size entries in xml-rpc
+- kernel options: only add quotes if there is a space in the value (bsc#1209926)
+- fix displaying system channels when no base product is installed
+  (bsc#1206423)
+- fix NPE in cobbler system sync when server has no creator set
+- remove channels from client after transfer to a different
+  organization (bsc#1209220)
+- Fix RHEL9 / SLL9 product discovery (bsc#1209993)
+
 -------------------------------------------------------------------
 Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
 
@@ -28,7 +67,6 @@ Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
   * Make API method systemgroup.listSystemsMinimal read-only (bsc#1208550)
   * Allow single-value lists in query strings in HTTP API (bsc#1207297)
   * Do not include channels from different orgs when listing mandatory channels (bsc#1204270)
-
 
 -------------------------------------------------------------------
 Thu Apr 13 15:22:40 CEST 2023 - marina.latini@suse.com
