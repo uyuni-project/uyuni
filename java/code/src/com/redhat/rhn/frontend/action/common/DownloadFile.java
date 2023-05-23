@@ -127,7 +127,8 @@ public class DownloadFile extends DownloadAction {
             String[] splits = url.split("/");
             log.debug(splits[0]);
             TinyUrl ty = CommonFactory.lookupTinyUrl(splits[0]);
-            url = url.replaceFirst(splits[0], ty.getUrl());
+            splits[0] = ty.getUrl();
+            url = String.join("/", splits);
             log.debug(url);
         }
         if (url.startsWith("/ks/dist")) {
