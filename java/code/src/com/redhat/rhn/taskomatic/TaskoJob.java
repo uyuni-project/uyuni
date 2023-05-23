@@ -46,9 +46,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TaskoJob implements Job {
 
-    private static Logger log = LogManager.getLogger(TaskoJob.class);
-    private static Map<String, Integer> tasks = new ConcurrentHashMap<>();
-    private static Map<String, Object> lastStatus = new ConcurrentHashMap<>();
+    private static final Logger LOG = LogManager.getLogger(TaskoJob.class);
+    private static final Map<String, Integer> TASKS = new ConcurrentHashMap<>();
+    private static final Map<String, Object> LAST_STATUS = new ConcurrentHashMap<>();
 
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss")
             .withZone(ZoneId.systemDefault());
@@ -58,8 +58,8 @@ public class TaskoJob implements Job {
 
     static {
         for (TaskoTask task : TaskoFactory.listTasks()) {
-            tasks.put(task.getName(), 0);
-            lastStatus.put(task.getName(), TaskoRun.STATUS_FINISHED);
+            TASKS.put(task.getName(), 0);
+            LAST_STATUS.put(task.getName(), TaskoRun.STATUS_FINISHED);
         }
         HibernateFactory.closeSession();
     }
@@ -80,29 +80,29 @@ public class TaskoJob implements Job {
         catch (InstantiationException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException |
                InvocationTargetException e) {
             // will be caught later
-            log.error("Error trying to instance a new class of {}: {}", task.getTaskClass(), e.getMessage(), e);
+            LOG.error("Error trying to instance a new class of {}: {}", task.getTaskClass(), e.getMessage(), e);
             return false;
         }
     }
 
     private boolean isTaskRunning(TaskoTask task) {
-        return tasks.get(task.getName()) > 0;
+        return TASKS.get(task.getName()) > 0;
     }
 
     private boolean isTaskThreadAvailable(RhnJob job, TaskoTask task) {
-        return tasks.get(task.getName()) < job.getParallelThreads();
+        return TASKS.get(task.getName()) < job.getParallelThreads();
     }
 
     private static synchronized void markTaskRunning(TaskoTask task) {
-        int count = tasks.get(task.getName());
+        int count = TASKS.get(task.getName());
         count++;
-        tasks.put(task.getName(), count);
+        TASKS.put(task.getName(), count);
     }
 
     private static synchronized void unmarkTaskRunning(TaskoTask task) {
-        int count = tasks.get(task.getName());
+        int count = TASKS.get(task.getName());
         count--;
-        tasks.put(task.getName(), count);
+        TASKS.put(task.getName(), count);
     }
 
     /**
@@ -113,43 +113,43 @@ public class TaskoJob implements Job {
         TaskoSchedule schedule = TaskoFactory.lookupScheduleById(scheduleId);
         if (schedule == null) {
             // means, that schedule was deleted (in the DB), but quartz still schedules it
-            log.error("No such schedule with id  {}", scheduleId);
+            LOG.error("No such schedule with id  {}", scheduleId);
             TaskoQuartzHelper.unscheduleTrigger(context.getTrigger());
             return;
         }
 
         Instant start = Instant.now();
-        log.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
+        LOG.info("{}: bunch {} STARTED", schedule.getJobLabel(), schedule.getBunch().getName());
 
         String previousRunStatus = null;
         for (TaskoTemplate template : schedule.getBunch().getTemplates()) {
             // If it's not the first run and the template requires a previous state, check for it
             if (previousRunStatus != null &&
                     template.getStartIf() != null && !template.getStartIf().equals(previousRunStatus)) {
-                log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
+                LOG.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
             TaskoTask task = template.getTask();
             TaskoRun runResult = runTask(schedule, task, template, context);
             if (runResult == null) {
                 // Null result means it was not possible to execute the template. Interrupt the bunch execution
-                log.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
+                LOG.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
 
             previousRunStatus = runResult.getStatus();
         }
         HibernateFactory.closeSession();
-        log.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
-        if (log.isDebugEnabled()) {
-            log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
+        LOG.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
                     TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
         }
     }
 
     private boolean isTaskRunning(TaskoSchedule schedule, TaskoTask task) {
         if (isTaskSingleThreaded(task) && isTaskRunning(task)) {
-            log.debug("{}: task {} already running ... LEAVING", schedule.getJobLabel(), task.getName());
+            LOG.debug("{}: task {} already running ... LEAVING", schedule.getJobLabel(), task.getName());
             return true;
         }
         return false;
@@ -158,7 +158,7 @@ public class TaskoJob implements Job {
     private boolean checkThreadAvailable(TaskoSchedule schedule, RhnJob job, TaskoTask task) throws SchedulerException {
         if (!isTaskThreadAvailable(job, task)) {
             int rescheduleSeconds = job.getRescheduleTime();
-            log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
+            LOG.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
             TaskoQuartzHelper.rescheduleJob(schedule, ZonedDateTime.now().plusSeconds(rescheduleSeconds).toInstant());
             return false;
         }
@@ -181,7 +181,7 @@ public class TaskoJob implements Job {
             markTaskRunning(task);
 
             try {
-                log.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
+                LOG.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
                 TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
                 TaskoFactory.save(taskRun);
                 HibernateFactory.commitTransaction();
@@ -195,15 +195,15 @@ public class TaskoJob implements Job {
                     HibernateFactory.closeSession();
                 }
 
-                if (log.isDebugEnabled()) {
-                    log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
                             taskRun.getStatus().toLowerCase());
                 }
 
                 if (List.of(TaskoRun.STATUS_FINISHED, TaskoRun.STATUS_FAILED).contains(taskRun.getStatus()) &&
-                        !Objects.equals(taskRun.getStatus(), lastStatus.get(task.getName()))) {
+                        !Objects.equals(taskRun.getStatus(), LAST_STATUS.get(task.getName()))) {
                     sendStatusMail(schedule, taskRun, task);
-                    lastStatus.put(task.getName(), taskRun.getStatus());
+                    LAST_STATUS.put(task.getName(), taskRun.getStatus());
                 }
 
                 result = taskRun;
@@ -213,7 +213,7 @@ public class TaskoJob implements Job {
             }
         }
         catch (Exception e) {
-            log.error("Unable to run task", e);
+            LOG.error("Unable to run task", e);
         }
 
         return result;
@@ -250,7 +250,7 @@ public class TaskoJob implements Job {
         else {
             email += " finished successfully and is back to normal.";
         }
-        log.info("Sending e-mail ... {}", task.getName());
+        LOG.info("Sending e-mail ... {}", task.getName());
         TaskHelper.sendTaskoEmail(taskRun.getOrgId(), email);
     }
 }
