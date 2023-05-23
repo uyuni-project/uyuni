@@ -16,12 +16,13 @@ Feature: Channel subscription with recommended or required dependencies
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     Then I should see the child channel "SLE-Product-SLES15-SP4-Updates for x86_64" "selected" and "disabled"
-    And I should see the toggler "disabled"
-    And I should see a "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
-    And I should see the child channel "SLE-Module-Basesystem15-SP4-Pool for x86_64" "unselected"
+    When I exclude the recommended child channels
+    Then I should see the toggler "disabled"
+    And I should see a "SLE-Module-Containers15-SP4-Pool for x86_64" text
+    And I should see the child channel "SLE-Module-Containers15-SP4-Pool for x86_64" "unselected"
     # check the a child channel selection that requires some channel trigger the selection of it
-    When I select the child channel "SLE-Module-Basesystem15-SP4-Updates for x86_64"
-    Then I should see the child channel "SLE-Module-Basesystem15-SP4-Pool for x86_64" "selected"
+    When I select the child channel "SLE-Module-Containers15-SP4-Pool for x86_64"
+    Then I should see the child channel "SLE-Module-Containers15-SP4-Pool for x86_64" "selected"
     # check a recommended channel not yet selected is checked  by the recommended toggler
     When I click on the "disabled" toggler
     Then I should see the child channel "SLE-Module-Server-Applications15-SP4-Pool for x86_64" "selected"
@@ -34,8 +35,8 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "Fake-RPM-SUSE-Channel", "1"
-    When I select "System Default Base Channel" from drop-down in table line with "Fake-RPM-SUSE-Channel"
+    And I should see a table line with "SLE-Product-SLES15-SP4-Pool for x86_64", "1"
+    When I select "System Default Base Channel" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see the toggler "disabled"
     And I should see a "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
