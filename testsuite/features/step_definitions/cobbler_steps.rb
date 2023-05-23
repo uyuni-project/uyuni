@@ -260,7 +260,6 @@ When(/^I start local monitoring of Cobbler$/) do
   if !code.zero?
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
-    # The format differs from the Uyuni branch in order to compensate the absence of accessibility to a package in SUMA testsuite
     handler_class = "\"\n[handler_#{handler_name}]\n" \
                   "class=FileHandler\n" \
                   "level=DEBUG\n" \
