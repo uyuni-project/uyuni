@@ -6,7 +6,7 @@ on:
 
 jobs:
   changelog_test:
-    name: Check master changelog files
+    name: Test changelogs
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -15,14 +15,24 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.0'
-    - id: files
+    - id: master
+      name: Get modified master changelog files
       uses: Ana06/get-changed-files@v2.2.0
       with:
         filter: '*.changes'
-    - name: Run changelog checker
+    - name: Test if the master changelog files modified
       run: |
-        ruby .github/scripts/changelog.rb ${{ steps.files.outputs.added_modified }}
-        
+        test -z ${{ steps.master.outputs.all }} || \
+        (echo 'Master changelog files cannot be modified directly.' && exit 1)
+    - id: changelogs
+      name: Get modified changelog files
+      uses: Ana06/get-changed-files@v2.2.0
+      with:
+        filter: '*.changes.*'
+    - name: Test if the changelog entries are added
+      run: |
+        ruby .github/scripts/changelog.rb ${{ steps.changelogs.outputs.added_modified }}
+
   changelog_approved:
     if: github.event.action != 'closed'
     needs: changelog_test
