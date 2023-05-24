@@ -16,8 +16,9 @@ package com.redhat.rhn.common.util.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.util.MD5Sum;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -30,20 +31,20 @@ import java.util.Random;
  * @author mmccune
  *
  */
-public class MD5SumTest  {
+public class SHA256CryptTest {
 
     @Test
-    public void testMD5Sum() throws Exception {
+    public void testSHA256Sum() throws Exception {
         File testFile = new File(TestUtils.findTestData("test.file").getFile());
-        String sum = MD5Sum.getFileMD5Sum(testFile);
-        assertEquals("ab0aa62f30d67085cd07ea9004a1437f", sum);
+        String sum = SHA256Crypt.getFileSHA256Sum(testFile);
+        assertEquals("78944e7840d6b81e0aec269d65bda7964c6e45c22595b507959f2aa0f0afc9e4", sum);
     }
 
     /**
      * Note that this test creates a large 100MB file in /tmp
-     * and then does an md5sum on the file.
+     * and then does an sha256sum on the file.
      *
-     * With a previous implementation of MD5Sum.getFileMD5Sum() this would
+     * With a previous implementation of SHA256Sum.getFileSHA256Sum() this would
      * cause an OOME with a max-heap size in junit of 256m.  This is configured in:
      * spacewalk/buildconf/build-utils.xml:
      * <pre>{@literal
@@ -57,12 +58,12 @@ public class MD5SumTest  {
      * @throws Exception something bad happened
      */
     @Test
-    public void testOOMEMD5Sum() throws Exception {
+    public void testOOMESHA256Sum() throws Exception {
         File large = new File("/tmp/large-file.dat");
         // Create a large 100mb file
         large.createNewFile();
         writeRandomLargeBytesToFile(large);
-        String sum = MD5Sum.getFileMD5Sum(large);
+        String sum = SHA256Crypt.getFileSHA256Sum(large);
         assertNotNull(sum);
         large.delete();
     }
@@ -73,4 +74,38 @@ public class MD5SumTest  {
         r.nextBytes(ba);
         TestUtils.writeByteArrayToFile(f, ba);
     }
+
+    @Test
+    public void testCrypt() {
+        String key = "%43AazZ09!@#$%^&*()-+=/.~`?;:<>,";
+        String salt = "testsalttestsalttest";
+
+        /*
+         * Ensure crypt(key) generates a random
+         * 16 character salt.
+         */
+        String c1 = SHA256Crypt.crypt(key);
+        assertNotNull(c1);
+        assertEquals(c1.charAt(19), '$');
+
+        /*
+         * Make sure the crypt(key, salt) works
+         */
+        String c2 = SHA256Crypt.crypt(key, salt);
+        String c3 = SHA256Crypt.crypt(key, salt);
+        assertEquals(c2, c3);
+        //Make sure salt was truncated
+        assertEquals(c2.charAt(19), '$');
+        //Make sure our salt was used
+        assertTrue(c2.startsWith("$5$testsalttestsalt"));
+        c2 = c2.substring(20); //get encoded password
+        assertNotNull(c2);
+
+        String password = "password";
+        String newSalt = "tests.l/t3stSALTtest";
+        String c4 = SHA256Crypt.crypt(password, newSalt);
+        String c5 = SHA256Crypt.crypt(password, c4);
+        assertEquals(c4, c5);
+    }
+
 }
