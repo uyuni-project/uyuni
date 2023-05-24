@@ -1,11 +1,10 @@
 import * as React from "react";
 
-import escapeHtml from "html-react-parser";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { MessagesContainer } from "components/toastr/toastr";
 
+import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -48,7 +47,7 @@ class Node extends React.Component<NodeProps> {
     return (
       <div className={this.props.isLeaf ? "leafLink" : "nodeLink"} onClick={(event) => this.handleClick(event)}>
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
-        <Link url={this.props.url} target={this.props.target} label={escapeHtml(this.props.label)} />
+        <Link url={this.props.url} target={this.props.target} label={stringToReact(this.props.label)} />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
           <i className={"submenuIcon " + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
         ) : null}
@@ -270,7 +269,7 @@ class Breadcrumb extends React.Component {
             <span key={a.label + "_" + i}>
               <Link
                 url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl}
-                label={escapeHtml(a.label)}
+                label={stringToReact(a.label)}
                 target={a.target}
               />
               {DEPRECATED_unsafeEquals(i, breadcrumbArray.length - 1) ? null : ">"}
