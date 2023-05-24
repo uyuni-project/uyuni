@@ -31,15 +31,8 @@ jobs:
         filter: '*.changes.*'
     - name: Test if the changelog entries are added
       run: |
-        ruby .github/scripts/changelog.rb ${{ steps.changelogs.outputs.added_modified }}
-
-  changelog_approved:
-    if: github.event.action != 'closed'
-    needs: changelog_test
-    runs-on: ubuntu-latest
-    steps:
-    - name: Changelogs approved
-      run : echo "Changelogs approved"
+        ruby .github/scripts/changelog.rb ${{ steps.changelogs.outputs.added_modified }} && \
+        echo "Changelogs approved"
 
   # warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
