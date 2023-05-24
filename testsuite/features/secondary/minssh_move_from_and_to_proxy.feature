@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -13,7 +13,7 @@
 @ssh_minion
 @scope_salt_ssh
 @proxy
-Feature: Move a ssh minion from a proxy to direct connection
+Feature: Move a SSH minion from a proxy to direct connection
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
