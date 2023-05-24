@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -76,3 +76,11 @@ Feature: Managing channels
     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
     And I click on "Update Channel"
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
+
+  Scenario: Cleanup: Delete created channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
+    And I follow "Delete software channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 has been deleted." text
