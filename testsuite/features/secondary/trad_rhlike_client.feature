@@ -22,6 +22,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "rhlike_minion"
     Then "rhlike_minion" should not be registered
 
   Scenario: Prepare the Red Hat-like traditional client

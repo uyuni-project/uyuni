@@ -34,6 +34,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Enable new module.run syntax on the minion and perform registration
@@ -75,6 +76,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion after mgrcompat tests

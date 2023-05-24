@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
@@ -8,7 +8,7 @@
 
 @sle_minion
 @scope_onboarding
-Feature: Register a Salt minion via Bootstrap-script
+Feature: Register a Salt minion with a bootstrap script
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -19,6 +19,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script

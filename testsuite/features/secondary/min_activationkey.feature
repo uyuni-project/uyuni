@@ -13,6 +13,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key

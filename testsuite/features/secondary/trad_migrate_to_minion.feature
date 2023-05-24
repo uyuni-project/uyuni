@@ -92,6 +92,7 @@ Feature: Migrate a traditional client into a Salt minion
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_client"
     Then "sle_client" should not be registered
 
 @skip_if_salt_bundle
