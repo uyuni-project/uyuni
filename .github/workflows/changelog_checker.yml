@@ -6,9 +6,8 @@ on:
 
 jobs:
   changelog_test:
-
+    name: Check master changelog files
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v3
       with:
@@ -26,7 +25,6 @@ jobs:
     if: github.event.action != 'closed'
     needs: changelog_test
     runs-on: ubuntu-latest
-    
     steps:
     - name: Changelogs approved
       run : echo "Changelogs approved"
