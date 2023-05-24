@@ -1,6 +1,30 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: var-cobbler
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 100Gi
+{{- if .Values.matchPvByLabel }}
+  selector:
+    matchLabels:
+      data: var-cobbler
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: var-pgsql
   namespace: "{{ .Release.Namespace }}"
 spec:
