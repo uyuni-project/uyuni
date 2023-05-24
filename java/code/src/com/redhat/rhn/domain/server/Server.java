@@ -726,6 +726,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * This may be null in some cases:
+     * - If a server was bootstrapped with Salt and the key was accepted manually via "salt-key".
+     * - If a server was created by a user and the user was later on deleted.
+     *
      * @return Returns the creator.
      */
     public User getCreator() {
