@@ -2,9 +2,6 @@ import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
 
-// TODO: Replace this with `import { stringToReact } from "utils";` and verify it works correctly
-import escapeHtml from "html-react-parser";
-
 import { AsyncButton } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
@@ -15,6 +12,7 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
+import { stringToReact } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -340,7 +338,7 @@ class NotificationMessages extends React.Component<Props, State> {
 
     return (
       <span>
-        {escapeHtml(row["summary"])}
+        {stringToReact(row["summary"])}
         &nbsp;
         {row["details"] && popupLink}
       </span>
@@ -349,12 +347,12 @@ class NotificationMessages extends React.Component<Props, State> {
 
   buildPopupSummary = () => {
     const summary = (this.state.popupItem || {}).summary || "";
-    return escapeHtml(summary);
+    return stringToReact(summary);
   };
 
   buildPopupDetails = () => {
     const details = (this.state.popupItem || {}).details || "";
-    return escapeHtml(details);
+    return stringToReact(details);
   };
 
   retryOnboarding = (minionId) => {
