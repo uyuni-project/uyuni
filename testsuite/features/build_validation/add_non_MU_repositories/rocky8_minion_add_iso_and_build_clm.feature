@@ -93,6 +93,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
     When I click on "Attach/Detach Sources"
+    And I wait until I do not see "Loading" text
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"
