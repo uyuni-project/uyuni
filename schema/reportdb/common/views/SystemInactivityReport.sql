@@ -15,7 +15,7 @@ CREATE OR REPLACE VIEW SystemInactivityReport AS
             , profile_name AS system_name
             , organization
             , last_checkin_time
-            , (current_timestamp - last_checkin_time) AS inactivity
+            , (synced_date - last_checkin_time) AS inactivity
             , synced_date
     FROM system
 ORDER BY mgm_id, system_id, organization
