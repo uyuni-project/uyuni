@@ -1,3 +1,4 @@
+- Disable jinja processing for the roster file (bsc#1211650)
 - Make sure that all hibernate connections are closed (bsc#1208687)
 - regenerate random passwords with new cipher algorithm
 - Fix misleading error message regarding SCC credentials removal (bsc#1207941)
