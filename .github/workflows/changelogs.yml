@@ -1,4 +1,4 @@
-name: changelog_test
+name: Changelogs
 
 on:
   pull_request_target:
@@ -6,36 +6,42 @@ on:
 
 jobs:
   changelog_test:
-    name: Test changelogs
+    name: Test changelog entries
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0'
     - id: master
       name: Get modified master changelog files
       uses: Ana06/get-changed-files@v2.2.0
       with:
         filter: '*.changes'
-    - name: Test if the master changelog files modified
+    - name: Fail if the master changelog files are modified
+      if: steps.master.outputs.all
       run: |
-        test -z ${{ steps.master.outputs.all }} || \
-        (echo 'Master changelog files cannot be modified directly.' && exit 1)
+        echo "Master changelog files cannot be modified directly."
+        echo "Please revert your changes on the following master changelog file(s):"
+        for file in ${{steps.master.outputs.all}}
+        do
+          echo "  - $file"
+        done
+        exit 1
     - id: changelogs
       name: Get modified changelog files
+      if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
       uses: Ana06/get-changed-files@v2.2.0
       with:
         filter: '*.changes.*'
-    - name: Test if the changelog entries are added
+    - name: Fail if no changelog entries are added
+      if: steps.changelogs.conclusion == 'success' && steps.changelogs.outputs.added_modified == ''
       run: |
-        ruby .github/scripts/changelog.rb ${{ steps.changelogs.outputs.added_modified }} && \
-        echo "Changelogs approved"
+        echo "No changelog entry found. Please add the required changelog entries."
+        exit 1
 
   # warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
+    name: Warn user if merged
     if: always() && github.event.action == 'closed' && github.event.pull_request.merged == true && needs.changelog_test.result == 'failure'
     needs: changelog_test
     runs-on: ubuntu-latest
@@ -45,4 +51,4 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          :warning: The changelog has not been updated. Please update it @${{ github.event.pull_request.user.login }}.
+          :warning: No changelog entry has been added. @${{ github.event.pull_request.user.login }}, please add necessary changelog entries with an additional PR.
