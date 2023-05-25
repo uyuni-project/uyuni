@@ -1,8 +1,10 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature is a dependency for:
-# - features/secondary/min_bootstrap_script.feature : Due to the registration of a SLES Minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_bootstrap_script.feature
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @scope_onboarding

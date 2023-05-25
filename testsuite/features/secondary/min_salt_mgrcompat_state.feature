@@ -1,5 +1,16 @@
 # Copyright (c) 2015-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_lock_packages.feature
+# - features/secondary/min_action_chain.feature
+# - features/secondary/allcli_action_chain.feature
+# - features/secondary/min_recurring_action.feature
+# - features/secondary/min_change_software_channel.feature
+# - features/secondary/min_retracted_patches.feature
+# - features/secondary/min_timezone.feature
+# - features/secondary/min_move_from_and_to_proxy.feature
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @sle_minion

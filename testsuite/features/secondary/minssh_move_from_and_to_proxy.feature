@@ -1,5 +1,14 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/minssh_action_chain.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/minssh_salt_install_package.feature
+# - features/secondary/minssh_ansible_control_node.feature
+# If the current feature fails on bootstrapping,
+# these features won't be able to perform actions on it.
 
 @ssh_minion
 @scope_salt_ssh

@@ -1,8 +1,9 @@
 # Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature depends on:
-# - features/secondary/min_bootstrap_ssh_key.feature : Due to the deletion of the previous SLES Minion
+# This feature can cause failures in the following features:
+# - features/secondary/min_ssh_tunnel.feature
+# If the minion fails to bootstrap
 
 @skip_if_container
 @sle_minion
