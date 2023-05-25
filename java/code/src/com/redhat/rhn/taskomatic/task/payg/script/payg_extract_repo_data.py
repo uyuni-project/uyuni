@@ -71,10 +71,12 @@ def _get_suse_cloud_info():
     full_output = auth_data_output.split("\n")
     _, header_auth, _, repository_url = full_output
     repository_url_parsed = urlparse(repository_url)
+    k, v = header_auth.split(":", 1)
 
-    instance_identification = _get_instance_identification()
+    headers = _get_instance_identification()
+    headers[k] = v
 
-    return SuseCloudInfo(instance_identification + [header_auth], repository_url_parsed.netloc)
+    return SuseCloudInfo(headers, repository_url_parsed.netloc)
 
 
 def _get_instance_identification():
@@ -86,11 +88,11 @@ def _get_instance_identification():
         reader = csv.reader(stream, delimiter="=")
         os_release = dict(reader)
 
-    return [
-        "X-Instance-Identifier:" + os_release["NAME"],
-        "X-Instance-Version:" + os_release["VERSION_ID"],
-        "X-Instance-Arch:" + platform.machine()
-    ]
+    return {
+        "X-Instance-Identifier": os_release["NAME"],
+        "X-Instance-Version": os_release["VERSION_ID"],
+        "X-Instance-Arch": platform.machine()
+    }
 
 
 
@@ -153,7 +155,8 @@ def load_instance_info():
     credentials_data = _extract_http_auth(CREDENTIALS_NAME)
     products = _get_installed_suse_products()
 
-    return { "products": products,
+    return { "type": "CLOUDRMT",
+             "products": products,
              "basic_auth": credentials_data,
              "header_auth": header_auth,
              "rmt_host": rmt_host_data}
