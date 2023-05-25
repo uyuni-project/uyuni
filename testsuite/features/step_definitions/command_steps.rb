@@ -1636,11 +1636,11 @@ end
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  command = "spacecmd -q api api.getVersion -u admin -p admin;
-             spacewalk-hostname-rename #{$server.public_ip}
-            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
-            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
-            --ssl-ca-password=spacewalk"
+  command = "spacecmd --nossl -q api api.getVersion -u admin -p admin; " \
+            "spacewalk-hostname-rename #{$server.public_ip} " \
+            "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
+            "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
+            "--ssl-ca-password=spacewalk"
   out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out_spacewalk}"
 
