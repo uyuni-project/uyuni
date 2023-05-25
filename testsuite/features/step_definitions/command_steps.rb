@@ -206,7 +206,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     log line
@@ -215,7 +219,14 @@ end
 
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt =
+    if $use_salt_bundle
+      "venv-salt-minion"
+    else
+      "salt"
+    end
+  changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     log line
