@@ -478,6 +478,10 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
     fi
 
+    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+        /usr/sbin/mgr-package-rpm-certificate-osimage
+    fi
+
     # rm /root/spacewalk-answers
     if [ "$SWRET" != "0" ]; then
         echo "ERROR: spacewalk-setup failed" >&2
