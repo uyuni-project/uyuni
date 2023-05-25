@@ -1,3 +1,4 @@
+- Use the CA cert in the pki config to generate build host rpm
 - mgr-bootstrap read the hostname from rhn.conf if possible
 - Read CA password from a file
 - Add shadow as dependency of osimage certificate package

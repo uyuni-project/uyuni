@@ -27,11 +27,12 @@ from rhn.stringutils import bstr
 CA_CERT_FULL_PATH_DEFAULT = BUILD_DIR + os.path.sep + CA_CRT_NAME
 
 def processCommandline():
+    default_ca_cert_path = CA_CERT_FULL_PATH_DEFAULT if os.path.exists(CA_CERT_FULL_PATH_DEFAULT) else "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
     parser = argparse.ArgumentParser(description="""Generates RPM certificate for
         OS image building""")
     parser.add_argument('--ca-cert-full-path',
-        help='CA certificate filename (default: %s)' % CA_CERT_FULL_PATH_DEFAULT,
-        default=CA_CERT_FULL_PATH_DEFAULT)
+        help='CA certificate filename (default: %s)' % default_ca_cert_path,
+        default=default_ca_cert_path)
     parser.add_argument('--target-os',
         help='Target OS',
         default='')
