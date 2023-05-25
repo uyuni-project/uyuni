@@ -42,7 +42,7 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV["PROVIDER"].include? 'aws'
-$is_container_provider = ENV["PROVIDER"].include? 'podman'
+$is_container_provider = ['k3s', 'podman'].include? ENV.fetch("CONTAINER_RUNTIME", '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
