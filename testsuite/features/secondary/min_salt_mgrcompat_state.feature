@@ -1,5 +1,25 @@
 # Copyright (c) 2015-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_lock_packages.feature
+# - features/secondary/min_action_chain.feature
+# - features/secondary/allcli_action_chain.feature
+# - features/secondary/min_recurring_action.feature
+# - features/secondary/min_change_software_channel.feature
+# - features/secondary/min_retracted_patches.feature
+# - features/secondary/min_timezone.feature
+# - features/secondary/srv_advanced_search.feature
+# - features/secondary/srv_datepicker.feature
+# - features/secondary/srv_group_union_intersection.feature
+# - features/secondary/srv_custom_system_info.feature
+# - features/secondary/srv_reportdb.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_system_group.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/min_bootstrap_api.feature
+# If the minion fails to bootstrap again.
 
 @sle_minion
 @scope_salt

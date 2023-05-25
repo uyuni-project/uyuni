@@ -8,6 +8,10 @@
 # For the scope of these tests, we configure it as follows:
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
+#
+# This feature can cause failures in the following features:
+# - features/secondary/proxy_retail_pxeboot_and_mass_import.feature:
+# This feature leaves a JeOS image built that is used in the "PXE boot a Retail terminal" feature.
 
 @buildhost
 @scope_retail

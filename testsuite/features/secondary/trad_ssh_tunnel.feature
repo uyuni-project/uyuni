@@ -1,5 +1,9 @@
 # Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_baremetal_discovery.feature
+# If the client fails to be bootstrapped again.
 
 @scope_traditional_client
 Feature: Register a traditional system to be managed via SSH push

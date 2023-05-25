@@ -1,5 +1,9 @@
 # Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_migrate_to_sshminion.feature
+# If the client fails to be bootstrapped again.
 
 @scope_traditional_client
 Feature: Migrate a traditional client into a Salt minion

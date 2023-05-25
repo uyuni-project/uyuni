@@ -1,5 +1,9 @@
 # Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/allcli_action_chain.feature
+# If the action chain fails to be completed and run.
 
 @ssh_minion
 @scope_action_chains

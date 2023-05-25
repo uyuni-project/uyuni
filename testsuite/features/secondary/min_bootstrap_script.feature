@@ -5,6 +5,10 @@
 # 1) delete SLES minion and register again with bootstrap script
 # 2) subscribe minion to a base channels
 # 3) install and remove a package
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_ssh_tunnel.feature
+# If the minion fails to bootstrap again.
 
 @sle_minion
 @scope_onboarding
