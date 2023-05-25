@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
+@scc_credentials
 Feature: Channel subscription with recommended or required dependencies
 
   Scenario: Log in as admin user
