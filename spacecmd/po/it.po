@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-28 14:54+0200\n"
-"PO-Revision-Date: 2021-03-25 12:57+0000\n"
+"PO-Revision-Date: 2023-05-26 18:14+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
-">\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
+"spacecmd-4-2/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -311,7 +311,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:961 ../src/spacecmd/configchannel.py:802
 #: ../src/spacecmd/configchannel.py:917 ../src/spacecmd/system.py:3104
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Configurazione Canali"
 
 #: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3109
 msgid "Entitlements"
