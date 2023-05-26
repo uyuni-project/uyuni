@@ -14,13 +14,16 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -31,6 +34,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -578,6 +582,56 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
         assertEquals(ReleaseStage.beta, product.getReleaseStage());
+    }
+
+    @Test
+    public void testClonedVendorChannelMandadory() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1576));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1580));
+
+
+
+        Channel baseChannel = ChannelFactory.lookupByLabel("sle-product-sles15-pool-x86_64");
+        Channel basesystemPool = ChannelFactory.lookupByLabel("sle-module-basesystem15-pool-x86_64");
+        Channel applicationsPool = ChannelFactory.lookupByLabel("sle-module-server-applications15-pool-x86_64");
+
+
+        Channel baseClone = ChannelFactoryTest.createTestClonedChannel(baseChannel, user, "", "-clone",
+                "Clone of", "", null);
+        Channel basesystemJan = ChannelFactoryTest.createTestClonedChannel(basesystemPool, user, "", "-jan",
+                "", " Jan", baseClone);
+        Channel applicationsJan = ChannelFactoryTest.createTestClonedChannel(applicationsPool, user, "", "-jan",
+                "", " Jan", baseClone);
+
+        Channel basesystemFeb = ChannelFactoryTest.createTestClonedChannel(basesystemPool, user, "", "-feb",
+                "", " Feb", baseClone);
+        Channel applicationsFeb = ChannelFactoryTest.createTestClonedChannel(applicationsPool, user, "", "-feb",
+                "", " Feb", baseClone);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<Channel> resultAppFeb = SUSEProductFactory
+                .findSyncedMandatoryChannels("sle-module-server-applications15-pool-x86_64-feb")
+                .collect(Collectors.toList());
+
+        assertIterableEquals(
+                List.of(applicationsFeb, basesystemFeb).stream().distinct().sorted().collect(Collectors.toList()),
+                resultAppFeb.stream().distinct().sorted().collect(Collectors.toList())
+        );
+
+        List<Channel> resultAppJan = SUSEProductFactory
+                .findSyncedMandatoryChannels("sle-module-server-applications15-pool-x86_64-jan")
+                .collect(Collectors.toList());
+
+        assertIterableEquals(
+                List.of(applicationsJan, basesystemJan).stream().distinct().sorted().collect(Collectors.toList()),
+                resultAppJan.stream().distinct().sorted().collect(Collectors.toList())
+        );
     }
 
     /**

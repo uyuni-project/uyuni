@@ -996,7 +996,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
             return Optional.empty();
         }
         else {
-            // We take the first item since there can be more then one entry.
+            // We take the first item since there can be more than one entry.
             // All entries should point to the same "product" with only arch differences.
             // The only exception to this is sles11 sp1/2 and caasp 1/2 but they are out of maintenance
             // and we decided to ignore this inconsistency until the great rewrite.

@@ -98,5 +98,5 @@ Feature: Redfish Power management
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
     When I click on the clear SSM button
 
-  Scenario: Check for errors in Cobbler monitoring
+  Scenario: Cleanup: clean Cobbler
     Then the local logs for Cobbler should not contain errors

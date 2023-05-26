@@ -240,6 +240,16 @@ SUCCEED_PKG=
 FAILED_CNT=0
 FAILED_PKG=
 
+# check which endpoint we are using to match the product
+if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+    PRODUCT_VERSION="susemanager-$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)"
+else
+    # Uyuni settings
+    PRODUCT_VERSION="uyuni-$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)"
+fi
+# to lowercase with ",," and replace spaces " " with "-"
+PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+
 while read PKG_NAME; do
   echo "=== Processing package [$PKG_NAME]"
 
@@ -250,19 +260,8 @@ while read PKG_NAME; do
     continue
   }
 
-  # check which endpoint we are using to match the product
-  if [ "${OSCAPI}" == "https://api.suse.de" ]; then
-      PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
-  else
-      # Uyuni settings
-      PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
-  fi
-  # to lowercase with ",," and replace spaces " " with "-"
-  PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
-  # Remove leading zero from Uyuni release and add potentially missing micro part
-  SEMANTIC_VERSION=$(echo ${PRODUCT_VERSION} | sed 's/\([0-9]\+\)\.0\?\([1-9][0-9]*\)\(\.\([0-9]\+\)\)\?\( .\+\)\?/\1.\2.\4\5/' | sed 's/\.$/.0/')
-
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
+      NAME="${PKG_NAME%%-image}"
       # check which endpoint we are using to match the product
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
@@ -273,11 +272,17 @@ while read PKG_NAME; do
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
+          NAME="suse\/manager\/${VERSION}\/${NAME}"
+      else
+          NAME="uyuni\/${NAME}"
       fi
-      sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+
+      # Add version from rhn_web on top of version from tito to have a continuity with already relased versions
+      sed "/^#\!BuildTag:/s/$/ ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
+      NAME="${PKG_NAME}"
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
@@ -289,9 +294,12 @@ while read PKG_NAME; do
           sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
           tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
           rm -rf ${SRPM_PKG_DIR}/tar
+          NAME="suse\/manager\/${VERSION}\/${NAME}"
+      else
+          NAME="uyuni\/${NAME}"
       fi
-      sed "s/version: 0.0.0/version: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
-      sed "s/%PKG_VERSION%/${SEMANTIC_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
+
+      sed "/^#\!BuildTag:/ s/$/ ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)
@@ -337,7 +345,7 @@ while read PKG_NAME; do
       $OSC status
       if [ -z "$FAKE_COMITTOBS" ]; then
         if [ -z "$OBS_TEST_PROJECT" ]; then
-      	  $OSC -H ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+         $OSC -H ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
         else
           $OSC linkpac -c -f $OBS_PROJ $PKG_NAME $OBS_TEST_PROJECT
           $OSC co $OBS_TEST_PROJECT $PKG_NAME
@@ -349,7 +357,7 @@ while read PKG_NAME; do
           $OSC add *
           $OSC -H ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
           cd -
-        fi  
+        fi
       else
 	echo "FAKE: Not comitting to OBS..."
 	false

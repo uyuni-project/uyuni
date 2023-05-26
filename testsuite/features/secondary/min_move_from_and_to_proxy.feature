@@ -1,5 +1,9 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/proxy_as_pod_basic_tests.feature:
+# If the minion is not properly bootstrapped again.
 
 @sle_minion
 @proxy
@@ -14,6 +18,7 @@ Feature: Move a minion from a proxy to direct connection
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap a minion

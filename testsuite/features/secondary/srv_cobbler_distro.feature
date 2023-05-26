@@ -175,5 +175,8 @@ Feature: Cobbler and distribution autoinstallation
     When I remove kickstart profiles and distros
     And I log out from Cobbler via the API
 
-  Scenario: Check for errors in Cobbler monitoring
+  Scenario: Cleanup: clean Cobbler
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

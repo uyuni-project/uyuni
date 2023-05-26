@@ -418,5 +418,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
-  Scenario: Check for errors in Cobbler monitoring
+  Scenario: Cleanup: clean Cobbler
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.Address;
@@ -124,16 +124,14 @@ public class CreateUserAction extends RhnAction {
          */
         boolean validatePassword = true;
         if (form.get("usepam") != null && (Boolean) form.get("usepam")) {
-            String hash = MD5Crypt.crypt("" + System.currentTimeMillis());
+            String fakePassword = CryptHelper.getRandomPasswordForPamAuth();
             if (form.get(UserActionHelper.DESIRED_PASS) == null ||
                     form.get(UserActionHelper.DESIRED_PASS).equals("")) {
-                validatePassword = false;
-                form.set(UserActionHelper.DESIRED_PASS, hash);
+                form.set(UserActionHelper.DESIRED_PASS, fakePassword);
             }
             if (form.get(UserActionHelper.DESIRED_PASS_CONFIRM) == null ||
                     form.get(UserActionHelper.DESIRED_PASS_CONFIRM).equals("")) {
-                validatePassword = false;
-                form.set(UserActionHelper.DESIRED_PASS_CONFIRM, hash);
+                form.set(UserActionHelper.DESIRED_PASS_CONFIRM, fakePassword);
             }
         }
 

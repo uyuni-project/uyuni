@@ -1,3 +1,5 @@
+- Fix layout alignment on pages showing failed states logs (bsc#1211713)
+- Fix parsing error when showing notification message details (bsc#1211469)
 - Fix font contrast in dark theme search field (bsc#1201337)
 - Fix wrong credentials error message (bsc#1210456)
 - Fix spelling on monitoring-admin page.

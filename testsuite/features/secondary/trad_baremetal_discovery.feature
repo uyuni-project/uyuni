@@ -1,5 +1,19 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_need_reboot.feature
+# - features/secondary/trad_action_chain.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_system_group.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/trad_cve_audit.feature
+# - features/secondary/trad_openscap_audit.feature
+# - features/secondary/trad_inst_package_and_patch.feature
+# - features/secondary/trad_check_patches_install.feature
+# - features/secondary/trad_check_registration.feature
+# If the client fails to be bootstrapped again.
 
 @scope_traditional_client
 Feature: Bare metal discovery
