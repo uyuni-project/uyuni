@@ -24,8 +24,7 @@ except ImportError:
     #  python3
     from io import StringIO
 
-from uyuni.common.usix import raise_with_tb, ListType
-from uyuni.common import rhnLib
+from .string_buffer import StringBuffer
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
@@ -33,7 +32,8 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
-from .string_buffer import StringBuffer
+from uyuni.common import rhnLib
+from uyuni.common.usix import raise_with_tb, ListType
 
 
 class XML_Dumper:
