@@ -749,7 +749,7 @@ class CachedDumper(exportLib.BaseDumper):
         log_debug(4, params)
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
-        with cfg_component(None) as CFG:
+        with cfg_component(component=None) as CFG:
             user = CFG.httpd_user
             group = CFG.httpd_group
         return rhnCache.set(key, value, modified=last_modified,
