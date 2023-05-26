@@ -33,6 +33,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
 from uyuni.common import rhnLib
+from uyuni.common.context_managers import cfg_component
 from uyuni.common.usix import raise_with_tb, ListType
 
 
@@ -748,11 +749,9 @@ class CachedDumper(exportLib.BaseDumper):
         log_debug(4, params)
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
-        user = 'apache'
-        group = 'apache'
-        if rhnLib.isSUSE():
-            user = 'wwwrun'
-            group = 'www'
+        with cfg_component(None) as CFG:
+            user = CFG.httpd_user
+            group = CFG.httpd_group
         return rhnCache.set(key, value, modified=last_modified,
                             raw=1, user=user, group=group, mode=int('0755', 8))
 
