@@ -106,14 +106,6 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 
-%post
-case "$1" in
-  2)
-       if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-               /usr/sbin/mgr-package-rpm-certificate-osimage
-       fi
-  ;;
-esac
 
 %files
 %defattr(-,root,root,-)
