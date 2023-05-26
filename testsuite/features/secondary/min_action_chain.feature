@@ -1,6 +1,11 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+#
+# This feature can cause failures in the following features:
+# - features/secondary/minssh_action_chain.feature
+# - features/secondary/allcli_action_chain.feature
+# If the action chain fails to be completed and run.
+#
 # skip on container. Running actions chains fail on container.
 # This needs to be fixed
 

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -65,7 +65,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
     public void testCreate() {
         // Setup
         String description = "CryptoKeysHandler.testCreate-Description";
-        String content = MD5Crypt.md5Hex(RandomStringUtils.random(28));
+        String content = SHA256Crypt.sha256Hex(RandomStringUtils.random(28));
 
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();

@@ -8,7 +8,7 @@ Feature: IPMI Power management API
 
   Scenario: Setup an IPMI host for API test
     When the server starts mocking an IPMI host
-    And  I want to operate on this "sle_minion"
+    And I want to operate on this "sle_minion"
 
   Scenario: Check the power management settings for API test
     When I fetch power management values

@@ -295,7 +295,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.addPackage(testPackage);
         ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
-                    "SOME FAKE CHECKSUM",
+                    "SOME FAKE CHECKSUM: 123456789012",
                     "test errata file" + TestUtils.randomString(), errataFilePackages);
 
         e.addFile(ef);

@@ -9,9 +9,9 @@
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
 #
-# Idempotency note:
-# This feature leaves an JeOS image built
-# The image is used in proxy_retail_pxeboot_and_mass_import.feature
+# This feature can cause failures in the following features:
+# - features/secondary/proxy_retail_pxeboot_and_mass_import.feature:
+# This feature leaves a JeOS image built that is used in the "PXE boot a Retail terminal" feature.
 
 @skip_if_container
 @skip_if_cloud

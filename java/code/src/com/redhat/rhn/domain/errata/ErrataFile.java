@@ -104,7 +104,7 @@ public class ErrataFile extends BaseDomainHelper {
     }
 
     /**
-     * MD5 checksum
+     * checksum
      * @param cs checksums
      */
     public void setChecksum(Checksum cs) {
@@ -112,7 +112,7 @@ public class ErrataFile extends BaseDomainHelper {
     }
 
     /**
-     * MD5 checksum
+     * checksum
      * @return checksum
      */
     public Checksum getChecksum() {
