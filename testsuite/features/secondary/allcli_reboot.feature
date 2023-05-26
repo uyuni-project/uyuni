@@ -6,6 +6,20 @@
 #   (the tests of this feature can be run several times with no change in the results)
 # * However, beware that firmware, kernel or library updates might be activated by the reboot
 #   (thus making changes in the behaviour of the system after the reboot)
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_config_channel.feature
+# - features/secondary/trad_lock_packages.feature
+# - features/secondary/min_rhlike_openscap_audit.feature
+# - features/secondary/min_rhlike_remote_command.feature
+# - features/secondary/min_rhlike_ssh.feature
+# - features/secondary/trad_rhlike_client.feature
+# - features/secondary/min_deblike_openscap_audit.feature
+# - features/secondary/min_deblike_remote_command.feature
+# - features/secondary/min_deblike_ssh.feature
+# If the minions take over the alloted 10 minutes to reboot, 
+# the following features could fail due to the minions not being reachable.
+# Depending on how long they take to reboot, even more features could fail.
 
 @scope_onboarding
 Feature: Reboot systems managed by Uyuni

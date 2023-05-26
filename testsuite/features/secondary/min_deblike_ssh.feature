@@ -4,6 +4,13 @@
 # 1) delete Debian-like minion and register as SSH minion
 # 2) run a remote command
 # 3) delete Debian-like SSH minion and register as normal minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_with_staging.feature
+# - features/secondary/min_deblike_monitoring.feature
+# If the cleanup bootstrap scenario fails,
+# the minion will not be reachable in those features.
 
 @scope_deblike
 @scope_salt_ssh

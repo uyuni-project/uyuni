@@ -1,5 +1,9 @@
 # Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_activationkey.feature
+# If the minion fails to bootstrap again.
 
 @scope_salt_ssh
 @ssh_minion

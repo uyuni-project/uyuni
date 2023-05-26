@@ -1,5 +1,9 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/allcli_software_channels.feature
+# If "SLE15-SP4-Installer-Updates for x86_64" fails to be unchecked
 
 @scope_changing_software_channels
 @sle_minion

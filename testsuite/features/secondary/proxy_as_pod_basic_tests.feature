@@ -5,6 +5,19 @@
 # * there is no proxy ($proxy is nil)
 # * there is no salt minion ($sle_minion is nil)
 # * there is no scope @scope_containerized_proxy
+#
+# This feature can cause failures in the following features:
+# - features/secondary/srv_advanced_search.feature
+# - features/secondary/srv_datepicker.feature
+# - features/secondary/srv_group_union_intersection.feature
+# - features/secondary/srv_custom_system_info.feature
+# - features/secondary/srv_reportdb.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_system_group.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/min_bootstrap_api.feature
+# If the minion is not properly bootstrapped again.
 
 @scope_containerized_proxy
 @proxy

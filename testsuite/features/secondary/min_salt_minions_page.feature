@@ -1,5 +1,9 @@
 # Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_mgrcompat_state.feature
+# If the minion fails to bootstrap again.
 
 @scope_salt
 Feature: Management of minion keys
