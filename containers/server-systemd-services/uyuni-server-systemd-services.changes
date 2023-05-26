@@ -1,1 +1,2 @@
+- Migrate uyuni server to container
 - create first draft of uyuni-server-systemd-services
