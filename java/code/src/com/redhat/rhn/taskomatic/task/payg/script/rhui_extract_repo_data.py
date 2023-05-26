@@ -14,6 +14,7 @@
 import base64
 import glob
 import json
+import re
 import subprocess
 import sys
 import urllib.request
@@ -97,10 +98,10 @@ def _parse_repositories():
             repo_id = line.split(":", 1)[1]
             if "rhui-" in repo_id:
                 is_rhui = True
-        elif line.startswith("Repo-mirrors"):
+        elif repo_url == "" and line.startswith("Repo-mirrors"):
             repo_url = line.split(":", 1)[1]
-        elif repo_url == "" and line.startswith("Repo-baseurl"):
-            repo_url = line.split(":", 1)[1]
+        elif line.startswith("Repo-baseurl"):
+            repo_url = re.split('\s+', line)[2]
         elif line.strip() == "":
             if (repo_id.strip() != "" and repo_url.strip() != ""):
                 repo_dict[repo_id.strip()] = repo_url.strip()
