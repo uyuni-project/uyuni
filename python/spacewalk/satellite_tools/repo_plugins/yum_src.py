@@ -655,6 +655,7 @@ class ContentSource:
         """
         Setup repository and fetch metadata
         """
+        plugin_used = False;
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
@@ -674,18 +675,24 @@ type=rpm-md
 '''
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
+           plugin_used = True
         elif self.http_headers:
            headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
            with open(headers_location, "w") as repo_headers_file:
                repo_headers_file.write(json.dumps(self.http_headers))
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(zypp_repo_url), quote(headers_location))
+           # RHUI mirror url works only as mirror and cannot be used to download content
+           # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
+           # So let's take the first url from the mirrorlist if it exists and use it as baseurl
+           baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(baseurl), quote(headers_location))
+           plugin_used = True
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                repo_url='baseurl' if not mirrorlist else 'mirrorlist',
+                repo_url='baseurl' if not mirrorlist or plugin_used else 'mirrorlist',
                 url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))
