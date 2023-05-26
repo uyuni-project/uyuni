@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-19 15:40+0200\n"
-"PO-Revision-Date: 2023-05-19 05:15+0000\n"
+"POT-Creation-Date: 2023-05-26 10:23+0200\n"
+"PO-Revision-Date: 2023-05-23 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-4-2/zh_CN/>\n"
@@ -221,20 +221,19 @@ msgstr "指派"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:112
 msgid "Previous month"
-msgstr ""
+msgstr "上个月"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:113
 msgid "Next month"
-msgstr ""
+msgstr "下个月"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:114
 msgid "Previous year"
-msgstr ""
+msgstr "上一年"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:115
-#, fuzzy
 msgid "Next year"
-msgstr "下一页"
+msgstr "下一年"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "

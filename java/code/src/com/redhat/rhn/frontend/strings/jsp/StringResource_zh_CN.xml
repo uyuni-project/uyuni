@@ -19789,7 +19789,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">The systems listed below are subscribed to a configuration channel that contains a /etc/rhn/rhn.conf configuration file. Note: each system can be subscribed to different or multiple files with this file path. The files listed below are the deployable versions of this file, that is, the file in the configuration channel with the highest priority for each system.</context>
           </context-group>
-        <target state="translated">下列系统订阅了包含 &lt;code&gt;{0}&lt;/code&gt; 配置文件的配置频道。&lt;br /&gt;&lt;strong&gt;注意：&lt;/strong&gt;每个系统都可以使用此文件路径订阅不同或多个文件。下列文件都是此文件（即配置频道中对每个系统而言优先级最高的文件）的可部署版本。</target>
+        <target state="translated">下列系统订阅了包含 &lt;code&gt;{0}&lt;/code&gt; 配置文件的配置通道。&lt;br /&gt;&lt;strong&gt;注意：&lt;/strong&gt;每个系统都可以使用此文件路径订阅不同或多个文件。下列文件都是此文件（即配置通道中对每个系统而言优先级最高的文件）的可部署版本。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffSystems.do</context>
         </context-group>
@@ -19877,7 +19877,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssmdeploy.jsp.summary" xml:space="preserve">
           <source>The following configuration files are associated with the systems in this set. You can select files and deploy the latest revisions of those files from the highest priority configuration channel for each system in the system set.</source>
-        <target state="translated">以下配置文件与此集中的系统关联。您可以为系统集中的每个系统选择文件并部署最高优先级配置频道中那些文件的最新修订版。</target>
+        <target state="translated">以下配置文件与此集中的系统关联。您可以为系统集中的每个系统选择文件并部署最高优先级配置通道中那些文件的最新修订版。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffFiles.do</context>
         </context-group>
@@ -19902,14 +19902,14 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be deployed to the systems listed below. Only configuration files in channels to which a system is currently subscribed will be deployed. You may schedule the earliest execution for the deploy action below.</context>
           </context-group>
-        <target state="translated">将在下列系统中部署您所选的 &lt;strong&gt;{0} 个配置文件&lt;/strong&gt;。只能部署系统当前订阅的频道中的配置文件。您可以安排最早在什么时候执行下面的部署操作。</target>
+        <target state="translated">将在下列系统中部署您所选的 &lt;strong&gt;{0} 个配置文件&lt;/strong&gt;。只能部署系统当前订阅的通道中的配置文件。您可以安排最早在什么时候执行下面的部署操作。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffFiles.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.summary.one" xml:space="preserve">
           <source>The configuration file you have selected will be deployed to the systems listed below. Only configuration files in channels to which a system is currently subscribed will be deployed. You may schedule the earliest execution for the deploy action below.</source>
-        <target state="translated">将在下列系统中部署您所选的配置文件。只能部署系统当前订阅的频道中的配置文件。您可以安排最早在什么时候执行下面的部署操作。</target>
+        <target state="translated">将在下列系统中部署您所选的配置文件。只能部署系统当前订阅的通道中的配置文件。您可以安排最早在什么时候执行下面的部署操作。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/DiffFiles.do</context>
         </context-group>
@@ -19937,14 +19937,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribe.jsp.header" xml:space="preserve">
           <source>Subscribe to Configuration Channels</source>
-        <target state="translated">订阅配置频道</target>
+        <target state="translated">订阅配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Subscribe.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.subscribe.jsp.summary" xml:space="preserve">
           <source>Below are available configuration channels to which you may subscribe systems. After selecting the channels to which you wish to subscribe, you will be given a chance to rank those channels. No changes will be made to your system set until after you have ranked channels.</source>
-        <target state="translated">下面是您可以订阅的可用配置频道。在选择了要订阅的频道后，您可以对这些频道排名。在您将这些频道排名之前，系统集不会有任何改变。</target>
+        <target state="translated">下面是您可以订阅的可用配置通道。在选择了要订阅的通道后，您可以对这些通道排名。在您将这些通道排名之前，系统集不会有任何改变。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Subscribe.do</context>
         </context-group>
@@ -19958,7 +19958,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribe.jsp.noChannels" xml:space="preserve">
           <source>No configuration channels.</source>
-        <target state="translated">没有配置频道。</target>
+        <target state="translated">没有配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Subscribe.do</context>
         </context-group>
@@ -19987,21 +19987,21 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/ssm/rankchannels.jsp  -->
       <trans-unit id="ssm.config.rank.jsp.header" xml:space="preserve">
           <source>Rank Configuration Channels</source>
-        <target state="translated">对配置频道排名</target>
+        <target state="translated">对配置通道排名</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Rank.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.rank.jsp.summary" xml:space="preserve">
           <source>Rank the new configuration channel subscriptions. Configuration files in channels appearing higher in the list will override configuration files with the same path in lower channels. Choose a channel in the list and then use the up and down arrows to change its priority. Also select what priority the configuration channels listed here will have in relation to current configuration channel subscriptions for each system.</source>
-        <target state="translated">对新配置频道订阅进行排名。列表中位置较高的频道中的配置文件将覆盖较低频道中相同路径的配置文件。请选择列表中的频道，然后使用向上和向下箭头来更改其优先级。此外，请选择此处所列配置频道的什么优先级将与每个系统的当前配置频道订阅相关。</target>
+        <target state="translated">对新配置通道订阅进行排名。列表中位置较高的通道中的配置文件将覆盖较低通道中相同路径的配置文件。请选择列表中的通道，然后使用向上和向下箭头来更改其优先级。此外，请选择此处所列配置通道的什么优先级将与每个系统的当前配置通道订阅相关。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Rank.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.rank.jsp.step" xml:space="preserve">
           <source>Step 2: Rank Channels for Subscription.</source>
-        <target state="translated">步骤 2：对订阅的频道排名。</target>
+        <target state="translated">步骤 2：对订阅的通道排名。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Rank.do</context>
         </context-group>
@@ -20051,14 +20051,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/ssm/subscribeconfirm.jsp  -->
       <trans-unit id="ssm.config.subscribeconfirm.jsp.header" xml:space="preserve">
           <source>Confirm Subscription to Configuration Channels</source>
-        <target state="translated">确认订阅配置频道</target>
+        <target state="translated">确认订阅配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.step" xml:space="preserve">
           <source>Step 3: Confirm Channels for Subscription.</source>
-        <target state="translated">步骤 3：确认订阅的频道。</target>
+        <target state="translated">步骤 3：确认订阅的通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20072,28 +20072,28 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.replacesummary" xml:space="preserve">
           <source>All of the current configuration channel subscriptions will be &lt;strong&gt;replaced&lt;/strong&gt; with the configuration channels listed below in the order they appear.</source>
-        <target state="translated">所有当前配置频道订阅将以下列配置频道按其显示顺序&lt;strong&gt;替换&lt;/strong&gt;。</target>
+        <target state="translated">所有当前配置通道订阅将以下列配置通道按其显示顺序&lt;strong&gt;替换&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.lowestsummary" xml:space="preserve">
           <source>All of the configuration channels will be subscribed to in the &lt;strong&gt;lowest&lt;/strong&gt; position in the order they appear below. Any currently existing subscription between one of the systems listed below and one of the channels listed below will be replaced so that it appears in a new position. All other currently existing subscriptions will remain in their current position.</source>
-        <target state="translated">将按在下面显示的顺序从&lt;strong&gt;最低&lt;/strong&gt;位置开始订阅所有配置频道。下面其中一个系统与下面其中一个频道之间的任何当前现有订阅都将被替换，并会出现在新的位置。所有其他现有订阅都将保持在当前位置。</target>
+        <target state="translated">将按在下面显示的顺序从&lt;strong&gt;最低&lt;/strong&gt;位置开始订阅所有配置通道。下面其中一个系统与下面其中一个通道之间的任何当前现有订阅都将被替换，并会出现在新的位置。所有其他现有订阅都将保持在当前位置。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.highestsummary" xml:space="preserve">
           <source>All of the configuration channels will be subscribed to in the &lt;strong&gt;highest&lt;/strong&gt; position in the order they appear below. Any currently existing subscription between one of the systems listed below and one of the channels listed below will be replaced so that it appears in a new position. All other currently existing subscriptions will remain in their current position.</source>
-        <target state="translated">将按在下面显示的顺序从&lt;strong&gt;最高&lt;/strong&gt;位置开始订阅所有配置频道。下面其中一个系统与下面其中一个频道之间的任何当前现有订阅都将被替换，并会出现在新的位置。所有其他现有订阅都将保持在当前位置。</target>
+        <target state="translated">将按在下面显示的顺序从&lt;strong&gt;最高&lt;/strong&gt;位置开始订阅所有配置通道。下面其中一个系统与下面其中一个通道之间的任何当前现有订阅都将被替换，并会出现在新的位置。所有其他现有订阅都将保持在当前位置。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.currentchannels" xml:space="preserve">
           <source>Current Subscriptions to Chosen Channels</source>
-        <target state="translated">所选频道的当前订阅</target>
+        <target state="translated">所选通道的当前订阅</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20107,7 +20107,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.noChannels" xml:space="preserve">
           <source>No Configuration Channels.</source>
-        <target state="translated">没有配置频道。</target>
+        <target state="translated">没有配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20135,7 +20135,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.onesuccess" xml:space="preserve">
           <source>Configuration channel subscriptions changed for 1 system successfully.</source>
-        <target state="translated">已成功为 1 个系统更改了配置频道订阅。</target>
+        <target state="translated">已成功为 1 个系统更改了配置通道订阅。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20145,7 +20145,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">{0} = number of systems</context>
           </context-group>
-        <target state="translated">已成功为 {0} 个系统更改了配置频道订阅。</target>
+        <target state="translated">已成功为 {0} 个系统更改了配置通道订阅。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20177,14 +20177,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="unsubscribe.jsp.summary" xml:space="preserve">
           <source>You can unsubscribe systems from the configuration channels below. The channels shown below are all of the global configuration channels to which at least one system in your system set is subscribed.</source>
-        <target state="translated">您可以将系统取消订阅下面的配置频道。下面显示的频道是您的系统集中至少有一个系统进行订阅的所有全局配置频道。</target>
+        <target state="translated">您可以将系统取消订阅下面的配置通道。下面显示的通道是您的系统集中至少有一个系统进行订阅的所有全局配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unsubscribe.jsp.noChannels" xml:space="preserve">
           <source>No configuration channels with subscribed systems in the current System Set!</source>
-        <target state="translated">在当前系统集中没有系统订阅过配置频道！</target>
+        <target state="translated">在当前系统集中没有系统订阅过配置通道！</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
@@ -20216,7 +20216,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">The systems shown below will be unsubscribed from the 3 configuration channels you have selected. The systems shown below are those in your system set currently subscribed to at least one configuration channel you have selected.</context>
           </context-group>
-        <target state="translated">下列系统将取消订阅您选择的 &lt;strong&gt;{0} 个配置频道&lt;/strong&gt;。下列系统是您的系统集中那些目前至少订阅了一个选定配置频道的系统。</target>
+        <target state="translated">下列系统将取消订阅您选择的 &lt;strong&gt;{0} 个配置通道&lt;/strong&gt;。下列系统是您的系统集中那些目前至少订阅了一个选定配置通道的系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
@@ -20251,7 +20251,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="unsubscribeconfirm.jsp.channels" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="translated">配置频道</target>
+        <target state="translated">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
@@ -20268,7 +20268,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">3 channels</context>
           </context-group>
-        <target state="translated">{0} 个频道</target>
+        <target state="translated">{0} 个通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
@@ -20291,7 +20291,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/ssm/channelsystems.jsp  -->
       <trans-unit id="ssmchannelsystems.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="translated">配置频道</target>
+        <target state="translated">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/ChannelSystems.do</context>
         </context-group>
@@ -20301,7 +20301,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">The systems listed below are those in your system set that are subscribed to Configgy Channel. Deployable Files are configuration files or directories in this channel that are not overridden by a local system configuration channel or a higher priority global channel.</context>
           </context-group>
-        <target state="translated">下列系统是您的系统集中那些订阅了 {0} 的系统。可部署的文件是此频道中未被本地系统配置频道或优先级更高的全局频道覆盖的配置文件或目录。</target>
+        <target state="translated">下列系统是您的系统集中那些订阅了 {0} 的系统。可部署的文件是此通道中未被本地系统配置通道或优先级更高的全局通道覆盖的配置文件或目录。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/ChannelSystems.do</context>
         </context-group>
@@ -20347,7 +20347,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/ssm/channelsystems.jsp  -->
       <trans-unit id="ssmsystemchannels.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="translated">配置频道</target>
+        <target state="translated">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SystemChannels.do</context>
         </context-group>
@@ -20357,7 +20357,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">The configuration channels listed below are those selected configuration channels to which system32.devel is subscribed. Deployable Files are configuration files or directories in the channel that are not overridden by a local system configuration channel or a higher priority global channel. Change this system's configuration channel ranking.</context>
           </context-group>
-        <target state="translated">下列配置频道是 {0} 要订阅的选定配置频道。可部署的文件是此频道中未被本地系统配置频道或优先级更高的全局频道覆盖的配置文件或目录。&lt;a href="{1}"&gt;更改此系统的配置频道排名&lt;/a&gt;。</target>
+        <target state="translated">下列配置通道是 {0} 要订阅的选定配置通道。可部署的文件是此通道中未被本地系统配置通道或优先级更高的全局通道覆盖的配置文件或目录。&lt;a href="{1}"&gt;更改此系统的配置通道排名&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SystemChannels.do</context>
         </context-group>
@@ -20464,7 +20464,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.sandbox_description" xml:space="preserve">
           <source>This sandbox is a place you can store configuration files that are under development. This sandbox is associated with this system, {0}, but you may promote files from this sandbox to a centrally-managed configuration channel using the "{1}" below. After files in this sandbox have been promoted to a centrally-managed configuration channel, you will be able to deploy them to other systems.</source>
-        <target state="translated">此沙箱是您可以在开发阶段储存配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置频道。在此沙箱的文件被提升至集中管理的配置频道后，您便可以将它们部署到其他系统。</target>
+        <target state="translated">此沙箱是您可以在开发阶段储存配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置通道。在此沙箱的文件被提升至集中管理的配置通道后，您便可以将它们部署到其他系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -20653,7 +20653,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.local.delete.success" xml:space="preserve">
           <source>{0} file(s) successfully deleted from System Config Channel</source>
-        <target state="translated">已成功将 {0} 个文件从系统配置频道中删除</target>
+        <target state="translated">已成功将 {0} 个文件从系统配置通道中删除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -20663,35 +20663,35 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/sdc/channellist.jsp  -->
       <trans-unit approved="yes" id="sdc.configlist.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="final">配置频道</target>
+        <target state="final">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.configlist.jsp.para1" xml:space="preserve">
           <source>Below are all the centrally-managed configuration channels to which this system is subscribed. They are in priority order with the highest-ranked channels appearing first in the list.</source>
-        <target state="translated">下面是此系统订阅的所有集中管理的配置频道。它们按优先级排列，在列表中优先级最高的最先出现。</target>
+        <target state="translated">下面是此系统订阅的所有集中管理的配置通道。它们按优先级排列，在列表中优先级最高的最先出现。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.configlist.jsp.noChannels" xml:space="preserve">
           <source>No configuration channels. To subscribe this system to a configuration channel, please visit the &lt;a href="{0}"&gt;Subscribe to Channels&lt;/a&gt; tab.</source>
-        <target state="translated">没有配置频道。要订阅配置频道，请访问&lt;a href="{0}"&gt;订阅频道&lt;/a&gt;选项卡。</target>
+        <target state="translated">没有配置通道。要订阅配置通道，请访问&lt;a href="{0}"&gt;订阅通道&lt;/a&gt;选项卡。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.configlist.jsp.name" xml:space="preserve">
           <source>Channel Name</source>
-        <target state="translated">频道名称</target>
+        <target state="translated">通道名称</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.configlist.jsp.label" xml:space="preserve">
           <source>Channel Label</source>
-        <target state="translated">频道标签</target>
+        <target state="translated">通道标签</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -20719,7 +20719,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.configlist.jsp.note" xml:space="preserve">
           <source>&lt;strong&gt;* - Note:&lt;/strong&gt; Deployable Files are files in a configuration channel that are not outranked by files in greater priority configuration channels nor overridden by files in the systems local configuration channel.</source>
-        <target state="translated">&lt;strong&gt;* - 注意：&lt;/strong&gt;可部署文件是配置频道中不比更高优先级配置频道中的文件的级别低且未被系统本地配置频道中的文件所覆盖的文件。</target>
+        <target state="translated">&lt;strong&gt;* - 注意：&lt;/strong&gt;可部署文件是配置通道中不比更高优先级配置通道中的文件的级别低且未被系统本地配置通道中的文件所覆盖的文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -20733,14 +20733,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success" xml:space="preserve">
           <source>{0} configuration channel(s) were unsubscribed.</source>
-        <target>已取消订阅 {0} 个配置频道。</target>
+        <target>已取消订阅 {0} 个配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure" xml:space="preserve">
           <source>Failed to unsubscribe {0} configuration channel(s).</source>
-        <target>无法取消订阅 {0} 个配置频道。</target>
+        <target>无法取消订阅 {0} 个配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -20755,7 +20755,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdccreatefile.jsp.summary" xml:space="preserve">
           <source>You may create a file below. The created file will be placed in your system sandbox. If you wish to deploy this file or override config files in global channels, copy this file into your local override channel.</source>
-        <target state="translated">您可以在下面创建文件。创建的文件将位于您的系统沙箱中。如果您要部署此文件或覆盖全局频道中的配置文件，请将此文件复制到您的本地覆盖频道。</target>
+        <target state="translated">您可以在下面创建文件。创建的文件将位于您的系统沙箱中。如果您要部署此文件或覆盖全局通道中的配置文件，请将此文件复制到您的本地覆盖通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/CreateFile.do</context>
         </context-group>
@@ -20770,7 +20770,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdcuploadfile.jsp.summary" xml:space="preserve">
           <source>You may upload a file from your machine below. The uploaded file will be placed in your system sandbox. If you wish to deploy this file or override config files in global channels, copy this file into your local override channel.</source>
-        <target state="translated">您可以在下面从您的计算机上载文件。上载的文件将位于您的系统沙箱中。如果您要部署此文件或覆盖全局频道中的配置文件，请将此文件复制到您的本地覆盖频道。</target>
+        <target state="translated">您可以在下面从您的计算机上载文件。上载的文件将位于您的系统沙箱中。如果您要部署此文件或覆盖全局通道中的配置文件，请将此文件复制到您的本地覆盖通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile.do</context>
         </context-group>
@@ -20791,7 +20791,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-        <target state="translated">通过此界面添加的所有文件将从 {0} 导入到此系统的沙箱频道。下次在系统上运行 &lt;code&gt;mgr_check&lt;/code&gt; 时将导入文件。如果您要部署这些文件或者覆盖全局频道中的配置文件，请在导入后将此文件复制到本地覆盖频道中。可以使用下面提供的一种或两种文件选择方法。</target>
+        <target state="translated">通过此界面添加的所有文件将从 {0} 导入到此系统的沙箱通道。下次在系统上运行 &lt;code&gt;mgr_check&lt;/code&gt; 时将导入文件。如果您要部署这些文件或者覆盖全局通道中的配置文件，请在导入后将此文件复制到本地覆盖通道中。可以使用下面提供的一种或两种文件选择方法。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFile.do</context>
         </context-group>
@@ -20889,7 +20889,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">This action will import the listed files from postbox.devel into this system's sandbox configuration channel.</context>
           </context-group>
-        <target state="translated">此操作会将列出的文件从 {0} 导入到此系统的沙箱配置频道中。</target>
+        <target state="translated">此操作会将列出的文件从 {0} 导入到此系统的沙箱配置通道中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
@@ -21038,7 +21038,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdcdeployfile.jsp.summary" xml:space="preserve">
           <source>The following configuration files are deployable to this system. Files from configuration channels with a higher priority take precedence over files from configuration channels with a lower priority.</source>
-        <target state="translated">以下配置文件是可部署到此系统的文件。优先级较高的配置频道中的文件将优先于优先级较低的配置频道中的文件。</target>
+        <target state="translated">以下配置文件是可部署到此系统的文件。优先级较高的配置通道中的文件将优先于优先级较低的配置通道中的文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/DeployFile.do</context>
         </context-group>
@@ -21242,7 +21242,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.viewlog.note" xml:space="preserve">
           <source>Note: only child channel subscription changes and package install/remove/upgrade/verify tasks are listed.</source>
-        <target state="translated">注意：仅会列出子频道订阅更改和软件包安装/去除/升级/校验任务。</target>
+        <target state="translated">注意：仅会列出子通道订阅更改和软件包安装/去除/升级/校验任务。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -21644,14 +21644,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- ssm/packageinstall.jsp -->
       <trans-unit id="ssm.package.install.selectchannel.header" xml:space="preserve">
           <source>Select Channel</source>
-        <target state="translated">选择频道</target>
+        <target state="translated">选择通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageInstall.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.install.selectchannel.summary" xml:space="preserve">
           <source>First, select the channel containing the packages to be installed upon the selected systems.</source>
-        <target state="translated">首先，请选择要安装在选定系统上的软件包所在的频道。</target>
+        <target state="translated">首先，请选择要安装在选定系统上的软件包所在的通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageInstall.do</context>
         </context-group>
@@ -21989,10 +21989,10 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
         <target state="translated">&lt;span class="small-text"&gt;&lt;strong&gt;提示：&lt;/strong&gt;
-请确保您在进行无人值守安装时为系统订阅了适当的软件频道。
+请确保您在进行无人值守安装时为系统订阅了适当的软件通道。
 这样，它们便可以访问与其同步的软件包配置文件中的软件包。
 请访问&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;激活密钥&lt;/a&gt;
-选项卡以在进行无人值守安装时为系统订阅软件频道。&lt;/span&gt;</target>
+选项卡以在进行无人值守安装时为系统订阅软件通道。&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.tip.proxy.jsp" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Date listed is last time proxy contacted @@PRODUCT_NAME@@.</source>
@@ -22908,7 +22908,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 
 "发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、基础频道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
+树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
 
 &lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和软件源信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
 </target>
@@ -22967,7 +22967,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="translated">未找到可自动安装的频道。</target>
+        <target state="translated">未找到可自动安装的通道。</target>
       </trans-unit>
       <trans-unit id="tree-form.jspf.noinstalltypes" xml:space="preserve">
         <source>
@@ -23055,7 +23055,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="translated">基础软件频道</target>
+        <target state="translated">基础软件通道</target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.applyaction" xml:space="preserve">
         <source>Apply Action</source>
@@ -23641,14 +23641,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.config.central-channel.subscriptions" xml:space="preserve">
           <source>Centrally-Managed Channel Subscriptions</source>
-        <target state="translated">集中管理的频道订阅</target>
+        <target state="translated">集中管理的通道订阅</target>
         <context-group name="sdc_items">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.subscribe_to_channels" xml:space="preserve">
           <source>Subscribe to channels</source>
-        <target state="translated">订阅频道</target>
+        <target state="translated">订阅通道</target>
         <context-group name="sdc_items">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -23760,21 +23760,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.header" xml:space="preserve">
           <source>Configuration Channel Subscriptions</source>
-        <target state="translated">配置频道订阅</target>
+        <target state="translated">配置通道订阅</target>
         <context-group name="sdc_subscriptions_list">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.para1" xml:space="preserve">
           <source>Below is a list of configuration channels available to this system. To subscribe to a channel, check its checkbox. Make sure you click the "Continue" button when you are finished with your changes.</source>
-        <target state="translated">下面是此系统可用的配置频道列表。要订阅某个频道，请选中相应的复选框。请确保在完成更改后单击 "继续"" 按钮。</target>
+        <target state="translated">下面是此系统可用的配置通道列表。要订阅某个通道，请选中相应的复选框。请确保在完成更改后单击 "继续"" 按钮。</target>
         <context-group name="sdc_subscriptions_list">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.channel" xml:space="preserve">
           <source>Channel Name</source>
-        <target state="translated">频道名称</target>
+        <target state="translated">通道名称</target>
         <context-group name="sdc_subscriptions_list">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -23795,14 +23795,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.noChannels" xml:space="preserve">
           <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source>
-        <target state="translated"> 没有可供订阅的配置频道。您已为此系统订阅了所有可用频道（&lt;a href="{0}"&gt;查看已订阅的频道&lt;/a&gt;），或者您无权访问任何可用频道。</target>
+        <target state="translated"> 没有可供订阅的配置通道。您已为此系统订阅了所有可用通道（&lt;a href="{0}"&gt;查看已订阅的通道&lt;/a&gt;），或者您无权访问任何可用通道。</target>
         <context-group name="sdc_subscriptions_list">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.config.subscription.jsp.error.nojavascript" xml:space="preserve">
           <source>Please enable Javascript before selecting your channel subscriptions.</source>
-        <target state="translated">请在选择频道订阅前启用 Javascript。</target>
+        <target state="translated">请在选择通道订阅前启用 Javascript。</target>
         <context-group name="sdc_subscriptions_list">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -23820,49 +23820,49 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
             <context context-type="paramnotes">server name. ex: postmaster.devel</context>
           </context-group>
-        <target state="translated">成功地修改了 {0} 的频道订阅</target>
+        <target state="translated">成功地修改了 {0} 的通道订阅</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.header" xml:space="preserve">
           <source>View/Modify Configuration Channel Ranks</source>
-        <target state="translated">查看/修改配置频道排名</target>
+        <target state="translated">查看/修改配置通道排名</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
           <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target state="translated">此系统订阅了下列配置频道，频道按排名以从高到低的顺序列出。特定频道中的文件将覆盖级别比其低的频道中文件路径和文件名相同的文件。</target>
+        <target state="translated">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para2" xml:space="preserve">
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source>
-        <target state="translated">要修改订阅的频道各自的排名，您可以选择一个频道并用方向键上下移动它。在您完成排名过程后，您将需要单击下面的 "{0}" 来确认频道订阅和顺序。</target>
+        <target state="translated">要修改订阅的通道各自的排名，您可以选择一个通道并用方向键上下移动它。在您完成排名过程后，您将需要单击下面的 "{0}" 来确认通道订阅和顺序。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.subscribed_channels" xml:space="preserve">
           <source>Subscribed Channels</source>
-        <target state="translated">订阅的频道</target>
+        <target state="translated">订阅的通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.config.rank.jsp.warning" xml:space="preserve">
           <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source>
-        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;您刚刚选择了要为此系统订阅的新配置频道。在您确定订阅的排名并单击下面的 "{0}" 确认订阅之前，此系统将&lt;strong&gt;不会&lt;/strong&gt;订阅这些频道。 </target>
+        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;您刚刚选择了要为此系统订阅的新配置通道。在您确定订阅的排名并单击下面的 "{0}" 确认订阅之前，此系统将&lt;strong&gt;不会&lt;/strong&gt;订阅这些通道。 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.config.rank.jsp.error.nojavascript" xml:space="preserve">
           <source>Please enable Javascript before ordering your channel subscriptions.</source>
-        <target state="translated">请在为频道订阅排序前启用 Javascript。</target>
+        <target state="translated">请在为通道订阅排序前启用 Javascript。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -23985,7 +23985,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">订阅的频道（&lt;a href="{0}"&gt;更改频道订阅&lt;/a&gt;）</target>
+        <target state="translated">订阅的通道（&lt;a href="{0}"&gt;更改通道订阅&lt;/a&gt;）</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -24636,7 +24636,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
         <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
-        <target state="translated">使用系统配置文件特定的激活密钥可以重新注册系统，并且系统将具有相同的 ID、历史记录、组和频道（除非系统的基础频道发生更改）。</target>
+        <target state="translated">使用系统配置文件特定的激活密钥可以重新注册系统，并且系统将具有相同的 ID、历史记录、组和通道（除非系统的基础通道发生更改）。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -25001,7 +25001,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-        <target state="final">软件频道</target>
+        <target state="final">软件通道</target>
       </trans-unit>
       <!-- downloads.jsp -->
       <trans-unit id="isodownload.hosted-only.warn" xml:space="preserve">
@@ -25030,7 +25030,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">outage-policy.jsp</context>
         </context-group>
-        <target state="translated">软件频道订阅</target>
+        <target state="translated">软件通道订阅</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.update_sub" xml:space="preserve">
         <source>Change Subscriptions</source>
@@ -25044,21 +25044,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">此系统订阅了列在最上面的基础频道以及其下任何选定频道（如果有）。禁用的复选框表示该频道不能手动订阅或取消订阅。</target>
+        <target state="translated">此系统订阅了列在最上面的基础通道以及其下任何选定通道（如果有）。禁用的复选框表示该通道不能手动订阅或取消订阅。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.summary2" xml:space="preserve">
         <source>You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">您可以更改系统订阅的基础软件频道。该系统将取消订阅所有软件频道，然后订阅新的基础软件频道。</target>
+        <target state="translated">您可以更改系统订阅的基础软件通道。该系统将取消订阅所有软件通道，然后订阅新的基础软件通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.subwarning" xml:space="preserve">
         <source>You do not have subscription rights to the current base channel for this system.  If you change the base channel, you will not be able to return it to this channel without administrator assistance.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">您没有为此系统订阅当前的基础频道的权限。如果您更改基础频道，没有管理员的协助，您将无法将其恢复到此频道。</target>
+        <target state="translated">您没有为此系统订阅当前的基础通道的权限。如果您更改基础通道，没有管理员的协助，您将无法将其恢复到此通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.confirm_update_base" xml:space="preserve">
         <source>Confirm</source>
@@ -25072,7 +25072,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">您没有下面标记的频道的订阅权限。没有管理员的介入，您将无法为此系统重新订阅这些频道。</target>
+        <target state="translated">您没有下面标记的通道的订阅权限。没有管理员的介入，您将无法为此系统重新订阅这些通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.resubwarning" xml:space="preserve">
         <source>Resubscription Warning</source>
@@ -25086,28 +25086,28 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">基础软件频道</target>
+        <target state="translated">基础软件通道</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.nobasechannel" xml:space="preserve">
         <source>This system has no Base Software Channel.  You can select a Base Channel from the list below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">此系统没有基础软件频道。您可以从下面的列表中选择一个基础频道。</target>
+        <target state="translated">此系统没有基础软件通道。您可以从下面的列表中选择一个基础通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;这些频道不是此 Guest 的主机 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; 的 @@ENTERPRISE_LINUX_NAME@@ 订阅的一部分。订阅这些频道将消耗额外的软件权利。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;为主机系统应用不同的虚拟系统权利&lt;/a&gt;将影响哪些频道具有此标记。</target>
+        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;这些通道不是此 Guest 的主机 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; 的 @@ENTERPRISE_LINUX_NAME@@ 订阅的一部分。订阅这些通道将消耗额外的软件权利。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;为主机系统应用不同的虚拟系统权利&lt;/a&gt;将影响哪些通道具有此标记。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;这些频道不是此 Guest 的主机的 @@ENTERPRISE_LINUX_NAME@@ 订阅的一部分。订阅这些频道将消耗额外的软件权利。为主机系统应用不同的虚拟系统权利将影响哪些频道具有此标记。</target>
+        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;这些通道不是此 Guest 的主机的 @@ENTERPRISE_LINUX_NAME@@ 订阅的一部分。订阅这些通道将消耗额外的软件权利。为主机系统应用不同的虚拟系统权利将影响哪些通道具有此标记。</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.channels.edit.fastrackBetaWarning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; 'FasTrack' and Beta child software channels are not available with Extended Update Support.</source>
@@ -25128,14 +25128,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">确认更改基础软件频道</target>
+        <target state="translated">确认更改基础软件通道</target>
       </trans-unit>
       <trans-unit id="sdc.channels.confirmNewBase.currentlySubscribedTo" xml:space="preserve">
         <source>This system is currently subscribed to the following software channels:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">此系统目前订阅了以下软件频道：</target>
+        <target state="translated">此系统目前订阅了以下软件通道：</target>
       </trans-unit>
       <trans-unit id="sdc.channels.confirmNewBase.noBaseChannel" xml:space="preserve">
         <source>None</source>
@@ -25156,14 +25156,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;如果您安装了来自上方高亮显示的任何频道中的软件包，将此系统移到扩展的更新支持时，这些软件包将&lt;strong&gt;无法再收到软件更新&lt;/strong&gt;，其中包括&lt;strong&gt;关键安全更新&lt;/strong&gt;。</target>
+        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;如果您安装了来自上方高亮显示的任何通道中的软件包，将此系统移到扩展的更新支持时，这些软件包将&lt;strong&gt;无法再收到软件更新&lt;/strong&gt;，其中包括&lt;strong&gt;关键安全更新&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.confirmNewBase.fasTrackBetaNote" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; FasTrack and Beta software channels are intended as early access options for &lt;strong&gt;new&lt;/strong&gt; software releases. This is why they are not compatible with Extended Update Support, which is meant to keep a particular system compatible with a particular &lt;strong&gt;previous&lt;/strong&gt; software release.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;FasTrack 和 Beta 软件频道可作为&lt;strong&gt;新&lt;/strong&gt;软件发行版的抢先体验选项。这就是它不与扩展的更新支持兼容的原因，也就是说，特定系统需要与特定的&lt;strong&gt;早期&lt;/strong&gt;软件发行版兼容。</target>
+        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;FasTrack 和 Beta 软件通道可作为&lt;strong&gt;新&lt;/strong&gt;软件发行版的抢先体验选项。这就是它不与扩展的更新支持兼容的原因，也就是说，特定系统需要与特定的&lt;strong&gt;早期&lt;/strong&gt;软件发行版兼容。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.confirmNewBase.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -25177,7 +25177,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">修改基础软件频道</target>
+        <target state="translated">修改基础软件通道</target>
       </trans-unit>
       <trans-unit id="system.reboot.scheduled" xml:space="preserve">
         <source>Reboot &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for system &lt;strong&gt;{0}&lt;/strong&gt; for {1}.</source>
@@ -25443,7 +25443,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target state="translated">频道订阅</target>
+        <target state="translated">通道订阅</target>
       </trans-unit>
       <trans-unit id="ssmchildsubs.jsp.summary" xml:space="preserve">
           <source>
@@ -25459,13 +25459,13 @@ Below is a list of channels in your organization.
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
         <target state="translated">
-下面是您组织中的频道列表。
+下面是您组织中的通道列表。
 &lt;ul&gt;
-&lt;li&gt;如果您不想对某个频道进行任何更改，请选中该频道对应的 "不执行任何操作"。&lt;/li&gt;
-&lt;li&gt;要为选定的系统订阅某个频道，请选中该频道对应的 "已订阅"。&lt;/li&gt;
-&lt;li&gt;要为选定的系统取消订阅某个频道，请选中该频道对应的 "已取消订阅"。&lt;/li&gt;
+&lt;li&gt;如果您不想对某个通道进行任何更改，请选中该通道对应的 "不执行任何操作"。&lt;/li&gt;
+&lt;li&gt;要为选定的系统订阅某个通道，请选中该通道对应的 "已订阅"。&lt;/li&gt;
+&lt;li&gt;要为选定的系统取消订阅某个通道，请选中该通道对应的 "已取消订阅"。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;strong&gt;注意：&lt;/strong&gt;尝试将系统指派到不兼容的频道会失败。
+&lt;strong&gt;注意：&lt;/strong&gt;尝试将系统指派到不兼容的通道会失败。
         </target>
       </trans-unit>
       <trans-unit id="ssmchildsubs.jsp.channelname" xml:space="preserve">
@@ -25473,7 +25473,7 @@ Below is a list of channels in your organization.
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target state="translated">频道</target>
+        <target state="translated">通道</target>
       </trans-unit>
       <trans-unit id="ssmchildsubs.jsp.alter" xml:space="preserve">
           <source>Alter Subscriptions</source>
@@ -25487,14 +25487,14 @@ Below is a list of channels in your organization.
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
           </context-group>
-        <target state="translated">确认更改频道订阅</target>
+        <target state="translated">确认更改通道订阅</target>
       </trans-unit>
       <trans-unit id="ssmchildsubconfirm.jsp.summary" xml:space="preserve">
           <source>Below is a per-system summary of the channel subscription changes that will occur.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
           </context-group>
-        <target state="translated">以下是每个系统将会发生的频道订阅更改摘要。</target>
+        <target state="translated">以下是每个系统将会发生的通道订阅更改摘要。</target>
       </trans-unit>
       <trans-unit id="ssmchildsubconfirm.jsp.systemName" xml:space="preserve">
           <source>Name</source>
@@ -25536,7 +25536,7 @@ Below is a list of channels in your organization.
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">基础频道更改</target>
+        <target state="translated">基础通道更改</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.summary" xml:space="preserve">
           <source>
@@ -25548,7 +25548,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
         <target state="translated">
-作为频道管理员，您可以更改系统订阅的基础频道。有效频道是您的组织创建的频道，或者适用于您操作系统版本和处理器类型的默认 @@VENDOR_NAME@@ 基础频道。系统将取消订阅所有频道，然后订阅其新的基础频道。
+作为通道管理员，您可以更改系统订阅的基础通道。有效通道是您的组织创建的通道，或者适用于您操作系统版本和处理器类型的默认 @@VENDOR_NAME@@ 基础通道。系统将取消订阅所有通道，然后订阅其新的基础通道。
 &lt;p/&gt;
 &lt;strong&gt;此操作可能会对系统可用的软件包和补丁产生重大影响，因此请慎用。&lt;/strong&gt;
           </target>
@@ -25565,7 +25565,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">@@VENDOR_NAME@@ 频道</target>
+        <target state="translated">@@VENDOR_NAME@@ 通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.noSystems" xml:space="preserve">
           <source>No systems selected</source>
@@ -25586,7 +25586,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">当前基础频道</target>
+        <target state="translated">当前基础通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.systemCount" xml:space="preserve">
           <source>Systems</source>
@@ -25600,14 +25600,14 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">所需基础频道</target>
+        <target state="translated">所需基础通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.default-channel" xml:space="preserve">
           <source>System Default Base Channel</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">系统默认基础频道</target>
+        <target state="translated">系统默认基础通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.no-channel-change" xml:space="preserve">
           <source>No Change</source>
@@ -25629,7 +25629,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
           </context-group>
-        <target state="translated">{0} 个系统已排队等待订阅频道 "{1}"</target>
+        <target state="translated">{0} 个系统已排队等待订阅通道 "{1}"</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.success-default" xml:space="preserve">
           <source>{0} systems queued to subscribe to the appropriate default base channel</source>
@@ -25637,7 +25637,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to the appropriate default base channel</context>
           </context-group>
-        <target state="translated">{0} 个系统已排队等待订阅正确的默认基础频道</target>
+        <target state="translated">{0} 个系统已排队等待订阅正确的默认基础通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.skip" xml:space="preserve">
           <source>{0} systems skipped while attempting to subscribe to channel '{1}'</source>
@@ -25645,7 +25645,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems skipped while attempting to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
           </context-group>
-        <target state="translated">在尝试订阅频道 "{1}" 时跳过了 {0} 个系统</target>
+        <target state="translated">在尝试订阅通道 "{1}" 时跳过了 {0} 个系统</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.skip-default" xml:space="preserve">
           <source>{0} systems skipped while attempting to subscribe to the appropriate default base channel</source>
@@ -25653,21 +25653,21 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems skipped while attempting to subscribe to the appropriate default base channel</context>
           </context-group>
-        <target state="translated">在尝试订阅正确的默认基础频道时跳过了 {0} 个系统</target>
+        <target state="translated">在尝试订阅正确的默认基础通道时跳过了 {0} 个系统</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.header" xml:space="preserve">
           <source>Confirm Base Channel Alteration</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">确认更改基础频道</target>
+        <target state="translated">确认更改基础通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.header.description" xml:space="preserve">
           <source>To confirm the alteration of the base channel subscription of the systems in your set with the selected base channels, please review the following information and click on the 'Alter Subscriptions' button below. If you are not sure you would like to continue with the base channel alteration of your systems, you may click the 'Cancel' button below.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">要确认使用所选的基础频道更改您系统集中各系统的基础频道订阅，请查看以下信息并单击下面的 "更改订阅" 按钮。如果您不确定是否要继续为您的系统更改基础频道，可以单击下面的 "取消" 按钮。</target>
+        <target state="translated">要确认使用所选的基础通道更改您系统集中各系统的基础通道订阅，请查看以下信息并单击下面的 "更改订阅" 按钮。如果您不确定是否要继续为您的系统更改基础通道，可以单击下面的 "取消" 按钮。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.alter" xml:space="preserve">
           <source>Alter Subscriptions</source>
@@ -25688,35 +25688,35 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">不匹配的子频道</target>
+        <target state="translated">不匹配的子通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.unmatchedDescription" xml:space="preserve">
           <source>Some of the systems in your set are currently subscribed to the channels in the 'Old Channel' column below, but suitable matches for the following child channels could not be found under the proposed new base channels. As a result, the systems in the 'Systems Affected' column will be unsubscribed from the 'Old Channels' listed below. Please note that these systems may have packages installed that will no longer receive updates, including security updates, after their base channel has been switched.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">您系统集中的一些系统目前订阅了下面 "旧频道" 一列中的频道，但在建议的新基础频道下找不到以下子频道的适当匹配项。因此，"受影响的系统" 一列中的系统将会取消订阅下面列出的 "旧频道"。请注意，在更换基础频道后，这些可能安装了软件包的系统将无法再收到更新，其中包括安全更新。</target>
+        <target state="translated">您系统集中的一些系统目前订阅了下面 "旧通道" 一列中的通道，但在建议的新基础通道下找不到以下子通道的适当匹配项。因此，"受影响的系统" 一列中的系统将会取消订阅下面列出的 "旧通道"。请注意，在更换基础通道后，这些可能安装了软件包的系统将无法再收到更新，其中包括安全更新。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.matchedHeader" xml:space="preserve">
           <source>Matched Child Channels</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">匹配的子频道</target>
+        <target state="translated">匹配的子通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.matchedDescription" xml:space="preserve">
           <source>Below is a list of child channels that the systems in your set are subscribed to in their old base channel and the corresponding child channel they will be subscribed to under their new base channels.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">以下是您的系统集中的系统在其旧基础频道中订阅的子频道，以及将要在其新基础频道中订阅的对应子频道。</target>
+        <target state="translated">以下是您的系统集中的系统在其旧基础通道中订阅的子通道，以及将要在其新基础通道中订阅的对应子通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.fasTrackBetaNote" xml:space="preserve">
           <source>&lt;strong&gt;* Note:&lt;/strong&gt; If you are moving systems from a major to a minor release version of Red Hat Enterprise Linux (for example, from Red Hat Enterprise Linux v.5 to Red Hat Enterprise Linux v.5.1) please note that FasTrack and Beta channels will never be available under a minor release; they only apply to major releases. It is recommended that you uninstall any packages obtained from a FasTrack or Beta channel when moving a system from a major to a minor release version of Enterprise Linux.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">&lt;strong&gt;*注意：&lt;/strong&gt;如果您将系统从一个 Red Hat Enterprise Linux 主发行版移到次发行版（例如从 Red Hat Enterprise Linux v.5 移到 Red Hat Enterprise Linux v.5.1），请注意 FasTrack 和 Beta 频道在次发行版中永远不可用，它们只适用于主发行版。建议您在将系统从 Enterprise Linux 的主发行版移到次发行版时，卸装所有来自 FasTrack 或 Beta 频道的软件包。</target>
+        <target state="translated">&lt;strong&gt;*注意：&lt;/strong&gt;如果您将系统从一个 Red Hat Enterprise Linux 主发行版移到次发行版（例如从 Red Hat Enterprise Linux v.5 移到 Red Hat Enterprise Linux v.5.1），请注意 FasTrack 和 Beta 通道在次发行版中永远不可用，它们只适用于主发行版。建议您在将系统从 Enterprise Linux 的主发行版移到次发行版时，卸装所有来自 FasTrack 或 Beta 通道的软件包。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.noChannelsFound" xml:space="preserve">
           <source>No channels found.</source>
@@ -25730,14 +25730,14 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">旧频道</target>
+        <target state="translated">旧通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.header.newChannel" xml:space="preserve">
           <source>New Channel</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">新频道</target>
+        <target state="translated">新通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.header.parentChannel" xml:space="preserve">
           <source>Parent</source>
@@ -25772,11 +25772,11 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">未选择要修改的基础频道。</target>
+        <target state="translated">未选择要修改的基础通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.dataHasChanged" xml:space="preserve">
           <source>A previous queued action has modified base channels assignments for some systems in SSM. Please, consider to set assignments again based on refreshed data.</source>
-        <target>前面某个已排队的操作修改了 SSM 中某些系统的基础频道指派。请考虑根据刷新的数据重新设置指派。</target>
+        <target>前面某个已排队的操作修改了 SSM 中某些系统的基础通道指派。请考虑根据刷新的数据重新设置指派。</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
@@ -25786,18 +25786,18 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="final">无法查找系统默认基础频道。</target>
+        <target state="final">无法查找系统默认基础通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams" xml:space="preserve">
           <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source>
-        <target>无法查找使用当前基础频道 "{1}" 的 [{0}] 的系统默认基础频道。</target>
+        <target>无法查找使用当前基础通道 "{1}" 的 [{0}] 的系统默认基础通道。</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="basesub.jsp.noBaseChannel" xml:space="preserve">
           <source>no base channel</source>
-        <target>无基础频道</target>
+        <target>无基础通道</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
@@ -25848,11 +25848,11 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg" xml:space="preserve">
         <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
-        <target state="translated">如果您要导入 @@VENDOR_NAME@@ 基础频道中或 @@VENDOR_NAME@@ 所提供频道的子频道中现有的补丁，请选择此选项。</target>
+        <target state="translated">如果您要导入 @@VENDOR_NAME@@ 基础通道中或 @@VENDOR_NAME@@ 所提供通道的子通道中现有的补丁，请选择此选项。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata" xml:space="preserve">
         <source>No patches found applicable to this channel.</source>
-        <target state="translated">未找到适用于此频道的补丁。</target>
+        <target state="translated">未找到适用于此通道的补丁。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerrata" xml:space="preserve">
         <source>Add Custom Patches</source>
@@ -25860,7 +25860,7 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerratamsg" xml:space="preserve">
         <source>Choose this option if you want to import custom patches or patches from custom channels.</source>
-        <target state="translated">如果您要导入自定义补丁或自定义频道中的补丁，请选择此选项。</target>
+        <target state="translated">如果您要导入自定义补丁或自定义通道中的补丁，请选择此选项。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerrata" xml:space="preserve">
         <source>Create Custom Patch</source>
@@ -25868,23 +25868,23 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg" xml:space="preserve">
         <source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
-        <target state="translated">选择此选项将从头开始创建补丁。您可以在发布时向此频道中导入新补丁。</target>
+        <target state="translated">选择此选项将从头开始创建补丁。您可以在发布时向此通道中导入新补丁。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg" xml:space="preserve">
         <source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
-        <target state="translated">以下是您已选择要克隆的补丁摘要。下载的每个 CSV 文件中都分别包含将要推送到该频道的补丁和软件包列表。</target>
+        <target state="translated">以下是您已选择要克隆的补丁摘要。下载的每个 CSV 文件中都分别包含将要推送到该通道的补丁和软件包列表。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg" xml:space="preserve">
         <source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
-        <target state="translated">以下是您可以推送到当前频道的补丁列表。使用频道选择下拉过滤器可缩小要选择的补丁范围。</target>
+        <target state="translated">以下是您可以推送到当前通道的补丁列表。使用通道选择下拉过滤器可缩小要选择的补丁范围。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg" xml:space="preserve">
         <source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
-        <target state="translated">以下是您可以推送到当前频道的补丁列表。使用下拉过滤器可缩小要选择的补丁范围。</target>
+        <target state="translated">以下是您可以推送到当前通道的补丁列表。使用下拉过滤器可缩小要选择的补丁范围。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg" xml:space="preserve">
         <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
-        <target state="translated">&lt;em&gt;（建议）&lt;/em&gt;选择此选项，将只会显示包含适用于此频道的软件包的补丁。错误，软件包体系结构将会与频道中当前使用的体系结构匹配。</target>
+        <target state="translated">&lt;em&gt;（建议）&lt;/em&gt;选择此选项，将只会显示包含适用于此通道的软件包的补丁。错误，软件包体系结构将会与通道中当前使用的体系结构匹配。</target>
       </trans-unit>
       <trans-unit id="toolbar.ssm.add" xml:space="preserve">
         <source>Add to SSM</source>
@@ -25909,8 +25909,8 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NameOverview.do</context>
         </context-group>
-        <target state="translated">注意：同一个软件包的不同体系结构可在单个频道中可共存，
-这可能导致给定频道中的同一个软件包会
+        <target state="translated">注意：同一个软件包的不同体系结构可在单个通道中可共存，
+这可能导致给定通道中的同一个软件包会
 列出两次。</target>
       </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault" xml:space="preserve">
@@ -25998,11 +25998,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.channel" xml:space="preserve">
         <source>Documentation for the creation and maintenance of custom channels using @@PRODUCT_NAME@@.</source>
-        <target state="translated">有关使用 @@PRODUCT_NAME@@ 创建及维护自定义频道的文档。</target>
+        <target state="translated">有关使用 @@PRODUCT_NAME@@ 创建及维护自定义通道的文档。</target>
       </trans-unit>
       <trans-unit id="help.jsp.channel.title" xml:space="preserve">
         <source>Channel Management Guide</source>
-        <target state="translated">频道管理指南</target>
+        <target state="translated">通道管理指南</target>
       </trans-unit>
       <trans-unit id="help.jsp.release.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Release Notes</source>
@@ -26038,7 +26038,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.emptylist" xml:space="preserve">
         <source>This channel contains no packages.</source>
-        <target state="translated">此频道中没有任何软件包。</target>
+        <target state="translated">此通道中没有任何软件包。</target>
       </trans-unit>
       <trans-unit approved="yes" id="package.jsp.list" xml:space="preserve">
         <source>This channel contains the following packages:</source>
@@ -26054,7 +26054,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.parentchannel" xml:space="preserve">
         <source>Parent Channel</source>
-        <target state="translated">父频道</target>
+        <target state="translated">父通道</target>
       </trans-unit>
       <trans-unit id="channel.jsp.summary" xml:space="preserve">
         <source>Summary</source>
@@ -26062,7 +26062,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.chanent" xml:space="preserve">
         <source>Channel Entitlement Name</source>
-        <target state="translated">频道权利名称</target>
+        <target state="translated">通道权利名称</target>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgunknown" xml:space="preserve">
         <source>Unknown</source>
@@ -26083,7 +26083,7 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.removesuccess" xml:space="preserve">
         <source>{0} package(s) removed from channel {1}
         </source>
-        <target state="translated">已从频道 {1} 中去除 {0} 个软件包
+        <target state="translated">已从通道 {1} 中去除 {0} 个软件包
         </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.removebutton" xml:space="preserve">
@@ -26163,7 +26163,7 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.add.confirm.msg" xml:space="preserve">
         <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
-        <target state="translated">下面是您选择要添加到此频道的软件包列表。在该频道中添加软件包不会自动影响订阅此频道的系统或适用的补丁。
+        <target state="translated">下面是您选择要添加到此通道的软件包列表。在该通道中添加软件包不会自动影响订阅此通道的系统或适用的补丁。
         </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle" xml:space="preserve">
@@ -26176,7 +26176,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.comparemessage" xml:space="preserve">
         <source>Compare packages in the current channel with packages from another channel. Only the latest version of packages will be compared. Choose a channel from the list below then select 'View Packages'.</source>
-        <target>将当前频道中的软件包与另一频道中的软件包进行比较。仅比较最新版本的软件包。请在以下列表中选择一个频道，然后选择 "查看软件包"。</target>
+        <target>将当前通道中的软件包与另一通道中的软件包进行比较。仅比较最新版本的软件包。请在以下列表中选择一个通道，然后选择 "查看软件包"。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.compareto" xml:space="preserve">
         <source>Compare to</source>
@@ -26192,7 +26192,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.full_sync_descr" xml:space="preserve">
         <source>Make {0} channel identical to selected channel</source>
-        <target state="translated">将 {0} 频道设为与所选频道相同</target>
+        <target state="translated">将 {0} 通道设为与所选通道相同</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.add_only_descr" xml:space="preserve">
         <source>Add missing packages to {0}</source>
@@ -26204,11 +26204,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.thisonly" xml:space="preserve">
         <source>This channel only</source>
-        <target state="translated">仅限此频道</target>
+        <target state="translated">仅限此通道</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.thisnewer" xml:space="preserve">
         <source>This channel newer</source>
-        <target state="translated">此频道较新</target>
+        <target state="translated">此通道较新</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.othernewer" xml:space="preserve">
         <source>{0} newer</source>
@@ -26242,7 +26242,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.syncchannels" xml:space="preserve">
         <source>Sync Channels</source>
-        <target state="translated">同步频道</target>
+        <target state="translated">同步通道</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.action" xml:space="preserve">
         <source>Action</source>
@@ -26258,11 +26258,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listtitle" xml:space="preserve">
         <source>This channel contains the following patches:</source>
-        <target state="translated">此频道包含以下补丁：</target>
+        <target state="translated">此通道包含以下补丁：</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.emptylist" xml:space="preserve">
         <source>This channel contains no patches.</source>
-        <target state="translated">此频道中没有补丁。</target>
+        <target state="translated">此通道中没有补丁。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.title" xml:space="preserve">
         <source>Clone Patches</source>
@@ -26270,7 +26270,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.summary" xml:space="preserve">
         <source>Below is the list of the patches which apply to the original channel, but have not yet been cloned into your channel.</source>
-        <target>下面是要应用到原始频道，但尚未克隆到您的频道中的补丁列表。</target>
+        <target>下面是要应用到原始通道，但尚未克隆到您的通道中的补丁列表。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.empty" xml:space="preserve">
         <source>No uncloned patches.</source>
@@ -26302,7 +26302,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list" xml:space="preserve">
         <source>Channel Packages</source>
-        <target state="translated">频道软件包</target>
+        <target state="translated">通道软件包</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.title" xml:space="preserve">
         <source>Custom System Info Keys</source>
@@ -26418,7 +26418,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.message" xml:space="preserve">
         <source>You may delete packages owned by your organization. The "view packages in channels" select box allows you to restrict the set of packages you will view. To delete a package, check the box next to it and click 'Confirm Deletion', below.</source>
-        <target state="translated">您可以删除您组织拥有的软件包。"查看频道中的软件包" 复选框可用于限制您要查看的软件包集。要删除软件包，请选中它旁边的复选框并单击下面的 "确认删除"。</target>
+        <target state="translated">您可以删除您组织拥有的软件包。"查看通道中的软件包" 复选框可用于限制您要查看的软件包集。要删除软件包，请选中它旁边的复选框并单击下面的 "确认删除"。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.subtitle" xml:space="preserve">
         <source>Package List</source>
@@ -26454,7 +26454,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.nopackages" xml:space="preserve">
         <source>No channel selected</source>
-        <target state="translated">未选择频道</target>
+        <target state="translated">未选择通道</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.allpackages" xml:space="preserve">
         <source>All managed packages.</source>
@@ -26462,7 +26462,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.packagesnochannels" xml:space="preserve">
         <source>Packages in no channels.</source>
-        <target state="translated">不属于任何频道的软件包。</target>
+        <target state="translated">不属于任何通道的软件包。</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.title" xml:space="preserve">
         <source>File Download Failed</source>
@@ -26712,7 +26712,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="newversions.jsp.providingchannel" xml:space="preserve">
         <source>Providing Channel</source>
-        <target>提供频道</target>
+        <target>提供通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
@@ -26785,14 +26785,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道标签</target>
+        <target state="translated">通道标签</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.parent" xml:space="preserve">
         <source>Parent Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">父频道</target>
+        <target state="translated">父通道</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksum" xml:space="preserve">
         <source>Repository Checksum Type</source>
@@ -26819,14 +26819,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道摘要</target>
+        <target state="translated">通道摘要</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.description" xml:space="preserve">
         <source>Channel Description</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道说明</target>
+        <target state="translated">通道说明</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.maintainername" xml:space="preserve">
         <source>Maintainer Name</source>
@@ -26903,14 +26903,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">创建频道</target>
+        <target state="translated">创建通道</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.editchannel" xml:space="preserve">
         <source>Update Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">更新频道</target>
+        <target state="translated">更新通道</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.toolbar" xml:space="preserve">
         <source>{0}</source>
@@ -26924,7 +26924,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">基础频道细节</target>
+        <target state="translated">基础通道细节</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.contactsupportinfo" xml:space="preserve">
         <source>Contact/Support Information</source>
@@ -26938,7 +26938,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道访问控制</target>
+        <target state="translated">通道访问控制</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.security.gpg" xml:space="preserve">
         <source>Security: GPG</source>
@@ -26949,42 +26949,42 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.clone.header" xml:space="preserve">
         <source>Clone Channel</source>
-        <target>克隆频道</target>
+        <target>克隆通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.summary" xml:space="preserve">
         <source>Select the channel you wish to clone from the list below. You can clone a channel in one of three ways:</source>
-        <target>从以下列表中选择您要克隆的频道。可通过以下三种方式之一克隆频道：</target>
+        <target>从以下列表中选择您要克隆的通道。可通过以下三种方式之一克隆通道：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current" xml:space="preserve">
         <source>Current state of the channel (all patches)</source>
-        <target>频道的当前状态（所有补丁）</target>
+        <target>通道的当前状态（所有补丁）</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current.summary" xml:space="preserve">
         <source>The new channel will include all of the latest packages from the target channel, and all patches related to the channel will be cloned into your organization. If your organization already owns a clone of a patch, the new channel will be associated with that patch instead of creating another clone of the patch.</source>
-        <target>新频道将包含目标频道中的所有最新软件包，与新频道相关的所有补丁将克隆到您的组织中。如果您的组织已拥有某个补丁的克隆版本，则新频道将与该补丁相关联，而不会创建补丁的另一个克隆版本。</target>
+        <target>新通道将包含目标通道中的所有最新软件包，与新通道相关的所有补丁将克隆到您的组织中。如果您的组织已拥有某个补丁的克隆版本，则新通道将与该补丁相关联，而不会创建补丁的另一个克隆版本。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original" xml:space="preserve">
         <source>Original state of the channel (no patches)</source>
-        <target>频道的原始状态（无补丁）</target>
+        <target>通道的原始状态（无补丁）</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original.summary" xml:space="preserve">
         <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have a patch associated with them. No patch will be cloned into your organization.</source>
-        <target>新频道将是目标频道原始状态的克隆版本。这是通过克隆目标频道中没有关联补丁的所有软件包实现的。不会将任何补丁克隆到您的组织中。</target>
+        <target>新通道将是目标通道原始状态的克隆版本。这是通过克隆目标通道中没有关联补丁的所有软件包实现的。不会将任何补丁克隆到您的组织中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -27043,7 +27043,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">删除频道</target>
+        <target state="translated">删除通道</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.introparagraph" xml:space="preserve">
         <source>Are you sure you wish to delete this channel? Packages in the channel will
@@ -27058,14 +27058,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">您确定要删除此频道吗？此频道中的软件包将被去除，但仍会保留在服务器中。
-          系统会提供相应的选项让您在删除频道后删除其中的
-          软件包。与频道相关的补丁将不再与该频道相关，并且
+        <target state="translated">您确定要删除此通道吗？此通道中的软件包将被去除，但仍会保留在服务器中。
+          系统会提供相应的选项让您在删除通道后删除其中的
+          软件包。与通道相关的补丁将不再与该通道相关，并且
           可能会处于孤立状态。
-          如果频道包含子频道，则无法删除该频道；必须先
-          删除子频道。
-          如果频道具有关联的可自动安装的发行套件，则无法
-          删除该频道；必须先将该发行套件与该频道取消关联或将其删除。
+          如果通道包含子通道，则无法删除该通道；必须先
+          删除子通道。
+          如果通道具有关联的可自动安装的发行套件，则无法
+          删除该通道；必须先将该发行套件与该通道取消关联或将其删除。
          </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch" xml:space="preserve">
@@ -27130,8 +27130,8 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">取消订阅已订阅 {0} 频道的所有可信组织
-            系统。已订阅系统将失去对此频道特定的软件包的访问权限。
+        <target state="translated">取消订阅已订阅 {0} 通道的所有可信组织
+            系统。已订阅系统将失去对此通道特定的软件包的访问权限。
          </target>
       </trans-unit>
       <trans-unit id="generic.jsp.none" xml:space="preserve">
@@ -27160,20 +27160,20 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">在此页面创建或者编辑软件频道。
+        <target state="translated">在此页面创建或者编辑软件通道。
         &lt;p/&gt;
-        如果将上级频道设置为 "无"，则此频道为基础频道。
-        否则，该频道为指定频道的子频道。
+        如果将上级通道设置为 "无"，则此通道为基础通道。
+        否则，该通道为指定通道的子通道。
         &lt;p/&gt;
-        必须指定频道名称和标签。&lt;br&gt;
-        每个频道名称或标签必须至少包含 6 个字符。&lt;br&gt;
-        频道名称不得超过 256 个字符，频道标签不得超过 128 个字符。&lt;br&gt;
-        频道名称必须以字母开头，频道标签可以以字母或数字开始。&lt;br&gt;
+        必须指定通道名称和标签。&lt;br&gt;
+        每个通道名称或标签必须至少包含 6 个字符。&lt;br&gt;
+        通道名称不得超过 256 个字符，通道标签不得超过 128 个字符。&lt;br&gt;
+        通道名称必须以字母开头，通道标签可以以字母或数字开始。&lt;br&gt;
         它们都不得以 rhn、redhat 或 red hat 开始。&lt;br&gt;
         它们都只能使用小写字母、连字符 ("-")、点 (".")、下划线 ("_") 及数字。&lt;br&gt;
-        频道名称还可包含空格、花括号() 和正斜杠 ("/")。
+        通道名称还可包含空格、花括号() 和正斜杠 ("/")。
         &lt;p/&gt;
-        必须提供频道摘要且其不得超过 500 个字符。
+        必须提供通道摘要且其不得超过 500 个字符。
         </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.public" xml:space="preserve">
@@ -27183,9 +27183,9 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">此频道是&lt;strong&gt;公用&lt;/strong&gt;频道，此组织
+        <target state="translated">此通道是&lt;strong&gt;公用&lt;/strong&gt;通道，此组织
         信任的任何&lt;a href="{0}"&gt;可信
-        组织&lt;/a&gt;均可访问此频道。</target>
+        组织&lt;/a&gt;均可访问此通道。</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected" xml:space="preserve">
         <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may
@@ -27194,7 +27194,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">此频道是&lt;strong&gt;受保护&lt;/strong&gt;频道，只能
+        <target state="translated">此通道是&lt;strong&gt;受保护&lt;/strong&gt;通道，只能
         由特定的&lt;a href="{0}"&gt;可信
         组织&lt;/a&gt;访问。</target>
       </trans-unit>
@@ -27204,8 +27204,8 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">此频道是&lt;strong&gt;专用&lt;/strong&gt;频道，任何
-        其他组织都不能访问此频道。</target>
+        <target state="translated">此通道是&lt;strong&gt;专用&lt;/strong&gt;通道，任何
+        其他组织都不能访问此通道。</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.edit.jsp.allusers" xml:space="preserve">
         <source>All users within your organization may subscribe to this channel.</source>
@@ -27219,14 +27219,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">只有您组织中的选定用户可以订阅此频道。</target>
+        <target state="translated">只有您组织中的选定用户可以订阅此通道。</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.title" xml:space="preserve">
         <source>Confirm Channel Sharing Modification</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="translated">确认修改频道共享</target>
+        <target state="translated">确认修改通道共享</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.noerrata.jsp" xml:space="preserve">
         <source>Do not sync errata</source>
@@ -27429,14 +27429,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">为给定服务器或频道重新计算勘误缓存</target>
+        <target state="translated">为给定服务器或通道重新计算勘误缓存</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.channel-repodata-bunch" xml:space="preserve">
         <source>Generates channel repodata</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">生成频道软件源数据</target>
+        <target state="translated">生成通道软件源数据</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch" xml:space="preserve">
         <source>Cleans up orphaned and outdated data</source>
@@ -27655,11 +27655,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="final">您确定要将此频道设置为
+        <target state="final">您确定要将此通道设置为
         &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的系统访问吗？
-        下面列出的是其他组织中订阅了由此频道提供的内容的系统。
-        去除对此频道的访问权限可能会对这些系统产生负面影响。例如：那些
-        系统将无法再收到此频道提供的内容的关键
+        下面列出的是其他组织中订阅了由此通道提供的内容的系统。
+        去除对此通道的访问权限可能会对这些系统产生负面影响。例如：那些
+        系统将无法再收到此通道提供的内容的关键
         安全更新。</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve">
@@ -27681,11 +27681,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="translated">您确定要将此频道的访问策略设置为
-        &lt;strong&gt;受保护&lt;/strong&gt;频道吗？请注意下面的组织
-        包含订阅到此频道的系统。
+        <target state="translated">您确定要将此通道的访问策略设置为
+        &lt;strong&gt;受保护&lt;/strong&gt;通道吗？请注意下面的组织
+        包含订阅到此通道的系统。
         去除这些组织访问可能会对这些系统产生负面影响。
-        例如：那些系统将无法再收到此频道提供的内容的关键
+        例如：那些系统将无法再收到此通道提供的内容的关键
         安全更新。</target>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg.deux" xml:space="preserve">
@@ -27696,14 +27696,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="translated">您可以选择为下面的组织授予对此频道的访问
-        权限，或者拒绝其访问频道。该频道受保护后，您可以
-        随时使用 "组织" 选项卡修改对此频道的访问权限。
+        <target state="translated">您可以选择为下面的组织授予对此通道的访问
+        权限，或者拒绝其访问通道。该通道受保护后，您可以
+        随时使用 "组织" 选项卡修改对此通道的访问权限。
         </target>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
         <source>Delete software channel</source>
-        <target>删除软件频道</target>
+        <target>删除软件通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -27731,14 +27731,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete software channel</source>
-        <target>删除软件频道</target>
+        <target>删除软件通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
-        <target>管理频道</target>
+        <target>管理通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Managers.do</context>
         </context-group>
@@ -27797,14 +27797,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target state="translated">以下是与此频道关联的补丁列表。要从此频道中去除补丁，请在此处选择它们并单击下面的 "去除"。</target>
+        <target state="translated">以下是与此通道关联的补丁列表。要从此通道中去除补丁，请在此处选择它们并单击下面的 "去除"。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.confirmmessage" xml:space="preserve">
         <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target state="translated">单击下面的 "确认" 会从您的频道中去除这些补丁，相关软件包也将从该频道中去除。</target>
+        <target state="translated">单击下面的 "确认" 会从您的通道中去除这些补丁，相关软件包也将从该通道中去除。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.finalmessage" xml:space="preserve">
         <source>Successfully removed {0} patch(es) from this channel.</source>
@@ -27818,7 +27818,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Managers.do</context>
         </context-group>
-        <target state="translated">所选用户可以管理此频道。拥有管理访问权限的用户（组织管理员或频道管理员）可以管理任何频道。</target>
+        <target state="translated">所选用户可以管理此通道。拥有管理访问权限的用户（组织管理员或通道管理员）可以管理任何通道。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.header" xml:space="preserve">
         <source>Subscribers</source>
@@ -27829,7 +27829,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.message" xml:space="preserve">
         <source>Selected users may subscribe systems to this channel. Users with Admin Access (org admins or channel admins) may subscribe systems to any channel.</source>
-        <target>选定的用户可让系统订阅此频道。拥有管理访问权限的用户（组织管理员或频道管理员）可让系统订阅任何频道。</target>
+        <target>选定的用户可让系统订阅此通道。拥有管理访问权限的用户（组织管理员或通道管理员）可让系统订阅任何通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Subscribers.do</context>
         </context-group>
@@ -27935,7 +27935,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata" xml:space="preserve">
         <source>Channel Repodata</source>
-        <target state="translated">频道软件源数据</target>
+        <target state="translated">通道软件源数据</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data" xml:space="preserve">
         <source>TimeSeries Cleanup</source>
@@ -27993,11 +27993,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message" xml:space="preserve">
         <source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
-        <target state="translated">下面的软包将在补丁同步过程中推送到此频道。请检查此列表并取消选择任何不需要的软件包。</target>
+        <target state="translated">下面的软包将在补丁同步过程中推送到此通道。请检查此列表并取消选择任何不需要的软件包。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete" xml:space="preserve">
         <source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
-        <target state="translated">已成功同步 {0} 个补丁并推送 {1} 个软件包到频道 {2} 中。</target>
+        <target state="translated">已成功同步 {0} 个补丁并推送 {1} 个软件包到通道 {2} 中。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
@@ -28109,11 +28109,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable" xml:space="preserve">
         <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
-        <target>可以在 SUSE Customer Center 中从相关的 debuginfo 子频道下载相应的 debuginfo 软件包（如果可用）。注意：并非所有软件包都已发布 debuginfo 软件包。</target>
+        <target>可以在 SUSE Customer Center 中从相关的 debuginfo 子通道下载相应的 debuginfo 软件包（如果可用）。注意：并非所有软件包都已发布 debuginfo 软件包。</target>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
-        <target>可以从相关的 debug 频道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
+        <target>可以从相关的 debug 通道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -28594,10 +28594,10 @@ given channel.</source>
           channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.
           </source>
         <target state="translated">
-          要同步从主组织到从属组织的频道访问权限，
+          要同步从主组织到从属组织的通道访问权限，
            每个已知主组织必须映射到此 @@PRODUCT_NAME@@ 实例中的本地组织。
            管理员可在此页面上完成这种映射。请注意，如果未映射主组织，
-           仅限该主组织访问的频道将成为此 @@PRODUCT_NAME@@ 实例中的公共频道。
+           仅限该主组织访问的通道将成为此 @@PRODUCT_NAME@@ 实例中的公共通道。
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
@@ -28836,7 +28836,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.ssm.deploy.warning" xml:space="preserve">
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
-        <target>下一次对应用程序运行 highstate 时，salt 管理的系统上的频道指派更改将会生效</target>
+        <target>下一次对应用程序运行 highstate 时，salt 管理的系统上的通道指派更改将会生效</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
@@ -28872,7 +28872,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
-        <target>选择频道</target>
+        <target>选择通道</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty" xml:space="preserve">
         <source>Please select one target product to migrate</source>
@@ -28884,7 +28884,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Product Migration - Channels</source>
-        <target state="final">产品迁移 - 频道</target>
+        <target state="final">产品迁移 - 通道</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -28896,7 +28896,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.base-channel" xml:space="preserve">
         <source>Target Base Channel:</source>
-        <target>目标基础频道：</target>
+        <target>目标基础通道：</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.mandatory-channels" xml:space="preserve">
         <source>Mandatory Child Channels:</source>
@@ -28904,7 +28904,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.optional-channels" xml:space="preserve">
         <source>Optional Child Channels:</source>
-        <target>可选的子频道：</target>
+        <target>可选的子通道：</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.none" xml:space="preserve">
         <source>None</source>
@@ -28956,7 +28956,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration" xml:space="preserve">
         <source>Channel subscriptions after the migration:</source>
-        <target>迁移后进行频道订阅：</target>
+        <target>迁移后进行通道订阅：</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
@@ -29162,11 +29162,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.label" xml:space="preserve">
         <source>Channel Label</source>
-        <target>频道标签</target>
+        <target>通道标签</target>
       </trans-unit>
       <trans-unit id="ssm.config.subscriptions.jsp.label" xml:space="preserve">
         <source>Channel Label</source>
-        <target>频道标签</target>
+        <target>通道标签</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
@@ -29209,7 +29209,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filedetails.jsp.tip.saltpath" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; To reference any file in the channel, you can use the base &lt;strong&gt;"{0}"&lt;/strong&gt; followed by the actual file path.</source>
-        <target>&lt;strong&gt;提示：&lt;/strong&gt;要在频道中引用任何文件，可以使用基础 &lt;strong&gt;"{0}"&lt;/strong&gt; 后接实际文件路径。</target>
+        <target>&lt;strong&gt;提示：&lt;/strong&gt;要在通道中引用任何文件，可以使用基础 &lt;strong&gt;"{0}"&lt;/strong&gt; 后接实际文件路径。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -29221,9 +29221,9 @@ given channel.</source>
            remove the deleted channel.
         </source>
         <target>
-           在当前指派了此频道的任何受控端上确认后，将立即
-           安排应用频道状态。这会更新这些受控端上的软件源文件，
-           以去除已删除的频道。
+           在当前指派了此通道的任何受控端上确认后，将立即
+           安排应用通道状态。这会更新这些受控端上的软件源文件，
+           以去除已删除的通道。
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
@@ -29239,7 +29239,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channels.subscribe" xml:space="preserve">
         <source>Subscribe Software Channels</source>
-        <target>订阅软件频道</target>
+        <target>订阅软件通道</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.submit" xml:space="preserve">
         <source>Confirm</source>
@@ -29331,7 +29331,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
-        <target>配置频道</target>
+        <target>配置通道</target>
       </trans-unit>
       <trans-unit id="Formula" xml:space="preserve">
         <source>Formula</source>
@@ -29459,7 +29459,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">新建配置状态频道</target>
+        <target state="translated">新建配置状态通道</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
         <source>Create Config State Channel</source>
@@ -29603,7 +29603,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="final">OS 有事务更新：请在任何软件包和/或频道更改后重引导系统。</target>
+        <target state="final">OS 有事务更新：请在任何软件包和/或通道更改后重引导系统。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
