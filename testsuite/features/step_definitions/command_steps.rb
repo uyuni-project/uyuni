@@ -206,7 +206,11 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
+  salt = $use_salt_bundle ? "venv-salt-minion" : "salt"
+  if host == 'server'
+    salt = 'salt'
+  end
+  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     log line
@@ -215,7 +219,14 @@ end
 
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
-  result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
+  salt =
+    if $use_salt_bundle
+      "venv-salt-minion"
+    else
+      "salt"
+    end
+  changelog_file = $use_salt_bundle ? "changelog.gz" : "changelog.Debian.gz"
+  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding("UTF-8")
     log line
@@ -251,14 +262,16 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
 
-When(/^I wait until "([^"]*)" service is (active|inactive) on "([^"]*)"$/) do |service, status, host|
+When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
-  repeat_until_timeout do
-    out, _err, _code = node.run(cmd, check_errors: false, separated_results: true)
-    break if out.strip == status
-    sleep 2
-  end
+  node.run_until_ok(cmd)
+end
+
+When(/^I wait until "([^"]*)" service is inactive on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  cmd = "systemctl is-active #{service}"
+  node.run_until_fail(cmd)
 end
 
 When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
@@ -1634,10 +1647,11 @@ end
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  command = "spacewalk-hostname-rename #{$server.public_ip}
-            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
-            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
-            --ssl-ca-password=spacewalk -u admin -p admin"
+  command = "spacecmd --nossl -q api api.getVersion -u admin -p admin; " \
+            "spacewalk-hostname-rename #{$server.public_ip} " \
+            "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
+            "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
+            "--ssl-ca-password=spacewalk"
   out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out_spacewalk}"
 

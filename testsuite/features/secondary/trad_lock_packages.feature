@@ -1,5 +1,11 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_cve_audit.feature
+# - features/secondary/trad_weak_deps.feature
+# - features/secondary/trad_migrate_to_sshminion.feature
+# These features can have failing scenarios if some packages are not properly unlocked.
 
 @scope_traditional_client
 Feature: Lock packages on traditional client

@@ -833,7 +833,7 @@ def getTarballFilename(d, version='1.0', release='1'):
         current = os.path.basename(current)
 
     # incoming release (usually coming from RPM version) is factored in
-    # ...if RPM version-release is greater then that is used.
+    # ...if RPM version-release is greater than that is used.
     v = next[len(server_tar_name)+1:-4]
     v = v.split('-')
     v[-1] = str(max(int(v[-1]), int(release)))

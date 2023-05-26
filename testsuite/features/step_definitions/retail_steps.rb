@@ -246,16 +246,6 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run('salt-key -y --accept=pxeboot.example.org')
 end
 
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
 When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
   file = 'uyuni.key'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -265,6 +255,16 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   system_name = get_system_name('pxeboot_minion')
   $server.run("salt-cp #{system_name} #{dest} #{dest}")
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
+end
+
+When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
+  file = 'wait-end-of-cleanup-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = '/tmp/' + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
 When(/^I prepare the retail configuration file on server$/) do

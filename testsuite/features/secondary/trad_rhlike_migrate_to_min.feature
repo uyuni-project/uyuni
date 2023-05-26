@@ -9,11 +9,12 @@ Feature: Migrate a Red Hat-like traditional client into a Salt minion
 
   Scenario: Delete the Red Hat-like minion in the migration context
     Given I am authorized for the "Admin" section
-    When I am on the Systems overview page of this "rhlike_client"
+    When I am on the Systems overview page of this "rhlike_minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "rhlike_minion"
     Then "rhlike_client" should not be registered
 
   Scenario: Prepare the Red Hat-like traditional client in the migration context

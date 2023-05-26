@@ -1,5 +1,9 @@
 # Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/trad_migrate_to_sshminion.feature
+# If the client fails to be bootstrapped again.
 
 @scope_traditional_client
 Feature: Migrate a traditional client into a Salt minion
@@ -92,6 +96,7 @@ Feature: Migrate a traditional client into a Salt minion
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_client"
     Then "sle_client" should not be registered
 
 @skip_if_salt_bundle

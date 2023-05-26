@@ -73,7 +73,7 @@ public class ModulemdApi {
      * @param sources the modular source channels
      * @param selectedModules the selected module streams
      * @return the response object with selected rpms, apis and module information
-     * @throws ConflictingStreamsException if more then one stream for a module is selected
+     * @throws ConflictingStreamsException if more than one stream for a module is selected
      * @throws ModuleNotFoundException if a selected module is not found
      */
     public ModulePackagesResponse getPackagesForModules(List<Channel> sources, List<Module> selectedModules)
