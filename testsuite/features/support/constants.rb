@@ -207,7 +207,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                           'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
                           'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
-                          'SLES15-SP4-Pool' => 'sle-product-sles15-sp5-pool-x86_64',
+                          'SLES15-SP5-Pool' => 'sle-product-sles15-sp5-pool-x86_64',
                           'SUSE-MicroOS-5.1-Pool for x86_64' => 'suse-microos-5.1-pool-x86_64',
                           'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                           'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
