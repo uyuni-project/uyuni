@@ -692,35 +692,35 @@
       </trans-unit>
       <trans-unit id="Inactive" xml:space="preserve">
         <source>Inactive</source>
-        <target/>
+        <target>Неактивен</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Active" xml:space="preserve">
         <source>Active</source>
-        <target/>
+        <target>Активен</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Ranges" xml:space="preserve">
         <source>IP Ranges</source>
-        <target/>
+        <target>Опсези на IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart" xml:space="preserve">
         <source>Autoinstallation</source>
-        <target/>
+        <target>Авто-инсталација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management" xml:space="preserve">
         <source>Power Management</source>
-        <target/>
+        <target>Управување со енергија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
