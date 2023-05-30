@@ -24,7 +24,11 @@ export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
-      <Pyag payg={paygJson} wasFreshlyCreatedMessage={wasFreshlyCreatedMessage} readOnly={paygJson.properties.host === "localhost"} />
+      <Pyag
+        payg={paygJson}
+        wasFreshlyCreatedMessage={wasFreshlyCreatedMessage}
+        readOnly={paygJson.properties.host === "localhost"}
+      />
     </RolesProvider>,
     document.getElementById(id)
   );
