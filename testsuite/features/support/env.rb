@@ -348,6 +348,14 @@ Before('@sle15sp4_client') do
   skip_this_scenario unless $sle15sp4_client
 end
 
+Before('@sle15sp5_ssh_minion') do
+  skip_this_scenario unless $sle15sp5_ssh_minion
+end
+
+Before('@sle15sp5_minion') do
+  skip_this_scenario unless $sle15sp5_minion
+end
+
 Before('@opensuse154arm_minion') do
   skip_this_scenario unless $opensuse154arm_minion
 end
