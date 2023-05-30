@@ -68,7 +68,13 @@ const Payg = (props: Props) => {
       title={t("Instance Hostname: {0}", payg.properties.host)}
       button={
         <div className="pull-right btn-group">
-          <ModalButton className="btn-danger" title={t("Delete")} text={t("Delete")} target="delete-payg-modal" disabled={props.readOnly} />
+          <ModalButton
+            className="btn-danger"
+            title={t("Delete")}
+            text={t("Delete")}
+            target="delete-payg-modal"
+            disabled={props.readOnly}
+          />
         </div>
       }
     >
