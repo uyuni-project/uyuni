@@ -72,6 +72,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                     className="form-control"
                     type="text"
                     placeholder={t("Login")}
+                    aria-label={t("Login")}
                     maxLength={parseInt(props.loginLength, 10)}
                     autoFocus={true}
                     required
@@ -84,6 +85,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                     type="password"
                     autoComplete="password"
                     placeholder={t("Password")}
+                    aria-label={t("Password")}
                     maxLength={parseInt(props.passwordLength, 10)}
                     required
                     {...passwordInput}
