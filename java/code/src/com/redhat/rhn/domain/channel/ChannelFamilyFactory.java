@@ -179,6 +179,13 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param cfam ChannelFamily to be removed from database.
      */
     public static void remove(ChannelFamily cfam) {
+        if (cfam.isPublic()) {
+            singleton.removeObject(cfam.getPublicChannelFamily());
+        }
+        else {
+            cfam.getPrivateChannelFamilies()
+                    .forEach(pcf -> singleton.removeObject(pcf));
+        }
         singleton.removeObject(cfam);
     }
 
