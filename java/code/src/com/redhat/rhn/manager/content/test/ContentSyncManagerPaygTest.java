@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -35,7 +37,7 @@ import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.redhat.rhn.taskomatic.task.payg.test.PaygUpdateAuthTaskTest;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
@@ -66,7 +68,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ContentSyncManagerPaygTest extends BaseTestCaseWithUser {
+public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String PRODUCTS_UNSCOPED = JARPATH + "rmtclouddata/organizations_products_unscoped.json";
     private static final String PRODUCT_TREE = JARPATH + "rmtclouddata/product_tree.json";
@@ -121,6 +123,10 @@ public class ContentSyncManagerPaygTest extends BaseTestCaseWithUser {
         CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
+        ChannelFamilyFactory.getAllChannelFamilies()
+                .stream()
+                .filter(ChannelFamily::isPublic)
+                .forEach(ChannelFamilyFactory::remove);
         HibernateFactory.commitTransaction();
     }
 
