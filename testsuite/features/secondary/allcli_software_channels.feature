@@ -211,13 +211,13 @@ Feature: Channel subscription via SSM
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I wait until I do not see "Loading..." text
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -237,7 +237,7 @@ Feature: Channel subscription via SSM
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
