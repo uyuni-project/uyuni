@@ -1,6 +1,10 @@
-- Show loading indicator on formula details pages (bsc#1179747)
-- Increase datetimepicker font sizes (bsc#1210437)
-- fix an issue where the datetimepicker shows wrong date (bsc#1209231)
+-------------------------------------------------------------------
+Wed May 31 09:28:17 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.35-1
+  * Show loading indicator on formula details pages (bsc#1179747)
+  * Increase datetimepicker font sizes (bsc#1210437)
+  * Fix an issue where the datetimepicker shows wrong date (bsc#1209231)
 
 -------------------------------------------------------------------
 Mon Apr 03 06:54:40 UTC 2023 - marina.latini@suse.com
