@@ -22,3 +22,4 @@ Feature: Reconfigure the server's hostname
 
   Scenario: Cleanup after hostname rename test
     When I clean up the server's hosts file
+    And I restart the spacewalk service
