@@ -61,7 +61,7 @@ Feature: Action chains on several systems at once
     And I check the "ssh_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Install" in the content area
-    And I follow "Fake-RPM-SLES-Channel" in the content area
+    And I follow "Fake-RPM-SUSE-Channel" in the content area
     And I enter "andromeda-dummy" as the filtered package name
     And I click on the filter button
     And I check "andromeda-dummy" in the list

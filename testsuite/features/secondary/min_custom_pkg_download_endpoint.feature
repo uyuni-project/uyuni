@@ -70,7 +70,7 @@ Feature: Repos file generation based on custom pillar data
     And I wait until I see "SLE15-SP3-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
