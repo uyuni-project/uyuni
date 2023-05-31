@@ -34,6 +34,7 @@ General template for leavers of the SUSE Manager team.
   - [ ] [suse-manager](https://mailman.suse.de/mailman/admindb/suse-manager)
   - [ ] [tomcat-maintainers](https://mailman.suse.de/mailman/admindb/tomcat-maintainers)
   - [ ] [uyuni-leader](https://mailman.suse.de/mailman/admindb/uyuni-leader)
+  - [ ] [uyuni announce](https://lists.opensuse.org/archives/list/announce@lists.uyuni-project.org/) (to prevent bounces later)
 - [ ] Remove from meeting invitations/calendars (in case the leaver got the meeting with a forward)
   - [ ] SUSE Manager Team Review
   - [ ] Priorities, Help and Planning (PHP)

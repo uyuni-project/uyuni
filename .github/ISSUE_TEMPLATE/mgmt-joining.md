@@ -18,7 +18,7 @@ General template for new joiners of the SUSE Manager team.
 - [ ] Confluence
   - [ ] Add to [SUMA squads](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) page
   - [ ] Add to [Confluence overview page](https://confluence.suse.com/display/SUSEMANAGER/SUSE+Manager) of the team
-- [ ] Mailing lists
+- [ ] Subscribe the user to the following mailing lists:
   - [ ] [galaxy-devel](https://mailman.suse.de/mailman/admindb/galaxy-devel)
   - [ ] [galaxy-team](https://mailman.suse.de/mailman/admindb/galaxy-team)
   - [ ] [suse-manager](https://mailman.suse.de/mailman/admindb/suse-manager)
@@ -34,12 +34,15 @@ General template for new joiners of the SUSE Manager team.
     - [ ] [salt-maintainers](https://mailman.suse.de/mailman/admindb/salt-maintainers)
     - [ ] [tomcat-maintainers](https://mailman.suse.de/mailman/admindb/tomcat-maintainers)
     - [ ] [uyuni-leader](https://mailman.suse.de/mailman/admindb/uyuni-leader)
-  - [ ] [openSUSE](https://lists.opensuse.org)
-  - [ ] [Uyuni](https://www.uyuni-project.org/pages/contact.html)
+- [ ] Tell the user to subscribe to the following lists:
+  - [ ] [Uyuni announce](https://lists.opensuse.org/archives/list/announce@lists.uyuni-project.org/) (mandatory)
+  - [ ] [SUSE](https//mailman.suse.de), at the very least [devel](https://mailman.suse.de/mailman/listinfo/devel), [users](https://mailman.suse.de/mailman/listinfo/users), recommended subscribing to [research](https://mailman.suse.de/mailman/listinfo/research) and [results](https://mailman.suse.de/mailman/listinfo/results)
+  - [ ] [openSUSE](https://lists.opensuse.org) (whatever is interesting for the user)
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
   - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
-- [ ] Outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available). Tell the user to subscribe the `SUSE Manager Engineering Team` calendar, to get access to PHP, Retrospective, and all other events.
+- [ ] Outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available).
+- [ ] Tell the user to subscribe the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) calendar, to get access to PHP, Retrospective, and all other events.
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
 - [ ] Provide default passwords if applicable (testsuite VMs, maybe https://gitlab.suse.de/galaxy/credentials)
 - [ ] Add user to SCC organization `SUSE Manager Team Playground` for SCC mirror credentials
