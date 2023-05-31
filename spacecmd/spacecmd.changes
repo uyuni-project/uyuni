@@ -1,4 +1,8 @@
-- fix argument parsing of distribution_update (bsc#1210458)
+-------------------------------------------------------------------
+Wed May 31 09:19:30 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.23-1
+  * Fix argument parsing of distribution_update (bsc#1210458)
 
 -------------------------------------------------------------------
 Tue Mar 28 09:45:02 UTC 2023 - marina.latini@suse.com
