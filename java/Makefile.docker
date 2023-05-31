@@ -2,6 +2,7 @@
 #
 
 # Docker tests variables
+EXECUTOR              = docker
 DOCKER_CONTAINER_BASE = devel/galaxy/manager/4.3/docker/containers/suma-4.3
 DOCKER_REGISTRY       = registry.suse.de
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
@@ -14,8 +15,8 @@ DOCKER_ENV            =
 all :: dockerrun_pg
 
 dockerpull ::
-	docker pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	$(EXECUTOR) pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 dockerrun_pg ::
 	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
-	docker run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	$(EXECUTOR) run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
