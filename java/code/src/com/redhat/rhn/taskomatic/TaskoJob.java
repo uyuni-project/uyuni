@@ -29,7 +29,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -77,8 +76,7 @@ public class TaskoJob implements Job {
         try {
             return Class.forName(task.getTaskClass()).getDeclaredConstructor().newInstance() instanceof RhnQueueJob;
         }
-        catch (InstantiationException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException |
-               InvocationTargetException e) {
+        catch (ReflectiveOperationException e) {
             // will be caught later
             LOG.error("Error trying to instance a new class of {}: {}", task.getTaskClass(), e.getMessage(), e);
             return false;
@@ -129,8 +127,8 @@ public class TaskoJob implements Job {
                 LOG.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
                 break;
             }
-            TaskoTask task = template.getTask();
-            TaskoRun runResult = runTask(schedule, task, template, context);
+
+            TaskoRun runResult = runTemplate(schedule, template, context);
             if (runResult == null) {
                 // Null result means it was not possible to execute the template. Interrupt the bunch execution
                 LOG.info("Interrupting {} ({})", schedule.getBunch().getName(), schedule.getJobLabel());
@@ -165,17 +163,16 @@ public class TaskoJob implements Job {
         return true;
     }
 
-    private TaskoRun runTask(TaskoSchedule schedule, TaskoTask task, TaskoTemplate template,
-                             JobExecutionContext context) {
-        TaskoRun result = null;
+    private TaskoRun runTemplate(TaskoSchedule schedule, TaskoTemplate template, JobExecutionContext context) {
+        TaskoTask task = template.getTask();
         if (isTaskRunning(schedule, task)) {
-            return result;
+            return null;
         }
 
         try {
-            RhnJob job = createJob(template.getTask().getTaskClass());
+            RhnJob job = createJob(task.getTaskClass());
             if (!checkThreadAvailable(schedule, job, task)) {
-                return result;
+                return null;
             }
 
             markTaskRunning(task);
@@ -207,7 +204,7 @@ public class TaskoJob implements Job {
                     LAST_STATUS.put(task.getName(), taskRun.getStatus());
                 }
 
-                result = taskRun;
+                return taskRun;
             }
             finally {
                 unmarkTaskRunning(task);
@@ -215,9 +212,8 @@ public class TaskoJob implements Job {
         }
         catch (Exception e) {
             LOG.error("Unable to run task", e);
+            return null;
         }
-
-        return result;
     }
 
     private static RhnJob createJob(String jobClassName) throws ReflectiveOperationException {
