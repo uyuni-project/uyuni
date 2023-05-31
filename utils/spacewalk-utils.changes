@@ -1,4 +1,8 @@
-* spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
+-------------------------------------------------------------------
+Wed May 31 09:16:14 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.19-1
+  * spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
 
 -------------------------------------------------------------------
 Tue Oct 18 09:56:55 CEST 2022 - jgonzalez@suse.com
