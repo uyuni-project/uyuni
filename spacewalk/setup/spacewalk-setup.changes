@@ -1,4 +1,8 @@
-- Enable netapi clients in master configuration (required for Salt 3006)
+-------------------------------------------------------------------
+Wed May 31 09:09:24 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.12-1
+  * Enable netapi clients in master configuration (required for Salt 3006)
 
 -------------------------------------------------------------------
 Wed Jul 06 15:56:44 CEST 2022 - jmassaguerpla@suse.de
