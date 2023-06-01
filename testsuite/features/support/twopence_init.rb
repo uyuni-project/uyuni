@@ -8,14 +8,16 @@ require_all 'features/support'
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
-warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
-warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
-warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
-warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
-warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
-warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
-warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+unless $build_validation
+  warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
+  warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
+  warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
+  warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
+  warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
+  warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
+  warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
+  warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+end
 
 # Preserve FQDN before initialization
 $named_nodes = {}
