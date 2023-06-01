@@ -193,42 +193,41 @@ public class UbuntuErrataManager {
      * @throws IOException in case of download issues
      */
     public static void sync(Set<Long> channelIds) throws IOException {
-        LOG.debug("sync started - get and parse errata, totalMemory:{}, freeMemory:{}",
-                  Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+        LOG.debug("sync started - check deb packages in channels, totalMemory:{}, freeMemory:{}",
+            Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+
+        // Extract the deb packages from each channel
+        var packagesByChannelMap = channelIds.stream()
+                                             .map(ChannelFactory::lookupById)
+                                             .filter(c -> c.isTypeDeb() && !c.isCloned())
+                                             .collect(Collectors.toMap(c -> c, Channel::getPackages));
+
+        if (packagesByChannelMap.isEmpty()) {
+            LOG.info("No deb packages to process in channels: {}", channelIds);
+            LOG.debug("check deb packages in channels finished - done, totalMemory:{}, freeMemory:{}",
+                Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+            return;
+        }
+
+        LOG.debug("check deb packages in channels finished - get and parse errata");
         Stream<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
-        LOG.debug("get and parse errata finished - process Ubuntu Errata By Id");
-        processUbuntuErrataByIds(channelIds, ubuntuErrataInfo);
-        LOG.debug("process Ubuntu Errata By Id finished, totalMemory:{}, freeMemory:{}",
-                  Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+        LOG.debug("get and parse errata finished - process Ubuntu Errata");
+        processUbuntuErrata(packagesByChannelMap, ubuntuErrataInfo);
+        LOG.debug("process Ubuntu Errata finished - done, totalMemory:{}, freeMemory:{}",
+            Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
     }
 
     /**
      * Processes ubuntu errata and tries to associate them to the given channels
-     * @param channelIds list of channel ids to match errata against
+     * @param packagesMap Map of deb packages by their corresponding channel
      * @param ubuntuErrataInfo list of ubuntu errata entries
      */
-    public static void processUbuntuErrataByIds(Set<Long> channelIds, Stream<Entry> ubuntuErrataInfo) {
-        processUbuntuErrata(channelIds.stream()
-                .map(ChannelFactory::lookupById)
-                .collect(Collectors.toSet()), ubuntuErrataInfo);
-    }
-
-    /**
-     * Processes ubuntu errata and tries to associate them to the given channels
-     * @param channels list of channels to match errata against
-     * @param ubuntuErrataInfo list of ubuntu errata entries
-     */
-    public static void processUbuntuErrata(Set<Channel> channels, Stream<Entry> ubuntuErrataInfo) {
-
-        Map<Channel, Set<Package>> ubuntuChannels = channels.stream()
-                .filter(c -> c.isTypeDeb() && !c.isCloned())
-                .collect(Collectors.toMap(c -> c, Channel::getPackages));
-
+    public static void processUbuntuErrata(Map<Channel, Set<Package>> packagesMap, Stream<Entry> ubuntuErrataInfo) {
         Set<Errata> changedErrata = new HashSet<>();
         TimeUtils.logTime(LOG, "writing erratas to db", () -> ubuntuErrataInfo.flatMap(entry -> {
             Map<Channel, Set<Package>> matchingPackagesByChannel =
                     TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
-                            () -> ubuntuChannels.entrySet().stream()
+                            () -> packagesMap.entrySet().stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
                                             c -> c.getValue().stream().filter(p -> entry.getPackages().stream()
                                                     .anyMatch(e -> {
@@ -288,7 +287,7 @@ public class UbuntuErrataManager {
 
                 // faster lookup for existing entries
                 Map<String, Cve> cveByName = errata.getCves().stream()
-                        .collect(Collectors.toMap(Cve::getName, cve -> cve));
+                    .collect(Collectors.toMap(Cve::getName, cve -> cve));
 
                 Set<Cve> cves = entry.getCves().stream()
                         .filter(c -> c.startsWith("CVE-"))
