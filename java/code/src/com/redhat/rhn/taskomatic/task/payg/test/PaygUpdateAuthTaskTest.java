@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.SslContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -28,6 +31,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.NotificationType;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -237,6 +241,65 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
             }
         }
     }
+    public void testRHUIConnection() throws Exception {
+        PaygInstanceInfo rhuiInstanceInfo = createRHUIInstanceInfo();
+        CONTEXT.checking(new Expectations() {
+            {
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(rhuiInstanceInfo));
+            }});
+        PAYG_DATA_TASK.execute(null);
+        for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
+            Credentials creds = outPaygData.getCredentials();
+            assertEquals("rhui", creds.getType().getLabel());
+            assertEquals("RHUI", creds.getUsername());
+            assertEquals(" ", creds.getPassword());
+            Map<String, String> extraAuthData = GSON.fromJson(new String(creds.getExtraAuthData()), Map.class);
+            assertEquals(extraAuthData.size(), 2);
+            assertEquals("PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN", extraAuthData.get("X-RHUI-ID"));
+            assertEquals("WStaWWtsN0dNY1FJeHNLK3BPYlcyZ3JqeHBFR3g4TkRPejBtRmdEakJW",
+                    extraAuthData.get("X-RHUI-SIGNATURE"));
+
+
+            for (ContentSource cs : ChannelFactory.lookupContentSources(OrgFactory.lookupById(1L))) {
+                long cid = creds.getId();
+                String dCert = String.format("Red Hat Update Infrastructure %s (C%d)", "Client Certificate", cid);
+                String dKey = String.format("Red Hat Update Infrastructure %s (C%d)", "Client Key", cid);
+                String dCa = String.format("Red Hat Update Infrastructure %s (C%d)", "CA Certificate", cid);
+
+                if (cs.getLabel().equals("repo-label-1-c" + cid)) {
+                    assertEquals("http://example.domain.top/path/to/repository_1?credentials=mirrcred_" + cid,
+                            cs.getSourceUrl());
+                    assertEquals(1, cs.getSslSets().size());
+                    SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
+
+                    assertEquals(dCert, sslcerts.getClientCert().getDescription());
+                    assertEquals("CLIENT CERTIFICATE", sslcerts.getClientCert().getKeyString());
+
+                    assertEquals(dKey, sslcerts.getClientKey().getDescription());
+                    assertEquals("CLIENT PRIVATE KEY", sslcerts.getClientKey().getKeyString());
+
+                    assertEquals(dCa, sslcerts.getCaCert().getDescription());
+                    assertEquals("CA CERTIFICATE", sslcerts.getCaCert().getKeyString());
+                }
+                else if (cs.getLabel().equals("repo-label-2-c" + cid)) {
+                    assertEquals("http://example.domain.top/path/to/repository_2?credentials=mirrcred_" + cid,
+                            cs.getSourceUrl());
+                    assertEquals(1, cs.getSslSets().size());
+                    SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
+
+                    assertEquals(dCert, sslcerts.getClientCert().getDescription());
+                    assertEquals("CLIENT CERTIFICATE", sslcerts.getClientCert().getKeyString());
+
+                    assertEquals(dKey, sslcerts.getClientKey().getDescription());
+                    assertEquals("CLIENT PRIVATE KEY", sslcerts.getClientKey().getKeyString());
+
+                    assertEquals(dCa, sslcerts.getCaCert().getDescription());
+                    assertEquals("CA CERTIFICATE", sslcerts.getCaCert().getKeyString());
+                }
+            }
+        }
+    }
 
     @Test
     public void testJschException() throws Exception {
@@ -398,5 +461,19 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         rmtHost.put("server_ca", "-----BEGIN CERTIFICATE-----");
 
         return new PaygInstanceInfo(products, basicAuth, headerAuth, rmtHost);
+    }
+
+    private PaygInstanceInfo createRHUIInstanceInfo() {
+        Map<String, String> headerAuth = new HashMap<>();
+        headerAuth.put("X-RHUI-ID", "PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN");
+        headerAuth.put("X-RHUI-SIGNATURE", "WStaWWtsN0dNY1FJeHNLK3BPYlcyZ3JqeHBFR3g4TkRPejBtRmdEakJW");
+
+        Map<String, String> repositories = new HashMap<>();
+        repositories.put("repo-label-1", "http://example.domain.top/path/to/repository_1");
+        repositories.put("repo-label-2", "http://example.domain.top/path/to/repository_2");
+
+        PaygInstanceInfo info = new PaygInstanceInfo(headerAuth, "CLIENT CERTIFICATE", "CLIENT PRIVATE KEY",
+                "CA CERTIFICATE", repositories);
+        return info;
     }
 }
