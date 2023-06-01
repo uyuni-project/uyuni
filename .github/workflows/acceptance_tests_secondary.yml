@@ -1,5 +1,10 @@
 name: acceptance-tests-secondary
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - 'java/**'
+      - 'web/html/src/**'
+      - 'testsuite/**'
 jobs:
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
