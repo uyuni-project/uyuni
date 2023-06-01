@@ -50,6 +50,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -64,6 +66,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UbuntuErrataManager {
+
+    private static final Type ERRATA_INFO_TYPE = new TypeToken<Map<String, UbuntuErrataInfo>>() { }.getType();
 
     private static final Logger LOG = LogManager.getLogger(UbuntuErrataManager.class);
 
@@ -115,16 +119,19 @@ public class UbuntuErrataManager {
         HttpGet httpGet = new HttpGet(jsonDBUrl);
         LOG.info("download ubuntu errata start");
         HttpResponse httpResponse = httpClient.executeRequest(httpGet);
-        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(
-                    new InputStreamReader(httpResponse.getEntity().getContent()),
-                    new TypeToken<Map<String, UbuntuErrataInfo>>() { } .getType());
-            LOG.info("download ubuntu errata end");
-            return errataInfo;
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode == HttpStatus.SC_OK) {
+            try (
+                InputStream responseStream = httpResponse.getEntity().getContent();
+                Reader responseReader = new InputStreamReader(responseStream);
+            ) {
+                Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
+                LOG.info("download ubuntu errata end");
+                return errataInfo;
+            }
         }
         else {
-            throw new IOException("error downloading " + jsonDBUrl + " status code " +
-                   httpResponse.getStatusLine().getStatusCode());
+            throw new IOException("error downloading " + jsonDBUrl + " status code " + statusCode);
         }
     }
 
@@ -178,9 +185,12 @@ public class UbuntuErrataManager {
         String jsonDBUrl = "https://usn.ubuntu.com/usn-db/database.json";
         if (isFromDir()) {
             URI uri = MgrSyncUtils.urlToFSPath(jsonDBUrl, "");
-            InputStream inputStream = Files.newInputStream(Paths.get(uri));
-            return GSON.fromJson(new InputStreamReader(inputStream),
-                    new TypeToken<Map<String, UbuntuErrataInfo>>() { }.getType());
+            try (
+                InputStream inputStream = Files.newInputStream(Paths.get(uri));
+                Reader fileReader = new InputStreamReader(inputStream);
+            ) {
+                return GSON.fromJson(fileReader, ERRATA_INFO_TYPE);
+            }
         }
         else {
             return downloadUbuntuErrataInfo(jsonDBUrl);
