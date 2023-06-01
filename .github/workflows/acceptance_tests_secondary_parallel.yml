@@ -5,6 +5,7 @@ on:
       - 'java/**'
       - 'web/html/src/**'
       - 'testsuite/**'
+      - '.github/workflows/acceptance_tests_secondary_parallel.yml'
 jobs:
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
