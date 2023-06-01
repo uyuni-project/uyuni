@@ -4,6 +4,14 @@
 # Note: image building via API is not tested here
 #       it is tested in buildhost_docker_build_image.feature and
 #                       buildhost_docker_auth_registry.feature
+#
+# This feature is a dependency for:
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
+#
+# This feature can cause failures in the following features:
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
 
 @skip_if_container
 @skip_if_cloud
