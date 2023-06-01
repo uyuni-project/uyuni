@@ -9,18 +9,20 @@ require 'rake/task'
 require 'parallel'
 
 junit_results = '-f junit -o results_junit'
+build_number = ENV['BUILD_NUMBER']
+result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
 namespace :cucumber do
   # Create results folder
-  sh "mkdir -p results", verbose: false
+  sh "mkdir -p  #{result_folder}", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       node_name = ENV['NODE']
       node_result_extension = node_name.nil? ? '' : "_#{node_name}"
-      json_results = "-f json -o results/output#{node_result_extension}_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o results/output#{node_result_extension}_#{timestamp}-#{filename}.html"
+      json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
       profiles = ENV['PROFILE']
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
@@ -149,9 +151,10 @@ namespace :utils do
   desc 'Generate test report'
   task :generate_test_report do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
-    sh 'timeout 180 bash -c -- "while find results/output*.json -type f -size 0 | grep json; do sleep 10;done" ; exit 0', verbose: false
+    sh "timeout 180 bash -c -- \"while find #{result_folder}/output*.json -type f -size 0 | grep json; do sleep 10;done\" ; exit 0", verbose: false
     sh 'find . -size 0 -delete', verbose: false
-    sh 'node index.js &> cucumber_reporter.log', verbose: false
+    sh "node index.js #{result_folder} &> cucumber_reporter.log", verbose: false
+    sh "cp cucumber_report/cucumber_report.html #{result_folder}"
   end
 
   def get_client_type(name)
