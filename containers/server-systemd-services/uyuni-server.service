@@ -20,8 +20,8 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --rm \
     --sdnotify=conmon \
+    --cap-add NET_RAW \
     -d \
-    --replace \
     --tmpfs /run \
     -p 443:443 \
     -p 80:80 \
