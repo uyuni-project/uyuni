@@ -1,7 +1,8 @@
+name: acceptance-tests-secondary
 on: pull_request
 jobs:
   test-uyuni:
-    uses: ./.github/workflows/test_all_in_one_common.yml
+    uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "17_run_secondary_tests.sh" 
 
