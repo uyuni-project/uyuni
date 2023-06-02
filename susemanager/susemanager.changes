@@ -1,3 +1,6 @@
+- Use newest venv-salt-minion version available to generate the
+  venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
+
 -------------------------------------------------------------------
 Mon Apr 24 09:17:34 CEST 2023 - jgonzalez@suse.com
 
