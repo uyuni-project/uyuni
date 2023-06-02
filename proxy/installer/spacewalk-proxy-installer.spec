@@ -131,6 +131,9 @@ if [ -e /etc/squid/squid.conf ]; then
     if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
         sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
     fi
+    if ! grep venv-enabled /etc/squid/squid.conf >/dev/null; then
+        sed -i 's;\(refresh_pattern /pub/repositories.*\);\1\nrefresh_pattern /pub/repositories/.*/venv-enabled-.*.txt$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
+    fi
 fi
 %endif
 if [ $1 -eq 2 ]
