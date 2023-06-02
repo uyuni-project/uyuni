@@ -59,3 +59,6 @@ Feature: Build image with authenticated registry
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
     And I logout from API
+
+  Scenario: Cleanup: Make sure no job is left running on buildhost
+    When I wait until no Salt job is running on "build_host"

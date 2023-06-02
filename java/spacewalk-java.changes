@@ -1,27 +1,31 @@
-- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
-- Fix issue with `aclChannelTypeCapable` that prevented errata view in
-  deb arch
-- Refresh pillars after setting custom values via SSM (bsc#1210659)
-- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
-- Filter CLM modular packages using release strings (bsc#1207814)
-- Allow processing big state results (bsc#1210957)
-- Use glassfish-activation-api instead of gnu-jaf
-- fix session information leak CVE-2023-22644 (bsc#1210107)
-- Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
-- kernel options: only add quotes if there is a space in the value (bsc#1209926)
-- fix link to Knowledge Base articles (bsc#1210311)
-- Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
-- remove channels from client after transfer to a different
-  organization (bsc#1209220)
-- fix displaying system channels when no base product is installed
-  (bsc#1206423)
-- fix broken ifcfg grub option on reinstallation (bsc#1210232)
-- fix NPE in cobbler system sync when server has no creator set
-- fix credentials and other secrets disclosure when debug log is enabled
-  CVE-2023-22644 (bsc#1210154)
-- Don't output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
-- Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
-- add listSystemEvents missing API endpoint (bsc#1209877)
+-------------------------------------------------------------------
+Wed May 31 09:26:36 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.50-1
+  * Fix misleading error message regarding SCC credentials removal (bsc#1207941)
+  * Fix issue with `aclChannelTypeCapable` that prevented errata view in
+    deb arch
+  * Refresh pillars after setting custom values via SSM (bsc#1210659)
+  * Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * Allow processing big state results (bsc#1210957)
+  * Use glassfish-activation-api instead of gnu-jaf
+  * Fix session information leak CVE-2023-22644 (bsc#1210107)
+  * Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
+  * kernel options: only add quotes if there is a space in the value (bsc#1209926)
+  * Fix link to Knowledge Base articles (bsc#1210311)
+  * Do not output Cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
+  * Remove channels from client after transfer to a different
+    organization (bsc#1209220)
+  * Fix displaying system channels when no base product is installed
+    (bsc#1206423)
+  * Fix broken ifcfg grub option on reinstallation (bsc#1210232)
+  * Fix NPE in Cobbler system sync when server has no creator set
+  * Fix credentials and other secrets disclosure when debug log is enabled
+    CVE-2023-22644 (bsc#1210154)
+  * Do not output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
+  * Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
+  * Add listSystemEvents missing API endpoint (bsc#1209877)
 
 -------------------------------------------------------------------
 Thu Apr 06 13:31:42 UTC 2023 - marina.latini@suse.com

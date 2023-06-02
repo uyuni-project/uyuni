@@ -33,7 +33,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I follow "SUSE Test Key x86_64" in the content area
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I select "Push via SSH" from "contactMethodId"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
@@ -136,7 +136,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I follow "SUSE Test Key x86_64" in the content area
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
     And I select "Default" from "contactMethodId"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text

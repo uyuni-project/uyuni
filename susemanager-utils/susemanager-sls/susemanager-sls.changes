@@ -1,7 +1,11 @@
-- Include automatic migration from Salt 3000 to Salt bundle in highstate
-- disable salt-minion and remove its config file on cleanup (bsc#1209277)
-- to update everything on a debian system, call dist-upgrade to
-  be able to install and remove packages
+-------------------------------------------------------------------
+Wed May 31 09:34:09 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.33-1
+  * Include automatic migration from Salt 3000 to Salt bundle in highstate
+  * Disable salt-minion and remove its config file on cleanup (bsc#1209277)
+  * To update everything on a debian system, call dist-upgrade to
+    be able to install and remove packages
 
 -------------------------------------------------------------------
 Tue Mar 28 09:41:57 UTC 2023 - marina.latini@suse.com

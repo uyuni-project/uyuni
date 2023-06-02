@@ -1,5 +1,9 @@
-- Filter CLM modular packages using release strings (bsc#1207814)
-- repeat schema migrations for module metadata storage (bsc#1209915)
+-------------------------------------------------------------------
+Wed May 31 09:32:58 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.28-1
+  * Filter CLM modular packages using release strings (bsc#1207814)
+  * Repeat schema migrations for module metadata storage (bsc#1209915)
 
 -------------------------------------------------------------------
 Fri Feb 24 10:05:07 CET 2023 - jgonzalez@suse.com

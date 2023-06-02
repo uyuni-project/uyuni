@@ -1,5 +1,9 @@
-- Add bootstrap repository definitions for openSUSE Leap 15.5
-- Add SLES15SP5 to bootstrap repo definitions
+-------------------------------------------------------------------
+Wed May 31 09:30:02 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.41-1
+  * Add bootstrap repository definitions for openSUSE Leap 15.5
+  * Add bootstrap repository definitions for SUSE Linux Enterprise Server 15 SP5
 
 -------------------------------------------------------------------
 Fri Feb 24 10:06:10 CET 2023 - jgonzalez@suse.com

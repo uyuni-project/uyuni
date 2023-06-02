@@ -10,7 +10,7 @@ Feature: Clone a channel
   Scenario: Clone a channel without patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Fake-RPM-SLES-Channel" as the origin channel
+    And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "original"
     And I click on "Clone Channel"
     And I enter "Fake-Clone-RPM-SLES15SP3-Channel" as "Channel Name"
@@ -29,7 +29,7 @@ Feature: Clone a channel
   Scenario: Clone a channel with patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Fake-RPM-SLES-Channel" as the origin channel
+    And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
     And I enter "Fake-Clone-2-RPM-SLES15SP3-Channel" as "Channel Name"
@@ -51,7 +51,7 @@ Feature: Clone a channel
   Scenario: Clone a channel with selected patches
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Fake-RPM-SLES-Channel" as the origin channel
+    And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "select"
     And I click on "Clone Channel"
     And I enter "Fake-Clone-3-RPM-SLES15SP3-Channel" as "Channel Name"
@@ -59,8 +59,8 @@ Feature: Clone a channel
     And I should see a "Select patches" text
     And I click on "Clone Channel"
     And I should see a "Fake-Clone-3-RPM-SLES15SP3-Channel" text
-    And I should see a "Channel Fake-Clone-3-RPM-SLES15SP3-Channel cloned from channel Fake-RPM-SLES-Channel." text
-    And I should see a "You may now wish to clone the patches associated with Fake-RPM-SLES-Channel." text
+    And I should see a "Channel Fake-Clone-3-RPM-SLES15SP3-Channel cloned from channel Fake-RPM-SUSE-Channel." text
+    And I should see a "You may now wish to clone the patches associated with Fake-RPM-SUSE-Channel." text
     And I check the row with the "hoag-dummy-7890" link
     And I check the row with the "virgo-dummy-3456" link
     And I click on "Clone Patches"
