@@ -597,7 +597,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         # create venv-enabled-{ARCH}.txt for repos with salt bundle package
         for file_path in glob.glob(os.path.join(destdirtmp, 'venv-enabled-*.txt')):
             os.remove(file_path)
-        for file_path in glob.glob(os.path.join(destdirtmp, '**/venv-salt-minion*.*'), recursive=True):
+        for file_path in sorted(glob.glob(os.path.join(destdirtmp, '**/venv-salt-minion*.*'), recursive=True)):
             rel_path = os.path.relpath(file_path, start=destdirtmp)
             (l_path, ext) = rel_path.rsplit('.', 1)
             if ext:
