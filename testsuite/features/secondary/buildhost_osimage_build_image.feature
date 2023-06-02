@@ -85,3 +85,6 @@ Feature: Build OS images
     And I should see a "Are you sure you want to delete the selected profile?" text
     And I click on the red confirmation button
     And I wait until I see "Image profile has been deleted" text
+
+  Scenario: Cleanup: Make sure no job is left running on buildhost
+    When I wait until no Salt job is running on "build_host"
