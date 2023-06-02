@@ -173,8 +173,8 @@ end
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
   case host
-    # The PXE boot minion and the terminals are not directly accessible on the network,
-    # therefore they are not represented by a twopence node
+  # The PXE boot minion and the terminals are not directly accessible on the network,
+  # therefore they are not represented by a twopence node
   when 'pxeboot_minion'
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
