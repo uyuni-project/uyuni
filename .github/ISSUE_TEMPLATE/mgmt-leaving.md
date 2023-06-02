@@ -54,6 +54,7 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from https://build.suse.de/groups/salt-maintainers (if applicable)
   - [ ] Remove from https://build.suse.de/groups/scap-security-guide-maintainers (if applicable)
   - [ ] Remove from https://build.suse.de/groups/suse-manager-maintainers (if applicable)
+  - [ ] Remove from https://build.suse.de/groups/suse-manager-developers (if applicable)
   - [ ] Remove from https://build.suse.de/groups/susemanager-releng (if applicable)
   - [ ] Remove from https://build.suse.de/groups/qam-manager (if applicable)
   - [ ] Remove from https://build.opensuse.org/groups/uyuni-maintainers (if applicable)
