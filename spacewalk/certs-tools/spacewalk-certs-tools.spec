@@ -19,10 +19,12 @@
 
 
 %if 0%{?suse_version}
-%global pub_bootstrap_dir /srv/www/htdocs/pub/bootstrap
+%global pub_dir /srv/www/htdocs/pub
 %else
-%global pub_bootstrap_dir /var/www/html/pub/bootstrap
+%global pub_dir /var/www/html/pub
 %endif
+
+%global pub_bootstrap_dir %{pub_dir}/bootstrap
 %global rhnroot %{_datadir}/rhn
 %global __python /usr/bin/python3
 
@@ -96,13 +98,13 @@ ln -s rhn-bootstrap-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
 ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 
-%if 0%{?suse_version}
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
 ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 
@@ -133,16 +135,14 @@ esac
 %doc ssl-howto-simple.txt ssl-howto.txt
 %license LICENSE
 %{pub_bootstrap_dir}/client_config_update.py*
-%if 0%{?suse_version}
 %dir %{rhnroot}
-%dir /srv/www/htdocs/pub
+%dir %{pub_dir}
 %dir %{pub_bootstrap_dir}
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
 %{_sbindir}/mgr-push-register
 %{_sbindir}/mgr-ssh-push-init
-%endif
 
 %files -n python3-%{name}
 %{python3_sitelib}/certs
