@@ -134,9 +134,11 @@ Feature: Build container images
 
   Scenario: Cleanup: delete all images
     Given I am authorized as "admin" with password "admin"
-    When I delete the image "suse_key" with version "Latest" via API calls
-    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    When I delete the image "suse_key" with version "latest" via API calls
     And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+    And I delete the image "suse_simple" with version "latest" via API calls
+    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    And I delete the image "suse_real_key" with version "latest" via API calls
     And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
     And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
 
@@ -150,3 +152,6 @@ Feature: Build container images
     And I should see a "Are you sure you want to delete selected profiles?" text
     And I click on the red confirmation button
     And I wait until I see "Image profiles have been deleted" text
+
+  Scenario: Cleanup: Make sure no job is left running on buildhost
+    When I wait until no Salt job is running on "build_host"

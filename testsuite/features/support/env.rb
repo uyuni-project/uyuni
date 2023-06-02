@@ -82,6 +82,8 @@ Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
 Capybara.default_normalize_ws = true
+Capybara.enable_aria_label = true
+Capybara.automatic_label_click = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
@@ -346,6 +348,14 @@ end
 
 Before('@sle15sp4_client') do
   skip_this_scenario unless $sle15sp4_client
+end
+
+Before('@sle15sp5_ssh_minion') do
+  skip_this_scenario unless $sle15sp5_ssh_minion
+end
+
+Before('@sle15sp5_minion') do
+  skip_this_scenario unless $sle15sp5_minion
 end
 
 Before('@opensuse154arm_minion') do

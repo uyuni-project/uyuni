@@ -57,7 +57,7 @@ Feature: Migrate a traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I should see a "subscribed to channel fake-rpm-sles-channel" text
+    Then I should see a "subscribed to channel fake-rpm-suse-channel" text
 
   Scenario: Install a package onto the migrated minion
     Given I am on the Systems overview page of this "sle_client"

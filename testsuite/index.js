@@ -3,10 +3,15 @@
  */
 
 var reporter = require('cucumber-html-reporter');
+var path = require('path');
+
+// Read command-line arguments
+var args = process.argv.slice(2);
+var jsonDir = args[0] || '.'; // Default to current directory if no argument provided
 
 var options = {
   theme: 'bootstrap',
-  jsonDir: '.',
+  jsonDir: jsonDir,
   output: 'cucumber_report/cucumber_report.html',
   reportSuiteAsScenarios: true,
   launchReport: true,

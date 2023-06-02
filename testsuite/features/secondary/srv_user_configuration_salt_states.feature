@@ -41,7 +41,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Managers"
 
   Scenario: User Roles were assigned

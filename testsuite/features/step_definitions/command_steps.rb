@@ -80,7 +80,7 @@ Then(/^it should be possible to use the HTTP proxy$/) do
 end
 
 Then(/^it should be possible to use the custom download endpoint$/) do
-  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-suse-channel/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -415,7 +415,7 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced([^"]*)$/) do |channel, withpkg|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
       # solv is the last file to be written when the server synchronizes a channel,
@@ -425,7 +425,19 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
         # We want to check if no .new files exists.
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
         _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
-        break unless new_code.zero?
+        unless new_code.zero?
+          break if withpkg.empty?
+          _result, solv_code = $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep 'repo size: 0 solvables'", check_errors: false)
+          break unless solv_code.zero?
+        end
+      else
+        # maybe a debian repo?
+        _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/Release", check_errors: false)
+        if code.zero?
+          break if withpkg.empty?
+          _result, solv_code = $server.run("test -s /var/cache/rhn/repodata/#{channel}/Packages", check_errors: false)
+          break if solv_code.zero?
+        end
       end
       log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
@@ -965,7 +977,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-suse-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1070,7 +1082,7 @@ end
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
   node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk:fake-rpm-sles-channel/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
+  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk:fake-rpm-suse-channel/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
   metadata_buildtime, return_code = node.run(cmd)
   raise "Command failed: #{cmd}" unless return_code.zero?
   cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
