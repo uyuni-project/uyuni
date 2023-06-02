@@ -8,15 +8,17 @@ require_all 'features/support'
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
-warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
-warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
-warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
-warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
-warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
-warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
-warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
+unless $build_validation
+  warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
+  warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
+  warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
+  warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
+  warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
+  warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
+  warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+  warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
+  warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
+end
 
 # Preserve FQDN before initialization
 $named_nodes = {}
@@ -171,8 +173,8 @@ end
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
   case host
-  # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a twopence node
+    # The PXE boot minion and the terminals are not directly accessible on the network,
+    # therefore they are not represented by a twopence node
   when 'pxeboot_minion'
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
