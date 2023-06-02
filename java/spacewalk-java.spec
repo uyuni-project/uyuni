@@ -631,11 +631,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 # Prettifying symlinks
 mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
 
-# Prettifying symlinks for RHEL
-%if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamail.jar
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jta.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
+%if 0%{?rhel}
 rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmail.jar
 %endif
 

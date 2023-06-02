@@ -1,4 +1,4 @@
-name: test-all-in-one-common
+name: acceptance-tests-common
 on:
   workflow_call:
     inputs:

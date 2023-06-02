@@ -1,3 +1,4 @@
+- Prevent product installation from being executed before executing product migration (bsc#1210475)
 - Include automatic migration from Salt 3000 to Salt Bundle in highstate
 - fix duplicate packages in state
 - Fix enabling bundle build via custom info
