@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun 02 17:52:44 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.42-1
+  * Use newest venv-salt-minion version available to generate the
+    venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
+
+-------------------------------------------------------------------
 Wed May 31 09:30:02 CEST 2023 - marina.latini@suse.com
 
 - version 4.2.41-1
