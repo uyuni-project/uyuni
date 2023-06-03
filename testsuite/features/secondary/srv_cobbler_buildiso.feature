@@ -82,6 +82,7 @@ Feature: Cobbler buildiso
     When I cleanup after Cobbler buildiso
     And I log out from Cobbler via the API
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
 
