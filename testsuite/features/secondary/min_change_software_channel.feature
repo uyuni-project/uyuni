@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021--2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -23,6 +23,15 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
+# susemanager has the Client Tools channels more than uyuni. (+2)
+# in Head also Beta Client Tools Channels (+2)
+@susemanager
+  Scenario: Check old channels are still enabled on the system before channel change completes
+    When I refresh the metadata for "sle_minion"
+    Then "17" channels should be enabled on "sle_minion"
+    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+
+@uyuni
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
     Then "13" channels should be enabled on "sle_minion"
@@ -56,6 +65,14 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as checked
 
+@susemanager
+  Scenario: Check the new channels are enabled on the system
+    When I refresh the metadata for "sle_minion"
+    Then "18" channels should be enabled on "sle_minion"
+    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
+
+@uyuni
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
     Then "14" channels should be enabled on "sle_minion"
