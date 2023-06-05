@@ -238,8 +238,8 @@ Feature: PXE boot a Retail terminal
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
-    And I stop salt-minion on the PXE boot minion
 
   Scenario: Cleanup: undo TFTP and PXE formulas
     Given I am on the Systems overview page of this "proxy"
