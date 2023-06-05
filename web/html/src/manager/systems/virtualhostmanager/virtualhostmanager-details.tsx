@@ -95,13 +95,13 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
                 columnKey="cpuSockets"
                 comparator={Utils.sortByText}
                 header={t("CPU Sockets")}
-                cell={(row, criteria) => row.cpuSockets !== 0 ? row.cpuSockets : "N/A"}
+                cell={(row, criteria) => (row.cpuSockets !== 0 ? row.cpuSockets : t("N/A"))}
               />
               <Column
                 columnKey="memory"
                 comparator={Utils.sortByText}
                 header={t("RAM (Mb)")}
-                cell={(row, criteria) => row.memory !== 0 ? row.memory : "N/A"}
+                cell={(row, criteria) => (row.memory !== 0 ? row.memory : t("N/A"))}
               />
             </Table>
           </BootstrapPanel>
