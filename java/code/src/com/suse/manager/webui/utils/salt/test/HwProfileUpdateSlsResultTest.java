@@ -22,7 +22,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.utils.Json;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.Test;
 
