@@ -1,3 +1,6 @@
+- Change the order of the Refresh and Create buttons on the
+  image-profiles and image-stores pages to stay consistent
+  with the image-list page.
 - Fix spelling on monitoring-admin page.
 - force all mandatory channels being selected in software channel
   change page (bsc#1211062)
