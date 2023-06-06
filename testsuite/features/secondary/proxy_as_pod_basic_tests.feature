@@ -1,10 +1,23 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
 # * there is no proxy ($proxy is nil)
 # * there is no salt minion ($sle_minion is nil)
 # * there is no scope @scope_containerized_proxy
+#
+# This feature can cause failures in the following features:
+# - features/secondary/srv_advanced_search.feature
+# - features/secondary/srv_datepicker.feature
+# - features/secondary/srv_group_union_intersection.feature
+# - features/secondary/srv_custom_system_info.feature
+# - features/secondary/srv_reportdb.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_system_group.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/min_bootstrap_api.feature
+# If the minion is not properly bootstrapped again.
 
 @scope_containerized_proxy
 @proxy
@@ -19,13 +32,11 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Pre-requisite: Unregister Salt minion in the traditional proxy
     Given I am on the Systems overview page of this "sle_minion"
-    When I stop salt-minion on "sle_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Pre-requisite: Stop traditional proxy service
@@ -211,13 +222,11 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Cleanup: Unregister a Salt minion in the Containerized Proxy
     Given I am on the Systems overview page of this "sle_minion"
-    When I stop salt-minion on "sle_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: Unregister Containerized Proxy

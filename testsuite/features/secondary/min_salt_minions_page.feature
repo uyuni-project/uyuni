@@ -1,5 +1,9 @@
 # Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_mgrcompat_state.feature
+# If the minion fails to bootstrap again.
 
 @skip_if_container
 @scope_salt
@@ -17,15 +21,15 @@ Feature: Management of minion keys
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Completeness of the onboarding page
-    And I follow the left menu "Salt > Keys"
+    When I follow the left menu "Salt > Keys"
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
     When I configure salt minion on "sle_minion"
-    And I wait until Salt client is inactive on "sle_minion"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"

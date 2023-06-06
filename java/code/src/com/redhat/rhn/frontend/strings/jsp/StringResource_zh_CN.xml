@@ -20663,7 +20663,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/sdc/channellist.jsp  -->
       <trans-unit approved="yes" id="sdc.configlist.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="final">配置频道</target>
+        <target state="final">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -22908,7 +22908,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 
 "发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、基础频道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
+树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
 
 &lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和软件源信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
 </target>
@@ -25001,7 +25001,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-        <target state="final">软件频道</target>
+        <target state="final">软件通道</target>
       </trans-unit>
       <!-- downloads.jsp -->
       <trans-unit id="isodownload.hosted-only.warn" xml:space="preserve">
@@ -25786,7 +25786,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="final">无法查找系统默认基础频道。</target>
+        <target state="final">无法查找系统默认基础通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams" xml:space="preserve">
           <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source>
@@ -27436,7 +27436,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">生成频道软件源数据</target>
+        <target state="translated">生成通道软件源数据</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch" xml:space="preserve">
         <source>Cleans up orphaned and outdated data</source>
@@ -27655,11 +27655,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="final">您确定要将此频道设置为
+        <target state="final">您确定要将此通道设置为
         &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的系统访问吗？
-        下面列出的是其他组织中订阅了由此频道提供的内容的系统。
-        去除对此频道的访问权限可能会对这些系统产生负面影响。例如：那些
-        系统将无法再收到此频道提供的内容的关键
+        下面列出的是其他组织中订阅了由此通道提供的内容的系统。
+        去除对此通道的访问权限可能会对这些系统产生负面影响。例如：那些
+        系统将无法再收到此通道提供的内容的关键
         安全更新。</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve">
@@ -27935,7 +27935,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata" xml:space="preserve">
         <source>Channel Repodata</source>
-        <target state="translated">频道软件源数据</target>
+        <target state="translated">通道软件源数据</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data" xml:space="preserve">
         <source>TimeSeries Cleanup</source>
@@ -28113,7 +28113,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
-        <target>可以从相关的 debug 频道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
+        <target>可以从相关的 debug 通道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -29221,9 +29221,9 @@ given channel.</source>
            remove the deleted channel.
         </source>
         <target>
-           在当前指派了此频道的任何受控端上确认后，将立即
-           安排应用频道状态。这会更新这些受控端上的软件源文件，
-           以去除已删除的频道。
+           在当前指派了此通道的任何受控端上确认后，将立即
+           安排应用通道状态。这会更新这些受控端上的软件源文件，
+           以去除已删除的通道。
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
@@ -29907,10 +29907,17 @@ given channel.</source>
         </context-group>
         <target state="final"> 显示失效的订阅警告。</target>
       </trans-unit>
-    <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

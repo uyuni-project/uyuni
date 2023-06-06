@@ -87,6 +87,27 @@ public class ChecksumFactory extends HibernateFactory {
     }
 
     /**
+     * Guess the checksum type by length of the checksum
+     * @param checksum the checksum
+     * @return the checksum type
+     */
+    public static String guessChecksumTypeByLength(String checksum) {
+        switch (checksum.length()) {
+            case 128:
+                return "sha512";
+            case 96:
+                return "sha384";
+            case 64:
+                return "sha256";
+            case 40:
+                return "sha1";
+            case 32:
+                return "md5";
+            default:
+                throw new IllegalArgumentException("Unable to identify the checksum type");
+        }
+    }
+    /**
      * {@inheritDoc}
      */
     @Override

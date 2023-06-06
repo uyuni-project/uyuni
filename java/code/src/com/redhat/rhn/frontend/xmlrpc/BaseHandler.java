@@ -126,6 +126,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             foundMethod = fallbackMethod.getA();
             converted = fallbackMethod.getB();
         }
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(foundMethod);
 
         if (user != null && user.isReadOnly()) {
             if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {
@@ -216,7 +217,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             return candidates.get(0);
         }
         else  {
-            throw new TranslationException("more then one method candidate found during conversion fallback");
+            throw new TranslationException("more than one method candidate found during conversion fallback");
         }
     }
 

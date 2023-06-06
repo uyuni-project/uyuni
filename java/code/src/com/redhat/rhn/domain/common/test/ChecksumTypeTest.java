@@ -16,7 +16,9 @@ package com.redhat.rhn.domain.common.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -44,4 +46,18 @@ public class ChecksumTypeTest extends RhnBaseTestCase {
         ChecksumType at3 = (ChecksumType) TestUtils.lookupFromCacheById(at1.getId(), query);
     }
 
+    @Test
+    public void testGuessChecksumType() {
+        assertEquals("md5", ChecksumFactory.guessChecksumTypeByLength("401b30e3b8b5d629635a5c613cdb7919"));
+        assertEquals("sha1", ChecksumFactory.guessChecksumTypeByLength("6fcf9dfbd479ed82697fee719b9f8c610a11ff2a"));
+        assertEquals("sha256", ChecksumFactory.guessChecksumTypeByLength(
+                "73cb3858a687a8494ca3323053016282f3dad39d42cf62ca4e79dda2aac7d9ac"));
+        assertEquals("sha384", ChecksumFactory.guessChecksumTypeByLength(
+                "bed4e0f8b9c0ec8bee077c2d5ffea39f5b8858458f2694cbe3bd50e137dedb806c76781c53e7cf25dd074855dbbfe3d4"));
+        assertEquals("sha512", ChecksumFactory.guessChecksumTypeByLength(
+                "45843648ecf9da8e513286f136e3f271e7d6dee4d29b947a50dde8c61f3e197694c13bcdc279ce" +
+                        "459839757cd8de19c11b23b33565384a97afcf360483578cd4"));
+        assertThrows(IllegalArgumentException.class, () ->
+                ChecksumFactory.guessChecksumTypeByLength("401b30e3b8b5d629635a5c613"));
+    }
 }

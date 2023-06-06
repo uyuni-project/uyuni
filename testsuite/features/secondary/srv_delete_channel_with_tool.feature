@@ -1,5 +1,11 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT License.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/srv_handle_software_channels_with_ISS_v2.feature
+# - features/secondary/srv_clone_channel_npn.feature
+# If the deletion of "Clone of Fake-RPM-SUSE-Channel" fails,
+# these features will have failing scenarios.
 
 @scope_configuration_channels
 Feature: Deleting channels with children or clones is not allowed

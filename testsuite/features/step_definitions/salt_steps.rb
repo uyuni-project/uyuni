@@ -205,6 +205,10 @@ end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
+  # Remove automatically installed dependency if needed
+  if package == 'uyuni-config'
+    $server.run("zypper --non-interactive remove #{package}-modules")
+  end
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
@@ -494,18 +498,23 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if rh_host?(host)
-    node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
-  elsif deb_host?(host)
-    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
-    node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
-  else
-    node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
-  end
   if $use_salt_bundle
+    if rh_host?(host)
+      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion", check_errors: false)
+    elsif deb_host?(host)
+      node.run("apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+    else
+      node.run("zypper --non-interactive remove --clean-deps -y venv-salt-minion", check_errors: false)
+    end
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
+    if rh_host?(host)
+      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion", check_errors: false)
+    elsif deb_host?(host)
+      node.run("apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+    else
+      node.run("zypper --non-interactive remove --clean-deps -y salt salt-minion", check_errors: false)
+    end
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   end
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)

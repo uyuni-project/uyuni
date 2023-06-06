@@ -44,6 +44,14 @@ Feature: Channel subscription via SSM
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
 @sle_minion
+@susemanager
+  Scenario: Check old channels are still enabled on SLES minion before channel change completes
+    When I refresh the metadata for "sle_minion"
+    Then "17" channels should be enabled on "sle_minion"
+    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+
+@sle_minion
+@uyuni
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
     Then "13" channels should be enabled on "sle_minion"

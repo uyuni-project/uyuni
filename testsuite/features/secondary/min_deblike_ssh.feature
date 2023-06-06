@@ -1,9 +1,16 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Debian-like minion and register as SSH minion
 # 2) run a remote command
 # 3) delete Debian-like SSH minion and register as normal minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_with_staging.feature
+# - features/secondary/min_deblike_monitoring.feature
+# If the cleanup bootstrap scenario fails,
+# the minion will not be reachable in those features.
 
 @skip_if_container
 @scope_deblike
@@ -20,6 +27,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "deblike_minion"
     Then "deblike_minion" should not be registered
 
   Scenario: Bootstrap a SSH-managed Debian-like minion
