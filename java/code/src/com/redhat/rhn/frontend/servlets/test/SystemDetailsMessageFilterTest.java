@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -27,12 +28,12 @@ import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.google.common.collect.Iterators;
-
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,11 +53,15 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         HttpServletRequest request = new RhnMockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, server);
-        ActionMessages messages =
-                ((ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR"));
-        assertEquals(1, Iterators.size(messages.get(ActionMessages.GLOBAL_MESSAGE)));
-        ActionMessage message = (ActionMessage) messages.get(ActionMessages.GLOBAL_MESSAGE).next();
+
+        ActionMessages messages = (ActionMessages) request.getSession().getAttribute("org.apache.struts.action.ERROR");
+        @SuppressWarnings("unchecked")
+        Iterator<ActionMessage> globalMessagesIterator = messages.get(ActionMessages.GLOBAL_MESSAGE);
+
+        ActionMessage message = globalMessagesIterator.next();
         assertEquals(SystemDetailsMessageFilter.TRADITIONAL_STACK_MESSAGE_KEY, message.getKey());
+        // Ensure only one message is present
+        assertFalse(globalMessagesIterator.hasNext());
     }
 
     @Test
