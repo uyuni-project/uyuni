@@ -1,9 +1,17 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Note: image building via API is not tested here
 #       it is tested in buildhost_docker_build_image.feature and
 #                       buildhost_docker_auth_registry.feature
+#
+# This feature is a dependency for:
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
+#
+# This feature can cause failures in the following features:
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
 
 @scope_building_container_images
 Feature: API "image" namespace for containers and sub-namespaces
