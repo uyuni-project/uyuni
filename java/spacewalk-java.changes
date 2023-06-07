@@ -1,3 +1,4 @@
+- Add option to disable SSL
 - Removed the expensive 'diff' column (bsc#1208427)
 - replace kickstart profile advanced option "md5_crypt_rootpw"
   with "sha256_crypt_rootpw" to use sha256 crypt when password
