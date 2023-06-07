@@ -106,6 +106,7 @@ Feature: Edit Cobbler profiles
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
 

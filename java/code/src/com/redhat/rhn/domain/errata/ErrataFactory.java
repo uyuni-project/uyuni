@@ -360,7 +360,7 @@ public class ErrataFactory extends HibernateFactory {
     /**
      * Creates a new Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
-     * @param cs MD5 Checksum for the new Errata File
+     * @param cs Checksum for the new Errata File
      * @param name name for the file
      * @return new Errata File
      */
@@ -371,7 +371,7 @@ public class ErrataFactory extends HibernateFactory {
     /**
      * Creates a new Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
-     * @param cs MD5 Checksum for the new Errata File
+     * @param cs Checksum for the new Errata File
      * @param name name for the file
      * @param packages Packages associated with this errata file.
      * @return new Errata File
@@ -382,7 +382,7 @@ public class ErrataFactory extends HibernateFactory {
                                               Set<Package> packages) {
         ErrataFile file = new ErrataFile();
         file.setFileType(ft);
-        file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
+        file.setChecksum(ChecksumFactory.safeCreate(cs, ChecksumFactory.guessChecksumTypeByLength(cs)));
         file.setFileName(name);
         file.setPackages(packages);
         return file;

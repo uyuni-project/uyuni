@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import ReactHtmlParser from "html-react-parser";
-
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
@@ -9,6 +7,8 @@ import { Messages, Utils as MsgUtils } from "components/messages";
 import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils/Loading";
+
+import { stringToReact } from "utils";
 
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType } from "../../../type";
@@ -137,7 +137,8 @@ const EnvironmentLifecycle = (props: Props) => {
                             <Messages
                               items={MsgUtils.warning(
                                 <>
-                                  {ReactHtmlParser(
+                                  {/* TODO: Remove this wrapper once https://github.com/SUSE/spacewalk/issues/20449 is implemented */}
+                                  {stringToReact(
                                     t(
                                       "This environment cannot be deleted since it is being used in an {0}autoinstallation distribution{1}.",
                                       '<a target="_blank" href="/rhn/kickstart/ViewTrees.do">',

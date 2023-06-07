@@ -68,9 +68,7 @@ function scrollTopBehavior() {
 // to set HTML tag dimensions
 function alignContentDimensions() {
   adaptFluidColLayout();
-  adjustDistanceForFixedHeader();
   sstStyle();
-  columnHeight();
 }
 
 // empty function by default hooked on window.scroll event
@@ -161,31 +159,9 @@ function sstStyle() {
   sst.width(sst.parent().width() - sst.css('padding-left') - sst.css('padding-right'));
 }
 
-// Header is fixed, the main content column needs
-// padding-top equals the header height to be fully visible
-function adjustDistanceForFixedHeader() {
-  // subtract 1px in case the outerHeight comes to us already upper rounded
-  jQuery('body').css('padding-top', jQuery('header').outerHeight());
-}
-
-// Make columns 100% in height
-function columnHeight() {
-  const aside = jQuery('.spacewalk-main-column-layout aside');
-  const navToolBox = jQuery('.spacewalk-main-column-layout aside .nav-tool-box');
-  const headerHeight = jQuery('header').outerHeight();
-  const footerHeight = jQuery('footer').outerHeight();
-  const winHeight = jQuery(window).height();
-  // // Column height should equal the window height minus the header and footer height
-  aside.css('height', winHeight - headerHeight);
-  // aside.css('padding-bottom', footerHeight);
-  const nav = jQuery('.spacewalk-main-column-layout aside #nav nav ul.level1');
-  nav.css('height', aside.outerHeight() - navToolBox.outerHeight() - footerHeight);
-};
-
 jQuery(document).on('click', '.navbar-toggle', function() {
   jQuery('aside').toggleClass('in');
   jQuery('aside').toggleClass('collapse');
-  columnHeight();
 });
 
 // returns an object that can be passed to ajax renderer as a callback
@@ -198,7 +174,6 @@ function makeRendererHandler(divId, debug) {
     }
     jQuery('#' + divId).html(text);
     jQuery('#' + divId).fadeIn();
-    columnHeight();
   });
 }
 

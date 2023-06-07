@@ -1642,7 +1642,7 @@ public class ContentSyncManager {
                 .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> {
                     if (e.getValue().size() != 1) {
                         throw new RuntimeException(
-                                "found more then 1 unique value for a product attribute override: " +
+                                "found more than 1 unique value for a product attribute override: " +
                                 "id " + e.getKey() +
                                 " values " + e.getValue().stream()
                                         .map(Object::toString)

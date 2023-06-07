@@ -1,5 +1,7 @@
 - Align the order of the Refresh and Create buttons for more
   consistency
+- Fix layout alignment on pages showing failed states logs (bsc#1211713)
+- Fix parsing error when showing notification message details (bsc#1211469)
 - Fix spelling on monitoring-admin page.
 - force all mandatory channels being selected in software channel
   change page (bsc#1211062)

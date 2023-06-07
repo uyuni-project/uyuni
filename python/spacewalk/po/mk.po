@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-28 14:47+0200\n"
-"PO-Revision-Date: 2023-05-06 01:40+0000\n"
+"PO-Revision-Date: 2023-05-29 06:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -321,16 +321,17 @@ msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"Редење на токени за пререгистрација со различни основни права не е поддржано"
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Не можеше да се најде токенот \"%s\""
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Токен од неусогласени организации"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853

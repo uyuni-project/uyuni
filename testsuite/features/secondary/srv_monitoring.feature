@@ -2,13 +2,23 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature is a dependency for:
-# - features/secondary/min_monitoring.feature: if this feature fails,
-#   it could let the monitoring feature disabled for the SLE minion
-# - features/secondary/min_rhlike_monitoring.feature: if this feature fails,
-#   it could let the monitoring feature disabled for the Red Hat-like minion
+# - features/secondary/min_monitoring.feature
+# - features/secondary/min_rhlike_monitoring.feature
+# - features/secondary/min_deblike_monitoring.feature
 #
 # This feature depends on:
 # - sumaform: as it is configuring monitoring to be enabled after deployment
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the SLE minion
+# - features/secondary/min_rhlike_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the Red Hat-like minion
+# - features/secondary/min_deblike_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the Debian-like minion
 
 @skip_if_container
 @scope_monitoring
