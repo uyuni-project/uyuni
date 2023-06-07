@@ -1,5 +1,8 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+# - features/secondary/min_docker_api.feature
 
 @buildhost
 @scope_building_container_images
