@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Basic images do not contain zypper nor the name of the server,
@@ -6,6 +6,9 @@
 #
 # This feature is a dependency for:
 # - features/secondary/srv_docker_cve_audit.feature 
+#
+# This feature depends on:
+# - features/secondary/min_docker_api.feature
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_salt_install_with_staging.feature
