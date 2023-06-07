@@ -197,6 +197,7 @@ class Nav extends React.Component {
             value={this.state.search}
             onChange={this.onSearch}
             placeholder="Search page"
+            aria-label="Search page"
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (

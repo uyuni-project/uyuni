@@ -10,7 +10,7 @@
 
 <div class="header-content">
   <div class="navbar-header">
-    <a href="#" class="navbar-toggle">
+    <a href="#" class="navbar-toggle" aria-label="Main menu">
       <i class="fa fa-bars" aria-hidden="true"></i>
     </a>
     <div id="breadcrumb"></div>
