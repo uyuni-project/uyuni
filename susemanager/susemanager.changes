@@ -1,3 +1,4 @@
+- Add option to disable SSL setup
 - Use newest venv-salt-minion version available to generate the
   venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
 - Add bootstrap repository definitions for openSUSE Leap Micro 5.4
