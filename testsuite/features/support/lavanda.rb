@@ -259,4 +259,44 @@ module LavandaBasic
     end
     code
   end
+
+  def file_exists(file)
+    if @in_has_uyunictl
+     _out, code = run_local("uyunictl exec -- 'test -f #{file}'", check_errors: false)
+     exists = code.zero?
+    else
+      _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
+      exists = code.zero? && local.zero?
+    end
+    exists
+  end
+
+  def folder_exists(file)
+    if @in_has_uyunictl
+     _out, code = run_local("uyunictl exec -- 'test -d #{file}'", check_errors: false)
+     exists = code.zero?
+    else
+      _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
+      exists = code.zero? && local.zero?
+    end
+    exists
+  end
+
+  def file_delete(file)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'rm #{file}'")
+    else
+      _out, _local, _remote, code = test_and_store_results_together("rm #{file}", 'root', 500)
+    end
+    code
+  end
+
+  def folder_delete(folder)
+    if @in_has_uyunictl
+      _out, code = run_local("uyunictl exec -- 'rm -rf #{folder}'")
+    else
+      _out, _local, _remote, code = test_and_store_results_together("rm-rf #{folder}", 'root', 500)
+    end
+    code
+  end
 end
