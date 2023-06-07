@@ -22,6 +22,7 @@ import subprocess
 import sys
 import urllib2
 from urllib2 import ProxyHandler
+import urlparse
 
 ID_DOC_HEADER = "X-RHUI-ID"
 ID_SIG_HEADER = "X-RHUI-SIGNATURE"
@@ -93,6 +94,18 @@ def _load_signature(token):
 def is_rhui_instance():
     return is_rhui
 
+
+def get_rhui_url(url):
+    """
+    check the url if it is a RHUI url.
+    If yes, return it, otherwise return an empty string
+    """
+    urlparams = urlparse.urlparse(url.strip())
+    if urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(".redhat.com"):
+        return url.strip()
+    return ""
+
+
 def _parse_repositories():
     global is_rhui
     global repo_dict
@@ -107,18 +120,21 @@ def _parse_repositories():
     repo_url = ""
     for line in repos_out.split("\n"):
         if line.startswith("Repo-id"):
-            repo_id = line.split(":", 1)[1]
+            repo_id = (line.split(":", 1)[1]).strip()
             if "rhui-" in repo_id:
                 is_rhui = True
-        elif repo_url == "" and line.startswith("Repo-mirrors"):
-            repo_url = line.split(":", 1)[1]
-        elif line.startswith("Repo-baseurl"):
-            repo_url = re.split('\s+', line)[2]
+        elif line.startswith("Repo-mirrors"):
+            repo_url = get_rhui_url(line.split(":", 1)[1])
+        elif repo_url == "" and line.startswith("Repo-baseurl"):
+            repo_url = get_rhui_url(re.split('\s+', line)[2])
         elif line.strip() == "":
-            if (repo_id.strip() != "" and repo_url.strip() != ""):
-                repo_dict[repo_id.strip()] = repo_url.strip()
+            if (repo_id != "" and repo_url != ""):
+                repo_dict[repo_id] = repo_url
             repo_id = ""
             repo_url = ""
+    if (repo_id != "" and repo_url != ""):
+        repo_dict[repo_id] = repo_url
+
 
 def _get_rhui_info():
     # Retrieve the Amazon metadata
