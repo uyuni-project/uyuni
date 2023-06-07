@@ -53,6 +53,7 @@ LOGFILE="0"
 WAIT_BETWEEN_STEPS=0
 MANAGER_FORCE_INSTALL=0
 PROGRAM="/usr/lib/susemanager/bin/mgr-setup"
+NON_INTERACTIVE=0
 
 MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
@@ -100,6 +101,7 @@ helper script to do migration or setup of $PRODUCT_NAME
   -s             fresh setup of the $PRODUCT_NAME installation
   -w             wait between steps (in case you do -r -m)
   -l LOGFILE     write a log to LOGFILE
+  -n             Don't ask anything, use default values
   -h             this help screen
 
 
@@ -116,6 +118,19 @@ wait_step() {
         echo "Press Return to continue"
         read
     fi;
+}
+
+ask_input() {
+    # Ask for input if the variable is not already defined, could be set using an env variable
+    # Set to an empty string if running in non-interactive mode
+    VARIABLE=$1
+    if [ -z ${!VARIABLE+x} ]; then
+        if [ $NON_INTERACTIVE -eq 0 ]; then
+            echo -n "$VARIABLE="; read $VARIABLE
+        else
+            declare $VARIABLE=
+        fi
+    fi
 }
 
 setup_swap() {
@@ -817,43 +832,43 @@ do_migration() {
 }
 
 do_setup() {
-    NO_SSL=
     if [ -f $SETUP_ENV ]; then
         . $SETUP_ENV
     else
         # ask for the needed values if the setup_env file does not exist
-        echo -n "MANAGER_USER=";        read MANAGER_USER
-        echo -n "MANAGER_PASS=";        read MANAGER_PASS
-        echo -n "MANAGER_ADMIN_EMAIL="; read MANAGER_ADMIN_EMAIL
-        echo -n "CERT_CNAMES="        ; read CERT_CNAMES
-        echo -n "CERT_O="             ; read CERT_O
-        echo -n "CERT_OU="            ; read CERT_OU
-        echo -n "CERT_CITY="          ; read CERT_CITY
-        echo -n "CERT_STATE="         ; read CERT_STATE
-        echo -n "CERT_COUNTRY="       ; read CERT_COUNTRY
-        echo -n "CERT_EMAIL="         ; read CERT_EMAIL
-        echo -n "CERT_PASS="          ; read CERT_PASS
-        echo -n "LOCAL_DB="           ; read LOCAL_DB
-        echo -n "DB_BACKEND="         ; read DB_BACKEND
-        echo -n "MANAGER_DB_NAME="    ; read MANAGER_DB_NAME
-        echo -n "MANAGER_DB_HOST="    ; read MANAGER_DB_HOST
-        echo -n "MANAGER_DB_PORT="    ; read MANAGER_DB_PORT
-        echo -n "MANAGER_DB_CA_CERT=" ; read MANAGER_DB_CA_CERT
-        echo -n "MANAGER_DB_PROTOCOL="; read MANAGER_DB_PROTOCOL
-        echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
-        echo -n "EXTERNALDB_ADMIN_USER=" ; read EXTERNALDB_ADMIN_USER
-        echo -n "EXTERNALDB_ADMIN_PASS=" ; read EXTERNALDB_ADMIN_PASS
-        echo -n "EXTERNALDB_PROVIDER="; read EXTERNALDB_PROVIDER
-        echo -n "SCC_USER="           ; read SCC_USER
-        echo -n "SCC_PASS="           ; read SCC_PASS
-        echo -n "ISS_PARENT="         ; read ISS_PARENT
-        echo -n "ACTIVATE_SLP="       ; read ACTIVATE_SLP
-        echo -n "REPORT_DB_NAME="     ; read REPORT_DB_NAME
-        echo -n "REPORT_DB_HOST="     ; read REPORT_DB_HOST
-        echo -n "REPORT_DB_PORT="     ; read REPORT_DB_PORT
-        echo -n "REPORT_DB_USER="     ; read REPORT_DB_USER
-        echo -n "REPORT_DB_PASS="     ; read REPORT_DB_PASS
-        echo -n "REPORT_DB_CA_CERT="  ; read REPORT_DB_CA_CERT
+        ask_input MANAGER_USER
+        ask_input MANAGER_PASS
+        ask_input MANAGER_ADMIN_EMAIL
+        ask_input CERT_CNAMES
+        ask_input CERT_O
+        ask_input CERT_OU
+        ask_input CERT_CITY
+        ask_input CERT_STATE
+        ask_input CERT_COUNTRY
+        ask_input CERT_EMAIL
+        ask_input CERT_PASS
+        ask_input LOCAL_DB
+        ask_input DB_BACKEND
+        ask_input MANAGER_DB_NAME
+        ask_input MANAGER_DB_HOST
+        ask_input MANAGER_DB_PORT
+        ask_input MANAGER_DB_CA_CERT
+        ask_input MANAGER_DB_PROTOCOL
+        ask_input MANAGER_ENABLE_TFTP
+        ask_input EXTERNALDB_ADMIN_USER
+        ask_input EXTERNALDB_ADMIN_PASS
+        ask_input EXTERNALDB_PROVIDER
+        ask_input SCC_USER
+        ask_input SCC_PASS
+        ask_input ISS_PARENT
+        ask_input ACTIVATE_SLP
+        ask_input REPORT_DB_NAME
+        ask_input REPORT_DB_HOST
+        ask_input REPORT_DB_PORT
+        ask_input REPORT_DB_USER
+        ask_input REPORT_DB_PASS
+        ask_input REPORT_DB_CA_CERT
+        ask_input UYUNI_FQDN
     fi;
     if [ -z "$SYS_DB_PASS" ]; then
         SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
@@ -886,6 +901,13 @@ do_setup() {
         *)
             EXTERNALDB=1 ;;
     esac
+
+    if [ -z "$NO_SSL" ]; then
+        NO_SSL=
+    fi
+    if [ -n "$UYUNI_FQDN" ]; then
+        HOSTNAME=$UYUNI_FQDN
+    fi
 
     check_re_install
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
@@ -971,6 +993,9 @@ do
         ;;
     -w)
         WAIT_BETWEEN_STEPS=1
+        ;;
+    -n)
+        NON_INTERACTIVE=1
         ;;
     *)
        echo

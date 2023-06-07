@@ -1,1 +1,2 @@
 - Read hostname from input file
+- Use environment variables in mgr-setup if available
