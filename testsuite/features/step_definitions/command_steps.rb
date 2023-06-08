@@ -1652,7 +1652,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
             "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
             "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
             "--ssl-ca-password=spacewalk"
-  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
   default_timeout = 300
