@@ -5,7 +5,7 @@
 # - features/secondary/min_config_state_channel_subscriptions.feature
 # If the state channel fails to be deleted.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_configuration_channels
 Feature: Configuration state channels
   In order to configure systems through Salt

@@ -13,7 +13,7 @@
 # - features/secondary/proxy_retail_pxeboot_and_mass_import.feature:
 # This feature leaves a JeOS image built that is used in the "PXE boot a Retail terminal" feature.
 
-@skip_if_container
+@skip_if_github_validation
 @skip_if_cloud
 @buildhost
 @scope_retail

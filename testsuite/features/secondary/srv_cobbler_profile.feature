@@ -6,7 +6,7 @@
 # the second one uses the XML-RPC API
 
 @scope_cobbler
-@skip_if_container
+@skip_if_github_validation
 Feature: Edit Cobbler profiles
 
   Background: The Cobbler service should be running

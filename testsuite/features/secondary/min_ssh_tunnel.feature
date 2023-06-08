@@ -5,7 +5,7 @@
 # - features/secondary/min_activationkey.feature
 # If the minion fails to bootstrap again.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_salt_ssh
 @ssh_minion
 Feature: Register a Salt system to be managed via SSH tunnel
