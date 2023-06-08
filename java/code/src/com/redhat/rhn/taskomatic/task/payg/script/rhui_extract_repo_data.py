@@ -147,19 +147,19 @@ def _get_certificate_info():
     ca_cert = ""
     crt = glob.glob("/etc/pki/rhui/product/content-*.crt")
     if (len(crt) != 1):
-        system_exit(6, "RHUI Client Certificate not found")
+        system_exit(6, ["RHUI Client Certificate not found"])
     with open(crt[0], "r") as c:
         client_cert = c.read()
 
     crt = glob.glob("/etc/pki/rhui/content-*.key")
     if (len(crt) != 1):
-        system_exit(6, "RHUI Client Key not found")
+        system_exit(6, ["RHUI Client Key not found"])
     with open(crt[0], "r") as c:
         client_key = c.read()
 
     crt = glob.glob("/etc/pki/rhui/*.crt")
     if (len(crt) != 1):
-        system_exit(6, "RHUI CA Certificate not found")
+        system_exit(6, ["RHUI CA Certificate not found"])
     with open(crt[0], "r") as c:
         ca_cert = c.read()
 
