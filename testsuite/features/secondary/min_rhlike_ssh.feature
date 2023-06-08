@@ -12,7 +12,7 @@
 # If the cleanup bootstrap scenario fails,
 # the minion will not be reachable in those features
 
-@skip_if_container
+@skip_if_github_validation
 @scope_res
 @rhlike_minion
 Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operations on it

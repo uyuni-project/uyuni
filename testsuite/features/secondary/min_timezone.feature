@@ -4,7 +4,7 @@
 # This is a known bug: https://bugzilla.suse.com/show_bug.cgi?id=1209231
 # Until is fixed, let's skip it in the container, as it will confuse
 # users.
-@skip_if_container
+@skip_if_github_validation
 @scope_visualization
 @sle_minion
 Feature: Correct timezone display 

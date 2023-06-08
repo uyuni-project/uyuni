@@ -4,7 +4,7 @@
 # We also test 'Bootstrapping using the command line' in this feature with the following script:
 # https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
 
-@skip_if_container
+@skip_if_github_validation
 @proxy
 @private_net
 @pxeboot_minion

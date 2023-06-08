@@ -5,7 +5,7 @@
 # - features/secondary/min_bootstrap_negative.feature
 # If the minion fails to bootstrap again.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_onboarding
 Feature: Register a Salt minion via API
 

@@ -1,7 +1,7 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_power_management
 @scope_cobbler
 @sle_minion
