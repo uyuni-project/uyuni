@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.contentmanagement.mappers;
+package com.suse.manager.webui.controllers.contentmanagement.mappers.test;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Optional.empty;
@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 
+import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
 import com.suse.manager.webui.utils.ViewHelper;
 
