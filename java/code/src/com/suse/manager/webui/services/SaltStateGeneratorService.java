@@ -71,6 +71,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -661,5 +662,45 @@ public enum SaltStateGeneratorService {
                 .filter(pillar -> pillar.getCategory().equals("mgr_conf"))
                 .findFirst()
                 .ifPresentOrElse(pillar -> pillar.setPillar(data), () -> Pillar.createGlobalPillar("mgr_conf", data));
+    }
+
+    /**
+     * Copies salt states from /srv/susemanager/salt/custom/custom_*.sls to /srv/susemanager/tmpXXXX/salt/custom
+     * @param saltPath the salt path
+     * @param tempCustomPath the temporary path
+     * @throws IOException when an error happens during the operation
+     */
+    public void copyStatesToTemp(Path saltPath, Path tempCustomPath) throws IOException {
+        if (!Files.exists(saltPath)) {
+            return;
+        }
+
+        try (var saltDirStream = Files.newDirectoryStream(saltPath, SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
+            for (Path serverSls : saltDirStream) {
+                Path target = tempCustomPath.resolve(serverSls.getFileName());
+                Files.copy(serverSls, target);
+                if (!skipSetOwner) {
+                    FileUtils.setAttributes(target, "tomcat", "susemanager",
+                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+                }
+            }
+        }
+    }
+
+    /**
+     * Move the temporary folder to the salt path: /srv/susemanager/tmp/saltXXXX/custom -> /srv/susemanager/salt/custom
+     * @param saltPath the salt path
+     * @param tempCustomPath the temporary path
+     * @throws IOException when an error happens during the operation
+     */
+    public void moveTempDirToSalt(Path saltPath, Path tempCustomPath) throws IOException {
+        if (Files.exists(tempCustomPath)) {
+            // this condition is needed only at setup time when there are no orgs yet
+            Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
+            if (!skipSetOwner) {
+                FileUtils.setAttributes(saltPath, "tomcat", "susemanager",
+                Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
+        }
+        }
     }
 }
