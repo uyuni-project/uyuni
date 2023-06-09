@@ -34,7 +34,7 @@ declare global {
     userPrefPageSize?: number;
   }
 
-  // WIP test env setup, see ./utils/test-utils
+  // Test env setup, see ./utils/test-utils/setup/index.ts
   namespace NodeJS {
     interface Global {
       jQuery: (window: Window, noGlobal?: boolean) => JQueryStatic;

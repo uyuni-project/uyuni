@@ -1,6 +1,35 @@
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment-timezone";
 
+// NB! This must be up to date with UserPreferenceUtils.java
+const dateFormat = "YYYY-MM-DD";
+const shortTimeFormat = "HH:mm";
+const longTimeFormat = "HH:mm:ss";
+
+const fallbackLocale = "en";
+const locale = window.preferredLocale ?? fallbackLocale;
+if (!window.preferredLocale) {
+  Loggerhead.error(`No locale info available, falling back to default locale ${fallbackLocale}`);
+}
+
+moment.locale(locale);
+// Ensure consistent formatting between our own formatters and `localizedMoment().calendar()` etc
+moment.updateLocale(locale, {
+  longDateFormat: {
+    LT: shortTimeFormat,
+    LTS: longTimeFormat,
+    L: dateFormat,
+    LL: dateFormat,
+    LLL: dateFormat,
+    LLLL: dateFormat,
+  },
+  calendar: {
+    lastWeek: dateFormat,
+    nextWeek: dateFormat,
+    sameElse: dateFormat,
+  },
+});
+
 declare global {
   interface Window {
     /** The server IANA time zone, e.g. `"Asia/Tokyo"` */
@@ -12,12 +41,14 @@ declare global {
     serverTime?: string;
     /** The user's configured IANA time zone, e.g. `"Asia/Tokyo"` */
     userTimeZone?: string;
-    userDateFormat?: string; // Optional
-    userTimeFormat?: string; // Optional
   }
 }
 
-function validateOrGuessTimeZone(input: string | undefined, errorLabel: string) {
+if (process.env.NODE_ENV !== "production") {
+  (window as any).localizedMoment = localizedMomentConstructor;
+}
+
+function validateOrGuessTimeZone(input: string | undefined, errorLabel: "Server" | "User") {
   try {
     if (!input) {
       throw new TypeError(`${errorLabel} time zone not configured`);
@@ -33,8 +64,9 @@ function validateOrGuessTimeZone(input: string | undefined, errorLabel: string) 
 }
 
 /**
- * The login page doesn't have user-specific data available, but includes this file via the legacy support module.
- * To avoid throwing or storing incorrect values, we only initialize config values once actually used.
+ * The login page doesn't have data such as `window.serverTimeZone` and `window.userTimeZone` available, but includes
+ * this file via the legacy support module. To avoid throwing or storing incorrect values, we only initialize those
+ * config values once actually used.
  */
 const config = {
   _serverTimeZone: undefined as string | undefined,
@@ -47,16 +79,11 @@ const config = {
     return (this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User"));
   },
 
-  // See https://momentjs.com/docs/#/displaying/
-  _userDateFormat: undefined as string | undefined,
-  get userDateFormat(): string {
-    return (this._userDateFormat ??= window.userDateFormat || "YYYY-MM-DD");
-  },
-
-  _userTimeFormat: undefined as string | undefined,
-  get userTimeFormat(): string {
-    return (this._userTimeFormat ??= window.userTimeFormat || "HH:mm");
-  },
+  // We currently don't support configuring these, but keep them in the config in case we ever do.
+  // NB! If these ever become configurable, check whether the `moment.updateLocale()` call needs to be updated too.
+  userDateFormat: dateFormat,
+  userShortTimeFormat: shortTimeFormat,
+  userLongTimeFormat: longTimeFormat,
 };
 
 // Sanity check, if the server and the browser have wildly differing time zone adjusted time, someone is probably wrong
@@ -104,19 +131,23 @@ declare module "moment" {
     toUserTimeString(): string;
   }
 
+  /** Full server time zone string, e.g. `"Asia/Tokyo"` */
   const serverTimeZone: string;
+  /** Abbreviated server time zone string, e.g. `"JST"` */
+  const serverTimeZoneAbbr: string;
+  /** Full user time zone string, e.g. `"Asia/Tokyo"` */
   const userTimeZone: string;
+  /** Abbreviated user time zone string, e.g. `"JST"` */
+  const userTimeZoneAbbr: string;
 }
 
 moment.fn.toServerString = function (this: moment.Moment): string {
   // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
-  return moment(this)
-    .tz(config.serverTimeZone)
-    .format(`${config.userDateFormat} ${config.userTimeFormat} [${config.serverTimeZone}]`);
+  return moment(this).tz(config.serverTimeZone).format(`${config.userDateFormat} ${config.userShortTimeFormat} z`);
 };
 
 moment.fn.toServerDateTimeString = function (this: moment.Moment): string {
-  return moment(this).tz(config.serverTimeZone).format(`${config.userDateFormat} ${config.userTimeFormat}`);
+  return moment(this).tz(config.serverTimeZone).format(`${config.userDateFormat} ${config.userShortTimeFormat}`);
 };
 
 moment.fn.toServerDateString = function (this: moment.Moment): string {
@@ -124,17 +155,15 @@ moment.fn.toServerDateString = function (this: moment.Moment): string {
 };
 
 moment.fn.toServerTimeString = function (this: moment.Moment): string {
-  return moment(this).tz(config.serverTimeZone).format(config.userTimeFormat);
+  return moment(this).tz(config.serverTimeZone).format(config.userShortTimeFormat);
 };
 
 moment.fn.toUserString = function (this: moment.Moment): string {
-  return moment(this)
-    .tz(config.userTimeZone)
-    .format(`${config.userDateFormat} ${config.userTimeFormat} [${config.userTimeZone}]`);
+  return moment(this).tz(config.userTimeZone).format(`${config.userDateFormat} ${config.userShortTimeFormat} z`);
 };
 
 moment.fn.toUserDateTimeString = function (this: moment.Moment): string {
-  return moment(this).tz(config.userTimeZone).format(`${config.userDateFormat} ${config.userTimeFormat}`);
+  return moment(this).tz(config.userTimeZone).format(`${config.userDateFormat} ${config.userShortTimeFormat}`);
 };
 
 moment.fn.toUserDateString = function (this: moment.Moment): string {
@@ -142,18 +171,30 @@ moment.fn.toUserDateString = function (this: moment.Moment): string {
 };
 
 moment.fn.toUserTimeString = function (this: moment.Moment): string {
-  return moment(this).tz(config.userTimeZone).format(config.userTimeFormat);
+  return moment(this).tz(config.userTimeZone).format(config.userShortTimeFormat);
 };
 
+let serverTimeZoneAbbr: undefined | string = undefined;
+let userTimeZoneAbbr: undefined | string = undefined;
 Object.defineProperties(moment, {
   serverTimeZone: {
     get() {
       return config.serverTimeZone as typeof moment["serverTimeZone"];
     },
   },
+  serverTimeZoneAbbr: {
+    get() {
+      return (serverTimeZoneAbbr ??= moment().tz(config.serverTimeZone).format("z"));
+    },
+  },
   userTimeZone: {
     get() {
       return config.userTimeZone as typeof moment["serverTimeZone"];
+    },
+  },
+  userTimeZoneAbbr: {
+    get() {
+      return (userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z"));
     },
   },
 });
