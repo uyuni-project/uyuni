@@ -64,6 +64,8 @@ jobs:
         do
           echo "  - $file"
         done
+        echo
+        echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing checklogs."
         exit 1
     - id: changelogs
       name: Get modified changelog files
@@ -75,6 +77,7 @@ jobs:
       if: steps.changelogs.conclusion == 'success' && steps.changelogs.outputs.added_modified == ''
       run: |
         echo "No changelog entry found. Please add the required changelog entries."
+        echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing checklogs."
         exit 1
 
   # warns the user if they merged the PR, but the changelog test failed
