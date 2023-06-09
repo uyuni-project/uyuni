@@ -99,6 +99,7 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle15sp4_client' => 'bison',
                       'sle15sp4_minion' => 'bison',
                       'sle15sp4_ssh_minion' => 'bison',
+                      'sle15sp5_client' => 'bison',
                       'sle15sp5_minion' => 'bison',
                       'sle15sp5_ssh_minion' => 'bison',
                       'slemicro51_minion' => 'ethtool',
@@ -135,7 +136,9 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian11_minion' => 'bison',
                       'debian11_ssh_minion' => 'bison',
                       'opensuse154arm_minion' => 'bison',
-                      'opensuse154arm_ssh_minion' => 'bison' }.freeze
+                      'opensuse154arm_ssh_minion' => 'bison',
+                      'opensuse155arm_minion' => 'bison',
+                      'opensuse155arm_ssh_minion' => 'bison' }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
@@ -165,6 +168,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle15sp4_client' => 'SLES15-SP4-Pool',
                            'sle15sp4_minion' => 'SLES15-SP4-Pool',
                            'sle15sp4_ssh_minion' => 'SLES15-SP4-Pool',
+                           'sle15sp5_client' => 'SLES15-SP5-Pool',
                            'sle15sp5_minion' => 'SLES15-SP5-Pool',
                            'sle15sp5_ssh_minion' => 'SLES15-SP5-Pool',
                            'slemicro51_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
@@ -204,7 +208,9 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'debian11_minion' => 'debian-11-pool',
                            'debian11_ssh_minion' => 'debian-11-pool',
                            'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
-                           'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64' }.freeze
+                           'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
+                           'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
+                           'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64' }.freeze
 
 # Used for creating activation keys
 # The values can be found under Admin -> Setup Wizard -> Products
@@ -318,6 +324,7 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle15sp4_client' => 'x86_64',
                       'sle15sp4_minion' => 'x86_64',
                       'sle15sp4_ssh_minion' => 'x86_64',
+                      'sle15sp5_client' => 'x86_64',
                       'sle15sp5_minion' => 'x86_64',
                       'sle15sp5_ssh_minion' => 'x86_64',
                       'slemicro51_minion' => 'x86_64',
@@ -354,7 +361,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian11_minion' => 'amd64',
                       'debian11_ssh_minion' => 'amd64',
                       'opensuse154arm_minion' => 'aarch64',
-                      'opensuse154arm_ssh_minion' => 'aarch64' }.freeze
+                      'opensuse154arm_ssh_minion' => 'aarch64',
+                      'opensuse155arm_minion' => 'aarch64',
+                      'opensuse155arm_ssh_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.

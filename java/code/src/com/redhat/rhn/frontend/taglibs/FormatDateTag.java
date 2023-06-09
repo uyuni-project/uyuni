@@ -37,7 +37,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * <strong>FormatDateTag</strong><br>
  * Displays a value in a human format (eg. 3 minutes ago)
  * <pre>{@literal
- *     <rhn:human-value value="${bean.value}">
+ *     <rhn:formatDate value="${bean.value}">
  * }</pre>
  * <p>
  * Outputs a human readable text for the value relative to now.
@@ -59,7 +59,6 @@ public class FormatDateTag extends TagSupport {
     private static final String NONE = "none";
 
     protected Date value;
-    protected Date reference;
     protected Locale locale;
 
     // cache
@@ -74,23 +73,6 @@ public class FormatDateTag extends TagSupport {
     protected String humanStyle;
 
     /**
-     * @return Current set reference
-     */
-    public Date getReference() {
-        return reference;
-    }
-
-    /**
-     * The reference date used instead of now
-     * when calculating intervals or durations
-     *
-     * @param ref date value
-     */
-    public void setReference(Date ref) {
-        this.reference = ref;
-    }
-
-    /**
      * @return The current set human style
      */
     public String getHumanStyle() {
@@ -103,7 +85,7 @@ public class FormatDateTag extends TagSupport {
      *
      * Valid values:
      * "none" (default)
-     * "from" date from now or reference
+     * "from" date from now
      * "calendar" calendar date
      */
     public void setHumanStyle(String style) {
@@ -250,13 +232,10 @@ public class FormatDateTag extends TagSupport {
         try {
             JspWriter out = pageContext.getOut();
 
-            OffsetDateTime refDate = OffsetDateTime.ofInstant(getReference().toInstant(), ZoneId.systemDefault());
             OffsetDateTime valDate = OffsetDateTime.ofInstant(getValue().toInstant(), ZoneId.systemDefault());
 
             out.append("  <time");
             out.append(getCssClass());
-            out.append(" data-reference-date=\"" +
-                    refDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) + "\"");
             out.append(" datetime=\"" +
                     valDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) + "\">");
             out.append(getFormattedDate());
@@ -361,7 +340,6 @@ public class FormatDateTag extends TagSupport {
     // to share with the constructor
     private void reset() {
         value = new Date();
-        reference = new Date();
         humanStyle = null;
         locale = null;
         // cached

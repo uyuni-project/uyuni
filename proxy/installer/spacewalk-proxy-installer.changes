@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun 02 16:34:45 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.11-1
+  * Fix squid refresh_pattern for "venv-enabled-*.txt" files to avoid
+    serving outdated version of the file (bsc#1211956)
+
+-------------------------------------------------------------------
 Wed Jul 27 14:15:33 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.10-1
