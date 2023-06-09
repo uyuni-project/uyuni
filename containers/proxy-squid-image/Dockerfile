@@ -23,7 +23,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
-COPY conf.d /etc/squid/conf.d.backup
 COPY squid.conf /etc/squid/squid.conf
 # Ensure every run / exec uses the squid user to avoid errors like
 #    FATAL: Cannot open '/proc/self/fd/1' for writing.
@@ -66,4 +65,4 @@ EXPOSE 8080/tcp
 
 VOLUME [ "/etc/uyuni", "/var/cache/squid" ]
 
-CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground
+CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground --enable-delay-pools
