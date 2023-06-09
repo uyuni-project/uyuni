@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.controllers.test;
 
-import static com.suse.manager.webui.utils.SparkTestUtils.createMockRequestWithParams;
+import static com.redhat.rhn.testing.SparkTestUtils.createMockRequestWithParams;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -35,7 +36,6 @@ import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

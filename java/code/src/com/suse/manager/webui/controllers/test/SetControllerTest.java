@@ -27,9 +27,9 @@ import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.webui.controllers.SetController;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
