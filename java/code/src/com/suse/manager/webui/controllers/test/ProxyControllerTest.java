@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.ProxyController;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;

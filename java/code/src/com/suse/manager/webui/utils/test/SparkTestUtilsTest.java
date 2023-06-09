@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.suse.manager.webui.utils.SparkTestUtils;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import org.junit.jupiter.api.Test;
 
