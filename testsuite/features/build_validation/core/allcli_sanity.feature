@@ -163,6 +163,27 @@ Feature: Sanity checks
     And "sle15sp4_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp4_ssh_minion" should be exact
 
+@sle15sp5_client
+  Scenario: The SLES 15 SP5 traditional client is healthy
+    Then "sle15sp5_client" should have a FQDN
+    And reverse resolution should work for "sle15sp5_client"
+    And "sle15sp5_client" should communicate with the server using public interface
+    And the clock from "sle15sp5_client" should be exact
+
+@sle15sp5_minion
+  Scenario: The SLES 15 SP5 minion is healthy
+    Then "sle15sp5_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp5_minion"
+    And "sle15sp5_minion" should communicate with the server using public interface
+    And the clock from "sle15sp5_minion" should be exact
+
+@sle15sp5_ssh_minion
+  Scenario: The SLES 15 SP5 Salt SSH minion is healthy
+    Then "sle15sp5_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp5_ssh_minion"
+    And "sle15sp5_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle15sp5_ssh_minion" should be exact
+
 @centos7_client
   Scenario: The CentOS 7 traditional client is healthy
     Then "centos7_client" should have a FQDN
@@ -267,6 +288,20 @@ Feature: Sanity checks
     And reverse resolution should work for "opensuse154arm_ssh_minion"
     And "opensuse154arm_ssh_minion" should communicate with the server using public interface
     And the clock from "opensuse154arm_ssh_minion" should be exact
+
+@opensuse155arm_minion
+  Scenario: The openSUSE 15.5 ARM minion is healthy
+    Then "opensuse155arm_minion" should have a FQDN
+    And reverse resolution should work for "opensuse155arm_minion"
+    And "opensuse155arm_minion" should communicate with the server using public interface
+    And the clock from "opensuse155arm_minion" should be exact
+
+@opensuse155arm_ssh_minion
+  Scenario: The openSUSE 15.5 ARM SSH minion is healthy
+    Then "opensuse155arm_ssh_minion" should have a FQDN
+    And reverse resolution should work for "opensuse155arm_ssh_minion"
+    And "opensuse155arm_ssh_minion" should communicate with the server using public interface
+    And the clock from "opensuse155arm_ssh_minion" should be exact
 
 @sle12sp5_buildhost
   Scenario: The SLES 12 SP5 build host is healthy

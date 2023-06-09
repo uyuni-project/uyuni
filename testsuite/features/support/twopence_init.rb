@@ -56,6 +56,9 @@ if $build_validation
   $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $sle15sp5_client = twopence_init("ssh:#{ENV['SLE15SP5_CLIENT']}") if ENV['SLE15SP5_CLIENT']
+  $sle15sp5_minion = twopence_init("ssh:#{ENV['SLE15SP5_MINION']}") if ENV['SLE15SP5_MINION']
+  $sle15sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP5_SSHMINION']}") if ENV['SLE15SP5_SSHMINION']
   $centos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
@@ -71,6 +74,8 @@ if $build_validation
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
   $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSHMINION']}") if ENV['OPENSUSE154ARM_SSHMINION']
+  $opensuse155arm_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_MINION']}") if ENV['OPENSUSE155ARM_MINION']
+  $opensuse155arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_SSHMINION']}") if ENV['OPENSUSE155ARM_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
@@ -80,6 +85,7 @@ if $build_validation
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $sle15sp5_client, $sle15sp5_minion, $sle15sp5_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
@@ -87,6 +93,7 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
+             $opensuse155arm_minion, $opensuse155arm_ssh_minion,
              $sle12sp5_buildhost,
              $sle15sp3_buildhost,
              $monitoring_server]
@@ -256,7 +263,7 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle_client'                => $client,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
-                  'rhlike_client'             => $rhlike_minion,
+                  'rhlike_client'             => $rhlike_client,
                   'rhlike_minion'             => $rhlike_minion,
                   'deblike_minion'            => $deblike_minion,
                   'build_host'                => $build_host,
@@ -279,11 +286,14 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp4_client'           => $sle15sp4_client,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'sle15sp5_client'           => $sle15sp5_client,
+                  'sle15sp5_minion'           => $sle15sp5_minion,
+                  'sle15sp5_ssh_minion'       => $sle15sp5_ssh_minion,
                   'centos7_client'            => $centos7_client,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
-                  'rocky8_minion'            => $rocky8_minion,
-                  'rocky8_ssh_minion'        => $rocky8_ssh_minion,
+                  'rocky8_minion'             => $rocky8_minion,
+                  'rocky8_ssh_minion'         => $rocky8_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
@@ -294,6 +304,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
                   'opensuse154arm_minion'     => $opensuse154arm_minion,
                   'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
+                  'opensuse155arm_minion'     => $opensuse155arm_minion,
+                  'opensuse155arm_ssh_minion' => $opensuse155arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'monitoring_server'         => $monitoring_server }
