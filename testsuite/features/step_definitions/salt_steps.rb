@@ -76,6 +76,12 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   end
 end
 
+When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
+  node = get_target(minion)
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  node.run("#{salt_call} saltutil.refresh_grains")
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
@@ -215,6 +221,18 @@ end
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   $server.run("salt #{system_name} saltutil.sync_all")
+end
+
+When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_cache = $use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  file_delete(node, "#{salt_cache}#{filename}")
+end
+
+When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  file_delete(node, "#{salt_config}#{filename}")
 end
 
 When(/^I configure salt minion on "([^"]*)"$/) do |host|

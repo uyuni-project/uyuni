@@ -238,76 +238,88 @@ Before('@debian11_ssh_minion') do
   skip_this_scenario unless $debian11_ssh_minion
 end
 
-Before('@sle12sp4_ssh_minion') do
-  skip_this_scenario unless $sle12sp4_ssh_minion
+Before('@sle12sp4_client') do
+  skip_this_scenario unless $sle12sp4_client
 end
 
 Before('@sle12sp4_minion') do
   skip_this_scenario unless $sle12sp4_minion
 end
 
-Before('@sle12sp4_client') do
-  skip_this_scenario unless $sle12sp4_client
-end
-
-Before('@sle12sp5_ssh_minion') do
-  skip_this_scenario unless $sle12sp5_ssh_minion
-end
-
-Before('@sle12sp5_minion') do
-  skip_this_scenario unless $sle12sp5_minion
+Before('@sle12sp4_ssh_minion') do
+  skip_this_scenario unless $sle12sp4_ssh_minion
 end
 
 Before('@sle12sp5_client') do
   skip_this_scenario unless $sle12sp5_client
 end
 
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless $sle15sp1_ssh_minion
+Before('@sle12sp5_minion') do
+  skip_this_scenario unless $sle12sp5_minion
 end
 
-Before('@sle15sp1_minion') do
-  skip_this_scenario unless $sle15sp1_minion
+Before('@sle12sp5_ssh_minion') do
+  skip_this_scenario unless $sle12sp5_ssh_minion
 end
 
 Before('@sle15sp1_client') do
   skip_this_scenario unless $sle15sp1_client
 end
 
-Before('@sle15sp2_ssh_minion') do
-  skip_this_scenario unless $sle15sp2_ssh_minion
+Before('@sle15sp1_minion') do
+  skip_this_scenario unless $sle15sp1_minion
 end
 
-Before('@sle15sp2_minion') do
-  skip_this_scenario unless $sle15sp2_minion
+Before('@sle15sp1_ssh_minion') do
+  skip_this_scenario unless $sle15sp1_ssh_minion
 end
 
 Before('@sle15sp2_client') do
   skip_this_scenario unless $sle15sp2_client
 end
 
-Before('@sle15sp3_ssh_minion') do
-  skip_this_scenario unless $sle15sp3_ssh_minion
+Before('@sle15sp2_minion') do
+  skip_this_scenario unless $sle15sp2_minion
 end
 
-Before('@sle15sp3_minion') do
-  skip_this_scenario unless $sle15sp3_minion
+Before('@sle15sp2_ssh_minion') do
+  skip_this_scenario unless $sle15sp2_ssh_minion
 end
 
 Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
 end
 
-Before('@sle15sp4_ssh_minion') do
-  skip_this_scenario unless $sle15sp4_ssh_minion
+Before('@sle15sp3_minion') do
+  skip_this_scenario unless $sle15sp3_minion
+end
+
+Before('@sle15sp3_ssh_minion') do
+  skip_this_scenario unless $sle15sp3_ssh_minion
+end
+
+Before('@sle15sp4_client') do
+  skip_this_scenario unless $sle15sp4_client
 end
 
 Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
 end
 
-Before('@sle15sp4_client') do
-  skip_this_scenario unless $sle15sp4_client
+Before('@sle15sp4_ssh_minion') do
+  skip_this_scenario unless $sle15sp4_ssh_minion
+end
+
+Before('@sle15sp5_client') do
+  skip_this_scenario unless $sle15sp5_client
+end
+
+Before('@sle15sp5_minion') do
+  skip_this_scenario unless $sle15sp5_minion
+end
+
+Before('@sle15sp5_ssh_minion') do
+  skip_this_scenario unless $sle15sp5_ssh_minion
 end
 
 Before('@opensuse154arm_minion') do
@@ -316,6 +328,14 @@ end
 
 Before('@opensuse154arm_ssh_minion') do
   skip_this_scenario unless $opensuse154arm_ssh_minion
+end
+
+Before('@opensuse155arm_minion') do
+  skip_this_scenario unless $opensuse155arm_minion
+end
+
+Before('@opensuse155arm_ssh_minion') do
+  skip_this_scenario unless $opensuse155arm_ssh_minion
 end
 
 Before('@sle12sp5_buildhost') do
