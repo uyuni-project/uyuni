@@ -1,3 +1,4 @@
+- Make sure that all hibernate connections are closed (bsc#1208687)
 - regenerate random passwords with new cipher algorithm
 - Fix misleading error message regarding SCC credentials removal (bsc#1207941)
 - Fix image size entries in xml-rpc
