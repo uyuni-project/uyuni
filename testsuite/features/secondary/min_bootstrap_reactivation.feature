@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Bootstrapping with reactivation key

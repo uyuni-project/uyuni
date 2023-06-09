@@ -1,7 +1,7 @@
 # Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_salt_ssh
 @scope_onboarding
 @ssh_minion

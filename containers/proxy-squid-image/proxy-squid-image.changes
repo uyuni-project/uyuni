@@ -1,3 +1,5 @@
+- Fix squid refresh_pattern for "venv-enabled-*.txt" files to avoid
+  serving outdated version of the file (bsc#1211956)
 - Add squid configuration for /saltboot
 - Integrate the containerized proxy into the usual rel-eng workflow
 
