@@ -32,13 +32,9 @@ public class PaygInstanceInfo {
     private Map<String, String> rmtHost;
     @SerializedName("header_auth")
     private Map<String, String> headerAuth;
-    private Map<String, String> repositories;
-    @SerializedName("client_cert")
-    private String clientCertificate;
-    @SerializedName("client_key")
-    private String clientKey;
-    @SerializedName("ca_cert")
-    private String caCertificate;
+    private Map<String, Map<String, String>> repositories;
+    @SerializedName("certs")
+    private Map<String, String> certificates;
 
     /**
      * Constructor for type CLOUDRMT
@@ -59,18 +55,14 @@ public class PaygInstanceInfo {
     /**
      * Constructor for type RHUI
      * @param headerAuthIn
-     * @param clientCertificateIn
-     * @param clientKeyIn
-     * @param caCertificateIn
+     * @param certificatesIn
      * @param repositoriesIn
      */
-    public PaygInstanceInfo(Map<String, String> headerAuthIn, String clientCertificateIn,
-                            String clientKeyIn, String caCertificateIn, Map<String, String> repositoriesIn) {
+    public PaygInstanceInfo(Map<String, String> headerAuthIn, Map<String, String> certificatesIn,
+                            Map<String, Map<String, String>> repositoriesIn) {
         this.type = "RHUI";
         this.headerAuth = headerAuthIn;
-        this.clientCertificate = clientCertificateIn;
-        this.clientKey = clientKeyIn;
-        this.caCertificate = caCertificateIn;
+        this.certificates = certificatesIn;
         this.repositories = repositoriesIn;
     }
 
@@ -81,24 +73,19 @@ public class PaygInstanceInfo {
      * @param basicAuthIn
      * @param headerAuthIn
      * @param rmtHostIn
-     * @param clientCertificateIn
-     * @param clientKeyIn
-     * @param caCertificateIn
+     * @param certificatesIn
      * @param repositoriesIn
      */
     public PaygInstanceInfo(String typeIn, List<PaygProductInfo> productsIn,
                             Map<String, String> basicAuthIn,
                             Map<String, String> headerAuthIn, Map<String, String> rmtHostIn,
-                            String clientCertificateIn, String clientKeyIn,
-                            String caCertificateIn, Map<String, String> repositoriesIn) {
+                            Map<String, String> certificatesIn, Map<String, Map<String, String>> repositoriesIn) {
         this.type = typeIn;
         this.products = productsIn;
         this.basicAuth = basicAuthIn;
         this.headerAuth = headerAuthIn;
         this.rmtHost = rmtHostIn;
-        this.clientCertificate = clientCertificateIn;
-        this.clientKey = clientKeyIn;
-        this.caCertificate = caCertificateIn;
+        this.certificates = certificatesIn;
         this.repositories = repositoriesIn;
     }
 
@@ -142,35 +129,19 @@ public class PaygInstanceInfo {
         this.rmtHost = rmtHostIn;
     }
 
-    public Map<String, String> getRepositories() {
+    public Map<String, Map<String, String>> getRepositories() {
         return repositories;
     }
 
-    public void setRepositories(Map<String, String> repositoriesIn) {
+    public void setRepositories(Map<String, Map<String, String>> repositoriesIn) {
         repositories = repositoriesIn;
     }
 
-    public String getClientCertificate() {
-        return clientCertificate;
+    public Map<String, String> getCertificates() {
+        return certificates;
     }
 
-    public void setClientCertificate(String clientCertificateIn) {
-        clientCertificate = clientCertificateIn;
-    }
-
-    public String getClientKey() {
-        return clientKey;
-    }
-
-    public void setClientKey(String clientKeyIn) {
-        clientKey = clientKeyIn;
-    }
-
-    public String getCaCertificate() {
-        return caCertificate;
-    }
-
-    public void setCaCertificate(String caCertificateIn) {
-        caCertificate = caCertificateIn;
+    public void setCertificates(Map<String, String> certificatesIn) {
+        certificates = certificatesIn;
     }
 }

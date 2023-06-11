@@ -263,36 +263,42 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
             for (ContentSource cs : ChannelFactory.lookupContentSources(OrgFactory.lookupById(1L))) {
                 long cid = creds.getId();
-                String dCert = String.format("Red Hat Update Infrastructure %s (C%d)", "Client Certificate", cid);
-                String dKey = String.format("Red Hat Update Infrastructure %s (C%d)", "Client Key", cid);
-                String dCa = String.format("Red Hat Update Infrastructure %s (C%d)", "CA Certificate", cid);
+                String dCertFmt = String.format("RHUI %s %s (C%d)", "Client Certificate", "%s", cid);
+                String dKeyFmt = String.format("RHUI %s %s (C%d)", "Private Key", "%s", cid);
+                String dCa = String.format("RHUI %s %s (C%d)", "CA Certificate", "ca-cert.crt", cid);
 
                 if (cs.getLabel().equals("repo-label-1-c" + cid)) {
+                    String dCert = String.format(dCertFmt, "repo-1.crt");
+                    String dKey = String.format(dKeyFmt, "repo-1.key");
+
                     assertEquals("http://example.domain.top/path/to/repository_1?credentials=mirrcred_" + cid,
                             cs.getSourceUrl());
                     assertEquals(1, cs.getSslSets().size());
                     SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
 
                     assertEquals(dCert, sslcerts.getClientCert().getDescription());
-                    assertEquals("CLIENT CERTIFICATE", sslcerts.getClientCert().getKeyString());
+                    assertEquals("CLIENT CERTIFICATE 1", sslcerts.getClientCert().getKeyString());
 
                     assertEquals(dKey, sslcerts.getClientKey().getDescription());
-                    assertEquals("CLIENT PRIVATE KEY", sslcerts.getClientKey().getKeyString());
+                    assertEquals("CLIENT PRIVATE KEY 1", sslcerts.getClientKey().getKeyString());
 
                     assertEquals(dCa, sslcerts.getCaCert().getDescription());
                     assertEquals("CA CERTIFICATE", sslcerts.getCaCert().getKeyString());
                 }
                 else if (cs.getLabel().equals("repo-label-2-c" + cid)) {
+                    String dCert = String.format(dCertFmt, "repo-2.crt");
+                    String dKey = String.format(dKeyFmt, "repo-2.key");
+
                     assertEquals("http://example.domain.top/path/to/repository_2?credentials=mirrcred_" + cid,
                             cs.getSourceUrl());
                     assertEquals(1, cs.getSslSets().size());
                     SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
 
                     assertEquals(dCert, sslcerts.getClientCert().getDescription());
-                    assertEquals("CLIENT CERTIFICATE", sslcerts.getClientCert().getKeyString());
+                    assertEquals("CLIENT CERTIFICATE 2", sslcerts.getClientCert().getKeyString());
 
                     assertEquals(dKey, sslcerts.getClientKey().getDescription());
-                    assertEquals("CLIENT PRIVATE KEY", sslcerts.getClientKey().getKeyString());
+                    assertEquals("CLIENT PRIVATE KEY 2", sslcerts.getClientKey().getKeyString());
 
                     assertEquals(dCa, sslcerts.getCaCert().getDescription());
                     assertEquals("CA CERTIFICATE", sslcerts.getCaCert().getKeyString());
@@ -468,12 +474,29 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         headerAuth.put("X-RHUI-ID", "PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN");
         headerAuth.put("X-RHUI-SIGNATURE", "WStaWWtsN0dNY1FJeHNLK3BPYlcyZ3JqeHBFR3g4TkRPejBtRmdEakJW");
 
-        Map<String, String> repositories = new HashMap<>();
-        repositories.put("repo-label-1", "http://example.domain.top/path/to/repository_1");
-        repositories.put("repo-label-2", "http://example.domain.top/path/to/repository_2");
+        Map<String, Map<String, String>> repositories = new HashMap<>();
+        Map<String, String> repodata = new HashMap<>();
+        repodata.put("url", "http://example.domain.top/path/to/repository_1");
+        repodata.put("sslclientcert", "/etc/pki/rhui/product/repo-1.crt");
+        repodata.put("sslclientkey", "/etc/pki/rhui/repo-1.key");
+        repodata.put("sslcacert", "/etc/pki/rhui/ca-cert.crt");
+        repositories.put("repo-label-1", repodata);
 
-        PaygInstanceInfo info = new PaygInstanceInfo(headerAuth, "CLIENT CERTIFICATE", "CLIENT PRIVATE KEY",
-                "CA CERTIFICATE", repositories);
+        repodata = new HashMap<>();
+        repodata.put("url", "http://example.domain.top/path/to/repository_2");
+        repodata.put("sslclientcert", "/etc/pki/rhui/product/repo-2.crt");
+        repodata.put("sslclientkey", "/etc/pki/rhui/repo-2.key");
+        repodata.put("sslcacert", "/etc/pki/rhui/ca-cert.crt");
+        repositories.put("repo-label-2", repodata);
+
+        Map<String, String> certs = new HashMap<>();
+        certs.put("/etc/pki/rhui/product/repo-1.crt", "CLIENT CERTIFICATE 1");
+        certs.put("/etc/pki/rhui/repo-1.key", "CLIENT PRIVATE KEY 1");
+        certs.put("/etc/pki/rhui/ca-cert.crt", "CA CERTIFICATE");
+        certs.put("/etc/pki/rhui/product/repo-2.crt", "CLIENT CERTIFICATE 2");
+        certs.put("/etc/pki/rhui/repo-2.key", "CLIENT PRIVATE KEY 2");
+
+        PaygInstanceInfo info = new PaygInstanceInfo(headerAuth, certs, repositories);
         return info;
     }
 }
