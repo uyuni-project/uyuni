@@ -17,8 +17,12 @@ import json
 import re
 import subprocess
 import sys
+import traceback
 import urllib.request
 import urllib.parse as urlparse
+
+PATTERN_SECTION = r'^\[(.+)\]$'
+PATTERN_KV = r'\s*=\s*'
 
 ID_DOC_HEADER = "X-RHUI-ID"
 ID_SIG_HEADER = "X-RHUI-SIGNATURE"
@@ -102,13 +106,15 @@ def _parse_repositories():
 
     try:
         repos_out = subprocess.check_output(["yum", "repolist", "--all", "-v"], stderr=subprocess.PIPE, universal_newlines=True)
+        #repos_out = subprocess.check_output(["yum", "repolist", "-C", "--all", "-v"], stderr=subprocess.PIPE, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         system_exit(2, ["Got error when getting repo processed URL(error {}):".format(e)])
     repo_id = ""
     repo_url = ""
     for line in repos_out.split("\n"):
         if line.startswith("Repo-id"):
-            repo_id = (line.split(":", 1)[1]).strip()
+            ident = (line.split(":", 1)[1]).strip()
+            repo_id = ident.split("/")[0]
             if "rhui-" in repo_id:
                 is_rhui = True
         elif line.startswith("Repo-mirrors"):
@@ -117,11 +123,31 @@ def _parse_repositories():
             repo_url = get_rhui_url(re.split('\s+', line)[2])
         elif line.strip() == "":
             if (repo_id != "" and repo_url != ""):
-                repo_dict[repo_id] = repo_url
+                repo_dict[repo_id] = { "url" : repo_url }
             repo_id = ""
             repo_url = ""
     if (repo_id != "" and repo_url != ""):
-        repo_dict[repo_id] = repo_url
+        repo_dict[repo_id] = { "url" : repo_url }
+
+    # parse the repositories to get the matching certificates
+    for repofile in glob.glob("/etc/yum.repos.d/*.repo"):
+        with open(repofile, "r") as r:
+            ident = ""
+            for line in r:
+                s = line.strip()
+                if re.match(PATTERN_SECTION, s):
+                    ident = re.findall(PATTERN_SECTION, s)[0]
+                elif not (ident and ident in repo_dict):
+                    # skip repos we do not know yet
+                    continue
+                elif "=" in s:
+                    k,v = re.split(PATTERN_KV, s, 1)
+                    if k in ["sslclientcert", "sslclientkey", "sslcacert"]:
+                        repo_dict[ident][k] = v
+                elif s == "":
+                    ident = ""
+
+    return repo_dict
 
 
 def _get_rhui_info():
@@ -142,39 +168,29 @@ def _get_rhui_info():
 
 
 def _get_certificate_info():
-    client_cert = ""
-    client_key = ""
-    ca_cert = ""
-    crt = glob.glob("/etc/pki/rhui/product/content-*.crt")
-    if (len(crt) != 1):
-        system_exit(6, ["RHUI Client Certificate not found"])
-    with open(crt[0], "r") as c:
-        client_cert = c.read()
+    """
+    Return a dict with all RHUI certificates and keys using
+    the path as key
+    """
+    certs = {}
+    for crt in glob.glob("/etc/pki/rhui/product/*.crt"):
+        with open(crt, "r") as c:
+            certs[crt] = c.read()
 
-    crt = glob.glob("/etc/pki/rhui/content-*.key")
-    if (len(crt) != 1):
-        system_exit(6, ["RHUI Client Key not found"])
-    with open(crt[0], "r") as c:
-        client_key = c.read()
+    for crt in glob.glob("/etc/pki/rhui/*.*"):
+        with open(crt, "r") as c:
+            certs[crt] = c.read()
 
-    crt = glob.glob("/etc/pki/rhui/*.crt")
-    if (len(crt) != 1):
-        system_exit(6, ["RHUI CA Certificate not found"])
-    with open(crt[0], "r") as c:
-        ca_cert = c.read()
-
-    return client_cert, client_key, ca_cert
+    return certs
 
 
 def load_instance_info():
     header_auth = _get_rhui_info()
-    client_cert_data, client_key_data, ca_cert_data = _get_certificate_info()
+    certs = _get_certificate_info()
 
     return { "type": "RHUI",
              "header_auth": header_auth,
-             "client_cert": client_cert_data,
-             "client_key": client_key_data,
-             "ca_cert": ca_cert_data,
+             "certs": certs,
              "repositories": repo_dict}
 
 def main():
@@ -195,6 +211,7 @@ if __name__ == '__main__':
     except SystemExit as e:
         sys.exit(e.code)
     except Exception as e:
+        #traceback.print_exc()
         system_exit(9, ["ERROR: {}".format(e)])
 
 # Error codes
