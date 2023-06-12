@@ -233,6 +233,7 @@ When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
   $server.run(cleanup_command.to_s, check_errors: false)
   result, code = $server.run('systemctl restart apache && systemctl restart cobblerd')
   raise "Error during Cobbler cleanup.\nLogs:\n#{result}" if code.nonzero?
+  step %(I wait until "cobblerd" service is active on "server")
 end
 
 # cobbler commands
