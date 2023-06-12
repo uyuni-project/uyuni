@@ -231,8 +231,12 @@ When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
                     'rm -r /srv/tftpboot 2> /dev/null && ' \
                     'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
   $server.run(cleanup_command.to_s, check_errors: false)
+  result, code = $server.run('systemctl restart apache')
+  raise "Error while restarting apache cleanup.\nLogs:\n#{result}" if code.nonzero?
+
   result, code = $server.run('systemctl restart apache && systemctl restart cobblerd')
-  raise "Error during Cobbler cleanup.\nLogs:\n#{result}" if code.nonzero?
+  raise "Error while restarting cobblerd.\nLogs:\n#{result}" if code.nonzero?
+
   step %(I wait until "cobblerd" service is active on "server")
 end
 
