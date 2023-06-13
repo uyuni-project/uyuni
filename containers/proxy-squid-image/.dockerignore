@@ -1,0 +1,10 @@
+# Exclude Python test files
+**/*_test.py
+**/test_*.py
+
+# Exclude Python cache files
+**/__pycache__
+
+# Exclude Python virtual environment directories
+**/venv
+**/.venv

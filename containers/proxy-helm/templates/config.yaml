@@ -10,14 +10,13 @@ data:
     proxy_fqdn: {{ .Values.proxy_fqdn }}
     email: {{ .Values.email }}
     log_level: {{ .Values.log_level | default 1 }}
-    squid_config:
-      max_cache_size_mb: {{ .Values.max_cache_size_mb }}
-      bandwidth_limit_kbps: {{ .Values.delay | default 0 }}
-      client_lifetime: {{ .Values.client_lifetime | default 1440 }}
-      request_timeout: {{ .Values.request_timeout | default 5 }} 
-      range_offset_limit: {{ .Values.range_offset_limit | default 0 }}
-      read_ahead_gap: {{ .Values.read_ahead_gap | default 16 }}
-      client_request_buffer_max_size: {{ .Values.client_request_buffer_max_size | default 512 }}
+    max_cache_size_mb: {{ .Values.max_cache_size_mb }}
+    bandwidth_limit_kbps: {{ .Values.delay | default 0 }}
+    client_lifetime: {{ .Values.client_lifetime | default 1440 }}
+    request_timeout: {{ .Values.request_timeout | default 5 }} 
+    range_offset_limit: {{ .Values.range_offset_limit | default 0 }}
+    read_ahead_gap: {{ .Values.read_ahead_gap | default 16 }}
+    client_request_buffer_max_size: {{ .Values.client_request_buffer_max_size | default 512 }}
     ca_crt: |
 {{ .Values.ca_crt | indent 6 }}
 ---

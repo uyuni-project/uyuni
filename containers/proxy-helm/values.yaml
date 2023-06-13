@@ -12,6 +12,16 @@ images:
     # proxy-ssh: <registry>/<image>/<version>
     # proxy-tftpd: <registry>/<image>/<version>
 
+## The Squid Proxy Parameters
+## These are the parameters that can be passed to the squid.conf file
+## Ref: http://www.squid-cache.org/Doc/config/
+# max_cache_size_mb: 4
+# bandwidth_limit_kbps: 0
+# client_lifetime: 1440
+# request_timeout: 5
+# range_offset_limit: 0
+# read_ahead_gap: 16
+# client_request_buffer_max_size: 512
 
 ## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 ##
