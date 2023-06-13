@@ -298,11 +298,7 @@ make test
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
-%if 0%{?rhel} || 0%{?fedora}
-%{misc_path}/spacewalk
-%else
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
-%endif
 %{_mandir}/man8/spacewalk-make-mount-points*
 %license LICENSE
 
