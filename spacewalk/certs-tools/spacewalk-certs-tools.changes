@@ -1,3 +1,4 @@
+- Also ship SUSE specific files on Enterprise Linux.
 - Use the CA cert in the pki config to generate build host rpm
 - Add shadow as dependency of osimage certificate package
   (bsc#1210834 bsc#1204089)
