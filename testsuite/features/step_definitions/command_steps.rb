@@ -1714,7 +1714,7 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
   # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
   command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
             " -- -o #{file_path} -p 8022 #{$proxy.full_hostname.sub('pxy', 'pod-pxy')} #{$server.full_hostname}" \
-            " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
+            " 2048 galaxy-noise@suse.de --ca-pass cert_pass --ssl-cname proxy.example.org" \
             " && rm cert_pass"
   $server.run(command)
 end
