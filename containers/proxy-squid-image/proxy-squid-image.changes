@@ -1,3 +1,5 @@
+- Added the possibility to configure the squid cache to deal with
+  bandwidth differences via config.yaml
 - Fix squid refresh_pattern for "venv-enabled-*.txt" files to avoid
   serving outdated version of the file (bsc#1211956)
 - Add squid configuration for /saltboot
