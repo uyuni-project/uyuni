@@ -29,8 +29,8 @@
 %define apache_group www
 %else
 %define www_path %{_var}
-%define apache_user root
-%define apache_group root
+%define apache_user apache
+%define apache_group apache
 %endif
 
 Name:           uyuni-base
@@ -122,11 +122,7 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %if ! (0%{?suse_version} == 1110)
 %files server
 %defattr(-,root,root)
-%if 0%{?rhel}
-/var/spacewalk
-%else
 %dir %attr(755,%{apache_user}, root) /var/spacewalk
-%endif
 %endif
 
 %files proxy
