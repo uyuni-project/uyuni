@@ -194,14 +194,16 @@ export const DateTimePicker = (props: Props) => {
           </>
         )}
         <span className="input-group-addon" key="tz">
-          {timeZone}
+          {props.serverTimeZone ? localizedMoment.serverTimeZoneAbbr : localizedMoment.userTimeZoneAbbr}
         </span>
       </div>
       {process.env.NODE_ENV !== "production" && SHOW_DEBUG_VALUES ? (
         <pre>
           user:{"   "}
-          {props.value.toUserDateTimeString()} ({localizedMoment.userTimeZone})<br />
-          server: {props.value.toServerDateTimeString()} ({localizedMoment.serverTimeZone})<br />
+          {props.value.toUserString()}
+          <br />
+          server: {props.value.toServerString()}
+          <br />
           iso:{"    "}
           {props.value.toISOString()}
         </pre>

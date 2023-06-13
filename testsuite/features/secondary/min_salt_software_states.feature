@@ -116,7 +116,7 @@ Feature: Salt package states
 
 # When run inside containers, we can't kill salt-minion or the
 # container will stop
-@skip_if_container
+@skip_if_github_validation
   Scenario: Use Salt presence mechanism on an unreachable minion
     When I follow "States" in the content area
     And I run "pkill salt-minion" on "sle_minion" without error control
@@ -125,7 +125,7 @@ Feature: Salt package states
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
-@skip_if_container    
+@skip_if_github_validation
   Scenario: Cleanup: restart the salt service on SLES minion
     When I restart salt-minion on "sle_minion"
 

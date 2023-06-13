@@ -136,7 +136,7 @@ Feature: Action chains on Salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
-@skip_if_container    
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"

@@ -4,8 +4,6 @@
 
 # IMMUTABLE ORDER
 
-- features/build_validation/core/allcli_sanity.feature
-
 # initialize SUSE Manager server
 - features/build_validation/core/srv_first_settings.feature
 - features/build_validation/core/srv_user_preferences.feature

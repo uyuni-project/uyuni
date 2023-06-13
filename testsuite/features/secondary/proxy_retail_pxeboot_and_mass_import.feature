@@ -4,7 +4,7 @@
 # Idempotency note:
 # This feature depends on a JeOS image present on the proxy
 # Please make sure that the feature
-#     features/buildhost_osimage_build_image.feature
+#     features/secondary/buildhost_osimage_build_image.feature
 # has been tested previously
 #
 # The scenarios in this feature are skipped:
@@ -12,7 +12,7 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
-@skip_if_container
+@skip_if_github_validation
 @buildhost
 @proxy
 @private_net

@@ -138,7 +138,6 @@ class ImageProfiles extends React.Component<Props, State> {
             target="delete-selected-modal"
           />
         )}
-        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
         {window.isAdmin && (
           <LinkButton
             id="create"
@@ -149,6 +148,7 @@ class ImageProfiles extends React.Component<Props, State> {
             href="/rhn/manager/cm/imageprofiles/create"
           />
         )}
+        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
       </div>
     );
 

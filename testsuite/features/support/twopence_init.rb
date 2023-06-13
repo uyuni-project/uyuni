@@ -87,6 +87,8 @@ if $build_validation
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
   $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSHMINION']}") if ENV['OPENSUSE154ARM_SSHMINION']
+  $opensuse155arm_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_MINION']}") if ENV['OPENSUSE155ARM_MINION']
+  $opensuse155arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_SSHMINION']}") if ENV['OPENSUSE155ARM_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
@@ -114,6 +116,7 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
+             $opensuse155arm_minion, $opensuse155arm_ssh_minion,
              $sle12sp5_buildhost,
              $sle15sp4_buildhost,
              $monitoring_server]
@@ -337,6 +340,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
                   'opensuse154arm_minion'     => $opensuse154arm_minion,
                   'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
+                  'opensuse155arm_minion'     => $opensuse155arm_minion,
+                  'opensuse155arm_ssh_minion' => $opensuse155arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp4_buildhost'        => $sle15sp4_buildhost,
                   'monitoring_server'         => $monitoring_server,

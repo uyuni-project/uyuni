@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 14:57+0200\n"
+"POT-Creation-Date: 2023-06-09 14:47+0200\n"
 "PO-Revision-Date: 2023-05-23 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:486
+#: ../html/javascript/spacewalk-essentials.js:436
 msgid "remaining"
 msgstr "남음"
 
-#: ../html/javascript/spacewalk-essentials.js:506
+#: ../html/javascript/spacewalk-essentials.js:456
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -1007,11 +1007,11 @@ msgstr "용량제 SSH 데이터 추가"
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
 #: ../html/src/manager/images/image-profile-edit.tsx:503
+#: ../html/src/manager/images/image-profiles.tsx:146
 #: ../html/src/manager/images/image-profiles.tsx:147
-#: ../html/src/manager/images/image-profiles.tsx:148
 #: ../html/src/manager/images/image-store-edit.tsx:225
+#: ../html/src/manager/images/image-stores.tsx:146
 #: ../html/src/manager/images/image-stores.tsx:147
-#: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:103
@@ -1181,8 +1181,8 @@ msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
-#: ../html/src/manager/images/image-profiles.tsx:141
-#: ../html/src/manager/images/image-stores.tsx:141
+#: ../html/src/manager/images/image-profiles.tsx:151
+#: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:373
 #: ../html/src/manager/notifications/notification-messages.tsx:451
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
