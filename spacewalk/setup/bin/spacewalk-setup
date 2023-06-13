@@ -479,7 +479,7 @@ sub setup_mod_ssl {
     return;
   }
 
-  my $no_ssl_arg = $answers->{"no-ssl"} =~ /^[Yy]/ ? ' --no-ssl' : '';
+  my $no_ssl_arg = ($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) ? ' --no-ssl' : '';
 
   system(split / /, "/usr/bin/spacewalk-setup-httpd$no_ssl_arg");
 
@@ -930,7 +930,7 @@ sub populate_final_configs {
 
   Spacewalk::Setup::satcon_deploy(-tree => '/var/lib/rhn/rhn-satellite-prep/etc/rhn',
                 -dest => '/etc/rhn');
-  if($answers->{"no-ssl"} =~ /^[Yy]/) {
+  if($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) {
       open(my $FILE, '>>', '/etc/rhn/rhn.conf');
       print $FILE "server.no_ssl = 1";
       close $FILE;
