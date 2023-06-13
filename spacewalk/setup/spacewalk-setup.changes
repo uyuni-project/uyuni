@@ -1,3 +1,4 @@
+- Align /var/spacewalk folder permissions with uyuni-base-server package.
 - Move set tomcat user setup to uyuni-base spec file
 - Add option to disable SSL setup
 - Corrected requirement to install Tomcat before spacewalk-setup.

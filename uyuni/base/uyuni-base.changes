@@ -1,3 +1,5 @@
+- Changed Apache user/group from "root" to "apache" for Enterprise
+  Linux operating systems.
 - Add www group to tomcat user
 
 -------------------------------------------------------------------
