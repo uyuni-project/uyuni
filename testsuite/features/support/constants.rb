@@ -191,7 +191,8 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-prod
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
                           'debian-11-pool' => 'debian-11-pool-amd64',
-                          'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64' }.freeze
+                          'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64',
+                          'openSUSE-Leap-15.5-Pool for aarch64' => 'opensuse-leap-15.5-pool-aarch64' }.freeze
 
 # Used for creating bootstrap repositories
 # The values can be found out on the server by running 'mgr-create-bootstrap-repo'
@@ -209,7 +210,8 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
-                                    'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64' }.freeze
+                                    'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64',
+                                    'openSUSE-Leap-15.5-Pool for aarch64' => 'openSUSE-Leap-15.5-aarch64' }.freeze
 
 # Used for creating bootstrap repositories
 # The values can be found under Admin -> Setup Wizard -> Products
@@ -229,7 +231,8 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-P
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
                                            'debian-11-pool' => 'debian-11-pool-amd64',
-                                           'openSUSE-Leap-15.4-Pool for aarch64' => nil }.freeze
+                                           'openSUSE-Leap-15.4-Pool for aarch64' => nil,
+                                           'openSUSE-Leap-15.5-Pool for aarch64' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
