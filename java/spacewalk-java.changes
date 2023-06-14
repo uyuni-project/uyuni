@@ -1,4 +1,8 @@
-- Make sure that all hibernate connections are closed (bsc#1208687)
+-------------------------------------------------------------------
+Wed Jun 14 16:59:13 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.58-1
+  * Make sure that all hibernate connections are closed (bsc#1208687)
 
 -------------------------------------------------------------------
 Wed Jun 14 14:54:48 CEST 2023 - marina.latini@suse.com
