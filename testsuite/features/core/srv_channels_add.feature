@@ -1,11 +1,6 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-
-Feature: Adding channels
-  In Order to distribute software to the clients
-  As an authorized user
-  I want to add channels
-
+#
 # This feature can cause failures in:
 # - features/core/srv_create_activationkey.feature
 # - features/core/srv_create_repository.feature
@@ -24,6 +19,11 @@ Feature: Adding channels
 # - features/secondary/srv_manage_channels_page.feature
 # - features/secondary/srv_patches_page.feature
 # - features/secondary/srv_push_package.feature
+
+Feature: Adding channels
+  In Order to distribute software to the clients
+  As an authorized user
+  I want to add channels
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

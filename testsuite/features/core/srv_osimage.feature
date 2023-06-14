@@ -1,5 +1,10 @@
 # Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in:
+# - features/secondary/buildhost_osimage_build_image.feature
+# If the "kiwikiwi" user fails to be created.
+
 
 Feature: Prepare server for using Kiwi
 
