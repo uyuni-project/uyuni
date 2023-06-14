@@ -1,3 +1,5 @@
+- Make spacewalk-data-fsck compatible to Enterprise Linux rpm version.
+
 -------------------------------------------------------------------
 Wed Apr 19 12:51:32 CEST 2023 - marina.latini@suse.com
 
