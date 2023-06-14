@@ -98,12 +98,12 @@
         <!-- <dependency org="manager-42" name="commons-lang" rev="2.6" /> -->
 
         <!-- Tomcat jars -->
-        <dependency org="manager-42" name="jasper" rev="9.0.43" />
-        <dependency org="manager-42" name="jasper-el" rev="9.0.43" />
-        <dependency org="manager-42" name="tomcat-el-3.0-api" rev="9.0.43" />
-        <dependency org="manager-42" name="tomcat-jsp-2.3-api" rev="9.0.43" />
-        <dependency org="manager-42" name="tomcat-juli" rev="9.0.43" />
-        <dependency org="manager-42" name="tomcat-servlet-4.0-api" rev="9.0.43" />
+        <dependency org="manager-42" name="jasper" rev="9.0.75" />
+        <dependency org="manager-42" name="jasper-el" rev="9.0.75" />
+        <dependency org="manager-42" name="tomcat-el-3.0-api" rev="9.0.75" />
+        <dependency org="manager-42" name="tomcat-jsp-2.3-api" rev="9.0.75" />
+        <dependency org="manager-42" name="tomcat-juli" rev="9.0.75" />
+        <dependency org="manager-42" name="tomcat-servlet-4.0-api" rev="9.0.75" />
 
         <!-- Compilation and testing -->
         <dependency org="manager-42" name="jetty-util" rev="9.4.48" />
