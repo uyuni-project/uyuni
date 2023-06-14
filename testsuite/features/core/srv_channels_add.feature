@@ -6,6 +6,25 @@ Feature: Adding channels
   As an authorized user
   I want to add channels
 
+# This feature can cause failures in:
+# - features/core/srv_create_activationkey.feature
+# - features/core/srv_create_repository.feature
+# - features/init_client/sle_minion.feature
+# - features/init_client/sle_ssh_minion.feature
+# - features/init_client/min_rhlike.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/min_deblike_ssh.feature
+# - features/secondary/min_rhlike_openscap_audit.feature
+# - features/secondary/min_rhlike_salt_install_package_and_patch.feature
+# - features/secondary/min_rhlike_ssh.feature
+# - features/secondary/srv_content_lifecycle.feature
+# - features/secondary/srv_delete_channel_from_ui.feature
+# - features/secondary/srv_dist_channel_mapping.feature
+# - features/secondary/srv_manage_activationkey.feature
+# - features/secondary/srv_manage_channels_page.feature
+# - features/secondary/srv_patches_page.feature
+# - features/secondary/srv_push_package.feature
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
