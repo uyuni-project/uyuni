@@ -112,12 +112,12 @@
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="jasper" rev="9.0.43" />
-        <dependency org="suse" name="jasper-el" rev="9.0.43" />
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.43" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.43" />
-        <dependency org="suse" name="tomcat-juli" rev="9.0.43" />
-        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.43" />
+        <dependency org="suse" name="jasper" rev="9.0.75" />
+        <dependency org="suse" name="jasper-el" rev="9.0.75" />
+        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.75" />
+        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.75" />
+        <dependency org="suse" name="tomcat-juli" rev="9.0.75" />
+        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.75" />
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.3"/>

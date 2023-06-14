@@ -1,3 +1,4 @@
+- Update version of tomcat build dependencies
 - Disable jinja processing for the roster file (bsc#1211650)
 - Make sure that all hibernate connections are closed (bsc#1208687)
 - Add option to disable SSL
