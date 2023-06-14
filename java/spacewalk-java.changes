@@ -23,6 +23,12 @@
 - execute highstate on registration with a user if available
 
 -------------------------------------------------------------------
+Wed Jun 14 14:54:48 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.57-1
+  * Update version of tomcat build dependencies
+
+-------------------------------------------------------------------
 Thu Apr 27 15:33:10 CEST 2023 - jgonzalez@suse.com
 
 - version 4.3.56-1
