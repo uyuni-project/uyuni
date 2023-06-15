@@ -1,3 +1,4 @@
+- Improve handling of websocket exceptions
 - Release DB connection in RHN Message Dispatcher thread
 - Disable jinja processing for the roster file (bsc#1211650)
 - regenerate random passwords with new cipher algorithm
