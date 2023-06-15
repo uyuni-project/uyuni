@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/min_bootstrap_api.feature
 # If the minion fails to bootstrap
 
 @skip_if_github_validation
