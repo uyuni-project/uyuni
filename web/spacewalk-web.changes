@@ -1,3 +1,5 @@
+- Fix parsing error when showing notification message details (bsc#1211469)
+
 -------------------------------------------------------------------
 Wed May 31 09:28:17 CEST 2023 - marina.latini@suse.com
 
