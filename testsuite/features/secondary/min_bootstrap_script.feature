@@ -7,8 +7,8 @@
 # 3) install and remove a package
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
-# If the minion fails to bootstrap again.
+# - features/secondary/min_bootstrap_api.feature
+# If the minion fails to bootstrap
 
 @sle_minion
 @scope_onboarding
