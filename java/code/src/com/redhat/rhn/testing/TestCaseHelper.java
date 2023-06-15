@@ -16,6 +16,7 @@ package com.redhat.rhn.testing;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import org.cobbler.test.MockConnection;
 import org.hibernate.TransactionException;
 
 /**
@@ -45,6 +46,10 @@ public class TestCaseHelper {
         if (rollbackException != null) {
             throw rollbackException;
         }
+
+        // Clear the mock MockConnection
+        MockConnection.clear();
+
         // In case someone disabled it and forgot to renable it.
         TestUtils.enableLocalizationLogging();
     }
