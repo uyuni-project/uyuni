@@ -179,7 +179,7 @@ public class Notification {
                     handbreakSession(session);
                 }
             }
-            catch (IOException e) {
+            catch (IOException | IllegalStateException e) {
                 LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
                         session.getId()));
                 handbreakSession(session);
