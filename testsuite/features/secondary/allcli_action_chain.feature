@@ -4,7 +4,7 @@
 # Skip if container because action chains fail on containers
 # This needs to be fixed
 
-@rhlike_minion
+@ssh_minion
 @sle_minion
 @scope_action_chains
 Feature: Action chains on several systems at once
@@ -56,7 +56,7 @@ Feature: Action chains on several systems at once
     When I delete all action chains
     And I cancel all scheduled actions
 
-  Scenario: Add an action chain using system set manager for Red Hat-like minion and SLE minion
+  Scenario: Add an action chain using system set manager for SSH minion and SLE minion
     When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
     And I check the "ssh_minion" client
