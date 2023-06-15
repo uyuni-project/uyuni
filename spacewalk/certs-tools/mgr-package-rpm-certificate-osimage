@@ -77,7 +77,7 @@ def genCaRpm(options):
                repr(CA_CERT_RPM_SUMMARY),
                repr(CA_CERT_RPM_SUMMARY),
                repr(update_trust_script), repr(update_trust_script),
-               repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
+               repr(CA_CRT_NAME), repr(cleanupAbsPath(ca_cert))))
     clientRpmName = '%s-%s-%s' % (ca_cert_rpm_osimage, ver, rel)
     print("CA Cert for OS Images: Packaging %s into %s.noarch.rpm" % (ca_cert, clientRpmName))
 
