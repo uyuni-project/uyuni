@@ -161,6 +161,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
 
+@rocky9_minion
+  Scenario: Add Rocky Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Rocky Linux 9" as the filtered product description
+    And I select "Rocky Linux 9 x86_64" as a product
+    Then I should see the "Rocky Linux 9 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Rocky Linux 9 x86_64" product has been added
+
 @ubuntu1804_minion
   Scenario: Add Ubuntu 18.04
     When I follow the left menu "Admin > Setup Wizard > Products"

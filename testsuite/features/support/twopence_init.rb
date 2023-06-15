@@ -64,6 +64,8 @@ if $build_validation
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
   $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
+  $rocky9_minion = twopence_init("ssh:#{ENV['ROCKY9_MINION']}") if ENV['ROCKY9_MINION']
+  $rocky9_ssh_minion = twopence_init("ssh:#{ENV['ROCKY9_SSHMINION']}") if ENV['ROCKY9_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -88,6 +90,7 @@ if $build_validation
              $sle15sp5_client, $sle15sp5_minion, $sle15sp5_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
+             $rocky9_minion, $rocky9_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
@@ -294,6 +297,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
                   'rocky8_minion'             => $rocky8_minion,
                   'rocky8_ssh_minion'         => $rocky8_ssh_minion,
+                  'rocky9_minion'             => $rocky9_minion,
+                  'rocky9_ssh_minion'         => $rocky9_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,

@@ -206,6 +206,14 @@ Before('@rocky8_ssh_minion') do
   skip_this_scenario unless $rocky8_ssh_minion
 end
 
+Before('@rocky9_minion') do
+  skip_this_scenario unless $rocky9_minion
+end
+
+Before('@rocky9_ssh_minion') do
+  skip_this_scenario unless $rocky9_ssh_minion
+end
+
 Before('@ubuntu1804_minion') do
   skip_this_scenario unless $ubuntu1804_minion
 end
