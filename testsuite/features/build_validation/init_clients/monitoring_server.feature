@@ -88,7 +88,7 @@ Feature: Bootstrap the monitoring server
   Scenario: Test Grafana dashboards of monitoring server
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
-    And I click on "View as list"
+    And I check radio button "View as list"
     # These are the 4 dashboards created by default when enabling the Grafana formula
     Then I should see a "Apache2" text
     And I should see a "PostgreSQL database insights" text
