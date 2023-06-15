@@ -16,6 +16,7 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
@@ -115,6 +116,9 @@ public class MessageDispatcher implements Runnable {
                 catch (Throwable t1) {
                     log.error("Error sending traceback email, logging for posterity.", t1);
                 }
+            }
+            finally {
+                HibernateFactory.closeSession();
             }
 
         }
