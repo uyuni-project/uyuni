@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
+# If the SUSE-KEY-x86_64 fails to be created:
 # - features/init_client/buildhost_bootstrap.feature
 # - features/init_client/sle_minion.feature
 # - features/secondary/buildhost_docker_auth_registry.feature
@@ -20,14 +21,13 @@
 # - features/secondary/proxy_cobbler_pxeboot.feature
 # - features/secondary/proxy_retail_pxeboot.feature
 # - features/secondary/srv_docker_advanced_content_management.feature
-# If the SUSE-KEY-x86_64 fails to be created
+# If the RH-LIKE-KEY fails to be created:
 # - features/secondary/min_rhlike_salt.feature
-# If the RH-LIKE-KEY fails to be created
+# If the DEBLIKE-KEY fails to be created:
 # - features/secondary/min_debike_salt.feature
-# If the DEBLIKE-KEY fails to be created
+# If the SUSE-SSH-KEY-x86_64 fails to be created:
 # - features/secondary/min_ssh_tunnel.feature
 # - features/secondary/minssh_move_from_and_to_proxy.feature
-# If the SUSE-SSH-KEY-x86_64 fails to be created
 
 
 Feature: Create activation keys

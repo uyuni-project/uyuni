@@ -1,8 +1,9 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
 # Almost every feature if the "admin" user fails to be created.
+# If the "testing" user fails to be created:
 # - features/core/srv_user_preferences.feature
 # - features/secondary/min_action_chain.feature
 # - features/secondary/min_rhlike_remote_command.feature
@@ -12,7 +13,6 @@
 # - features/secondary/srv_cobbler_profile.feature
 # - features/secondary/srv_mainpage.feature
 # - features/secondary/srv_users.feature
-# If the "testing" user fails to be created
 
 Feature: Very first settings
   In order to use the product
