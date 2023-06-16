@@ -1560,3 +1560,16 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   node.init_os_family(os_family)
   node.init_os_version(os_version)
 end
+
+And(/^I choose the right devel url for "([^"]*)" and add it as url$/) do |host|
+  node = get_target(host)
+  os_family = node.os_family
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    link = "grep baseurl /etc/zypp/repos.d/tools_additional_repo.repo | awk -F '='  '{print $2}'"
+  elsif os_family =~ /^centos/
+    link = "grep baseurl /etc/yum.repos.d/tools_update_repo.repo | awk -F '='  '{print $2}'"
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    link = "awk -F ' ' '{print $3}' /etc/apt/sources.list.d/tools_update_repo.list"
+  end
+  steps %(And I enter "#{link}" as "url")
+end

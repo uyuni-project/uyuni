@@ -28,7 +28,24 @@ Feature: Add a repository to a channel
     Then I should see a "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
-  Scenario: Add the repository to the x86_64 channel
+  Scenario: Add the devel repository for x86_64
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "Create Repository"
+    And I enter "sle_devel" as "label"
+    And I choose the right devel url for "sle_minion" and add it as url
+    And I click on "Create Repository"
+    Then I should see a "Repository created successfully" text
+    And I should see "metadataSigned" as checked
+
+  Scenario: Disable metadata check for the x86_64 devel repository
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "sle_devel"
+    And I uncheck "metadataSigned"
+    And I click on "Update Repository"
+    Then I should see a "Repository updated successfully" text
+    And I should see "metadataSigned" as unchecked
+
+  Scenario: Add the repositories to the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
@@ -36,10 +53,11 @@ Feature: Add a repository to a channel
     Then I should see a "Channel Test-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
+    And I select the "sle_devel" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the x86_64 channel
+  Scenario: Synchronize the repositories in the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
@@ -89,16 +107,27 @@ Feature: Add a repository to a channel
     Then I should see a "Repository created successfully" text
 
 @deblike_minion
-  Scenario: Add the Debian-like repository to the AMD64 channel
+  Scenario: Add the devel repository for Debian-like
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "Create Repository"
+    And I enter "deb_devel" as "label"
+    And I select "deb" from "contenttype"
+    And I choose the right devel url for "deblike_minion" and add it as url
+    And I click on "Create Repository"
+    Then I should see a "Repository created successfully" text
+
+@deblike_minion
+  Scenario: Add the Debian-like repositories to the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
+    And I select the "deb_devel" repo
     And I click on "Save Repositories"
     Then I should see a "Fake-Deb-AMD64-Channel repository information was successfully updated" text
 
 @deblike_minion
-  Scenario: Synchronize the Debian-like repository in the AMD64 channel
+  Scenario: Synchronize the Debian-like repositories in the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Repositories" in the content area
@@ -108,7 +137,25 @@ Feature: Add a repository to a channel
     Then I should see a "Repository sync scheduled for Fake-Deb-AMD64-Channel." text
 
 @rhlike_minion
-  Scenario: Add the repository to the RedHat-like channel
+Scenario: Add the devel repository for Redhat-Like
+  When I follow the left menu "Software > Manage > Repositories"
+  And I follow "Create Repository"
+  And I enter "rh_devel" as "label"
+  And I choose the right devel url for "rhlike_minion" and add it as url
+  And I click on "Create Repository"
+  Then I should see a "Repository created successfully" text
+  And I should see "metadataSigned" as checked
+
+  Scenario: Disable metadata check for the Redhat-Like devel repository
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "rh_devel"
+    And I uncheck "metadataSigned"
+    And I click on "Update Repository"
+    Then I should see a "Repository updated successfully" text
+    And I should see "metadataSigned" as unchecked
+
+@rhlike_minion
+  Scenario: Add the repositories to the RedHat-like channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-RH-Like-Channel"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
@@ -116,11 +163,12 @@ Feature: Add a repository to a channel
     Then I should see a "Channel Fake-RH-Like-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
+    And I select the "rh_devel" repo
     And I click on "Save Repositories"
     Then I should see a "Fake-RH-Like-Channel repository information was successfully updated" text
 
 @rhlike_minion
-  Scenario: Synchronize the repository in the x86_64 channel
+  Scenario: Synchronize the repositories in the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-RH-Like-Channel"
     And I follow "Repositories" in the content area
