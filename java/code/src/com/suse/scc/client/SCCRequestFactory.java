@@ -20,6 +20,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
+import java.util.Map;
+
 /**
  * Helper class for setting up HTTP Requests as {@link HttpRequestBase} objects.
  */
@@ -72,6 +74,11 @@ public class SCCRequestFactory {
         // overwrite the default
         request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
                 ConfigDefaults.get().getProductVersion());
+
+        // add additional headers from the config
+        for (Map.Entry<String, String> e : config.getAdditionalHeaders().entrySet()) {
+            request.addHeader(e.getKey(), e.getValue());
+        }
 
         return request;
     }
