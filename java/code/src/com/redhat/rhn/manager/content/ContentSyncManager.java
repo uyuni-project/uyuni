@@ -2599,23 +2599,24 @@ public class ContentSyncManager {
 
         String username = null;
         String password = null;
+        Map<String, String> addHeaders = new HashMap<>();
         if (credentials != null) {
             if (credentials.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
                 URI uri = new URI(credentials.getUrl());
                 url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
+                Gson gson = new GsonBuilder().create();
+                addHeaders = gson.fromJson(new String(credentials.getExtraAuthData()), Map.class);
             }
-            else {
-                username = credentials.getUsername();
-                password = credentials.getPassword();
-            }
+            username = credentials.getUsername();
+            password = credentials.getPassword();
         }
         if (localAbsolutePath != null) {
             return new SCCFileClient(new SCCConfig(localAbsolutePath));
         }
-        SCCConfig config = new SCCConfig(url, username, password, getUUID());
+        SCCConfig config = new SCCConfig(url, username, password, getUUID(), addHeaders);
         if (tmpLoggingDir != null) {
             config = new SCCConfig(url, username, password, getUUID(), null,
-                    tmpLoggingDir.toAbsolutePath().toString(), false);
+                    tmpLoggingDir.toAbsolutePath().toString(), false, addHeaders);
         }
         return new SCCWebClient(config);
     }
