@@ -295,8 +295,8 @@ When(/^I start local monitoring of Cobbler$/) do
   else
     $server.run('systemctl restart cobblerd')
   end
-  # give cobbler a second to come up
-  sleep 1
+  # give cobbler a few seconds to come up
+  sleep 3
 end
 
 Then(/^the local logs for Cobbler should not contain errors$/) do
