@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 14:33+0200\n"
+"POT-Creation-Date: 2023-06-16 15:25+0200\n"
 "PO-Revision-Date: 2023-05-23 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1013,7 +1013,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "刷新"
@@ -1311,13 +1311,13 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:572
+#: ../html/src/manager/notifications/notification-messages.tsx:571
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:574
+#: ../html/src/manager/notifications/notification-messages.tsx:573
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -2024,7 +2024,7 @@ msgstr "群集"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:617
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:509
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2582,7 +2582,7 @@ msgstr "已成功更新环境"
 msgid "Environment {0} deleted successfully"
 msgstr "已成功删除环境 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:142
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:143
 msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
@@ -4073,125 +4073,125 @@ msgstr "已保存软件包状态。"
 msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
-#: ../html/src/manager/notifications/notification-messages.tsx:30
+#: ../html/src/manager/notifications/notification-messages.tsx:29
 msgid "Onboarding failed"
 msgstr "载入失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:34
+#: ../html/src/manager/notifications/notification-messages.tsx:33
 msgid "Channel sync failed"
 msgstr "通道同步失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:38
+#: ../html/src/manager/notifications/notification-messages.tsx:37
 msgid "Channel sync finished"
 msgstr "通道同步已完成"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:42
+#: ../html/src/manager/notifications/notification-messages.tsx:41
 msgid "Creating Bootstrap Repository failed"
 msgstr "创建引导软件源失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:46
+#: ../html/src/manager/notifications/notification-messages.tsx:45
 msgid "State apply failed"
 msgstr "状态应用失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:50
+#: ../html/src/manager/notifications/notification-messages.tsx:49
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:54
+#: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
 msgstr "生命周期结束期限"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:145
+#: ../html/src/manager/notifications/notification-messages.tsx:144
 msgid "Filter by type"
 msgstr "按类型过滤"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:252
 #: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr "信息"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:260
 #: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr "警告"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:268
 #: ../html/src/manager/notifications/notification-messages.tsx:269
-#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr "错误"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:332
+#: ../html/src/manager/notifications/notification-messages.tsx:331
 msgid "show details"
 msgstr "显示细节"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:381
+#: ../html/src/manager/notifications/notification-messages.tsx:380
 msgid "Retry onboarding"
 msgstr "重试载入"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:391
+#: ../html/src/manager/notifications/notification-messages.tsx:390
 msgid "Retry repo sync"
 msgstr "重试软件源同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:415
+#: ../html/src/manager/notifications/notification-messages.tsx:414
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:419
 msgid "All Messages"
 msgstr "所有消息"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:451
 #: ../html/src/manager/notifications/notification-messages.tsx:452
-#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:459
 #: ../html/src/manager/notifications/notification-messages.tsx:460
-#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:478
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:477
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.tsx:482
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:497
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:503
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:516
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Summary"
 msgstr "摘要"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:522
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Created"
 msgstr "创建日期"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Action"
 msgstr "操作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:532
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:541
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:541
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Delete Notification"
 msgstr "删除通知"
 
@@ -4345,33 +4345,33 @@ msgstr "密钥"
 msgid "Fingerprint"
 msgstr "指纹"
 
-#: ../html/src/manager/shared/menu/menu.tsx:203
+#: ../html/src/manager/shared/menu/menu.tsx:202
 msgid "Clear Menu"
 msgstr "清除菜单"
 
-#: ../html/src/manager/shared/menu/menu.tsx:205
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Filter menu"
 msgstr "过滤菜单"
 
-#: ../html/src/manager/shared/menu/menu.tsx:242
-#: ../html/src/manager/shared/menu/menu.tsx:245
+#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:244
 msgid "Uyuni homepage"
 msgstr "Uyuni 主页"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:242
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
-#: ../html/src/manager/shared/menu/menu.tsx:261
+#: ../html/src/manager/shared/menu/menu.tsx:251
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager 主页"
 
-#: ../html/src/manager/shared/menu/menu.tsx:255
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr "SuSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:257
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr "Manager"
 
