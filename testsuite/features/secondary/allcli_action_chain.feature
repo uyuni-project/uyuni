@@ -1,7 +1,7 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@sle_client
+@ssh_minion
 @sle_minion
 @scope_action_chains
 Feature: Action chains on several systems at once
@@ -55,7 +55,7 @@ Feature: Action chains on several systems at once
     And I cancel all scheduled actions
     And I logout from API
 
-  Scenario: Add an action chain using system set manager for traditional client and Salt minion
+  Scenario: Add an action chain using system set manager for SSH minion and SLE minion
     When I follow the left menu "Systems > Overview"
     And I check the "sle_minion" client
     And I check the "ssh_minion" client
