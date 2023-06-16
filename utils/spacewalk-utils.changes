@@ -1,3 +1,4 @@
+* Add RHEL 7, 8, 9 pool and tools channels
 - Add openSUSE Leap Micro 5.4 repositories
 - Add SLE Micro 5.4 Uyuni Client Tools repositories
 - spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
