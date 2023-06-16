@@ -11,10 +11,6 @@ defaultdict = {
     "sle12sp4_minion": "/SUSE_Updates_SLE-Manager-Tools_12_x86_64/",
     "sle12sp5_client": "/SUSE_Updates_SLE-Manager-Tools_12_x86_64/",
     "sle12sp5_minion": "/SUSE_Updates_SLE-Manager-Tools_12_x86_64/",
-    "sle15_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
-                     "/SUSE_Updates_SLE-Product-SLES_15-LTSS_x86_64/"],
-    "sle15_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
-                     "/SUSE_Updates_SLE-Product-SLES_15-LTSS_x86_64/"],
     "sle15sp1_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Product-SLES_15-SP1-LTSS_x86_64/"],
     "sle15sp1_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
@@ -51,9 +47,9 @@ defaultdict = {
     "ubuntu2204_minion": "/SUSE_Updates_Ubuntu_22.04-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
-    "opensuse153arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.3/",
-                              "/SUSE_Updates_SLE-Manager-Tools_15_aarch64/"],
     "opensuse154arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.4/",
+                              "/SUSE_Updates_SLE-Manager-Tools_15_aarch64/"],
+    "opensuse155arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.5/",
                               "/SUSE_Updates_SLE-Manager-Tools_15_aarch64/"],
     "rhel9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
     "rocky9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
@@ -64,9 +60,11 @@ defaultdict = {
     "slemicro52_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
                           "/SUSE_Updates_SUSE-MicroOS_5.2_x86_64/"],
     "slemicro53_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
-                          "/SUSE_Updates_SUSE-MicroOS_5.3_x86_64/"],
+                          "/SUSE_Updates_SUSE-MicroOS_5.3_x86_64/",
+                          "/SUSE_Updates_SLE-Micro_5.3_x86_64/"],
     "slemicro54_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
-                          "/SUSE_Updates_SUSE-MicroOS_5.4_x86_64/"]
+                          "/SUSE_Updates_SUSE-MicroOS_5.4_x86_64/",
+                          "/SUSE_Updates_SLE-Micro_5.4_x86_64/"],
 }
 
 # Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
