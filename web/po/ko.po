@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 14:33+0200\n"
+"POT-Creation-Date: 2023-06-16 15:25+0200\n"
 "PO-Revision-Date: 2023-05-23 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/"
@@ -1037,7 +1037,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:371
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "새로 고침"
@@ -1340,14 +1340,14 @@ msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:572
+#: ../html/src/manager/notifications/notification-messages.tsx:571
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:574
+#: ../html/src/manager/notifications/notification-messages.tsx:573
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
@@ -2071,7 +2071,7 @@ msgstr "클러스터"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:617
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:509
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2631,7 +2631,7 @@ msgstr "환경 업데이트됨"
 msgid "Environment {0} deleted successfully"
 msgstr "{0} 환경 삭제됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:142
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:143
 msgid ""
 "This environment cannot be deleted since it is being used in an {0}"
 "autoinstallation distribution{1}."
@@ -4150,125 +4150,125 @@ msgstr "패키지 상태가 저장되었습니다."
 msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
-#: ../html/src/manager/notifications/notification-messages.tsx:30
+#: ../html/src/manager/notifications/notification-messages.tsx:29
 msgid "Onboarding failed"
 msgstr "온보딩 실패"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:34
+#: ../html/src/manager/notifications/notification-messages.tsx:33
 msgid "Channel sync failed"
 msgstr "채널 동기화 실패"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:38
+#: ../html/src/manager/notifications/notification-messages.tsx:37
 msgid "Channel sync finished"
 msgstr "채널 동기화 완료됨"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:42
+#: ../html/src/manager/notifications/notification-messages.tsx:41
 msgid "Creating Bootstrap Repository failed"
 msgstr "부트스트랩 저장소 생성 실패"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:46
+#: ../html/src/manager/notifications/notification-messages.tsx:45
 msgid "State apply failed"
 msgstr "상태 적용 실패"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:50
+#: ../html/src/manager/notifications/notification-messages.tsx:49
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr "용량제 새로 고침 인증 데이터 실패"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:54
+#: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
 msgstr "수명 주기 종료"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:145
+#: ../html/src/manager/notifications/notification-messages.tsx:144
 msgid "Filter by type"
 msgstr "유형을 기준으로 필터링"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:252
 #: ../html/src/manager/notifications/notification-messages.tsx:253
-#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr "정보"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:260
 #: ../html/src/manager/notifications/notification-messages.tsx:261
-#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr "경고"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:268
 #: ../html/src/manager/notifications/notification-messages.tsx:269
-#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr "오류"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:332
+#: ../html/src/manager/notifications/notification-messages.tsx:331
 msgid "show details"
 msgstr "세부 사항 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:381
+#: ../html/src/manager/notifications/notification-messages.tsx:380
 msgid "Retry onboarding"
 msgstr "온보딩 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:391
+#: ../html/src/manager/notifications/notification-messages.tsx:390
 msgid "Retry repo sync"
 msgstr "저장소 동기화 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:415
+#: ../html/src/manager/notifications/notification-messages.tsx:414
 msgid "Unread Messages"
 msgstr "읽지 않은 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:419
 msgid "All Messages"
 msgstr "모든 메시지"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:451
 #: ../html/src/manager/notifications/notification-messages.tsx:452
-#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr "선택한 메시지 삭제"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:459
 #: ../html/src/manager/notifications/notification-messages.tsx:460
-#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr "선택 항목을 읽음으로 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:478
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:477
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Notification Messages"
 msgstr "알림 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.tsx:482
 msgid "The server has collected the following notification messages."
 msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:497
 msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:503
 msgid "Severity"
 msgstr "심각도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:516
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Summary"
 msgstr "요약"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:522
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Created"
 msgstr "생성됨"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Action"
 msgstr "작업"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:532
 msgid "Read|Delete"
 msgstr "읽기|삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:541
 msgid "Flag as Unread"
 msgstr "읽지 않음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:542
+#: ../html/src/manager/notifications/notification-messages.tsx:541
 msgid "Flag as Read"
 msgstr "읽음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Delete Notification"
 msgstr "알림 삭제"
 
@@ -4425,33 +4425,33 @@ msgstr "키"
 msgid "Fingerprint"
 msgstr "지문"
 
-#: ../html/src/manager/shared/menu/menu.tsx:203
+#: ../html/src/manager/shared/menu/menu.tsx:202
 msgid "Clear Menu"
 msgstr "메뉴 지우기"
 
-#: ../html/src/manager/shared/menu/menu.tsx:205
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Filter menu"
 msgstr "필터 메뉴"
 
-#: ../html/src/manager/shared/menu/menu.tsx:242
-#: ../html/src/manager/shared/menu/menu.tsx:245
+#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:244
 msgid "Uyuni homepage"
 msgstr "Uyuni 홈페이지"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:242
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
-#: ../html/src/manager/shared/menu/menu.tsx:261
+#: ../html/src/manager/shared/menu/menu.tsx:251
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager 홈페이지"
 
-#: ../html/src/manager/shared/menu/menu.tsx:255
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:257
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr "Manager"
 
