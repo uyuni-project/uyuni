@@ -1573,3 +1573,4 @@ And(/^I choose the right devel url for "([^"]*)" and add it as url$/) do |host|
   end
   steps %(And I enter "#{link}" as "url")
 end
+
