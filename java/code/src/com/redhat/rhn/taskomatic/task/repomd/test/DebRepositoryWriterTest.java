@@ -72,6 +72,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         DebRepositoryWriter writer = new DebRepositoryWriter("rhn/repodata", tmpDir.normalize().toString());
+        writer.setCommitTransaction(false);
         writer.writeRepomdFiles(channel);
         Path channelRepodataDir = tmpDir.resolve("rhn/repodata/" + channel.getLabel());
         List<String> fileNames = Files.list(channelRepodataDir)
