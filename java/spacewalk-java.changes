@@ -1,3 +1,4 @@
+- catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
 - Improve handling of websocket exceptions
 - Release DB connection in RHN Message Dispatcher thread
 - Disable jinja processing for the roster file (bsc#1211650)
