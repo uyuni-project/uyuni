@@ -265,6 +265,7 @@ def getCertData(cert):
             if nextval == "subjectKeyIdentifier":
                 data["subjectKeyIdentifier"] = line.strip().upper()
             elif nextval == "authorityKeyIdentifier":
+                # OpenSSL v1 adds a prefix 'keyid:'. OenSSL v3 does not.
                 data["authorityKeyIdentifier"] = line.replace("keyid:", "").strip().upper()
         elif "subject_hash" not in data:
             # subject_hash comes first without key to identify it
