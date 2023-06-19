@@ -1,4 +1,8 @@
-- Update version of tomcat build dependencies
+-------------------------------------------------------------------
+Mon Jun 19 13:47:09 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.51-1
+  * Update version of Tomcat build dependencies
 
 -------------------------------------------------------------------
 Wed May 31 09:26:36 CEST 2023 - marina.latini@suse.com
