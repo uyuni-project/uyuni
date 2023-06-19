@@ -1,4 +1,3 @@
-- Update version of tomcat build dependencies
 - Disable jinja processing for the roster file (bsc#1211650)
 
 -------------------------------------------------------------------
