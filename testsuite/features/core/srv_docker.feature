@@ -1,5 +1,8 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+# This feature is a dependency for:
+# - features/secondary/min_docker_api.feature
 
 Feature: Prepare server for using Docker
 
