@@ -33,6 +33,7 @@ public class SystemCommandThreadedExecutor implements Executor {
     private String lastCommandOutput;
     private String lastCommandError;
     private boolean logError;
+    private boolean stdoutLog;
 
     private class StreamThread extends Thread {
         private InputStream inputStream;
@@ -86,10 +87,12 @@ public class SystemCommandThreadedExecutor implements Executor {
     /**
      * Constructor
      * @param log Desired logger
+     * @param stdoutLogIn log StdOut
      */
-    public SystemCommandThreadedExecutor(Logger log) {
+    public SystemCommandThreadedExecutor(Logger log, boolean stdoutLogIn) {
         logError = true;
         logger   = log;
+        stdoutLog = stdoutLogIn;
     }
 
     /**
@@ -120,23 +123,30 @@ public class SystemCommandThreadedExecutor implements Executor {
             }
             Process p = r.exec(args);
 
-            StreamThread inStream  = new StreamThread(p.getInputStream(), false, logger);
             StreamThread errStream = new StreamThread(p.getErrorStream(), logError, logger);
 
-            inStream.start();
+            StreamThread inStream = null;
+            if (stdoutLog) {
+                inStream = new StreamThread(p.getInputStream(), false, logger);
+                inStream.start();
+            }
             errStream.start();
 
             try {
                 logger.debug("execute() - Calling p.waitfor ..");
                 retval = p.waitFor();
-                inStream.join();
+                if (inStream != null) {
+                    inStream.join();
+                }
                 errStream.join();
             }
             catch (InterruptedException e) {
                 throw new RhnRuntimeException("InterruptedException while trying to exec: " + e);
             }
             lastCommandError = errStream.getMessage();
-            lastCommandOutput = inStream.getMessage();
+            if (inStream != null) {
+                lastCommandOutput = inStream.getMessage();
+            }
         }
         catch (IOException ioe) {
             logger.error("execute(String[])", ioe);

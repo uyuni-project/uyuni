@@ -77,7 +77,7 @@ public class RepoSyncTask extends RhnJavaJob {
                 log.info("Syncing repos for channel: {}", channel.getName());
 
                 try {
-                    executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
+                    executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]), true);
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                             new ChannelSyncFinished(channel.getId(), channel.getName())
                     );
