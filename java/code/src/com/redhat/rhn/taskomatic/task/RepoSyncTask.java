@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -65,12 +66,10 @@ public class RepoSyncTask extends RhnJavaJob {
 
         List<String> lparams = List.of("no-errata", "latest", "sync-kickstart", "fail");
         List<String> ltrue = List.of("true", "1");
-        List<String> params = new ArrayList<>();
-        for (String p : lparams) {
-            if ((ltrue.contains(jobDataMap.getOrDefault(p, "false").toString().toLowerCase().trim()))) {
-                    params.add("--" + p);
-            }
-        }
+        List<String> params = lparams.stream()
+                .filter(p -> ltrue.contains(jobDataMap.getOrDefault(p, "false").toString().toLowerCase().trim()))
+                .map(p -> "--" + p)
+                .collect(Collectors.toList());
         if (!GlobalInstanceHolder.PAYG_MANAGER.isCompliant()) {
             log.error("Synchronization of repositories is forbidden as SUSE Manager Server PAYG " +
                     "is unable to send accounting data to the cloud provider.");
