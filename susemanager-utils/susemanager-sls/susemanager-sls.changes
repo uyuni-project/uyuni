@@ -1,4 +1,8 @@
-- trust new Liberty Linux v2 key (bsc#1212096)
+-------------------------------------------------------------------
+Mon Jun 19 11:16:50 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.34-1
+  * trust new Liberty Linux v2 key (bsc#1212096)
 
 -------------------------------------------------------------------
 Wed May 31 09:34:09 CEST 2023 - marina.latini@suse.com
