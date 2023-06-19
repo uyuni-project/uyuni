@@ -25,6 +25,12 @@
 - execute highstate on registration with a user if available
 
 -------------------------------------------------------------------
+Mon Jun 19 17:35:09 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.59-1
+  * Update jetty-util to version 9.4.51
+
+-------------------------------------------------------------------
 Wed Jun 14 16:59:13 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.58-1
