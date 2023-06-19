@@ -1,3 +1,4 @@
+- Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
 - Make spacewalk-data-fsck compatible to Enterprise Linux rpm version.
 
 -------------------------------------------------------------------
