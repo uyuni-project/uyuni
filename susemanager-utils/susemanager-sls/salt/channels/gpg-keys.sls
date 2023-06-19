@@ -23,6 +23,12 @@ trust_res_gpg_key:
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
     - runas: root
 
+trust_liberty_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:liberty:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:liberty:name') }}
+    - runas: root
+
 trust_suse_manager_tools_rhel_gpg_key:
   cmd.run:
 {%- if grains['osmajorrelease']|int == 6 %}
