@@ -1,3 +1,4 @@
+- Update jetty-util from version 9.4.48 to 9.4.51
 - catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
 - Improve handling of websocket exceptions
 - Release DB connection in RHN Message Dispatcher thread
