@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -62,17 +63,13 @@ public class RepoSyncTask extends RhnJavaJob {
     public void execute(JobExecutionContext context) {
         List<Long> channelIds = getChannelIds(context.getJobDetail().getJobDataMap());
 
-        String[] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
+        List<String> lparams = Arrays.asList("no-errata", "latest", "sync-kickstart", "fail");
         List<String> ltrue = Arrays.asList("true", "1");
-        List<String> params = new ArrayList<>();
-        for (String p : lparams) {
-            if (context.getJobDetail().getJobDataMap().containsKey(p)) {
-                if (ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString()
-                        .toLowerCase().trim())) {
-                    params.add("--" + p);
-                }
-            }
-        }
+        List<String> params = lparams.stream()
+                .filter(p -> context.getJobDetail().getJobDataMap().containsKey(p) &&
+                    ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString().toLowerCase().trim()))
+                .map(p -> "--" + p)
+                .collect(Collectors.toList());
 
         for (Long channelId : channelIds) {
             Channel channel = ChannelFactory.lookupById(channelId);
@@ -81,33 +78,20 @@ public class RepoSyncTask extends RhnJavaJob {
 
                 try {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
+                    NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                            new ChannelSyncFinished(channel.getId(), channel.getName())
+                    );
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.ofNullable(channel.getOrg()));
                 }
                 catch (JobExecutionException e) {
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                             new ChannelSyncFailed(channel.getId(), channel.getName(), e.getMessage())
                     );
-                    if (channel.getOrg() == null) {
-                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-                    }
-                    else {
-                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
-                    }
-
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.ofNullable(channel.getOrg()));
 
                     log.error(e.getMessage());
-                }
-                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        new ChannelSyncFinished(channel.getId(), channel.getName())
-                );
-                if (channel.getOrg() == null) {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-                }
-                else {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
                 }
             }
             else {
