@@ -581,8 +581,8 @@ When(/^the server starts mocking a Redfish host$/) do
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
-  $server.run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
-  $server.run('unzip DSP2043_2019.1.zip')
+  $server.run('curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
+  $server.run('unzip /root/DSP2043_2019.1.zip -d /root/')
   cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{$server.full_hostname} -p 8443 " \
         "-S -D /root/DSP2043_2019.1/public-catfish/ " \
