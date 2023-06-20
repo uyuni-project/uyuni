@@ -13,6 +13,8 @@ jobs:
   test-uyuni:
     runs-on: ubuntu-22.04
     steps:
+      - name: debug_info
+        run: sh "dpkg -l podman && apt-get update && apt-cache policy podman"
       - name: maintenance_message
         run: echo "Disabled for maintenance. See https://github.com/uyuni-project/uyuni/discussions/7164" && exit -1
       - name: welcome_message
