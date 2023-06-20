@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: debug_info
         run: sh -c "dpkg -l podman && sudo apt-get update && apt-cache policy podman"
-      - name: maintenance_message
-        run: echo "Disabled for maintenance. See https://github.com/uyuni-project/uyuni/discussions/7164" && exit -1
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v3
