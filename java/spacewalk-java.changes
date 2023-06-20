@@ -1,3 +1,4 @@
+- Update tomcat jars to version 9.0.75 (for dev and test)
 - Update jetty-util to version 9.4.51 (for dev and test)
 
 -------------------------------------------------------------------
