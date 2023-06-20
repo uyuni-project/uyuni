@@ -19,8 +19,6 @@ jobs:
         run: echo "Disabled for maintenance. See https://github.com/uyuni-project/uyuni/discussions/7164" && exit -1
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
-      - name: Install-Podman
-        run: sh -c "sudo apt-get update && sudo apt-get -y install podman"
       - uses: actions/checkout@v3
       - name: Cache-jar-files
         uses: actions/cache@v3
