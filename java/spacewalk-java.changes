@@ -1,3 +1,5 @@
+- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+  Management Management/Operations on SSM -> Provisioning
 - catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
 - Improve handling of websocket exceptions
 - Release DB connection in RHN Message Dispatcher thread
