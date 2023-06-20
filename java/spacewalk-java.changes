@@ -1,3 +1,5 @@
+- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+  Management Management/Operations on SSM -> Provisioning
 - Update copyright year (bsc#1212106)
 - Disable jinja processing for the roster file (bsc#1211650)
 
