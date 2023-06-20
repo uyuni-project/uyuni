@@ -13,6 +13,8 @@ jobs:
   test-uyuni:
     runs-on: ubuntu-22.04
     steps:
+      - name: maintenance_message
+        run: echo "Disabled for maintenance. See https://github.com/uyuni-project/uyuni/discussions/7164" && exit -1
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - name: Install-Podman
