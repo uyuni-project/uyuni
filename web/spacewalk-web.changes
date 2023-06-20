@@ -1,3 +1,4 @@
+- Fix VHM CPU and RAM display when 0 (bsc#1175823)
 - Align the order of the Refresh and Create buttons for more
   consistency
 - Fix layout alignment on pages showing failed states logs (bsc#1211713)
