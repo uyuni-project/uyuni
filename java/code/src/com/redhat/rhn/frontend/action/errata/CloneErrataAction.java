@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -115,7 +116,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
         if (channels != null) {
             for (Channel c : channels) {
                 // /me wonders if this shouldn't be part of the query.
-                if ("rpm".equals(c.getChannelArch().getArchType().getLabel())) {
+                if (PackageFactory.ARCH_TYPE_RPM.equals(c.getChannelArch().getArchType().getLabel())) {
                     displayList.add(new LabelValueBean(c.getName(),
                             "channel_" + c.getId()));
                 }

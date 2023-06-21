@@ -39,8 +39,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PaygAuthDataProcessor {
@@ -66,7 +68,7 @@ public class PaygAuthDataProcessor {
         Credentials credentials = processAndGetCredentials(instance, paygData);
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(credentials);
 
-        List<SCCRepository> repositories = getReposToInsert(paygData.getProducts());
+        Set<SCCRepository> repositories = getReposToInsert(paygData.getProducts());
 
         List<SCCRepositoryAuth> processedRepoAuth = new ArrayList<>();
         repositories.forEach(sccRepo-> {
@@ -114,8 +116,9 @@ public class PaygAuthDataProcessor {
 
         final String username = paygData.getBasicAuth().get("username");
         final String password = paygData.getBasicAuth().get("password");
+        Credentials credentialsIn = instance.getCredentials();
         Credentials credentials = Optional.ofNullable(instance.getCredentials()).orElseGet(() ->
-                CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT, null));
+                CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT));
 
         credentials.setUsername(username);
         credentials.setPassword(password);
@@ -131,7 +134,12 @@ public class PaygAuthDataProcessor {
         }
         credentials.setPaygSshData(instance);
 
-        CredentialsFactory.storeCredentials(credentials);
+        if (credentialsIn == null || !credentialsIn.equals(credentials)) {
+            // storeCredentials update the modified date which should only be
+            // done when the data really change as it would force a full
+            // scc product refresh
+            CredentialsFactory.storeCredentials(credentials);
+        }
 
         instance.setCredentials(credentials);
         PaygSshDataFactory.savePaygSshData(instance);
@@ -139,9 +147,26 @@ public class PaygAuthDataProcessor {
         return credentials;
     }
 
-    private List<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
-        return products.stream().map(product ->
-            SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(product.getName(), product.getArch())
-        ).flatMap(List::stream).collect(Collectors.toList());
+    private Set<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
+        return products.stream()
+                .map(product -> {
+                    if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
+                        return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
+                                product.getName(), product.getVersion(), product.getArch());
+                    }
+
+                    return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
+                            product.getName(), product.getArch())
+                            .stream()
+                            // We add Tools Channels directly to SLE12 products, but they are not accessible
+                            // via the SLES credentials. We need to remove them from all except the sle-manager-tools
+                            // product
+                            .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
+                                           r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")))
+                            .collect(Collectors.toSet());
+
+                })
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 }

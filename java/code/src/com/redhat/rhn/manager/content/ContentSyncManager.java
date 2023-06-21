@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -24,6 +25,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -52,13 +55,15 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.client.SCCClientUtils;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCOrderItemJson;
@@ -116,7 +121,7 @@ import java.util.stream.Stream;
 public class ContentSyncManager {
 
     // Logger instance
-    private static Logger log = LogManager.getLogger(ContentSyncManager.class);
+    private static final Logger LOG = LogManager.getLogger(ContentSyncManager.class);
 
     /**
      * OES channel family name, this is used to distinguish supported non-SUSE
@@ -125,7 +130,6 @@ public class ContentSyncManager {
     public static final String OES_CHANNEL_FAMILY = "OES2";
     private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
             "OES11-SP2-Pool/sle-11-x86_64/";
-
 
     // Static JSON files we parse
     private static File upgradePathsJson = new File(
@@ -136,11 +140,9 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/additional_products.json");
     private static File additionalRepositoriesJson = new File(
             "/usr/share/susemanager/scc/additional_repositories.json");
-    private static Optional<File> sumaProductTreeJson = Optional.empty();
 
     // File to parse this system's UUID from
-    private static final File UUID_FILE =
-            new File("/etc/zypp/credentials.d/SCCcredentials");
+    private static final File UUID_FILE = new File("/etc/zypp/credentials.d/SCCcredentials");
     private static String uuid;
 
     // Mirror URL read from rhn.conf
@@ -149,10 +151,30 @@ public class ContentSyncManager {
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
 
+    private Optional<File> sumaProductTreeJson = Optional.empty();
+
+    private CloudPaygManager cloudPaygManager;
+
+    private Path tmpLoggingDir;
+
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
+        cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    }
+
+    /**
+     * Constructor for testing
+     * @param tmpLogDir overwrite logdir for credential output
+     * @param paygMgrIn {@link CloudPaygManager} to use
+     */
+    public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
+        super();
+        tmpLoggingDir = tmpLogDir;
+        if (paygMgrIn != null) {
+            cloudPaygManager = paygMgrIn;
+        }
     }
 
     /**
@@ -164,11 +186,27 @@ public class ContentSyncManager {
     }
 
     /**
+     * Set the channel_family.json {@link File} to a different path.
+     * @param file the channel_family.json
+     */
+    public void setChannelFamiliesJson(File file) {
+        channelFamiliesJson = file;
+    }
+
+    /**
      * Set the product_tree.json {@link File} to read from.
      * @param file the product_tree.json file
      */
     public void setSumaProductTreeJson(Optional<File> file) {
         sumaProductTreeJson = file;
+    }
+
+    /**
+     * Set the additional_products.json {@link File} to read from.
+     * @param file the add additional_products.json file
+     */
+    public void setAdditionalProductsJson(File file) {
+        additionalProductsJson = file;
     }
 
     /**
@@ -185,10 +223,10 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(ChannelFamilyJson.class));
         }
         catch (IOException e) {
-            log.error(e);
+            LOG.error(e);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Read {} channel families from {}", channelFamilies.size(),
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Read {} channel families from {}", channelFamilies.size(),
                     channelFamiliesJson.getAbsolutePath());
         }
         return channelFamilies;
@@ -211,8 +249,8 @@ public class ContentSyncManager {
         catch (Exception e) {
             throw new ContentSyncException(e);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Read {} upgrade paths from {}", upPaths.size(), upgradePathsJson.getAbsolutePath());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Read {} upgrade paths from {}", upPaths.size(), upgradePathsJson.getAbsolutePath());
         }
         return upPaths;
     }
@@ -233,8 +271,18 @@ public class ContentSyncManager {
             return list;
         }
 
-        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+        List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
         if (credentials.isEmpty()) {
+            if (cloudPaygManager.isPaygInstance()) {
+                // We look for the local RMT Cloud Credentials as alternative
+                List<Credentials> rmtCreds = PaygSshDataFactory.lookupByHostname("localhost")
+                        .map(PaygSshData::getCredentials)
+                        .stream().collect(Collectors.toList());
+                if (!rmtCreds.isEmpty()) {
+                    return rmtCreds;
+                }
+            }
+            // TODO: is just an empty list for no credentials ok as well? Test it out
             throw new ContentSyncException("No SCC organization credentials found.");
         }
         else {
@@ -274,7 +322,7 @@ public class ContentSyncManager {
                 // Check for missing attributes
                 String missing = verifySCCProduct(product);
                 if (!StringUtils.isBlank(missing)) {
-                    log.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
+                    LOG.warn("Broken product: {}, Version: {}, Identifier: {}, Product ID: {} " +
                                     "### Missing attributes: {}", product.getName(), product.getVersion(),
                             product.getIdentifier(), product.getId(), missing);
                 }
@@ -284,8 +332,8 @@ public class ContentSyncManager {
             }
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} available products.", productList.size());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found {} available products.", productList.size());
         }
 
         return new ArrayList<>(productList);
@@ -308,7 +356,7 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(SCCRepositoryJson.class));
         }
         catch (IOException e) {
-            log.error(e);
+            LOG.error(e);
         }
         repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
         return repos;
@@ -348,7 +396,7 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(SCCProductJson.class));
         }
         catch (IOException e) {
-            log.error(e);
+            LOG.error(e);
         }
         return fixAdditionalProducts(additionalProducts);
     }
@@ -359,7 +407,7 @@ public class ContentSyncManager {
      */
     public List<MgrSyncProductDto> listProducts() {
         if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription())) {
-            log.warn("No SUSE Manager Server Subscription available. " +
+            LOG.warn("No SUSE Manager Server Subscription available. " +
                      "Products requiring Client Tools Channel will not be shown.");
         }
         return HibernateFactory.doWithoutAutoFlushing(this::listProductsImpl);
@@ -393,7 +441,7 @@ public class ContentSyncManager {
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
         List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> availableChannels =
-                TimeUtils.logTime(log, "getAvailableCHannels", this::getAvailableChannels).stream().map(e -> {
+                TimeUtils.logTime(LOG, "getAvailableCHannels", this::getAvailableChannels).stream().map(e -> {
                     MgrSyncStatus status = installedChannelLabels.contains(e.getChannelLabel()) ?
                             MgrSyncStatus.INSTALLED : MgrSyncStatus.AVAILABLE;
                     return new Tuple2<>(e, status);
@@ -418,7 +466,7 @@ public class ContentSyncManager {
         Map<Long, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> byRootId = availableChannels.stream()
                 .collect(Collectors.groupingBy(p -> p.getA().getRootProduct().getId()));
 
-        List<MgrSyncProductDto> productDtos = roots.stream()
+        return roots.stream()
                 .filter(p -> byProductId.containsKey(p.getId()))
                 .map(root -> {
 
@@ -480,7 +528,6 @@ public class ContentSyncManager {
             Set<MgrSyncProductDto> extensions = byExtension.entrySet().stream().map(e -> {
                 SUSEProduct ext = e.getKey();
 
-
                 Set<MgrSyncChannelDto> extChildChannels = e.getValue().stream().map(c -> new MgrSyncChannelDto(
                         c.getA().getChannelName(),
                         c.getA().getChannelLabel(),
@@ -503,25 +550,16 @@ public class ContentSyncManager {
                         .map(s -> s.contains(root.getProductId()))
                         .orElse(false);
 
-                MgrSyncProductDto productDto = new MgrSyncProductDto(
+                return new MgrSyncProductDto(
                         ext.getFriendlyName(), ext.getProductId(), ext.getId(), ext.getVersion(), isRecommended,
                         baseChannel, extChildChannels, Collections.emptySet()
                 );
-
-                return productDto;
             }).collect(Collectors.toSet());
 
-
-            MgrSyncProductDto rootProductDto = new MgrSyncProductDto(
+            return new MgrSyncProductDto(
                     root.getFriendlyName(), root.getProductId(), root.getId(), root.getVersion(), false,
-                    baseChannel, allChannels, extensions
-            );
-
-            return rootProductDto;
+                    baseChannel, allChannels, extensions);
         }).collect(Collectors.toList());
-
-
-        return productDtos;
     }
 
     /**
@@ -544,20 +582,22 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             List<SCCRepositoryJson> repos = new LinkedList<>();
-            log.debug("Getting repos for: {}", c);
-            try {
-                SCCClient scc = getSCCClient(c);
-                repos = scc.listRepositories();
-            }
-            catch (SCCClientException e) {
-                // test for OES credentials
-                if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
-                    log.info("Credential is not an OES credentials");
+            LOG.debug("Getting repos for: {}", c);
+            if (c == null || c.isTypeOf(Credentials.TYPE_SCC)) {
+                try {
+                    SCCClient scc = getSCCClient(c);
+                    repos = scc.listRepositories();
+                }
+                catch (SCCClientException e) {
+                    // test for OES credentials
+                    if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                        LOG.info("Credential is not an OES credentials");
+                        throw new ContentSyncException(e);
+                    }
+                }
+                catch (URISyntaxException e) {
                     throw new ContentSyncException(e);
                 }
-            }
-            catch (URISyntaxException e) {
-                throw new ContentSyncException(e);
             }
             repos.addAll(getAdditionalRepositories());
             refreshRepositoriesAuthentication(repos, c, mirrorUrl);
@@ -601,28 +641,28 @@ public class ContentSyncManager {
      * @param mirrorUrl optional mirror url
      */
     public void linkAndRefreshContentSource(String mirrorUrl) {
-        log.debug("linkAndRefreshContentSource called");
+        LOG.debug("linkAndRefreshContentSource called");
         // flush needed to let the next queries find something
         HibernateFactory.getSession().flush();
         // find all CountentSource with org id == NULL which do not have a sccrepositoryauth
         List<ContentSource> orphan = ChannelFactory.lookupOrphanVendorContentSources();
         if (orphan != null) {
-            log.debug("found orphan vendor content sources: {}", orphan.size());
+            LOG.debug("found orphan vendor content sources: {}", orphan.size());
             // find sccrepositoryauth and link
             orphan.forEach(cs ->
                 cs.getChannels().forEach(c ->
                     Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
                     () -> {
-                        log.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
+                        LOG.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
                         ChannelFactory.remove(cs);
                     },
                     repo ->
                         Opt.consume(repo.getBestAuth(),
                         () -> {
-                            log.debug("No auth anymore - remove content source: {}", cs.getLabel());
+                            LOG.debug("No auth anymore - remove content source: {}", cs.getLabel());
                             ChannelFactory.remove(cs);
                         }, auth -> {
-                                    log.debug("Has new auth: {}", cs.getLabel());
+                            LOG.debug("Has new auth: {}", cs.getLabel());
                             auth.setContentSource(cs);
                             SCCCachingFactory.saveRepositoryAuth(auth);
                         })
@@ -633,17 +673,17 @@ public class ContentSyncManager {
         // find all rhnChannel with org id == null and no content source
         List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
         if (orphanChannels != null) {
-            log.debug("found orphan vendor channels: {}", orphanChannels.size());
+            LOG.debug("found orphan vendor channels: {}", orphanChannels.size());
             // find sccrepository auth and create content source and link
             orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
-                () -> log.error("No repository found for channel: '{}'", c.getLabel()),
-                repo -> {
-                    log.debug("configure orphan repo {}", repo.toString());
-                    repo.getBestAuth().ifPresentOrElse(
-                            a -> createOrUpdateContentSource(a, c, mirrorUrl),
-                            () -> log.info("No Auth available for {}", repo.toString())
-                            );
-                }
+                    () -> LOG.error("No repository found for channel: '{}'", c.getLabel()),
+                    repo -> {
+                        LOG.debug("configure orphan repo {}", repo.toString());
+                        repo.getBestAuth().ifPresentOrElse(
+                                a -> createOrUpdateContentSource(a, c, mirrorUrl),
+                                () -> LOG.info("No Auth available for {}", repo.toString())
+                        );
+                    }
             ));
         }
         // update URL if needed
@@ -654,14 +694,14 @@ public class ContentSyncManager {
             // check if this auth item is the "best" available auth for this repo
             // if not, switch it over to the best
             if (auth.getRepo().getBestAuth().isEmpty()) {
-                log.warn("no best auth available for repo {}", auth.getRepo());
+                LOG.warn("no best auth available for repo {}", auth.getRepo());
                 continue;
             }
             SCCRepositoryAuth bestAuth = auth.getRepo().getBestAuth().get();
             if (!bestAuth.equals(auth)) {
                 // we are not the "best" available repository auth item.
                 // remove the content source link and set it to the "best"
-                log.info("Auth '{}' became the best auth. Remove CS link from {}", bestAuth.getId(), auth.getId());
+                LOG.info("Auth '{}' became the best auth. Remove CS link from {}", bestAuth.getId(), auth.getId());
                 auth.setContentSource(null);
                 bestAuth.setContentSource(cs);
                 SCCCachingFactory.saveRepositoryAuth(auth);
@@ -670,10 +710,10 @@ public class ContentSyncManager {
                 auth = bestAuth;
             }
             String overwriteUrl = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
-            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: '%s'",
+            LOG.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: '%s'",
                     cs.getSourceUrl(), overwriteUrl, auth.getUrl(), mirrorUrl));
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                log.debug("Change URL to : {}", overwriteUrl);
+                LOG.debug("Change URL to : {}", overwriteUrl);
                 cs.setSourceUrl(overwriteUrl);
                 save = true;
             }
@@ -698,10 +738,10 @@ public class ContentSyncManager {
             ContentSource cs = a.getContentSource();
             try {
                 String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
-                log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
+                LOG.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
                         cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
                 if (!cs.getSourceUrl().equals(overwriteUrl)) {
-                    log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
+                    LOG.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
                     return true;
                 }
             }
@@ -714,7 +754,7 @@ public class ContentSyncManager {
 
         Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
-            log.debug("Syncing from dir");
+            LOG.debug("Syncing from dir");
             long hours24 = 24 * 60 * 60 * 1000;
             Timestamp t = new Timestamp(System.currentTimeMillis() - hours24);
 
@@ -722,12 +762,12 @@ public class ContentSyncManager {
                     lastRefreshDate,
                     () -> true,
                     modifiedCache -> {
-                        log.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache.toString(), t.toString());
+                        LOG.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache.toString(), t.toString());
                         return t.after(modifiedCache) ? true : false;
                     }
             );
         }
-        else if (CredentialsFactory.lookupSCCCredentials().isEmpty()) {
+        else if (CredentialsFactory.listSCCCredentials().isEmpty()) {
             // Can happen when neither SCC Credentials nor fromdir is configured
             // in such a case, refresh makes no sense.
             return false;
@@ -776,12 +816,14 @@ public class ContentSyncManager {
             // cleanup if we come from scc
             allRepoAuths.stream()
                 .filter(a -> a.getOptionalCredentials().isPresent())
+                .filter(a -> a.cloudRmtAuth().isEmpty())
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
         }
         else {
             // cleanup if we come from "fromdir"
             allRepoAuths.stream()
-                .filter(a -> !a.getOptionalCredentials().isPresent())
+                .filter(a -> a.getOptionalCredentials().isEmpty())
+                .filter(a -> a.cloudRmtAuth().isEmpty())
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
         }
         allRepoAuths = null;
@@ -793,14 +835,14 @@ public class ContentSyncManager {
             }
             SCCRepository repo = availableRepos.get(jrepo.getSCCId());
             if (repo == null) {
-                log.error("No repository with ID '{}' found", jrepo.getSCCId());
+                LOG.error("No repository with ID '{}' found", jrepo.getSCCId());
                 continue;
             }
             Set<SCCRepositoryAuth> allAuths = repo.getRepositoryAuth();
             Set<SCCRepositoryAuth> authsThisCred = allAuths.stream()
                     .filter(a -> {
                         if (c == null) {
-                            return !a.getOptionalCredentials().isPresent();
+                            return a.getOptionalCredentials().isEmpty();
                         }
                         else {
                             Optional<Credentials> oc = a.getOptionalCredentials();
@@ -809,8 +851,8 @@ public class ContentSyncManager {
                     })
                     .collect(Collectors.toSet());
             if (authsThisCred.size() > 1) {
-                log.error("More than 1 authentication found for one credential - removing all unused");
-                authsThisCred.stream().forEach(a -> {
+                LOG.error("More than 1 authentication found for one credential - removing all unused");
+                authsThisCred.forEach(a -> {
                     allAuths.remove(a);
                     authsThisCred.remove(a);
                     repo.setRepositoryAuth(allAuths);
@@ -831,7 +873,7 @@ public class ContentSyncManager {
                 newAuth = new SCCRepositoryTokenAuth(tokenOpt.get());
             }
             else if (repo.getProducts().isEmpty()) {
-                log.debug("Repo '{}' not in the product tree. Skipping", repo.getUrl());
+                LOG.debug("Repo '{}' not in the product tree. Skipping", repo.getUrl());
                 continue;
             }
             else if (c != null &&
@@ -840,7 +882,7 @@ public class ContentSyncManager {
                         .filter(SUSEProduct::getFree)
                         .anyMatch(p -> p.getChannelFamily().getLabel().startsWith("SLE-M-T") ||
                                 p.getChannelFamily().getLabel().startsWith("OPENSUSE"))) {
-                log.debug("Free repo detected. Setting NoAuth for {}", repo.getUrl());
+                LOG.debug("Free repo detected. Setting NoAuth for {}", repo.getUrl());
                 newAuth = new SCCRepositoryNoAuth();
             }
             else {
@@ -853,7 +895,7 @@ public class ContentSyncManager {
                         }
                         else {
                             // we do not handle the case where the credentials are part of the URL
-                            log.error("URLs with credentials not supported");
+                            LOG.error("URLs with credentials not supported");
                             continue;
                         }
                     }
@@ -866,7 +908,7 @@ public class ContentSyncManager {
                     }
                 }
                 catch (URISyntaxException e) {
-                    log.warn("Unable to parse URL");
+                    LOG.warn("Unable to parse URL");
                     continue;
                 }
             }
@@ -916,8 +958,9 @@ public class ContentSyncManager {
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
         authList.stream()
-            .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
-            .forEach(SCCCachingFactory::deleteRepositoryAuth);
+                .filter(repoAuth -> repoAuth.cloudRmtAuth().isEmpty()) // rmtAuth is handled elsewhere
+                .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
+                .forEach(SCCCachingFactory::deleteRepositoryAuth);
 
         if (withFix) {
             SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst()
@@ -987,7 +1030,7 @@ public class ContentSyncManager {
             uri = new URI(jrepo.getUrl());
         }
         catch (URISyntaxException e) {
-            log.warn("Unable to parse URL '{}'. Skipping", jrepo.getUrl(), e);
+            LOG.warn("Unable to parse URL '{}'. Skipping", jrepo.getUrl(), e);
             return null;
         }
 
@@ -1005,7 +1048,7 @@ public class ContentSyncManager {
 
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
         if (product == null) {
-            log.warn("Skipping PTF repo for unknown product: {}", uri);
+            LOG.warn("Skipping PTF repo for unknown product: {}", uri);
             return null;
         }
 
@@ -1018,7 +1061,7 @@ public class ContentSyncManager {
                 channelParts.add("TEST");
                 break;
             default:
-                log.warn("Unknown repo type: {}. Skipping", parts[7]);
+                LOG.warn("Unknown repo type: {}. Skipping", parts[7]);
                 return null;
         }
         channelParts.add(prdArch);
@@ -1065,7 +1108,7 @@ public class ContentSyncManager {
                });
         if (StringUtils.isBlank(prodRepoLink.getChannelLabel())) {
             // mandatory field is missing. This happens when a product does not have suseProductSCCRepositories
-            log.info("Product '{}' does not have repositories. Skipping.", root);
+            LOG.info("Product '{}' does not have repositories. Skipping.", root);
             return null;
         }
         return prodRepoLink;
@@ -1097,16 +1140,15 @@ public class ContentSyncManager {
             Set<SCCRepositoryAuth> authsThisCred = allAuths.stream()
                     .filter(a -> {
                         if (c == null) {
-                            return !a.getOptionalCredentials().isPresent();
+                            return a.getOptionalCredentials().isEmpty();
                         }
                         else {
-                            Optional<Credentials> oc = a.getOptionalCredentials();
-                            return oc.isPresent() && oc.get().equals(c);
+                            return a.getOptionalCredentials().filter(oc -> oc.equals(c)).isPresent();
                         }
                     })
                     .collect(Collectors.toSet());
             if (authsThisCred.size() > 1) {
-                log.error("More than 1 authentication found for one credential - removing all");
+                LOG.error("More than 1 authentication found for one credential - removing all");
                 authsThisCred.forEach(a -> {
                     allAuths.remove(a);
                     authsThisCred.remove(a);
@@ -1124,7 +1166,7 @@ public class ContentSyncManager {
                     }
                 }
                 catch (URISyntaxException e) {
-                    log.error("Failed to parse URL", e);
+                    LOG.error("Failed to parse URL", e);
                     continue;
                 }
                 newAuth = new SCCRepositoryNoAuth();
@@ -1205,7 +1247,7 @@ public class ContentSyncManager {
             }
         }
         catch (URISyntaxException e) {
-            log.warn(e.getMessage());
+            LOG.warn(e.getMessage());
         }
         return defaultUrl;
     }
@@ -1270,11 +1312,11 @@ public class ContentSyncManager {
             subscriptionsBySccId.put(ns.getSccId(), ns);
             cachedSccIDs.remove(s.getId());
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} subscriptions with credentials: {}", subscriptions.size(), c);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found {} subscriptions with credentials: {}", subscriptions.size(), c);
         }
         for (Long subId : cachedSccIDs) {
-            log.debug("Delete Subscription with sccId: {}", subId);
+            LOG.debug("Delete Subscription with sccId: {}", subId);
             SCCCachingFactory.deleteSubscriptionBySccId(subId);
         }
     }
@@ -1300,7 +1342,7 @@ public class ContentSyncManager {
             }
         }
         catch (URISyntaxException e) {
-            log.error("Invalid URL:{}", e.getMessage());
+            LOG.error("Invalid URL:{}", e.getMessage());
             return new ArrayList<>();
         }
         refreshSubscriptionCache(subscriptions, credentials);
@@ -1316,11 +1358,15 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public Collection<SCCSubscriptionJson> updateSubscriptions() throws ContentSyncException {
-        log.info("ContentSyncManager.getSubscriptions called");
+        LOG.info("ContentSyncManager.getSubscriptions called");
         Set<SCCSubscriptionJson> subscriptions = new HashSet<>();
         List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
+            if (c != null && c.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+                // RMT report always empty subscriptions
+                continue;
+            }
             try {
                 subscriptions.addAll(updateSubscriptions(c));
             }
@@ -1328,10 +1374,10 @@ public class ContentSyncManager {
                 throw new ContentSyncException(e);
             }
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} available subscriptions.", subscriptions.size());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found {} available subscriptions.", subscriptions.size());
         }
-        log.info("ContentSyncManager.getSubscriptions finished");
+        LOG.info("ContentSyncManager.getSubscriptions finished");
         return subscriptions;
     }
 
@@ -1355,7 +1401,7 @@ public class ContentSyncManager {
             }
         }
         catch (URISyntaxException e) {
-            log.error("Invalid URL:{}", e.getMessage());
+            LOG.error("Invalid URL:{}", e.getMessage());
         }
         List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(c);
         for (SCCOrderJson order : orders) {
@@ -1385,7 +1431,7 @@ public class ContentSyncManager {
                 .filter(sub -> "oem".equals(sub.getType()))
                 .forEach(sub -> {
                     if (sub.getSkus().size() == 1) {
-                        log.debug("Generating order item for OEM subscription {}, SCC ID: {}",
+                        LOG.debug("Generating order item for OEM subscription {}, SCC ID: {}",
                                 sub.getName(), sub.getId());
                         long subscriptionSccId = sub.getId();
                         SCCOrderItem oemOrder = SCCCachingFactory.lookupOrderItemBySccId(-subscriptionSccId)
@@ -1402,7 +1448,7 @@ public class ContentSyncManager {
                         existingOI.remove(oemOrder);
                     }
                     else {
-                        log.warn("Subscription {}, SCC ID: {} does not have a single SKU. " +
+                        LOG.warn("Subscription {}, SCC ID: {} does not have a single SKU. " +
                                 "Not generating Order Item for it.", sub.getName(), sub.getId());
                     }
                 });
@@ -1421,9 +1467,9 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateRepositories(String mirrorUrl) throws ContentSyncException {
-        log.info("ContentSyncManager.updateRepository called");
+        LOG.info("ContentSyncManager.updateRepository called");
         refreshRepositoriesAuthentication(mirrorUrl);
-        log.info("ContentSyncManager.updateRepository finished");
+        LOG.info("ContentSyncManager.updateRepository finished");
     }
 
     /**
@@ -1433,7 +1479,7 @@ public class ContentSyncManager {
      */
     public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies)
             throws ContentSyncException {
-        log.info("ContentSyncManager.updateChannelFamilies called");
+        LOG.info("ContentSyncManager.updateChannelFamilies called");
         List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
         for (ChannelFamilyJson channelFamily : channelFamilies) {
@@ -1451,7 +1497,7 @@ public class ContentSyncManager {
                 }
             }
         }
-        log.info("ContentSyncManager.updateChannelFamilies finished");
+        LOG.info("ContentSyncManager.updateChannelFamilies finished");
     }
 
     /**
@@ -1485,7 +1531,7 @@ public class ContentSyncManager {
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
             // unsupported architecture, skip the product
-            log.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
         }
         else {
             product.setArch(pArch);
@@ -1532,7 +1578,7 @@ public class ContentSyncManager {
         PackageArch pArch = packageArchMap.computeIfAbsent(p.getArch(), PackageFactory::lookupPackageArchByLabel);
         if (pArch == null && p.getArch() != null) {
             // unsupported architecture, skip the product
-            log.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
+            LOG.error("Unknown architecture '{}'. This may be caused by a missing database migration", p.getArch());
         }
         else {
             product.setArch(pArch);
@@ -1591,7 +1637,7 @@ public class ContentSyncManager {
                         SCCClientUtils.toListType(ProductTreeEntry.class));
             }
             catch (IOException e) {
-                log.error(e);
+                LOG.error(e);
             }
         }
         else {
@@ -1773,7 +1819,7 @@ public class ContentSyncManager {
         Map<Tuple3<Long, Long, Long>, SUSEProductExtension> extensionsToSave = new HashMap<>();
         Set<String> channelsToCleanup = new HashSet<>();
 
-        tree.stream().forEach(entry -> {
+        tree.forEach(entry -> {
             SCCProductJson productJson = productsById.get(entry.getProductId());
 
             SCCRepositoryJson repoJson = reposById.get(entry.getRepositoryId());
@@ -1784,7 +1830,7 @@ public class ContentSyncManager {
                     .map(id -> Optional.ofNullable(productsById.get(id)));
 
             if (productJson != null  && repoJson != null && rootJson != null &&
-                    (!parentJson.isPresent() || parentJson.get().isPresent())) {
+                    (parentJson.isEmpty() || parentJson.get().isPresent())) {
 
                 Tuple3<Long, Long, Long> ids = new Tuple3<>(rootJson.getId(), productJson.getId(), repoJson.getSCCId());
                 SUSEProduct product = productMap.get(productJson.getId());
@@ -1809,7 +1855,7 @@ public class ContentSyncManager {
                             prodRepoLink.setRootProduct(root);
                             if (!entry.getGpgInfo().isEmpty()) {
                                 prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
-                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                        .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
                                 // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
@@ -1831,19 +1877,19 @@ public class ContentSyncManager {
                             else {
                                 if (!entry.getParentChannelLabel()
                                         .equals(Optional.ofNullable(prodRepoLink.getParentChannelLabel()))) {
-                                    log.error("parent_channel_label changed from '{}' to '{}' but its not allowed " +
+                                    LOG.error("parent_channel_label changed from '{}' to '{}' but its not allowed " +
                                             "to change.", prodRepoLink.getParentChannelLabel(),
                                             entry.getParentChannelLabel());
                                 }
 
                                 if (!entry.getUpdateTag()
                                         .equals(Optional.ofNullable(prodRepoLink.getUpdateTag()))) {
-                                    log.debug("updatetag changed from '{}' to '{}' but its not allowed to change.",
+                                    LOG.debug("updatetag changed from '{}' to '{}' but its not allowed to change.",
                                             prodRepoLink.getUpdateTag(), entry.getUpdateTag());
                                 }
 
                                 if (!entry.getChannelLabel().equals(prodRepoLink.getChannelLabel())) {
-                                    log.error("channel_label changed from '{}' to '{}' but its not allowed to change.",
+                                    LOG.error("channel_label changed from '{}' to '{}' but its not allowed to change.",
                                             prodRepoLink.getChannelLabel(), entry.getChannelLabel());
                                 }
                             }
@@ -1853,7 +1899,7 @@ public class ContentSyncManager {
                             prodRepoLink.getRepository().setSigned(entry.isSigned());
                             if (!entry.getGpgInfo().isEmpty()) {
                                 prodRepoLink.setGpgKeyUrl(entry.getGpgInfo()
-                                        .stream().map(i -> i.getUrl()).collect(Collectors.joining(" ")));
+                                        .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
                                 // we use only the 1st entry for id and fingerprint
                                 prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
                                 prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
@@ -1913,7 +1959,7 @@ public class ContentSyncManager {
         repoMap.values().forEach(SUSEProductFactory::save);
         productReposToSave.values().forEach(SUSEProductFactory::save);
 
-        ChannelFactory.listVendorChannels().stream().forEach(c -> {
+        ChannelFactory.listVendorChannels().forEach(c -> {
             updateChannel(c);
             if (channelsToCleanup.contains(c.getLabel())) {
                 ChannelManager.disassociateChannelEntries(c);
@@ -1947,7 +1993,7 @@ public class ContentSyncManager {
      */
     public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
                                    List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
-        log.info("ContentSyncManager.updateSUSEProducts called");
+        LOG.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
         List<SCCProductJson> allProducts = overrideProductAttributes(
@@ -1976,7 +2022,7 @@ public class ContentSyncManager {
 
         updateUpgradePaths(products, upgradePathJsons);
         HibernateFactory.getSession().flush();
-        log.info("ContentSyncManager.updateSUSEProducts finished");
+        LOG.info("ContentSyncManager.updateSUSEProducts finished");
     }
 
     /**
@@ -2007,7 +2053,7 @@ public class ContentSyncManager {
         if (!isISSSlave) {
             isMirrorable = repo.getRepository().isAccessible();
         }
-        log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {} isAvailable: {}",
+        LOG.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {} isAvailable: {}",
                 repo.getProduct().getFriendlyName(),
                 repo.getChannelLabel(), isPublic, isMirrorable, isISSSlave, isAvailable);
         return  isPublic && (isMirrorable || isISSSlave || isAvailable);
@@ -2048,14 +2094,14 @@ public class ContentSyncManager {
                     .allMatch(entry -> {
                         boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
                         boolean hasAuth = repoIdsWithAuth.contains(entry.getRepository().getId());
-                        log.debug("{} - {} isPublic: {} hasAuth: {}", product.getFriendlyName(),
+                        LOG.debug("{} - {} isPublic: {} hasAuth: {}", product.getFriendlyName(),
                                 entry.getChannelLabel(), isPublic, hasAuth);
                         return  isPublic &&
                                 // isMirrorable
                                 hasAuth;
                     });
 
-        log.debug("{}: {} {}", product.getFriendlyName(), isAccessible, entries.stream()
+        LOG.debug("{}: {} {}", product.getFriendlyName(), isAccessible, entries.stream()
                 .map(SUSEProductSCCRepository::getChannelLabel)
                 .collect(Collectors.joining(",")));
 
@@ -2130,11 +2176,10 @@ public class ContentSyncManager {
      */
     public List<MgrSyncChannelDto> listChannels() {
 
-        List<MgrSyncChannelDto> collect = listProducts().stream().flatMap(p -> Stream.concat(
+        return listProducts().stream().flatMap(p -> Stream.concat(
                 p.getChannels().stream(),
                 p.getExtensions().stream().flatMap(e -> e.getChannels().stream())
                 )).collect(Collectors.toList());
-        return collect;
     }
 
     private Optional<String> getTokenFromURL(String url) {
@@ -2153,7 +2198,7 @@ public class ContentSyncManager {
      */
     public static void updateChannel(Channel dbChannel) {
         if (dbChannel == null) {
-            log.error("Channel does not exist");
+            LOG.error("Channel does not exist");
             return;
         }
         String label = dbChannel.getLabel();
@@ -2162,8 +2207,8 @@ public class ContentSyncManager {
 
         Optional<SUSEProductSCCRepository> prdrepoOpt = suseProductSCCRepositories.stream().findFirst();
         if (prdrepoOpt.isEmpty()) {
-            log.warn("Expired Vendor Channel with label '{}' found. To remove it please run: ", label);
-            log.warn("spacewalk-remove-channel -c {}", label);
+            LOG.warn("Expired Vendor Channel with label '{}' found. To remove it please run: ", label);
+            LOG.warn("spacewalk-remove-channel -c {}", label);
         }
         else {
             SUSEProductSCCRepository productrepo = prdrepoOpt.get();
@@ -2216,8 +2261,8 @@ public class ContentSyncManager {
     public void addChannel(String label, String mirrorUrl) throws ContentSyncException {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Channel exists ({}), returning...", label);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Channel exists ({}), returning...", label);
             }
             return;
         }
@@ -2399,10 +2444,10 @@ public class ContentSyncManager {
                 }
             }
             catch (FileNotFoundException e) {
-                log.info("Server not registered at SCC: {}", e.getMessage());
+                LOG.info("Server not registered at SCC: {}", e.getMessage());
             }
             catch (IOException e) {
-                log.warn("Unable to read SCC credentials file: {}", e.getMessage());
+                LOG.warn("Unable to read SCC credentials file: {}", e.getMessage());
             }
             finally {
                 if (reader != null) {
@@ -2410,14 +2455,14 @@ public class ContentSyncManager {
                         reader.close();
                     }
                     catch (IOException e) {
-                        log.warn("IO exception on SCC credentials file: {}", e.getMessage());
+                        LOG.warn("IO exception on SCC credentials file: {}", e.getMessage());
                     }
                 }
             }
             if (uuid == null) {
                 uuid = Config.get().getString(ConfigDefaults.SCC_BACKUP_SRV_USR);
                 if (uuid == null) {
-                    log.warn("WARNING: unable to read SCC username");
+                    LOG.warn("WARNING: unable to read SCC username");
                 }
             }
         }
@@ -2476,7 +2521,7 @@ public class ContentSyncManager {
             return accessibleUrl(url, username, password);
         }
         catch (URISyntaxException e) {
-            log.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
         }
         return false;
     }
@@ -2498,7 +2543,7 @@ public class ContentSyncManager {
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
                 boolean res = Files.isReadable(testUrlPath);
-                log.debug("accessibleUrl:{} {}", testUrlPath.toString(), res);
+                LOG.debug("accessibleUrl:{} {}", testUrlPath.toString(), res);
                 return res;
             }
             else {
@@ -2507,15 +2552,15 @@ public class ContentSyncManager {
                 // Verify the mirrored repo by sending a HEAD request
                 int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         user, password).getStatusLine().getStatusCode();
-                log.debug("accessibleUrl: {} returned status {}", testUri.toString(), status);
+                LOG.debug("accessibleUrl: {} returned status {}", testUri.toString(), status);
                 return (status == HttpURLConnection.HTTP_OK);
             }
         }
         catch (IOException e) {
-            log.error("accessibleUrl: {} IOException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} IOException {}", url, e.getMessage());
         }
         catch (URISyntaxException e) {
-            log.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
         }
         return false;
     }
@@ -2526,7 +2571,7 @@ public class ContentSyncManager {
      *
      * @param credentials username/password pair
      * @throws URISyntaxException if the URL in configuration file is malformed
-     * @throws SCCClientException
+     * @throws SCCClientException when access is not possible
      * @return {@link SCCWebClient}
      */
     private SCCClient getSCCClient(Credentials credentials)
@@ -2552,11 +2597,28 @@ public class ContentSyncManager {
             }
         }
 
-        String username = credentials == null ? null : credentials.getUsername();
-        String password = credentials == null ? null : credentials.getPassword();
-
-        return SCCClientFactory.getInstance(url, username, password, localAbsolutePath,
-                getUUID());
+        String username = null;
+        String password = null;
+        Map<String, String> addHeaders = new HashMap<>();
+        if (credentials != null) {
+            if (credentials.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+                URI uri = new URI(credentials.getUrl());
+                url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
+                Gson gson = new GsonBuilder().create();
+                addHeaders = gson.fromJson(new String(credentials.getExtraAuthData()), Map.class);
+            }
+            username = credentials.getUsername();
+            password = credentials.getPassword();
+        }
+        if (localAbsolutePath != null) {
+            return new SCCFileClient(new SCCConfig(localAbsolutePath));
+        }
+        SCCConfig config = new SCCConfig(url, username, password, getUUID(), addHeaders);
+        if (tmpLoggingDir != null) {
+            config = new SCCConfig(url, username, password, getUUID(), null,
+                    tmpLoggingDir.toAbsolutePath().toString(), false, addHeaders);
+        }
+        return new SCCWebClient(config);
     }
 
     /**
@@ -2595,6 +2657,22 @@ public class ContentSyncManager {
                .map(SCCSubscription::getProducts)
                .flatMap(Set::stream)
                .filter(p -> p.getChannelFamily() != null)
-               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
+               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
+    }
+
+    /**
+     * Check if Tools Channels can be synced via Cloud RMT Infrastructure.
+     * In PAYG scenario, we do not have a subscription, but we have access
+     * via the Cloud RMT server and can mirror them.
+     * @return return true if we can sync tools channels via Cloud RMT, otherwise false
+     */
+    public boolean canSyncToolsChannelViaCloudRMT() {
+        return SCCCachingFactory.lookupRepositoryAuth().stream()
+                .filter(a -> a.cloudRmtAuth().isPresent())
+                .map(SCCRepositoryAuth::getRepo)
+                .flatMap(r -> r.getProducts().stream())
+                .map(SUSEProductSCCRepository::getProduct)
+                .filter(p -> p.getChannelFamily() != null)
+                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 }

@@ -304,7 +304,7 @@ public class ImageTestUtils {
      */
     public static Credentials createCredentials() {
         return CredentialsFactory.createCredentials("testuser", "testpass",
-                Credentials.TYPE_REGISTRY, null);
+                Credentials.TYPE_REGISTRY);
     }
 
     /**

@@ -40,8 +40,10 @@ public class ChannelFamilyFactory extends HibernateFactory {
 
     private static ChannelFamilyFactory singleton = new ChannelFamilyFactory();
     private static Logger log = LogManager.getLogger(ChannelFamilyFactory.class);
+    public static final String TOOLS_CHANNEL_FAMILY_LABEL = "SLE-M-T";
     public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "SMS";
     public static final String PROXY_CHANNEL_FAMILY_LABEL = "SMP";
+    public static final String MODULE_CHANNEL_FAMILY_LABEL = "MODULE";
 
     private ChannelFamilyFactory() {
         super();
@@ -177,6 +179,13 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param cfam ChannelFamily to be removed from database.
      */
     public static void remove(ChannelFamily cfam) {
+        if (cfam.isPublic()) {
+            singleton.removeObject(cfam.getPublicChannelFamily());
+        }
+        else {
+            cfam.getPrivateChannelFamilies()
+                    .forEach(pcf -> singleton.removeObject(pcf));
+        }
         singleton.removeObject(cfam);
     }
 

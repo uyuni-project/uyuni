@@ -1420,6 +1420,15 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Returns a list of ids of all the servers.
+     *
+     * @return the list of all the ids of the servers
+     */
+    public static List<Long> listAllServerIds() {
+        return getSession().createNamedQuery("Server.listAllServerIds", Long.class).list();
+    }
+
+    /**
      * Get all SLES systems containing the name query string
      *
      * @param nameQuery the partial system name to query

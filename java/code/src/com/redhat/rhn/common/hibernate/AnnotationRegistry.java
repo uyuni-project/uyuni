@@ -79,6 +79,8 @@ import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 
+import com.suse.cloud.domain.PaygDimensionComputation;
+import com.suse.cloud.domain.PaygDimensionResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -161,7 +163,9 @@ public class AnnotationRegistry {
         RecurringState.class,
         RecurringConfigChannel.class,
         RecurringInternalState.class,
-        InternalState.class
+        InternalState.class,
+        PaygDimensionComputation.class,
+        PaygDimensionResult.class
     );
 
     /**

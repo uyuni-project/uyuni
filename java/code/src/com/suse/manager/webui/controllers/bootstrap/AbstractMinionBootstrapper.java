@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.CommandExecutionException;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -68,6 +69,7 @@ public abstract class AbstractMinionBootstrapper {
 
     protected final SaltApi saltApi;
     protected final SystemQuery systemQuery;
+    protected final CloudPaygManager paygManager;
 
     private static final int KEY_LENGTH_LIMIT = 1_000_000;
 
@@ -78,10 +80,12 @@ public abstract class AbstractMinionBootstrapper {
      * Constructor
      * @param systemQueryIn salt service
      * @param saltApiIn salt service
+     * @param paygMgrIn cloudPaygManager
      */
-    protected AbstractMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+    protected AbstractMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
+        this.paygManager = paygMgrIn;
     }
 
     /**
