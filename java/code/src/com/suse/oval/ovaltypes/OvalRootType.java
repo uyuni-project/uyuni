@@ -9,6 +9,8 @@
 package com.suse.oval.ovaltypes;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -45,8 +47,12 @@ public class OvalRootType {
     /**
      * Gets the value of the definitions property.
      */
-    public DefinitionsType getDefinitions() {
-        return definitions;
+    public List<DefinitionType> getDefinitions() {
+        if (definitions == null) {
+            return new ArrayList<>();
+        } else {
+            return definitions.getDefinitions();
+        }
     }
 
     /**
