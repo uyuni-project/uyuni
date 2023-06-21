@@ -85,7 +85,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param family the channel family
      * @return the newly created SUSE product
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) {
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
         return createTestSUSEProduct(family, TestUtils.randomString().toLowerCase());
     }
         /**
