@@ -41,11 +41,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGKeyException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
-import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.channel.CloneChannelCommand;
-import com.redhat.rhn.manager.channel.CreateChannelCommand;
-import com.redhat.rhn.manager.channel.InvalidGPGFingerprintException;
-import com.redhat.rhn.manager.channel.UpdateChannelCommand;
+import com.redhat.rhn.manager.channel.*;
 import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -499,6 +495,10 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         }
         catch (IllegalArgumentException iae) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(iae.getMessage()));
+        }
+        catch (ForbiddenCloneChannelPAYGException f) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "edit.channel.forbiddenclonechannelpayg"));
         }
         return null;
     }
