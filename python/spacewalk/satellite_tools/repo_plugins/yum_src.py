@@ -753,7 +753,7 @@ password={passwd}
 '''
             netloc = parsed_url.hostname
             if parsed_url.port:
-                netloc = "{1}:{2}".format(netloc, parsed_url.port)
+                netloc = "{0}:{1}".format(netloc, parsed_url.port)
             cdir = os.path.join(REPOSYNC_ZYPPER_ROOT, "etc/zypp/credentials.d")
             if not os.path.exists(cdir):
                 os.makedirs(cdir)
