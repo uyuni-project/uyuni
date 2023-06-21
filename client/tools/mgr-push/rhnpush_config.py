@@ -66,7 +66,7 @@ class rhnpushConfigParser:
             'no_session_caching':   '0',
             'proxy':   '',
             'tolerant':   '0',
-            'ca_chain':   '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
+            'ca_chain':   '/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT',
             'timeout': None
         }
 
