@@ -18,7 +18,7 @@
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
 - show virtualization host info in systems overview page
 - OES credentials do not allow access to SCC. Skip them when an
-  SCCClientException is thrown and move forward
+  SCCClientException is thrown and move forward (bsc#1212550)
 - set swap memory value if available
 - set primary FQDN to hostname if none is set (bsc#1209156)
 - fix ISE when neither SCC credentials nor a local mirror is configured
