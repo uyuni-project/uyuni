@@ -261,7 +261,7 @@ class SafeTransport(Transport):
 
     def add_trusted_cert(self, certfile):
         if not os.access(certfile, os.R_OK):
-            raise ValueError("Certificate file %s is not accessible" % certfile)
+            raise ValueError("SafeTransport: Certificate file %s is not accessible" % certfile)
         self.trusted_certs.append(certfile)
 
     def get_connection(self, host):
@@ -316,7 +316,7 @@ class SafeProxyTransport(ProxyTransport):
 
     def add_trusted_cert(self, certfile):
         if not os.access(certfile, os.R_OK):
-            raise ValueError("Certificate file %s is not accessible" % certfile)
+            raise ValueError("SafeProxyTransport:Certificate file %s is not accessible" % certfile)
         self.trusted_certs.append(certfile)
 
     def get_connection(self, host):
