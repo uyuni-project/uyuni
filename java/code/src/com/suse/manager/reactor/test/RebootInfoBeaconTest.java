@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -61,11 +62,13 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
         SaltService saltService = createSaltService();
         SaltServerActionService saltServerActionService = createSaltServerActionService(saltService, saltService);
         SaltUtils saltUtils = new SaltUtils(saltService, saltService);
+        CloudPaygManager paygMgr = new CloudPaygManager();
         reactor = new SaltReactor(
             saltService,
             saltService,
             saltServerActionService,
-            saltUtils
+            saltUtils,
+            paygMgr
         );
     }
 
