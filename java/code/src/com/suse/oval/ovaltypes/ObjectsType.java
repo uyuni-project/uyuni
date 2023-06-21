@@ -8,8 +8,8 @@
 
 package com.suse.oval.ovaltypes;
 
-import com.suse.ovaltypes.linux.DpkginfoObject;
-import com.suse.ovaltypes.linux.RpminfoObject;
+import com.suse.oval.ovaltypes.linux.DpkginfoObject;
+import com.suse.oval.ovaltypes.linux.RpminfoObject;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
