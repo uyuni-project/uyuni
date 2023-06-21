@@ -590,7 +590,7 @@ public class ContentSyncManager {
                 }
                 catch (SCCClientException e) {
                     // test for OES credentials
-                    if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                    if (c == null || !accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
                         LOG.info("Credential is not an OES credentials");
                         throw new ContentSyncException(e);
                     }
@@ -678,10 +678,10 @@ public class ContentSyncManager {
             orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
                     () -> LOG.error("No repository found for channel: '{}'", c.getLabel()),
                     repo -> {
-                        LOG.debug("configure orphan repo {}", repo.toString());
+                        LOG.debug("configure orphan repo {}", repo);
                         repo.getBestAuth().ifPresentOrElse(
                                 a -> createOrUpdateContentSource(a, c, mirrorUrl),
-                                () -> LOG.info("No Auth available for {}", repo.toString())
+                                () -> LOG.info("No Auth available for {}", repo)
                         );
                     }
             ));

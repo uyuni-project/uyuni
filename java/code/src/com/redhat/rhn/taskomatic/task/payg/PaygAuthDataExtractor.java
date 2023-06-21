@@ -64,14 +64,14 @@ public class PaygAuthDataExtractor {
     private PaygInstanceInfo processOutput(int exitStatus, String error, String output) {
         if (exitStatus != 0 || error.length() > 0) {
             LOG.error("Exit status: {}", exitStatus);
-            LOG.error("stderr:\n{}", error.toString());
-            throw new PaygDataExtractException(error.toString());
+            LOG.error("stderr:\n{}", error);
+            throw new PaygDataExtractException(error);
         }
         if (output.length() == 0) {
             LOG.error("Exit status was success but no data retrieved");
             throw new PaygDataExtractException("No data retrieved from the instance.");
         }
-        return GSON.fromJson(output.toString(), PaygInstanceInfo.class);
+        return GSON.fromJson(output, PaygInstanceInfo.class);
     }
 
 
@@ -88,16 +88,14 @@ public class PaygAuthDataExtractor {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch sshTarget = new JSch();
-            //sshTarget.setKnownHosts(KNOWN_HOSTS);
             if (!StringUtils.isEmpty(instance.getKey())) {
                 String authKeypassIn = instance.getKeyPassword() != null ? instance.getKeyPassword() : "";
                 sshTarget.addIdentity("targetkey", instance.getKey().getBytes(), null, authKeypassIn.getBytes());
             }
-            Integer sshPortIn = instance.getPort() != null ? instance.getPort() : 22;
+            int sshPortIn = instance.getPort() != null ? instance.getPort() : 22;
 
             if (!StringUtils.isEmpty(instance.getBastionHost())) {
                 JSch sshBastion = new JSch();
-                //sshBastion.setKnownHosts(KNOWN_HOSTS);
                 if (!StringUtils.isEmpty(instance.getBastionKey())) {
                     String bastionAuthKeyPassIn = instance.getBastionKeyPassword() != null ?
                             instance.getBastionKeyPassword() : "";
@@ -133,7 +131,6 @@ public class PaygAuthDataExtractor {
                 channel.setInputStream(PaygAuthDataExtractor.class
                         .getResourceAsStream("script/payg_extract_repo_data.py"));
 
-                //channel.setInputStream(null);
                 InputStream stdout = channel.getInputStream();
                 InputStream stderr = channel.getErrStream();
                 channel.connect();
@@ -211,7 +208,11 @@ public class PaygAuthDataExtractor {
             //TODO: add additional product information
             return processOutput(exitStatus, error, output);
         }
-        catch (IOException | InterruptedException e) {
+        catch (IOException e) {
+            LOG.error(e);
+        }
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             LOG.error(e);
         }
         return null;
@@ -269,6 +270,7 @@ public class PaygAuthDataExtractor {
                 Thread.sleep(RESPONSE_TIMEOUT / 10);
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 // Should not happen
                 LOG.error("error when waiting for channel to be closed", e);
             }
