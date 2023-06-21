@@ -351,8 +351,9 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |package, channel|
-  command = "rhnpush -u admin -p admin --nosig -c #{channel} #{package}"
+When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
+  srvurl = "https://#{ENV['SERVER']}/APP"
+  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
   get_target('server').run(command, timeout: 500)
   # TODO: instead of next line, wait for package to appear inside /var/spacewalk/packages
   get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)

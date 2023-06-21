@@ -20,6 +20,7 @@
 #
 
 import sys
+import os
 
 # pylint: disable=F0401
 if sys.version_info[0] == 3:
@@ -35,6 +36,14 @@ else:
 class rhnpushConfigParser:
     # pylint: disable=W0201
     _instance = None
+
+    def get_ca_bundle_path(self):
+        if os.system("grep -iq '^ID_LIKE=.*suse' /etc/os-release") == 0:
+            return '/etc/ssl/ca-bundle.pem'
+        if os.system("grep -iq '^ID_LIKE=.*rhel' /etc/os-release") == 0:
+            return '/etc/pki/tls/certs/ca-bundle.crt'
+        if os.system("grep -iq '^ID_LIKE=.*debian' /etc/os-release") == 0:
+            return '/etc/ssl/certs/ca-certificates.crt'
 
     def __init__(self, filename=None, ensure_consistency=False):
 
@@ -66,7 +75,7 @@ class rhnpushConfigParser:
             'no_session_caching':   '0',
             'proxy':   '',
             'tolerant':   '0',
-            'ca_chain':   '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
+            'ca_chain':  self.get_ca_bundle_path(),
             'timeout': None
         }
 
