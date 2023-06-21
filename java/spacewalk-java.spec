@@ -33,13 +33,11 @@
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
-%define java_version    11
 %else
 %define serverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define salt_user_group salt
 %define apache2         httpd
-%define java_version    1:11
 %endif
 
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
@@ -59,7 +57,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.17
+Version:        4.4.18
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -104,7 +102,7 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
-BuildRequires:  java-11-openjdk-devel
+BuildRequires:  java-17-openjdk-devel
 BuildRequires:  java-saml
 BuildRequires:  javamail
 BuildRequires:  javapackages-tools
@@ -192,7 +190,7 @@ Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
 Requires:       jade4j
-Requires:       java-11-openjdk
+Requires:       java-17-openjdk
 Requires:       java-saml
 Requires:       javamail
 Requires:       javapackages-tools
@@ -356,7 +354,7 @@ Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-Requires:       java-11-openjdk
+Requires:       java-17-openjdk
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
@@ -424,7 +422,7 @@ PRODUCT_NAME="Uyuni"
 %endif
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
 %endif
 
 # compile only java sources (no packing here)
@@ -490,7 +488,7 @@ PRODUCT_NAME="Uyuni"
 %endif
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
 %endif
 
 export NO_BRP_STALE_LINK_ERROR=yes
