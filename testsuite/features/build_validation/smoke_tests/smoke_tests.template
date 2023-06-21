@@ -32,8 +32,6 @@ Feature: Smoke tests for <client>
     And the system name for "<client>" should be correct
     And I should see several text fields for "<client>"
 
-# TODO: remove the "skip" tag when Rocky has patches available.
-@skip_for_rocky9
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
     When I follow "Software" in the content area
