@@ -504,7 +504,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
-  srvurl = "http://#{ENV['SERVER']}/APP"
+  srvurl = "https://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   $server.run(command, timeout: 500)
   $server.run('ls -lR /var/spacewalk/packages', timeout: 500)
