@@ -85,6 +85,8 @@ public class RegistrationUtils {
     private static final String OS_ARCH = "osarch";
 
     private static final Logger LOG = LogManager.getLogger(RegistrationUtils.class);
+    public static final String OS_MAJOR_RELEASE = "osmajorrelease";
+    public static final String OS_RELEASE = "osrelease";
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -366,7 +368,7 @@ public class RegistrationUtils {
         if (isPaygClient) {
             return true;
         }
-        return identifyProduct(systemQuery, minionId, grains.getValueAsString("osarch"), channels, grains)
+        return identifyProduct(systemQuery, minionId, grains.getValueAsString(OS_ARCH), channels, grains)
                 .stream()
                 .allMatch(p -> {
                     if (p.getFree()) {
@@ -386,10 +388,12 @@ public class RegistrationUtils {
     }
     private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, String minionId, String arch,
                                                     Set<Channel> channels, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        String osGrain = grains.getValueAsString(OS);
+        String osArchGrain = grains.getValueAsString(OS_ARCH);
+        if ("suse".equalsIgnoreCase(osGrain)) {
             Optional<List<Zypper.ProductInfo>> productList =
                     systemQuery.getProducts(minionId);
-            return Opt.stream(productList).flatMap(pl -> pl.stream()
+            return productList.stream().flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();
                         String osVersion = pi.getVersion();
@@ -398,14 +402,14 @@ public class RegistrationUtils {
                         Optional<SUSEProduct> suseProduct =
                                 ofNullable(SUSEProductFactory.findSUSEProduct(osName,
                                         osVersion, osRelease, osArch, true));
-                        if (!suseProduct.isPresent()) {
+                        if (suseProduct.isEmpty()) {
                             LOG.warn("No product match found for: {} {} {} {}", osName, osVersion, osRelease, osArch);
                         }
-                        return Opt.stream(suseProduct);
+                        return suseProduct.stream();
                     })).collect(toSet());
         }
         else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
-                .contains(grains.getValueAsString(OS).toLowerCase())) {
+                .contains(osGrain.toLowerCase())) {
 
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(minionId);
 
@@ -424,22 +428,21 @@ public class RegistrationUtils {
                 return rhel.getAllSuseProducts().stream();
             }).collect(toSet());
         }
-        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if ("ubuntu".equalsIgnoreCase(osGrain)) {
             SUSEProduct product = SUSEProductFactory.findSUSEProduct("ubuntu-client",
-                    grains.getValueAsString("osrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+                    grains.getValueAsString(OS_RELEASE), null, osArchGrain + "-deb", false);
             if (product != null) {
                 return Collections.singleton(product);
             }
         }
-        else if ("debian".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if ("debian".equalsIgnoreCase(osGrain)) {
            SUSEProduct product = SUSEProductFactory.findSUSEProduct("debian-client",
-                   grains.getValueAsString("osmajorrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+                   grains.getValueAsString(OS_MAJOR_RELEASE), null, osArchGrain + "-deb", false);
            if (product != null) {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS),
-                grains.getValueAsString(OS_ARCH));
+        LOG.warn("No product match found. OS grain is {}, arch is {}", osGrain, osArchGrain);
         return emptySet();
     }
 

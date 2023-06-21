@@ -29,7 +29,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     public void testCloudProvider() {
         CloudPaygManager cpm = new CloudPaygManager();
         CloudPaygManager.CloudProvider prv = cpm.getCloudProvider();
-        assertEquals(CloudPaygManager.CloudProvider.None, prv);
+        assertEquals(CloudPaygManager.CloudProvider.NONE, prv);
 
         CloudPaygManager cpmAWS = new CloudPaygManager() {
             @Override

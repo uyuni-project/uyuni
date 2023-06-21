@@ -31,11 +31,8 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.admin.PaygAdminManager;
 
-
 import com.jcraft.jsch.JSchException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.util.Collections;
@@ -48,8 +45,6 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
     private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
-    private static final Logger LOG = LogManager.getLogger(PaygUpdateAuthTask.class);
-
     private static final String KEY_ID = "sshData_id";
 
     @Override
@@ -59,7 +54,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
     private void manageLocalHostPayg() {
         if (cloudPaygManager.isPaygInstance()) {
-            PaygSshDataFactory.lookupByHostname("localhost").orElseGet(() -> {
+            if (PaygSshDataFactory.lookupByHostname("localhost").isEmpty()) {
                 PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
                 paygSshData.setHost("localhost");
                 paygSshData.setDescription("SUSE Manager Pay-as-you-go");
@@ -67,8 +62,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
                 PaygSshDataFactory.savePaygSshData(paygSshData);
                 HibernateFactory.getSession().flush();
                 HibernateFactory.commitTransaction();
-                return paygSshData;
-            });
+            }
         }
         else {
             try {
@@ -124,12 +118,12 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
         }
         catch (PaygDataExtractException | JSchException e) {
-            LOG.error("error getting instance data ", e);
+            log.error("error getting instance data ", e);
             saveError(instance,  e.getMessage());
 
         }
         catch (Exception e) {
-            LOG.error("error processing instance data", e);
+            log.error("error processing instance data", e);
             // Error message will be empty because we don't want to show this error on UI
             saveError(instance, "");
         }
