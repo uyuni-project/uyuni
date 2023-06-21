@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.channel;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -118,19 +119,20 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setOriginal(original);
 
         // PAYG Code to avoid cloning channels under forbidden channels
-        if (c.getParentChannel() != null) {
-            Optional<Channel> channelTest = c.getParentChannel().originChain()
-                    .map(n -> n.getAccessibleChildrenFor(user))
-                    .flatMap(Collection::stream)
-                    .filter(n -> !n.getName().equals(name)) // We filter out the cloned channel from the list
-                    .filter(n -> n.getProductName().getLabel().equals(original.getProductName().getLabel()))
-                    .findFirst();
+        if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance()) {
+            if (c.getParentChannel() != null) {
+                Optional<Channel> channelTest = c.getParentChannel().originChain()
+                        .map(n -> n.getAccessibleChildrenFor(user))
+                        .flatMap(Collection::stream)
+                        .filter(n -> n.getId() != null) // We filter out the cloned channel from the list
+                        .filter(n -> n.getProductName().getLabel().equals(original.getProductName().getLabel()))
+                        .findFirst();
 
-            if (!channelTest.isPresent()) {
-                throw new InvalidParentChannelException();
+                if (!channelTest.isPresent()) {
+                    throw new ForbiddenCloneChannelPAYGException();
+                }
             }
         }
-
 
         // need to save before calling stored procs below
         ChannelFactory.save(c);
