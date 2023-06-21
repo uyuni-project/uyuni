@@ -33,8 +33,8 @@ public class UyuniAPI {
         private final Optional<PackageEvr> packageEvr;
         private final boolean packageInstalled;
 
-        CVEPatchStatus(long systemIdIn, Optional<String> packageNameIn,
-                       Optional<PackageEvr> evrIn, boolean packageInstalledIn, Optional<String> packageArch) {
+        public CVEPatchStatus(long systemIdIn, Optional<String> packageNameIn,
+                              Optional<PackageEvr> evrIn, boolean packageInstalledIn, Optional<String> packageArch) {
             this.systemId = systemIdIn;
             this.packageName = packageNameIn;
             this.packageInstalled = packageInstalledIn;
@@ -42,7 +42,7 @@ public class UyuniAPI {
             this.packageArch = packageArch;
         }
 
-        CVEPatchStatus(long systemIdIn, Optional<String> packageNameIn, Optional<PackageEvr> evrIn, boolean packageInstalledIn) {
+        public CVEPatchStatus(long systemIdIn, Optional<String> packageNameIn, Optional<PackageEvr> evrIn, boolean packageInstalledIn) {
             this(systemIdIn, packageNameIn, evrIn, packageInstalledIn, Optional.of("noarch"));
         }
 
