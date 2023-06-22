@@ -1492,6 +1492,11 @@ public class SaltUtils {
                     Function.identity()
              ));
 
+        if(result.getInfoInstalled() == null) {
+            LOG.warn("Cannot find information about installed packages, maybe because action failed");
+            return;
+        }
+
         Map<String, Map.Entry<String, Pkg.Info>> newPackageMap =
             result.getInfoInstalled().getChanges().getRet()
                 .entrySet().stream()
