@@ -1,3 +1,6 @@
+- Update tomcat jars to version 9.0.75
+- Update jetty-util to version 9.4.51
+
 -------------------------------------------------------------------
 Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
 
