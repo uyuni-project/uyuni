@@ -52,8 +52,6 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
 Requires:       python3-uyuni-common-libs
-# Required by spacewalk-clone-by-date, spacewalk-sync-setup
-Requires:       python3-salt
 # Required by spacewalk-hostname-rename
 Requires:       rpm
 # Required by spacewalk-hostname-rename
