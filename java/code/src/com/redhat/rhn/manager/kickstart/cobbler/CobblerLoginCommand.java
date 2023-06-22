@@ -44,10 +44,10 @@ public class CobblerLoginCommand {
         XMLRPCInvoker helper =
             (XMLRPCInvoker) MethodUtil.getClassFromConfig(
                     CobblerXMLRPCHelper.class.getName());
-        List args = new ArrayList<>();
+        List<String> args = new ArrayList<>();
         args.add(usernameIn);
         args.add(passwordIn);
-        String retval = null;
+        String retval;
         try {
             retval = (String) helper.invokeMethod("login", args);
         }
@@ -57,7 +57,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We had an error trying to login.", e);
         }
-        log.debug("token received from cobbler: {}", retval);
+        log.debug("token received from cobbler");
         return retval;
     }
 
@@ -73,9 +73,9 @@ public class CobblerLoginCommand {
         XMLRPCInvoker helper =
             (XMLRPCInvoker) MethodUtil.getClassFromConfig(
                     CobblerXMLRPCHelper.class.getName());
-        List args = new ArrayList<>();
+        List<String> args = new ArrayList<>();
         args.add(token);
-        Boolean retval = null;
+        Boolean retval;
         try {
             retval = (Boolean) helper.invokeMethod("token_check", args);
             if (retval == null) {
@@ -91,7 +91,7 @@ public class CobblerLoginCommand {
             throw new NoCobblerTokenException(
                     "We errored out trying to check the token.", e);
         }
-        log.debug("token received from cobbler: {}", retval);
+        log.debug("token received from cobbler");
 
         return retval;
     }
