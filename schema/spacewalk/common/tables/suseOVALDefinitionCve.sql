@@ -12,12 +12,17 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
-DROP TABLE IF EXISTS suseOVALDefinition;
-CREATE TABLE suseOVALDefinition
+
+DROP TABLE IF EXISTS suseOVALDefinitionCve;
+CREATE TABLE suseOVALDefinitionCve
 (
-    id     VARCHAR NOT NULL
-             CONSTRAINT suse_oval_definition_id_pk PRIMARY KEY,
-    class  VARCHAR NOT NULL,
-    title  VARCHAR,
-    description VARCHAR(10000)
+    definition_id    VARCHAR NOT NULL
+                         REFERENCES suseOVALDefinition(id),
+    cve_id           NUMERIC NOT NULL
+                        REFERENCES rhncve(id)
 );
+
+
+CREATE UNIQUE INDEX suse_oval_def_cve_uq
+    ON suseOVALDefinitionCve (definition_id, cve_id)
+;

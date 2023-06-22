@@ -19,6 +19,7 @@ CREATE TABLE suseOVALDefinitionAffectedPlatform
     definition_id    VARCHAR NOT NULL
                        REFERENCES suseOVALDefinition(id),
     platform_id      NUMERIC
+                        REFERENCES suseOVALPlatform(id)
 );
 
 
