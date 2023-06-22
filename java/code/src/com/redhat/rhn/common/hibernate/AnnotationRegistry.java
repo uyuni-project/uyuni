@@ -85,6 +85,7 @@ import com.suse.cloud.domain.PaygDimensionResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.oval.db.OVALDefinition;
+import com.suse.oval.db.OVALPackageObject;
 import com.suse.oval.db.OVALPlatform;
 import com.suse.oval.db.OVALReference;
 
@@ -174,7 +175,8 @@ public class AnnotationRegistry {
         InternalState.class,
         OVALDefinition.class,
         OVALPlatform.class,
-        OVALReference.class
+        OVALReference.class,
+        OVALPackageObject.class
     );
 
     /**
