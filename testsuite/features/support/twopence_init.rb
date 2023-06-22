@@ -8,15 +8,17 @@ require_all 'features/support'
 # Initialize SSH targets from environment variables
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
-warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
-warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
-warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
-warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
-warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
-warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
-warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
-warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
+unless $build_validation
+  warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
+  warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
+  warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
+  warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
+  warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
+  warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
+  warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
+  warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
+  warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
+end
 
 # Preserve FQDN before initialization
 $named_nodes = {}
@@ -49,6 +51,8 @@ if $build_validation
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $sle15sp5_minion = twopence_init("ssh:#{ENV['SLE15SP5_MINION']}") if ENV['SLE15SP5_MINION']
+  $sle15sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP5_SSHMINION']}") if ENV['SLE15SP5_SSHMINION']
   $slemicro51_minion = twopence_init("ssh:#{ENV['SLEMICRO51_MINION']}") if ENV['SLEMICRO51_MINION']
   $slemicro51_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO51_SSHMINION']}") if ENV['SLEMICRO51_SSHMINION']
   $slemicro52_minion = twopence_init("ssh:#{ENV['SLEMICRO52_MINION']}") if ENV['SLEMICRO52_MINION']
@@ -83,6 +87,8 @@ if $build_validation
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
   $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSHMINION']}") if ENV['OPENSUSE154ARM_SSHMINION']
+  $opensuse155arm_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_MINION']}") if ENV['OPENSUSE155ARM_MINION']
+  $opensuse155arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE155ARM_SSHMINION']}") if ENV['OPENSUSE155ARM_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
@@ -92,6 +98,7 @@ if $build_validation
              $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $sle15sp5_minion, $sle15sp5_ssh_minion,
              $slemicro51_minion, $slemicro51_ssh_minion,
              $slemicro52_minion, $slemicro52_ssh_minion,
              $slemicro53_minion, $slemicro53_ssh_minion,
@@ -109,6 +116,7 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
+             $opensuse155arm_minion, $opensuse155arm_ssh_minion,
              $sle12sp5_buildhost,
              $sle15sp4_buildhost,
              $monitoring_server]
@@ -296,6 +304,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'sle15sp5_minion'           => $sle15sp5_minion,
+                  'sle15sp5_ssh_minion'       => $sle15sp5_ssh_minion,
                   'slemicro51_minion'         => $slemicro51_minion,
                   'slemicro51_ssh_minion'     => $slemicro51_ssh_minion,
                   'slemicro52_minion'         => $slemicro52_minion,
@@ -330,6 +340,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
                   'opensuse154arm_minion'     => $opensuse154arm_minion,
                   'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
+                  'opensuse155arm_minion'     => $opensuse155arm_minion,
+                  'opensuse155arm_ssh_minion' => $opensuse155arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp4_buildhost'        => $sle15sp4_buildhost,
                   'monitoring_server'         => $monitoring_server,

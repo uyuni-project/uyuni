@@ -98,6 +98,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
 
+@sle15sp5_minion
+Scenario: Add SUSE Linux Enterprise Server 15 SP5
+  When I follow the left menu "Admin > Setup Wizard > Products"
+  And I wait until I do not see "Loading" text
+  And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
+  And I select "SUSE Linux Enterprise Server 15 SP5 x86_64" as a product
+  Then I should see the "SUSE Linux Enterprise Server 15 SP5 x86_64" selected
+  When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP5 x86_64"
+  And I open the sub-list of the product "Basesystem Module 15 SP5 x86_64"
+  And I select "Desktop Applications Module 15 SP5 x86_64" as a product
+  Then I should see the "Desktop Applications Module 15 SP5 x86_64" selected
+  When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
+  And I select "Development Tools Module 15 SP5 x86_64" as a product
+  Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+  When I click the Add Product button
+  And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+  And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
+
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -164,6 +182,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "openSUSE Leap 15.4 aarch64" product has been added
+
+@opensuse155arm_minion
+  Scenario: Add openSUSE 15.5 for ARM
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "openSUSE Leap 15.5 aarch64" as the filtered product description
+    And I select "openSUSE Leap 15.5 aarch64" as a product
+    Then I should see the "openSUSE Leap 15.5 aarch64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "openSUSE Leap 15.5 aarch64" product has been added
 
 @alma9_minion
   Scenario: Add Alma Linux 9

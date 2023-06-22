@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -55,6 +56,7 @@ public class EnvironmentFilter implements Filter {
      */
     @Override
     public void init(FilterConfig arg0) {
+        // Not needed in this filter
     }
 
     /**
@@ -78,11 +80,8 @@ public class EnvironmentFilter implements Filter {
         // Have to make this decision here, because once we pass the request
         // off to the next filter, that filter can do work that sends data to
         // the client, meaning that we can't redirect.
-        if (RhnHelper.pathNeedsSecurity(nosslurls, path) &&
-                !hreq.isSecure()) {
-            if (log.isDebugEnabled()) {
-                log.debug("redirecting to secure: {}", path);
-            }
+        if (ConfigDefaults.get().isSsl() && RhnHelper.pathNeedsSecurity(nosslurls, path) && !hreq.isSecure()) {
+            log.debug("redirecting to secure: {}", path);
             redirectToSecure(hreq, hres);
             return;
         }
@@ -91,9 +90,7 @@ public class EnvironmentFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         request.setAttribute(RequestContext.REQUESTED_URI, req.getRequestURI());
 
-        if (log.isDebugEnabled()) {
-            log.debug("set REQUESTED_URI: {}", req.getRequestURI());
-        }
+        log.debug("set REQUESTED_URI: {}", req.getRequestURI());
 
         // add messages that were put on the request path.
         addParameterizedMessages(req);

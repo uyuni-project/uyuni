@@ -18,7 +18,7 @@
 # the following features could fail due to the minions not being reachable.
 # Depending on how long they take to reboot, even more features could fail.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_onboarding
 Feature: Reboot systems managed by Uyuni
 

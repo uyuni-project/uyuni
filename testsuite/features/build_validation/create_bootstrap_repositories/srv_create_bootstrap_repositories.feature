@@ -34,6 +34,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP4 minion
     When I create the bootstrap repository for "sle15sp4_minion" on the server
 
+@sle15sp5_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP5 minion
+    When I create the bootstrap repository for "sle15sp5_minion" on the server
+
 @monitoring_server
   Scenario: Create the bootstrap repository for the monitoring server
     When I create the bootstrap repository for "monitoring_server" on the server
@@ -105,3 +109,7 @@ Feature: Create bootstrap repositories
 @opensuse154arm_minion
   Scenario: Create the bootstrap repository for a OpenSUSE 15.4 ARM minion
     When I create the bootstrap repository for "opensuse154arm_minion" on the server
+
+@opensuse155arm_minion
+  Scenario: Create the bootstrap repository for a OpenSUSE 15.5 ARM minion
+    When I create the bootstrap repository for "opensuse155arm_minion" on the server

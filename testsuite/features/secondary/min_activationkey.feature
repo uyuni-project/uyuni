@@ -2,10 +2,10 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_salt_minions_page.feature
+# - features/secondary/min_bootstrap_ssh_key.feature
 # If the minion fails to bootstrap.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 

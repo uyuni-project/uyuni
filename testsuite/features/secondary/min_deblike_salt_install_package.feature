@@ -1,7 +1,7 @@
 # Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_deblike
 @deblike_minion
 Feature: Install and upgrade package on the Debian-like minion via Salt through the UI

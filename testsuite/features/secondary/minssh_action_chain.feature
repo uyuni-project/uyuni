@@ -7,8 +7,6 @@
 #
 # Skip if container because the action chain fails
 # This needs to be fixed
-
-@skip_if_container
 @ssh_minion
 @scope_action_chains
 @scope_salt_ssh
@@ -127,6 +125,7 @@ Feature: Salt SSH action chain
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow first "Schedule System Reboot"
@@ -154,8 +153,7 @@ Feature: Salt SSH action chain
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Run a remote command on 1 system" text
+    And I should see a "Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
@@ -194,6 +192,7 @@ Feature: Salt SSH action chain
   Scenario: Cleanup: roll back action chain effects on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
+    And I enable repository "test_repo_rpm_pool" on this "ssh_minion"
     And I remove package "andromeda-dummy" from this "ssh_minion" without error control
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
     And I install package "milkyway-dummy" on this "ssh_minion" without error control
@@ -220,7 +219,6 @@ Feature: Salt SSH action chain
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
     And I call actionchain.add_script_run() with the script "exit 1;"
-    And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty

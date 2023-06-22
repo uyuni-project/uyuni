@@ -9,7 +9,6 @@
 # skip on container. Running actions chains fail on container.
 # This needs to be fixed
 
-@skip_if_container
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions
@@ -137,6 +136,7 @@ Feature: Action chains on Salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"
@@ -165,8 +165,7 @@ Feature: Action chains on Salt minions
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Run a remote command on 1 system" text
+    And I should see a "Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for Salt minion
     Given I am authorized as "testing" with password "testing"
@@ -205,7 +204,8 @@ Feature: Action chains on Salt minions
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"

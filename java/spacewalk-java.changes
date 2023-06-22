@@ -1,3 +1,14 @@
+- cache debian package metadata snippets in DB
+- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+  Management Management/Operations on SSM -> Provisioning
+- catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
+- Improve handling of websocket exceptions
+- Release DB connection in RHN Message Dispatcher thread
+- Update version of tomcat build dependencies
+- Disable jinja processing for the roster file (bsc#1211650)
+- Make sure that all hibernate connections are closed (bsc#1208687)
+- Add option to disable SSL
+- Removed the expensive 'diff' column (bsc#1208427)
 - replace kickstart profile advanced option "md5_crypt_rootpw"
   with "sha256_crypt_rootpw" to use sha256 crypt when password
   is provided in plain text
@@ -14,7 +25,7 @@
 - Update system overview in case of manual system reboot
 - Add uyuni_systems_scrape_duration_seconds metric
 - OES credentials do not allow access to SCC. Skip them when an
-  SCCClientException is thrown and move forward
+  SCCClientException is thrown and move forward (bsc#1212550)
 - show virtualization host info in systems overview page
 - Refresh pillars after setting custom values via SSM (bsc#1210659)
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
@@ -52,7 +63,7 @@ Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
   * Fix possible "NullPointerException" issues when running cobbler-sync-bunch
   * Do not trigger extra cobbler sync when changing kickstart data (bsc#1208536)
   * set jasper development mode to false (bsc#1206191)
-  * fixed select all for ptf packages list
+  * fixed select all for ptf packages list (bsc#1209143)
   * added SLES 12 support for ptf removal
   * fixed issue with checking ptf repositories on cloned channels
   * remove spacewalk-koan and mgr-virtualization usage

@@ -1504,15 +1504,15 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.csvcomma" xml:space="preserve">
         <source>Comma (",", default)</source>
-        <target/>
+        <target>Čiarka (",", predvolené)</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvsemicolon" xml:space="preserve">
         <source>Semicolon (";", compatible with Microsoft® Excel®)</source>
-        <target/>
+        <target>Bodkočiarka (";", kompatibilné s Microsoft® Excel®)</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.submitvalue" xml:space="preserve">
         <source>Save Preferences</source>
-        <target/>
+        <target>Uložiť predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1520,56 +1520,56 @@
       <!-- header.jsp -->
       <trans-unit id="header.jsp.change" xml:space="preserve">
         <source>change</source>
-        <target/>
+        <target>zmeniť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.shortcuts" xml:space="preserve">
         <source>Shortcuts:</source>
-        <target/>
+        <target>Skratky:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.knowledgebase" xml:space="preserve">
         <source>Knowledgebase</source>
-        <target/>
+        <target>Databáza znalostí</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.documentation" xml:space="preserve">
         <source>Documentation</source>
-        <target/>
+        <target>Dokumentácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.loggedin" xml:space="preserve">
         <source>User:</source>
-        <target/>
+        <target>Používateľ:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.org" xml:space="preserve">
         <source>Organization:</source>
-        <target/>
+        <target>Organizácia:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target/>
+        <target>Predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.signout" xml:space="preserve">
         <source>Sign Out</source>
-        <target/>
+        <target>Odhlásenie sa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
@@ -28893,7 +28893,7 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -29624,13 +29624,13 @@ given channel.</source>
         <source>Recurring Actions</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

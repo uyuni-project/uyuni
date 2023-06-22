@@ -52,7 +52,7 @@ export default class Loggerhead {
 
   private postData(data: { level: Level; message: string }) {
     if (this.url === "") {
-      var errorMessage = "[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ";
+      const errorMessage = "[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ";
       if (this.console.error) {
         console.error(errorMessage);
       }

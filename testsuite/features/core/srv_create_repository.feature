@@ -1,5 +1,15 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in:
+# If the fake-rpm-repo fails to be created:
+# - features/init_client/allcli_update_activationkeys.feature
+# If Fake-Deb-AMD64-Channel fails to be updated with the repository:
+# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_with_staging.feature
+# If Fake-RH-Like-Channel fails to be updated with the repository:
+# - features/secondary/min_rhlike_salt_install_package_and_patch.feature
+# - features/secondary/srv_maintenance_windows.feature
 
 Feature: Add a repository to a channel
   In order to distribute software to the clients

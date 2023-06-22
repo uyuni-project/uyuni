@@ -409,7 +409,7 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced([^"]*)$/) do |channel, withpkg|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
       # solv is the last file to be written when the server synchronizes a channel,
@@ -419,7 +419,19 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
         # We want to check if no .new files exists.
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
         _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
-        break unless new_code.zero?
+        unless new_code.zero?
+          break if withpkg.empty?
+          _result, solv_code = $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep 'repo size: 0 solvables'", check_errors: false)
+          break unless solv_code.zero?
+        end
+      else
+        # maybe a debian repo?
+        _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/Release", check_errors: false)
+        if code.zero?
+          break if withpkg.empty?
+          _result, solv_code = $server.run("test -s /var/cache/rhn/repodata/#{channel}/Packages", check_errors: false)
+          break if solv_code.zero?
+        end
       end
       log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
@@ -1460,7 +1472,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
             "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
             "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
             "--ssl-ca-password=spacewalk"
-  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
   default_timeout = 300

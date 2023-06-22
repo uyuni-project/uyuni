@@ -1,6 +1,11 @@
 # Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
-@skip_if_container
+#
+# This feature can cause failures in the following features when running in sequential:
+# - features/secondary/min_bootstrap_negative.feature
+# If the minion fails to bootstrap again.
+
+@skip_if_github_validation
 @scope_onboarding
 Feature: Register a Salt minion via API
 

@@ -65,7 +65,8 @@ umask 0027;
 open(TMP, "> $tmpfile") or die "Could not open $tmpfile for writing: $OS_ERROR";
 if ($tmpfile =~ m!^/etc/rhn/!) {
   # Chown for different potential apache group names (SUSE/RHEL)
-  chown 0, (getgrnam("www") // "") . (getgrnam("apache") // ""), $tmpfile;
+  my $apache_group = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
+  chown 0, $apache_group, $tmpfile;
 }
 
 while (my $line = <TARGET>) {

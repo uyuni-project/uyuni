@@ -5,7 +5,8 @@
 # - features/secondary/min_salt_mgrcompat_state.feature
 # If the minion fails to bootstrap again.
 
-@skip_if_container
+@skip_if_github_validation
+@sle_minion
 @scope_salt
 Feature: Management of minion keys
   In Order to validate the minion onboarding page
