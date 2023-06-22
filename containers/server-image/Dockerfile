@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/server:latest uyuni/server:%PKG_VERSION% uyuni/server:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/server:latest uyuni/server:4.4.0 uyuni/server:4.4.0.%RELEASE%
 
 ARG INIT_BASE=registry.suse.com/bci/bci-base:15.4
 FROM $INIT_BASE
