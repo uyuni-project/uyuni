@@ -114,20 +114,6 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
-        return readStringFromFile(path, false);
-    }
-
-
-    /**
-     * Read a file off disk into a String and return it.
-     *
-     * Expect weird stuff if the file is not textual.
-     *
-     * @param path of file to read in
-     * @param noLog don't log the content of the file
-     * @return String containing file.
-     */
-    public static String readStringFromFile(String path, boolean noLog) {
         if (log.isDebugEnabled()) {
             log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
         }
@@ -139,7 +125,7 @@ public class FileUtils {
             StringWriter writer = new StringWriter();
             IOUtils.getInstance().copyWriter(input, writer);
             String contents = writer.toString();
-            if (noLog && log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("contents: {}", contents);
             }
             return contents;
