@@ -34,7 +34,6 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       %{pythonX}
-Requires:       salt
 Requires:       spacewalk-branding
 BuildRequires:  /usr/bin/docbook2man
 
