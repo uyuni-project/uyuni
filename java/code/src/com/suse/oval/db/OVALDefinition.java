@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "suseOVALDefinition")
 public class OVALDefinition {
     private String id;
     private DefinitionClassEnum defClass;
