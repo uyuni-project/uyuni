@@ -14,12 +14,14 @@ public class OVALPackageArchStateEntity {
     private String value;
     private OperationEnumeration operation;
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_oval_pkg_arch_state_id_seq")
     public Integer getId() {
         return id;
     }
 
+    @Column(name = "value")
     public String getValue() {
         return value;
     }
@@ -28,6 +30,7 @@ public class OVALPackageArchStateEntity {
         this.value = arch;
     }
 
+    @Column(name = "operation")
     @Enumerated(EnumType.STRING)
     public OperationEnumeration getOperation() {
         return operation;
