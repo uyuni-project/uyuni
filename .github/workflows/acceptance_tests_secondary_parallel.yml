@@ -7,7 +7,7 @@ on:
       - 'testsuite/**'
       - '.github/workflows/acceptance_tests_secondary_parallel.yml'
       - '.github/workflows/acceptance_tests_common.yml'
-      - '!java/*.changes'
+      - '!java/*.changes*'
 jobs:
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
