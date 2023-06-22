@@ -1,12 +1,16 @@
-- fix session information leak CVE-2023-22644 (bsc#1210107)
-- fix credentials and other secrets disclosure when debug log is enabled
-  CVE-2023-22644 (bsc#1210154)
-- Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
-- Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
-- Don't output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
-- Do not log SSL certificate / key file content CVE-2023-22644 (bsc#1210094)
-- Update tomcat jars to version 9.0.75
-- Update jetty-util to version 9.4.51
+-------------------------------------------------------------------
+Thu Jun 22 18:59:40 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.18-1
+  * Fix session information leak CVE-2023-22644 (bsc#1210107)
+  * Fix credentials and other secrets disclosure when debug log is enabled
+    CVE-2023-22644 (bsc#1210154)
+  * Remove web session swap secrets output in logs CVE-2023-22644 (bsc#1210086)
+  * Do not output cobbler xmlrpc token in debug logs CVE-2023-22644 (bsc#1210162)
+  * Do not output URL parameters for tiny urls CVE-2023-22644 (bsc#1210101)
+  * Do not log SSL certificate / key file content CVE-2023-22644 (bsc#1210094)
+  * Update tomcat jars to version 9.0.75
+  * Update jetty-util to version 9.4.51
 
 -------------------------------------------------------------------
 Wed Apr 19 12:47:06 CEST 2023 - marina.latini@suse.com
