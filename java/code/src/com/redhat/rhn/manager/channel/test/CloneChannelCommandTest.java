@@ -15,23 +15,25 @@
 
 package com.redhat.rhn.manager.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.channel.ForbiddenCloneChannelPAYGException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
-
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.cloud.CloudPaygManager;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
@@ -121,11 +123,12 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void testCloneParentChannelPAYG () throws Exception {
+    public void testCloneParentChannelPAYG() throws Exception {
         GlobalInstanceHolder.PAYG_MANAGER.setPaygInstance(true); // Mock we are in a PAYG SUMA instance
         Channel parentChannel = createBaseChannel();
 
-        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, parentChannel);
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                                                        parentChannel);
         ccc.setUser(user);
         Channel clonedParentChannel = ccc.create();
 
@@ -146,7 +149,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void testCloneChildChannelPAYG () throws Exception {
+    public void testCloneChildChannelPAYG() throws Exception {
         GlobalInstanceHolder.PAYG_MANAGER.setPaygInstance(true); // Mock we are in a PAYG SUMA instance
 
         Channel parentChannelWithProductChannels = createBaseChannel();
@@ -162,7 +165,8 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         ChannelFactory.save(childrenChannel);
 
         // Test 1
-        CloneChannelCommand ccc1 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, childrenChannel);
+        CloneChannelCommand ccc1 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                                                            childrenChannel);
         ccc1.setUser(user);
         ccc1.setParentId(parentChannelWithProductChannels.getId());
         Channel clonedChildChannel1 = ccc1.create();
@@ -173,21 +177,26 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         ChannelFactory.remove(gotChannelTest1);
 
         // Test 2
-        CloneChannelCommand ccc2 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, childrenChannel);
+        CloneChannelCommand ccc2 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                                                            childrenChannel);
         ccc2.setUser(user);
         ccc2.setParentId(parentChannelWithoutProductChannels.getId());
         Channel clonedChildChannel2 = null;
 
         try {
             clonedChildChannel2 = ccc2.create();
-        } catch (ForbiddenCloneChannelPAYGException f) {} // Catch this specific exception to avoid aborting the test
+        }
+        catch (ForbiddenCloneChannelPAYGException f) {
+            // Catch this specific exception to avoid aborting the test
+        }
 
         // Assert that the channel is null, which means it wasn't created
         assertNull(clonedChildChannel2);
 
 
         // Test 3
-        CloneChannelCommand ccc3 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, parentChannelWithProductChannels);
+        CloneChannelCommand ccc3 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
+                                                            parentChannelWithProductChannels);
         ccc3.setUser(user);
         Channel clonedBaseChannel = ccc3.create();
 
