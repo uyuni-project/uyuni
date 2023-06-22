@@ -1,3 +1,4 @@
+- show error message in action result even on parser error
 - restrict registration on pure PAYG Server
 - Added taskomatic job to compute and store billing dimensions for PAYG
 - Access SUSE Manager Proxy repositories from cloud rmt infrastructure
