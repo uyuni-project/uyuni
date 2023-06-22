@@ -26,7 +26,6 @@ from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
 import getpass
-from salt.ext import six
 
 try:
     import xmlrpclib
@@ -613,10 +612,7 @@ def describe_master_template(master_setup_filename):
 
 def ask(msg, password=False):
     msg += ": "
-    if six.PY2:
-        inputfn = raw_input
-    else:
-        inputfn = input
+    inputfn = input
     return password and getpass.getpass(msg) or inputfn(msg)
 
 
