@@ -94,8 +94,8 @@ public class SSLCertManager {
             File serverFolder = new File(sslBuildDir, data.getMachineName());
             File serverCertFile = new File(serverFolder, "server.crt");
             File serverKeyFile = new File(serverFolder, "server.key");
-            return new SSLCertPair(FileUtils.readStringFromFile(serverCertFile.getAbsolutePath(), true),
-                    FileUtils.readStringFromFile(serverKeyFile.getAbsolutePath(), true));
+            return new SSLCertPair(FileUtils.readStringFromFile(serverCertFile.getAbsolutePath()),
+                    FileUtils.readStringFromFile(serverKeyFile.getAbsolutePath()));
         }
         catch (RhnRuntimeException | IOException err) {
             String msg = err.getMessage();
