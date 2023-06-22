@@ -115,6 +115,11 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertFalse(c.isModular());
     }
 
+    /**
+     * testCloneParentChannelPAYG tests that it's possible to clone all base channels in a SUMA PAYG instace.
+     *
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testCloneParentChannelPAYG () throws Exception {
         GlobalInstanceHolder.PAYG_MANAGER.setPaygInstance(true); // Mock we are in a PAYG SUMA instance
@@ -129,6 +134,17 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertNotNull(gotChannel);
     }
 
+    /**
+     * testCloneChildChannelPAYG test different scenarios when cloning channels under base channels.
+     * Test 1 - Tests that cloning a channel under the same base channel works.
+     * Test 2 - Test that cloning a channel under a different base channel that has not the channel product we are
+     *          cloning from, fails.
+     * Test 3 - Tests some recursiveness. It clones a base channel that has associated some product channel, and then
+     *          under that cloned base channel it clones a child channel with the same product channel as the first one.
+     *          This test should work.
+     *
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testCloneChildChannelPAYG () throws Exception {
         GlobalInstanceHolder.PAYG_MANAGER.setPaygInstance(true); // Mock we are in a PAYG SUMA instance
@@ -145,8 +161,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(pn);
         ChannelFactory.save(childrenChannel);
 
-
-        // Test 1 - Check cloning channel under a base channel with the same channel works
+        // Test 1
         CloneChannelCommand ccc1 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, childrenChannel);
         ccc1.setUser(user);
         ccc1.setParentId(parentChannelWithProductChannels.getId());
@@ -157,7 +172,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertNotNull(gotChannelTest1);
         ChannelFactory.remove(gotChannelTest1);
 
-        // Test 2 - Check cloning channel under a base channel without the same channel fails
+        // Test 2
         CloneChannelCommand ccc2 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, childrenChannel);
         ccc2.setUser(user);
         ccc2.setParentId(parentChannelWithoutProductChannels.getId());
@@ -171,8 +186,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertNull(clonedChildChannel2);
 
 
-        // Test 3 - Clone a base channel that has children with product channels, and clone under it a channel
-        // with those product channels (Recursive check).
+        // Test 3
         CloneChannelCommand ccc3 = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, parentChannelWithProductChannels);
         ccc3.setUser(user);
         Channel clonedBaseChannel = ccc3.create();
