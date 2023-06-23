@@ -59,6 +59,7 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check the events history for the reactivation
     Given I am on the Systems overview page of this "sle_minion"
@@ -89,3 +90,4 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"

@@ -138,7 +138,13 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
+    service =
+      if node.os_family =~ /^rocky/
+        'NetworkManager'
+      else
+        'network'
+      end
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
   end
   # /etc/netplan/01-netcfg.yaml
   nodes = [$deblike_minion]
@@ -443,7 +449,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle15sp3_terminal'
     mac = $sle15sp3_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
-  elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'ubuntu')
+  elsif (host.include? 'deblike') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

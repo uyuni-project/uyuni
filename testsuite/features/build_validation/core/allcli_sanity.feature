@@ -219,20 +219,6 @@ Feature: Sanity checks
     And "rocky8_ssh_minion" should communicate with the server using public interface
     And the clock from "rocky8_ssh_minion" should be exact
 
-@rocky9_minion
-  Scenario: The Rocky 9 Salt minion is healthy
-    Then "rocky9_minion" should have a FQDN
-    And reverse resolution should work for "rocky9_minion"
-    And "rocky9_minion" should communicate with the server using public interface
-    And the clock from "rocky9_minion" should be exact
-
-@rocky9_ssh_minion
-  Scenario: The Rocky 9 Salt SSH minion is healthy
-    Then "rocky9_ssh_minion" should have a FQDN
-    And reverse resolution should work for "rocky9_ssh_minion"
-    And "rocky9_ssh_minion" should communicate with the server using public interface
-    And the clock from "rocky9_ssh_minion" should be exact
-
 @ubuntu1804_minion
   Scenario: The Ubuntu 18.04 Salt minion is healthy
     Then "ubuntu1804_minion" should have a FQDN
@@ -274,20 +260,6 @@ Feature: Sanity checks
     And reverse resolution should work for "debian10_ssh_minion"
     And "debian10_ssh_minion" should communicate with the server using public interface
     And the clock from "debian10_ssh_minion" should be exact
-
-@debian11_minion
-  Scenario: The Debian 11 minion is healthy
-    Then "debian11_minion" should have a FQDN
-    And reverse resolution should work for "debian11_minion"
-    And "debian11_minion" should communicate with the server using public interface
-    And the clock from "debian11_minion" should be exact
-
-@debian11_ssh_minion
-  Scenario: The Debian 11 Salt SSH minion is healthy
-    Then "debian11_ssh_minion" should have a FQDN
-    And reverse resolution should work for "debian11_ssh_minion"
-    And "debian11_ssh_minion" should communicate with the server using public interface
-    And the clock from "debian11_ssh_minion" should be exact
 
 @opensuse154arm_minion
   Scenario: The openSUSE 15.4 ARM minion is healthy

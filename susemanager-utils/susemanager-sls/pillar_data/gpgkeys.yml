@@ -11,6 +11,9 @@ gpgkeys:
   res:
     name: gpg-pubkey-0182b964
     file: res-gpg-pubkey-0182b964.key
+  liberty:
+    name: gpg-pubkey-b0f9c64f
+    file: suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
   ubuntutools:
     name: gpg-pubkey-39db7c82
     file: sle12-gpg-pubkey-39db7c82.key
