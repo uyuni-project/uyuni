@@ -1492,7 +1492,7 @@ public class SaltUtils {
                     Function.identity()
              ));
 
-        if(result.getInfoInstalled() == null) {
+        if (result.getInfoInstalled() == null) {
             LOG.warn("Cannot find information about installed packages, maybe because action failed");
             return;
         }
