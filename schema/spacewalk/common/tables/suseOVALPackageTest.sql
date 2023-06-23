@@ -13,18 +13,18 @@
 -- in this software or its documentation.
 --
 
-DROP TABLE IF EXISTS suseOVALPackageState;
-CREATE TABLE suseOVALPackageState
+DROP TABLE IF EXISTS suseOVALPackageTest;
+CREATE TABLE suseOVALPackageTest
 (
-    id                  VARCHAR NOT NULL
-                           CONSTRAINT suse_oval_pkg_state_id_pk PRIMARY KEY,
-    operator            VARCHAR,
-    comment             VARCHAR,
-    arch_state_id       NUMERIC
-                           REFERENCES suseOVALPackageArchState(id),
-    version_state_id    NUMERIC
-                            REFERENCES suseOVALPackageVersionState(id),
-    evr_state_id        NUMERIC
-                            REFERENCES suseOVALPackageEvrState(id),
-    isRpm               BOOLEAN
+    id                VARCHAR NOT NULL
+                         CONSTRAINT suse_oval_pkg_test_id_pk PRIMARY KEY,
+    comment           VARCHAR,
+    check_exist       VARCHAR,
+    test_check        VARCHAR,
+    state_operator    VARCHAR,
+    isRpm             BOOLEAN,
+    pkg_object_id     VARCHAR NOT NULL
+                         REFERENCES suseOVALPackageObject(id),
+    pkg_state_id      VARCHAR
+                         REFERENCES suseOVALPackageState(id)
 );

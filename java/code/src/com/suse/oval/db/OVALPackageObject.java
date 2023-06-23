@@ -8,7 +8,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "suseOVALPackageObject")
 public class OVALPackageObject {
-
     private String id;
     private String packageName;
     private String comment;
