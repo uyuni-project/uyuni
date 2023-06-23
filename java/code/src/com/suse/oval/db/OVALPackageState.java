@@ -13,12 +13,15 @@ public class OVALPackageState {
     private String comment;
     @ManyToOne
     @JoinColumn(name = "arch_state_id")
+    @Access(AccessType.FIELD)
     private OVALPackageArchStateEntity packageArchState;
     @ManyToOne
     @JoinColumn(name = "version_state_id")
+    @Access(AccessType.FIELD)
     private OVALPackageVersionStateEntity packageVersionState;
     @ManyToOne
     @JoinColumn(name = "evr_state_id")
+    @Access(AccessType.FIELD)
     private OVALPackageEvrStateEntity packageEvrState;
     private boolean isRpm;
 

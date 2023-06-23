@@ -19,6 +19,7 @@ public class OVALPackageTest {
     private OVALPackageObject packageObject;
     @ManyToOne
     @JoinColumn(name = "pkg_state_id")
+    @Access(AccessType.FIELD)
     private OVALPackageState packageState;
 
     @Column(name = "id")
