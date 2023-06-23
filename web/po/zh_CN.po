@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 14:47+0200\n"
+"POT-Creation-Date: 2023-06-23 14:35+0200\n"
 "PO-Revision-Date: 2023-05-23 04:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -5384,6 +5384,13 @@ msgstr "CPU 体系结构"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
 msgid "CPU Sockets"
 msgstr "CPU 插槽数"
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:163
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:170
+msgid "N/A"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:103
 msgid "RAM (Mb)"
