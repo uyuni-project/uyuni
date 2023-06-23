@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 /**
  * Service that sends periodic pings to all the registered websocket connections, making sure the connections are kept

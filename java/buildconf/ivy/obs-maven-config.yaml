@@ -129,7 +129,7 @@ artifacts:
     repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jakarta-persistence-api
+  - artifact: jakarta.jakartaee-api
     package: jpa-api
     repository: Uyuni_Other
   - artifact: java-saml
