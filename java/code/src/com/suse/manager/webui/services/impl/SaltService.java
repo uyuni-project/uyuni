@@ -1001,7 +1001,7 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     @Override
     public void deployChannels(List<String> minionIds) throws SaltException {
-        callSync(
+        callAsync(
                 com.suse.salt.netapi.calls.modules.State.apply(ApplyStatesEventMessage.CHANNELS),
                 new MinionList(minionIds));
     }

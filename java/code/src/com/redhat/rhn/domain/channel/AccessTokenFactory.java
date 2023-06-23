@@ -14,8 +14,11 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.utils.Opt;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -213,13 +217,25 @@ public class AccessTokenFactory extends HibernateFactory {
      * Deletes unassigned expired AccessTokens.
      */
     public static void cleanupUnusedExpired() {
-        Instant now = Instant.now();
-        all().forEach(token -> {
-            if (token.getMinion() == null &&
-                    now.isAfter(token.getExpiration().toInstant())) {
-                delete(token);
-            }
-        });
+        WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_TOKEN_CLEANUP);
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Executing WriteMode " + TaskConstants.MODE_NAME + "::" +
+                    TaskConstants.TASK_QUERY_TOKEN_CLEANUP);
+        }
+        int tokensDeleted = m.executeUpdate(new HashMap<>());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
+                    TaskConstants.TASK_QUERY_TOKEN_CLEANUP + " returned");
+        }
+        //logs number of tokens deleted
+        if (tokensDeleted > 0) {
+            LOG.info("{} channel access tokens deleted", tokensDeleted);
+        }
+        else {
+            LOG.debug("No tokens to be deleted");
+        }
    }
 
     /**
@@ -295,6 +311,7 @@ public class AccessTokenFactory extends HibernateFactory {
 
         // Unlink the old token
         token.setMinion(null);
+        token.setValid(false);
         AccessTokenFactory.save(token);
 
         return newToken;
