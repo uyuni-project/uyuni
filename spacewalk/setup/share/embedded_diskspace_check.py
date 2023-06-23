@@ -8,11 +8,6 @@
     Author: Todd Warner <taw@redhat.com>
 """
 
-try:
-    from salt.ext import six
-except ImportError:
-    import six
-
 import os
 import sys
 import stat
@@ -103,7 +98,7 @@ def paths2freespace(paths):
     pathsd = {} # 1:1
     for path in paths:
         vfs = os.statvfs(path)
-        pathsd[path] = (six.PY3 and int)(vfs.f_bavail) * vfs.f_bsize
+        pathsd[path] = int(vfs.f_bavail) * vfs.f_bsize
 
     return pathsd
 

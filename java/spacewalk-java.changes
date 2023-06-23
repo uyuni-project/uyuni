@@ -1,3 +1,8 @@
+- show error message in action result even on parser error
+- cache debian package metadata snippets in DB
+- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+  Management Management/Operations on SSM -> Provisioning
+- catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
 - Improve handling of websocket exceptions
 - Release DB connection in RHN Message Dispatcher thread
 - Update version of tomcat build dependencies
@@ -21,7 +26,7 @@
 - Update system overview in case of manual system reboot
 - Add uyuni_systems_scrape_duration_seconds metric
 - OES credentials do not allow access to SCC. Skip them when an
-  SCCClientException is thrown and move forward
+  SCCClientException is thrown and move forward (bsc#1212550)
 - show virtualization host info in systems overview page
 - Refresh pillars after setting custom values via SSM (bsc#1210659)
 - Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)

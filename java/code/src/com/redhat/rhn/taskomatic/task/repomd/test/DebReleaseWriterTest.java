@@ -68,6 +68,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
         pkgWriter.close();
 
         DebRepositoryWriter repoWriter = new DebRepositoryWriter("", prefix);
+        repoWriter.setCommitTransaction(false);
         repoWriter.gzipCompress(pkgWriter.getFilenamePackages());
 
         DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);

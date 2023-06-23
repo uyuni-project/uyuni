@@ -1,9 +1,5 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
-# This feature can cause failures in the following features:
-# - features/secondary/min_salt_minions_page.feature
-# If the minion fails to bootstrap.
 
 @skip_if_github_validation
 @sle_minion
@@ -60,6 +56,7 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check the events history for the reactivation
     Given I am on the Systems overview page of this "sle_minion"
@@ -90,3 +87,4 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"

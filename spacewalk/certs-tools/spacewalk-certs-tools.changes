@@ -1,3 +1,4 @@
+- Add openssl3 compatibility.
 - Read CA password from a file
 - Also ship SUSE specific files on Enterprise Linux.
 - Use the CA cert in the pki config to generate build host rpm

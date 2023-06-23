@@ -126,7 +126,7 @@ if(not $opts{"skip-initial-configuration"}) {
             $config_opts->{'kickstart_mount_point'});
     chmod 0775, $config_opts->{'mount_point'} . '/systems';
     # Check for both potential Apache groups (SUSE/RHEL)
-    my $www_gid = (getgrnam("www") // "") . (getgrnam("apache") // "");
+    my $www_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
     chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
 }
 
@@ -892,7 +892,7 @@ sub populate_initial_configs {
                                         "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
                                        1, "*** Setup Organization Credentials failed.");
 
-      my $apache_gid = getgrnam('www');
+      my $apache_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
       if ($apache_gid && -e Spacewalk::Setup::SCC_CREDENTIAL_FILE) {
           chown -1, $apache_gid, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
           chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;

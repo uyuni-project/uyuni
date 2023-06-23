@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 # Copyright (c) 2011 SUSE LLC
@@ -67,12 +67,6 @@ def main():
     if os.getuid() != 0:
         systemExit(8, 'ERROR: must be root to execute.')
 
-    global LOCK
-    try:
-        LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
-    except rhnLockfile.LockfileLockedException:
-        systemExit(1, "ERROR: attempting to run more than one instance of "
-                      "spacewalk-repo-sync Exiting.")
 
     parser = OptionParser()
     parser.add_option('-l', '--list', action='store_true', dest='list',
@@ -129,6 +123,13 @@ def main():
     parser.add_option('-v', '--verbose', action='count',
                       help="Verbose output. Possible to accumulate: -vvv")
     (options, args) = parser.parse_args()
+
+    global LOCK
+    try:
+        LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
+    except rhnLockfile.LockfileLockedException:
+        systemExit(1, "ERROR: attempting to run more than one instance of "
+                      "spacewalk-repo-sync Exiting.")
 
     log_level = options.verbose
     if log_level is None:
