@@ -19,6 +19,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.BaseProductRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.EntitlementRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.RequirementType;
+import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.SUSEManagerToolsRule;
 
 import com.suse.cloud.domain.BillingDimension;
 
@@ -43,7 +44,8 @@ public class DimensionsConfiguration {
             BillingDimension.MANAGED_SYSTEMS, List.of(
                 new EntitlementRule(RuleType.INCLUDE, RequirementType.ANY,
                     Set.of(EntitlementManager.SALT, EntitlementManager.MANAGEMENT)),
-                new BaseProductRule(RuleType.EXCLUDE, Set.of("sles_sap"), true)
+                new BaseProductRule(RuleType.EXCLUDE, Set.of("sles_sap"), true),
+                new SUSEManagerToolsRule()
             ),
 
             BillingDimension.MONITORING, List.of(

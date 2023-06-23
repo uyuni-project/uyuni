@@ -41,6 +41,20 @@ public class ChannelFamily extends BaseDomainHelper {
     private PublicChannelFamily publicChannelFamily;
 
     /**
+     * Default constructor.
+     */
+    public ChannelFamily() {
+    }
+
+    /**
+     * Constructor that create the family with the specified label. Meant for unit testing only.
+     * @param labelIn the label
+     */
+    public ChannelFamily(String labelIn) {
+        this.label = labelIn;
+    }
+
+    /**
      * @return Returns the channels.
      */
     public Set<Channel> getChannels() {
