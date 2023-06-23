@@ -44,7 +44,7 @@ Feature: Recurring Actions
     Then I wait until I see the event "Apply recurring states [manager_org_1.statechannel-recurring] scheduled by admin" completed during last minute, refreshing the page
     And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "1" on "sle_minion"
 
-  Scenario: Edit a minion Custom state Recurring Action
+  Scenario: Edit the IP forwarding custom state recurring action
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "IP forwarding custom state recurring action" text
     When I click the "IP forwarding custom state recurring action" item edit button
@@ -78,7 +78,7 @@ Feature: Recurring Actions
     And I wait until I see "show response" text
     And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "0" on "sle_minion"
 
-  Scenario: Cleanup: Delete a minion Custom state Recurring Action
+  Scenario: Cleanup: Delete the minion Custom state Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "custom_state_schedule_name_changed" text
     When I click the "custom_state_schedule_name_changed" item delete button
@@ -104,7 +104,7 @@ Feature: Recurring Actions
     And I follow "History"
     And I wait until I see the event "Apply highstate in test-mode scheduled by admin" completed during last minute, refreshing the page
 
-  Scenario: Edit a minion Highstate Recurring Action
+  Scenario: Edit the minion Highstate Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "Minion Highstate Recurring Action" text
     When I click the "Minion Highstate Recurring Action" item edit button
@@ -119,7 +119,7 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     And I should see a "0 35 1 ? * 4" text
 
-  Scenario: View a minion Highstate Recurring Action details
+  Scenario: View the minion Highstate Recurring Action details
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "schedule_name_minion" text
     When I click the "schedule_name_minion" item details button
@@ -164,7 +164,7 @@ Feature: Recurring Actions
     And I follow "History"
     Then I wait until I see the event "Apply recurring states [uptodate] scheduled by admin" completed during last minute, refreshing the page
 
-  Scenario: Edit a group Recurring Action
+  Scenario: Edit the group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Recurring Actions" in the content area
@@ -180,7 +180,7 @@ Feature: Recurring Actions
     And I should see a "Group" text
     And I should see a "0 35 * ? * *" text
 
-  Scenario: View a group recurring actions details
+  Scenario: View the group recurring actions details
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Recurring Actions" in the content area
@@ -215,7 +215,7 @@ Feature: Recurring Actions
     And I follow "History"
     Then I wait until I see the event "Apply recurring states [packages.profileupdate] scheduled by admin" completed during last minute, refreshing the page
 
-  Scenario: Edit a yourorg Recurring Action
+  Scenario: Edit the yourorg Recurring Action
     When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item edit button
@@ -230,7 +230,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
     And I should see a "0 17 5 7 * ?" text
 
-  Scenario: View a yourorg recurring actions details
+  Scenario: View the yourorg recurring actions details
     When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name" text
     When I click the "schedule_name" item details button
@@ -239,7 +239,7 @@ Feature: Recurring Actions
     When I click on "Back"
     Then I should see a "Schedules" text
 
-  Scenario: Cleanup: Delete a yourorg Recurring Action
+  Scenario: Cleanup: Delete the yourorg Recurring Action
     When I follow the left menu "Home > My Organization > Recurring Actions"
     Then I should see a "schedule_name_edit" text
     When I click the "schedule_name" item delete button
@@ -273,7 +273,7 @@ Feature: Recurring Actions
     And I follow "History"
     Then I wait until I see the event "Apply recurring states [hardware.profileupdate] scheduled by admin" completed during last minute, refreshing the page
 
-  Scenario: Edit an admin org Recurring Action
+  Scenario: Edit the admin org Recurring Action
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "Recurring Actions" in the content area
@@ -289,7 +289,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
     And I should see a "0 0 15 3 * ?" text
 
-  Scenario: View an admin org recurring actions details
+  Scenario: View the admin org recurring actions details
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "Recurring Actions" in the content area
@@ -317,7 +317,7 @@ Feature: Recurring Actions
     When I click on "Back"
     Then I should see a "schedule_name_group" text
 
-  Scenario: Cleanup: Delete an admin org Recurring Action
+  Scenario: Cleanup: Delete the admin org Recurring Action
     When I follow the left menu "Admin > Organizations"
     And I follow "SUSE Test" in the content area
     And I follow "Recurring Actions" in the content area
@@ -327,7 +327,7 @@ Feature: Recurring Actions
     And I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_org' has been deleted." text
 
-  Scenario: Cleanup: Delete a group Recurring Action
+  Scenario: Cleanup: Delete the group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Recurring Actions" in the content area
@@ -338,7 +338,7 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule 'schedule_name_group' has been deleted." text
     And I should see a "No schedules created. Use Create to add a schedule" text
 
-  Scenario: Cleanup: Delete a minion Highstate Recurring Action
+  Scenario: Cleanup: Delete the minion Highstate Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
     Then I should see a "schedule_name_minion" text
     When I click the "schedule_name_minion" item delete button
@@ -347,7 +347,7 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule 'schedule_name_minion' has been deleted." text
     And I should see a "No schedules created. Use Create to add a schedule" text
 
-  Scenario: Cleanup: Delete system group created for group recurring action tests
+  Scenario: Cleanup: Delete the system group created for group recurring action tests
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
     And I follow "Delete Group"
