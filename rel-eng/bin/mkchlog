@@ -27,31 +27,36 @@ Uyuni project: <https://github.com/uyuni-project/uyuni>
 EOF
 }
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
+ARGS=$(getopt -n mkchlog -o rhf:u: --long remove,help,feature:username: -- "$@")
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+eval set -- "$ARGS"
+while [ : ]; do
+    case "$1" in
         -h|--help)
             usage
             exit
             ;;
         -f|--feature)
             FEATURE=$2
-            shift
-            shift
+            shift 2
             ;;
         -u|--username)
             USER=$2
-            shift
-            shift
+            shift 2
             ;;
         -r|--remove)
             REMOVE=1
             shift
             ;;
         -n|--no-wrap)
-            NO_WRAP=true
+            NO_WRAP=1
             shift
             ;;
-        *)
+        --)
+            shift
             break
             ;;
     esac
@@ -145,10 +150,10 @@ if ! [ -z $REMOVE ]; then
 fi
 
 # Add the new entry
-if [ "$NO_WRAP" = true ]; then
-    echo "- $1" > $CHFILE.new
-else
+if [ -z $NO_WRAP ]; then
     echo "$1" | fold -s -w 65 | sed '1s/^.*$/- &/;2,$s/^.*$/  &/' > $CHFILE.new
+else
+    echo "- $1" > $CHFILE.new
 fi
 
 # Append older entries
