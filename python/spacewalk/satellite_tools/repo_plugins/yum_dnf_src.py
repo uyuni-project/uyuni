@@ -37,8 +37,6 @@ from urllib.parse import urlparse, urlsplit, urlunparse
 
 
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
-APACHE_USER = 'apache'
-APACHE_GROUP = 'apache'
 
 
 logging.basicConfig()
@@ -184,7 +182,8 @@ class ContentSource(zypper_ContentSource):
         with cfg_component('server.satellite') as CFG:
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
-            fileutils.makedirs(pkgdir, user=APACHE_USER, group=APACHE_GROUP)
+            with cfg_component('server.satellite') as CFG:
+                fileutils.makedirs(pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file
         repo.sslclientcert = client_cert_file
