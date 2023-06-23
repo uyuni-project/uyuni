@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 14:54+0200\n"
+"POT-Creation-Date: 2023-06-23 14:46+0200\n"
 "PO-Revision-Date: 2023-05-23 07:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -164,7 +164,8 @@ msgstr "취소"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:133
-#: ../html/src/manager/admin/payg/payg.tsx:70
+#: ../html/src/manager/admin/payg/payg.tsx:73
+#: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -1057,7 +1058,7 @@ msgstr "용량제 속성 업데이트됨"
 msgid "Edit Information"
 msgstr "정보 편집"
 
-#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:57
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
 msgid "Editing properties.."
 msgstr "속성을 편집하는 중..."
@@ -1070,7 +1071,7 @@ msgstr "최신 상태 업데이트"
 msgid "Edit "
 msgstr "편집 "
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
@@ -1115,19 +1116,19 @@ msgstr "SSH 개인 키"
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
-#: ../html/src/manager/admin/payg/payg.tsx:60
+#: ../html/src/manager/admin/payg/payg.tsx:61
 msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 인스턴스가 없거나 삭제되었습니다."
 
-#: ../html/src/manager/admin/payg/payg.tsx:67
+#: ../html/src/manager/admin/payg/payg.tsx:68
 msgid "Instance Hostname: {0}"
 msgstr "인스턴스 호스트 이름: {0}"
 
-#: ../html/src/manager/admin/payg/payg.tsx:76
+#: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Delete Pay-as-you-go"
 msgstr "용량제 삭제"
 
-#: ../html/src/manager/admin/payg/payg.tsx:79
+#: ../html/src/manager/admin/payg/payg.tsx:86
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr "프로젝트를 삭제하시겠습니까"
