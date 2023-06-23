@@ -18,7 +18,7 @@ public class OVALPackageTest {
     private boolean isRpm;
     private OVALPackageObject packageObject;
     @ManyToOne
-    @Column(name = "pkg_state_id")
+    @JoinColumn(name = "pkg_state_id")
     private OVALPackageState packageState;
 
     @Column(name = "id")
@@ -70,7 +70,7 @@ public class OVALPackageTest {
         this.stateOperator = stateOperator;
     }
 
-    @Column(name = "pkg_object_id")
+    @JoinColumn(name = "pkg_object_id")
     @ManyToOne(optional = false)
     public OVALPackageObject getPackageObject() {
         return packageObject;
