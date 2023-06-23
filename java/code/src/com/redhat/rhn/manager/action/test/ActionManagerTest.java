@@ -1108,6 +1108,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Build an Image Profile", action.getActionType().getName());
     }
 
+    @Test
+    public void testDefineApplyStatesActionName() {
+        List<String> states = List.of("util.syncgrains", "hardware.profileupdate", "util.syncmodules");
+        String highstateNonRecurring = ActionManager.defineStatesActionName(Collections.emptyList(), false);
+        String highstateRecurring = ActionManager.defineStatesActionName(Collections.emptyList(), true);
+        String statesNonRecurring = ActionManager.defineStatesActionName(states, false);
+        String statesRecurring = ActionManager.defineStatesActionName(states, true);
+        assertEquals("Apply highstate", highstateNonRecurring);
+        assertEquals("Apply recurring highstate", highstateRecurring);
+        assertEquals("Apply recurring states [util.syncgrains, hardware.profileupdate, util.syncmodules]",
+                statesRecurring);
+        assertEquals("Apply states [util.syncgrains, hardware.profileupdate, util.syncmodules]", statesNonRecurring);
+    }
+
+
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);
         if (coll.size() == 0) {
