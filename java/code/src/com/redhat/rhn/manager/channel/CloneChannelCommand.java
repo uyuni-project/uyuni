@@ -27,7 +27,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import java.util.Collection;
+import com.suse.cloud.CloudPaygManager;
+
 import java.util.Optional;
 
 /**
@@ -39,6 +40,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
     private Channel original;
     private String DEFAULT_PREFIX = "clone-of-";
     private boolean stripModularMetadata = false;
+    private CloudPaygManager cloudPaygManager;
 
     /**
      * Clone Behavior type
@@ -67,6 +69,21 @@ public class CloneChannelCommand extends CreateChannelCommand {
         gpgKeyFp = cloneFrom.getGPGKeyFp();
         gpgCheck  = cloneFrom.isGPGCheck();
         archLabel = Optional.ofNullable(cloneFrom.getChannelArch()).map(ChannelArch::getLabel).orElse("");
+        cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    }
+
+    /**
+     * Constructor for testing
+     * @param cloneBehaviorIn the cloning behavior
+     * @param cloneFrom channel to clone from
+     * @param testCloudPaygManager {@link CloudPaygManager} to use
+     */
+    public CloneChannelCommand(CloneBehavior cloneBehaviorIn, Channel cloneFrom,
+                               CloudPaygManager testCloudPaygManager) {
+        this(cloneBehaviorIn, cloneFrom);
+        if (testCloudPaygManager != null) {
+            cloudPaygManager = testCloudPaygManager;
+        }
     }
 
     /**
@@ -116,16 +133,15 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setOriginal(original);
 
         // PAYG Code to avoid cloning channels under forbidden channels
-        if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance()) {
+        if (cloudPaygManager.isPaygInstance()) {
             if (c.getParentChannel() != null) {
                 Optional<Channel> channelTest = c.getParentChannel().originChain()
-                        .map(n -> n.getAccessibleChildrenFor(user))
-                        .flatMap(Collection::stream)
+                        .flatMap(n -> n.getAccessibleChildrenFor(user).stream())
                         .filter(n -> n.getId() != null) // We filter out the cloned channel from the list
                         .filter(n -> n.getProductName().getLabel().equals(original.getProductName().getLabel()))
                         .findFirst();
 
-                if (!channelTest.isPresent()) {
+                if (channelTest.isEmpty()) {
                     throw new ForbiddenCloneChannelPAYGException();
                 }
             }
