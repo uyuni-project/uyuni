@@ -1,0 +1,1 @@
+- Token cleanup process removing invalid tokens using sql query (bsc#1211675)

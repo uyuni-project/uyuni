@@ -50,6 +50,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -502,11 +503,15 @@ public class DownloadController {
      */
     private static void validateToken(String token, String channel, String filename) {
 
-        AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
-            if (!obj.getValid()) {
+        AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
+            Instant now = Instant.now();
+            if (!obj.getValid() || now.isAfter(obj.getExpiration().toInstant())) {
                 log.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
+        }, () -> {
+            log.info(String.format("Forbidden: token %s to access %s doesn't exists in the database", token, filename));
+            halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
         });
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);

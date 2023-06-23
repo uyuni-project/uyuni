@@ -43,6 +43,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_SESSION_CLEANUP =
         "taskomatic_session_cleanup";
 
+    public static final String TASK_QUERY_TOKEN_CLEANUP =
+        "taskomatic_token_cleanup";
+
     public static final String TASK_QUERY_PACKAGE_CHANGELOG_CLEANUP =
         "taskomatic_package_changelog_cleanup";
 

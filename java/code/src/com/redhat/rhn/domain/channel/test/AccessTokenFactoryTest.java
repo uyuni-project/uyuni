@@ -73,6 +73,41 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertEquals(initialChannelCount + 1, ChannelFactory.listAllBaseChannels().size());
     }
 
+
+    @Test
+    public void testCleanupNoMinionInvalid() throws Exception {
+
+
+        AccessToken valid = new AccessToken();
+        valid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
+        valid.setStart(Date.from(Instant.now()));
+        valid.setToken("valid1");
+        AccessTokenFactory.save(valid);
+
+        AccessToken withMinionInvalid = new AccessToken();
+        withMinionInvalid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
+        withMinionInvalid.setStart(Date.from(Instant.now()));
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        withMinionInvalid.setMinion(minion);
+        withMinionInvalid.setValid(false);
+        withMinionInvalid.setToken("valid2");
+        AccessTokenFactory.save(withMinionInvalid);
+
+        AccessToken noMinionInvalid = new AccessToken();
+        noMinionInvalid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
+        noMinionInvalid.setStart(Date.from(Instant.now()));
+        noMinionInvalid.setValid(false);
+        noMinionInvalid.setToken("valid3");
+        AccessTokenFactory.save(noMinionInvalid);
+
+        assertEquals(3, AccessTokenFactory.all().size());
+        AccessTokenFactory.cleanupUnusedExpired();
+        List<AccessToken> all = AccessTokenFactory.all();
+        assertEquals(2, all.size());
+        assertTrue(all.stream().anyMatch(t -> t.getToken().equals("valid1")));
+        assertTrue(all.stream().anyMatch(t -> t.getToken().equals("valid2")));
+    }
+
     @Test
     public void testCleanupExpired() {
         AccessToken valid = new AccessToken();

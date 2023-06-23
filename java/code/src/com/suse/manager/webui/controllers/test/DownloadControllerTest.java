@@ -52,12 +52,14 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SparkTestUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,10 +69,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -178,6 +183,24 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Files.deleteIfExists(packageFile.toPath());
         Files.deleteIfExists(debPackageFile.toPath());
         Files.deleteIfExists(debPackageFile2.toPath());
+    }
+
+    /**
+     * helper method to save a token to the database
+     * @param tokenBuilder
+     * @return the access token database object
+     * @throws JoseException if an error happens during token build
+     */
+    private AccessToken saveTokenToDataBase(TokenBuilder tokenBuilder) throws JoseException {
+        AccessToken newToken = new AccessToken();
+        newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
+        newToken.setToken(tokenBuilder.getToken());
+        Instant expiration = tokenBuilder.getIssuedAt()
+                .plus(tokenBuilder.getExpirationTimeMinutesInTheFuture(),
+                        ChronoUnit.MINUTES);
+        newToken.setExpiration(Date.from(expiration));
+        TestUtils.saveAndFlush(newToken);
+        return newToken;
     }
 
     /**
@@ -531,7 +554,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilder.onlyChannels(
                 new HashSet<>(
                         Arrays.asList(channel.getLabel())));
-        String tokenChannel = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenChannel = accessToken.getToken();
 
         Request request = requestFactory.apply(tokenChannel);
         try {
@@ -552,7 +576,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(new HashSet<>(Arrays.asList(channel.getLabel())));
-        String tokenChannel = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenChannel = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenChannel, "");
@@ -579,7 +604,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testCorrectOrg() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -609,7 +635,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilder.useServerSecret();
         // already expired
         tokenBuilder.setExpirationTimeMinutesInTheFuture(-1);
-        String expiredToken = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String expiredToken = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(expiredToken, "");
@@ -622,7 +649,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
         catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
-            assertTrue(e.getBody().contains("The JWT is no longer valid"));
+            assertTrue(e.getBody().contains("This token is not valid"));
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
@@ -636,7 +663,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadComps() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -689,7 +717,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadModules() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -741,7 +770,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadMediaProducts() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -794,7 +824,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadMissingFile() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
