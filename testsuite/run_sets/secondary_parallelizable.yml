@@ -52,6 +52,9 @@
 - features/secondary/min_deblike_monitoring.feature
 - features/secondary/min_deblike_salt_install_with_staging.feature
 - features/secondary/min_deblike_salt_install_package.feature
+- features/secondary/min_bootstrap_api.feature
+- features/secondary/min_bootstrap_negative.feature
+- features/secondary/min_bootstrap_reactivation.feature
 - features/secondary/min_salt_software_states.feature
 - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
