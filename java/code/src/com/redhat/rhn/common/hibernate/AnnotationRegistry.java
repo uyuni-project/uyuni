@@ -177,7 +177,10 @@ public class AnnotationRegistry {
         OVALPackageState.class,
         OVALPackageTest.class,
         OVALVulnerablePackage.class,
-        OVALPlatformVulnerablePackage.class
+        OVALPlatformVulnerablePackage.class,
+        OVALPackageArchStateEntity.class,
+        OVALPackageEvrStateEntity.class,
+        OVALPackageVersionStateEntity.class
     );
 
     /**
