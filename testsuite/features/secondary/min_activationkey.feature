@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_bootstrap_ssh_key.feature
+# - features/secondary/min_salt_minions_page.feature
 # If the minion fails to bootstrap.
 
 @scope_onboarding

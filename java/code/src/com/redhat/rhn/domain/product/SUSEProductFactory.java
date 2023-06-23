@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -385,7 +386,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<SUSEProductSCCRepository> findNotSyncedMandatoryChannels(String channelLabel) {
         return findAllMandatoryChannels(channelLabel).
-                filter(spsr -> !Optional.ofNullable(ChannelFactory.lookupByLabel(spsr.getChannelLabel())).isPresent())
+                filter(spsr -> Objects.nonNull(ChannelFactory.lookupByLabel(spsr.getChannelLabel())))
                 .sorted(Comparator.comparing(SUSEProductSCCRepository::getParentChannelLabel,
                         Comparator.nullsFirst(Comparator.naturalOrder())));
     }
@@ -521,12 +522,9 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Map<Long, SUSEProduct> productsByProductIds() {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProduct.class);
-        Map<Long, SUSEProduct> result = new HashMap<>();
-        for (SUSEProduct prd: (List<SUSEProduct>) c.list()) {
-            result.put(prd.getProductId(), prd);
-        }
-        return result;
+        return session.createQuery("from com.redhat.rhn.domain.product.SUSEProduct", SUSEProduct.class)
+                .stream()
+                .collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
     }
 
     /**
@@ -663,6 +661,39 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
         return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+    /**
+     * Find all extensions of a given root product. When the given product
+     * is not a root product, the result is empty.
+     * @param root the root product
+     * @return List of {@link SUSEProduct} extensions
+     */
+    public static List<SUSEProduct> findAllExtensionsOfRootProduct(SUSEProduct root) {
+        return getSession()
+                .createNamedQuery("SUSEProductExtension.findAllExtensionsOfRootProduct", SUSEProduct.class)
+                .setParameter("rootId", root.getId())
+                .list();
+    }
+
+    /**
+     * @return a stream of products with channel family SLE-M-T (Tools Channel)
+     */
+    public static Stream<SUSEProduct> listAllSLEMTProducts() {
+        //TODO: replace with optimised query later
+        return findAllSUSEProducts().stream()
+                .filter(p -> p.getChannelFamily() != null)
+                .filter(p -> ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(p.getChannelFamily().getLabel()));
+    }
+
+    /**
+     * @return a stream of products with channel family SMP (SUSE Manager Proxy)
+     */
+    public static Stream<SUSEProduct> listAllSMPProducts() {
+        //TODO: replace with optimised query later
+        return findAllSUSEProducts().stream()
+                .filter(p -> p.getChannelFamily() != null)
+                .filter(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL));
     }
 
     /**

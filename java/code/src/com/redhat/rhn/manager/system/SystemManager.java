@@ -3933,7 +3933,7 @@ public class SystemManager extends BaseManager {
                 .orElse(CredentialsFactory.createCredentials(
                         "hermes_" + RandomStringUtils.random(8, "abcdefghijklmnopqrstuvwxyz"),
                         RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
-                        Credentials.TYPE_REPORT_CREDS, null));
+                        Credentials.TYPE_REPORT_CREDS));
         if (forcePwChange) {
             credentials.setPassword(RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()));
             CredentialsFactory.storeCredentials(credentials);

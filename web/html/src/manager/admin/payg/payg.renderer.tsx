@@ -10,9 +10,10 @@ import Pyag from "./payg";
 type RendererProps = {
   payg?: string;
   wasFreshlyCreatedMessage?: string;
+  readOnly?: boolean;
 };
 
-export const renderer = (id: string, { payg, wasFreshlyCreatedMessage }: RendererProps = {}) => {
+export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly }: RendererProps = {}) => {
   let paygJson: any = {};
   try {
     paygJson = JSON.parse(payg || "");
@@ -23,7 +24,11 @@ export const renderer = (id: string, { payg, wasFreshlyCreatedMessage }: Rendere
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
-      <Pyag payg={paygJson} wasFreshlyCreatedMessage={wasFreshlyCreatedMessage} />
+      <Pyag
+        payg={paygJson}
+        wasFreshlyCreatedMessage={wasFreshlyCreatedMessage}
+        readOnly={paygJson.properties.host === "localhost"}
+      />
     </RolesProvider>,
     document.getElementById(id)
   );

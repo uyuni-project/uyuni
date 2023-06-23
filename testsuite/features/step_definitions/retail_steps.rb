@@ -154,7 +154,13 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
+    service =
+      if node.os_family =~ /^rocky/
+        'NetworkManager'
+      else
+        'network'
+      end
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
   end
   # /etc/netplan/01-netcfg.yaml
   nodes = [$deblike_minion]

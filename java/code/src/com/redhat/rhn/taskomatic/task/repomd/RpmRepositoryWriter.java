@@ -322,6 +322,10 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 }
             }
             log.info("Processed {} packages", i + packageBatch.getEnd());
+            if (commitTransaction) {
+                // commit pre generated XML snippets in the cache
+                HibernateFactory.commitTransaction();
+            }
         }
         primary.end();
         filelists.end();

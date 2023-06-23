@@ -1,0 +1,163 @@
+#!/bin/bash
+
+function usage() {
+cat << EOF
+mkchlog - Create changelog entries for Uyuni packages
+
+Usage: mkchlog [OPTIONS] [MESSAGE]
+
+When called from a subdirectory of any Uyuni package, create a changelog file in
+the following format:
+
+    <package_name>.changes.<username>.<feature_name>
+
+If not explicitly specified, fetch username and feature_name from git email's
+username part and the current branch name.
+
+With no MESSAGE, open a text editor for manual input.
+The default editor can be specified by setting the EDITOR environment variable.
+
+  -f, --feature         set the feature name to use as a filename part
+  -u, --username        set the username to use as a filename part
+  -r, --remove          remove existing changelog file
+  -h, --help            display this help and exit
+
+Uyuni project: <https://github.com/uyuni-project/uyuni>
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            usage
+            exit
+            ;;
+        -f|--feature)
+            FEATURE=$2
+            shift
+            shift
+            ;;
+        -u|--username)
+            USER=$2
+            shift
+            shift
+            ;;
+        -r|--remove)
+            REMOVE=1
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+if ! command -v git &>/dev/null; then
+    echo "Error: git is not available in your system."
+    exit 1
+fi
+
+GITROOT=`git rev-parse --show-toplevel`
+CURDIR=`git rev-parse --show-prefix`
+GITMAIL=`git config --get user.email`
+
+if [ -z "$USER" ]; then
+    if [ -n "$GITMAIL" ]; then
+        USER=${GITMAIL%@*}
+    else
+        echo "Cannot read the username from git config. Omitting the username part."
+    fi
+fi
+
+if [ -z "$FEATURE" ]; then
+    FEATURE=`git rev-parse --abbrev-ref HEAD`
+    if [ -z "$FEATURE" ] || [ "HEAD" == "$FEATURE" ]; then
+        echo "Cannot read the branch name from the current HEAD. Omitting the feature name part."
+        unset FEATURE
+    fi
+fi
+
+if [ -z $USER ] && [ -z $FEATURE ]; then
+    echo "Error: Neither username nor branch name could be read. Please specify the values using --feature and --username options or create a changelog file manually."
+    exit 1
+fi
+
+# Returns the changelog file name in format <package>.changes.<username>.<feature>.
+# Loops through the base directories of each package and tries to match one with the current directory.
+# Returns 1 if no match found, which means the user is outside of a package directory.
+function getChangelogFile() {
+    for pkg in $(cat $GITROOT/rel-eng/packages/* | cut -d' ' -f2)
+    do
+        if echo $CURDIR | grep -q "^$pkg"; then
+            local chfile=$(ls $GITROOT/$pkg*.changes)
+            echo $chfile${USER:+.$USER}${FEATURE:+.$FEATURE}
+            return
+        fi
+    done
+    exit 1
+}
+
+# Get user's default text editor, falling back to vi.
+function getEditorCmd() {
+    local cmd
+    if [ -n "$EDITOR" ]; then
+        cmd=$EDITOR
+    elif command -v vim &>/dev/null; then
+        cmd=vim
+    else
+        cmd=vi
+    fi
+
+    # Specific CLI options for common text editors
+    case "$cmd" in
+        vi | vim)
+            cmd="$cmd +1 +startinsert!"
+            ;;
+        *)
+            cmd="$cmd +1:3"
+            ;;
+    esac
+
+    echo $cmd
+}
+
+CHFILE=$(getChangelogFile)
+if [ $? -ne 0 ]; then
+    echo "Error: Not in a package directory."
+    exit 1
+fi
+
+# Remove option
+if ! [ -z $REMOVE ]; then
+    if [ -f $CHFILE ]; then
+        git restore --staged $CHFILE 2>/dev/null
+        rm $CHFILE 2>/dev/null
+        exit
+    else
+        echo "Error: '$CHFILE' does not exist."
+        exit 1
+    fi
+fi
+
+# Add the new entry
+echo "- $1" > $CHFILE.new
+
+# Append older entries
+cat $CHFILE >> $CHFILE.new 2>/dev/null
+
+# Open file for edit
+if [ -z "$1" ]; then
+    $(getEditorCmd) $CHFILE.new
+fi
+
+# Move file into place
+if [ -s $CHFILE.new ]; then
+    mv $CHFILE.new $CHFILE
+    # Stage in git
+    git add $CHFILE
+else
+    # Unstage and remove
+    echo "No entries written. Discarding the changelog file."
+    git restore --staged $CHFILE 2>/dev/null
+    rm $CHFILE.new $CHFILE 2>/dev/null
+fi

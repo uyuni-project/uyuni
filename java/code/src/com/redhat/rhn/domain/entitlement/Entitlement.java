@@ -20,13 +20,15 @@ import com.redhat.rhn.domain.server.Server;
 import com.suse.manager.reactor.utils.ValueMap;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Entitlements
  */
-public abstract class Entitlement implements Comparable {
-    private String label;
+public abstract class Entitlement implements Comparable<Entitlement> {
+    private final String label;
 
     /**
      * Constructs an Entitlement labeled <code>lbl</code>.
@@ -67,13 +69,31 @@ public abstract class Entitlement implements Comparable {
             return new ToStringBuilder(this).append("label", label).toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Entitlement)) {
+            return false;
+        }
+
+        Entitlement that = (Entitlement) o;
+
+        return new EqualsBuilder().append(label, that.label).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(label).toHashCode();
+    }
+
     /**
      * {@inheritDoc}
      */
-    public int compareTo(final Object other) {
-        Entitlement castOther = (Entitlement) other;
-        return new CompareToBuilder().append(label, castOther.label)
-                .toComparison();
+    public int compareTo(Entitlement other) {
+        return new CompareToBuilder().append(label, other.label).toComparison();
     }
 
     /**

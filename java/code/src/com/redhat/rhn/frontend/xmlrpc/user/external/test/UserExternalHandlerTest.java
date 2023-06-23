@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -130,8 +131,10 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String desc = TestUtils.randomString();
         SaltApi saltApi = new TestSaltApi();
         SystemQuery systemQuery = new TestSystemQuery();
-        RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery, saltApi);
-        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+        CloudPaygManager paygManager = new CloudPaygManager();
+        RegularMinionBootstrapper regularMinionBootstrapper =
+                new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
+        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper

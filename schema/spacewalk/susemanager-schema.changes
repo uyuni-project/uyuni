@@ -1,3 +1,5 @@
+- Added PAYG dimension computation taskomatic job configuration
+- Added new tables to handle PAYG instances computations
 - speedup old schema migration
 
 -------------------------------------------------------------------

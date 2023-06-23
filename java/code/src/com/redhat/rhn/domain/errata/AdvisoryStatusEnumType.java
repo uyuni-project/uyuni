@@ -17,11 +17,12 @@ package com.redhat.rhn.domain.errata;
 /**
  * AdvisoryStatusEnumType
  */
-public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus> {
+public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus, String> {
     /**
      * Constructor
      */
     public AdvisoryStatusEnumType() {
-        super(AdvisoryStatus.class, AdvisoryStatus::getMetadataValue, s -> AdvisoryStatus.fromMetadata(s).get());
+        super(AdvisoryStatus.class, String.class, AdvisoryStatus::getMetadataValue,
+            s -> AdvisoryStatus.fromMetadata(s).orElse(null));
     }
 }
