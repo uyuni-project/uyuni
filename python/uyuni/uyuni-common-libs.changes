@@ -1,5 +1,3 @@
-- Use context manager for apache users in fileutils.py.
-
 -------------------------------------------------------------------
 Wed Apr 19 12:55:12 CEST 2023 - marina.latini@suse.com
 
