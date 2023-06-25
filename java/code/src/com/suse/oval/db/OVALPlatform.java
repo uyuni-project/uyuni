@@ -10,7 +10,7 @@ import java.util.List;
                 query = "SELECT platform " +
                         "FROM OVALPlatform platform " +
                         "JOIN platform.definitions def " +
-                        "JOIN def.cves cve " +
+                        "JOIN def.cve cve " +
                         "WHERE cve.name = :cve"
         ),
         @NamedQuery(name = "OVALPlatform.getPlatformsAffectedByDefinition",

@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "suseOVALDefinition")
 @NamedQueries({
         @NamedQuery(name = "OVALDefinition.getVulnerabilityDefinitionByCve",
-                query = "SELECT def FROM OVALDefinition def JOIN def.cves cve WHERE cve.name = :cve")
+                query = "SELECT def FROM OVALDefinition def JOIN def.cve cve WHERE cve.name = :cve")
 })
 public class OVALDefinition {
     private String id;
@@ -20,7 +20,7 @@ public class OVALDefinition {
     private String description;
     private List<OVALReference> references;
     private List<OVALPlatform> affectedPlatforms;
-    private List<Cve> cves;
+    private Cve cve;
 
     @Id
     @Column(name = "id")
@@ -83,15 +83,13 @@ public class OVALDefinition {
     }
 
     @SuppressWarnings("JpaAttributeTypeInspection")
-    @ManyToMany
-    @JoinTable(name = "suseOVALDefinitionCve",
-            joinColumns = {@JoinColumn(name = "definition_id")},
-            inverseJoinColumns = {@JoinColumn(name = "cve_id")})
-    public List<Cve> getCves() {
-        return cves;
+    @OneToOne
+    @JoinColumn(name = "cve_id")
+    public Cve getCve() {
+        return cve;
     }
 
-    public void setCves(List<Cve> cves) {
-        this.cves = cves;
+    public void setCve(Cve cve) {
+        this.cve = cve;
     }
 }
