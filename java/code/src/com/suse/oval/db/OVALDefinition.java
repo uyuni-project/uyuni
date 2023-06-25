@@ -9,6 +9,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "suseOVALDefinition")
+@NamedQueries({
+        @NamedQuery(name = "OVALDefinition.getVulnerabilityDefinitionByCve",
+                query = "SELECT def FROM OVALDefinition def JOIN def.cves cve WHERE cve.name = :cve")
+})
 public class OVALDefinition {
     private String id;
     private DefinitionClassEnum defClass;
