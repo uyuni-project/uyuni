@@ -37,16 +37,16 @@ public class OVALCachingFactory extends HibernateFactory {
         instance.saveObject(pkgObject);
     }
 
-    public static OVALPackageTest getPackageTestById(String id) {
-        return null;
+    public static OVALPackageTest lookupPackageTestById(String id) {
+        return getSession().byId(OVALPackageTest.class).load(id);
     }
 
-    public static OVALPackageState getPackageStateById(String id) {
-        return null;
+    public static OVALPackageState lookupPackageStateById(String id) {
+        return getSession().byId(OVALPackageState.class).load(id);
     }
 
-    public static OVALPackageObject getPackageObjectById(String id) {
-        return null;
+    public static OVALPackageObject lookupPackageObjectById(String id) {
+        return getSession().byId(OVALPackageObject.class).load(id);
     }
 
     public static List<OVALPlatform> getPlatformsAffectedByCve(String cve) {
