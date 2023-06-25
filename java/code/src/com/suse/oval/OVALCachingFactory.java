@@ -1,6 +1,7 @@
 package com.suse.oval;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.suse.oval.db.*;
 import org.apache.commons.lang3.NotImplementedException;
@@ -11,6 +12,7 @@ import org.hibernate.Session;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +37,7 @@ public class OVALCachingFactory extends HibernateFactory {
                         .collect(Collectors.toList())
         );
 
+        // TODO: OVAL source should be included in the OVALDefinition object
         String cve = extractCveFromDefinition(definition, OVALDefinitionSource.SUSE);
         definition.setCve(CveFactory.lookupOrInsertByName(cve));
 
@@ -117,12 +120,60 @@ public class OVALCachingFactory extends HibernateFactory {
                 .uniqueResultOptional();
     }
 
+    public static List<OVALVulnerablePackage> lookupVulnerablePackagesByPlatformAndCve(long platformId, String cve) {
+        return Collections.emptyList();
+    }
+
+    public static void assignVulnerablePackageToPlatform(String platformName, String cveName, String pkgName, String pkgFixVersion) {
+        OVALPlatform platform = lookupPlatformByName(platformName);
+        Cve cve = CveFactory.lookupByName(cveName);
+        OVALVulnerablePackage vulnerablePkg = lookupOrInsertVulnerablePackage(pkgName, pkgFixVersion);
+
+        OVALPlatformVulnerablePackage platformVulnerablePkg = new OVALPlatformVulnerablePackage();
+        platformVulnerablePkg.setPlatform(platform);
+        platformVulnerablePkg.setCve(cve);
+        platformVulnerablePkg.setVulnerablePackage(vulnerablePkg);
+
+        instance.saveObject(platformVulnerablePkg);
+    }
+
+    public static OVALVulnerablePackage lookupOrInsertVulnerablePackage(String pkgName, String fixVersion) {
+        OVALVulnerablePackage vulnerablePackage = lookupVulnerablePackageByNameAndFixVersion(pkgName, fixVersion);
+        if (vulnerablePackage != null) {
+            return vulnerablePackage;
+        } else {
+            OVALVulnerablePackage newVulnerablePackage = new OVALVulnerablePackage();
+            newVulnerablePackage.setName(pkgName);
+            newVulnerablePackage.setFixVersion(fixVersion);
+
+            instance.saveObject(newVulnerablePackage);
+
+            return newVulnerablePackage;
+        }
+    }
+
+    public static OVALVulnerablePackage lookupVulnerablePackageByNameAndFixVersion(String pkgName, String fixVersion) {
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<OVALVulnerablePackage> criteriaQuery = builder.createQuery(OVALVulnerablePackage.class);
+        Root<OVALVulnerablePackage> root = criteriaQuery.from(OVALVulnerablePackage.class);
+
+        criteriaQuery.where(builder.and(
+                        builder.equal(root.get("name"), pkgName),
+                        builder.equal(root.get("fix_version"), fixVersion)
+                )
+        );
+
+        return session.createQuery(criteriaQuery).uniqueResult();
+    }
+
     @Override
     protected Logger getLogger() {
         return LOG;
     }
 
-    public static String extractCveFromDefinition(OVALDefinition definition, OVALDefinitionSource source) {
+    private static String extractCveFromDefinition(OVALDefinition definition, OVALDefinitionSource source) {
         switch (source) {
             case SUSE:
                 return definition.getTitle();
