@@ -4,7 +4,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.suse.oval.db.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +23,42 @@ public class OVALCachingFactory extends HibernateFactory {
     /**
      * Insert the passed definition object into the database.
      * <p>
-     * Also insert the affected platforms information (if not already inserted) into the relevant tables
+     * Also inserts the affected platforms information (if not already inserted) into the relevant tables
      */
-    public static void saveDefinition(OVALDefinition definition) {
+    public static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms) {
+        affectedPlatforms.forEach(OVALCachingFactory::lookupOrInsertPlatformByName);
+
         instance.saveObject(definition);
+    }
+
+    /**
+     * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
+     *
+     * @param name name of the platform
+     * @return the platform
+     */
+    public static OVALPlatform lookupOrInsertPlatformByName(String name) {
+        OVALPlatform platform = lookupPlatformByName(name);
+        if (platform != null) {
+            return platform;
+        } else {
+            OVALPlatform newPlatform = new OVALPlatform();
+            newPlatform.setName(name);
+            instance.saveObject(newPlatform);
+            return newPlatform;
+        }
+    }
+
+    public static OVALPlatform lookupPlatformByName(String name) {
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<OVALPlatform> criteriaQuery = builder.createQuery(OVALPlatform.class);
+        Root<OVALPlatform> root = criteriaQuery.from(OVALPlatform.class);
+
+        criteriaQuery.where(builder.equal(root.get("name"), name));
+
+        return session.createQuery(criteriaQuery).uniqueResult();
     }
 
     public static void savePackageTest(OVALPackageTest pkgTest) {
@@ -50,10 +86,20 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static List<OVALPlatform> getPlatformsAffectedByCve(String cve) {
-        return null;
+        return getSession()
+                .createNamedQuery("OVALPlatform.getPlatformsAffectedByCve", OVALPlatform.class)
+                .setParameter("cve", cve)
+                .getResultList();
     }
 
-    public static Optional<OVALDefinition> getVulnerabilityDefinitionByCve(String cve) {
+    public static List<OVALPlatform> lookupPlatformsAffectedByDefinition(String defId) {
+        return getSession()
+                .createNamedQuery("OVALPlatform.getPlatformsAffectedByDefinition", OVALPlatform.class)
+                .setParameter("defId", defId)
+                .getResultList();
+    }
+
+    public static Optional<OVALDefinition> lookupVulnerabilityDefinitionByCve(String cve) {
         return getSession()
                 .createNamedQuery("OVALDefinition.getVulnerabilityDefinitionByCve", OVALDefinition.class)
                 .setParameter("cve", cve)
