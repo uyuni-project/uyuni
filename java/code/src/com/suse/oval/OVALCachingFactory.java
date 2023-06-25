@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(OVALCachingFactory.class);
@@ -26,7 +27,11 @@ public class OVALCachingFactory extends HibernateFactory {
      * Also inserts the affected platforms information (if not already inserted) into the relevant tables
      */
     public static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms) {
-        affectedPlatforms.forEach(OVALCachingFactory::lookupOrInsertPlatformByName);
+        definition.setAffectedPlatforms(
+                affectedPlatforms.stream()
+                        .map(OVALCachingFactory::lookupOrInsertPlatformByName)
+                        .collect(Collectors.toList())
+        );
 
         instance.saveObject(definition);
     }
@@ -45,6 +50,7 @@ public class OVALCachingFactory extends HibernateFactory {
             OVALPlatform newPlatform = new OVALPlatform();
             newPlatform.setName(name);
             instance.saveObject(newPlatform);
+
             return newPlatform;
         }
     }
