@@ -1,5 +1,8 @@
 package com.suse.oval.db;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -63,5 +66,30 @@ public class OVALPlatform {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof OVALPlatform)) {
+            return false;
+        }
+        OVALPlatform castOther = (OVALPlatform) other;
+        return new EqualsBuilder()
+                .append(id, castOther.id)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }

@@ -35,33 +35,33 @@ public class OVALPlatformVulnerablePackageKey implements Serializable {
         this.vulnerablePackage = vulnerablePackage;
     }
 
-/*    *//**
+    /**
      * {@inheritDoc}
-     *//*
+     */
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder()
-                .append(platformId)
-                .append(cveId)
-                .append(vulnerablePkgId);
+                .append(platform.getId())
+                .append(cve.getId())
+                .append(vulnerablePackage.getId());
         return builder.toHashCode();
 
     }
 
-    *//**
+    /**
      * {@inheritDoc}
-     *//*
+     */
     @Override
     public boolean equals(Object other) {
         if (other instanceof OVALPlatformVulnerablePackageKey) {
             OVALPlatformVulnerablePackageKey otherKey = (OVALPlatformVulnerablePackageKey) other;
             return new EqualsBuilder()
-                    .append(this.getPlatformId(), otherKey.getPlatformId())
-                    .append(this.getCveId(), otherKey.getCveId())
-                    .append(this.getVulnerablePkgId(), otherKey.getVulnerablePkgId())
+                    .append(this.getPlatform(), otherKey.getPlatform())
+                    .append(this.getCve(), otherKey.getCve())
+                    .append(this.getVulnerablePackage(), otherKey.getVulnerablePackage())
                     .isEquals();
         } else {
             return false;
         }
-    }*/
+    }
 }
