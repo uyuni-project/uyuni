@@ -54,7 +54,10 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static Optional<OVALDefinition> getVulnerabilityDefinitionByCve(String cve) {
-        return Optional.empty();
+        return getSession()
+                .createNamedQuery("OVALDefinition.getVulnerabilityDefinitionByCve", OVALDefinition.class)
+                .setParameter("cve", cve)
+                .uniqueResultOptional();
     }
 
     @Override
