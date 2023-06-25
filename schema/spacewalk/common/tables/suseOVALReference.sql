@@ -12,8 +12,8 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
-DROP TABLE IF EXISTS suseOVALReference;
-CREATE TABLE suseOVALReference
+
+CREATE TABLE IF NOT EXISTS suseOVALReference
 (
     ref_id    VARCHAR NOT NULL,
     definition_id    VARCHAR NOT NULL
