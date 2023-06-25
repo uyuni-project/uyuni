@@ -26,15 +26,15 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static void savePackageTest(OVALPackageTest pkgTest) {
-
+        instance.saveObject(pkgTest);
     }
 
     public static void savePackageState(OVALPackageState pkgState) {
-
+        instance.saveObject(pkgState);
     }
 
     public static void savePackageObject(OVALPackageObject pkgObject) {
-
+        instance.saveObject(pkgObject);
     }
 
     public static OVALPackageTest getPackageTestById(String id) {
