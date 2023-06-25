@@ -1,5 +1,8 @@
 package com.suse.oval.db;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -36,5 +39,30 @@ public class OVALVulnerablePackage {
 
     public void setFixVersion(String fixVersion) {
         this.fixVersion = fixVersion;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof OVALVulnerablePackage)) {
+            return false;
+        }
+        OVALVulnerablePackage castOther = (OVALVulnerablePackage) other;
+        return new EqualsBuilder()
+                .append(id, castOther.id)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }

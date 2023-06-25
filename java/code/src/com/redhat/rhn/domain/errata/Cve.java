@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.errata;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  *
  *
@@ -47,5 +51,29 @@ public class Cve {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof Cve)) {
+            return false;
+        }
+        Cve castOther = (Cve) other;
+        return new EqualsBuilder()
+                .append(id, castOther.id)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }
