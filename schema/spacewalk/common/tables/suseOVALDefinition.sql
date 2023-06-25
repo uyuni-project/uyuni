@@ -15,9 +15,11 @@
 DROP TABLE IF EXISTS suseOVALDefinition;
 CREATE TABLE suseOVALDefinition
 (
-    id     VARCHAR NOT NULL
-             CONSTRAINT suse_oval_definition_id_pk PRIMARY KEY,
-    class  VARCHAR NOT NULL,
-    title  VARCHAR,
-    description VARCHAR(10000)
+    id              VARCHAR NOT NULL
+                       CONSTRAINT suse_oval_definition_id_pk PRIMARY KEY,
+    class           VARCHAR NOT NULL,
+    title           VARCHAR,
+    description     VARCHAR(10000),
+    cve_id          NUMERIC
+                       REFERENCES rhnCve(id)
 );
