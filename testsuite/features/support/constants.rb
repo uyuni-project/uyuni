@@ -88,12 +88,16 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
                       'sle15sp3_ssh_minion' => 'bison',
                       'sle15sp4_minion' => 'bison',
                       'sle15sp4_ssh_minion' => 'bison',
+                      'sle15sp5_minion' => 'bison',
+                      'sle15sp5_ssh_minion' => 'bison',
                       'slemicro51_minion' => 'ethtool',
                       'slemicro51_ssh_minion' => 'ethtool',
                       'slemicro52_minion' => 'ethtool',
                       'slemicro52_ssh_minion' => 'ethtool',
                       'slemicro53_minion' => 'ethtool',
                       'slemicro53_ssh_minion' => 'ethtool',
+                      'slemicro54_minion' => 'ethtool',
+                      'slemicro54_ssh_minion' => 'ethtool',
                       'alma9_minion' => 'autoconf',
                       'alma9_ssh_minion' => 'autoconf',
                       'centos7_minion' => 'autoconf',
@@ -119,7 +123,9 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
                       'debian11_minion' => 'bison',
                       'debian11_ssh_minion' => 'bison',
                       'opensuse154arm_minion' => 'bison',
-                      'opensuse154arm_ssh_minion' => 'bison' }.freeze
+                      'opensuse154arm_ssh_minion' => 'bison',
+                      'opensuse155arm_minion' => 'bison',
+                      'opensuse155arm_ssh_minion' => 'bison' }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
@@ -152,12 +158,16 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle15sp3_ssh_minion' => 'SLES15-SP3-Pool',
                            'sle15sp4_minion' => 'SLES15-SP4-Pool',
                            'sle15sp4_ssh_minion' => 'SLES15-SP4-Pool',
+                           'sle15sp5_minion' => 'SLES15-SP5-Pool',
+                           'sle15sp5_ssh_minion' => 'SLES15-SP5-Pool',
                            'slemicro51_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                            'slemicro51_ssh_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                            'slemicro52_minion' => 'SUSE-MicroOS-5.2-Pool for x86_64',
                            'slemicro52_ssh_minion' => 'SUSE-MicroOS-5.2-Pool for x86_64',
                            'slemicro53_minion' => 'SLE-Micro-5.3-Pool for x86_64',
                            'slemicro53_ssh_minion' => 'SLE-Micro-5.3-Pool for x86_64',
+                           'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
+                           'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
                            'sle15sp4_buildhost' => 'SLES15-SP4-Pool',
                            'monitoring_server' => 'SLES15-SP4-Pool',
                            'sle15sp4_terminal' => 'SLES15-SP4-Pool',
@@ -186,7 +196,9 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'debian11_minion' => 'debian-11-pool',
                            'debian11_ssh_minion' => 'debian-11-pool',
                            'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
-                           'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64' }.freeze
+                           'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
+                           'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
+                           'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64' }.freeze
 
 # Used for creating activation keys
 # The values can be found under Admin -> Setup Wizard -> Products
@@ -199,9 +211,11 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                           'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
                           'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
+                          'SLES15-SP5-Pool' => 'sle-product-sles15-sp5-pool-x86_64',
                           'SUSE-MicroOS-5.1-Pool for x86_64' => 'suse-microos-5.1-pool-x86_64',
                           'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                           'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
+                          'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                           'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
                           'Fake Base Channel' => 'fake_base_channel',
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
@@ -212,10 +226,10 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'ubuntu-2204-amd64-main' => 'ubuntu-2204-amd64-main-amd64',
-                          'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
                           'debian-11-pool' => 'debian-11-pool-amd64',
-                          'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64' }.freeze
+                          'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64',
+                          'openSUSE-Leap-15.5-Pool for aarch64' => 'opensuse-leap-15.5-pool-aarch64' }.freeze
 
 # Used for creating bootstrap repositories
 # The values can be found out on the server by running 'mgr-create-bootstrap-repo'
@@ -227,9 +241,11 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'SLES15-SP2-Pool' => 'SLE-15-SP2-x86_64',
                                     'SLES15-SP3-Pool' => 'SLE-15-SP3-x86_64',
                                     'SLES15-SP4-Pool' => 'SLE-15-SP4-x86_64',
+                                    'SLES15-SP5-Pool' => 'SLE-15-SP5-x86_64',
                                     'SUSE-MicroOS-5.1-Pool for x86_64' => 'SLE-MICRO-5.1-x86_64',
                                     'SUSE-MicroOS-5.2-Pool for x86_64' => 'SLE-MICRO-5.2-x86_64',
                                     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
+                                    'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
                                     'almalinux9 for x86_64' => 'almalinux-9-x86_64',
                                     'Fake Base Channel' => 'fake_base_channel-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
@@ -242,7 +258,8 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'ubuntu-2204-amd64-main' => 'ubuntu-22.04-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
-                                    'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64' }.freeze
+                                    'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64',
+                                    'openSUSE-Leap-15.5-Pool for aarch64' => 'openSUSE-Leap-15.5-aarch64' }.freeze
 
 # Used for creating bootstrap repositories
 # The values can be found under Admin -> Setup Wizard -> Products
@@ -255,9 +272,11 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                                            'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
                                            'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
+                                           'SLES15-SP5-Pool' => 'sle-product-sles15-sp5-pool-x86_64',
                                            'SUSE-MicroOS-5.1-Pool for x86_64' => 'suse-microos-5.1-pool-x86_64',
                                            'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                                            'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
+                                           'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                                            'almalinux9 for x86_64' => nil,
                                            'Fake Base Channel' => nil,
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
@@ -268,10 +287,10 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
                                            'ubuntu-2204-amd64-main' => nil,
-                                           'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
                                            'debian-11-pool' => 'debian-11-pool-amd64',
-                                           'openSUSE-Leap-15.4-Pool for aarch64' => nil }.freeze
+                                           'openSUSE-Leap-15.4-Pool for aarch64' => nil,
+                                           'openSUSE-Leap-15.5-Pool for aarch64' => nil }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_minion' => 'x86_64',
@@ -291,12 +310,16 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle15sp3_ssh_minion' => 'x86_64',
                       'sle15sp4_minion' => 'x86_64',
                       'sle15sp4_ssh_minion' => 'x86_64',
+                      'sle15sp5_minion' => 'x86_64',
+                      'sle15sp5_ssh_minion' => 'x86_64',
                       'slemicro51_minion' => 'x86_64',
                       'slemicro51_ssh_minion' => 'x86_64',
                       'slemicro52_minion' => 'x86_64',
                       'slemicro52_ssh_minion' => 'x86_64',
                       'slemicro53_minion' => 'x86_64',
                       'slemicro53_ssh_minion' => 'x86_64',
+                      'slemicro54_minion' => 'x86_64',
+                      'slemicro54_ssh_minion' => 'x86_64',
                       'alma9_minion' => 'x86_64',
                       'alma9_ssh_minion' => 'x86_64',
                       'centos7_minion' => 'x86_64',
@@ -322,7 +345,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian11_minion' => 'amd64',
                       'debian11_ssh_minion' => 'amd64',
                       'opensuse154arm_minion' => 'aarch64',
-                      'opensuse154arm_ssh_minion' => 'aarch64' }.freeze
+                      'opensuse154arm_ssh_minion' => 'aarch64',
+                      'opensuse155arm_minion' => 'aarch64',
+                      'opensuse155arm_ssh_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.

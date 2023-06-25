@@ -28,7 +28,6 @@ import tempfile
 import io
 from uyuni.common.checksum import getFileChecksum
 from uyuni.common.context_managers import cfg_component
-from uyuni.common.rhnLib import isSUSE
 from uyuni.common.usix import ListType, TupleType, MaxInt
 
 try:
@@ -300,7 +299,7 @@ def createPath(path, user=None, group=None, chmod=int('0755', 8)):
 
     Uses the above makedirs() function.
     """
-    with cfg_component() as CFG:
+    with cfg_component(component=None) as CFG:
         if user is None:
             user = CFG.httpd_user
         if group is None:
@@ -324,7 +323,7 @@ def createPath(path, user=None, group=None, chmod=int('0755', 8)):
 def setPermsPath(path, user=None, group='root', chmod=int('0750', 8)):
     """chown user.group and set permissions to chmod"""
     if user is None:
-        with cfg_component() as CFG:
+        with cfg_component(component=None) as CFG:
             user = CFG.httpd_user
 
     if not os.path.exists(path):

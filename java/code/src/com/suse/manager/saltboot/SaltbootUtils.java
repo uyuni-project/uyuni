@@ -184,12 +184,14 @@ public class SaltbootUtils {
 
         Profile profile = Profile.lookupByName(con, org.getId() + "-" + bootImage);
         if (profile == null) {
-            throw new SaltbootException("Unable to find Cobbler profile for specified boot image " + bootImage);
+            LOG.warn("Unable to find Cobbler profile for specified boot image '{}'", bootImage);
+            return;
         }
 
         Profile group = Profile.lookupByName(con, org.getId() + "-" + saltbootGroup);
         if (group == null) {
-            throw new SaltbootException("Unable to find Cobbler profile for saltboot group " + saltbootGroup);
+            LOG.warn("Unable to find Cobbler profile for saltboot group '{}'", saltbootGroup);
+            return;
         }
 
         // We need to append associated saltboot group settings, particularly MASTER
@@ -201,6 +203,9 @@ public class SaltbootUtils {
         SystemRecord system = SystemRecord.lookupByName(con, name);
         if (system == null) {
             system = SystemRecord.create(con, name, profile);
+        }
+        else {
+            system.setProfile(profile);
         }
         system.<String>setKernelOptions(Optional.of(kernelParams));
         List<Network> networks = hwAddresses.stream().map(hw -> {

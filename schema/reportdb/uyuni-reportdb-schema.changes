@@ -1,4 +1,10 @@
-- Require perl-File-Find for Enterprise Linux.
+- Use synced_date to compute the inactivity period to correctly
+  describe when reporting database was updated (bsc#1211621)
+-------------------------------------------------------------------
+Wed Apr 19 12:54:31 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.3-1
+  * Require perl-File-Find for Enterprise Linux.
 
 -------------------------------------------------------------------
 Tue Feb 21 12:30:41 CET 2023 - jgonzalez@suse.com

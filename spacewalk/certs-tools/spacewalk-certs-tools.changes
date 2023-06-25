@@ -1,4 +1,15 @@
-- remove unused dependencies
+- Add openssl3 compatibility.
+- Read CA password from a file
+- Also ship SUSE specific files on Enterprise Linux.
+- Use the CA cert in the pki config to generate build host rpm
+- Add shadow as dependency of osimage certificate package
+  (bsc#1210834 bsc#1204089)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:52:17 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.6-1
+  * remove unused dependencies
 
 -------------------------------------------------------------------
 Tue Feb 21 14:03:19 CET 2023 - jgonzalez@suse.com

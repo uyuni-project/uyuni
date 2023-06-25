@@ -1,8 +1,30 @@
-- Fix datetime picker appearing behind modal edge
-- Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
-- Fix UI inconsistencies in susemanager-light and susemanager-dark
-  theme
-- Deprecate jQuery datepicker, integrate React datepicker
+- Fix VHM CPU and RAM display when 0 (bsc#1175823)
+- Align the order of the Refresh and Create buttons for more
+  consistency
+- Fix layout alignment on pages showing failed states logs (bsc#1211713)
+- Fix parsing error when showing notification message details (bsc#1211469)
+- Fix spelling on monitoring-admin page.
+- force all mandatory channels being selected in software channel
+  change page (bsc#1211062)
+- Fix font contrast in dark theme search field (bsc#1201337)
+- Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+- Show loading indicator on formula details pages (bsc#1179747)
+- Fix systems list sorting buttons
+- Fix wrong credentials error message (bsc#1210456)
+- Recurring custom states
+- Increase datetimepicker font sizes (bsc#1210437)
+- Disable login button with empty password
+
+-------------------------------------------------------------------
+Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.10-1
+  * fix an issue where the datetimepicker shows wrong date (bsc#1209231)
+  * Fix datetime picker appearing behind modal edge
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+  * Fix UI inconsistencies in susemanager-light and susemanager-dark
+    theme
+  * Deprecate jQuery datepicker, integrate React datepicker
 
 -------------------------------------------------------------------
 Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com

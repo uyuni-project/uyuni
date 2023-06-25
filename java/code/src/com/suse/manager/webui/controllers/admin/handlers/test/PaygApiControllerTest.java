@@ -27,6 +27,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -66,7 +67,8 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         super.setUp();
         clearDb();
 
-        satAdmin = UserTestUtils.createSatAdminInOrgOne();
+        satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
 
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = context.mock(TaskomaticApi.class);

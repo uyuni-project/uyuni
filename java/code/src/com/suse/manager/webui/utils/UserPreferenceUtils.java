@@ -180,9 +180,6 @@ public class UserPreferenceUtils {
     }
 
     /**
-     * TODO
-     * Make the parameter configurable from the configuration file
-     *
      * @param pageContext the current PageContext
      * @return the String format of the Date
      */
@@ -191,9 +188,6 @@ public class UserPreferenceUtils {
     }
 
     /**
-     * TODO
-     * Make the parameter configurable from the configuration file
-     *
      * @param pageContext the current PageContext
      * @return the String format of the Time
      */

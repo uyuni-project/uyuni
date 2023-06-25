@@ -114,29 +114,34 @@ public class Notification {
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        // Each session sends messages to tell us what action ID they need to monitor
-        Set<String> watched = wsSessions.get(session);
-        if (watched != null) {
-            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
-                    .map(webUserID -> UserFactory.lookupById((Long) webUserID));
-            userOpt.ifPresentOrElse(user -> {
-                        try {
-                            Set<String> request = GSON.fromJson(messageBody,
-                                    new TypeToken<Set<String>>() { }.getType());
-                            watched.addAll(request);
+        try {
+            // Each session sends messages to tell us what action ID they need to monitor
+            Set<String> watched = wsSessions.get(session);
+            if (watched != null) {
+                Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
+                        .map(webUserID -> UserFactory.lookupById((Long) webUserID));
+                userOpt.ifPresentOrElse(user -> {
+                            try {
+                                Set<String> request = GSON.fromJson(messageBody,
+                                        new TypeToken<Set<String>>() { }.getType());
+                                watched.addAll(request);
 
-                            // Send the data
-                            sendData(session, user, request);
-                        }
-                        catch (JsonSyntaxException e) {
-                            LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
-                        }
-                    },
-                    () -> LOG.debug("no authenticated user.")
-                );
+                                // Send the data
+                                sendData(session, user, request);
+                            }
+                            catch (JsonSyntaxException e) {
+                                LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
+                            }
+                        },
+                        () -> LOG.debug("no authenticated user.")
+                    );
+            }
+            else {
+                LOG.debug("Session not registered or broken: [id:{}]", session.getId());
+            }
         }
-        else {
-            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
+        finally {
+            HibernateFactory.closeSession();
         }
     }
 
@@ -178,7 +183,7 @@ public class Notification {
                     handbreakSession(session);
                 }
             }
-            catch (IOException e) {
+            catch (IOException | IllegalStateException e) {
                 LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
                         session.getId()));
                 handbreakSession(session);

@@ -1,4 +1,8 @@
-- remove pylint check at build time
+-------------------------------------------------------------------
+Wed Apr 19 12:45:23 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.4-1
+  * remove pylint check at build time
 
 -------------------------------------------------------------------
 Tue Feb 21 14:12:58 CET 2023 - jgonzalez@suse.com

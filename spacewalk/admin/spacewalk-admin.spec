@@ -28,13 +28,14 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.4
+Version:        4.4.5
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       procps
+Requires:       python3-websockify
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 BuildRequires:  make
@@ -45,9 +46,7 @@ Provides:       satellite-utils = 5.3.0
 Obsoletes:      rhn-satellite-admin < 5.3.0
 Provides:       rhn-satellite-admin = 5.3.0
 BuildArch:      noarch
-%if 0%{?suse_version}
 BuildRequires:  spacewalk-config
-%endif
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
 Requires:       susemanager-schema-utility

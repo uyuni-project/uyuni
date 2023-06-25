@@ -1,6 +1,11 @@
-# Copyright (c) 2018-2021 SUSE LLC.
+# Copyright (c) 2018-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features when running in sequential:
+# - features/secondary/min_config_state_channel_subscriptions.feature
+# If the state channel fails to be deleted.
 
+@skip_if_github_validation
 @scope_configuration_channels
 Feature: Configuration state channels
   In order to configure systems through Salt

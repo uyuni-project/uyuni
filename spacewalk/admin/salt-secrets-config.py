@@ -30,7 +30,7 @@ cert_location = "/etc/pki/trust/anchors"
 if not os.path.isdir(cert_location):
     cert_location = "/etc/pki/ca-trust/source/anchors"
 
-with cfg_component(None) as CFG:
+with cfg_component(component=None) as CFG:
     mgr_events_config = {
         "engines": [{
             "mgr_events": {

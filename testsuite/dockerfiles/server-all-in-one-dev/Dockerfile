@@ -13,6 +13,7 @@ RUN zypper ref && \
       servletapi5 \
       cpio \
       spacecmd \
+      expect \
       wget && \
     zypper addrepo --no-gpgcheck obs://systemsmanagement:Uyuni:Utils systemsmanagement:uyuni:utils && \
     zypper -n install obs-to-maven yarn && \

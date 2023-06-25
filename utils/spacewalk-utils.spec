@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-utils
-Version:        4.4.6
+Version:        4.4.7
 Release:        1
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -54,8 +54,6 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
 Requires:       python3-uyuni-common-libs
-# Required by spacewalk-clone-by-date, spacewalk-sync-setup
-Requires:       python3-salt
 # Required by spacewalk-hostname-rename
 Requires:       rpm
 # Required by spacewalk-hostname-rename

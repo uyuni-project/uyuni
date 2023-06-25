@@ -1,7 +1,7 @@
 # Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @skip_if_cloud
 @scope_virtual_host_manager
 Feature: Virtual host manager web UI

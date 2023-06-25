@@ -28,39 +28,23 @@ import org.junit.jupiter.api.Test;
  */
 public class HMACTest extends RhnBaseTestCase {
 
-    public void doTestSHA1(String data, String key, String expect) {
+    public void doTestSHA256(String data, String key, String expect) {
 
-        String value = HMAC.sha1(data, key);
-        assertEquals(expect, value);
-    }
-
-    public void doTestMD5(String data, String key, String expect) {
-
-        String value = HMAC.md5(data, key);
+        String value = HMAC.sha256(data, key);
         assertEquals(expect, value);
     }
 
     @Test
-    public void testDataKeySHA1() throws Exception {
-        doTestSHA1("data", "key", "104152c5bfdca07bc633eebd46199f0255c9f49d");
+    public void testDataKeySHA256() throws Exception {
+        doTestSHA256("data", "key", "5031fe3d989c6d1537a013fa6e739da23463fdaec3b70137d828e36ace221bd0");
+
     }
 
     @Test
-    public void testDataKeyMD5() throws Exception {
-        doTestMD5("data", "key", "9d5c73ef85594d34ec4438b7c97e51d8");
-    }
-
-    @Test
-    public void testLongKeySHA1() throws Exception {
-        doTestSHA1("data",
+    public void testLongKeySHA256() throws Exception {
+        doTestSHA256("data",
       "this is a very long key to see if that breaks the implementation, xxxx",
-                   "fba60ff23634892fa139a3a24de8514562fc9c8c");
+                   "cfb516736c4f9353b463c4de0d24b35d3c523e75810c6d8cb9320c7ab73a77ce");
     }
 
-    @Test
-    public void testlongkeymd5() throws Exception {
-        doTestMD5("data",
-      "this is a very long key to see if that breaks the implementation, xxxx",
-                  "582c5a52823a09b071b2577eb9ccad28");
-    }
 }

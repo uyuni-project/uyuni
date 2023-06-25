@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -52,6 +53,7 @@ import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SaltbootController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -229,6 +231,12 @@ public class Router implements SparkApplication {
 
         // HTTP API
         httpApiRegistry.initRoutes();
+
+        // Saltboot
+        SaltbootController.initRoutes();
+
+        // if the calls above opened Hibernate session, close it now
+        HibernateFactory.closeSession();
     }
 
     private void initNotFoundRoutes(JadeTemplateEngine jade) {

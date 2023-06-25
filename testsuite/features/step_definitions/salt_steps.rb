@@ -83,6 +83,11 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   end
 end
 
+When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
+  salt_minion = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
+end
+
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
@@ -101,6 +106,10 @@ end
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
   $server.run("salt-key -y --accept=#{system_name}*")
+end
+
+When(/^I list all Salt keys shown on the Salt master$/) do
+  $server.run("salt-key --list-all", check_errors: false, verbose: true)
 end
 
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
@@ -159,6 +168,10 @@ When(/^I click on preview$/) do
   find('button#preview').click
 end
 
+When(/^I click on stop waiting$/) do
+  find('button#stop').click
+end
+
 When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
@@ -192,6 +205,10 @@ end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
+  # Remove automatically installed dependency if needed
+  if package == 'uyuni-config'
+    $server.run("zypper --non-interactive remove #{package}-modules")
+  end
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
@@ -209,6 +226,19 @@ When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |
   node = get_target(host)
   salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   file_delete(node, "#{salt_config}#{filename}")
+end
+
+When(/^I configure salt minion on "([^"]*)"$/) do |host|
+  content = %(
+master: #{$server.full_hostname}
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+start_event_grains:
+  - machine_id
+  - saltboot_initrd
+  - susemanager)
+  step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
@@ -315,8 +345,12 @@ Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/
 end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
-  output, _code = pillar_get(key, minion)
-  raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+  output = ''
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "Output has more than one line: #{output}", report_result: true) do
+    output, _code = pillar_get(key, minion)
+    break if output.split("\n").length == 1
+    sleep 1
+  end
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
@@ -464,18 +498,23 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if rh_host?(host)
-    node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
-  elsif deb_host?(host)
-    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
-    node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
-  else
-    node.run("zypper --non-interactive remove --clean-deps -y #{pkgs} spacewalk-proxy-salt", check_errors: false)
-  end
   if $use_salt_bundle
+    if rh_host?(host)
+      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion", check_errors: false)
+    elsif deb_host?(host)
+      node.run("apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+    else
+      node.run("zypper --non-interactive remove --clean-deps -y venv-salt-minion", check_errors: false)
+    end
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
+    if rh_host?(host)
+      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion", check_errors: false)
+    elsif deb_host?(host)
+      node.run("apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+    else
+      node.run("zypper --non-interactive remove --clean-deps -y salt salt-minion", check_errors: false)
+    end
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   end
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
@@ -516,4 +555,18 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
+end
+
+When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
+  node = get_target(host)
+  system_name = node.full_hostname
+  migrate = "salt #{system_name} state.apply util.mgr_switch_to_venv_minion"
+  $server.run(migrate, check_errors: true, verbose: true)
+end
+
+When(/^I purge salt-minion on "([^"]*)" after a migration$/) do |host|
+  node = get_target(host)
+  system_name = node.full_hostname
+  cleanup = %(salt #{system_name} state.apply util.mgr_switch_to_venv_minion pillar='{"mgr_purge_non_venv_salt_files": True, "mgr_purge_non_venv_salt": True}')
+  $server.run(cleanup, check_errors: true, verbose: true)
 end

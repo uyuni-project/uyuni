@@ -15,11 +15,13 @@
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction.test;
 
+import static com.redhat.rhn.domain.recurringactions.type.RecurringActionType.ActionType.HIGHSTATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -30,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -41,19 +44,17 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
-
 
 /**
  * Test for {@link RecurringActionHandler}
  */
 public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
-    private RecurringActionHandler handler;
-
-    // common props for creating action
-    private Map<String, Object> testActionProps;
+    private RecurringHighstateHandler highstateHandler;
+    private RecurringActionHandler actionHandler;
+    private static final String TEST_CRON_EXPR = "0 * * * * ?";
 
     private TaskomaticApi taskomaticMock;
 
@@ -67,18 +68,12 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         super.setUp();
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        handler = new RecurringActionHandler();
-        testActionProps = Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
-                "entity_type", "ORG",
-                "name", "test-action-123",
-                "cron_expr", "0 * * * * ?"
-        );
+        highstateHandler = new RecurringHighstateHandler();
+        actionHandler = new RecurringActionHandler();
 
         // mocking
         taskomaticMock = context().mock(TaskomaticApi.class);
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
-
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
             allowing(taskomaticMock).unscheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -86,156 +81,168 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateAndLookupOrgAction() {
-        var actionId = handler.create(user, testActionProps);
+    public void testCreateOrgAction() {
+        int actionId = highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
+        RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
 
-        var createdAction = handler.lookupById(user, actionId);
-        var dbAction = RecurringActionFactory.lookupById(actionId).get();
-
-        assertEquals(dbAction, createdAction);
-        assertEquals(RecurringAction.Type.ORG, createdAction.getType());
+        assertEquals(HIGHSTATE, action.getActionType());
+        assertEquals(user, action.getCreator());
+        assertEquals("test-action", action.getName());
+        assertEquals(user.getOrg().getId(), action.getEntityId());
+        assertEquals("0 * * * * ?", action.getCronExpr());
+        assertEquals(RecurringAction.TargetType.ORG, action.getTargetType());
     }
 
     @Test
-    public void testCreateAndLookupMinionAction() throws Exception {
-        var minionId = MinionServerFactoryTest.createTestMinionServer(user).getId().intValue();
-        var props = new HashMap<>(testActionProps);
-        props.put("entity_id", minionId);
-        props.put("entity_type", "MINION");
-        var actionId = handler.create(user, props);
+    public void testCreateMinionAction() throws Exception {
+        int minionId = MinionServerFactoryTest.createTestMinionServer(user).getId().intValue();
+        int actionId = highstateHandler.create(user, Map.of(
+                "entity_id", minionId,
+                "entity_type", "minion",
+                "name", "test_action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
 
-        var createdAction = handler.lookupById(user, actionId);
-        var dbAction = RecurringActionFactory.lookupById(actionId).get();
+        RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
 
-        assertEquals(dbAction, createdAction);
-        assertEquals(RecurringAction.Type.MINION, createdAction.getType());
+        assertEquals(HIGHSTATE, action.getActionType());
+        assertEquals(user, action.getCreator());
+        assertEquals("test_action", action.getName());
+        assertEquals(minionId, action.getEntityId());
+        assertEquals("0 * * * * ?", action.getCronExpr());
+        assertEquals(RecurringAction.TargetType.MINION, action.getTargetType());
     }
 
     @Test
     public void testCreateActionInvalidData() {
-        try {
-            handler.create(user, Map.of());
-            fail("An exception should have been thrown");
-        }
-        catch (InvalidArgsException e) {
-            // no-op
-        }
+        assertThrows(InvalidArgsException.class, () -> highstateHandler.create(user, Collections.emptyMap()));
     }
 
     @Test
     public void testCreateExistingAction() {
-        handler.create(user, testActionProps);
-        try {
-            handler.create(user, testActionProps);
-            fail("An exception should have been thrown");
-        }
-        catch (ValidationException e) {
-            // no-op
-        }
+        Map<String, Object> actionProps = Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        );
+        highstateHandler.create(user, actionProps);
+        ValidationException e = assertThrows(ValidationException.class,
+                () -> highstateHandler.create(user, actionProps));
+        assertEquals("Recurring Action with given name already exists", e.getMessage());
     }
 
     @Test
     public void testCreateActionWithNonExistingEntity() {
-        var props = new HashMap<>(testActionProps);
-        props.put("entity_id", -12345);
-        try {
-            handler.create(user, props);
-            fail("An exception should have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            // no-op
-        }
+        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.create(user, Map.of(
+                "entity_id", -12345,
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        )));
     }
 
     @Test
     public void testCreateNonAccessibleEntity() {
-        var org = OrgFactory.createOrg();
+        Org org = OrgFactory.createOrg();
         org.setName("test org: " + TestUtils.randomString());
         org = OrgFactory.save(org);
 
-        var props = Map.<String, Object>of(
-                "entity_id", org.getId().intValue(),
+        Org finalOrg = org;
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(user, Map.of(
+                "entity_id", finalOrg.getId().intValue(),
                 "entity_type", "ORG",
                 "name", "test-action-123",
-                "cron_expr", "0 * * * * ?"
-        );
+                "cron_expr", TEST_CRON_EXPR
+        )));
+        assertEquals("User has no permissions to do the action", e.getMessage());
+    }
 
-        try {
-            handler.create(user, props);
-            fail("An exception should have been thrown");
-        }
-        catch (ValidationException e) {
-            // no-op
-        }
+    @Test
+    public void testCreateInvalidCronExpr() {
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", "This is invalid"
+        )));
+
+        assertEquals("Invalid Quartz expression provided.", e.getMessage());
     }
 
     @Test
     public void testUpdateAction() {
-        int actionId = handler.create(user, testActionProps);
+        int actionId = highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
 
-        var updateProps = Map.<String, Object>of(
+        Map<String, Object> updateProps = Map.of(
                 "id", actionId,
-                "name", "new-test-action-123",
+                "name", "new-test-action",
                 "active", false
         );
-        handler.update(user, updateProps);
+        highstateHandler.update(user, updateProps);
 
-        var updatedAction = handler.lookupById(user, actionId);
-        assertEquals("new-test-action-123", updatedAction.getName());
-        assertFalse(updatedAction.isActive());
+        RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
+        assertEquals("new-test-action", action.getName());
+        assertFalse(action.isActive());
     }
 
     @Test
     public void testUpdateActionSetExistingName() {
-        handler.create(user, testActionProps);
-        var otherActionProps = new HashMap<>(testActionProps);
-        otherActionProps.put("name", "new-test-action-123");
-        int otherAction = handler.create(user, otherActionProps);
+        highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
 
-        var updateProps = Map.<String, Object>of(
-                "id", otherAction,
-                "name", "test-action-123" // try to set the name to the name of the first action
-        );
-        try {
-            handler.update(user, updateProps);
-            fail("An exception should have been thrown");
-        }
-        catch (ValidationException e) {
-            // no-op
-        }
+        int otherActionId = highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "other-test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
+
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(user, Map.of(
+                "id", otherActionId,
+                "name", "test-action"
+        )));
+
+        assertEquals("Recurring Action with given name already exists", e.getMessage());
     }
 
     @Test
     public void testUpdateActionSetInvalidCronExpr() {
-        var actionId = handler.create(user, testActionProps);
+        var actionId = highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
 
-        var updateProps = Map.<String, Object>of(
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(user, Map.of(
                 "id", actionId,
                 "cron_expr", "THIS IS NOT CRON, THIS IS A STRING!"
-        );
+        )));
 
-        try {
-            handler.update(user, updateProps);
-            fail("An exception should have been thrown");
-        }
-        catch (ValidationException e) {
-            // no-op
-        }
+        assertEquals("Invalid Quartz expression provided.", e.getMessage());
     }
 
     @Test
     public void testUpdateNonexistingAction() {
-        var updateProps = Map.<String, Object>of(
-                "id", -123456,
-                "name", "test-name"
-        );
-        try {
-            handler.update(user, updateProps);
-            fail("An exception should have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            // no-op
-        }
+        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.update(user, Map.of(
+                "id", -123,
+                "name", "new-name"
+        )));
     }
 
     @Test
@@ -253,36 +260,31 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
         // create a minion with no recurring actions
         var minionId = MinionServerFactoryTest.createTestMinionServer(user).getId();
-        var props = new HashMap<>(testActionProps);
-        props.put("entity_id", minionId.intValue());
-        props.put("entity_type", "MINION");
 
-        try {
-            handler.create(user, props);
-            fail("An exception should have been thrown");
-        }
-        catch (com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException e) {
-            // no-op
-        }
+        assertThrows(com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException.class,
+                () -> highstateHandler.create(user, Map.of(
+                        "entity_id", minionId.intValue(),
+                        "entity_type", "minion",
+                        "name", "test-action",
+                        "cron_expr", TEST_CRON_EXPR
+                )));
     }
 
     @Test
     public void testDeleteAction() {
-        int actionId = handler.create(user, testActionProps);
+        int actionId = highstateHandler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action",
+                "cron_expr", TEST_CRON_EXPR
+        ));
 
-        handler.delete(user, actionId);
-
+        actionHandler.delete(user, actionId);
         assertTrue(RecurringActionFactory.lookupById(actionId).isEmpty());
     }
 
     @Test
     public void testDeleteNonexistingAction() {
-        try {
-            handler.delete(user, -12345);
-            fail("An exception should have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            // no-op
-        }
+        assertThrows(EntityNotExistsFaultException.class, () -> actionHandler.delete(user, -123));
     }
 }

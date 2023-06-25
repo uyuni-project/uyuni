@@ -16,6 +16,7 @@ Feature: Distribution Channel Mapping
     And I should see a "Create Distribution Channel Mapping" link
     And I should see a "No distribution channel mappings currently exist." text in the content area
 
+@scc_credentials
   Scenario: Create new map for x86_64 SUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
@@ -38,6 +39,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
+@scc_credentials
   Scenario: Create new map for iSeries SUSE clients using test channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
@@ -49,6 +51,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
+@scc_credentials
   Scenario: Update map for x86_64 SUSE clients using test-x86_64 channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4" in the Operating System field
@@ -74,6 +77,7 @@ Feature: Distribution Channel Mapping
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
     And I should see the text "fake_base_channel" in the Channel Label field
 
+@scc_credentials
   Scenario: Update map for IA-32 SUSE clients using amd deb test channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries" in the Operating System field
@@ -86,6 +90,7 @@ Feature: Distribution Channel Mapping
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" in the Operating System field
     And I should see the text "fake-deb-amd64-channel" in the Channel Label field
 
+@scc_credentials
   Scenario: Cleanup: delete the map created for x68_64 SUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 modified" in the Operating System field
@@ -110,6 +115,7 @@ Feature: Distribution Channel Mapping
     When I click on "Delete Mapping"
     Then I should not see a "Ubuntu 22.04.01 LTS modified" link
     
+@scc_credentials
   Scenario: Cleanup: delete the map created for i586 clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" in the Operating System field

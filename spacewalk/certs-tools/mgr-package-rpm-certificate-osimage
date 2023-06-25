@@ -16,7 +16,7 @@ import argparse
 
 from certs.sslToolCli import CertExpTooShortException, \
         CertExpTooLongException, InvalidCountryCodeException
-from certs.sslToolLib import RhnSslToolException, chdir
+from certs.sslToolLib import RhnSslToolException, chdir, gendir
 from uyuni.common.fileutils import cleanupAbsPath, rhn_popen
 from certs.rhn_ssl_tool import legacyTreeFixup, _disableRpmMacros, _reenableRpmMacros, \
     GenCaCertRpmException
@@ -24,7 +24,7 @@ from certs.sslToolConfig import BUILD_DIR, CERT_PATH, CA_CERT_RPM_SUMMARY, \
     CA_CRT_NAME, CA_CRT_RPM_NAME
 from rhn.stringutils import bstr
 
-CA_CERT_FULL_PATH_DEFAULT = BUILD_DIR + os.path.sep + CA_CRT_NAME
+CA_CERT_FULL_PATH_DEFAULT = "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
 
 def processCommandline():
     parser = argparse.ArgumentParser(description="""Generates RPM certificate for
@@ -48,13 +48,13 @@ def processCommandline():
     return args
 
 def genCaRpm(options):
-    OSIMAGE_RPM_CERTIFICATE_PATH = "/usr/share/susemanager/salt/images"
+    OSIMAGE_RPM_CERTIFICATE_PATH = "/srv/susemanager/salt/images"
     if options.target_os == 'SLE11':
         CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage-sle11"
         OSIMAGE_RPM_REQUIRES = ["openssl-certs", "coreutils"]
     else:
         CA_CERT_RPM_NAME_OSIMAGE = CA_CRT_RPM_NAME + "-osimage"
-        OSIMAGE_RPM_REQUIRES = ["ca-certificates"]
+        OSIMAGE_RPM_REQUIRES = ["ca-certificates", "shadow"]
 
     ca_cert_name = os.path.basename(options.ca_cert_full_path)
     ca_cert = options.ca_cert_full_path
@@ -77,11 +77,14 @@ def genCaRpm(options):
                repr(CA_CERT_RPM_SUMMARY),
                repr(CA_CERT_RPM_SUMMARY),
                repr(update_trust_script), repr(update_trust_script),
-               repr(ca_cert_name), repr(cleanupAbsPath(ca_cert))))
+               repr(CA_CRT_NAME), repr(cleanupAbsPath(ca_cert))))
     clientRpmName = '%s-%s-%s' % (ca_cert_rpm_osimage, ver, rel)
     print("CA Cert for OS Images: Packaging %s into %s.noarch.rpm" % (ca_cert, clientRpmName))
 
     _disableRpmMacros()
+    gendir(OSIMAGE_RPM_CERTIFICATE_PATH)
+    shutil.chown(OSIMAGE_RPM_CERTIFICATE_PATH, "salt", "salt")
+    os.chmod(OSIMAGE_RPM_CERTIFICATE_PATH, int("0755", 8))
     cwd = chdir(OSIMAGE_RPM_CERTIFICATE_PATH)
     try:
         ret, out_stream, err_stream = rhn_popen(args)
@@ -99,6 +102,7 @@ def genCaRpm(options):
         raise GenCaCertRpmException("CA public SSL certificate RPM generation "
                                 "failed:\n%s\n%s" % (out, err))
     os.chmod('%s.noarch.rpm' % clientRpmName, int('0644',8))
+    shutil.chown('%s.noarch.rpm' % clientRpmName, "salt", "salt")
 
     return '%s.noarch.rpm' % clientRpmName
 

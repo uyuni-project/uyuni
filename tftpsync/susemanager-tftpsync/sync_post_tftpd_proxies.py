@@ -24,7 +24,7 @@ from cobbler import utils
 import time
 import cobbler.MultipartPostHandler as MultipartPostHandler
 import json
-from concurrent.futures import ThreadPoolExecutor
+from concurrent import futures
 import threading
 
 try:
@@ -46,32 +46,40 @@ def register():
 
 
 def run(api, args):
+    del args # unused, required API
     logger.info("sync_post_tftp_proxies started - this can take a while (to see the progress check the cobbler logs)")
     settings = api.settings()
 
+
     # test if proxies are configured:
     try:
-        p = settings.proxies
-    except:
+        _ = settings.proxies
+    except AttributeError:
         # not configured - so we return
         return 0
 
     tftpbootdir = "/srv/tftpboot"
-    syncstart = os.stat(tftpbootdir).st_mtime
-
     find_delete_from_proxies(tftpbootdir, settings)
 
-    pool = ThreadPoolExecutor()
+    push_futures = []
+    with futures.ThreadPoolExecutor() as executor:
+        for dirname, _dirnames, filenames in os.walk(tftpbootdir):
+            for fname in filenames:
+                path = os.path.join(dirname, fname)
+                if '.link_cache' in path:
+                    continue
+                push_futures.append(executor.submit(check_push, path, tftpbootdir, settings))
 
-    for root, dirs, files in os.walk(tftpbootdir):
-        for fname in files:
-            path = os.path.join(root, fname)
-            if '.link_cache' in path:
-                continue
-            pool.submit(check_push, path, tftpbootdir, settings)
+        _update_pxe_cache([f.result() for f in futures.as_completed(push_futures)])
 
-    pool.shutdown()
     return 0
+
+def _update_pxe_cache(thread_results):
+    cache = {}
+    for res in thread_results:
+        cache.update(res)
+    with open("/var/lib/cobbler/pxe_cache.json", "w") as pxe_cache:
+        json.dump(cache, pxe_cache)
 
 
 def sync_to_proxies(filename, tftpbootdir, format, settings):
@@ -215,11 +223,10 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
             format = 'grub'
         if sync_to_proxies(fn, tftpbootdir, format, settings):
             db[fn] = (mtime, key)
-            json.dump(db, open(dbfile, 'w'))
             logger.info("Push successful")
         else:
             logger.info("Push failed")
-
+    return db
 
 class ProxySync(threading.Thread):
     Result = True

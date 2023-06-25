@@ -8,7 +8,7 @@ Feature: Add the Rocky 8 distribution custom repositories
   I want to filter them out to remove the modules information
 
   Scenario: Download the iso of Rocky 8 DVD and mount it on the server
-    When I mount as "rocky-8-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/rocky/8/isos/x86_64/Rocky-x86_64-dvd.iso" in the server
+    When I mount as "rocky-8-iso" the ISO from "http://mirror.chpc.utah.edu/pub/rocky/8/isos/x86_64/Rocky-x86_64-dvd.iso" in the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -74,6 +74,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
     When I click on "Attach/Detach Sources"
+    And I wait until I do not see "Loading" text
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"

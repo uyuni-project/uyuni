@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.system.test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
-import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
@@ -130,6 +129,7 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -338,7 +338,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
-        HibernateFactory.commitTransaction();
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
@@ -360,8 +359,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
-
-        HibernateFactory.commitTransaction();
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
         assertFalse(formulaValues.exists());
@@ -2092,10 +2089,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Long sid = server.getId();
         Package pack = PackageTest.createTestPackage(user.getOrg());
-
         ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
-        SystemsOverviewUpdateWorker.doUpdate(sid);
 
-        assertEquals(1, SystemManager.countOutdatedSystems());
+        assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
     }
 }

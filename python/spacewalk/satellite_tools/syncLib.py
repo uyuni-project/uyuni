@@ -232,7 +232,7 @@ class FileManip:
         fout = open(self.full_path, 'wb')
         # setting file permissions; NOTE: rhnpush uses apache to write to disk,
         # hence the 6 setting.
-        with cfg_component() as CFG:
+        with cfg_component(component=None) as CFG:
             setPermsPath(self.full_path, user=CFG.httpd_user, group=CFG.httpd_group, chmod=int('0644', 8))
         size = 0
         try:

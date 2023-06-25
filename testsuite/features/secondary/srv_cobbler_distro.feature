@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
@@ -176,5 +176,9 @@ Feature: Cobbler and distribution autoinstallation
     When I remove kickstart profiles and distros
     And I log out from Cobbler via the API
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

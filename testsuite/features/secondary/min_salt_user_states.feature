@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_salt
 Feature: Coexistence with user-defined states
 

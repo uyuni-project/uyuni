@@ -1,14 +1,26 @@
-- Create repostories with sha256 instead of sha1.
-- Use context manager for mgr-create-bootstrap-repo.
-- remove dependency to suseRegisterInfo
-- Make python3-ordered-set optional for the SLE15 bootstrap repo as it is
-  not required or present in SLE15SP3 or older
-- Add bootstrap repository definitions for openSUSE Leap 15.5
-- Add bootstrap repository definitions for openEuler 22.03
-- Tune the dabase after copying the old configuration (bsc#1208611)
-- Remove non-salt-bundle packages from repositories for SLE12,
-  CentOS7 and clones
-- Replace apache group to root for RHEL.
+- Add option to disable SSL setup
+- Use newest venv-salt-minion version available to generate the
+  venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
+- Add bootstrap repository definitions for openSUSE Leap Micro 5.4
+- Add bootstrap repository definitions for SLE Micro 5.4
+- Ensure installation of make for building.
+- Automatically detect PostgreSQL service and data folder name.
+- Adjust product name in setup script output (bsc#1195380)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:48:42 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.6-1
+  * Use context manager for mgr-create-bootstrap-repo.
+  * remove dependency to suseRegisterInfo
+  * Make python3-ordered-set optional for the SLE15 bootstrap repo as it is
+    not required or present in SLE15SP3 or older
+  * Add bootstrap repository definitions for openSUSE Leap 15.5
+  * Add bootstrap repository definitions for openEuler 22.03
+  * Tune the dabase after copying the old configuration (bsc#1208611)
+  * Remove non-salt-bundle packages from repositories for SLE12,
+    CentOS7 and clones
+  * Replace apache group to root for RHEL.
 
 -------------------------------------------------------------------
 Tue Feb 21 14:10:57 CET 2023 - jgonzalez@suse.com

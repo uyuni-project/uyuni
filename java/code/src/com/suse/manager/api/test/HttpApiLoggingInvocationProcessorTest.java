@@ -17,14 +17,10 @@ package com.suse.manager.api.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.legacy.UserImpl;
-
 import com.suse.manager.api.HttpApiLoggingInvocationProcessor;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class HttpApiLoggingInvocationProcessorTest {
@@ -37,25 +33,6 @@ public class HttpApiLoggingInvocationProcessorTest {
         String[] urlTokens = url.split("/");
         String handlerName = processor.getHandlerName(urlTokens);
         assertEquals("system.provisioning.powermanagement", handlerName);
-    }
-
-    @Test
-    public void testGetCallerLogin() {
-        String login = "userLoginTest";
-        User user = new UserImpl();
-        user.setLogin(login);
-        assertEquals("none", processor.getCallerLogin(null));
-        assertEquals(login, processor.getCallerLogin(user));
-    }
-
-    @Test
-    public void getParamValueToLog() {
-        String value = "testValue";
-        String valueToLog = processor.getParamValueToLog("system", "login", "username", value);
-        assertEquals(value, valueToLog);
-
-        valueToLog = processor.getParamValueToLog("auth", "login", "password", value);
-        assertEquals("******", valueToLog);
     }
 
     @Test
@@ -72,14 +49,4 @@ public class HttpApiLoggingInvocationProcessorTest {
         assertEquals("\"value2\"", parsed.get("var2"));
     }
 
-    @Test
-    public void testProcessParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("sid", "100001");
-        params.put("user", "userTest");
-        StringBuilder result = processor.processParams(
-            params, "system.provisioning.powermanagement", "getDetails"
-        );
-        assertEquals("user=userTest, sid=100001", result.toString());
-    }
 }

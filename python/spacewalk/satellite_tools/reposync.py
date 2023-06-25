@@ -442,9 +442,8 @@ class RepoSync(object):
             log_level = 0
         with cfg_component('server.susemanager') as CFG:
             CFG.set('DEBUG', log_level)
-        rhnLog.initLOG(log_path, log_level)
-        # os.fchown isn't in 2.4 :/
-        with cfg_component() as CFG:
+            rhnLog.initLOG(log_path, log_level)
+            # os.fchown isn't in 2.4 :/
             os.system("chgrp " + CFG.httpd_group + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
@@ -718,7 +717,7 @@ class RepoSync(object):
 
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
-        with cfg_component() as CFG:
+        with cfg_component('server.susemanager') as CFG:
             for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
                 for d in dirs:
                     fileutils.setPermsPath(os.path.join(root, d), group=CFG.httpd_group, chmod=int('0755', 8))

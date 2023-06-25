@@ -1678,6 +1678,7 @@ public class SaltUtils {
                 new ValueMap(result.getGrains()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
         server.setRam(hwMapper.getTotalMemory());
+        server.setSwap(hwMapper.getTotalSwapMemory());
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
                     result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
@@ -1817,7 +1818,7 @@ public class SaltUtils {
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                 rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
-        return rhelProductInfo.get().getSuseProduct().map(product -> {
+        return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
             InstalledProduct installedProduct = new InstalledProduct();
@@ -1825,10 +1826,10 @@ public class SaltUtils {
             installedProduct.setVersion(product.getVersion());
             installedProduct.setRelease(product.getRelease());
             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(true);
+            installedProduct.setBaseproduct(product.isBase());
 
-            return Collections.singleton(installedProduct);
-        }).orElse(Collections.emptySet());
+            return installedProduct;
+        }).collect(Collectors.toSet());
     }
 
     private static Set<InstalledProduct> getInstalledProductsForRhel(
@@ -1859,7 +1860,7 @@ public class SaltUtils {
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                  rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
-         return rhelProductInfo.get().getSuseProduct().map(product -> {
+         return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
 
              InstalledProduct installedProduct = new InstalledProduct();
@@ -1869,8 +1870,8 @@ public class SaltUtils {
              installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
              installedProduct.setBaseproduct(true);
 
-             return Collections.singleton(installedProduct);
-         }).orElse(Collections.emptySet());
+             return installedProduct;
+         }).collect(Collectors.toSet());
      }
 
     /**

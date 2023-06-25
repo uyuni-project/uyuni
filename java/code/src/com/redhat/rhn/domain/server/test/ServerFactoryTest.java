@@ -708,19 +708,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             TestUtils.saveAndFlush(sg2);
         }
 
-        /*
-         * Since adding a server to a group is done by a stored proc, the
-         * server object at this point doesn't know it has any groups; ie.,
-         * newS.getGroups() == null. To fix this, we need to evict newS
-         * from the session and look it back up.
-         * This shouldn't be a problem in prod, just something we have to do
-         * in our test code until we move to hib3 and can work with stored
-         * procs.
-         */
-        // commitAndCloseSession();
-        // System.out.println("COMMITED SESSION!\n\n");
-
-
         Long id = newS.getId();
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(newS);
@@ -740,7 +727,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setRunningKernel(RUNNING_KERNEL);
         s.setName("serverfactorytest" + TestUtils.randomString() + ".rhn.redhat.com");
         s.setRelease("9");
-        s.setSecret("12345678901234567890123456789012");
+        s.setSecret("1234567890123456789012345678901234567890123456789012345678901234");
         s.setAutoUpdate("N");
         s.setLastBoot(System.currentTimeMillis() / 1000);
         s.setServerArch(ServerFactory.lookupServerArchByLabel("i386-redhat-linux"));

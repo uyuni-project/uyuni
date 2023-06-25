@@ -1,6 +1,11 @@
 # Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
-@skip_if_container
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_minions_page.feature
+# If the minion fails to bootstrap.
+
+@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 
@@ -13,6 +18,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key

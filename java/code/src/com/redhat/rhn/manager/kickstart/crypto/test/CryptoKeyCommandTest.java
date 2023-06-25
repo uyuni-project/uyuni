@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -45,7 +45,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         assertNotNull(cmd.getCryptoKey().getOrg());
         cmd.setDescription("Test desc");
         cmd.setType("GPG");
-        cmd.setContents(MD5Crypt.md5Hex(RandomStringUtils.random(28)));
+        cmd.setContents(SHA256Crypt.sha256Hex(RandomStringUtils.random(28)));
         cmd.store();
 
     }
@@ -66,7 +66,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         cmd = new CreateCryptoKeyCommand(user.getOrg());
         cmd.setDescription(usedDesc);
         cmd.setType("GPG");
-        cmd.setContents(MD5Crypt.md5Hex(RandomStringUtils.random(28)));
+        cmd.setContents(SHA256Crypt.sha256Hex(RandomStringUtils.random(28)));
         assertNotNull(cmd.store());
 
     }

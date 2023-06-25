@@ -1709,7 +1709,7 @@ public class ActionManager extends BaseManager {
             kad.setVirtBridge(pcmd.getVirtBridge());
         }
 
-        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(
+        CobblerVirtualSystemCommand vcmd = new CobblerVirtualSystemCommand(pcmd.getUser(),
                 pcmd.getServer(), cProfile.getName(), pcmd.getGuestName(),
                 pcmd.getKsdata());
         kad.setCobblerSystemName(vcmd.getCobblerSystemRecordName());
@@ -2269,7 +2269,7 @@ public class ActionManager extends BaseManager {
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Date earliest, Optional<Boolean> test) {
-        return scheduleApplyStates(scheduler, sids, mods, Optional.empty(), earliest, test);
+        return scheduleApplyStates(scheduler, sids, mods, Optional.empty(), earliest, test, false);
     }
 
     /**
@@ -2285,11 +2285,28 @@ public class ActionManager extends BaseManager {
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
-            Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test) {
+        Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param pillar optional pillar map
+     * @param earliest action will not be executed before this date
+     * @param test run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+            Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test, boolean recurring) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        String states = mods.isEmpty() ? "highstate" : "states " + mods.toString();
-        action.setName("Apply " + states);
+        action.setName(defineStatesActionName(mods, recurring));
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
         action.setSchedulerUser(scheduler);
@@ -2303,6 +2320,21 @@ public class ActionManager extends BaseManager {
 
         scheduleForExecution(action, new HashSet<>(sids));
         return action;
+    }
+
+    /**
+     * Define apply states action name.
+     * @param mods - the mods applied
+     * @param recurring - whether the states are being applied recurring
+     * @return - the name of the action
+     */
+    public static String defineStatesActionName(List<String> mods, boolean recurring) {
+        StringBuilder statesDescription = new StringBuilder("Apply ");
+        if (recurring) {
+            statesDescription.append("recurring ");
+        }
+        statesDescription.append(mods.isEmpty() ? "highstate" : "states " + mods);
+        return statesDescription.toString();
     }
 
     /**

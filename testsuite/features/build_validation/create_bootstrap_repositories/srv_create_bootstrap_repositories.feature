@@ -34,6 +34,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP4 minion
     When I create the bootstrap repository for "sle15sp4_minion" on the server
 
+@sle15sp5_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP5 minion
+    When I create the bootstrap repository for "sle15sp5_minion" on the server
+
 @monitoring_server
   Scenario: Create the bootstrap repository for the monitoring server
     When I create the bootstrap repository for "monitoring_server" on the server
@@ -42,25 +46,17 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLE Micro 5.1 minion
     When I create the bootstrap repository for "slemicro51_minion" on the server
 
-@slemicro51_ssh_minion
-  Scenario: Create the bootstrap repository for a SLE Micro 5.1 SSH minion
-    When I create the bootstrap repository for "slemicro51_ssh_minion" on the server
-
 @slemicro52_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.2 minion
     When I create the bootstrap repository for "slemicro52_minion" on the server
-
-@slemicro52_ssh_minion
-  Scenario: Create the bootstrap repository for a SLE Micro 5.2 SSH minion
-    When I create the bootstrap repository for "slemicro52_ssh_minion" on the server
 
 @slemicro53_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.3 minion
     When I create the bootstrap repository for "slemicro53_minion" on the server
 
-@slemicro53_ssh_minion
-  Scenario: Create the bootstrap repository for a SLE Micro 5.3 SSH minion
-    When I create the bootstrap repository for "slemicro53_ssh_minion" on the server
+@slemicro54_minion
+  Scenario: Create the bootstrap repository for a SLE Micro 5.4 minion
+    When I create the bootstrap repository for "slemicro54_minion" on the server
 
 @alma9_minion
   Scenario: Create the bootstrap repository for a Alma 9 Salt minion
@@ -113,3 +109,7 @@ Feature: Create bootstrap repositories
 @opensuse154arm_minion
   Scenario: Create the bootstrap repository for a OpenSUSE 15.4 ARM minion
     When I create the bootstrap repository for "opensuse154arm_minion" on the server
+
+@opensuse155arm_minion
+  Scenario: Create the bootstrap repository for a OpenSUSE 15.5 ARM minion
+    When I create the bootstrap repository for "opensuse155arm_minion" on the server

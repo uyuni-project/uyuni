@@ -62,7 +62,6 @@
         <rl:column headerkey="erratalist.jsp.systems"
                    sortable="true"
                    sortattr="systems"
-                   defaultsort="desc"
                    styleclass="text-align: center;">
             <a href="/rhn/errata/details/SystemsAffected.do?eid=${current.id}">${current.affectedSystemCount}</a>
         </rl:column>

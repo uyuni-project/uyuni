@@ -1,14 +1,14 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_api
 @sle_minion
 Feature: IPMI Power management API
 
   Scenario: Setup an IPMI host for API test
     When the server starts mocking an IPMI host
-    And  I want to operate on this "sle_minion"
+    And I want to operate on this "sle_minion"
 
   Scenario: Check the power management settings for API test
     When I fetch power management values

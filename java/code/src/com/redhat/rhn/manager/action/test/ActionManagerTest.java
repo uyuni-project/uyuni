@@ -98,7 +98,6 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -693,7 +692,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
                 ksData, user, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = RhnBaseTestCase.reload(ksSession);
+        ksSession = reload(ksSession);
 
         List actionList = createActionList(user, new Action [] {parentAction});
 
@@ -1109,6 +1108,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(action);
         assertEquals("Build an Image Profile", action.getActionType().getName());
     }
+
+    @Test
+    public void testDefineApplyStatesActionName() {
+        List<String> states = List.of("util.syncgrains", "hardware.profileupdate", "util.syncmodules");
+        String highstateNonRecurring = ActionManager.defineStatesActionName(Collections.emptyList(), false);
+        String highstateRecurring = ActionManager.defineStatesActionName(Collections.emptyList(), true);
+        String statesNonRecurring = ActionManager.defineStatesActionName(states, false);
+        String statesRecurring = ActionManager.defineStatesActionName(states, true);
+        assertEquals("Apply highstate", highstateNonRecurring);
+        assertEquals("Apply recurring highstate", highstateRecurring);
+        assertEquals("Apply recurring states [util.syncgrains, hardware.profileupdate, util.syncmodules]",
+                statesRecurring);
+        assertEquals("Apply states [util.syncgrains, hardware.profileupdate, util.syncmodules]", statesNonRecurring);
+    }
+
 
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);

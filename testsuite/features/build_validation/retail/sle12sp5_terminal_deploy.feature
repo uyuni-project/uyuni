@@ -27,7 +27,7 @@ Feature: PXE boot a SLES 12 SP5 retail terminal
     Then "sle12sp5_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 12 SP5 retail terminal to branch server
-    Given I am on the Systems overview page of this "sle12sp5_terminal"
+    Given I navigate to the Systems overview page of this "sle12sp5_terminal"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text

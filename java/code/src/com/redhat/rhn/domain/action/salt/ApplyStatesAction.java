@@ -81,6 +81,8 @@ public class ApplyStatesAction extends Action {
             LocalizationService ls = LocalizationService.getInstance();
             retval.append("<strong><span class='text-danger'>");
             retval.append("Error: " + ls.getMessage("system.event.details.syntaxerror"));
+            retval.append('\n');
+            retval.append(result.getOutputContents());
             retval.append("</span></strong>");
             return retval.toString();
         }

@@ -59,7 +59,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.15
+Version:        4.4.17
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -87,9 +87,10 @@ BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  byte-buddy
+BuildRequires:  byte-buddy >= 1.11
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
+BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
@@ -142,20 +143,19 @@ BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
+BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
-BuildRequires:  (glassfish-activation-api or jakarta-activation)
-BuildRequires:  (glassfish-jaxb-api or jaxb-api)
+BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-jaxb-api
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
-BuildRequires:  classmate
 BuildRequires:  libxml2-tools
 %endif
 %if 0%{?rhel}
-BuildRequires:  glassfish-jaxb-core
 BuildRequires:  libxml2-devel
 %endif
 
@@ -174,12 +174,15 @@ Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy >= 1.11
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
+Requires:       glassfish-activation-api
+Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       google-gson >= 2.2.4
@@ -240,20 +243,12 @@ Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
-Requires:       libtcnative-1-0
+Requires:       tomcat-native
 Requires(pre):  salt
 Requires(pre):  tomcat >= 7
 Requires(pre):  uyuni-base-server
 
-%if 0%{?suse_version}
-Requires:       classmate
-Requires:       glassfish-activation-api
-Requires:       glassfish-jaxb-api
-%endif
 %if 0%{?rhel}
-Requires:       glassfish-jaxb-core
-Requires:       jakarta-activation
-Requires:       jaxb-api
 Recommends:     rng-tools
 %endif
 
@@ -352,9 +347,10 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy >= 1.11
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
@@ -381,9 +377,6 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
-%if 0%{?suse_version}
-Requires:       classmate
-%endif
 
 Conflicts:      quartz < 2.0
 
@@ -638,21 +631,9 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 # Prettifying symlinks
 mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
 
-# Prettifying symlinks for RHEL
-%if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jaf.jar
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamail.jar
-mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jta.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/geronimo-jta-1.1-api.jar
 # Removing unused symlinks.
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jakarta-activationjakarta.activation-api.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamaildsn.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailgimap.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailimap.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailjavax.mail-api.jar
+%if 0%{?rhel}
 rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmail.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmailapi.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailpop3.jar
-rm -rf $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailsmtp.jar
 %endif
 
 # show all JAR symlinks

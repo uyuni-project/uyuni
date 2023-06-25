@@ -11,12 +11,13 @@
 
 package com.suse.manager.metrics;
 
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Tuple;
 
 import io.prometheus.client.Collector;
 
@@ -24,36 +25,67 @@ public class SystemsCollector extends Collector {
 
     public static final String PRODUCT_NAME = "uyuni";
 
+    private static long getCountFromNativeQuery(String selectCountQuery) {
+        return HibernateFactory.getSession()
+                .createNativeQuery(selectCountQuery, Tuple.class)
+                .getSingleResult()
+                .get("count", Number.class)
+                .longValue();
+    }
+
+    /**
+     * Returns the number of systems with outdated packages
+     *
+     * @return number of systems with outdated packages
+     */
+    public static long getNumberOfOutdatedSystems() {
+        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
+        return getCountFromNativeQuery(selectCountQuery);
+    }
+
     @Override
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> out = new ArrayList<>();
-        List<Server> servers = ServerFactory.lookupByIds(SystemManager.listSystemIds());
+        long start = System.nanoTime();
+        long numberOfSystems = getNumberOfSystems();
 
-        out.add(CustomCollectorUtils.gaugeFor("all_systems", "Number of all systems",
-                getNumberOfSystems(servers), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("virtual_systems", "Number of virtual systems",
-                getNumberOfVirtualSystems(servers), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("inactive_systems", "Number of inactive systems",
-                getNumberOfInactiveSystems(servers), PRODUCT_NAME));
-        out.add(CustomCollectorUtils.gaugeFor("outdated_systems", "Number of systems with outdated packages",
-                getNumberOfOutdatedSystems(), PRODUCT_NAME));
+        if (numberOfSystems > 0) {
+            out.add(CustomCollectorUtils.gaugeFor("all_systems", "Number of all systems",
+                    numberOfSystems, PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("virtual_systems", "Number of virtual systems",
+                    getNumberOfVirtualSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("inactive_systems", "Number of inactive systems",
+                    getNumberOfInactiveSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("outdated_systems", "Number of systems with outdated packages",
+                    getNumberOfOutdatedSystems(), PRODUCT_NAME));
+            out.add(CustomCollectorUtils.gaugeFor("systems_scrape_duration_seconds", "Duration of Uyuni systems " +
+                    "statistics scrape", (System.nanoTime() - start) / 1.0E9, PRODUCT_NAME));
+        }
 
         return out;
     }
 
-    private long getNumberOfSystems(List<Server> servers) {
-        return servers.size();
+    private long getNumberOfSystems() {
+        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM rhnServer";
+        return getCountFromNativeQuery(selectCountQuery);
     }
 
-    private long getNumberOfVirtualSystems(List<Server> servers) {
-        return servers.stream().filter(Server::isVirtualGuest).count();
+    private long getNumberOfVirtualSystems() {
+        String selectCountQuery = "SELECT COUNT(DISTINCT(virtual_system_id)) FROM rhnvirtualinstance";
+        return getCountFromNativeQuery(selectCountQuery);
     }
 
-    private long getNumberOfInactiveSystems(List<Server> servers) {
-        return servers.stream().filter(Server::isInactive).count();
-    }
-
-    private long getNumberOfOutdatedSystems() {
-        return SystemManager.countOutdatedSystems();
+    private long getNumberOfInactiveSystems() {
+        String selectCountQuery = "SELECT COUNT(DISTINCT(server_id)) " +
+                "FROM rhnServerInfo " +
+                "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
+        long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+        long secondsInDay = 60L * 60 * 24;
+        return HibernateFactory.getSession()
+                .createNativeQuery(selectCountQuery, Tuple.class)
+                .setParameter("checkin_threshold", threshold * secondsInDay)
+                .getSingleResult()
+                .get("count", Number.class)
+                .longValue();
     }
 }

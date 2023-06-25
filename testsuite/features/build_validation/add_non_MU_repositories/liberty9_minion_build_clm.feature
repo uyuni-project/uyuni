@@ -23,6 +23,7 @@ Feature: Add the Liberty Linux 9 distribution custom repositories
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Liberty Linux 9" text
     When I click on "Attach/Detach Sources"
+    And I wait until I do not see "Loading" text
     And I select "EL9-Pool for x86_64" from "selectedBaseChannel"
     And I check "SLL-9-Updates for x86_64"
     And I check "SLL-AS-9-Updates for x86_64"

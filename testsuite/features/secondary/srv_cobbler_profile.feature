@@ -1,13 +1,13 @@
 # Copyright (c) 2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+#
+# Motivated by bsc#1207532 - Internal Server Error editing cobbler profiles
+# This feature is split up into 2 sections: the first section uses the web UI,
+# the second one uses the XML-RPC API
 
 @scope_cobbler
-@skip_if_container
-Feature: Cobbler editing profiles results in ISE
-  Tests for occuring Cobbler issue (bsc#1207532)
-  This feature is split up into 2 sections
-  The first section uses the webUI
-  The second one uses the XML-RPC API
+@skip_if_github_validation
+Feature: Edit Cobbler profiles
 
   Background: The Cobbler service should be running
     Given cobblerd is running
@@ -44,7 +44,7 @@ Feature: Cobbler editing profiles results in ISE
     Then I should see a "Autoinstallation: iseprofile_ui" text
     And I should see a "Autoinstallation Details" link
 
-  Scenario: Check Cobbler created distro and profile via the UI
+  Scenario: Cobbler created distro and profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "iseprofile_ui" text
     And I should see a "isedistro_ui" text
@@ -81,18 +81,18 @@ Feature: Cobbler editing profiles results in ISE
     Then I should see a "Autoinstallation: iseprofile_api" text
     And I should see a "Autoinstallation Details" link
 
-  Scenario: Check Cobbler created distro and profile via the UI in the XML-RPC context
+  Scenario: Cobbler created distro and profile via the UI in the XML-RPC context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "iseprofile_api" text
     And I should see a "isedistro_api" text
 
   Scenario: Create a Cobbler system via the XML-RPC API
-    And I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
+    When I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
 
   Scenario: Create and modify a System profile using the XML-RPC API
     # This should intentionally fail and XML-RPC should return an error here until
     # https://github.com/uyuni-project/uyuni/pull/6676 gets merged by Ion
-    And I create and modify the kickstart system "isesystem_api" with hostname "ise-system.test" via XML-RPC
+    When I create and modify the kickstart system "isesystem_api" with hostname "ise-system.test" via XML-RPC
       | inst.repo   | http://ise.cobbler.test |
       | self_update | http://ise.cobbler.test |
 
@@ -106,5 +106,9 @@ Feature: Cobbler editing profiles results in ISE
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup: clean Cobbler
+    When I cleanup Cobbler files and restart apache and cobblerd services

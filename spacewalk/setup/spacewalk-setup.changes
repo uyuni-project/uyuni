@@ -1,5 +1,20 @@
-- use template for reportdb configuration (bsc#1206783)
-- Enable netapi clients in master configuration (required for Salt 3006)
+- Fix to detect correct Apache group instead of assuming it (gh#7092).
+- Align /var/spacewalk folder permissions with uyuni-base-server package.
+- Move set tomcat user setup to uyuni-base spec file
+- Add option to disable SSL setup
+- Corrected requirement to install Tomcat before spacewalk-setup.
+- Automatically detect PostgreSQL service and data folder name.
+
+-------------------------------------------------------------------
+Wed Apr 19 13:00:08 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.8-1
+  * Persist report_db_sslrootcert value (bsc#1210349)
+  * Fix migration test
+  * Escape `%` in spec file.
+  * remove useless tomcat configuration (bsc#1206191)
+  * use template for reportdb configuration (bsc#1206783)
+  * Enable netapi clients in master configuration (required for Salt 3006)
 
 -------------------------------------------------------------------
 Tue Feb 21 12:29:07 CET 2023 - jgonzalez@suse.com

@@ -834,8 +834,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         addFilesAndDirs(local);
         s.setLocalOverride(local);
         ServerFactory.save(s);
-        //HibernateFactory.commitTransaction();
-        //HibernateFactory.closeSession();
 
         ConfigFileCount actual = cm.countLocallyManagedPaths(s, user,
                                         ConfigChannelType.local()
