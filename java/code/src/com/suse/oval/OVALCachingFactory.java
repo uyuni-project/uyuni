@@ -1,7 +1,9 @@
 package com.suse.oval;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.errata.CveFactory;
 import com.suse.oval.db.*;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -32,6 +34,9 @@ public class OVALCachingFactory extends HibernateFactory {
                         .map(OVALCachingFactory::lookupOrInsertPlatformByName)
                         .collect(Collectors.toList())
         );
+
+        String cve = extractCveFromDefinition(definition, OVALDefinitionSource.SUSE);
+        definition.setCve(CveFactory.lookupOrInsertByName(cve));
 
         instance.saveObject(definition);
     }
@@ -115,5 +120,18 @@ public class OVALCachingFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return LOG;
+    }
+
+    public static String extractCveFromDefinition(OVALDefinition definition, OVALDefinitionSource source) {
+        switch (source) {
+            case SUSE:
+                return definition.getTitle();
+            case DEBIAN:
+            case REDHAT:
+            case UBUNTU:
+                throw new NotImplementedException("Cannot extract cve from '" + source + "' OVAL definitions");
+        }
+
+        return "";
     }
 }
