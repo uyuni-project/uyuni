@@ -9,7 +9,9 @@ public class OVALPlatform {
     private String name;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_oval_platform_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "platform_id_seq")
+    @SequenceGenerator(name = "platform_id_seq", sequenceName = "suse_oval_platform_id_seq",
+            allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -24,5 +26,13 @@ public class OVALPlatform {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "OVALPlatform{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
