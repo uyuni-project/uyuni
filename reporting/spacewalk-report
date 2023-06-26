@@ -251,7 +251,7 @@ if __name__ == '__main__':
                     if report.column_types[column] == 'i' and not re.match('^[0-9]+$', v):
                         systemExit(-7, 'Column [%s] in report [%s] only accepts integer value.' % (column, report_name))
 
-                for clause, values in column.items():
+                for clause, values in where[column].items():
                     l = []
                     for v in values:
                         l.append(':p%d' % pi)
