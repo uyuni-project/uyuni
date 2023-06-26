@@ -169,7 +169,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
-    public void canCloneChildChannelUnderDifferentParentChannelWithoutProductChannel() throws Exception {
+    public void cannotCloneChildChannelUnderDifferentParentChannelWithoutProductChannel() throws Exception {
         CloudPaygManager fakeCloudPaygManager = getFakeCloudPaygManager();
 
         Channel parentChannelWithProductChannels = createBaseChannel();
