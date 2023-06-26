@@ -1,0 +1,1 @@
+- Revert openssl3 compatibility because it breaks cert validation
