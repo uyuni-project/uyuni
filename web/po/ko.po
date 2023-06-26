@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-23 14:35+0200\n"
-"PO-Revision-Date: 2023-05-23 07:14+0000\n"
+"PO-Revision-Date: 2023-06-26 08:15+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -595,8 +595,9 @@ msgid "Channel"
 msgstr "채널"
 
 #: ../html/src/components/states-picker.tsx:402
+#, fuzzy
 msgid "Edit {0} Ranks"
-msgstr ""
+msgstr "{0} 순위 편집"
 
 #: ../html/src/components/states-picker.tsx:405
 #, fuzzy
@@ -4619,8 +4620,9 @@ msgid "Action Type"
 msgstr "작업"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#, fuzzy
 msgid "Configure states to execute"
-msgstr ""
+msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:112
 #, fuzzy
@@ -4680,7 +4682,7 @@ msgstr ""
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
 #, fuzzy
 msgid "Select an Action Type"
-msgstr "일정 선택"
+msgstr "작업 유형 선택"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
 #, fuzzy
