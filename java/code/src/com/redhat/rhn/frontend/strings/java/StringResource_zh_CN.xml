@@ -751,7 +751,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">管理软件源</target>
+        <target state="translated">管理储存库</target>
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
@@ -9601,11 +9601,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target state="translated">已为 {0} 安排软件源同步。</target>
+        <target state="translated">已为 {0} 安排储存库同步。</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target>软件源同步正在运行。</target>
+        <target>储存库同步正在运行。</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
@@ -9677,23 +9677,23 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target state="translated">此通道从未与外部软件源同步过。</target>
+        <target state="translated">此通道从未与外部储存库同步过。</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target state="translated">已成功更新 {0} 软件源信息</target>
+        <target state="translated">已成功更新 {0} 储存库信息</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target state="translated">软件源标签 "{0}" 已被使用，请选择其他标签</target>
+        <target state="translated">储存库标签 "{0}" 已被使用，请选择其他标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>软件源类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
+        <target>储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="translated">已有定义的软件源使用给定 URL，请重复使用该软件源。</target>
+        <target state="translated">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
@@ -10136,7 +10136,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.repo-sync" xml:space="preserve">
         <source>Repository Sync</source>
-        <target>软件源同步</target>
+        <target>储存库同步</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
@@ -10176,7 +10176,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-        <target state="translated">同步 @@PRODUCT_NAME@@ 软件源</target>
+        <target state="translated">同步 @@PRODUCT_NAME@@ 储存库</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
@@ -10549,7 +10549,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target>为 {0} 生成引导软件源时出错</target>
+        <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -10806,7 +10806,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">软件源标签 "{0}" 无效。软件源标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
+        <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
       <trans-unit approved="yes" id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
@@ -11224,7 +11224,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="final">已禁用模块化。目标软件源中将不会包含任何模块。</target>
+        <target state="final">已禁用模块化。目标储存库中将不会包含任何模块。</target>
       </trans-unit>
       <trans-unit approved="yes" id="PTF" xml:space="preserve">
         <source>PTFs</source>
@@ -11247,62 +11247,62 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">未执行此操作，因为其最早执行日期已过去太久。如果从安排到选择进行处理相隔的时间超过 {0} 个小时，系统就会将该操作视为不再相关，因而会将其丢弃。
           如果您确实希望系统执行此操作，请重新安排此操作。</target>
       </trans-unit>
-    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve" approved="yes">
         <source>Recurring Action type must be provided</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
+        <target state="final">必须提供重复性操作类型</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve" approved="yes">
         <source>States configuration must be provided</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
+        <target state="final">必须提供状态配置</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve" approved="yes">
         <source>Recurring action has invalid type.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <target state="final">重复性操作的类型无效。</target>
+      </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve" approved="yes">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <target state="final">在目标系统上安装并信任服务器的 SSL 证书</target>
+      </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve" approved="yes">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <target state="final">确保通道订阅与服务器端配置保持同步</target>
+      </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed hardware</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <target state="final">更新所安装硬件的相关信息</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve" approved="yes">
         <source>Apply package states as configured for the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <target state="final">根据针对目标系统的配置应用软件包状态</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed software (packages and products)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.uptodate" xml:space="preserve">
+        <target state="final">更新所安装软件（软件包和产品）的相关信息</target>
+      </trans-unit>
+      <trans-unit id="internal_state.uptodate" xml:space="preserve" approved="yes">
         <source>Update the system, rebooting if required</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <target state="final">更新系统，并根据需要进行重引导</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve" approved="yes">
         <source>Sync Salt beacons to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
+        <target state="final">将 Salt 信标同步到目标系统</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve" approved="yes">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <target state="final">将所有 Salt 工件（模块、状态、grain 和信标）同步到目标系统</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve" approved="yes">
         <source>Sync Salt grains to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <target state="final">将 Salt grain 同步到目标系统</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve" approved="yes">
         <source>Sync Salt modules to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <target state="final">将 Salt 模块同步到目标系统</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve" approved="yes">
         <source>Sync Salt states to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">将 Salt 状态同步到目标系统</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
