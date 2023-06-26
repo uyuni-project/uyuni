@@ -5,6 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "suseOVALReference")
 @IdClass(OVALReferenceKey.class)
+@NamedQueries({
+        @NamedQuery(name = "OVALReference.lookupReferenceByRefIdAndDefinition",
+        query = "SELECT ref FROM OVALReference ref " +
+                "WHERE ref.refId = :refId AND ref.definition.id = :definitionId")
+})
 public class OVALReference {
     private String refId;
     private String source;

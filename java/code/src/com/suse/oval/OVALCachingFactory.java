@@ -57,6 +57,18 @@ public class OVALCachingFactory extends HibernateFactory {
         instance.saveObject(definition);
     }
 
+
+    /**
+     * Looks up an {@link OVALReference} by id (reference and definition id)
+     */
+    public static OVALReference lookupReferenceByRefIdAndDefinition(String refId, String definitionId) {
+        return getSession()
+                .createNamedQuery("OVALReference.lookupReferenceByRefIdAndDefinition", OVALReference.class)
+                .setParameter("refId", refId)
+                .setParameter("definitionId", definitionId)
+                .uniqueResult();
+    }
+
     /**
      * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
      *
