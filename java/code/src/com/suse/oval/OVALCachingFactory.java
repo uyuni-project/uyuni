@@ -13,7 +13,6 @@ import org.hibernate.Session;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,8 +49,7 @@ public class OVALCachingFactory extends HibernateFactory {
                 }).collect(Collectors.toList())
         );
 
-        // TODO: OVAL source should be included in the OVALDefinition object
-        String cve = extractCveFromDefinition(definition, OVALDefinitionSource.SUSE);
+        String cve = extractCveFromDefinition(definition);
         definition.setCve(CveFactory.lookupOrInsertByName(cve));
 
         instance.saveObject(definition);
@@ -202,7 +200,11 @@ public class OVALCachingFactory extends HibernateFactory {
         return LOG;
     }
 
-    private static String extractCveFromDefinition(OVALDefinition definition, OVALDefinitionSource source) {
+    private static String extractCveFromDefinition(OVALDefinition definition) {
+        OVALDefinitionSource source = definition.getSource();
+        if (source == null) {
+            throw new IllegalStateException("Definition doesn't have a source property");
+        }
         switch (source) {
             case SUSE:
                 return definition.getTitle();
@@ -211,7 +213,6 @@ public class OVALCachingFactory extends HibernateFactory {
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + source + "' OVAL definitions");
         }
-
         return "";
     }
 }

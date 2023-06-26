@@ -12,8 +12,8 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
-DROP TABLE IF EXISTS suseOVALDefinition;
-CREATE TABLE suseOVALDefinition
+
+CREATE TABLE IF NOT EXISTS suseOVALDefinition
 (
     id              VARCHAR NOT NULL
                        CONSTRAINT suse_oval_definition_id_pk PRIMARY KEY,
@@ -21,5 +21,6 @@ CREATE TABLE suseOVALDefinition
     title           VARCHAR,
     description     VARCHAR(10000),
     cve_id          NUMERIC
-                       REFERENCES rhnCve(id)
+                       REFERENCES rhnCve(id),
+    source          VARCHAR
 );
