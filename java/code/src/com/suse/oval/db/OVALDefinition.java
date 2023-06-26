@@ -61,7 +61,7 @@ public class OVALDefinition {
         this.description = description;
     }
 
-    @OneToMany(mappedBy = "definition")
+    @OneToMany(mappedBy = "definition", cascade = CascadeType.ALL)
     public List<OVALReference> getReferences() {
         return references;
     }
@@ -82,7 +82,7 @@ public class OVALDefinition {
         this.affectedPlatforms = affectedPlatforms;
     }
 
-    @SuppressWarnings("JpaAttributeTypeInspection")
+
     @OneToOne
     @JoinColumn(name = "cve_id")
     public Cve getCve() {
