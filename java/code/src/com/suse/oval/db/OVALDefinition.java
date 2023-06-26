@@ -2,6 +2,7 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
+import com.suse.oval.OVALDefinitionSource;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class OVALDefinition {
     private List<OVALReference> references;
     private List<OVALPlatform> affectedPlatforms;
     private Cve cve;
+    private OVALDefinitionSource source;
 
     @Id
     @Column(name = "id")
@@ -91,5 +93,15 @@ public class OVALDefinition {
 
     public void setCve(Cve cve) {
         this.cve = cve;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source")
+    public OVALDefinitionSource getSource() {
+        return source;
+    }
+
+    public void setSource(OVALDefinitionSource source) {
+        this.source = source;
     }
 }
