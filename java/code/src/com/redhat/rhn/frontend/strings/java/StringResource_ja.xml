@@ -11256,15 +11256,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve" approved="yes">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-        <target state="final">サーバーのSSL証明書をインストールし、ターゲットシステムで信頼します</target>
+        <target state="final">サーバのSSL証明書をインストールし、ターゲットシステムで信頼します</target>
       </trans-unit>
       <trans-unit id="internal_state.channels" xml:space="preserve" approved="yes">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-        <target state="final">チャネルサブスクリプションがサーバ側の設定と同期していることを確認します</target>
+        <target state="final">チャンネルサブスクリプションがサーバ側の設定と同期していることを確認します</target>
       </trans-unit>
       <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed hardware</source>
-        <target state="final">インストールされているハードウェアに関する情報を更新します</target>
+        <target state="final">インストールされたハードウェアに関する情報を更新します</target>
       </trans-unit>
       <trans-unit id="internal_state.packages" xml:space="preserve" approved="yes">
         <source>Apply package states as configured for the target system</source>
@@ -11272,7 +11272,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed software (packages and products)</source>
-        <target state="final">インストールされたソフトウェア(パッケージと製品)に関する更新新情報</target>
+        <target state="final">インストールされたソフトウェア(パッケージと製品)に関する情報を更新します</target>
       </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve" approved="yes">
         <source>Update the system, rebooting if required</source>
@@ -11280,7 +11280,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve" approved="yes">
         <source>Sync Salt beacons to the target system</source>
-        <target state="final">ソルトビーコンをターゲットシステムに同期します</target>
+        <target state="final">Saltビーコンをターゲットシステムに同期します</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncall" xml:space="preserve" approved="yes">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
@@ -11288,7 +11288,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve" approved="yes">
         <source>Sync Salt grains to the target system</source>
-        <target state="final">Salt grainをターゲット市捨て宇に同期します</target>
+        <target state="final">Salt grainをターゲットシステムに同期します</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncmodules" xml:space="preserve" approved="yes">
         <source>Sync Salt modules to the target system</source>
