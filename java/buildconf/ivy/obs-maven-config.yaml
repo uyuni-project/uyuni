@@ -51,6 +51,9 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
+  - artifact: jakarta.servlet-api
+    package: jakarta-servlet
+    repository: Leap
   - artifact: commons-el
     package: apache-commons-el
     repository: Leap
