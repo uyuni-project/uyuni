@@ -259,7 +259,7 @@ Feature: Recurring Actions
     And I wait until I see "Configure states to execute" text
     And I enter "schedule_name" as "scheduleName"
     And I check radio button "schedule-daily"
-    And I enter 1 minutes from now as "time-daily_time"
+    And I pick 1 minutes from now as "time-daily_time"
     And I click on the "disabled" toggler
     And I check "Hardware Profile Update-cbox"
     And I click on "Save Changes"
@@ -353,7 +353,7 @@ Feature: Recurring Actions
     And I follow "Delete Group"
     And I click on "Confirm Deletion"
     Then I should see a "Your organization has no system groups." text
-    
+
   Scenario: Cleanup: Remove "My State Channel for Recurring Actions" config channel
     When I follow the left menu "Configuration > Channels"
     And I follow "My State Channel for Recurring Actions"
