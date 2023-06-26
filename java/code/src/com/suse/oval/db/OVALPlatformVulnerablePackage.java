@@ -7,6 +7,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "suseOVALPlatformVulnerablePackage")
 @IdClass(OVALPlatformVulnerablePackageKey.class)
+@NamedQueries({
+        @NamedQuery(name = "OVALVulnerablePackage.lookupVulnerablePackagesByPlatformAndCve",
+                query = "SELECT vulnerablePkg " +
+                        "FROM OVALPlatformVulnerablePackage platformVulnerablePkg " +
+                        "JOIN platformVulnerablePkg.vulnerablePackage vulnerablePkg " +
+                        "JOIN platformVulnerablePkg.cve cve " +
+                        "JOIN platformVulnerablePkg.platform platform " +
+                        "WHERE platform.id = :platformId AND cve.name = :cve")}
+)
 public class OVALPlatformVulnerablePackage {
     private OVALPlatform platform;
     private Cve cve;
