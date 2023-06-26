@@ -95,7 +95,7 @@ public class AnsibleController {
                 withCsrfToken(withDocsLocale(withUserAndServer(AnsibleController::playbooks))), jade);
 
         get("/manager/systems/details/ansible/inventories",
-                withCsrfToken(withDocsLocale(withUser(AnsibleController::inventories))), jade);
+                withCsrfToken(withDocsLocale(withUserAndServer(AnsibleController::inventories))), jade);
 
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
@@ -157,13 +157,11 @@ public class AnsibleController {
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
+     * @param server the server
      * @return the model and view
      */
-    public static ModelAndView inventories(Request req, Response res, User user) {
-        String serverId = req.queryParams("sid");
+    public static ModelAndView inventories(Request req, Response res, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
         data.put("pathContentType", AnsiblePath.Type.INVENTORY.getLabel());
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
     }
