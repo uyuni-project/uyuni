@@ -132,9 +132,6 @@ artifacts:
   - artifact: jakarta-persistence-api
     package: jpa-api
     repository: Uyuni_Other
-  - artifact: jakarta.jakartaee-api
-    package: jpa-api
-    repository: Uyuni_Other
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
