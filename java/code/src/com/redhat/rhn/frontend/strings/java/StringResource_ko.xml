@@ -11259,47 +11259,47 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">서버의 SSL 인증서를 설치하고 대상 시스템에서 이를 신뢰합니다.</target>
       </trans-unit>
       <trans-unit id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-        <target state="new"/>
+        <target state="translated">채널 구독과 서버 측 구성이 동기화되어 있는지 확인합니다.</target>
       </trans-unit>
       <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
-        <target state="new"/>
+        <target state="needs-translation">설치된 하드웨어에 대한 업데이트 정보</target>
       </trans-unit>
       <trans-unit id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">대상 시스템에 구성된 대로 패키지 상태를 적용합니다.</target>
       </trans-unit>
       <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
-        <target state="new"/>
+        <target state="needs-translation">설치된 소프트웨어(패키지 및 제품)에 대한 업데이트 정보</target>
       </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
-        <target state="new"/>
+        <target state="needs-translation">시스템을 업데이트하십시오. 필요한 경우 재부팅하십시오.</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">Salt 신호를 대상 시스템에 동기화</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">모든 Salt 아티팩트(모듈, 상태, 입자 및 신호)를 대상 시스템에 동기화</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">Salt 입자를 대상 시스템에 동기화</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">Salt 모듈을 대상 시스템에 동기화</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
-        <target state="new"/>
+        <target state="needs-translation">Salt 상태를 대상 시스템에 동기화</target>
       </trans-unit>
     </body>
   </file>
