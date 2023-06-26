@@ -29892,17 +29892,17 @@ given channel.</source>
         </context-group>
         <target state="final"> 만료된 구독 경고를 표시합니다.</target>
       </trans-unit>
-    <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">반복 작업</target>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">가상화 호스트:</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
