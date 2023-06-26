@@ -9768,7 +9768,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">RPM 软件源安装点</target>
+        <target state="translated">RPM 储存库安装点</target>
       </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
@@ -10154,7 +10154,7 @@ Please note that some manual configuration of these scripts may still be require
       <!-- Repo Sync -->
       <trans-unit id="repos.jsp.summary" xml:space="preserve">
         <source>Use repositories to sync additional packages to your channels. Repositories may be linked to your channels.</source>
-        <target state="translated">使用软件源可将额外的软件包同步到您的通道。软件源可以关联到您的通道。</target>
+        <target state="translated">使用储存库可将额外的软件包同步到您的通道。储存库可以关联到您的通道。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.note.default" xml:space="preserve">
         <source>note here</source>
@@ -10162,11 +10162,11 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.norepos" xml:space="preserve">
         <source>No repositories currently exist.</source>
-        <target state="translated">当前不存在任何软件源。</target>
+        <target state="translated">当前不存在任何储存库。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.norepos" xml:space="preserve">
         <source>No repositories are currently associated with this channel.</source>
-        <target state="translated">当前没有与此通道关联的软件源。</target>
+        <target state="translated">当前没有与此通道关联的储存库。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.label" xml:space="preserve">
         <source>Label</source>
@@ -10178,7 +10178,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.message.schedulefailed" xml:space="preserve">
         <source>Schedule of Repo Sync failed. Check logs for more information.</source>
-        <target state="translated">安排软件源同步失败。请查看日志了解详细信息。</target>
+        <target state="translated">安排储存库同步失败。请查看日志了解详细信息。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.message.taskomaticdown" xml:space="preserve">
         <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
@@ -10189,90 +10189,90 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoList.do</context>
         </context-group>
-        <target state="translated">创建软件源</target>
+        <target state="translated">创建储存库</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.repos" xml:space="preserve">
         <source>Delete Repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoDetails.do</context>
         </context-group>
-        <target state="translated">删除软件源</target>
+        <target state="translated">删除储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.toolbar" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="final">创建软件源</target>
+        <target state="final">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.header" xml:space="preserve">
         <source>Repositories</source>
-        <target state="translated">软件源</target>
+        <target state="translated">储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.header2" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="final">创建软件源</target>
+        <target state="final">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.label" xml:space="preserve">
         <source>Repository Label</source>
-        <target state="translated">软件源标签</target>
+        <target state="translated">储存库标签</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.url" xml:space="preserve">
         <source>Repository URL</source>
-        <target state="translated">软件源 URL</target>
+        <target state="translated">储存库 URL</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.type" xml:space="preserve">
         <source>Repository Type</source>
-        <target>软件源类型</target>
+        <target>储存库类型</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.submit" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="translated">创建软件源</target>
+        <target state="translated">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.submit" xml:space="preserve">
         <source>Update Repository</source>
-        <target state="translated">更新软件源</target>
+        <target state="translated">更新储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.submit" xml:space="preserve">
         <source>Delete Repository</source>
-        <target state="translated">删除软件源</target>
+        <target state="translated">删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.success" xml:space="preserve">
         <source>Repository created successfully</source>
-        <target state="translated">已成功创建软件源</target>
+        <target state="translated">已成功创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.success" xml:space="preserve">
         <source>Repository updated successfully</source>
-        <target state="translated">已成功更新软件源</target>
+        <target state="translated">已成功更新储存库</target>
       </trans-unit>
       <trans-unit id="repos.delete.success" xml:space="preserve">
         <source>Repository deleted successfully</source>
-        <target state="translated">已成功删除软件源</target>
+        <target state="translated">已成功删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.details.header2" xml:space="preserve">
         <source>Repository Details</source>
-        <target state="translated">软件源细节</target>
+        <target state="translated">储存库细节</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.header2" xml:space="preserve">
         <source>Confirm Repository Delete</source>
-        <target state="translated">确认删除软件源</target>
+        <target state="translated">确认删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.summary" xml:space="preserve">
         <source>Are you sure you want to delete this repository permanently?</source>
-        <target state="translated">您确定要永久删除此软件源吗？</target>
+        <target state="translated">您确定要永久删除此储存库吗？</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.warning" xml:space="preserve">
         <source>Deleting this repository will remove any channel mappings this repository is associated with</source>
-        <target state="translated">删除此软件源会去除与其关联的所有通道映射</target>
+        <target state="translated">删除此储存库会去除与其关联的所有通道映射</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.info.header" xml:space="preserve">
         <source>Repository Information</source>
-        <target state="translated">软件源信息</target>
+        <target state="translated">储存库信息</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel" xml:space="preserve">
         <source>Save Repositories</source>
-        <target state="translated">保存软件源</target>
+        <target state="translated">保存储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.channel.header" xml:space="preserve">
         <source>Repository</source>
-        <target state="final">软件源</target>
+        <target state="final">储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.status" xml:space="preserve">
         <source>Sync Status</source>
@@ -10280,7 +10280,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channel.repos" xml:space="preserve">
         <source>Channel Repositories</source>
-        <target state="translated">通道软件源</target>
+        <target state="translated">通道储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.ssl.ca" xml:space="preserve">
         <source>SSL CA Certificate</source>
@@ -10308,19 +10308,19 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channelHeader" xml:space="preserve">
         <source>Channels using {0} repository</source>
-        <target state="translated">使用 {0} 软件源的通道</target>
+        <target state="translated">使用 {0} 储存库的通道</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channelSummary" xml:space="preserve">
         <source>Below are channels with {0} repository attached to them.</source>
-        <target state="translated">以下与 {0} 软件源关联的通道。</target>
+        <target state="translated">以下与 {0} 储存库关联的通道。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.noChannels" xml:space="preserve">
         <source>This repository is not linked to any channel.</source>
-        <target state="translated">此软件源未与任何通道关联。</target>
+        <target state="translated">此储存库未与任何通道关联。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.createRepo" xml:space="preserve">
         <source>Create Repository</source>
-        <target>创建软件源</target>
+        <target>创建储存库</target>
       </trans-unit>
       <trans-unit id="os" xml:space="preserve">
         <source>Operating System</source>
@@ -12299,14 +12299,14 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target state="translated">软件源</target>
+        <target state="translated">储存库</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.repos-tooltip" xml:space="preserve">
         <source>Selected Repositories will be available in the &lt;strong&gt;%packages &lt;/strong&gt; section of the kickstart file.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target state="translated">选择的软件源将包含在 kickstart 文件的 &lt;strong&gt;%packages &lt;/strong&gt; 部分。</target>
+        <target state="translated">选择的储存库将包含在 kickstart 文件的 &lt;strong&gt;%packages &lt;/strong&gt; 部分。</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.warning" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Warning:&lt;/strong&gt; If any activation keys are associated with this kickstart profile(under the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;activation keys tab&lt;/a&gt;). the child channel subscriptions above will be overridden. In that situation please use an activation key to specify child channel subscriptions.&lt;/span&gt;</source>
@@ -22910,7 +22910,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 
 树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和软件源信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
+&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -26799,7 +26799,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">软件源校验和类型</target>
+        <target state="translated">储存库校验和类型</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip" xml:space="preserve">
         <source>&lt;strong&gt; Tip:&lt;/strong&gt;
@@ -27436,7 +27436,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">生成通道软件源数据</target>
+        <target state="translated">生成通道储存库数据</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch" xml:space="preserve">
         <source>Cleans up orphaned and outdated data</source>
@@ -27935,7 +27935,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata" xml:space="preserve">
         <source>Channel Repodata</source>
-        <target state="translated">通道软件源数据</target>
+        <target state="translated">通道储存库数据</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data" xml:space="preserve">
         <source>TimeSeries Cleanup</source>
@@ -28001,7 +28001,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
-        <target state="translated">软件源缓存状态</target>
+        <target state="translated">储存库缓存状态</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
         <source> Completed </source>
@@ -28017,7 +28017,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
-        <target state="translated">上次软件源构建数据</target>
+        <target state="translated">上次储存库构建数据</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.lastsynced" xml:space="preserve">
         <source>Last Sync Time</source>
@@ -28113,7 +28113,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
-        <target>可以从相关的 debug 通道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
+        <target>可以从相关的 debug 通道或储存库同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -29084,7 +29084,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
-        <target state="needs-adaptation">版权所有 (c) 2011 - 2022 SUSE LLC。</target>
+        <target state="final">版权所有 (c) 2011 - 2023 SUSE LLC。</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29222,7 +29222,7 @@ given channel.</source>
         </source>
         <target>
            在当前指派了此通道的任何受控端上确认后，将立即
-           安排应用通道状态。这会更新这些受控端上的软件源文件，
+           安排应用通道状态。这会更新这些受控端上的储存库文件，
            以去除已删除的通道。
         </target>
         <context-group name="ctx">
@@ -29552,21 +29552,21 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">抱歉，找不到该软件源。</target>
+        <target state="final">抱歉，找不到该储存库。</target>
       </trans-unit>
       <trans-unit approved="yes" id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">请求的软件源不存在。如果您通过书签或其他某种非链接方式进入此页面，则很有可能会出现这种情况。</target>
+        <target state="final">请求的储存库不存在。如果您通过书签或其他某种非链接方式进入此页面，则很有可能会出现这种情况。</target>
       </trans-unit>
       <trans-unit approved="yes" id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">您没有查看这个软件源的权限。</target>
+        <target state="final">您没有查看这个储存库的权限。</target>
       </trans-unit>
       <trans-unit approved="yes" id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
@@ -29907,16 +29907,16 @@ given channel.</source>
         </context-group>
         <target state="final"> 显示失效的订阅警告。</target>
       </trans-unit>
-      <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit id="Recurring Actions" xml:space="preserve" approved="yes">
         <source>Recurring Actions</source>
-        <target state="new"/>
+        <target state="final">重复性操作</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve" approved="yes">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">虚拟化主机：</target>
       </trans-unit>
     </body>
   </file>
