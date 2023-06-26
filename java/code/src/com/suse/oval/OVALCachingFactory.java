@@ -146,7 +146,11 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static List<OVALVulnerablePackage> lookupVulnerablePackagesByPlatformAndCve(long platformId, String cve) {
-        return Collections.emptyList();
+        return getSession()
+                .createNamedQuery("OVALVulnerablePackage.lookupVulnerablePackagesByPlatformAndCve", OVALVulnerablePackage.class)
+                .setParameter("platformId", platformId)
+                .setParameter("cve", cve)
+                .getResultList();
     }
 
     public static void assignVulnerablePackageToPlatform(String platformName, String cveName, String pkgName, String pkgFixVersion) {
