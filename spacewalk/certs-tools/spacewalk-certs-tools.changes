@@ -1,4 +1,3 @@
-- Revert openssl3 compatibility because it breaks cert validation
 - Add openssl3 compatibility.
 - Read CA password from a file
 - Also ship SUSE specific files on Enterprise Linux.
