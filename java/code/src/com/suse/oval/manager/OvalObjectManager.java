@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A cache for {@link ObjectType} to access OVAL objects quickly
+ */
 public class OvalObjectManager {
     private final Map<String, ObjectType> objectsMap = new HashMap<>();
 

@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A cache for {@link TestType} to access OVAL tests quickly
+ */
 public class OvalTestManager {
     private final Map<String, TestType> testsMap = new HashMap<>();
 

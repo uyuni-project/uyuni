@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A cache for {@link StateType} to access OVAL states quickly
+ */
 public class OvalStateManager {
     private final Map<String, StateType> statesMap = new HashMap<>();
 
