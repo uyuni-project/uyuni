@@ -162,13 +162,14 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertNotNull(gotChannelTest1);
     }
 
-    @Test
+
     /**
      * Tests that cloning a channel under a different base channel that has not the channel product we are
      * cloning from fails in a SUMA PAYG instace.
      *
      * @throws Exception
      */
+    @Test
     public void cannotCloneChildChannelUnderDifferentParentChannelWithoutProductChannel() throws Exception {
         CloudPaygManager fakeCloudPaygManager = getFakeCloudPaygManager();
 
