@@ -1,0 +1,2 @@
+- use jakarta ws instead of javax (bsc#1210222)
+- fix NPE in SaltUtil 
