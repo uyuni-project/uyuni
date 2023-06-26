@@ -98,7 +98,7 @@ const Payg = (props: Props) => {
       />
       <PaygInfoEdit
         payg={payg}
-        editing={!props.readOnly}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
@@ -109,7 +109,7 @@ const Payg = (props: Props) => {
         paygId={payg.id}
         isInstance={true}
         labelPrefix={"Instance"}
-        editing={!props.readOnly}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
@@ -120,7 +120,7 @@ const Payg = (props: Props) => {
         paygId={payg.id}
         isInstance={false}
         labelPrefix={"Bastion"}
-        editing={!props.readOnly}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
