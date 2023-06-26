@@ -11242,62 +11242,62 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">このアクションは、最初の実行日が古すぎるため実行されませんでした。スケジューリングからピックアップまでの時間が {0} 時間を超えると、関連性がなくなったと見なされるため、アクションは破棄されます。
          このアクションを本当に実行する場合は再スケジュールしてください。</target>
       </trans-unit>
-    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve" approved="yes">
         <source>Recurring Action type must be provided</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
+        <target state="final">定期的なアクションタイプを提供する必要があります</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve" approved="yes">
         <source>States configuration must be provided</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
+        <target state="final">状態の設定を提供する必要があります</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve" approved="yes">
         <source>Recurring action has invalid type.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <target state="final">定期的なアクションには無効なタイプがあります。</target>
+      </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve" approved="yes">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <target state="final">サーバーのSSL証明書をインストールし、ターゲットシステムで信頼します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve" approved="yes">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <target state="final">チャネルサブスクリプションがサーバ側の設定と同期していることを確認します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed hardware</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <target state="final">インストールされているハードウェアに関する情報を更新します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve" approved="yes">
         <source>Apply package states as configured for the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <target state="final">ターゲットシステム用に設定されたパッケージの状態を適用します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve" approved="yes">
         <source>Update information about installed software (packages and products)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.uptodate" xml:space="preserve">
+        <target state="final">インストールされたソフトウェア(パッケージと製品)に関する更新新情報</target>
+      </trans-unit>
+      <trans-unit id="internal_state.uptodate" xml:space="preserve" approved="yes">
         <source>Update the system, rebooting if required</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <target state="final">システムを更新し、必要に応じて再起動します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve" approved="yes">
         <source>Sync Salt beacons to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
+        <target state="final">ソルトビーコンをターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve" approved="yes">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <target state="final">すべてのSaltアーティファクト(モジュール、状態、grain、ビーコン)をターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve" approved="yes">
         <source>Sync Salt grains to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <target state="final">Salt grainをターゲット市捨て宇に同期します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve" approved="yes">
         <source>Sync Salt modules to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <target state="final">Saltモジュールをターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve" approved="yes">
         <source>Sync Salt states to the target system</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">Salt状態をターゲットシステムに同期します</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
