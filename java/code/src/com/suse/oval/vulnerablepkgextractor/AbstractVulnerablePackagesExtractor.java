@@ -1,6 +1,5 @@
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.manager.OvalObjectManager;
 import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.manager.OvalTestManager;
@@ -12,7 +11,6 @@ import com.suse.oval.ovaltypes.DefinitionType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -21,15 +19,20 @@ import java.util.stream.Collectors;
  * differ depending on the source of the OVAL definition (SUSE, Ubuntu, etc.)
  */
 public abstract class AbstractVulnerablePackagesExtractor {
-    protected final OVALDefinition vulnerabilityDefinition;
+    protected final DefinitionType vulnerabilityDefinition;
     protected final CriteriaType criteriaRoot;
+    protected final OvalObjectManager ovalObjectManager;
+    protected final OvalTestManager ovalTestManager;
+    protected final OvalStateManager ovalStateManager;
 
-    protected AbstractVulnerablePackagesExtractor(OVALDefinition vulnerabilityDefinition) {
-        Objects.requireNonNull(vulnerabilityDefinition);
-        Objects.requireNonNull(vulnerabilityDefinition.getCriteriaTree());
-
+    protected AbstractVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition,
+                                                  OvalObjectManager ovalObjectManager, OvalTestManager ovalTestManager,
+                                                  OvalStateManager ovalStateManager) {
         this.vulnerabilityDefinition = vulnerabilityDefinition;
-        this.criteriaRoot = vulnerabilityDefinition.getCriteriaTree();
+        this.criteriaRoot = vulnerabilityDefinition.getCriteria();
+        this.ovalObjectManager = ovalObjectManager;
+        this.ovalTestManager = ovalTestManager;
+        this.ovalStateManager = ovalStateManager;
     }
 
     protected abstract List<ProductVulnerablePackages> extractItem(CriteriaType criteriaType);
