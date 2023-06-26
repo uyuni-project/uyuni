@@ -129,6 +129,9 @@ artifacts:
     repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
+  - artifact: jakarta-persistence-api
+    package: jpa-api
+    repository: Uyuni_Other
   - artifact: jakarta.jakartaee-api
     package: jpa-api
     repository: Uyuni_Other
