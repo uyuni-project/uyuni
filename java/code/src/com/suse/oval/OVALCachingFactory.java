@@ -4,6 +4,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.suse.oval.db.*;
+import com.suse.oval.ovaltypes.ReferenceType;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,13 +29,25 @@ public class OVALCachingFactory extends HibernateFactory {
     /**
      * Insert the passed definition object into the database.
      * <p>
-     * Also inserts the affected platforms information (if not already inserted) into the relevant tables
+     * Also inserts the affected platforms and references information (if not already inserted) into the relevant tables
      */
-    public static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms) {
+    public static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms, List<ReferenceType> references) {
         definition.setAffectedPlatforms(
                 affectedPlatforms.stream()
                         .map(OVALCachingFactory::lookupOrInsertPlatformByName)
                         .collect(Collectors.toList())
+        );
+
+        definition.setReferences(
+                references.stream().map(ref -> {
+                    OVALReference ovalRef = new OVALReference();
+                    ovalRef.setDefinition(definition);
+                    ovalRef.setRefId(ref.getRefId());
+                    ovalRef.setSource(ref.getSource());
+                    ovalRef.setRefURL(ref.getRefUrl().orElse(""));
+
+                    return ovalRef;
+                }).collect(Collectors.toList())
         );
 
         // TODO: OVAL source should be included in the OVALDefinition object
@@ -161,7 +174,7 @@ public class OVALCachingFactory extends HibernateFactory {
 
         criteriaQuery.where(builder.and(
                         builder.equal(root.get("name"), pkgName),
-                        builder.equal(root.get("fix_version"), fixVersion)
+                        builder.equal(root.get("fixVersion"), fixVersion)
                 )
         );
 
