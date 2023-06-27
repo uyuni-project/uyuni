@@ -1,4 +1,8 @@
-- Integrate the containerized proxy into the usual rel-eng workflow
+-------------------------------------------------------------------
+Tue Jun 27 23:08:24 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.7
+  * Integrate the containerized proxy into the usual rel-eng workflow
 
 -------------------------------------------------------------------
 Mon Apr 24 07:22:35 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
