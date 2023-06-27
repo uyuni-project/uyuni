@@ -29073,7 +29073,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2022 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2022 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29892,16 +29892,16 @@ given channel.</source>
         </context-group>
         <target state="final"> 만료된 구독 경고를 표시합니다.</target>
       </trans-unit>
-      <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit id="Recurring Actions" xml:space="preserve" approved="yes">
         <source>Recurring Actions</source>
-        <target state="needs-translation">반복 작업</target>
+        <target state="final">반복 작업</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve" approved="yes">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-translation">가상화 호스트:</target>
+        <target state="final">가상화 호스트:</target>
       </trans-unit>
     </body>
   </file>
