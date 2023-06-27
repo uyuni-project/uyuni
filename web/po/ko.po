@@ -18,11 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 14:46+0200\n"
+"POT-Creation-Date: 2023-06-27 09:42+0200\n"
 "PO-Revision-Date: 2023-06-27 07:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -805,7 +805,9 @@ msgstr "모니터링 상태가 변경되지 않았습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr "오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시오."
+msgstr ""
+"오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시"
+"오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
