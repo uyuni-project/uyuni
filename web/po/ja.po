@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-23 14:46+0200\n"
-"PO-Revision-Date: 2023-06-26 16:15+0000\n"
+"PO-Revision-Date: 2023-06-27 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -4566,7 +4566,7 @@ msgstr "クォーツ書式文字列"
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:230
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:237
 msgid "Delete Recurring Action Schedule"
-msgstr "定期的アクションのスケジュールの削除"
+msgstr "定期的なアクションのスケジュールの削除"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:231
 msgid "Are you sure you want to delete this schedule?"
