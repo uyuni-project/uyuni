@@ -66,6 +66,9 @@ testsuite/ @uyuni-project/qe
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt
 
+# Generic fallback for Java
+java/ @uyuni-project/java
+
 # Individual Java packages
 
 # XMLRPC API
