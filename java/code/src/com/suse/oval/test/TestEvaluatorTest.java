@@ -2,17 +2,14 @@ package com.suse.oval.test;
 
 import com.suse.oval.TestEvaluator;
 import com.suse.oval.UyuniAPI;
-import com.suse.oval.manager.OvalObjectManager;
-import com.suse.oval.manager.OvalStateManager;
-import com.suse.oval.manager.OvalTestManager;
+import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,27 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestEvaluatorTest {
     TestEvaluator testEvaluator;
-    OvalObjectManager ovalObjectManager = new OvalObjectManager(Collections.emptyList());
-    OvalStateManager ovalStateManager = new OvalStateManager(Collections.emptyList());
-    OvalTestManager ovalTestManager = new OvalTestManager(Collections.emptyList());
-
-    TestType t1;
-    TestType t2;
-    TestType t3;
-    TestType t4;
-    TestType t5;
-    TestType t6;
-    TestType t7;
-    TestType t8;
-    TestType t9;
-    TestType t10;
-    TestType t11;
+    OVALPackageTest t1;
+    OVALPackageTest t2;
+    OVALPackageTest t3;
+    OVALPackageTest t4;
+    OVALPackageTest t5;
+    OVALPackageTest t6;
+    OVALPackageTest t7;
+    OVALPackageTest t8;
+    OVALPackageTest t9;
+    OVALPackageTest t10;
+    OVALPackageTest t11;
 
     @BeforeEach
     void setUp() {
-        ovalObjectManager = new OvalObjectManager(Collections.emptyList());
-        ovalStateManager = new OvalStateManager(Collections.emptyList());
-        ovalTestManager = new OvalTestManager(Collections.emptyList());
 
         List<UyuniAPI.CVEPatchStatus> systemCvePatchStatusList = List.of(
                 new UyuniAPI.CVEPatchStatus(1, Optional.of("libsoftokn3-hmac-32bit"),
@@ -57,50 +47,50 @@ public class TestEvaluatorTest {
                         Optional.of(UyuniAPI.PackageEvr.parseRpm("0:15.4-0")), true)
         );
 
-        ObjectType o1 = newObjectType("obj:1", "libsoftokn3-hmac-32bit");
-        ObjectType o2 = newObjectType("obj:2", "libsha1detectcoll1");
-        ObjectType o3 = newObjectType("obj:3", "postgresql12-plperl");
-        ObjectType o4 = newObjectType("obj:4", "sles-release");
+        OVALPackageObject o1 = newOVALPackageObject("libsoftokn3-hmac-32bit");
+        OVALPackageObject o2 = newOVALPackageObject("libsha1detectcoll1");
+        OVALPackageObject o3 = newOVALPackageObject("postgresql12-plperl");
+        OVALPackageObject o4 = newOVALPackageObject("sles-release");
 
-        StateType s1 = new StateTypeBuilder("ste:1")
+        OVALPackageState s1 = new OVALStateBuilder()
                 .withEVR("0:3.68.3-150400.1.7", OperationEnumeration.LESS_THAN)
                 .build();
 
-        StateType s2 = new StateTypeBuilder("ste:2")
+        OVALPackageState s2 = new OVALStateBuilder()
                 .withEVR("0:3.68.3-150400.1.7", OperationEnumeration.GREATER_THAN)
                 .build();
 
-        StateType s3 = new StateTypeBuilder("ste:3")
+        OVALPackageState s3 = new OVALStateBuilder()
                 .withEVR("0:3.68.3-150400.1.7", OperationEnumeration.EQUALS)
                 .build();
 
-        StateType s4 = new StateTypeBuilder("ste:4")
+        OVALPackageState s4 = new OVALStateBuilder()
                 .withEVR("0:3.68.3-150400.1.7", OperationEnumeration.GREATER_THAN)
                 .withArch("aarch64", OperationEnumeration.EQUALS)
                 .build();
 
-        StateType s5 = new StateTypeBuilder("ste:5")
+        OVALPackageState s5 = new OVALStateBuilder()
                 .withEVR("0:3.68.3-150400.1.7", OperationEnumeration.GREATER_THAN)
                 .withArch("(aarch64|noarch)", OperationEnumeration.PATTERN_MATCH)
                 .build();
 
-        StateType s6 = new StateTypeBuilder("ste:6")
+        OVALPackageState s6 = new OVALStateBuilder()
                 .withVersion("15.4", OperationEnumeration.EQUALS)
                 .build();
 
-        t1 = newTestType("tst:1", o1, s1);
-        t2 = newTestType("tst:2", o1, s2);
-        t3 = newTestType("tst:3", o1, s3);
-        t4 = newTestType("tst:4", o2, s1);
-        t5 = newTestType("tst:5", o2, s2);
-        t6 = newTestType("tst:6", o2, s3);
-        t7 = newTestType("tst:7", o1, s4);
-        t8 = newTestType("tst:8", o2, s4);
-        t9 = newTestType("tst:9", o3, s4);
-        t10 = newTestType("tst:10", o2, s5);
-        t11 = newTestType("tst:11", o4, s6);
+        t1 = newOVALPackageTest(o1, s1);
+        t2 = newOVALPackageTest(o1, s2);
+        t3 = newOVALPackageTest(o1, s3);
+        t4 = newOVALPackageTest(o2, s1);
+        t5 = newOVALPackageTest(o2, s2);
+        t6 = newOVALPackageTest(o2, s3);
+        t7 = newOVALPackageTest(o1, s4);
+        t8 = newOVALPackageTest(o2, s4);
+        t9 = newOVALPackageTest(o3, s4);
+        t10 = newOVALPackageTest(o2, s5);
+        t11 = newOVALPackageTest(o4, s6);
 
-        testEvaluator = new TestEvaluator(ovalTestManager, ovalObjectManager, ovalStateManager, systemCvePatchStatusList);
+        testEvaluator = new TestEvaluator(systemCvePatchStatusList);
     }
 
     /**
@@ -109,37 +99,37 @@ public class TestEvaluatorTest {
      */
     @Test
     void testT1() {
-        assertFalse(testEvaluator.evaluate(t1.getId()));
+        assertFalse(testEvaluator.evaluate(t1));
     }
 
     @Test
     void testT2() {
-        assertFalse(testEvaluator.evaluate(t2.getId()));
+        assertFalse(testEvaluator.evaluate(t2));
     }
 
     @Test
     void testT3() {
-        assertTrue(testEvaluator.evaluate(t3.getId()));
+        assertTrue(testEvaluator.evaluate(t3));
     }
 
     @Test
     void testT4() {
-        assertTrue(testEvaluator.evaluate(t4.getId()));
+        assertTrue(testEvaluator.evaluate(t4));
     }
 
     @Test
     void testT5() {
-        assertTrue(testEvaluator.evaluate(t5.getId()));
+        assertTrue(testEvaluator.evaluate(t5));
     }
 
     @Test
     void testT6() {
-        assertTrue(testEvaluator.evaluate(t6.getId()));
+        assertTrue(testEvaluator.evaluate(t6));
     }
 
     @Test
     void testT7() {
-        assertFalse(testEvaluator.evaluate(t7.getId()));
+        assertFalse(testEvaluator.evaluate(t7));
     }
 
     /**
@@ -147,7 +137,7 @@ public class TestEvaluatorTest {
      */
     @Test
     void testT8() {
-        assertTrue(testEvaluator.evaluate(t8.getId()));
+        assertTrue(testEvaluator.evaluate(t8));
     }
 
     /**
@@ -155,7 +145,7 @@ public class TestEvaluatorTest {
      */
     @Test
     void testT9() {
-        assertFalse(testEvaluator.evaluate(t9.getId()));
+        assertFalse(testEvaluator.evaluate(t9));
     }
 
     /**
@@ -163,91 +153,70 @@ public class TestEvaluatorTest {
      */
     @Test
     void testT10() {
-        assertTrue(testEvaluator.evaluate(t10.getId()));
+        assertTrue(testEvaluator.evaluate(t10));
     }
 
     @Test
     void testT11() {
-        assertTrue(testEvaluator.evaluate(t11.getId()));
+        assertTrue(testEvaluator.evaluate(t11));
     }
 
-    TestType newTestType(String id, ObjectType object, List<StateType> states) {
-        ObjectRefType objectRefType = new ObjectRefType();
-        objectRefType.setObjectRef(object.getId());
+    OVALPackageTest newOVALPackageTest(OVALPackageObject object, OVALPackageState state) {
+        OVALPackageTest test = new OVALPackageTest();
+        test.setId(RandomStringUtils.randomAlphabetic(24));
+        test.setPackageObject(object);
+        test.setPackageState(state);
 
-        List<StateRefType> stateRefs = states.stream().map(state -> {
-            StateRefType stateRefType = new StateRefType();
-            stateRefType.setStateRef(state.getId());
-            return stateRefType;
-        }).collect(Collectors.toList());
-
-        TestType testType = new TestType();
-        testType.setId(id);
-        testType.setObject(objectRefType);
-        testType.setStates(stateRefs);
-
-        ovalTestManager.add(testType);
-
-        return testType;
+        return test;
     }
 
-    TestType newTestType(String id, ObjectType object, StateType state) {
-        return newTestType(id, object, List.of(state));
-    }
-
-    ObjectType newObjectType(String id, String packageName) {
-        ObjectRefType objectRefType = new ObjectRefType();
-        objectRefType.setObjectRef(id);
-
-        ObjectType object = new ObjectType();
-        object.setId(objectRefType.getObjectRef());
+    OVALPackageObject newOVALPackageObject(String packageName) {
+        OVALPackageObject object = new OVALPackageObject();
+        object.setId(RandomStringUtils.randomAlphabetic(24));
         object.setPackageName(packageName);
-
-        ovalObjectManager.add(object);
 
         return object;
     }
 
-    private class StateTypeBuilder {
-        private StateType state = new StateType();
+    private class OVALStateBuilder {
+        private OVALPackageState state = new OVALPackageState();
 
-        public StateTypeBuilder(String id) {
-            state.setId(id);
+        public OVALStateBuilder() {
+            state.setId(RandomStringUtils.randomAlphabetic(24));
         }
 
-        public StateTypeBuilder withEVR(String evr, OperationEnumeration operation) {
-            EVRType evrType = new EVRType();
-            evrType.setDatatype(EVRDataTypeEnum.RPM_EVR);
-            evrType.setOperation(operation);
-            evrType.setValue(evr);
+        public OVALStateBuilder withEVR(String evr, OperationEnumeration operation) {
+            OVALPackageEvrStateEntity evrState = new OVALPackageEvrStateEntity();
+            evrState.setDatatype(EVRDataTypeEnum.RPM_EVR);
+            evrState.setOperation(operation);
+            evrState.setEvr(evr);
 
-            state.setPackageEVR(evrType);
+            state.setPackageEvrState(evrState);
 
             return this;
         }
 
-        public StateTypeBuilder withArch(String arch, OperationEnumeration operation) {
-            ArchType archType = new ArchType();
-            archType.setValue(arch);
-            archType.setOperation(operation);
+        public OVALStateBuilder withArch(String arch, OperationEnumeration operation) {
+            OVALPackageArchStateEntity archState = new OVALPackageArchStateEntity();
+            archState.setValue(arch);
+            archState.setOperation(operation);
 
-            state.setPackageArch(archType);
-
-            return this;
-        }
-
-        public StateTypeBuilder withVersion(String version, OperationEnumeration operation) {
-            VersionType versionType = new VersionType();
-            versionType.setValue(version);
-            versionType.setOperation(operation);
-
-            state.setPackageVersion(versionType);
+            state.setPackageArchState(archState);
 
             return this;
         }
 
-        public StateType build() {
-            ovalStateManager.add(state);
+        public OVALStateBuilder withVersion(String version, OperationEnumeration operation) {
+            OVALPackageVersionStateEntity versionState = new OVALPackageVersionStateEntity();
+            versionState.setValue(version);
+            versionState.setOperation(operation);
+
+            state.setPackageVersionState(versionState);
+
+            return this;
+        }
+
+        public OVALPackageState build() {
             return state;
         }
     }

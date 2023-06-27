@@ -8,6 +8,7 @@
 
 package com.suse.oval.ovaltypes;
 
+import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.TestEvaluator;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -83,6 +84,6 @@ public class CriterionType implements BaseCriteria {
 
     @Override
     public boolean evaluate(TestEvaluator testEvaluator) {
-        return negate ^ testEvaluator.evaluate(testRef);
+        return negate ^ testEvaluator.evaluate(OVALCachingFactory.lookupPackageTestById(testRef));
     }
 }

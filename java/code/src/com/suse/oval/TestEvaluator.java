@@ -1,9 +1,11 @@
 package com.suse.oval;
 
+import com.suse.oval.db.*;
 import com.suse.oval.manager.OvalObjectManager;
 import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.manager.OvalTestManager;
 import com.suse.oval.ovaltypes.*;
+import com.suse.utils.Opt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,28 +14,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TestEvaluator {
-    private final OvalTestManager ovalTestManager;
-    private final OvalObjectManager ovalObjectManager;
-    private final OvalStateManager ovalStateManager;
     private final List<UyuniAPI.CVEPatchStatus> systemCvePatchStatusList;
 
-    public TestEvaluator(OvalTestManager ovalTestManager, OvalObjectManager ovalObjectManager,
-                         OvalStateManager ovalStateManager, List<UyuniAPI.CVEPatchStatus> systemCvePatchStatusList) {
-        Objects.requireNonNull(ovalTestManager);
-
-        this.ovalStateManager = ovalStateManager;
-        this.ovalObjectManager = ovalObjectManager;
+    public TestEvaluator(List<UyuniAPI.CVEPatchStatus> systemCvePatchStatusList) {
         this.systemCvePatchStatusList = systemCvePatchStatusList == null ? new ArrayList<>() : systemCvePatchStatusList;
-        this.ovalTestManager = ovalTestManager;
     }
 
-    public boolean evaluate(String testId) {
-        TestType test = ovalTestManager.get(testId);
-        if (test.getObject() == null) {
+    public boolean evaluate(OVALPackageTest test) {
+        if (test.getPackageObject() == null) {
             throw new IllegalStateException();
         }
 
-        ObjectType object = ovalObjectManager.get(test.getObject().getObjectRef());
+        OVALPackageObject object = test.getPackageObject();
         List<UyuniAPI.CVEPatchStatus> packageVersionsOnSystem = listPackageVersionsInstalledOnSystem(object.getPackageName());
         long packageVersionsCount = packageVersionsOnSystem.size();
 
@@ -59,30 +51,30 @@ public class TestEvaluator {
                 break;
         }
 
-        Optional<String> ovalState = test.getStateRef();
-        if (ovalState.isEmpty()) {
+        Optional<OVALPackageState> stateOpt = test.getPackageState();
+        if (stateOpt.isEmpty()) {
             return true;
         }
 
-        List<Boolean> stateEvaluations = ovalState.stream()
-                .map(ovalStateManager::get)
+        List<Boolean> stateEvaluations = stateOpt.stream()
                 .map(state -> evaluatePackageState(packageVersionsOnSystem, state))
                 .collect(Collectors.toList());
 
         return combineBooleans(test.getStateOperator(), stateEvaluations);
     }
 
-    private boolean evaluatePackageState(List<UyuniAPI.CVEPatchStatus> packageVersionsOnSystem, StateType expectedState) {
+    private boolean evaluatePackageState(List<UyuniAPI.CVEPatchStatus> packageVersionsOnSystem, OVALPackageState expectedState) {
         return packageVersionsOnSystem.stream().anyMatch(cvePatchStatus -> {
             // This list holds the evaluation results of each of the specified state entities .e.g. arch,
             // evr, version, etc.
             List<Boolean> stateEntitiesEvaluations = new ArrayList<>();
 
-            EVRType expectedEvr = expectedState.getPackageEVR();
-            if (expectedEvr != null) {
+            Optional<OVALPackageEvrStateEntity> expectedEvrOpt = expectedState.getPackageEvrState();
+            if (expectedEvrOpt.isPresent()) {
+                OVALPackageEvrStateEntity expectedEvr = expectedEvrOpt.get();
                 cvePatchStatus.getPackageEvr().ifPresent(packageOnSystemEVR -> {
                     UyuniAPI.PackageEvr packageOnOvalEVR = UyuniAPI.PackageEvr
-                            .parsePackageEvr(toPackageType(expectedEvr.getDatatype()), expectedEvr.getValue());
+                            .parsePackageEvr(toPackageType(expectedEvr.getDatatype()), expectedEvr.getEvr());
 
                     int evrComparisonResult = packageOnSystemEVR.compareTo(packageOnOvalEVR);
 
@@ -91,14 +83,18 @@ public class TestEvaluator {
             }
 
 
-            ArchType expectedArch = expectedState.getPackageArch();
-            if (expectedArch != null) {
+            Optional<OVALPackageArchStateEntity> expectedArchOpt = expectedState.getPackageArchState();
+            if (expectedArchOpt.isPresent()) {
+                OVALPackageArchStateEntity expectedArch = expectedArchOpt.get();
+
                 stateEntitiesEvaluations.add(checkPackageArch(cvePatchStatus.getPackageArch().orElse(""),
                         expectedArch.getValue(), expectedArch.getOperation()));
             }
 
-            VersionType expectedVersion = expectedState.getPackageVersion();
-            if (expectedVersion != null) {
+            Optional<OVALPackageVersionStateEntity> expectedVersionOpt = expectedState.getPackageVersionState();
+            if (expectedVersionOpt.isPresent()) {
+                OVALPackageVersionStateEntity expectedVersion = expectedVersionOpt.get();
+
                 cvePatchStatus.getPackageEvr().ifPresent(packageOnSystemEVR -> {
                     stateEntitiesEvaluations.add(checkPackageVersion(packageOnSystemEVR.getVersion(),
                             expectedVersion.getValue(), expectedVersion.getOperation()));
