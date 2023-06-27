@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 27 21:17:44 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.17-1
+  * Drop usage of salt.ext.six in embedded_diskspace_check
+
+-------------------------------------------------------------------
 Mon Apr 24 09:12:31 CEST 2023 - jgonzalez@suse.com
 
 - version 4.3.16-1
