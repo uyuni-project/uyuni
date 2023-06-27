@@ -1,4 +1,8 @@
-- use credentials file for reposync if password is in URL
+-------------------------------------------------------------------
+Tue Jun 27 16:20:26 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.22-1
+  * Use credentials file for reposync if password is in URL
 
 -------------------------------------------------------------------
 Mon Apr 24 09:16:25 CEST 2023 - jgonzalez@suse.com
