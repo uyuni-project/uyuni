@@ -218,11 +218,23 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.1-1.module_yyy.x86_64")));
     }
 
+    @Test
+    public void testResolveModularFiltersDisabled() throws DependencyResolutionException {
+        FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
+
+        DependencyResolutionResult result = resolver.resolveFilters(List.of(noModules));
+
+        assertEquals(0, result.getModules().size());
+        assertEquals(2, result.getFilters().size());
+        assertTrue(result.getFilters().stream().anyMatch(f -> f instanceof ModularPackageFilter));
+    }
+
     /**
-     * Test the resolver with modularity disabled
+     * Test the resolver with module filters when modularity is disabled
      */
     @Test
-    public void testResolveModuleFiltersDisabled() {
+    public void testResolveModuleFiltersDisabledWithModuleFilters() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
         ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
