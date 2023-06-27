@@ -49,6 +49,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I check "manageWithSSH"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until onboarding is completed for "sle_client" salt minion
 
   Scenario: Check that the migrated system is now a SSH minion
     Given I am on the Systems overview page of this "sle_client"
