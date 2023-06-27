@@ -1,0 +1,1 @@
+- Filter out modules properly with 'none' matcher (bsc#1212770)
