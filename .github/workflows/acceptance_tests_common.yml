@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: debug
         run: sudo apt-get update && sudo apt list podman -a && sudo apt show podman -a && sudo apt-cache policy podman && sudo dpkg -s podman
+      - name: fix podman
+        run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v3
