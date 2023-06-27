@@ -1,4 +1,8 @@
-- show data for managed systems and monitored systems
+-------------------------------------------------------------------
+Tue Jun 27 16:09:32 CEST 2023 - marina.latini@suse.com
+
+- version 0.2-1
+  * Show data for managed systems and monitored systems
 
 -------------------------------------------------------------------
 Tue May 09 13:43:10 CEST 2023 - mc@suse.de
