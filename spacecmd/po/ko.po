@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-12 14:58+0200\n"
-"PO-Revision-Date: 2023-06-26 08:15+0000\n"
+"PO-Revision-Date: 2023-06-27 07:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -3544,7 +3544,6 @@ msgstr "사용자 자신"
 
 #. hasTraditionalSystems endpoint is not available prior to 4.3
 #: ../src/spacecmd/misc.py:475
-#, fuzzy
 msgid "Skipping traditional system check"
 msgstr "기존 시스템 검사 건너뛰기"
 
