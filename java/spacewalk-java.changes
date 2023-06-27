@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 27 23:23:45 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.61-1
+  * Filter out modules properly with 'none' matcher (bsc#1212770)
+
+-------------------------------------------------------------------
 Tue Jun 27 16:11:29 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.60-1
