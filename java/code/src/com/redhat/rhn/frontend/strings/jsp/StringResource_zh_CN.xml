@@ -29843,11 +29843,11 @@ given channel.</source>
         </context-group>
         <target state="final">此软件包是某个程序临时修复 (PTF) 的组件，无法直接安装。请选择该临时修复的主软件包查看目标系统。</target>
       </trans-unit>
-      <trans-unit id="Recurring Actions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
         <target state="final">重复性操作</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>

@@ -29828,11 +29828,11 @@ given channel.</source>
         </context-group>
         <target state="final">이 패키지는 제품 임시 수정(PTF)의 일부이며 직접 설치할 수 없습니다. 임시 수정의 기본 패키지를 선택하여 대상 시스템을 검토하십시오.</target>
       </trans-unit>
-      <trans-unit id="Recurring Actions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
         <target state="final">반복 작업</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
