@@ -178,7 +178,7 @@ public class TestEvaluatorTest {
         return object;
     }
 
-    private class OVALStateBuilder {
+    private static class OVALStateBuilder {
         private OVALPackageState state = new OVALPackageState();
 
         public OVALStateBuilder() {
