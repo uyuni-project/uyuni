@@ -13,6 +13,8 @@ jobs:
   test-uyuni:
     runs-on: ubuntu-22.04
     steps:
+      - name: debug
+        run: apt-get update && apt list podman -a && apt show podman -a && apt-cache policy podman && dpkg -s podman
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v3
