@@ -1,5 +1,9 @@
-- Use synced_date to compute the inactivity period to correctly
-  describe when reporting database was updated (bsc#1211621)
+-------------------------------------------------------------------
+Tue Jun 27 16:18:10 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.7-1
+  * Use synced_date to compute the inactivity period to correctly
+    describe when reporting database was updated (bsc#1211621)
 -------------------------------------------------------------------
 Mon Sep 26 12:14:43 UTC 2022 - marina.latini@suse.com
 
