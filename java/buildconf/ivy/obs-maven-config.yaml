@@ -10,6 +10,9 @@ repositories:
     repository: openSUSE_Leap_15.4
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.4/sle
+  Factory:
+    project: openSUSE:Factory
+    repository: standard
 artifacts:
   - artifact: asm
     package: objectweb-asm
@@ -53,7 +56,7 @@ artifacts:
     repository: Leap
   - artifact: jakarta.servlet-api
     package: jakarta-servlet
-    repository: Leap
+    repository: Factory
   - artifact: commons-el
     package: apache-commons-el
     repository: Leap
