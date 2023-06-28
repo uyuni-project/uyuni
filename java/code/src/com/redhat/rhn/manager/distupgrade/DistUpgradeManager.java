@@ -712,7 +712,8 @@ public class DistUpgradeManager extends BaseManager {
                  Forbid migration from OpenSUSE Leap 15.4 to SLES 15 SP4
             */
             throw new DistUpgradePaygException();
-        } else {
+        }
+        else {
             return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
         }
     }
