@@ -608,8 +608,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
 
-    public static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type, int stype) {
+    public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type, int stype) {
         return createTestServer(owner, ensureOwnerAccess, type, stype, new Date());
     }
 
