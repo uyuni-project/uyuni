@@ -270,15 +270,15 @@ public class SystemHandler extends BaseHandler {
      * @param systemEntitlementManagerIn the system entitlement manager
      * @param systemManagerIn the system manager
      * @param serverGroupManagerIn
-     * @param cloudPaygManager fake CloudPaygManager for testing purposes
+     * @param cloudPaygManagerIn fake CloudPaygManager for testing purposes
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
                          SystemEntitlementManager systemEntitlementManagerIn,
                          SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
-                         CloudPaygManager cloudPaygManager) {
+                         CloudPaygManager cloudPaygManagerIn) {
         this(taskomaticApiIn, xmlRpcSystemHelperIn, systemEntitlementManagerIn, systemManagerIn, serverGroupManagerIn);
-        if (cloudPaygManager != null) {
-            this.cloudPaygManager = cloudPaygManager;
+        if (cloudPaygManagerIn != null) {
+            cloudPaygManager = cloudPaygManagerIn;
         }
     }
 

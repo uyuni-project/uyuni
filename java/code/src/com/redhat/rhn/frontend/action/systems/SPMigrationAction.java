@@ -50,7 +50,11 @@ import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.action.*;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,8 +120,8 @@ public class SPMigrationAction extends RhnAction {
      */
     @Override
     public ActionForward execute(ActionMapping actionMapping,
-            ActionForm actionForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+                                 ActionForm actionForm, HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         // Bind the server object to the request
         RequestContext ctx = new RequestContext(request);
         Server server = ctx.lookupAndBindServer();
