@@ -2004,6 +2004,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Add an InstalledProduct to this server
+     *
+     * @param product the product
+     */
+    public void addInstalledProduct(InstalledProduct product) {
+        if (this.installedProducts == null) {
+            this.installedProducts = new HashSet<>();
+        }
+
+        this.installedProducts.add(product);
+    }
+
+    /**
      * Return the installed products or null in case of no products found.
      * @return installed products
      */
