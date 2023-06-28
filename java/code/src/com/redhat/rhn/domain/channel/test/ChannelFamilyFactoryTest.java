@@ -118,8 +118,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         return createTestChannelFamily(user, nullOrg, "ChannelFamily");
     }
 
-    public static ChannelFamily createTestChannelFamily(User user, boolean nullOrg,
-            String prefix) {
+    public static ChannelFamily createTestChannelFamily(User user, boolean nullOrg, String prefix) {
         String label = prefix + "Label" + TestUtils.randomString();
         String name = prefix + "Name" + TestUtils.randomString();
 
@@ -129,7 +128,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         cfam.setName(name);
 
         ChannelFamilyFactory.save(cfam);
-        cfam = (ChannelFamily) TestUtils.reload(cfam);
+        cfam = TestUtils.reload(cfam);
 
         if (nullOrg) {
             PublicChannelFamily pcf = new PublicChannelFamily();
@@ -146,7 +145,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
             cfam.addPrivateChannelFamily(pcf);
         }
-        cfam = (ChannelFamily) TestUtils.reload(cfam);
-        return cfam;
+
+        return TestUtils.reload(cfam);
     }
 }
