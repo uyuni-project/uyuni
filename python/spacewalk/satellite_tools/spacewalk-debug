@@ -261,6 +261,7 @@ if [ -d /var/lib/cobbler ]; then
    cp -fa /var/lib/cobbler/config $DIR/cobbler-lib/
    cp -fa /var/lib/cobbler/kickstarts $DIR/cobbler-lib/
    cp -fa /var/lib/cobbler/triggers $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/collections $DIR/cobbler-lib/
 fi
 if [ -d /var/lib/rhn/kickstarts ]; then
    cp -fa /var/lib/rhn/kickstarts/* $DIR/kickstarts/
