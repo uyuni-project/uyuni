@@ -704,6 +704,13 @@ public class DistUpgradeManager extends BaseManager {
             throws TaskomaticApiException, DistUpgradePaygException {
 
         if (cloudPaygManager.isPaygInstance()) {
+            /*
+            In the future we probably would like to allow product migrations to same product but different
+            version and just forbid migrating from different products. At the moment we are just blocking
+            all product migrations on SUMA PAYG instance.
+            I.e: Allow migration from SLES 15 SP4 to SLES 15 SP5.
+                 Forbid migration from OpenSUSE Leap 15.4 to SLES 15 SP4
+            */
             throw new DistUpgradePaygException();
         } else {
             return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
