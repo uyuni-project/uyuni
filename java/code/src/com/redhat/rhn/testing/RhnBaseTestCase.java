@@ -98,6 +98,16 @@ public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
     }
 
     /**
+     * Assert that <code>coll</code> does not contain <code>elem</code>
+     * @param <A> element type
+     * @param coll a collection
+     * @param elem the element that should not be in the collection
+     */
+    public static <A> void assertNotContains(Collection<A> coll, A elem) {
+        Asserts.assertNotContains(coll, elem);
+    }
+
+    /**
      * Assert that <code>coll</code> is not empty
      * @param coll the collection
      */
