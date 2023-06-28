@@ -49,6 +49,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.utils.Lists;
 import com.suse.utils.Opt;
 
@@ -679,6 +680,34 @@ public class DistUpgradeManager extends BaseManager {
 
         // Return the ID of the scheduled action
         return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();
+    }
+
+    /**
+     * Schedule a distribution upgrade for a given server, allowing passing the PAYG flag.
+     *
+     * @param user the user who is scheduling
+     * @param server the server to migrate
+     * @param targetSet set of target products (base product and addons)
+     * @param channelIDs IDs of all channels to subscribe
+     * @param dryRun perform a dry run
+     * @param allowVendorChange allow vendor change during dist upgrade
+     * @param earliest earliest schedule date
+     * @param cloudPaygManager manager to see if this SUMA instance is PAYG
+     * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * @throws DistUpgradePaygException
+     */
+    public static Long scheduleDistUpgrade(User user, Server server,
+                                           SUSEProductSet targetSet, Collection<Long> channelIDs,
+                                           boolean dryRun, boolean allowVendorChange, Date earliest,
+                                           CloudPaygManager cloudPaygManager)
+            throws TaskomaticApiException, DistUpgradePaygException {
+
+        if (cloudPaygManager.isPaygInstance()) {
+            throw new DistUpgradePaygException();
+        } else {
+            return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
+        }
     }
 
     /**
