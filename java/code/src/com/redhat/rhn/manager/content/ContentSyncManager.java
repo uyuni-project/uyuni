@@ -1651,6 +1651,13 @@ public class ContentSyncManager {
                     throw new ContentSyncException(e);
                 }
             }
+
+            // If we have only RMT credentials
+            if (!credentials.isEmpty() && credentials.stream().allMatch(c -> c.isTypeOf(Credentials.TYPE_CLOUD_RMT))) {
+                // Remove Ubuntu and Debian products until RMT supports them
+                tree.removeIf(productEntry -> productEntry.getChannelLabel().contains("amd64") ||
+                    productEntry.getParentChannelLabel().filter(label -> label.contains("amd64")).isPresent());
+            }
         }
         return productTreeFix(
             tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag)).collect(Collectors.toList())

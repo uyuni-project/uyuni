@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -173,45 +174,52 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             List<SCCRepositoryAuth> auth = SCCCachingFactory.lookupRepositoryAuth();
             assertFalse(auth.isEmpty());
 
-            Set<String> reponames = auth.stream()
-                    .filter(a -> a.cloudRmtAuth().isPresent())
-                    .map(SCCRepositoryAuth::getRepo)
-                    .map(SCCRepository::getName)
-                    .collect(Collectors.toSet());
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Server-4.2-Pool");
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Server-4.2-Updates");
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Server-4.3-Pool");
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Server-4.3-Updates");
-            assertContains(reponames, "SLE-Module-Basesystem15-SP3-Pool");
-            assertContains(reponames, "SLE-Module-Basesystem15-SP4-Pool");
-            assertContains(reponames, "SLE-Manager-Tools12-Pool");
-            assertContains(reponames, "SLE-Manager-Tools12-Updates");
-            assertContains(reponames, "SLE-Manager-Tools15-Pool");
-            assertContains(reponames, "SLE-Manager-Tools15-Updates");
-            assertContains(reponames, "SLE-Manager-Tools-For-Micro5-Pool");
-            assertContains(reponames, "SLE-Manager-Tools-For-Micro5-Updates");
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Proxy-4.3-Pool");
-            assertContains(reponames, "SLE-Product-SUSE-Manager-Proxy-4.3-Updates");
-            assertContains(reponames, "RES-7-SUSE-Manager-Tools");
-            assertContains(reponames, "RES8-Manager-Tools-Pool");
-            assertContains(reponames, "RES8-Manager-Tools-Updates");
-            assertContains(reponames, "EL9-Manager-Tools-Pool");
-            assertContains(reponames, "EL9-Manager-Tools-Updates");
+            Set<String> authRepos = auth.stream()
+                                        .filter(a -> a.cloudRmtAuth().isPresent())
+                                        .map(SCCRepositoryAuth::getRepo)
+                                        .map(SCCRepository::getName)
+                                        .collect(Collectors.toSet());
 
-            reponames = auth.stream()
-                    .filter(a -> a.noAuth().isPresent())
-                    .map(SCCRepositoryAuth::getRepo)
-                    .map(SCCRepository::getName)
-                    .collect(Collectors.toSet());
-            assertContains(reponames, "rockylinux-8");
-            assertContains(reponames, "rockylinux-9");
-            assertContains(reponames, "oraclelinux7");
-            assertContains(reponames, "oraclelinux8");
-            assertContains(reponames, "oraclelinux9");
-            assertContains(reponames, "almalinux8");
-            assertContains(reponames, "almalinux9");
-            assertContains(reponames, "debian-11-pool");
-            assertContains(reponames, "ubuntu-2204-amd64-main");
+            assertAll("Repositories with auth",
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.2-Pool"),
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.2-Updates"),
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.3-Pool"),
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.3-Updates"),
+                () -> assertContains(authRepos, "SLE-Module-Basesystem15-SP3-Pool"),
+                () -> assertContains(authRepos, "SLE-Module-Basesystem15-SP4-Pool"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools12-Pool"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools12-Updates"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools15-Pool"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools15-Updates"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools-For-Micro5-Pool"),
+                () -> assertContains(authRepos, "SLE-Manager-Tools-For-Micro5-Updates"),
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Proxy-4.3-Pool"),
+                () -> assertContains(authRepos, "SLE-Product-SUSE-Manager-Proxy-4.3-Updates"),
+                () -> assertContains(authRepos, "RES-7-SUSE-Manager-Tools"),
+                () -> assertContains(authRepos, "RES8-Manager-Tools-Pool"),
+                () -> assertContains(authRepos, "RES8-Manager-Tools-Updates"),
+                () -> assertContains(authRepos, "EL9-Manager-Tools-Pool"),
+                () -> assertContains(authRepos, "EL9-Manager-Tools-Updates")
+            );
+
+            Set<String> noAuthRepos = auth.stream()
+                                          .filter(a -> a.noAuth().isPresent())
+                                          .map(SCCRepositoryAuth::getRepo)
+                                          .map(SCCRepository::getName)
+                                          .collect(Collectors.toSet());
+
+            assertAll("Repositories without auth",
+                () -> assertContains(noAuthRepos, "rockylinux-8"),
+                () -> assertContains(noAuthRepos, "rockylinux-9"),
+                () -> assertContains(noAuthRepos, "oraclelinux7"),
+                () -> assertContains(noAuthRepos, "oraclelinux8"),
+                () -> assertContains(noAuthRepos, "oraclelinux9"),
+                () -> assertContains(noAuthRepos, "almalinux8"),
+                () -> assertContains(noAuthRepos, "almalinux9"),
+                // Ubuntu and Debian should be excluded until RMT supports them
+                () -> assertNotContains(noAuthRepos, "debian-11-pool"),
+                () -> assertNotContains(noAuthRepos, "ubuntu-2204-amd64-main")
+            );
         }
         finally {
             wireMockServer.stop();
