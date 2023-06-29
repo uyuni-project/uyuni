@@ -56,12 +56,12 @@ def add(args):
     root.find("title").text = new_title 
 
     if (maintainer!=""):
-        print("DEBUG: Adding user {} as the only maintainer".format(auth_user))
+        print("DEBUG: Adding user {} as the only maintainer".format(maintainer))
         for user in root.findall("person"):
             root.remove(user)
         for group in root.findall("group"):
             root.remove(group)
-        new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
+        new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(maintainer))
         root.append(new_person)
 
     if (disable_publish):
