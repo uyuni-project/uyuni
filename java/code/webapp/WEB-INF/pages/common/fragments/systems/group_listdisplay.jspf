@@ -33,6 +33,9 @@
 
     <a href="/rhn/groups/ListErrata.do?sgid=${current.id}" class="js-spa">
     <c:choose>
+      <c:when test="${current.disabled}">
+        <rhn:icon type="system-unknown" title="grouplist.jsp.unknown" />
+      </c:when>
       <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
         <rhn:icon type="system-crit" title="grouplist.jsp.security" />
       </c:when>
