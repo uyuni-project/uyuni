@@ -66,7 +66,9 @@ def add(args):
 
     if (disable_publish):
         print("DEBUG: disabling publishing")
-        root.remove(root.find("publish"))
+        publish_node = root.find("publish")
+        if (publish_node != None):
+            root.remove(publish_node)
         node = ET.fromstring("<publish><disable/></publish>")
         root.append(node)
 
