@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
+import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
@@ -34,6 +35,8 @@ import org.quartz.JobExecutionContext;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Used to schedule actions from Recurring action schedules
@@ -82,11 +85,15 @@ public class RecurringActionJob extends RhnJavaJob {
                         Optional.of(((RecurringHighstate) actionType).isTestMode()), context.getFireTime(), null);
             }
             else if (actionType instanceof RecurringState) {
+                Set<RecurringStateConfig> configs = ((RecurringState) action.getRecurringActionType()).getStateConfig();
+                List<String> mods = configs.stream().map(RecurringStateConfig::getStateName)
+                        .collect(Collectors.toList());
                 Action a = ActionManager.scheduleApplyStates(action.getCreator(),
-                        minionIds, List.of("recurring"),
+                        minionIds, mods,
                         Optional.of(Map.of("rec_id", action.getId().toString())),
                         context.getFireTime(),
-                        Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()));
+                        Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()),
+                        true);
                 ActionFactory.save(a);
                 new TaskomaticApi().scheduleActionExecution(a);
             }
