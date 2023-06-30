@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:47+0200\n"
-"PO-Revision-Date: 2022-08-26 05:13+0000\n"
+"POT-Creation-Date: 2023-06-30 15:17+0200\n"
+"PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -1078,11 +1078,11 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"错误：从您的临时软件源访问通道数据时出现\n"
+"错误：从您的临时储存库访问通道数据时出现\n"
 "       问题。您是否已将通道 ISO 中的所有数据\n"
 "       迁移到此目录？如果是，请再次检查通道\n"
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
-"       重新装入并重新填充临时软件源 (%s)。\n"
+"       重新装入并重新填充临时储存库 (%s)。\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1244,16 +1244,16 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:110 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:118
+#: ../satellite_tools/reposync.py:113
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:121 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
@@ -1590,7 +1590,7 @@ msgstr "   正在提取任何缺少的 SRPM：%s (%s)"
 #: ../satellite_tools/satsync.py:1265
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
-msgstr "正在识别软件源包元数据的差异（本地缺少哪些数据？）：%s"
+msgstr "正在识别储存库包元数据的差异（本地缺少哪些数据？）：%s"
 
 #: ../satellite_tools/satsync.py:1276
 msgid "Downloading source package metadata"

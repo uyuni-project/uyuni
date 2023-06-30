@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 14:35+0200\n"
-"PO-Revision-Date: 2023-05-23 17:14+0000\n"
+"POT-Creation-Date: 2023-06-30 15:18+0200\n"
+"PO-Revision-Date: 2023-06-27 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -459,7 +459,6 @@ msgstr "状態設定チャンネル"
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:28
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
-#, fuzzy
 msgid "Internal State"
 msgstr "内部状態"
 
@@ -508,9 +507,8 @@ msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "保存されていない変更があります。続行してもよろしいですか？"
 
 #: ../html/src/components/states-picker.tsx:98
-#, fuzzy
 msgid "State configuration must not be empty"
-msgstr "状態設定チャンネル"
+msgstr "状態設定を空にすることはできません"
 
 #: ../html/src/components/states-picker.tsx:129
 msgid "State assignments have been saved."
@@ -558,20 +556,17 @@ msgstr "並べ替え"
 
 #: ../html/src/components/states-picker.tsx:386
 #: ../html/src/components/states-picker.tsx:406
-#, fuzzy
 msgid "states"
-msgstr "都道府県"
+msgstr "状態"
 
 #: ../html/src/components/states-picker.tsx:386
 #: ../html/src/components/states-picker.tsx:406
-#, fuzzy
 msgid "configuration channels"
 msgstr "設定チャンネル"
 
 #: ../html/src/components/states-picker.tsx:385
-#, fuzzy
 msgid "Search in {0}"
-msgstr "検索"
+msgstr "{0} で検索"
 
 #: ../html/src/components/states-picker.tsx:392
 #: ../html/src/manager/header/search/search.tsx:77
@@ -602,12 +597,11 @@ msgstr "チャンネル"
 
 #: ../html/src/components/states-picker.tsx:402
 msgid "Edit {0} Ranks"
-msgstr ""
+msgstr "{0} ランクの編集"
 
 #: ../html/src/components/states-picker.tsx:405
-#, fuzzy
 msgid "Edit the ranking of the {0} by dragging them."
-msgstr "設定チャンネルの順位を変更するには、それらをドラッグしてください。"
+msgstr "{0} のランキングを編集するには、それらをドラッグしてください。"
 
 #: ../html/src/components/states-picker.tsx:412
 msgid "There are no states assigned."
@@ -615,9 +609,8 @@ msgstr "状態が何も割り当てられていません。"
 
 #: ../html/src/components/states-picker.tsx:420
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
-#, fuzzy
 msgid "State Name"
-msgstr "姓"
+msgstr "状態名"
 
 #: ../html/src/components/states-picker.tsx:420
 msgid "Channel Name"
@@ -625,9 +618,8 @@ msgstr "チャンネル名"
 
 #: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
-#, fuzzy
 msgid "State Label"
-msgstr "状態チャンネル"
+msgstr "状態ラベル"
 
 #: ../html/src/components/states-picker.tsx:421
 msgid "Channel Label"
@@ -694,15 +686,13 @@ msgstr "システムはロック済み"
 
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
-#, fuzzy
 msgid "Filter"
 msgstr "フィルタ"
 
 #: ../html/src/components/table/SearchField.tsx:53
 #: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
-#, fuzzy
 msgid "Select a filter"
-msgstr "スケジュールの選択:"
+msgstr "フィルタの選択"
 
 #: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
@@ -787,7 +777,6 @@ msgid "Restart is needed for the configuration changes to take effect."
 msgstr "変更した設定を反映させるには、再起動が必要です。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
-#, fuzzy
 msgid "An internal error has occurred. See the server logs for details."
 msgstr "内部エラーが発生しました。詳細はサーバ内のログをお読みください。"
 
@@ -860,7 +849,6 @@ msgid "Monitoring status hasn't changed."
 msgstr "モニタリング状態は変更されていません。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
-#, fuzzy
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr ""
 "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
@@ -930,7 +918,6 @@ msgid "documentation"
 msgstr "ドキュメンテーション"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
-#, fuzzy
 msgid " to learn how to consume these metrics."
 msgstr " をお読みください。メトリックの消費方法が書かれています。"
 
@@ -4601,18 +4588,16 @@ msgid "True"
 msgstr "はい"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:162
-#, fuzzy
 msgid "Action type"
-msgstr "動作"
+msgstr "動作タイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:166
 msgid "Target type"
 msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:170
-#, fuzzy
 msgid "Target name"
-msgstr "ターゲットホスト名"
+msgstr "ターゲット名"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:174
 msgid "Created by"
@@ -4628,34 +4613,29 @@ msgstr "クォーツ書式文字列"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:230
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:237
-#, fuzzy
 msgid "Delete Recurring Action Schedule"
-msgstr "繰り返し状態スケジュールの削除"
+msgstr "定期的なアクションのスケジュールの削除"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:231
 msgid "Are you sure you want to delete this schedule?"
 msgstr "このスケジュールを削除してよろしいですか？"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
-#, fuzzy
 msgid "State configuration for {0}"
-msgstr "状態設定チャンネル"
+msgstr "{0} の状態設定"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
-#, fuzzy
 msgid "Order"
-msgstr "並べ替え"
+msgstr "順序"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:83
-#, fuzzy
 msgid "Schedule successfully updated."
-msgstr "スケジュールしました"
+msgstr "スケジュールが正常に更新されました。"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:79
-#, fuzzy
 msgid "Schedule successfully created."
-msgstr "スケジュールしました"
+msgstr "スケジュールが正常に作成されました。"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
 msgid "Update "
@@ -4666,25 +4646,22 @@ msgid "Create "
 msgstr "作成 "
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
-#, fuzzy
 msgid "Schedule Recurring Action"
-msgstr "繰り返しの Highstate のスケジュール"
+msgstr "定期的なアクションをスケジュールする"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
-#, fuzzy
 msgid "Action Type"
-msgstr "動作"
+msgstr "動作タイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
 msgid "Configure states to execute"
-msgstr ""
+msgstr "実行する状態を設定する"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:112
-#, fuzzy
 msgid "Recurring Actions"
-msgstr "繰り返し状態"
+msgstr "定期的なアクション"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:117
 msgid "The following recurring actions have been created."
@@ -4709,9 +4686,8 @@ msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
-#, fuzzy
 msgid "Target Name"
-msgstr "ターゲットホスト名"
+msgstr "ターゲット名"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
@@ -4738,19 +4714,16 @@ msgstr ""
 "間はサーバ時間になります。"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-#, fuzzy
 msgid "Select an Action Type"
-msgstr "独自の info 鍵の選択"
+msgstr "動作タイプの選択"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-#, fuzzy
 msgid "Select a Target Type"
-msgstr "ターゲットタイプ"
+msgstr "ターゲットタイプの選択"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
-#, fuzzy
 msgid "Custom State"
-msgstr "カスタムチャンネル"
+msgstr "カスタム状態"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74

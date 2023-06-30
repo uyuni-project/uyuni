@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-12 14:58+0200\n"
-"PO-Revision-Date: 2023-01-10 02:13+0000\n"
+"POT-Creation-Date: 2023-06-30 15:18+0200\n"
+"PO-Revision-Date: 2023-06-26 16:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -3637,7 +3637,7 @@ msgstr "あなた自身です"
 #. hasTraditionalSystems endpoint is not available prior to 4.3
 #: ../src/spacecmd/misc.py:475
 msgid "Skipping traditional system check"
-msgstr ""
+msgstr "従来のシステムチェックのスキップしています"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:547
