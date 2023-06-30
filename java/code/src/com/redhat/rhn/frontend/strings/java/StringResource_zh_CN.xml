@@ -11247,59 +11247,59 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">未执行此操作，因为其最早执行日期已过去太久。如果从安排到选择进行处理相隔的时间超过 {0} 个小时，系统就会将该操作视为不再相关，因而会将其丢弃。
           如果您确实希望系统执行此操作，请重新安排此操作。</target>
       </trans-unit>
-      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.empty_action_type" xml:space="preserve">
         <source>Recurring Action type must be provided</source>
         <target state="final">必须提供重复性操作类型</target>
       </trans-unit>
-      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
         <target state="final">必须提供状态配置</target>
       </trans-unit>
-      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
         <target state="final">重复性操作的类型无效。</target>
       </trans-unit>
-      <trans-unit id="internal_state.certs" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
         <target state="final">在目标系统上安装并信任服务器的 SSL 证书</target>
       </trans-unit>
-      <trans-unit id="internal_state.channels" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
         <target state="final">确保通道订阅与服务器端配置保持同步</target>
       </trans-unit>
-      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
         <target state="final">更新所安装硬件的相关信息</target>
       </trans-unit>
-      <trans-unit id="internal_state.packages" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
         <target state="final">根据针对目标系统的配置应用软件包状态</target>
       </trans-unit>
-      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
         <target state="final">更新所安装软件（软件包和产品）的相关信息</target>
       </trans-unit>
-      <trans-unit id="internal_state.uptodate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
         <target state="final">更新系统，并根据需要进行重引导</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
         <target state="final">将 Salt 信标同步到目标系统</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncall" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
         <target state="final">将所有 Salt 工件（模块、状态、grain 和信标）同步到目标系统</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
         <target state="final">将 Salt grain 同步到目标系统</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
         <target state="final">将 Salt 模块同步到目标系统</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncstates" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
         <target state="final">将 Salt 状态同步到目标系统</target>
       </trans-unit>

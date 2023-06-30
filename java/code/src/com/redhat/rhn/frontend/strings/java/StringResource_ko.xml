@@ -11245,59 +11245,59 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">가장 빠른 실행 날짜가 너무 오래되어 이 작업이 실행되지 않았습니다. 예약과 픽업 사이 시간이 {0}시간 이상 경과하면 작업이 더 이상 관련이 없는 것으로 간주되어 삭제됩니다.
            이 작업을 실행하려면 다시 예약하십시오.</target>
       </trans-unit>
-      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.empty_action_type" xml:space="preserve">
         <source>Recurring Action type must be provided</source>
         <target state="final">반복 작업 유형을 제공해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
         <target state="final">상태 구성을 제공해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
         <target state="final">반복 작업의 유형이 유효하지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="internal_state.certs" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
         <target state="final">서버의 SSL 인증서를 설치하고 대상 시스템에서 이를 신뢰합니다.</target>
       </trans-unit>
-      <trans-unit id="internal_state.channels" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
         <target state="final">채널 구독과 서버 측 구성이 동기화되어 있는지 확인합니다.</target>
       </trans-unit>
-      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
         <target state="final">설치된 하드웨어에 대한 업데이트 정보</target>
       </trans-unit>
-      <trans-unit id="internal_state.packages" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
         <target state="final">대상 시스템에 구성된 대로 패키지 상태를 적용합니다.</target>
       </trans-unit>
-      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
         <target state="final">설치된 소프트웨어(패키지 및 제품)에 대한 업데이트 정보</target>
       </trans-unit>
-      <trans-unit id="internal_state.uptodate" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
         <target state="final">시스템을 업데이트하십시오. 필요한 경우 재부팅하십시오.</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
         <target state="final">Salt 신호를 대상 시스템에 동기화</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncall" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
         <target state="final">모든 Salt 아티팩트(모듈, 상태, 입자 및 신호)를 대상 시스템에 동기화</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
         <target state="final">Salt 입자를 대상 시스템에 동기화</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
         <target state="final">Salt 모듈을 대상 시스템에 동기화</target>
       </trans-unit>
-      <trans-unit id="internal_state.util_syncstates" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
         <target state="final">Salt 상태를 대상 시스템에 동기화</target>
       </trans-unit>
