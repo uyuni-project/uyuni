@@ -1,0 +1,1 @@
+- Add missing Salt 3006.0 dependencies to bootstrap repo definitions (bsc#1212700)

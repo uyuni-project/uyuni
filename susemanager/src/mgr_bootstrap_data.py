@@ -391,6 +391,8 @@ RES8 = [
     "python3-distro",
     "python3-immutables",
     "python3-contextvars",
+    "python3-looseversion",
+    "python3-jmespath",
     "venv-salt-minion",
 ]
 
@@ -464,6 +466,8 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "salt-minion",
     "python3-apipkg*",
     "python3-iniconfig*",
+    "python3-looseversion",
+    "python3-jmespath",
 ]
 
 PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
@@ -625,6 +629,8 @@ PKGLISTUBUNTU1804 = [
     "gnupg",
     "python3-immutables",
     "python3-contextvars",
+    "python3-looseversion",
+    "python3-jmespath",
     "venv-salt-minion",
 ]
 
@@ -643,6 +649,8 @@ PKGLISTUBUNTU2004 = [
     "python3-pycryptodome",
     "python3-zmq",
     "python3-gnupg",
+    "python3-looseversion",
+    "python3-jmespath",
     "salt-common",
     "salt-minion",
     "gnupg",
@@ -766,6 +774,8 @@ PKGLISTDEBIAN10 = [
     "gnupg",
     "venv-salt-minion",
     "python3-gnupg",
+    "python3-looseversion",
+    "python3-jmespath",
 ]
 
 PKGLISTDEBIAN11 = [
