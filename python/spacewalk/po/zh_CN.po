@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:47+0200\n"
+"POT-Creation-Date: 2023-06-30 15:17+0200\n"
 "PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1244,16 +1244,16 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:110 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:118
+#: ../satellite_tools/reposync.py:113
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:121 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
