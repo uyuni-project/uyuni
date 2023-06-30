@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-16 15:25+0200\n"
-"PO-Revision-Date: 2023-05-23 04:15+0000\n"
+"PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-4-2/zh_CN/>\n"
@@ -4087,7 +4087,7 @@ msgstr "通道同步已完成"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:41
 msgid "Creating Bootstrap Repository failed"
-msgstr "创建引导软件源失败"
+msgstr "创建引导储存库失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:45
 msgid "State apply failed"
@@ -4130,7 +4130,7 @@ msgstr "重试载入"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:390
 msgid "Retry repo sync"
-msgstr "重试软件源同步"
+msgstr "重试储存库同步"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:414
 msgid "Unread Messages"

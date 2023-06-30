@@ -751,7 +751,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">管理软件源</target>
+        <target state="translated">管理储存库</target>
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
@@ -9706,11 +9706,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target state="translated">已为 {0} 安排软件源同步。</target>
+        <target state="translated">已为 {0} 安排储存库同步。</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target>软件源同步正在运行。</target>
+        <target>储存库同步正在运行。</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
@@ -9782,23 +9782,23 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target state="translated">此通道从未与外部软件源同步过。</target>
+        <target state="translated">此通道从未与外部储存库同步过。</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target state="translated">已成功更新 {0} 软件源信息</target>
+        <target state="translated">已成功更新 {0} 储存库信息</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target state="translated">软件源标签 "{0}" 已被使用，请选择其他标签</target>
+        <target state="translated">储存库标签 "{0}" 已被使用，请选择其他标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>软件源类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
+        <target>储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="translated">已有定义的软件源使用给定 URL，请重复使用该软件源。</target>
+        <target state="translated">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
@@ -10243,7 +10243,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.repo-sync" xml:space="preserve">
         <source>Repository Sync</source>
-        <target>软件源同步</target>
+        <target>储存库同步</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
@@ -10283,7 +10283,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-        <target state="translated">同步 @@PRODUCT_NAME@@ 软件源</target>
+        <target state="translated">同步 @@PRODUCT_NAME@@ 储存库</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
@@ -10660,7 +10660,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target>为 {0} 生成引导软件源时出错</target>
+        <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -10917,7 +10917,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">软件源标签 "{0}" 无效。软件源标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
+        <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
       <trans-unit approved="yes" id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
@@ -11303,7 +11303,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="final">已禁用模块化。目标软件源中将不会包含任何模块。</target>
+        <target state="final">已禁用模块化。目标储存库中将不会包含任何模块。</target>
       </trans-unit>
       <trans-unit approved="yes" id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
