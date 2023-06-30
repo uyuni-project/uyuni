@@ -74,9 +74,9 @@ if [ $? -ne 0 ] || ! [ -d $GITROOT/rel-eng/packages ]; then
 fi
 
 CURDIR=`git rev-parse --show-prefix` || exit 1
-GITMAIL=`git config --get user.email` || exit 1
 
 if [ -z "$USER" ]; then
+    GITMAIL=`git config --get user.email 2>/dev/null`
     if [ -n "$GITMAIL" ]; then
         USER=${GITMAIL%@*}
     else
@@ -85,7 +85,7 @@ if [ -z "$USER" ]; then
 fi
 
 if [ -z "$FEATURE" ]; then
-    FEATURE=`git rev-parse --abbrev-ref HEAD`
+    FEATURE=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
     if [ -z "$FEATURE" ] || [ "HEAD" == "$FEATURE" ]; then
         echo "Cannot read the branch name from the current HEAD. Omitting the feature name part."
         unset FEATURE
