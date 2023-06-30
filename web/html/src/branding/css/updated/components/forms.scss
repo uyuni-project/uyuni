@@ -1,0 +1,18 @@
+.form-control {
+  display: block;
+  width: 100%;
+  height: 35px;
+  max-width: 100%;
+  padding: 8px;
+  border: 1px solid $eos-bc-gray-700;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: none;
+
+  &:focus {
+    border-color: #2453ff;
+    outline: none;
+    box-shadow: none;
+  }
+}

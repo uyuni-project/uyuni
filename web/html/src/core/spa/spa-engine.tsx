@@ -9,7 +9,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { showErrorToastr } from "components/toastr";
 
-import { onEndNavigate } from "./theme-loader";
+import { onEndNavigate as onEndNavigateTheme } from "./theme-loader";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
@@ -20,7 +20,7 @@ window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
 // Navigation hook for standalone renderers to detect navigation
-const onSpaEndNavigationCallbacks: Function[] = [onEndNavigate];
+const onSpaEndNavigationCallbacks: Function[] = [];
 window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
@@ -88,6 +88,8 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
     });
 
     appInstance.on("endNavigate", function (navigation) {
+      onEndNavigateTheme();
+
       // Drop everything that was marked to be removed
       jQuery(".modal.removeWhenNavigationEnds").remove();
       jQuery(".modal-backdrop.removeWhenNavigationEnds").remove();

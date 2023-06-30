@@ -36,12 +36,14 @@
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
     <c:choose>
       <c:when test="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}">
-        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" disabled="disabled"/>
-        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme"/>
+        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" data-theme="/css/${webTheme}.css?cb=${cb_version}" data-updated-theme="/css/updated-${webTheme}.css?cb=${cb_version}" id="web-theme"/>
+        <link rel="preload" href="/css/${webTheme}.css?cb=${cb_version}" as="style" />
+        <link rel="preload" href="/css/updated-${webTheme}.css?cb=${cb_version}" as="style" />
       </c:when>
       <c:otherwise>
-        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme"/>
-        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" disabled="disabled"/>
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" data-theme="/css/${webTheme}.css?cb=${cb_version}" data-updated-theme="/css/updated-${webTheme}.css?cb=${cb_version}" id="web-theme"/>
+        <link rel="preload" href="/css/${webTheme}.css?cb=${cb_version}" as="style" />
+        <link rel="preload" href="/css/updated-${webTheme}.css?cb=${cb_version}" as="style" />
       </c:otherwise>
     </c:choose>
 

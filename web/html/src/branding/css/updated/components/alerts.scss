@@ -1,0 +1,134 @@
+// Toastify has separate styles, but try and share as much as we can
+.Toastify__toast,
+.alert {
+  position: relative;
+  z-index: 1;
+  padding: 8px;
+  padding-left: 30px;
+  border: none;
+  margin: 0;
+
+  &:before {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 14px;
+  }
+}
+
+.alert:after,
+.Toastify__toast:after {
+  font-family: "Fontawesome";
+  content: "\f00d";
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  font-size: 12px;
+}
+
+.alert:before,
+.Toastify__toast:before {
+  font-family: "spacewalk-icon";
+}
+
+.alert-info,
+.Toastify__toast--info {
+  background-color: $eos-bc-cerulean-100;
+  border-left: 5px solid $eos-bc-cerulean-900;
+  color: $eos-bc-gray-1000;
+
+  &:before {
+    content: "\e63e";
+  }
+}
+
+.alert-success,
+.Toastify__toast--success {
+  background-color: $eos-bc-green-100;
+  border-left: 5px solid $eos-bc-green-500;
+  color: $eos-bc-gray-1000;
+
+  &:before {
+    content: "\e63d";
+  }
+}
+
+.alert-warning,
+.Toastify__toast--warning {
+  background-color: $eos-bc-yellow-100;
+  border-left: 5px solid $eos-bc-yellow-900;
+  color: $eos-bc-gray-1000;
+
+  &:before {
+    content: "\e63f";
+  }
+}
+
+.alert-danger,
+.Toastify__toast--error {
+  background-color: $eos-bc-red-100;
+  border-left: 5px solid $eos-bc-red-900;
+  color: $eos-bc-gray-1000;
+
+  &:before {
+    content: "\e640";
+  }
+}
+
+.Toastify {
+  position: relative;
+  width: 100%;
+
+  // Global alerts
+  &#global .Toastify__toast-container {
+    position: relative !important;
+    margin: 0 !important;
+  }
+}
+
+.Toastify__toast-container {
+  margin-top: 24px;
+  width: 100% !important;
+}
+
+.Toastify__toast {
+  cursor: pointer;
+  min-height: 0;
+  box-shadow: none;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@keyframes toast-enter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes toast-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+// This is required to hide the toasts automatically
+@keyframes Toastify__trackProgress {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+.Toastify__progress-bar--animated {
+  animation: Toastify__trackProgress linear 1 forwards;
+}

@@ -1,0 +1,59 @@
+.spacewalk-list-head-addons {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  label {
+    cursor: pointer;
+  }
+}
+
+.spacewalk-list-bottom-addons > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-search-wrapper {
+  flex: 1;
+
+  .form-group {
+    margin: 0;
+  }
+}
+
+.table-input-search {
+  max-width: 500px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.table-search-select-all {
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
+.table {
+  margin: 0;
+  color: inherit;
+}
+
+thead tr {
+  background: transparent;
+  color: $eos-bc-gray-700;
+
+  .btn-link {
+    padding: 0;
+    border-width: 0;
+    color: $eos-bc-gray-1000;
+    font-weight: bold;
+  }
+}
+
+tbody tr,
+tbody tr td,
+.list-row-odd,
+.list-row-even {
+  background: transparent !important;
+  box-shadow: none !important;
+}

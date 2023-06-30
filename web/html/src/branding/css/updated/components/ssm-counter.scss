@@ -1,0 +1,58 @@
+.ssm-box {
+  padding: 0px;
+
+  #ssm-box-default {
+    padding: 0;
+    color: inherit !important;
+  }
+
+  #ssm-counter {
+    display: flex;
+    gap: $navbar-item-gap;
+  }
+
+  #header_selcount {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .badge {
+      border-radius: 8px;
+      background: $gray-light;
+      display: block;
+      padding: 2px 6px;
+      margin-bottom: -2px;
+      text-align: center;
+      color: darken($gray-dark, 20%);
+      font-size: 12px;
+    }
+  }
+
+  a {
+    border-radius: 0;
+    padding: $navbar-item-padding;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      // TODO: Replace this with one of the Bootstrap colors
+      color: $green;
+    }
+  }
+
+  #clear-ssm {
+    padding: $navbar-item-padding;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: $navbar-item-radius;
+    border-width: 0;
+
+    i {
+      margin: 0;
+    }
+
+    &:hover {
+      background-color: $danger;
+    }
+  }
+}

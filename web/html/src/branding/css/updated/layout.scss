@@ -8,6 +8,10 @@ body {
   overflow: hidden;
 }
 
+html {
+  font-size: 14px;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -20,9 +24,12 @@ body {
   flex: 1 1 auto;
   overflow: hidden;
 
-  aside {
-    overflow: auto;
+  #spacewalk-aside {
+    overflow: hidden;
     position: relative;
+    // This is a carryover from the old theme, this can be rounded up or down after the Bootstrap migration is complete
+    max-width: 16.66666667%;
+    min-width: 16.66666667%;
 
     footer {
       position: -webkit-sticky;
@@ -34,5 +41,11 @@ body {
   #page-body {
     flex: 1 1 auto;
     overflow: auto;
+  }
+
+  #spacewalk-content {
+    // TODO: This is 2rem for the Uyuni theme
+    // TODO: Make this uniform between both themes after all pages have been migrated
+    padding: 1.5rem 4rem 4rem;
   }
 }

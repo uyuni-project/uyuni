@@ -1,0 +1,21 @@
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+p {
+  margin: 0 0 10.5px;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin: 0;
+  }
+}

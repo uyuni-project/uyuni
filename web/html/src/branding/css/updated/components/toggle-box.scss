@@ -1,0 +1,23 @@
+a.toggle-box:hover,
+a.toggle-box.open,
+.manual-toggle-box:hover,
+.manual-toggle-box.open {
+  color: $green;
+}
+
+.box-wrapper {
+  position: absolute;
+  top: 100%;
+  background-color: $eos-bc-pine-500;
+  border-radius: 0px 2px 2px 2px;
+  z-index: 1000;
+  box-shadow: 0px 4px 4px 0px $gray;
+  // margin-top: 5px;
+}
+
+.sideleg {
+  background: #0c322c;
+  color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 0px 0px 4px 4px;
+}

@@ -1,0 +1,82 @@
+.panel {
+  margin-bottom: 14px;
+  background: $eos-bc-gray-50;
+  box-shadow: none !important;
+
+  .panel {
+    background: $eos-bc-white;
+  }
+
+  .panel-footer {
+    background: transparent !important;
+    // TODO: Check if we can drop this
+    // padding: 10px 15px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &-default {
+    border: none;
+
+    > .panel-heading {
+      background: transparent;
+      // TODO: Make a generic border color?
+      border-bottom: 1px solid $eos-bc-gray-100;
+      border-bottom-width: 1px;
+      padding: 7.5px 12.5px;
+      font-size: 14px;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: $h4-font-size;
+        font-weight: 500;
+        margin: 0;
+      }
+    }
+
+    .panel-body {
+      padding: 12.5px;
+    }
+
+    .list-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .list-group-item {
+      background: transparent;
+      border-color: $eos-bc-gray-100;
+      border-left-width: 0;
+      border-right-width: 0;
+      padding: 10px 15px;
+
+      > i.fa {
+        margin-right: 0.5em;
+      }
+    }
+
+    // A panel heading followed directly by a list
+    .panel-heading + .list-group .list-group-item:first-child {
+      border-top-width: 0;
+    }
+  }
+}
+
+// TODO: What is this for?
+// dl:last-child {
+//   margin-bottom: 0;
+// }
+
+.well {
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}

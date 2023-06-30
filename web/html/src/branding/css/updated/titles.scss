@@ -1,0 +1,65 @@
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 10.5px;
+
+  small {
+    color: inherit;
+    font-size: 80%;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  i[class~="fa"],
+  i[class^="spacewalk-icon"] {
+    margin-right: 0.3em;
+    font-size: inherit;
+  }
+
+  i.spacewalk-help-link {
+    font-size: 16px;
+  }
+}
+
+// TODO: Make these variables obsolete once the Bootstrap upgrade is complete
+h1,
+.h1 {
+  font-size: $h1-font-size;
+}
+
+h2,
+.h2 {
+  font-size: $h2-font-size;
+}
+
+h3,
+.h3 {
+  font-size: $h3-font-size;
+}
+
+h4,
+.h4 {
+  font-size: $h4-font-size;
+}
+
+h5,
+.h5 {
+  font-size: $h5-font-size;
+}
+
+h6,
+.h6 {
+  font-size: $h6-font-size;
+}

@@ -56,26 +56,24 @@
   <body onload="<decorator:getProperty property="body.onload" />">
   <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
-  <header class="navbar-pf">
-    <div class="navbar-header">
+  <header class="navbar-pf navbar navbar-dark bg-dark">
+    <div class="navbar-header d-flex flex-row">
       <div id="breadcrumb">
           <c:choose>
             <c:when test="${Config.get().getString('product_name').compareToIgnoreCase('Uyuni') == 0 }">
               <a href="/" class="navbar-brand js-spa" target="" title="Uyuni homepage">
-                <i class="fa fa-home" title="Uyuni homepage"></i>
                 <span>Uyuni</span>
               </a>
             </c:when>
             <c:otherwise>
               <a href="/" class="navbar-brand js-spa" target="" title="SUSE Manager homepage">
-                <i class="fa fa-home" title="SUSE Manager homepage"></i>
                 <span>SUSE<i class="fa fa-registered"></i>Manager</span>
               </a>
             </c:otherwise>
           </c:choose>
       </div>
     </div>
-    <ul class="nav navbar-nav navbar-utility">
+    <ul class="nav navbar-nav navbar-utility d-flex flex-row">
       <li>
         <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
       </li>

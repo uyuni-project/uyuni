@@ -1,0 +1,177 @@
+#spacewalk-aside {
+  display: flex;
+  flex-direction: column;
+  background-color: $eos-bc-gray-50;
+
+  #nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 1.1em;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      color: inherit;
+
+      > ul {
+        flex: 1 1 auto;
+        margin: 0;
+        overflow: auto;
+
+        // This scrollbar theming is a carryover from the old theme, making the scrollbar look nicer on dark backgrounds
+        scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+          width: 7px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
+          background: rgba(200, 200, 200, 0.5);
+        }
+      }
+
+      ul ul {
+        display: none;
+      }
+
+      ul li.open > ul {
+        display: block;
+      }
+    }
+
+    a,
+    a:hover {
+      color: inherit;
+    }
+
+    .nodeLink,
+    .leafLink {
+      display: flex;
+      align-items: center;
+      border-left: 5px solid transparent;
+      min-width: 100%;
+
+      .fa {
+        font-size: 1.2em;
+        vertical-align: text-bottom;
+        margin-right: 0.5em;
+      }
+
+      .submenuIcon {
+        font-size: 1.1em;
+        margin-left: auto;
+        // These simply match the old layout positioning, we can remove them once the Bootstrap upgrade is complete
+        margin-top: -6px;
+        margin-right: 18px;
+      }
+    }
+
+    .nodeLink:hover,
+    .leafLink:hover,
+    li.active > .leafLink {
+      border-left-color: $eos-bc-green-500;
+    }
+
+    .nodeLink > a {
+      padding: 10px 4px;
+    }
+
+    .leafLink > a {
+      padding: 6px 10px;
+    }
+
+    .level1 > li > .nodeLink {
+      padding-left: 1em;
+    }
+
+    .level2 {
+      padding-bottom: 25px;
+
+      .nodeLink,
+      .leafLink {
+        & > a {
+          padding: 6px 10px;
+          padding-left: 3em;
+        }
+      }
+    }
+
+    .level3 {
+      .nodeLink,
+      .leafLink {
+        & > a {
+          padding-left: 4.4em;
+        }
+      }
+    }
+
+    .level4 {
+      .nodeLink,
+      .leafLink {
+        & > a {
+          padding-left: 5.8em;
+        }
+      }
+    }
+  }
+
+  .nav-tool-box {
+    position: relative;
+
+    input {
+      background-color: transparent;
+      border-width: 0 0 1px 0;
+      color: $eos-bc-gray-1000;
+      // border-color: $eos-bc-gray-700;
+      height: 3em;
+
+      &::placeholder {
+        color: $eos-bc-gray-900;
+      }
+    }
+
+    .input-right-icon {
+      position: absolute;
+      // This is some random color not used elsewhere
+      color: rgba(182, 180, 180, 0.6);
+      position: absolute;
+      top: 6px;
+      right: 12px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+  }
+}
+
+#spacewalk-aside footer {
+  padding: 3px 12px;
+  width: 100%;
+  font-size: 0.9em;
+  color: $eos-bc-gray-900;
+  border-top: 1px solid $eos-bc-gray-100;
+  background-image: url(/img/susemanager/suse-logo-footer.svg);
+  background-repeat: no-repeat;
+  background-position: right 13px top 21px;
+  background-size: 32px 16px;
+
+  .wrapper {
+    min-height: 28px;
+
+    & > div {
+      padding: 3px 0 2px 0;
+    }
+  }
+
+  a,
+  a:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

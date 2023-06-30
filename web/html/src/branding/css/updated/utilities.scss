@@ -1,0 +1,39 @@
+// Unstyle native UI components such as <button> and <select> before we restyle them
+.is-plain {
+  appearance: none !important;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: block;
+  font: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  user-select: text;
+  padding: 0;
+  margin: 0;
+  box-shadow: none !important;
+  color: inherit;
+
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+button.is-plain {
+  cursor: pointer;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}

@@ -22,7 +22,7 @@ export function SsmCounter(props: Props) {
 
   return (
     <>
-      <a href="/rhn/ssm/index.do" id="manage-ssm" title={t("Manage")}>
+      <a href="/rhn/ssm/index.do" id="manage-ssm" title={t("Manage selected system set")}>
         <div id="ssm-counter" />
         <div id="header_selcount">
           <span id="spacewalk-set-system_list-counter" className="badge">
@@ -31,7 +31,7 @@ export function SsmCounter(props: Props) {
           {count === 1 ? t("system selected") : t("systems selected")}
         </div>
       </a>
-      <Button id="clear-ssm" title={t("Clear")} handler={ssm_clear} icon="fa-eraser" />
+      <Button id="clear-ssm" title={t("Clear selected system set")} handler={ssm_clear} icon="fa-eraser" />
     </>
   );
 }

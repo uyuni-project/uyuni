@@ -1,0 +1,134 @@
+$navbar-item-padding: 4px 12px;
+$navbar-item-gap: 0px;
+$navbar-icon-gap: 8px;
+$navbar-item-radius: 2px;
+
+.navbar {
+  padding: 0;
+  color: $navbar-dark-color;
+
+  .header-content {
+    height: 50px;
+
+    // TODO: Remove this when the Bootstrap upgrade is complete, this exists only to provide layout parity with the old theme
+    padding-right: 11px !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  #messages-container {
+    width: 100%;
+  }
+
+  > .container-fluid {
+    justify-content: normal !important;
+    align-items: center;
+    padding: 0 10px;
+    gap: $navbar-item-gap;
+  }
+
+  .navbar-header {
+    margin-right: auto;
+    align-items: center;
+    // Match the old theme layout
+    gap: 4px;
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+
+  .navbar-utility {
+    order: 1;
+    gap: $navbar-item-gap;
+
+    li {
+      display: flex;
+      align-items: center;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      padding: $navbar-item-padding;
+      gap: $navbar-icon-gap;
+
+      &:hover,
+      &:focus {
+        // TODO: Replace this with one of the Bootstrap colors
+        color: $green;
+      }
+    }
+  }
+
+  .navbar-primary {
+    gap: $navbar-icon-gap;
+    align-items: center;
+
+    li {
+      display: block;
+
+      > :first-child {
+        padding: $navbar-item-padding;
+        border-radius: $navbar-item-radius;
+
+        &:hover,
+        &:focus {
+          // TODO: Replace this with one of the Bootstrap colors
+          color: $green;
+        }
+      }
+    }
+  }
+
+  .navbar-toggle {
+    margin-top: 1px;
+
+    i {
+      font-size: 21px;
+      line-height: 1.5;
+    }
+  }
+
+  #breadcrumb {
+    font-size: 14px;
+
+    .navbar-brand {
+      font-size: 22.4px;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    a {
+      padding: 0 3px;
+    }
+  }
+
+  #header-search > div {
+    padding: 0;
+
+    button {
+      padding: $navbar-item-padding;
+    }
+  }
+
+  form#search-form {
+    .form-group {
+      width: 200px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    input[type="search"],
+    select.form-control {
+      width: 100%;
+    }
+  }
+}

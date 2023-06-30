@@ -1,3 +1,5 @@
+const scrollTarget = "#page-body";
+
 function onDocumentReadyGeneral(){
   // See if there is a system already selected as soon as the page loads
   updateSsmToolbarOpacity();
@@ -49,7 +51,7 @@ function listenForGlobalNotificationChanges() {
 
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
-  jQuery(window).on("scroll", function () {
+  jQuery(scrollTarget).on("scroll", function () {
     if(jQuery(this).scrollTop() > 100) {
       jQuery('#scroll-top').show();
     } else {
@@ -60,7 +62,7 @@ function scrollTopBehavior() {
   });
 
   jQuery(document).on('click', '#scroll-top', function() {
-    window.scrollTo(0,0);
+    jQuery(scrollTarget).scrollTo(0,0);
   });
 }
 
@@ -84,7 +86,7 @@ function sstScrollBehaviorSetup(sst) {
 
   // override the empty function hooked on window.scroll event                                              │
   sstScrollBehavior = function() {
-    var currentScroll = jQuery(window).scrollTop();
+    var currentScroll = jQuery(scrollTarget).scrollTop();
     if (currentScroll >= fixedTop) {
       sst.after(adjustSpaceObject);
       jQuery(sst).addClass('fixed');
