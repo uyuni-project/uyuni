@@ -67,9 +67,14 @@ if ! command -v git &>/dev/null; then
     exit 1
 fi
 
-GITROOT=`git rev-parse --show-toplevel`
-CURDIR=`git rev-parse --show-prefix`
-GITMAIL=`git config --get user.email`
+GITROOT=`git rev-parse --show-toplevel 2>/dev/null`
+if [ $? -ne 0 ] || ! [ -d $GITROOT/rel-eng/packages ]; then
+    echo "Error: Not in Uyuni working directory."
+    exit 1
+fi
+
+CURDIR=`git rev-parse --show-prefix` || exit 1
+GITMAIL=`git config --get user.email` || exit 1
 
 if [ -z "$USER" ]; then
     if [ -n "$GITMAIL" ]; then
