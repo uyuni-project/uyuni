@@ -125,7 +125,7 @@ function getEditorCmd() {
 
     # Specific CLI options for common text editors
     case "$cmd" in
-        vi | vim)
+        vi*)
             cmd="$cmd +1 +startinsert!"
             ;;
         *)
