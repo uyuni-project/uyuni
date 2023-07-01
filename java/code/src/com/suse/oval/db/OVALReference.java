@@ -53,7 +53,7 @@ public class OVALReference {
     }
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "definition_id")
     public OVALDefinition getDefinition() {
         return definition;
