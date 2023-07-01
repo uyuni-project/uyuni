@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "suseOVALPlatform")
@@ -26,17 +26,17 @@ import java.util.List;
 public class OVALPlatform {
     private Long id;
     private String name;
-    private List<OVALDefinition> definitions;
+    private Set<OVALDefinition> definitions;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseOVALDefinitionAffectedPlatform",
             joinColumns = {@JoinColumn(name = "platform_id")},
             inverseJoinColumns = {@JoinColumn(name = "definition_id")})
-    public List<OVALDefinition> getDefinitions() {
+    public Set<OVALDefinition> getDefinitions() {
         return definitions;
     }
 
-    public void setDefinitions(List<OVALDefinition> definitions) {
+    public void setDefinitions(Set<OVALDefinition> definitions) {
         this.definitions = definitions;
     }
 
