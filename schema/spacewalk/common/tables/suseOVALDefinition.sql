@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS suseOVALDefinition
     description     VARCHAR(10000),
     cve_id          NUMERIC
                        REFERENCES rhnCve(id),
-    source          VARCHAR
+    source          VARCHAR,
+    criteria_tree   JSON
 );
