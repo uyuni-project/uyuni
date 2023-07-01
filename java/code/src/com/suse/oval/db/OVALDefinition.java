@@ -3,13 +3,21 @@ package com.suse.oval.db;
 
 import com.redhat.rhn.domain.errata.Cve;
 import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "suseOVALDefinition")
+@TypeDefs({
+        @TypeDef(name = "json", typeClass = JsonType.class)
+})
 @NamedQueries({
         @NamedQuery(name = "OVALDefinition.getVulnerabilityDefinitionByCve",
                 query = "SELECT def FROM OVALDefinition def JOIN def.cve cve WHERE cve.name = :cve")
@@ -23,6 +31,7 @@ public class OVALDefinition {
     private List<OVALPlatform> affectedPlatforms;
     private Cve cve;
     private OVALDefinitionSource source;
+    private CriteriaType criteriaTree;
 
     @Id
     @Column(name = "id")
@@ -84,7 +93,6 @@ public class OVALDefinition {
         this.affectedPlatforms = affectedPlatforms;
     }
 
-
     @OneToOne
     @JoinColumn(name = "cve_id")
     public Cve getCve() {
@@ -103,5 +111,15 @@ public class OVALDefinition {
 
     public void setSource(OVALDefinitionSource source) {
         this.source = source;
+    }
+
+    @Type(type = "json")
+    @Column(name = "criteria_tree")
+    public CriteriaType getCriteriaTree() {
+        return criteriaTree;
+    }
+
+    public void setCriteriaTree(CriteriaType criteriaTree) {
+        this.criteriaTree = criteriaTree;
     }
 }
