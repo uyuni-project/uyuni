@@ -4,6 +4,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.suse.oval.db.*;
+import com.suse.oval.ovaltypes.AffectedType;
+import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.ReferenceType;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +15,9 @@ import org.hibernate.Session;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,11 +30,39 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Insert the passed definition object into the database.
+     * Insert the passed OVAL definitions into the database.
      * <p>
      * Also inserts the affected platforms and references information (if not already inserted) into the relevant tables
      */
-    public static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms, List<ReferenceType> references) {
+    public static void saveDefinitions(List<DefinitionType> definitionTypes, OVALDefinitionSource source) {
+        for (int i = 0; i < definitionTypes.size(); i++) {
+            DefinitionType definitionType = definitionTypes.get(i);
+
+            OVALDefinition definition = new OVALDefinition();
+            definition.setId(definitionType.getId());
+            definition.setTitle(definitionType.getMetadata().getTitle());
+            definition.setDefClass(definitionType.getDefinitionClass());
+            definition.setDescription(definitionType.getMetadata().getDescription());
+            definition.setCriteriaTree(definitionType.getCriteria());
+
+            definition.setSource(source);
+
+            List<String> affectedPlatforms = definitionType.getMetadata().getAffected()
+                    .stream().map(AffectedType::getPlatforms).flatMap(List::stream)
+                    .collect(Collectors.toList());
+
+            saveDefinition(definition, affectedPlatforms, definitionType.getMetadata().getReference());
+
+            if (i % 60 == 0) {
+                LOG.error(definitionType.getId());
+                getSession().clear();
+                getSession().flush();
+            }
+        }
+    }
+
+
+    private static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms, List<ReferenceType> references) {
         definition.setAffectedPlatforms(
                 affectedPlatforms.stream()
                         .map(OVALCachingFactory::lookupOrInsertPlatformByName)
@@ -67,6 +99,8 @@ public class OVALCachingFactory extends HibernateFactory {
                 .uniqueResult();
     }
 
+    private static Map<String, OVALPlatform> platformsMap = new HashMap<>(100);
+
     /**
      * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
      *
@@ -74,16 +108,23 @@ public class OVALCachingFactory extends HibernateFactory {
      * @return the platform
      */
     public static OVALPlatform lookupOrInsertPlatformByName(String name) {
+        if (platformsMap.containsKey(name)) {
+            return platformsMap.get(name);
+        }
+
         OVALPlatform platform = lookupPlatformByName(name);
-        if (platform != null) {
-            return platform;
-        } else {
+        if (platform == null) {
             OVALPlatform newPlatform = new OVALPlatform();
             newPlatform.setName(name);
             instance.saveObject(newPlatform);
 
-            return newPlatform;
+            platform = newPlatform;
         }
+
+        platformsMap.put(name, platform);
+
+        return platform;
+
     }
 
     public static OVALPlatform lookupPlatformByName(String name) {
