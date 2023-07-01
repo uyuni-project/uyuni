@@ -72,7 +72,7 @@ public class OVALDefinition {
         this.description = description;
     }
 
-    @OneToMany(mappedBy = "definition", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "definition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<OVALReference> getReferences() {
         return references;
     }
@@ -81,7 +81,7 @@ public class OVALDefinition {
         this.references = references;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseOVALDefinitionAffectedPlatform",
             joinColumns = {@JoinColumn(name = "definition_id")},
             inverseJoinColumns = {@JoinColumn(name = "platform_id")})
