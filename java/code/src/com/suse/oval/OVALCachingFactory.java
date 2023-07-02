@@ -51,12 +51,14 @@ public class OVALCachingFactory extends HibernateFactory {
                     .stream().map(AffectedType::getPlatforms).flatMap(List::stream)
                     .collect(Collectors.toList());
 
-            saveDefinition(definition, affectedPlatforms, definitionType.getMetadata().getReference());
+            HibernateFactory.doWithoutAutoFlushing(
+                    () -> saveDefinition(definition, affectedPlatforms, definitionType.getMetadata().getReference())
+            );
 
             if (i % 60 == 0) {
                 LOG.error(definitionType.getId());
-                getSession().clear();
                 getSession().flush();
+                getSession().clear();
             }
         }
     }

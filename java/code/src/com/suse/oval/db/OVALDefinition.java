@@ -6,6 +6,7 @@ import com.suse.oval.OVALDefinitionSource;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -22,6 +23,7 @@ import java.util.List;
         @NamedQuery(name = "OVALDefinition.getVulnerabilityDefinitionByCve",
                 query = "SELECT def FROM OVALDefinition def JOIN def.cve cve WHERE cve.name = :cve")
 })
+@DynamicUpdate
 public class OVALDefinition {
     private String id;
     private DefinitionClassEnum defClass;
