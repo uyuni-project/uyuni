@@ -45,6 +45,7 @@ public class GathererJsonIO {
             .setPrettyPrinting()
             .registerTypeAdapter(GathererModule.class, new GathererModuleAdapter())
             .registerTypeAdapter(VirtualHostManager.class, new VHMAdapter())
+            .serializeNulls()
             .create();
     }
 
