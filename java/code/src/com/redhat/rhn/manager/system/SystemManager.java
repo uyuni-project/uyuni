@@ -1228,12 +1228,20 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<SystemGroupOverview> groupList(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "visible_to_user");
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+            m.removeElaboratorByName("most_severe_errata");
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("org_id", user.getOrg().getId());
         elabParams.put("user_id", user.getId());
-        return makeDataResult(params, elabParams, pc, m);
+
+        DataResult<SystemGroupOverview> dr = makeDataResult(params, elabParams, pc, m);
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+            dr.stream().forEach(x -> x.setDisabled(true));
+        }
+        return dr;
     }
 
     /**
@@ -1250,10 +1258,18 @@ public class SystemManager extends BaseManager {
                     User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                         "visible_to_user_and_counts");
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+            m.removeElaboratorByName("most_severe_errata");
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m);
+
+        DataResult<SystemGroupOverview> dr = makeDataResult(params, elabParams, pc, m);
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_UPDATE_STATUS)) {
+            dr.stream().forEach(x -> x.setDisabled(true));
+        }
+        return dr;
     }
 
     /**
