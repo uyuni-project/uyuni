@@ -76,8 +76,9 @@ Feature: Correct timezone display
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-  Scenario: Cleanup: Log in as admin user again
+  Scenario: Cleanup: Log in as admin user again and remove scheduled actions
     Given I am authorized for the "Admin" section
+    And I cancel all scheduled actions
 
   Scenario: Cleanup: Remove role
     When I follow the left menu "Users > User List > Active"
