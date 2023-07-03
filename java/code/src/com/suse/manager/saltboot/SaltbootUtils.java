@@ -17,11 +17,17 @@ package com.suse.manager.saltboot;
 
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.CustomDataValue;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
+import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +38,7 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -179,8 +186,9 @@ public class SaltbootUtils {
     public static void createSaltbootSystem(String minionId, String bootImage, String saltbootGroup,
                                             List<String> hwAddresses, String kernelParams) throws SaltbootException {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-        Org org = MinionServerFactory.findByMinionId(minionId).orElseThrow(
-                () -> new SaltbootException("Unable to find minion entry for minion id " + minionId)).getOrg();
+        MinionServer minion = MinionServerFactory.findByMinionId(minionId).orElseThrow(
+                () -> new SaltbootException("Unable to find minion entry for minion id " + minionId));
+        Org org = minion.getOrg();
 
         Profile profile = Profile.lookupByName(con, org.getId() + "-" + bootImage);
         if (profile == null) {
@@ -216,6 +224,8 @@ public class SaltbootUtils {
         system.setNetworkInterfaces(networks);
         system.enableNetboot(true);
         system.save();
+
+        minion.setCobblerId(system.getId());
     }
 
     /**
@@ -231,6 +241,70 @@ public class SaltbootUtils {
         SystemRecord sr = SystemRecord.lookupByName(con, org.getId() + "-" + minionId);
         if (sr != null) {
             sr.remove();
+        }
+    }
+
+    /**
+     * Remove saltboot:force_redeploy and saltboot:force_repartition flags
+     * These flags can be both as a saltboot:force* pillars ( from saltboot formula)
+     * or custom info saltboot_force_* keys
+     *
+     * Consumer of these flags is saltboot state
+     * @param minionId
+     */
+    public static void resetSaltbootRedeployFlags(String minionId) {
+        Opt.consume(MinionServerFactory.findByMinionId(minionId),
+            () -> LOG.error("Trying to reset saltboot flag for nonexisting minion {}", minionId),
+            minion -> {
+                // Look for custom_info or formula_saltboot category.
+                // If flag is set somewhere else, then we can't reset it
+                removeSaltbootRedeployPillar(minion);
+                removeSaltbootRedeployCustomInfo(minion);
+            }
+        );
+    }
+
+    /**
+     * Remove saltboot:force_redeploy and saltboot:force_repartition from saltboot formula data
+     * @param minion
+     */
+    private static void removeSaltbootRedeployPillar(MinionServer minion) {
+        minion.getPillarByCategory("formula-saltboot").ifPresent(
+            pillar -> {
+                Map<String, Object> pillarData = pillar.getPillar();
+                Map<String, String> saltboot = (Map<String, String>)pillarData.get("saltboot");
+                boolean changed = false;
+                if (saltboot.remove("force_redeploy") != null) {
+                    changed = true;
+                }
+                if (saltboot.remove("force_repartition") != null) {
+                    changed = true;
+                }
+                if (changed) {
+                    LOG.debug("saltboot redeploy flags removed");
+                    pillar.setPillar(pillarData);
+                }
+            }
+        );
+    }
+
+    /**
+     * Remove saltboot_force_redeploy and saltboot_force_repartition custom info values from the minion
+     * @param minion
+     */
+    private static void removeSaltbootRedeployCustomInfo(MinionServer minion) {
+        CustomDataKey saltbootRedeploy = OrgFactory.lookupKeyByLabelAndOrg("saltboot_force_redeploy", minion.getOrg());
+        CustomDataValue redeploy = minion.getCustomDataValue(saltbootRedeploy);
+        if (redeploy != null) {
+            ServerFactory.removeCustomDataValue(minion, saltbootRedeploy);
+        }
+        CustomDataKey saltbootRepart = OrgFactory.lookupKeyByLabelAndOrg("saltboot_force_repartition", minion.getOrg());
+        CustomDataValue repart = minion.getCustomDataValue(saltbootRepart);
+        if (repart != null) {
+            ServerFactory.removeCustomDataValue(minion, saltbootRepart);
+        }
+        if (redeploy != null || repart != null) {
+            LOG.debug("saltboot custom info redeploy flags removed");
         }
     }
 }
