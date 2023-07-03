@@ -62,7 +62,7 @@ public class SaltbootUtils {
                 .setKernelOptions(Optional.of("panic=60 splash=silent"))
                 .setArch(imageInfo.getImageArch().getName()).setBreed("generic")
                 .build(con);
-        cd.setComment("Distro for image " + name + "belonging to organization " + imageInfo.getOrg().getName());
+        cd.setComment("Distro for image " + name + " belonging to organization " + imageInfo.getOrg().getName());
         cd.save();
 
         // Each distro have its own private profile for individual system records
@@ -108,8 +108,8 @@ public class SaltbootUtils {
         String distroToUse;
         if (bootImage == null || bootImage.isEmpty()) {
             SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con).stream().map(d -> d.getName()).sorted(saltbootCompare)
-                    .collect(Collectors.toList()).stream().findFirst().orElseThrow(
+            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(org.getId() + "-"))
+                    .sorted(saltbootCompare).collect(Collectors.toList()).stream().findFirst().orElseThrow(
                             () -> new SaltbootException("No registered image found"));
         }
         else if (bootImageVersion == null || bootImageVersion.isEmpty()) {
@@ -224,7 +224,7 @@ public class SaltbootUtils {
      *
      * @param minionId
      */
-    public void deleteSaltbootSystem(String minionId) {
+    public static void deleteSaltbootSystem(String minionId) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         Org org = MinionServerFactory.findByMinionId(minionId).orElseThrow(
                 () -> new SaltbootException("Unable to find minion entry for minion id " + minionId)).getOrg();
