@@ -8,11 +8,10 @@
 
 package com.suse.oval.ovaltypes;
 
-import org.w3c.dom.Element;
-
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -33,8 +32,8 @@ public class MetadataType {
     protected List<ReferenceType> reference;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", required = true)
     protected String description;
-    @XmlAnyElement
-    protected List<Element> any;
+    @XmlElement(name = "advisory", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+    protected Advisory advisory;
 
     /**
      * Gets the value of the title property.
@@ -84,14 +83,11 @@ public class MetadataType {
         this.description = value;
     }
 
-    /**
-     * Gets the value of the 'any' property.
-     */
-    public List<Element> getAny() {
-        if (any == null) {
-            any = new ArrayList<>();
-        }
-        return this.any;
+    public Optional<Advisory> getAdvisory() {
+        return Optional.ofNullable(advisory);
     }
 
+    public void setAdvisory(Advisory advisory) {
+        this.advisory = advisory;
+    }
 }
