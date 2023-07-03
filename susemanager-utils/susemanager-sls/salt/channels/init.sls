@@ -155,6 +155,9 @@ mgrchannels_install_products:
 {%- else %}
       - mgrcompat: sync_states
 {%- endif %}
+{%- if salt['pillar.get']('susemanager:distupgrade', False) %}
+      - mgrcompat: spmigration
+{%- endif %}
 {%- endif %}
 {%- endif %}
 

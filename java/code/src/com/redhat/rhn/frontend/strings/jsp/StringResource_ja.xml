@@ -29084,7 +29084,7 @@ given channel.</source>
         <target>このユーザ名の資格情報は既に存在しています</target>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="final">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -29906,10 +29906,17 @@ given channel.</source>
         </context-group>
         <target state="final"> 期限切れのサブスクライブに関する警告を表示します。</target>
       </trans-unit>
-    <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">定期的なアクション</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">仮想化ホスト:</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

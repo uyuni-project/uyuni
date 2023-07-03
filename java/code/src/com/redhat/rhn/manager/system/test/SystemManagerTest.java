@@ -126,6 +126,7 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -2083,10 +2084,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Long sid = server.getId();
         Package pack = PackageTest.createTestPackage(user.getOrg());
-
         ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
-        SystemsOverviewUpdateWorker.doUpdate(sid);
 
-        assertEquals(1, SystemManager.countOutdatedSystems());
+        assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
     }
 }

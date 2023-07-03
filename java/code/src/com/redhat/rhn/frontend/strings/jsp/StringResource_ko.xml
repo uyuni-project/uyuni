@@ -29072,7 +29072,7 @@ given channel.</source>
         <target>이름이 동일한 인증서 이미 있음</target>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="final">Copyright (c) 2011 - 2022 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -29892,10 +29892,17 @@ given channel.</source>
         </context-group>
         <target state="final"> 만료된 구독 경고를 표시합니다.</target>
       </trans-unit>
-    <trans-unit id="Recurring Actions" xml:space="preserve">
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">반복 작업</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">가상화 호스트:</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -18,7 +18,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -41,6 +41,7 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidKickstartScriptException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidScriptNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidScriptTypeException;
 import com.redhat.rhn.frontend.xmlrpc.IpRangeConflictException;
@@ -816,8 +817,9 @@ public class ProfileHandler extends BaseHandler {
      *         or invalid advanced option is provided
      *
      * @apidoc.doc Set advanced options for a kickstart profile.
-     * If 'md5_crypt_rootpw' is set to 'True', 'root_pw' is taken as plaintext and
-     * will md5 encrypted on server side, otherwise a hash encoded password
+     * 'md5_crypt_rootpw' is not supported anymore.
+     * If 'sha256_crypt_rootpw' is set to 'True', 'root_pw' is taken as plaintext and
+     * will sha256 encrypted on server side, otherwise a hash encoded password
      * (according to the auth option) is expected
      * @apidoc.param #session_key()
      * @apidoc.param #param("string","ksLabel")
@@ -831,7 +833,7 @@ public class ProfileHandler extends BaseHandler {
      *              timezone, auth, rootpw, selinux, reboot, firewall, xconfig, skipx,
      *              key, ignoredisk, autopart, cmdline, firstboot, graphical, iscsi,
      *              iscsiname, logging, monitor, multipath, poweroff, halt, services,
-     *              shutdown, user, vnc, zfcp, driverdisk, md5_crypt_rootpw")
+     *              shutdown, user, vnc, zfcp, driverdisk, sha256_crypt_rootpw")
      *          #prop_desc("string", "arguments", "Arguments of the option")
      *      #struct_end()
      *   #array_end()
@@ -902,12 +904,12 @@ public class ProfileHandler extends BaseHandler {
                     if (cn.getName().equals("rootpw")) {
                         String pwarg = option.get("arguments");
                         // password already encrypted
-                        if (!md5cryptRootPw(options)) {
+                        if (!isRootpwEncrypted(options)) {
                             kc.setArguments(pwarg);
                         }
                         // password changed, encrypt it
                         else {
-                            kc.setArguments(MD5Crypt.crypt(pwarg));
+                            kc.setArguments(SHA256Crypt.crypt(pwarg));
                         }
                     }
                     else {
@@ -923,9 +925,12 @@ public class ProfileHandler extends BaseHandler {
         return 1;
     }
 
-    private boolean md5cryptRootPw(List<Map<String, String>> options) {
+    private boolean isRootpwEncrypted(List<Map<String, String>> options) {
         for (Map<String, String> m : options) {
             if ("md5_crypt_rootpw".equals(m.get("name"))) {
+                throw new InvalidParameterException("md5_crypt_rootpw");
+            }
+            else if ("sha256_crypt_rootpw".equals(m.get("name"))) {
                 return BooleanUtils.toBoolean(m.get("arguments"));
             }
         }

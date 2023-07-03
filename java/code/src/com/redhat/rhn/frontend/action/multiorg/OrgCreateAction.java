@@ -16,8 +16,7 @@ package com.redhat.rhn.frontend.action.multiorg;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.UserDefaults;
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
@@ -87,8 +86,7 @@ public class OrgCreateAction extends RhnAction {
          */
             if (dynaForm.get("usepam") != null &&
                     (Boolean) dynaForm.get("usepam")) {
-                String fakePassword = MD5Crypt.crypt("" + System.currentTimeMillis()).
-                    substring(0, UserDefaults.get().getMaxPasswordLength());
+                String fakePassword = CryptHelper.getRandomPasswordForPamAuth();
                 if (StringUtils.isEmpty(
                         (String) dynaForm.get(UserActionHelper.DESIRED_PASS))) {
                     dynaForm.set(UserActionHelper.DESIRED_PASS, fakePassword);

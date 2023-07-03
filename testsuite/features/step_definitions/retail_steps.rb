@@ -154,7 +154,13 @@ When(/^I set up the private network on the terminals$/) do
     next if node.nil?
     domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart NetworkManager")
+    service =
+      if node.os_family =~ /^rocky/
+        'NetworkManager'
+      else
+        'network'
+      end
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
   end
   # /etc/netplan/01-netcfg.yaml
   nodes = [$deblike_minion]
@@ -261,16 +267,6 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run('salt-key -y --accept=pxeboot.example.org')
 end
 
-When(/^I stop salt-minion on the PXE boot minion$/) do
-  file = 'cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
-  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
-end
-
 When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
   file = 'uyuni.key'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -280,6 +276,16 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   system_name = get_system_name('pxeboot_minion')
   $server.run("salt-cp #{system_name} #{dest} #{dest}")
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
+end
+
+When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
+  file = 'wait-end-of-cleanup-pxeboot.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = '/tmp/' + file
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
+  $proxy.run("expect -f /tmp/#{file} #{ipv4}")
 end
 
 When(/^I prepare the retail configuration file on server$/) do

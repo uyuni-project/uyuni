@@ -1,7 +1,11 @@
+- Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
+- Make spacewalk-data-fsck compatible to Enterprise Linux rpm version.
+
 -------------------------------------------------------------------
 Wed Apr 19 12:51:32 CEST 2023 - marina.latini@suse.com
 
 - version 4.4.10-1
+  * Make "spacewalk-repo-sync --help" command to work if reposync is running.
   * Enhance mirrorlist detection for dnf reposync plugin.
   * Add httpd user and group to rhn.conf.
   * Add package details to reposync error logging

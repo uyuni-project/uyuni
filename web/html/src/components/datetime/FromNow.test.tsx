@@ -10,15 +10,8 @@ describe("FromNow component", () => {
   test("renders with basic input", () => {
     render(<FromNow value={validISOString} />);
     // Title is given in user's configured time zone
-    const span = screen.getByTitle("2020-01-30 15:00 America/Los_Angeles");
-    expect(span).toBeDefined();
-    expect((span.innerHTML || "").trim()).not.toEqual("");
-  });
-
-  test("renders with child input", () => {
-    render(<FromNow>{validISOString}</FromNow>);
-    const span = screen.getByTitle("2020-01-30 15:00 America/Los_Angeles");
-    expect(span).toBeDefined();
-    expect((span.innerHTML || "").trim()).not.toEqual("");
+    const element = screen.getByTitle("2020-01-30 15:00 PST");
+    expect(element).toBeDefined();
+    expect((element.innerHTML || "").trim()).not.toEqual("");
   });
 });

@@ -1,5 +1,34 @@
 # Copyright (c) 2010-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in:
+# If the SUSE-KEY-x86_64 fails to be created:
+# - features/init_client/buildhost_bootstrap.feature
+# - features/init_client/sle_minion.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_osimage_build_image.feature
+# - features/secondary/min_baremetal_discovery.feature
+# - features/secondary/min_bootstrap_api.feature
+# - features/secondary/min_bootstrap_reactivation.feature
+# - features/secondary/min_bootstrap_script.feature
+# - features/secondary/min_docker_api.feature
+# - features/secondary/min_move_from_and_to_proxy.feature
+# - features/secondary/min_salt_mgrcompat_state.feature
+# - features/secondary/min_salt_minions_page.feature
+# - features/secondary/minkvm_guests.feature
+# - features/secondary/proxy_as_pod_basic_tests.feature
+# - features/secondary/proxy_cobbler_pxeboot.feature
+# - features/secondary/proxy_retail_pxeboot.feature
+# - features/secondary/srv_docker_advanced_content_management.feature
+# If the RH-LIKE-KEY fails to be created:
+# - features/secondary/min_rhlike_salt.feature
+# If the DEBLIKE-KEY fails to be created:
+# - features/secondary/min_debike_salt.feature
+# If the SUSE-SSH-KEY-x86_64 fails to be created:
+# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_move_from_and_to_proxy.feature
+
 
 Feature: Create activation keys
   In order to register systems to the spacewalk server

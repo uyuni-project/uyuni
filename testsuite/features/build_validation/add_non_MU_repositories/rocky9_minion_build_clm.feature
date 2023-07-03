@@ -23,6 +23,7 @@ Feature: Add the Rocky 9 distribution custom repositories
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 9" text
     When I click on "Attach/Detach Sources"
+    And I wait until I do not see "Loading" text
     And I select "rockylinux-9 for x86_64" from "selectedBaseChannel"
     # "rockylinux-9-appstream for x86_64" is already checked
     And I check "Custom Channel for rocky9_minion"

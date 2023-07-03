@@ -447,17 +447,28 @@ scc-pass = $SCC_PASS
     elif [ -n "$ISS_PARENT" ]; then
         PARAM_CC="--disconnected"
     fi
-    if [ -n "$CA_CERT" -a -n "$SERVER_CERT" -a -n "$SERVER_KEY" ]; then
-        echo "ssl-use-existing-certs = Y
+
+    if [ "$NO_SSL" == "Y" ]; then
+        echo "no-ssl = Y
+" >>/root/spacewalk-answers
+        PARAM_CC="$PARAM_CC --skip-ssl-cert-generation"
+
+        sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
+        echo "server.no_ssl = 1" >>/etc/rhn/rhn.conf
+        sed '/<IfDefine SSL/,/<\/IfDefine SSL/d' -i /etc/apache2/listen.conf
+    else
+        if [ -n "$CA_CERT" -a -n "$SERVER_CERT" -a -n "$SERVER_KEY" ]; then
+            echo "ssl-use-existing-certs = Y
 ssl-ca-cert = $CA_CERT
 ssl-server-cert = $SERVER_CERT
 ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
-    else
-        echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
+        else
+            echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
 
-	# check if CA Cert and Key exists and try to use it to generate the server certs
-	if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
-            PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
+        # check if CA Cert and Key exists and try to use it to generate the server certs
+        if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
+                PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
+            fi
         fi
     fi
 
@@ -476,6 +487,10 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     fi
     if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
+    fi
+
+    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+        /usr/sbin/mgr-package-rpm-certificate-osimage
     fi
 
     # rm /root/spacewalk-answers
@@ -793,6 +808,7 @@ do_migration() {
 }
 
 do_setup() {
+    NO_SSL=
     if [ -f $SETUP_ENV ]; then
         . $SETUP_ENV
     else
@@ -996,7 +1012,9 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/sbin/spacewalk-service stop
 
         if [ "$EXTERNALDB" = "0" ]; then
-            systemctl restart postgresql
+            # Find PostgreSQL service name.
+            POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+            systemctl restart $POSTGRESQLSERVICE
         fi
         /usr/sbin/spacewalk-service start
         systemctl --quiet enable spacewalk-diskcheck.timer 2>&1

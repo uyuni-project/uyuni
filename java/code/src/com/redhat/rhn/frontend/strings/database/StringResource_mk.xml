@@ -405,42 +405,42 @@
       </trans-unit>
       <trans-unit id="Asia/Riyadh" xml:space="preserve">
         <source>(GMT+0300) Saudi Arabia</source>
-        <target/>
+        <target>(GMT+0300) Саудиска Арабија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Tehran" xml:space="preserve">
         <source>(GMT+0330) Iran</source>
-        <target/>
+        <target>(GMT+0330) Иран</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Jerusalem" xml:space="preserve">
         <source>(GMT+0200) Israel</source>
-        <target/>
+        <target>(GMT+0200) Израел</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
-        <target/>
+        <target>(GMT+0800) Сингапур</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
-        <target/>
+        <target>(GMT+0800) Малезија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Shanghai" xml:space="preserve">
         <source>(GMT+0800) China</source>
-        <target/>
+        <target>(GMT+0800) Кина</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -533,14 +533,14 @@
       </trans-unit>
       <trans-unit id="Command" xml:space="preserve">
         <source>Command</source>
-        <target/>
+        <target>Команда</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Command name" xml:space="preserve">
         <source>Command name</source>
-        <target/>
+        <target>Име на команда</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -911,7 +911,7 @@
       </trans-unit>
       <trans-unit id="Critical Query Rate" xml:space="preserve">
         <source>Critical Query Rate</source>
-        <target/>
+        <target>Критична Рата на Барање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -939,7 +939,7 @@
       </trans-unit>
       <trans-unit id="Critical Read Rate" xml:space="preserve">
         <source>Critical Read Rate</source>
-        <target/>
+        <target>Критична Рата на Читање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -995,28 +995,28 @@
       </trans-unit>
       <trans-unit id="Critical Seconds" xml:space="preserve">
         <source>Critical Seconds</source>
-        <target/>
+        <target>Критично: секунди</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Size" xml:space="preserve">
         <source>Critical Size</source>
-        <target/>
+        <target>Критично: Големина</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Space Available" xml:space="preserve">
         <source>Critical Space Available</source>
-        <target/>
+        <target>Критично: Достапно место</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Space Used" xml:space="preserve">
         <source>Critical Space Used</source>
-        <target/>
+        <target>Критично: Искористено место</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-05 15:16+0200\n"
-"PO-Revision-Date: 2023-01-06 05:14+0000\n"
+"POT-Creation-Date: 2023-06-30 15:18+0200\n"
+"PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -3531,7 +3531,7 @@ msgstr "您自己"
 #. hasTraditionalSystems endpoint is not available prior to 4.3
 #: ../src/spacecmd/misc.py:475
 msgid "Skipping traditional system check"
-msgstr ""
+msgstr "正在跳过传统系统检查"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:547
@@ -4218,7 +4218,7 @@ msgstr ""
 
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
-msgstr "repo_list：列出所有可用的用户软件源"
+msgstr "repo_list：列出所有可用的用户储存库"
 
 #: ../src/spacecmd/repo.py:49
 msgid "usage: repo_list"
@@ -4226,49 +4226,49 @@ msgstr "用法：repo_list"
 
 #: ../src/spacecmd/repo.py:67
 msgid "repo_details: Show the details of a user repo"
-msgstr "repo_details：显示用户软件源的细节"
+msgstr "repo_details：显示用户储存库的细节"
 
 #: ../src/spacecmd/repo.py:68
 msgid "usage: repo_details <repo ...>"
-msgstr "用法：repo_details <软件源 ...>"
+msgstr "用法：repo_details <储存库 ...>"
 
 #: ../src/spacecmd/repo.py:96
 #, python-format
 msgid "Repository Label:                  %s"
-msgstr "软件源标签：%s"
+msgstr "储存库标签：%s"
 
 #: ../src/spacecmd/repo.py:97
 #, python-format
 msgid "Repository URL:                    %s"
-msgstr "软件源 URL：%s"
+msgstr "储存库 URL：%s"
 
 #: ../src/spacecmd/repo.py:98
 #, python-format
 msgid "Repository Type:                   %s"
-msgstr "软件源类型：%s"
+msgstr "储存库类型：%s"
 
 #: ../src/spacecmd/repo.py:99
 #, python-format
 msgid "Repository SSL Ca Certificate:     %s"
-msgstr "软件源 SSL CA 证书：%s"
+msgstr "储存库 SSL CA 证书：%s"
 
 #: ../src/spacecmd/repo.py:100
 #, python-format
 msgid "Repository SSL Client Certificate: %s"
-msgstr "软件源 SSL 客户端证书：%s"
+msgstr "储存库 SSL 客户端证书：%s"
 
 #: ../src/spacecmd/repo.py:101
 #, python-format
 msgid "Repository SSL Client Key:         %s"
-msgstr "软件源 SSL 客户端密钥：%s"
+msgstr "储存库 SSL 客户端密钥：%s"
 
 #: ../src/spacecmd/repo.py:103
 msgid "No repositories found for '{}' query"
-msgstr "未找到查询 '{}' 的软件源"
+msgstr "未找到查询 '{}' 的储存库"
 
 #: ../src/spacecmd/repo.py:112
 msgid "repo_listfilters: Show the filters for a user repo"
-msgstr "repo_listfilters：显示用户软件源的过滤器"
+msgstr "repo_listfilters：显示用户储存库的过滤器"
 
 #: ../src/spacecmd/repo.py:113
 msgid "usage: repo_listfilters repo"
@@ -4280,7 +4280,7 @@ msgstr "未找到过滤器"
 
 #: ../src/spacecmd/repo.py:143
 msgid "repo_addfilters: Add filters for a user repo"
-msgstr "repo_addfilters：添加用户软件源的过滤器"
+msgstr "repo_addfilters：添加用户储存库的过滤器"
 
 #: ../src/spacecmd/repo.py:144
 msgid "usage: repo_addfilters repo <filter ...>"
@@ -4293,7 +4293,7 @@ msgstr "每个过滤器必须以 + 或 - 开头"
 
 #: ../src/spacecmd/repo.py:184
 msgid "repo_removefilters: Remove filters from a user repo"
-msgstr "repo_removefilters：从用户软件源中去除过滤器"
+msgstr "repo_removefilters：从用户储存库中去除过滤器"
 
 #: ../src/spacecmd/repo.py:185
 msgid "usage: repo_removefilters repo <filter ...>"
@@ -4301,7 +4301,7 @@ msgstr "用法：repo_removefilters repo <过滤器 ...>"
 
 #: ../src/spacecmd/repo.py:221
 msgid "repo_setfilters: Set the filters for a user repo"
-msgstr "repo_setfilters：设置用户软件源的过滤器"
+msgstr "repo_setfilters：设置用户储存库的过滤器"
 
 #: ../src/spacecmd/repo.py:222
 msgid "usage: repo_setfilters repo <filter ...>"
@@ -4309,7 +4309,7 @@ msgstr "用法：repo_setfilters repo <过滤器 ...>"
 
 #: ../src/spacecmd/repo.py:259
 msgid "repo_clearfilters: Clears the filters for a user repo"
-msgstr "repo_clearfilters：清除用户软件源的过滤器"
+msgstr "repo_clearfilters：清除用户储存库的过滤器"
 
 #: ../src/spacecmd/repo.py:260
 msgid ""
@@ -4331,28 +4331,28 @@ msgstr "去除这些过滤器 [y/N]："
 
 #: ../src/spacecmd/repo.py:291
 msgid "repo_delete: Delete a user repo"
-msgstr "repo_delete：删除用户软件源"
+msgstr "repo_delete：删除用户储存库"
 
 #: ../src/spacecmd/repo.py:292
 msgid "usage: repo_delete <repo ...>"
-msgstr "用法：repo_delete <软件源 ...>"
+msgstr "用法：repo_delete <储存库 ...>"
 
 #: ../src/spacecmd/repo.py:311 ../src/spacecmd/softwarechannel.py:586
 msgid "Repos"
-msgstr "软件源"
+msgstr "储存库"
 
 #: ../src/spacecmd/repo.py:315
 msgid "Delete these repos [y/N]:"
-msgstr "删除这些软件源 [y/N]："
+msgstr "删除这些储存库 [y/N]："
 
 #: ../src/spacecmd/repo.py:320
 #, python-format
 msgid "Failed to remove repo %s"
-msgstr "无法去除软件源 %s"
+msgstr "无法去除储存库 %s"
 
 #: ../src/spacecmd/repo.py:328
 msgid "repo_create: Create a user repository"
-msgstr "repo_create：创建用户软件源"
+msgstr "repo_create：创建用户储存库"
 
 #: ../src/spacecmd/repo.py:329
 msgid ""
@@ -4370,9 +4370,9 @@ msgstr ""
 "用法：repo_create <选项>)\n"
 "\n"
 "选项：\n"
-"  -n、--name   软件源的名称\n"
-"  -u、--url    软件源的 URL\n"
-"  -t、--type   软件源的类型（默认为 yum）\n"
+"  -n、--name   储存库的名称\n"
+"  -u、--url    储存库的 URL\n"
+"  -t、--type   储存库的类型（默认为 yum）\n"
 "\n"
 "  --ca         SSL CA 证书（不是必需的）\n"
 "  --cert       SSL 客户端证书（不是必需的）\n"
@@ -4404,7 +4404,7 @@ msgstr "URL 是必需的"
 
 #: ../src/spacecmd/repo.py:385
 msgid "repo_rename: Rename a user repository"
-msgstr "repo_rename：重命名用户软件源"
+msgstr "repo_rename：重命名用户储存库"
 
 #: ../src/spacecmd/repo.py:386
 msgid "usage: repo_rename OLDNAME NEWNAME"
@@ -4413,19 +4413,19 @@ msgstr "用法：repo_rename OLDNAME NEWNAME"
 #: ../src/spacecmd/repo.py:410
 #, python-format
 msgid "Could not find repo %s"
-msgstr "找不到软件源 %s"
+msgstr "找不到储存库 %s"
 
 #: ../src/spacecmd/repo.py:423
 msgid "repo_updateurl: Change the URL of a user repository"
-msgstr "repo_updateurl：更改用户软件源的 URL"
+msgstr "repo_updateurl：更改用户储存库的 URL"
 
 #: ../src/spacecmd/repo.py:424
 msgid "usage: repo_updateurl <repo> <url>"
-msgstr "用法：repo_updateurl <软件源> <URL>"
+msgstr "用法：repo_updateurl <储存库> <URL>"
 
 #: ../src/spacecmd/repo.py:451
 msgid "repo_updatessl: Change the SSL certificates of a user repository"
-msgstr "repo_updatessl：更改用户软件源的 SSL 证书"
+msgstr "repo_updatessl：更改用户储存库的 SSL 证书"
 
 #: ../src/spacecmd/repo.py:452
 msgid ""
@@ -6270,7 +6270,7 @@ msgstr "softwarechannel_syncrepos： "
 
 #: ../src/spacecmd/softwarechannel.py:2606
 msgid "Sync users repos for a software channel"
-msgstr "同步软件通道的用户软件源"
+msgstr "同步软件通道的用户储存库"
 
 #: ../src/spacecmd/softwarechannel.py:2608
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
@@ -6294,7 +6294,7 @@ msgstr "    -k/--sync-kickstart：创建 kickstart 树"
 #: ../src/spacecmd/softwarechannel.py:2613
 #: ../src/spacecmd/softwarechannel.py:2656
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
-msgstr "    -l/--latest：同步软件源时仅下载最新软件包版本"
+msgstr "    -l/--latest：同步储存库时仅下载最新软件包版本"
 
 #: ../src/spacecmd/softwarechannel.py:2648
 msgid "softwarechannel_setsyncschedule: "
@@ -6302,7 +6302,7 @@ msgstr "softwarechannel_setsyncschedule： "
 
 #: ../src/spacecmd/softwarechannel.py:2649
 msgid "Sets the repo sync schedule for a software channel"
-msgstr "设置软件通道的软件源同步日程安排"
+msgstr "设置软件通道的储存库同步日程安排"
 
 #: ../src/spacecmd/softwarechannel.py:2651
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
@@ -6330,7 +6330,7 @@ msgstr "softwarechannel_removesyncschedule： "
 
 #: ../src/spacecmd/softwarechannel.py:2696
 msgid "Removes the repo sync schedule for a software channel"
-msgstr "去除软件通道的软件源同步日程安排"
+msgstr "去除软件通道的储存库同步日程安排"
 
 #: ../src/spacecmd/softwarechannel.py:2698
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
@@ -6360,7 +6360,7 @@ msgstr "更新日程安排"
 
 #: ../src/spacecmd/softwarechannel.py:2760
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
-msgstr "softwarechannel_addrepo：将软件源添加到软件通道"
+msgstr "softwarechannel_addrepo：将储存库添加到软件通道"
 
 #: ../src/spacecmd/softwarechannel.py:2761
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
@@ -6368,7 +6368,7 @@ msgstr "用法：softwarechannel_addrepo CHANNEL REPO"
 
 #: ../src/spacecmd/softwarechannel.py:2796
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
-msgstr "softwarechannel_removerepo：从软件通道中去除软件源"
+msgstr "softwarechannel_removerepo：从软件通道中去除储存库"
 
 #: ../src/spacecmd/softwarechannel.py:2797
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
@@ -6376,7 +6376,7 @@ msgstr "用法：softwarechannel_removerepo CHANNEL REPO"
 
 #: ../src/spacecmd/softwarechannel.py:2839
 msgid "softwarechannel_listrepos: List the repos for a software channel"
-msgstr "softwarechannel_listrepos：列出软件通道的软件源"
+msgstr "softwarechannel_listrepos：列出软件通道的储存库"
 
 #: ../src/spacecmd/softwarechannel.py:2840
 msgid "usage: softwarechannel_listrepos CHANNEL"
@@ -6384,7 +6384,7 @@ msgstr "用法：softwarechannel_listrepos CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:2863
 msgid "No repos have been found for this channel."
-msgstr "未找到此通道的软件源。"
+msgstr "未找到此通道的储存库。"
 
 #: ../src/spacecmd/softwarechannel.py:2870
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"

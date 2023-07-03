@@ -1,10 +1,10 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # We also test 'Bootstrapping using the command line' in this feature with the following script:
 # https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
 
-@skip_if_container
+@skip_if_github_validation
 @proxy
 @private_net
 @pxeboot_minion
@@ -146,8 +146,8 @@ Feature: PXE boot a terminal with Cobbler
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
-    And I stop salt-minion on the PXE boot minion
 
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
     Given I am on the Systems overview page of this "proxy"
@@ -163,6 +163,7 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
 

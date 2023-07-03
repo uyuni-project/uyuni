@@ -19,7 +19,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
@@ -390,6 +389,12 @@ public class UserImpl extends BaseDomainHelper implements User {
          * authenticate via pam, otherwise, use the db.
          */
         if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
+            if (password.startsWith(CryptHelper.getMD5Prefix())) {
+                // password field in DB is NOT NULL, so we set a random password
+                // when using PAM authentication. Here the password is still MD5
+                // based. Just set a new one with SHA256crypt
+                setPassword(CryptHelper.getRandomPasswordForPamAuth());
+            }
             Pam pam = new Pam(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
@@ -408,13 +413,6 @@ public class UserImpl extends BaseDomainHelper implements User {
                 // user uses SHA-256 encrypted password
                 if (password.startsWith(CryptHelper.getSHA256Prefix())) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
-                }
-                // user still uses MD5 encrypted password
-                else if (password.startsWith(CryptHelper.getMD5Prefix()) &&
-                        MD5Crypt.crypt(thePassword, password).equals(password)) {
-                    // if authenticated with md5 pass, convert it to sha-256
-                    setPassword(thePassword);
-                    result = true;
                 }
             }
             else {

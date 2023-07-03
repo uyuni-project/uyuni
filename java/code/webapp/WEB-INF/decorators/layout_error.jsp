@@ -32,7 +32,8 @@
 
     <c:set var="webTheme" value="${ConfigDefaults.get().getDefaultWebTheme()}"/>
     <!-- import styles -->
-    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" />
+    <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" disabled="disabled" />
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${ConfigDefaults.get().getDefaultLocale()}"/>

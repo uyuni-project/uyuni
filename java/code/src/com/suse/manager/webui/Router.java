@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -233,6 +234,9 @@ public class Router implements SparkApplication {
 
         // Saltboot
         SaltbootController.initRoutes();
+
+        // if the calls above opened Hibernate session, close it now
+        HibernateFactory.closeSession();
     }
 
     private void initNotFoundRoutes(JadeTemplateEngine jade) {

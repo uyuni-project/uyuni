@@ -123,6 +123,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testWriteRepomdFiles() throws Exception {
         RpmRepositoryWriter writer = new RpmRepositoryWriter("rhn/repodata", mountPointDir.toAbsolutePath().toString());
+        writer.setCommitTransaction(false);
 
         com.redhat.rhn.domain.rhnpackage.Package pkg1 = PackageManagerTest.addPackageToChannel("pkg1", channel);
         pkg1.setVendor(null);

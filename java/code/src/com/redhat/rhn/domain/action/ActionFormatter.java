@@ -22,8 +22,9 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.ConstructorException;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -39,6 +40,8 @@ import java.util.Map;
 public class ActionFormatter {
 
     private Action action;
+
+    private static final Logger LOG = LogManager.getLogger(ActionFormatter.class);
 
     /**
      * Create an ActionFormatter with the associated Action.
@@ -236,9 +239,10 @@ public class ActionFormatter {
         try {
             @SuppressWarnings("unchecked")
             Map<String, Map<String, Object>> payload = yaml.loadAs(msg, Map.class);
-            payload.entrySet().stream().forEach(e -> result.add(new StateResult(e)));
+            payload.entrySet().forEach(e -> result.add(new StateResult(e)));
         }
-        catch (ConstructorException ce) {
+        catch (Exception ce) {
+            LOG.warn("Unable to parse result message: {}\n{}", ce, msg);
             return StringEscapeUtils.escapeHtml4(msg);
         }
         return ActionFormatter.formatSaltResultMessage(result);

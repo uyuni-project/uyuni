@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_container
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Bootstrapping with reactivation key
@@ -56,6 +56,7 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check the events history for the reactivation
     Given I am on the Systems overview page of this "sle_minion"
@@ -70,6 +71,7 @@ Feature: Bootstrapping with reactivation key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a SLES minion after reactivation tests
@@ -85,3 +87,4 @@ Feature: Bootstrapping with reactivation key
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"

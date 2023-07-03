@@ -4,7 +4,12 @@
 # means that the page was refreshed, but in case of a timeout or other error,
 # we included a manual refresh and a simple navigation step to make sure the UI
 # is indeed up and running after the restart.
+#
+# This feature can cause failures in the following features:
+# All features following this one if the server fails to restart.
 
+@skip_if_github_validation
+@skip_if_container_server
 Feature: Restart the spacewalk services via UI
 
   Scenario: Restart the SUSE Manager through the WebUI Admin option

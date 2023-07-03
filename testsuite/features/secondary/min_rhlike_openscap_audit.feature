@@ -12,13 +12,13 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  @skip_if_container
+  @skip_if_github_validation
   Scenario: Enable repositories for openSCAP on the Red Hat-like minion
     When I enable the repositories "Rocky-BaseOS Rocky-AppStream" on this "rhlike_minion"
     And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
     And I refresh the metadata for "rhlike_minion"
 
-  @skip_if_container
+  @skip_if_github_validation
   Scenario: Install the OpenSCAP packages on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     And I install OpenSCAP dependencies on "rhlike_minion"
@@ -75,13 +75,13 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  @skip_if_container
+  @skip_if_github_validation
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
     And I disable repository "Rocky-BaseOS" on this "rhlike_minion"
     And I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
 
-  @skip_if_container
+  @skip_if_github_validation
   Scenario: Cleanup: restore the base channel for the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area

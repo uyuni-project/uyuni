@@ -1,0 +1,12 @@
+set pxeboot_ipv4 [lindex $argv 0]
+set timeout 20
+
+spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $pxeboot_ipv4
+match_max 100000
+expect "*?assword:*"
+send -- "linux\r"
+expect "#"
+send -- "while test `systemctl is-active salt-minion` == 'active'; do sleep 1; done\r"
+expect "#"
+send -- "exit\r"
+puts "\r"

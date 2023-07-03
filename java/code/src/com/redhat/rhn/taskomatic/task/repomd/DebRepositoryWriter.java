@@ -124,6 +124,11 @@ public class DebRepositoryWriter extends RepositoryWriter {
                 for (PackageDto pkgDto : packageBatch) {
                     writer.addPackage(pkgDto);
                 }
+                log.info("Processed {} packages", i + packageBatch.getEnd());
+                if (commitTransaction) {
+                    // commit pre generated package snippets in the cache
+                    HibernateFactory.commitTransaction();
+                }
             }
             packagesFile = writer.getFilenamePackages();
         }

@@ -27024,7 +27024,7 @@ given channel.</source>
         <target>Ya existen credenciales con este nombre de usuario</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="needs-adaptation">Derechos de autor © 2011-2019 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -27798,6 +27798,13 @@ given channel.</source>
  
       <trans-unit id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

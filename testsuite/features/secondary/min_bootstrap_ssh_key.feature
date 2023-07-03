@@ -1,10 +1,12 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This feature is a dependency for:
-# - features/secondary/min_bootstrap_script.feature : Due to the registration of a SLES Minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_bootstrap_script.feature
+# If the minion fails to bootstrap again.
 
-@skip_if_container
+@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 
@@ -17,6 +19,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Prepare the minion for SSH key authentication

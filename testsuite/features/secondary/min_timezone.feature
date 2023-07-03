@@ -4,7 +4,7 @@
 # This is a known bug: https://bugzilla.suse.com/show_bug.cgi?id=1209231
 # Until is fixed, let's skip it in the container, as it will confuse
 # users.
-@skip_if_container
+@skip_if_github_validation
 @scope_visualization
 @sle_minion
 Feature: Correct timezone display 
@@ -81,8 +81,9 @@ Feature: Correct timezone display
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-  Scenario: Cleanup: Log in as admin user again
+  Scenario: Cleanup: Log in as admin user again and remove scheduled actions
     Given I am authorized for the "Admin" section
+    And I cancel all scheduled actions
 
   Scenario: Cleanup: Remove role
     When I follow the left menu "Users > User List > Active"

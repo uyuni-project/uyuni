@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.integration;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.common.util.SHA256Crypt;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
@@ -93,15 +93,15 @@ public class IntegrationService {
             passwd = Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1);
         }
         else {
-            SecureRandom random = new SecureRandom();
-            byte[] bytes = new byte[512];
-            random.nextBytes(bytes);
-            String digestAsHex = new DigestUtils("SHA3-256").digestAsHex(bytes);
-            // Store the digestAsHex number in our map and send over the encoded version of it.
-            // On the return checkRandomToken() call we will decode the encoded data to make sure it is the
+            String sha256random = SHA256Crypt.sha256Hex(RandomStringUtils.random(64, 0, 0,
+                    false, false, SessionSwap.HEX_CHARS, new SecureRandom()));
+            // Store the sha256random number in our map
+            // and send over the encoded version of it.
+            // On the return checkRandomToken() call
+            // we will decode the encoded data to make sure it is the
             // unaltered random number.
-            randomTokenStore.put(login, digestAsHex);
-            passwd = SessionSwap.encodeData(digestAsHex);
+            randomTokenStore.put(login, sha256random);
+            passwd = SessionSwap.encodeData(sha256random);
         }
 
         log.debug("Authorize called with username: {}", login);

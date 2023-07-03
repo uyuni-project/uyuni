@@ -75,7 +75,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
                 throw new IllegalArgumentException(location);
             }
         }
-        location = url.toExternalForm();
+        location = url.toExternalForm().replace("http:", "https:");
         super.sendRedirect(location);
     }
 

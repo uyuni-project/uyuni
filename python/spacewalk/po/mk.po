@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-28 14:47+0200\n"
-"PO-Revision-Date: 2023-05-05 06:14+0000\n"
+"POT-Creation-Date: 2023-06-30 15:17+0200\n"
+"PO-Revision-Date: 2023-05-29 06:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -304,33 +304,34 @@ msgstr "Токен '%s' има повеќе од еден назначен ба�
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Конфликтни базни канали"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Не успеа да се додаде сервер во групата %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Достигнат е максимален број на користење од %s"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"Редење на токени за пререгистрација со различни основни права не е поддржано"
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Не можеше да се најде токенот \"%s\""
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Токен од неусогласени организации"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
@@ -1133,16 +1134,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:115 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:110 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:118
+#: ../satellite_tools/reposync.py:113
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:126 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:121 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 

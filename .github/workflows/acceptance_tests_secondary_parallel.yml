@@ -1,0 +1,19 @@
+name: acceptance-tests-secondary-parallel
+on:
+  pull_request:
+    paths:
+      - 'java/**'
+      - 'web/html/src/**'
+      - 'testsuite/**'
+      - '.github/workflows/acceptance_tests_secondary_parallel.yml'
+      - '.github/workflows/acceptance_tests_common.yml'
+      - '!java/*.changes*'
+jobs:
+  test-uyuni:
+    uses: ./.github/workflows/acceptance_tests_common.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      secondary_tests: "18_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"

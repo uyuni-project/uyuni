@@ -37,7 +37,7 @@ rel-eng/ @uyuni-project/release-engineering
 tito.props @uyuni-project/release-engineering
 
 # Cobbler
-java/conf/cobbler/snippets/ @SchoolGuy
+java/conf/cobbler/snippets/ @uyuni-project/python
 
 # Python
 *.py @uyuni-project/python
@@ -65,6 +65,9 @@ testsuite/ @uyuni-project/qe
 
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt
+
+# Generic fallback for Java
+java/ @uyuni-project/java
 
 # Individual Java packages
 

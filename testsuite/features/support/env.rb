@@ -43,6 +43,7 @@ Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV["PROVIDER"].include? 'aws'
 $is_container_provider = ENV["PROVIDER"].include? 'podman'
+$is_container_server = ['k3s', 'podman'].include? ENV.fetch("CONTAINER_RUNTIME", '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
@@ -97,6 +98,8 @@ Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
 Capybara.default_normalize_ws = true
+Capybara.enable_aria_label = true
+Capybara.automatic_label_click = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
@@ -316,52 +319,60 @@ Before('@debian11_ssh_minion') do
   skip_this_scenario unless $debian11_ssh_minion
 end
 
-Before('@sle12sp4_ssh_minion') do
-  skip_this_scenario unless $sle12sp4_ssh_minion
-end
-
 Before('@sle12sp4_minion') do
   skip_this_scenario unless $sle12sp4_minion
 end
 
-Before('@sle12sp5_ssh_minion') do
-  skip_this_scenario unless $sle12sp5_ssh_minion
+Before('@sle12sp4_ssh_minion') do
+  skip_this_scenario unless $sle12sp4_ssh_minion
 end
 
 Before('@sle12sp5_minion') do
   skip_this_scenario unless $sle12sp5_minion
 end
 
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless $sle15sp1_ssh_minion
+Before('@sle12sp5_ssh_minion') do
+  skip_this_scenario unless $sle12sp5_ssh_minion
 end
 
 Before('@sle15sp1_minion') do
   skip_this_scenario unless $sle15sp1_minion
 end
 
-Before('@sle15sp2_ssh_minion') do
-  skip_this_scenario unless $sle15sp2_ssh_minion
+Before('@sle15sp1_ssh_minion') do
+  skip_this_scenario unless $sle15sp1_ssh_minion
 end
 
 Before('@sle15sp2_minion') do
   skip_this_scenario unless $sle15sp2_minion
 end
 
-Before('@sle15sp3_ssh_minion') do
-  skip_this_scenario unless $sle15sp3_ssh_minion
+Before('@sle15sp2_ssh_minion') do
+  skip_this_scenario unless $sle15sp2_ssh_minion
 end
 
 Before('@sle15sp3_minion') do
   skip_this_scenario unless $sle15sp3_minion
 end
 
-Before('@sle15sp4_ssh_minion') do
-  skip_this_scenario unless $sle15sp4_ssh_minion
+Before('@sle15sp3_ssh_minion') do
+  skip_this_scenario unless $sle15sp3_ssh_minion
 end
 
 Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
+end
+
+Before('@sle15sp4_ssh_minion') do
+  skip_this_scenario unless $sle15sp4_ssh_minion
+end
+
+Before('@sle15sp5_minion') do
+  skip_this_scenario unless $sle15sp5_minion
+end
+
+Before('@sle15sp5_ssh_minion') do
+  skip_this_scenario unless $sle15sp5_ssh_minion
 end
 
 Before('@opensuse154arm_minion') do
@@ -370,6 +381,14 @@ end
 
 Before('@opensuse154arm_ssh_minion') do
   skip_this_scenario unless $opensuse154arm_ssh_minion
+end
+
+Before('@opensuse155arm_minion') do
+  skip_this_scenario unless $opensuse155arm_minion
+end
+
+Before('@opensuse155arm_ssh_minion') do
+  skip_this_scenario unless $opensuse155arm_ssh_minion
 end
 
 Before('@slemicro') do |scenario|
@@ -516,9 +535,14 @@ Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
 end
 
-# skip tests if executed in docker
-Before('@skip_if_container') do
+# skip tests if executed in containers for the githug validation
+Before('@skip_if_github_validation') do
   skip_this_scenario if $is_container_provider
+end
+
+# skip tests if the server runs in a container
+Before('@skip_if_container_server') do
+  skip_this_scenario if $is_container_server
 end
 
 # have more infos about the errors
