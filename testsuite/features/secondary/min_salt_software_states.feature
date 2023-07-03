@@ -33,6 +33,19 @@ Feature: Salt package states
     And I should see a "bunch was scheduled" text
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
+  Scenario: Pre-requisite: set the package states as unmanaged
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "States" in the content area
+    And I follow "Packages"
+    And I follow "Search"
+    And I should see a "Package States" text
+    And I list packages with "dummy"
+    And I wait until I see "andromeda-dummy" text
+    And I change the state of "virgo-dummy" to "Unmanaged" and ""
+    And I change the state of "andromeda-dummy" to "Unmanaged" and ""
+    And I click save
+    Then I wait until I see "Package states have been saved." text
+
   Scenario: Accepted minion has a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
