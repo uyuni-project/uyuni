@@ -62,6 +62,7 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_STARTTLS = "java.smtp_starttls";
     public static final String WEB_SMTP_USER = "java.smtp_user";
     public static final String WEB_SMTP_PASS = "java.smtp_pass";
+    public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
 
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
