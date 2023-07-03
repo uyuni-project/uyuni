@@ -1,4 +1,3 @@
-- Cleanup Method.Util for CobblerXMLRPC Helper
 - show error message in action result even on parser error
 - cache debian package metadata snippets in DB
 - Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
