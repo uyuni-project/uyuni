@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -112,7 +113,6 @@ public class CSVDownloadAction extends DownloadAction {
      * @param session HTTP session
      * @return page data
      */
-    @SuppressWarnings("unchecked")
     protected List<BaseDto> getPageData(HttpServletRequest request, HttpSession session) {
         String paramQuery = request.getParameter(QUERY_DATA);
         if (paramQuery != null) {
@@ -128,19 +128,7 @@ public class CSVDownloadAction extends DownloadAction {
             throw new IllegalArgumentException("Missing request parameter, " + EXPORT_COLUMNS);
         }
 
-        List<BaseDto> pageData = (List<BaseDto>) session.getAttribute(paramPageData);
-
-        // You would think that since the line above didn't throw an exceptions, then the list items are guaranteed
-        // to be of type BaseDto, but no.
-        // The casting above will succeed as long as getAttribute returns a List; it doesn't matter what the generic is.
-        if (pageData != null && !pageData.isEmpty() && !(pageData.get(0) instanceof BaseDto)) {
-            throw new IllegalStateException("Data to be exported as CSV should inherit BaseDto");
-        }
-
-        if (null == pageData) {
-            throw new IllegalArgumentException("Missing value for session attribute, " + paramPageData);
-        }
-        return pageData;
+        return ListUtils.typedList((List<?>) session.getAttribute(paramPageData), BaseDto.class);
     }
 
     /**
