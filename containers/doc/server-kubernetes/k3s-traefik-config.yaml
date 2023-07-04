@@ -36,6 +36,16 @@ spec:
         expose: true
         exposedPort: 8001
         protocol: TCP
+      psql-metrics:
+        port: 9187
+        expose: true
+        exposedPort: 9187
+        protocol: TCP
+      node-metrics:
+        port: 9101
+        expose: true
+        exposedPort: 9101
+        protocol: TCP
       tftp:
         port: 69
         expose: true
