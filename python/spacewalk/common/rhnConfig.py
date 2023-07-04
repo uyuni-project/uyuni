@@ -534,13 +534,7 @@ def initCFG(component=None, root=None, filename=None):
     CFG.init(component, root, filename)
     CFG.parse()
 
-try:
-    ALL_CFG = RHNOptions('')
-    ALL_CFG.parse()
-    PRODUCT_NAME = ALL_CFG.PRODUCT_NAME
-except ConfigParserError:
-    PRODUCT_NAME = "SUSE Manager"
-
+PRODUCT_NAME = "Uyuni"
 
 def isUyuni():
     return (PRODUCT_NAME == "Uyuni")
