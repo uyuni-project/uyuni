@@ -1,0 +1,1 @@
+- Use a constant to get the product name in python code rather than reading rhn.conf (bsc#1212943)
