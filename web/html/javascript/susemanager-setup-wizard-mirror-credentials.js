@@ -107,7 +107,6 @@ function verifyCredentials(id, refresh) {
   const responseHandler = (result) => {
     jQuery('#' + elemId).html(result);
     jQuery('#' + elemId).fadeIn();
-    columnHeight();
     setDeleteAllowed(id, true);
   };
 
