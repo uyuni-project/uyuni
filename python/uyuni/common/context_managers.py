@@ -1,6 +1,12 @@
 """Collection of context managers for Uyuni."""
 from contextlib import contextmanager
-from spacewalk.common.rhnConfig import CFG, initCFG
+import importlib
+
+# will hold spacewalk.common.rhnConfig after it was imported lazily in `cfg_component`
+# importing is done lazily to defer the file I/O, which makes it easier to import this
+# (context_managers) module
+rhnConfig = None
+
 
 @contextmanager
 def cfg_component(component, root=None, filename=None):
@@ -21,6 +27,11 @@ def cfg_component(component, root=None, filename=None):
     with cfg_component('my_component') as CFG:
         print(CFG.my_value)
     """
+    global rhnConfig
+    if rhnConfig is None:
+        rhnConfig = importlib.import_module("spacewalk.common.rhnConfig")
+    CFG, initCFG = rhnConfig.CFG, rhnConfig.initCFG
+
     previous = CFG.getComponent()
     initCFG(component=component, root=root, filename=filename)
     try:
