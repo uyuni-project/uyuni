@@ -73,7 +73,7 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
-    - node-exporter
+    - node-metrics
   routes:
     - match: HostSNI(`*`)
       services:
@@ -83,30 +83,16 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: postgres-exporter-router
+  name: postgresql-exporter-router
   namespace: "{{ .Release.Namespace }}"
 spec:
   entryPoints:
-    - postgres-exporter
+    - psql-metrics
   routes:
     - match: HostSNI(`*`)
       services:
       - name: uyuni-tcp
         port: 9187
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRouteTCP
-metadata:
-  name: taskomatic-router
-  namespace: "{{ .Release.Namespace }}"
-spec:
-  entryPoints:
-    - taskomatic
-  routes:
-    - match: HostSNI(`*`)
-      services:
-      - name: uyuni-tcp
-        port: 9800
 {{- end }}
 {{- if .Values.exposeJavaDebug }}
 ---
