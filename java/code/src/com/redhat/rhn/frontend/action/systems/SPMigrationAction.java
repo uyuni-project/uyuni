@@ -326,7 +326,7 @@ public class SPMigrationAction extends RhnAction {
             try {
                 Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
                         server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest,
-                        GlobalInstanceHolder.PAYG_MANAGER);
+                        GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance());
 
                 // Display a message to the user
                 String product = targetProductSet.getBaseProduct().getFriendlyName();
