@@ -247,40 +247,29 @@ public class SystemHandler extends BaseHandler {
     /**
      * Instantiates a new system handler.
      *
-     * @param taskomaticApiIn the taskomatic api
-     * @param xmlRpcSystemHelperIn the xml rpc system helper
+     * @param taskomaticApiIn            the taskomatic api
+     * @param xmlRpcSystemHelperIn       the xml rpc system helper
      * @param systemEntitlementManagerIn the system entitlement manager
-     * @param systemManagerIn the system manager
+     * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
+     * @param cloudPaygManager           the pay-as-you-go manager. If null, the one from GlobalInstanceHolder is used.
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
-            SystemEntitlementManager systemEntitlementManagerIn,
-            SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn) {
+                         SystemEntitlementManager systemEntitlementManagerIn,
+                         SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
+                         CloudPaygManager cloudPaygManager) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
         this.systemManager = systemManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
-        this.cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
-    }
-
-    /**
-     * Instantiates a new system handler for testing purposes. It allows to inject a fake CloudPaygManager object.
-     * @param taskomaticApiIn the taskomatic api
-     * @param xmlRpcSystemHelperIn the xml rpc system helper
-     * @param systemEntitlementManagerIn the system entitlement manager
-     * @param systemManagerIn the system manager
-     * @param serverGroupManagerIn
-     * @param cloudPaygManagerIn fake CloudPaygManager for testing purposes
-     */
-    public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
-                         SystemEntitlementManager systemEntitlementManagerIn,
-                         SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
-                         CloudPaygManager cloudPaygManagerIn) {
-        this(taskomaticApiIn, xmlRpcSystemHelperIn, systemEntitlementManagerIn, systemManagerIn, serverGroupManagerIn);
-        if (cloudPaygManagerIn != null) {
-            cloudPaygManager = cloudPaygManagerIn;
+        if (cloudPaygManager == null) {
+            this.cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
         }
+        else {
+            this.cloudPaygManager = cloudPaygManager;
+        }
+
     }
 
     /**
@@ -7867,7 +7856,7 @@ public class SystemHandler extends BaseHandler {
                     }
                     return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
                             targetProducts, channelIDs, dryRun, allowVendorChange,
-                            earliestOccurrence, cloudPaygManager);
+                            earliestOccurrence, cloudPaygManager.isPaygInstance());
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -7878,7 +7867,7 @@ public class SystemHandler extends BaseHandler {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
                         return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
                                 targetProducts, channelIDs, dryRun, allowVendorChange,
-                                earliestOccurrence, cloudPaygManager);
+                                earliestOccurrence, cloudPaygManager.isPaygInstance());
                     }
                 }
             }
@@ -7976,18 +7965,18 @@ public class SystemHandler extends BaseHandler {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
             return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
                     channelIDs, dryRun, allowVendorChange,
-                    earliestOccurrence, cloudPaygManager);
+                    earliestOccurrence, cloudPaygManager.isPaygInstance());
+        }
+        catch (DistUpgradePaygException e) {
+            // We are not allowing product migration in SUMA PAYG instance
+            throw new FaultException(-1, "productMigrationNotAllowedPayg",
+                    "Product migration in SUSE Manager PAYG is not allowed");
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
-        }
-        catch (DistUpgradePaygException e) {
-            // We are not allowing product migration in SUMA PAYG instance
-            throw new FaultException(-1, "productMigrationNotAllowedPayg",
-                    "Product migration in SUSE Manager PAYG is not allowed");
         }
     }
     /**
