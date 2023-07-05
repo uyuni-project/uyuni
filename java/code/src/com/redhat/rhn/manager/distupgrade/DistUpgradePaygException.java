@@ -22,6 +22,7 @@ public class DistUpgradePaygException extends DistUpgradeException {
 
     /**
      * Constructor
+     * @param message the cause
      */
     public DistUpgradePaygException(String message) {
         super(message);
