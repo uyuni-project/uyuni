@@ -17,12 +17,6 @@
 #
 
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
-%global build_py3   1
-%endif
-
-%define pythonX %{?build_py3: python3}%{!?build_py3: python}
-
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
 Group:          Applications/Internet
@@ -32,7 +26,7 @@ Version:        4.4.5
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       %{pythonX}
+Requires:       python3
 Requires:       lsof
 Requires:       procps
 Requires:       python3-websockify
@@ -79,9 +73,6 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
 %{_bindir}/pod2man --section=8 man/rhn-deploy-ca-cert.pl.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-deploy-ca-cert.pl.8
 %{_bindir}/pod2man --section=8 man/rhn-install-ssl-cert.pl.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-install-ssl-cert.pl.8
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
-%if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/salt-secrets-config.py
-%endif
 
 %post
 if [ -x /usr/bin/systemctl ]; then
