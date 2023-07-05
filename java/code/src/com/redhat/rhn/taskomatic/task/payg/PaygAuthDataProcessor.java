@@ -31,6 +31,7 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -126,10 +127,15 @@ public class PaygAuthDataProcessor {
         URI credentialsURI = new URI("https", paygData.getRmtHost().get("hostname"), "/repo", null);
         credentials.setUrl(credentialsURI.toString());
 
-        if (paygData.getHeaderAuth() != null && paygData.getHeaderAuth().contains(":")) {
-            String[] headSplit = paygData.getHeaderAuth().split(":", 2);
+        List<String> paygDataHeaders = paygData.getHeaders();
+        if (CollectionUtils.isNotEmpty(paygDataHeaders)) {
             Map<String, String> headers = new HashMap<>();
-            headers.put(headSplit[0], headSplit[1]);
+
+            paygDataHeaders.stream()
+                           .filter(header -> header.contains(":"))
+                           .map(header -> header.split(":", 2))
+                           .forEach(split -> headers.put(split[0], split[1]));
+
             credentials.setExtraAuthData(GSON.toJson(headers).getBytes());
         }
         credentials.setPaygSshData(instance);

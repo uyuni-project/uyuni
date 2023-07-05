@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.beans;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class PaygInstanceInfo {
     @SerializedName("basic_auth")
     private Map<String, String> basicAuth;
     @SerializedName("header_auth")
-    private String headerAuth;
+    private List<String> headers;
     @SerializedName("rmt_host")
     private Map<String, String> rmtHost;
 
@@ -36,15 +37,15 @@ public class PaygInstanceInfo {
      * Constructor with all parameters
      * @param productsIn
      * @param basicAuthIn
-     * @param headerAuthIn
+     * @param headersIn
      * @param rmtHostIn
      */
     public PaygInstanceInfo(List<PaygProductInfo> productsIn,
                             Map<String, String> basicAuthIn,
-                            String headerAuthIn, Map<String, String> rmtHostIn) {
+                            List<String> headersIn, Map<String, String> rmtHostIn) {
         this.products = productsIn;
         this.basicAuth = basicAuthIn;
-        this.headerAuth = headerAuthIn;
+        this.headers = new ArrayList<>(headersIn);
         this.rmtHost = rmtHostIn;
     }
 
@@ -64,12 +65,12 @@ public class PaygInstanceInfo {
         this.basicAuth = basicAuthIn;
     }
 
-    public String getHeaderAuth() {
-        return headerAuth;
+    public List<String> getHeaders() {
+        return headers;
     }
 
-    public void setHeaderAuth(String headerAuthIn) {
-        this.headerAuth = headerAuthIn;
+    public void setHeaders(List<String> headersIn) {
+        this.headers = headersIn;
     }
 
     public Map<String, String> getRmtHost() {
