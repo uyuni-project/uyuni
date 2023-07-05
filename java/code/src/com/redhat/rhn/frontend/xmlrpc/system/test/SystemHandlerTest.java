@@ -229,7 +229,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    serverGroupManager);
+                    serverGroupManager, null);
 
     @RegisterExtension
     protected final Mockery mockContext = new JUnit5Mockery() {{
@@ -3598,7 +3598,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, null);
 
         mockContext.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
