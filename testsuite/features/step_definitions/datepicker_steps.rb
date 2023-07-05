@@ -12,7 +12,7 @@ require 'date'
 def get_future_time(minutes_to_add)
   now = Time.new
   future_time = now + 60 * minutes_to_add.to_i
-  future_time.strftime('%l:%M %P').to_s.strip
+  future_time.strftime('%k:%M').to_s.strip
 end
 
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
@@ -73,8 +73,7 @@ When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
   raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
 
-  execute_script("$('#date_timepicker_widget_input')
-    .timepicker('setTime', '#{action_time}').trigger('change');")
+  step %(I enter "#{action_time}" as "date_timepicker_widget_input")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
