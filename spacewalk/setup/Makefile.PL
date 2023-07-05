@@ -11,14 +11,11 @@ WriteMakefile(
     EXE_FILES           => ['bin/spacewalk-setup',
                             'bin/spacewalk-make-mount-points',
                             'bin/spacewalk-setup-cobbler',
-                            'bin/spacewalk-setup-httpd',
-                            'bin/spacewalk-setup-sudoers'],
+                            'bin/spacewalk-setup-httpd'],
     PREREQ_PM => {
         'Test::More' => 0,
     },
-    MAN1PODS		=> { 'lib/Spacewalk/Setup.pm' => '$(INST_MAN1DIR)/spacewalk-setup.$(MAN1EXT)',
-        'bin/spacewalk-setup-sudoers' => '$(INST_MAN1DIR)/spacewalk-setup-sudoers.$(MAN1EXT)',
-			},
+    MAN1PODS		=> { 'lib/Spacewalk/Setup.pm' => '$(INST_MAN1DIR)/spacewalk-setup.$(MAN1EXT)', },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Spacewalk-Setup-*' },
 );

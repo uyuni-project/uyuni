@@ -130,8 +130,6 @@ if(not $opts{"skip-initial-configuration"}) {
     chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
 }
 
-setup_sudoers();
-
 
 print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
 setup_mod_ssl(\%opts, \%answers);
@@ -383,11 +381,6 @@ sub setup_cc {
       -password => 1);
 }
 
-sub setup_sudoers {
-  Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-sudoers', ''], 1,
-    'Could not setup sudo for Spacewalk commands.');
-  return;
-}
 
 sub passwords_match {
   my $password_1 = shift;
