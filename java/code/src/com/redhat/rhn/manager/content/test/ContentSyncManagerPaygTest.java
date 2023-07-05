@@ -97,7 +97,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
                 rmtHost.put("ip", "18.156.40.199");
                 rmtHost.put("server_ca", "-----BEGIN CERTIFICATE-----");
 
-                return new PaygInstanceInfo(products, basicAuth, headerAuth, rmtHost);
+                return new PaygInstanceInfo(products, basicAuth, List.of(headerAuth), rmtHost);
             }
         };
         PAYG_DATA_TASK.setPaygDataExtractor(paygAuthDataExtractorMock);

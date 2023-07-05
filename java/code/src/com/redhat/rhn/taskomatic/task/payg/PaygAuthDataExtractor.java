@@ -56,10 +56,10 @@ public class PaygAuthDataExtractor {
 
     private static final Logger LOG = LogManager.getLogger(PaygAuthDataExtractor.class);
 
-    private final Gson GSON = new GsonBuilder()
-            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
-            .serializeNulls()
-            .create();
+    private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+        .serializeNulls()
+        .create();
 
     private PaygInstanceInfo processOutput(int exitStatus, String error, String output) {
         if (exitStatus != 0 || error.length() > 0) {
@@ -102,7 +102,7 @@ public class PaygAuthDataExtractor {
                     sshBastion.addIdentity("bastionkey", instance.getBastionKey().getBytes(), null,
                             bastionAuthKeyPassIn.getBytes());
                 }
-                Integer bastionSshPortIn = instance.getBastionPort() != null ? instance.getBastionPort() : 22;
+                int bastionSshPortIn = instance.getBastionPort() != null ? instance.getBastionPort() : 22;
                 sessionBastion = sshBastion.getSession(instance.getBastionUsername(), instance.getBastionHost(),
                         bastionSshPortIn);
                 if (!StringUtils.isEmpty(instance.getBastionPassword())) {
@@ -240,6 +240,7 @@ public class PaygAuthDataExtractor {
                     .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch().getLabel()))
                     .collect(Collectors.toList());
             paygInstanceInfo.getProducts().addAll(slemtProductInfos);
+
             return paygInstanceInfo;
         }
         else {
