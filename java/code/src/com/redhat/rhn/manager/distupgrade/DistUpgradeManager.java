@@ -49,7 +49,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.utils.Lists;
 import com.suse.utils.Opt;
 
@@ -700,7 +699,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param isPayg tells the method how to behave if SUMA is PAYG
      * @return the action ID
      * @throws TaskomaticApiException if there was a Taskomatic error
-     * @throws DistUpgradePaygException
+     * @throws DistUpgradePaygException if the SUSE Manager instance is PAYG.
      */
     public static Long scheduleDistUpgrade(User user, Server server,
                                            SUSEProductSet targetSet, Collection<Long> channelIDs,
