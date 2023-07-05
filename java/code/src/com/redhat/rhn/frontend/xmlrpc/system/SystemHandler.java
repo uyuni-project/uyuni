@@ -252,22 +252,22 @@ public class SystemHandler extends BaseHandler {
      * @param systemEntitlementManagerIn the system entitlement manager
      * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
-     * @param cloudPaygManager           the pay-as-you-go manager. If null, the one from GlobalInstanceHolder is used.
+     * @param cloudPaygManagerIn         the pay-as-you-go manager. If null, the one from GlobalInstanceHolder is used.
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
                          SystemEntitlementManager systemEntitlementManagerIn,
                          SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
-                         CloudPaygManager cloudPaygManager) {
+                         CloudPaygManager cloudPaygManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
         this.systemManager = systemManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
-        if (cloudPaygManager == null) {
+        if (cloudPaygManagerIn == null) {
             this.cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
         }
         else {
-            this.cloudPaygManager = cloudPaygManager;
+            this.cloudPaygManager = cloudPaygManagerIn;
         }
 
     }
