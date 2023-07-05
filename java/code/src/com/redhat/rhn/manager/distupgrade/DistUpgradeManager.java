@@ -692,7 +692,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param dryRun perform a dry run
      * @param allowVendorChange allow vendor change during dist upgrade
      * @param earliest earliest schedule date
-     * @param cloudPaygManager manager to see if this SUMA instance is PAYG
+     * @param isPayg tells the method how to behave if SUMA is PAYG
      * @return the action ID
      * @throws TaskomaticApiException if there was a Taskomatic error
      * @throws DistUpgradePaygException
@@ -700,10 +700,10 @@ public class DistUpgradeManager extends BaseManager {
     public static Long scheduleDistUpgrade(User user, Server server,
                                            SUSEProductSet targetSet, Collection<Long> channelIDs,
                                            boolean dryRun, boolean allowVendorChange, Date earliest,
-                                           CloudPaygManager cloudPaygManager)
+                                           boolean isPayg)
             throws TaskomaticApiException, DistUpgradePaygException {
 
-        if (cloudPaygManager.isPaygInstance()) {
+        if (isPayg) {
             /*
             In the future we probably would like to allow product migrations to same product but different
             version and just forbid migrating from different products. At the moment we are just blocking
@@ -711,11 +711,10 @@ public class DistUpgradeManager extends BaseManager {
             I.e: Allow migration from SLES 15 SP4 to SLES 15 SP5.
                  Forbid migration from OpenSUSE Leap 15.4 to SLES 15 SP4
             */
-            throw new DistUpgradePaygException();
+            throw new DistUpgradePaygException("In PAYG SUMA instances, products migrations is forbidden");
         }
-        else {
-            return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
-        }
+
+        return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
     }
 
     /**
