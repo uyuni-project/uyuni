@@ -501,7 +501,7 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.getDetails = MagicMock(
             return_value={"packages": [
                 {"name": "libzypp", "arch": "ZX80"},
-                {"name": "java-11-openjdk-devel", "arch": "CBM64"},
+                {"name": "java-17-openjdk-devel", "arch": "CBM64"},
             ]}
         )
 
@@ -512,7 +512,7 @@ class TestSCActivationKeyMethods:
         assert len(mprint.call_args_list) == 2
         # keep ordering
         assert mprint.call_args_list[0][0][0] == "libzypp.ZX80"
-        assert mprint.call_args_list[1][0][0] == "java-11-openjdk-devel.CBM64"
+        assert mprint.call_args_list[1][0][0] == "java-17-openjdk-devel.CBM64"
 
     def test_do_activationkey_listpackages_args_noarch(self, shell):
         """
@@ -522,7 +522,7 @@ class TestSCActivationKeyMethods:
         shell.client.activationkey.getDetails = MagicMock(
             return_value={"packages": [
                 {"name": "libzypp"},
-                {"name": "java-11-openjdk-devel"},
+                {"name": "java-17-openjdk-devel"},
             ]}
         )
 
@@ -533,7 +533,7 @@ class TestSCActivationKeyMethods:
         assert len(mprint.call_args_list) == 2
         # keep ordering
         assert mprint.call_args_list[0][0][0] == "libzypp"
-        assert mprint.call_args_list[1][0][0] == "java-11-openjdk-devel"
+        assert mprint.call_args_list[1][0][0] == "java-17-openjdk-devel"
 
     def test_do_activationkey_listconfigchannels_noargs(self, shell):
         """
