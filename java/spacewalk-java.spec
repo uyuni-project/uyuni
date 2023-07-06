@@ -33,11 +33,13 @@
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
+%define java_version    17
 %else
 %define serverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define salt_user_group salt
 %define apache2         httpd
+%define java_version    1:17
 %endif
 
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
@@ -377,6 +379,7 @@ Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 
 Conflicts:      quartz < 2.0
+Conflicts:      java-11-openjdk
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -476,10 +479,6 @@ popd
 echo "Building apidoc asciidoc sources"
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-asciidoc
 
-# Don't use Java module com.sun.xml.bind if it isn't available. (only SUSE has it)
-if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
-    sed -i 's/--add-modules java.annotation,com.sun.xml.bind//' conf/default/rhn_taskomatic_daemon.conf
-fi
 
 %install
 PRODUCT_NAME="SUSE Manager"
@@ -490,6 +489,22 @@ PRODUCT_NAME="Uyuni"
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
 %endif
+
+# Set Java 17 as the default version
+JAVA17_PATH=$(update-alternatives --list java | grep "jre-17")
+update-alternatives --set java "$JAVA17_PATH"
+
+# In case we're updating a system that still has module com.sun.xml.bind, then removes it. (only SUSE has it, using java 11)
+if [$1 -eq 2]; then
+    if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
+        sed -i 's/--add-modules java.annotation,com.sun.xml.bind//' conf/default/rhn_taskomatic_daemon.conf
+        sed -i 's/--add-modules java.annotation,com.sun.xml.bind//' share/tomcat_java_opts_suse.conf
+    fi
+    # same applies for the following options related to tomcat
+    if [[ ! `grep UseConcMarkSweepGC share/tomcat_java_opts.conf` ]]; then
+        sed -i 's/-XX:MaxNewSize=256 -XX:-UseConcMarkSweepGC//' share/tomcat_java_opts.conf
+    fi
+fi
 
 export NO_BRP_STALE_LINK_ERROR=yes
 

@@ -18,10 +18,10 @@
 
 
 %if 0%{?suse_version}
-%define java_version   11
+%define java_version   17
 %global apache_group www
 %else
-%define java_version   1:11
+%define java_version   1:17
 %global apache_group apache
 %endif
 
@@ -64,7 +64,7 @@ BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
-BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
+BuildRequires:  (java-devel >= %{java_version} or java-17-openjdk-devel)
 %if 0%{?rhel}
 BuildRequires:  systemd-rpm-macros
 %endif
@@ -101,7 +101,7 @@ Spacewalk Server.
 
 %install
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
 %endif
 rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
