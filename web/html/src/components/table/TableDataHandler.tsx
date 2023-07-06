@@ -2,6 +2,7 @@ import * as React from "react";
 
 import _isEqual from "lodash/isEqual";
 
+import { t2 } from "core/intl";
 import { pageSize } from "core/user-preferences";
 
 import { Loading } from "components/utils";
@@ -406,7 +407,8 @@ export class TableDataHandler extends React.Component<Props, State> {
                     currentValue={this.state.itemsPerPage}
                     onChange={this.onItemsPerPageChange}
                   />{" "}
-                  {t("items per page")}
+                  {t2("items per page")}
+                  {t2("{foo} bar tea")}
                   {this.props.titleButtons}
                 </div>
               </div>
