@@ -5,9 +5,9 @@ import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 
 import com.suse.oval.db.*;
-import com.suse.oval.ovaltypes.Advisory;
-import com.suse.oval.ovaltypes.DefinitionType;
-import com.suse.oval.ovaltypes.ReferenceType;
+import com.suse.oval.manager.OvalObjectManager;
+import com.suse.oval.manager.OvalStateManager;
+import com.suse.oval.ovaltypes.*;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
@@ -140,6 +140,101 @@ public class OVALCachingFactory extends HibernateFactory {
         criteriaQuery.where(builder.equal(root.get("cpe"), cpe));
 
         return session.createQuery(criteriaQuery).uniqueResult();
+    }
+
+    public static void savePackageTests(List<TestType> ovalTests,
+                                        OvalObjectManager objectManager, OvalStateManager stateManager) {
+
+        for (int i = 0; i < ovalTests.size(); i++) {
+            TestType testType = ovalTests.get(i);
+            OVALPackageTest ovalPackageTest = new OVALPackageTest();
+            ovalPackageTest.setId(testType.getId());
+            ovalPackageTest.setComment(testType.getComment());
+            ovalPackageTest.setCheck(testType.getCheck());
+            ovalPackageTest.setCheckExistence(testType.getCheckExistence());
+            // TODO: fix!
+            ovalPackageTest.setRpm(true);
+
+            ObjectType objectType = objectManager.get(testType.getObject().getObjectRef());
+            OVALPackageObject ovalPackageObject = new OVALPackageObject();
+            ovalPackageObject.setId(objectType.getId());
+            ovalPackageObject.setComment(objectType.getComment());
+            ovalPackageObject.setPackageName(objectType.getPackageName());
+            ovalPackageObject.setRpm(true);
+
+            StateType stateType = testType.getStateRef().map(stateManager::get).orElse(null);
+            // TODO: fix!
+            if (stateType == null) {
+                throw new IllegalStateException();
+            }
+
+            OVALPackageState ovalPackageState = new OVALPackageState();
+            ovalPackageState.setId(stateType.getId());
+            ovalPackageState.setComment(stateType.getComment());
+            ovalPackageState.setOperator(stateType.getOperator());
+            ovalPackageState.setRpm(true);
+
+            OVALPackageEvrStateEntity ovalPackageEvrStateEntity = stateType.getPackageEVR().map(evrType -> {
+                OVALPackageEvrStateEntity result = new OVALPackageEvrStateEntity();
+                result.setEvr(evrType.getValue());
+                result.setDatatype(evrType.getDatatype());
+                result.setOperation(evrType.getOperation());
+
+                return result;
+            }).orElse(null);
+
+            ovalPackageTest.setPackageState(ovalPackageState);
+            ovalPackageTest.setPackageObject(ovalPackageObject);
+
+            HibernateFactory.doWithoutAutoFlushing(() -> {
+                if (ovalPackageEvrStateEntity != null) {
+                    ovalPackageState.setPackageEvrState(ovalPackageEvrStateEntity);
+                    getSession().save(ovalPackageEvrStateEntity);
+                }
+
+                getSession().merge(ovalPackageState);
+                getSession().merge(ovalPackageObject);
+                getSession().merge(ovalPackageTest);
+            });
+
+            if (i % 60 == 0) {
+                LOG.error("Saving '{}'", testType.getId());
+                getSession().flush();
+                getSession().clear();
+            }
+        }
+    }
+
+    private OVALPackageObject lookupOrInsetPackageObject(OVALPackageObject ovalPackageObject) {
+        OVALPackageObject lookup = lookupPackageObjectById(ovalPackageObject.getId());
+        if (lookup == null) {
+            instance.saveObject(ovalPackageObject);
+
+            return ovalPackageObject;
+        }
+
+        return lookup;
+    }
+
+    private OVALPackageTest lookupOrInsetPackageTest(OVALPackageTest ovalPackageTest) {
+        OVALPackageTest lookup = lookupPackageTestById(ovalPackageTest.getId());
+        if (lookup == null) {
+            instance.saveObject(ovalPackageTest);
+            return ovalPackageTest;
+        }
+
+        return lookup;
+    }
+
+    private OVALPackageState lookupOrInsetPackageState(OVALPackageState ovalPackageState) {
+        OVALPackageState lookup = lookupPackageStateById(ovalPackageState.getId());
+        if (lookup == null) {
+            instance.saveObject(ovalPackageState);
+
+            return ovalPackageState;
+        }
+
+        return lookup;
     }
 
     public static void savePackageTest(OVALPackageTest pkgTest) {

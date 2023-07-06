@@ -10,6 +10,7 @@ package com.suse.oval.ovaltypes;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;
+import java.util.Optional;
 
 
 /**
@@ -120,8 +121,8 @@ public class StateType {
         this.deprecated = value;
     }
 
-    public EVRType getPackageEVR() {
-        return packageEVR;
+    public Optional<EVRType> getPackageEVR() {
+        return Optional.ofNullable(packageEVR);
     }
 
     public void setPackageEVR(EVRType packageEVR) {
