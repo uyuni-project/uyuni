@@ -15,6 +15,17 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.MinionActionManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import com.suse.manager.virtualization.VirtualizationActionHelper;
 
 import org.cobbler.test.MockConnection;
 import org.hibernate.TransactionException;
@@ -36,7 +47,6 @@ public class TestCaseHelper {
         if (HibernateFactory.inTransaction()) {
             try {
                 HibernateFactory.rollbackTransaction();
-                // HibernateFactory.commitTransaction();
             }
             catch (TransactionException e) {
                 rollbackException = e;
@@ -52,5 +62,22 @@ public class TestCaseHelper {
 
         // In case someone disabled it and forgot to renable it.
         TestUtils.enableLocalizationLogging();
+
+        // Restore taskomatic API default implementations, in case test mocked it
+        restoreTaskomaticApi();
+    }
+
+    private static void restoreTaskomaticApi() {
+        TaskomaticApi taskomaticApi = new TaskomaticApi();
+
+        ActionChainManager.setTaskomaticApi(taskomaticApi);
+        ActionChainFactory.setTaskomaticApi(taskomaticApi);
+        ActionManager.setTaskomaticApi(taskomaticApi);
+        MinionActionManager.setTaskomaticApi(taskomaticApi);
+        ChannelManager.setTaskomaticApi(taskomaticApi);
+        ErrataManager.setTaskomaticApi(taskomaticApi);
+        RecurringActionManager.setTaskomaticApi(taskomaticApi);
+        VirtualizationActionHelper.setTaskomaticApi(taskomaticApi);
+        ImageInfoFactory.setTaskomaticApi(taskomaticApi);
     }
 }
