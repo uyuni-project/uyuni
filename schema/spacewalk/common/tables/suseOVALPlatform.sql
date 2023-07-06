@@ -15,9 +15,9 @@
 DROP TABLE IF EXISTS suseOVALPlatform;
 CREATE TABLE suseOVALPlatform
 (
-    id    NUMERIC NOT NULL
-        CONSTRAINT suse_oval_platform_id_pk PRIMARY KEY,
-    name    VARCHAR
+    id        NUMERIC NOT NULL
+                 CONSTRAINT suse_oval_platform_id_pk PRIMARY KEY,
+    cpe      VARCHAR
 );
 
 

@@ -25,7 +25,7 @@ import java.util.Set;
 })
 public class OVALPlatform {
     private Long id;
-    private String name;
+    private String cpe;
     private Set<OVALDefinition> definitions;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -52,19 +52,20 @@ public class OVALPlatform {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    @Column(name = "cpe")
+    public String getCpe() {
+        return cpe;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCpe(String name) {
+        this.cpe = name;
     }
 
     @Override
     public String toString() {
         return "OVALPlatform{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", cpe='" + cpe + '\'' +
                 '}';
     }
 

@@ -3,22 +3,22 @@ package com.suse.oval;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
+
 import com.suse.oval.db.*;
-import com.suse.oval.ovaltypes.AffectedType;
+import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.ReferenceType;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -47,12 +47,13 @@ public class OVALCachingFactory extends HibernateFactory {
 
             definition.setSource(source);
 
-            List<String> affectedPlatforms = definitionType.getMetadata().getAffected()
-                    .stream().map(AffectedType::getPlatforms).flatMap(List::stream)
-                    .collect(Collectors.toList());
+            // TODO: affected cpe list is not present in all OVAL files.
+            List<String> affectedCpeList = definitionType.getMetadata().getAdvisory()
+                    .map(Advisory::getAffectedCpeList)
+                    .orElse(Collections.emptyList());
 
             HibernateFactory.doWithoutAutoFlushing(
-                    () -> saveDefinition(definition, affectedPlatforms, definitionType.getMetadata().getReference())
+                    () -> saveDefinition(definition, affectedCpeList, definitionType.getMetadata().getReference())
             );
 
             if (i % 60 == 0) {
@@ -64,10 +65,10 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
 
-    private static void saveDefinition(OVALDefinition definition, List<String> affectedPlatforms, List<ReferenceType> references) {
+    private static void saveDefinition(OVALDefinition definition, List<String> affectedCpeList, List<ReferenceType> references) {
         definition.setAffectedPlatforms(
-                affectedPlatforms.stream()
-                        .map(OVALCachingFactory::lookupOrInsertPlatformByName)
+                affectedCpeList.stream()
+                        .map(OVALCachingFactory::lookupOrInsertPlatformByCpe)
                         .collect(Collectors.toList())
         );
 
@@ -106,37 +107,37 @@ public class OVALCachingFactory extends HibernateFactory {
     /**
      * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
      *
-     * @param name name of the platform
+     * @param cpe cpe of the platform
      * @return the platform
      */
-    public static OVALPlatform lookupOrInsertPlatformByName(String name) {
-        if (platformsMap.containsKey(name)) {
-            return platformsMap.get(name);
+    public static OVALPlatform lookupOrInsertPlatformByCpe(String cpe) {
+        if (platformsMap.containsKey(cpe)) {
+            return platformsMap.get(cpe);
         }
 
-        OVALPlatform platform = lookupPlatformByName(name);
+        OVALPlatform platform = lookupPlatformByCpe(cpe);
         if (platform == null) {
             OVALPlatform newPlatform = new OVALPlatform();
-            newPlatform.setName(name);
+            newPlatform.setCpe(cpe);
             instance.saveObject(newPlatform);
 
             platform = newPlatform;
         }
 
-        platformsMap.put(name, platform);
+        platformsMap.put(cpe, platform);
 
         return platform;
 
     }
 
-    public static OVALPlatform lookupPlatformByName(String name) {
+    public static OVALPlatform lookupPlatformByCpe(String cpe) {
         Session session = HibernateFactory.getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
         CriteriaQuery<OVALPlatform> criteriaQuery = builder.createQuery(OVALPlatform.class);
         Root<OVALPlatform> root = criteriaQuery.from(OVALPlatform.class);
 
-        criteriaQuery.where(builder.equal(root.get("name"), name));
+        criteriaQuery.where(builder.equal(root.get("cpe"), cpe));
 
         return session.createQuery(criteriaQuery).uniqueResult();
     }
@@ -195,7 +196,7 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static void assignVulnerablePackageToPlatform(String platformName, String cveName, String pkgName, String pkgFixVersion) {
-        OVALPlatform platform = lookupPlatformByName(platformName);
+        OVALPlatform platform = lookupPlatformByCpe(platformName);
         Cve cve = CveFactory.lookupByName(cveName);
         OVALVulnerablePackage vulnerablePkg = lookupOrInsertVulnerablePackage(pkgName, pkgFixVersion);
 
