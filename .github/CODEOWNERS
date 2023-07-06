@@ -66,8 +66,9 @@ testsuite/ @uyuni-project/qe
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt
 
-# Generic fallback for Java
+# Generic fallback for Java, apart from changelog files
 java/ @uyuni-project/java
+java/*.changes*
 
 # Individual Java packages
 
