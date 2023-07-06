@@ -121,7 +121,8 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(unentitler, entitler);
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
-        handler = new SystemHandler(taskomaticApi, xmlRpcHelper, entitlementManager, systemManager, groupManager, null);
+        handler = new SystemHandler(taskomaticApi, xmlRpcHelper, entitlementManager, systemManager, groupManager,
+                new CloudPaygManager());
 
         standard = PackageTest.createTestPackage(admin.getOrg());
         standardUpdated = PackageTestUtils.newVersionOfPackage(standard, null, "2.0.0", null, admin.getOrg());
