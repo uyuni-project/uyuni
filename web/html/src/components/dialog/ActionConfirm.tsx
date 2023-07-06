@@ -68,6 +68,7 @@ export class ActionConfirm extends React.Component<Props, State> {
             )}
             {this.props.selected.length === 1 && (
               <span>
+                {/* TODO: Here and below, this translation logic needs to be changed to whole sentences from parents */}
                 {t(
                   "Are you sure you want to {0} {1} ",
                   this.state.force && this.props.forceName

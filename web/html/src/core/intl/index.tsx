@@ -49,6 +49,11 @@ const intl = createIntl(
 export const t2 = <Message extends string, Values extends Record<string, any>>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
+  /**
+   * An object providing values to placeholders, e.g. for `"example {foo}"`, providing `{ foo: "text" }` would return `"example text"`.
+   *
+   * DOM nodes, React components, etc can also be used, e.g. `"example <bold>text</bold>"` and `{ bold: str => <b>{str}</b> }` would give `"example <b>text</b>"`.
+   */
   values?: Values
 ) => {
   console.log(`getting for "${defaultMessage}"`);
