@@ -3,6 +3,8 @@ package com.suse.oval.db;
 
 import com.suse.oval.ovaltypes.EVRDataTypeEnum;
 import com.suse.oval.ovaltypes.OperationEnumeration;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 
@@ -19,7 +21,8 @@ public class OVALPackageEvrStateEntity {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_oval_pkg_evr_state_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkg_evr_state_id_seq")
+    @SequenceGenerator(name = "pkg_evr_state_id_seq", sequenceName = "suse_oval_pkg_evr_state_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -55,5 +58,29 @@ public class OVALPackageEvrStateEntity {
 
     public void setOperation(OperationEnumeration operation) {
         this.operation = operation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof OVALPackageEvrStateEntity)) {
+            return false;
+        }
+        OVALPackageEvrStateEntity castOther = (OVALPackageEvrStateEntity) other;
+        return new EqualsBuilder()
+                .append(id, castOther.id)
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }
