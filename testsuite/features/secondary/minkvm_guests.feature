@@ -28,11 +28,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
     And I create a leap virtual machine named "test-vm" without cloudinit on "kvm_server"
-    And I follow "Virtualization" in the content area
-    And I wait until I see "test-vm" text
 
   Scenario: Start a KVM virtual machine
-    When I click on "Start" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
   Scenario: Show the VNC graphical console for KVM
@@ -82,7 +82,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" SCSI disk from pool "tmp"
 
   Scenario: Add a network interface to a KVM virtual machine
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
@@ -91,7 +93,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have 2 NIC using "test-net1" network
 
   Scenario: Delete a network interface from a KVM virtual machine
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_network1"
     And I click on "Update"
@@ -99,7 +103,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
 
   Scenario: Add a disk and a cdrom to a KVM virtual machine
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
     And I click on "add_disk"
@@ -111,7 +117,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have a sata cdrom
 
   Scenario: Attach an image to a cdrom on a KVM virtual machine
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
     And I wait until I do not see "Loading..." text
@@ -121,7 +129,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have "/tmp/test-image.iso" attached to a cdrom
 
   Scenario: Delete a disk from a KVM virtual machine
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_disk2"
     And I click on "Update"
@@ -129,7 +139,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have no cdrom
 
   Scenario: Delete a KVM virtual machine
-    When I click on "Delete" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "kvm_server"
 
@@ -156,7 +168,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
 
   Scenario: Show the Spice graphical console for KVM
-    When I click on "Graphical Console" in row "test-vm2"
+    When I follow "Virtualization" in the content area
+    And I wait until I do not see "Loading..." text
+    And I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     Then I wait until I see the spice graphical console
     When I close the last opened window
