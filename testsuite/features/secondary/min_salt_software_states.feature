@@ -129,6 +129,19 @@ Feature: Salt package states
   Scenario: Cleanup: restart the salt service on SLES minion
     When I restart salt-minion on "sle_minion"
 
+  Scenario: Cleanup: set the package states as unmanaged
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "States" in the content area
+    And I follow "Packages"
+    And I follow "Search"
+    And I should see a "Package States" text
+    And I list packages with "dummy"
+    And I wait until I see "andromeda-dummy" text
+    And I change the state of "virgo-dummy" to "Unmanaged" and ""
+    And I change the state of "andromeda-dummy" to "Unmanaged" and ""
+    And I click save
+    Then I wait until I see "Package states have been saved." text
+
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
     And I remove package "milkyway-dummy" from this "sle_minion" without error control

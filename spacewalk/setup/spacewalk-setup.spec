@@ -160,7 +160,6 @@ install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat_java_opts.conf %{buildroot}/%{_sysconfdir}/tomcat/conf.d/
 %if 0%{?suse_version}
@@ -181,9 +180,7 @@ install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
-/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 # Sphinx built manpage
 %define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
 install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1
@@ -216,14 +213,6 @@ fi
 if [ -d /var/cache/salt/master/thin ]; then
   # clean the thin cache
   rm -rf /var/cache/salt/master/thin
-fi
-
-# sudoers file is now in /etc/sudoers.d/spacewalk
-if [ -f /etc/sudoers.d/spacewalk -a -f /etc/sudoers.d/susemanager ]; then
-    # do not fail if one is just a link to the other one
-    cp /etc/sudoers.d/spacewalk /etc/sudoers.d/spacewalk.tmp
-    rm -f /etc/sudoers.d/spacewalk /etc/sudoers.d/susemanager
-    mv /etc/sudoers.d/spacewalk.tmp /etc/sudoers.d/spacewalk
 fi
 
 if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
@@ -291,7 +280,6 @@ make test
 %{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
-%{_bindir}/spacewalk-setup-sudoers
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/

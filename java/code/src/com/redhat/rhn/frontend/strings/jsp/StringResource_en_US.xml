@@ -6031,6 +6031,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+      </trans-unit>
       <trans-unit id="grouplist.jsp.security" xml:space="preserve">
         <source>Security updates needed</source>
         <context-group name="ctx">

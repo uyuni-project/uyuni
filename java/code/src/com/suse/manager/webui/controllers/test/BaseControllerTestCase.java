@@ -15,8 +15,7 @@
 package com.suse.manager.webui.controllers.test; import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.suse.manager.webui.utils.SparkTestUtils;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;

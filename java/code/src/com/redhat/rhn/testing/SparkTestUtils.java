@@ -13,10 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils;
-
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpSession;
+package com.redhat.rhn.testing;
 
 import com.mockobjects.servlet.MockServletInputStream;
 

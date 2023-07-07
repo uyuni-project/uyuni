@@ -21,11 +21,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.download.ByteArrayStreamInfo;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.SystemSearchPartialResult;
-import com.redhat.rhn.frontend.dto.SystemSearchResult;
+import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -36,7 +36,6 @@ import org.apache.struts.actions.DownloadAction;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -114,8 +113,7 @@ public class CSVDownloadAction extends DownloadAction {
      * @param session HTTP session
      * @return page data
      */
-    @SuppressWarnings("unchecked")
-    protected List<SystemSearchResult> getPageData(HttpServletRequest request, HttpSession session) {
+    protected List<BaseDto> getPageData(HttpServletRequest request, HttpSession session) {
         String paramQuery = request.getParameter(QUERY_DATA);
         if (paramQuery != null) {
             CachedStatement query = (CachedStatement) session.getAttribute(paramQuery);
@@ -129,15 +127,13 @@ public class CSVDownloadAction extends DownloadAction {
         if (null == paramPageData) {
             throw new IllegalArgumentException("Missing request parameter, " + EXPORT_COLUMNS);
         }
-        List<SystemSearchResult> pageData = (List<SystemSearchResult>) session.getAttribute(paramPageData);
-        if (null == pageData) {
-            throw new IllegalArgumentException("Missing value for session attribute, " + paramPageData);
-        }
-        return pageData;
+
+        return ListUtils.typedList((List<?>) session.getAttribute(paramPageData), BaseDto.class);
     }
 
     /**
      * Returns the value of the UNIQUE_NAME attribute or exception if value is null.
+     *
      * @param request HTTP request containing UNIQUE_NAME parameter
      * @return unique name
      */
@@ -151,6 +147,7 @@ public class CSVDownloadAction extends DownloadAction {
 
     /**
      * Returns the header name
+     *
      * @param request the http servlet request
      * @param session the session
      * @return the header name
@@ -174,53 +171,36 @@ public class CSVDownloadAction extends DownloadAction {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
-                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                       HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (null == session) {
             throw new RhnRuntimeException("Missing session");
         }
+
         String exportColumns = getExportColumns(request, session);
-        List<SystemSearchResult> pageData = getPageData(request, session);
+        List<BaseDto> pageData = getPageData(request, session);
 
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
-        CSVWriter expW = new CSVWriter(new StringWriter(), user.getCsvSeparator());
-        String[] columns  = exportColumns.split("\\s*,\\s*");
-        expW.setColumns(Arrays.asList(columns));
+        CSVWriter csvWriter = new CSVWriter(new StringWriter(), user.getCsvSeparator());
+        String[] columns = exportColumns.split("\\s*,\\s*");
+        csvWriter.setColumns(Arrays.asList(columns));
 
         String header = getHeaderText(request, session);
         if (header != null) {
-            expW.setHeaderText(header);
-        }
-        Elaborator elab = TagHelper.lookupElaboratorFor(
-                getUniqueName(request), request);
-        if (elab != null) {
-            elab.elaborate(pageData, HibernateFactory.getSession());
-            if (!pageData.isEmpty() && pageData.get(0) != null) {
-                mergeWithPartialResult(pageData,
-                        (Map<Long, SystemSearchPartialResult>)session.getAttribute("ssr_" + request
-                                .getParameter(QUERY_DATA)));
-            }
+            csvWriter.setHeaderText(header);
         }
 
-        String contentType = expW.getMimeType() + ";charset=" +
-            response.getCharacterEncoding();
-        response.setHeader("Content-Disposition",
-                "attachment; filename=download." + expW.getFileExtension());
-        expW.write(pageData);
-
-        return new ByteArrayStreamInfo(contentType, expW.getContents().getBytes());
-    }
-
-    private List<SystemSearchResult> mergeWithPartialResult(List<SystemSearchResult> full,
-                                                            Map<Long, SystemSearchPartialResult> partial) {
-        for (SystemSearchResult r : full) {
-            SystemSearchPartialResult p = partial.get(r.getId());
-            r.setMatchingField(p.getMatchingField());
-            r.setMatchingFieldValue(p.getMatchingFieldValue());
+        Elaborator elaborator = TagHelper.lookupElaboratorFor(getUniqueName(request), request);
+        if (elaborator != null) {
+            elaborator.elaborate(pageData, HibernateFactory.getSession());
         }
-        return full;
+
+        String contentType = csvWriter.getMimeType() + ";charset=" + response.getCharacterEncoding();
+        response.setHeader("Content-Disposition", "attachment; filename=download." + csvWriter.getFileExtension());
+        csvWriter.write(pageData);
+
+        return new ByteArrayStreamInfo(contentType, csvWriter.getContents().getBytes());
     }
 }

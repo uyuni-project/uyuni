@@ -286,6 +286,10 @@ do
 	sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
 
+%if !0%{?is_opensuse} && 0%{?sle_version}
+sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = "SUSE Manager"/' common/rhnConfig.py
+%endif
+
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{python3rhnroot}

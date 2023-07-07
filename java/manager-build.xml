@@ -43,10 +43,15 @@
 
   <!-- Paths -->
   <path id="libjars">
-    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+      <!-- Exclude checkstyle and jacoco -->
+      <exclude name="all-8.30.jar" />
+      <exclude name="nodeps-0.8.7.jar" />
+    </fileset>
   </path>
   <path id="managertestjars">
-    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <path refid="libjars" />
     <fileset file="${build.dir}/rhn.jar" />
   </path>
 
@@ -311,7 +316,7 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
-    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+    <taskdef resource="org/jacoco/ant/antlib.xml" classpath="${lib.dir}/nodeps-0.8.7.jar" />
     <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
 
     <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
@@ -350,7 +355,7 @@
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="libjars" />
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-8.30.jar" />
     <checkstyle config="${basedir}/buildconf/checkstyle.xml">
       <classpath>
         <path location="${build.dir}/classes" />

@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.controllers.SaltbootController;
-import com.suse.manager.webui.utils.SparkTestUtils;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;

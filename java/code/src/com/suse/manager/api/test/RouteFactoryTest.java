@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.api.ApiResponseSerializer;
@@ -34,7 +35,6 @@ import com.suse.manager.api.RouteFactory;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
