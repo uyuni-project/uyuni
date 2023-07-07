@@ -48,6 +48,9 @@ install -d -m 755 %{buildroot}%{_sbindir}
 #sed 's|^NAMESPACE=.*$|NAMESPACE=%{susemanager_container_images_path}|' -i uyuni-server-services.config
 #%endif
 
+HOST_TZ=$(timedatectl | awk '/Time zone:/{print $3}')
+sed 's|^TZ=.*$|TZ=$HOST_TZ|' -i uyuni-server-services.config
+
 %if !0%{?is_opensuse}
 PRODUCT_VERSION=$(echo %{version} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
 %endif
