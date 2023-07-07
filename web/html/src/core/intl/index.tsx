@@ -48,7 +48,7 @@ const intl = createIntl(
   cache
 );
 
-const t = <Message extends string>(
+export const t = <Message extends string>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
   /**
@@ -58,6 +58,11 @@ const t = <Message extends string>(
    */
   values?: Values<Message>
 ) => {
+  // react-intl is unhappy when an emtpy string is used as an id
+  if (!defaultMessage) {
+    return "";
+  }
+
   return intl.formatMessage(
     {
       id: defaultMessage,

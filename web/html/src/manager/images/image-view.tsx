@@ -40,8 +40,7 @@ declare global {
 const msgMap = {
   not_found: "Image cannot be found.",
   cluster_info_err:
-    // TODO: Fix this {0}
-    "Cannot retrieve data from cluster '{0}'. Please check the logs and make sure the cluster API is accessible.",
+    "Cannot retrieve data from cluster '{arg}'. Please check the logs and make sure the cluster API is accessible.",
   image_overview_not_found: "Image overview not found.",
 };
 
@@ -153,7 +152,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   };
 
   handleResponseError(jqXHR, arg = "") {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], { arg }) : null));
     this.setState({ messages: this.state.messages.concat(msg) });
   }
 
