@@ -29839,6 +29839,10 @@ given channel.</source>
         </context-group>
         <target state="final">가상화 호스트:</target>
       </trans-unit>
-    </body>
+    <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
