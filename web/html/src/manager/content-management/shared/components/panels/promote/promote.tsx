@@ -96,7 +96,10 @@ const Promote = (props: Props) => {
             </React.Fragment>
           )
         }
-        title={t("Promote version {0} into {1}", props.environmentPromote.version, props.environmentTarget.name)}
+        title={t("Promote version {version} into {environmentName}", {
+          version: props.environmentPromote.version,
+          environmentName: props.environmentTarget.name,
+        })}
         buttons={
           <div className="col-lg-12">
             <div className="pull-right btn-group">
@@ -124,11 +127,10 @@ const Promote = (props: Props) => {
                     .then((projectWithUpdatedSources) => {
                       closeDialog(modalNameId);
                       showSuccessToastr(
-                        t(
-                          "Version {0} successfully promoted into {1}",
-                          props.versionToPromote,
-                          props.environmentTarget.name
-                        )
+                        t("Version {version} successfully promoted into {environmentName}", {
+                          version: props.versionToPromote,
+                          environmentName: props.environmentTarget.name,
+                        })
                       );
                       props.onChange(projectWithUpdatedSources);
                     })

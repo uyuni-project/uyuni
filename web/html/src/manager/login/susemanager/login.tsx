@@ -39,14 +39,16 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             <h1 className={styles.title}>{product.bodyTitle}</h1>
             <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
           </div>
-          {t(
-            <p className={styles.productInfo}>
-              <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
-                Learn more
-              </a>{" "}
-              about {product.key}.
-            </p>
-          )}
+          <p className={styles.productInfo}>
+            {t("<link>Learn more</link> about {product}.", {
+              link: (str) => (
+                <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
+                  {str}
+                </a>
+              ),
+              product: product.key,
+            })}
+          </p>
         </div>
         <div className={`${styles.loginArea} is-wrap`}>
           <div className={styles.loginHeader}>

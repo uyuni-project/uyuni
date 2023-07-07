@@ -381,10 +381,9 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                       <TextField
                         id="search-field"
                         value={this.state.filter}
-                        placeholder={t(
-                          "Search in {0}",
-                          this.props.type === "state" ? t("states") : t("configuration channels")
-                        )}
+                        placeholder={
+                          this.props.type === "state" ? t("Search in states") : t("Search in configuration channels")
+                        }
                         onChange={this.onSearchChange}
                         onPressEnter={this.search}
                       />
@@ -399,12 +398,11 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
             {this.state.rank ? (
               <div className="col-md-offset-2 col-md-8">
-                <h2>{t("Edit {0} Ranks", this.props.type === "state" ? t("State") : t("Channel"))}</h2>
+                <h2>{this.props.type === "state" ? t("Edit State Ranks") : t("Edit Channel Ranks")}</h2>
                 <p>
-                  {t(
-                    "Edit the ranking of the {0} by dragging them.",
-                    this.props.type === "state" ? t("states") : t("configuration channels")
-                  )}
+                  {this.props.type === "state"
+                    ? t("Edit the ranking of the states by dragging them.")
+                    : t("Edit the ranking of the configuration channels by dragging them.")}
                 </p>
                 <RankingTable
                   items={currentAssignment}

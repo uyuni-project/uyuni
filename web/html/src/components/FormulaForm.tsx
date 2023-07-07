@@ -134,10 +134,9 @@ class FormulaForm extends React.Component<Props, State> {
         else {
           if (data.formula_list.filter((formula) => formula === data.formula_name).length > 1) {
             this.state.warnings.push(
-              t(
-                'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
-                capitalize(data.formula_name)
-              )
+              t('Multiple Group formulas detected. Only one formula for "{name}" can be used on each system!', {
+                name: capitalize(data.formula_name),
+              })
             );
           }
           const rawLayout = data.layout;

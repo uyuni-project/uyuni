@@ -47,7 +47,7 @@ class SaltStatePopup extends React.Component<SaltStatePopupProps> {
       title = this.props.saltState && (
         <span>
           {icon}
-          {t("Configuration Channel: {0}", this.props.saltState.name)}
+          {t("Configuration Channel: {name}", { name: this.props.saltState.name })}
         </span>
       );
 

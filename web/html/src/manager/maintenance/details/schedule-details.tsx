@@ -150,7 +150,9 @@ const SystemPicker = (props: SystemPickerProps) => {
     })
       .then(() =>
         props.onMessage(
-          MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))
+          MessagesUtils.success(
+            t("Maintenance schedule has been assigned to {count} system(s)", { count: selectedSystems.length })
+          )
         )
       )
       .then(props.onBack)
