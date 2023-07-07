@@ -61,13 +61,13 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         CloudPaygManager cpm = new CloudPaygManager() {
             @Override
             protected boolean isFileExecutable(String filename) {
-                return filename.equals("/usr/sbin/registercloudguest") ||
+                return filename.equals("/usr/bin/instance-flavor-check") ||
                         filename.equals("/usr/bin/ec2metadata");
             }
 
             @Override
-            protected boolean fileExists(String filename) {
-                return filename.equals("/usr/share/susemanager/.ispayg");
+            protected String getInstanceType() {
+                return "PAYG";
             }
         };
         assertTrue(cpm.isPaygInstance(), "Expecting a PAYG instance");
