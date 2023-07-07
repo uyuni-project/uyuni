@@ -1,8 +1,7 @@
-// TODO: This binds the global intl
+// This binds the global translation logic
 import "core/intl";
 
 import * as React from "react";
-
 import ReactDOM from "react-dom";
 
 window.pageRenderers = window.pageRenderers || {};

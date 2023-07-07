@@ -43,7 +43,7 @@ declare global {
     }
   }
 
-  const t: tType;
+  var t: tType;
 
   var onDocumentReadyInitOldJS: Function;
   var ace: any;

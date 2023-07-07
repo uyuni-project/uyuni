@@ -48,8 +48,7 @@ const intl = createIntl(
   cache
 );
 
-// TODO: Make this global?
-export const t = <Message extends string>(
+const t = <Message extends string>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
   /**
@@ -58,8 +57,7 @@ export const t = <Message extends string>(
    * DOM nodes, React components, etc can also be used, e.g. `"example <bold>text</bold>"` and `{ bold: str => <b>{str}</b> }` would give `"example <b>text</b>"`.
    */
   values?: Values<Message>
-): string | React.ReactNode => {
-  console.log(`getting for "${defaultMessage}"`);
+) => {
   return intl.formatMessage(
     {
       id: defaultMessage,
@@ -73,6 +71,6 @@ export type tType = typeof t;
 
 window.t = t;
 
-console.log("fire?", t);
+// If we need to, we have the option to export stuff such as formatNumber etc here in the future
 
 export default {};

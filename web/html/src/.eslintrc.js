@@ -53,7 +53,7 @@ module.exports = {
           ["^\\u0000"],
           // HMR needs to be imported before everything else
           ["^react-hot-loader/root"],
-          ["^react$"],
+          ["^react$", "^react-dom$"],
           // Fullcalendar needs to be imported before its plugins
           ["^@fullcalendar/react"],
           // Packages
