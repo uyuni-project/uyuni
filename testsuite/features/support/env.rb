@@ -177,6 +177,13 @@ After('@scope_cobbler') do |scenario|
   end
 end
 
+After('@window_switching') do |scenario|
+  if scenario.failed?
+    page.driver.browser.close
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+  end
+end
+
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
     log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
