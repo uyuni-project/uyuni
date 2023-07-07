@@ -39,6 +39,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I click on "Graphical Console" in row "test-vm"
     And I switch to last opened window
     Then I wait until I see the VNC graphical console
+
+  Scenario: Cleanup: Close the VNC graphical console
     When I close the last opened window
 
   Scenario: Suspend a KVM virtual machine
@@ -150,7 +152,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I refresh the "test-pool0" storage pool of this "kvm_server"
     When I follow "Create Guest"
     And I wait until I see "General" text
-    And I enter "test-vm2" as "name"
+    And I enter "test-v2" as "name"
     And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
@@ -159,18 +161,18 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-v2" is completed
     And I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
-    And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
-    And "test-vm2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
+    And I wait until table row for "test-v2" contains button "Stop"
+    And "test-v2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
+    And "test-v2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
+    And "test-v2" virtual machine on "kvm_server" should have a "test-v2_system" virtio disk from pool "test-pool0"
+    And "test-v2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
 
   Scenario: Show the Spice graphical console for KVM
     When I follow "Virtualization" in the content area
     And I wait until I do not see "Loading..." text
-    And I click on "Graphical Console" in row "test-vm2"
+    And I click on "Graphical Console" in row "test-v2"
     And I switch to last opened window
     Then I wait until I see the spice graphical console
     When I close the last opened window
@@ -180,19 +182,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "Storage"
     And I wait until I do not see "Loading..." text
     And I open the sub-list of the product "test-pool0"
-    Then I wait until I see "test-vm2_system" text
+    Then I wait until I see "test-v2_system" text
 
   Scenario: delete a running KVM virtual machine
     When I follow "Virtualization" in the content area
     And I wait until I do not see "Loading..." text
-    And I click on "Delete" in row "test-vm2"
+    And I click on "Delete" in row "test-v2"
     And I click on "Delete" in "Delete Guest" modal
-    Then I should not see a "test-vm2" virtual machine on "kvm_server"
+    Then I should not see a "test-v2" virtual machine on "kvm_server"
 
   Scenario: Create a KVM UEFI virtual machine
     When I follow "Create Guest"
     And I wait until I see "General" text
-    And I enter "test-vm2" as "name"
+    And I enter "test-v2" as "name"
     And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I check "uefi"
@@ -200,20 +202,20 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "/usr/share/qemu/ovmf-x86_64-ms-vars.bin" as "nvramTemplate"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-v2" is completed
     And I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
-    And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
-    And "test-vm2" virtual machine on "kvm_server" should be UEFI enabled
+    And I wait until table row for "test-v2" contains button "Stop"
+    And "test-v2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
+    And "test-v2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
+    And "test-v2" virtual machine on "kvm_server" should have a "test-v2_system" virtio disk from pool "test-pool0"
+    And "test-v2" virtual machine on "kvm_server" should be UEFI enabled
 
   Scenario: delete a running KVM UEFI virtual machine
     When I follow "Virtualization" in the content area
     And I wait until I do not see "Loading..." text
-    And I click on "Delete" in row "test-vm2"
+    And I click on "Delete" in row "test-v2"
     And I click on "Delete" in "Delete Guest" modal
-    Then I should not see a "test-vm2" virtual machine on "kvm_server"
+    Then I should not see a "test-v2" virtual machine on "kvm_server"
 
   Scenario: Refresh a virtual storage pool for KVM
     When I follow "Storage"
@@ -391,24 +393,24 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until the channel "sle-module-basesystem15-sp4-updates-x86_64" has been synced
     When I follow "Create Guest"
     And I wait until I see "General" text
-    And I enter "test-vm2" as "name"
+    And I enter "test-v2" as "name"
     And I select "15-sp4-kvm" from "cobbler_profile"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-v2" is completed
     And I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm2" contains button "Stop"
+    And I wait until table row for "test-v2" contains button "Stop"
     # Test the VM boot params
-    Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
-    And "test-vm2" virtual machine on "kvm_server" should stop on reboot
-    And "test-vm2" virtual machine on "kvm_server" should boot on hard disk at next start
-    And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
-    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
+    Then "test-v2" virtual machine on "kvm_server" should boot using autoyast
+    And "test-v2" virtual machine on "kvm_server" should stop on reboot
+    And "test-v2" virtual machine on "kvm_server" should boot on hard disk at next start
+    And "test-v2" virtual machine on "kvm_server" should not stop on reboot at next start
+    And I wait at most 1000 seconds until Salt master sees "test-v2" as "unaccepted"
 
 @scc_credentials
   Scenario: VNC console for the auto installing KVM virtual machine
-    When I click on "Graphical Console" in row "test-vm2"
+    When I click on "Graphical Console" in row "test-v2"
     And I switch to last opened window
     And I wait until I see the VNC graphical console
     And I close the last opened window
