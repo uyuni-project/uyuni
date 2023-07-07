@@ -48,9 +48,6 @@ install -d -m 755 %{buildroot}%{_sbindir}
 #sed 's|^NAMESPACE=.*$|NAMESPACE=%{susemanager_container_images_path}|' -i uyuni-server-services.config
 #%endif
 
-export HOST_TZ=$(timedatectl | awk '/Time zone:/{print $3}')
-sed "s|^TZ=.*$|TZ=$HOST_TZ|" -i uyuni-server-services.config
-
 %if !0%{?is_opensuse}
 PRODUCT_VERSION=$(echo %{version} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
 %endif
@@ -64,6 +61,7 @@ install -D -m 644 uyuni-server.service %{buildroot}%{_unitdir}/uyuni-server.serv
 ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rcuyuni-server
 
 install -m 755 uyuni-server.sh %{buildroot}%{_sbindir}/uyuni-server.sh
+install -m 755 setup_podman_timezone.sh %{buildroot}%{_sbindir}/setup_podman_timezone.sh
 
 %check
 
@@ -109,5 +107,7 @@ install -m 755 uyuni-server.sh %{buildroot}%{_sbindir}/uyuni-server.sh
 %endif
 %{_sysconfdir}/uyuni
 %{_sbindir}/uyuni-server.sh
+%{_sbindir}/setup_podman_timezone.sh
+
 
 %changelog

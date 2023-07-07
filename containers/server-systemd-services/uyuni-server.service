@@ -14,6 +14,7 @@ EnvironmentFile=-/etc/sysconfig/uyuni-server-systemd-services
 Restart=on-failure
 ExecStartPre=/bin/rm \
     -f %t/uyuni-server.pid %t/%n.ctr-id
+ExecStartPre=setup_podman_timezone.sh
 ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/uyuni-server.pid \
     --cidfile=%t/%n.ctr-id \
