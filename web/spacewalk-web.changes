@@ -1,13 +1,17 @@
-- disable editing for special local payg connection
-- Fix VHM CPU and RAM display when 0 (bsc#1175823)
-- Fix layout alignment on pages showing failed states logs (bsc#1211713)
-- Fix parsing error when showing notification message details (bsc#1211469)
-- Fix font contrast in dark theme search field (bsc#1201337)
-- Fix wrong credentials error message (bsc#1210456)
-- Fix spelling on monitoring-admin page.
-- Show loading indicator on formula details pages (bsc#1179747)
-- force all mandatory channels being selected in software channel
-  change page (bsc#1211062)
+-------------------------------------------------------------------
+Tue Jun 27 21:19:05 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.32-1
+  * Disable editing for special local payg connection
+  * Fix VHM CPU and RAM display when 0 (bsc#1175823)
+  * Fix layout alignment on pages showing failed states logs (bsc#1211713)
+  * Fix parsing error when showing notification message details (bsc#1211469)
+  * Fix font contrast in dark theme search field (bsc#1201337)
+  * Fix wrong credentials error message (bsc#1210456)
+  * Fix spelling on monitoring-admin page.
+  * Show loading indicator on formula details pages (bsc#1179747)
+  * Force all mandatory channels being selected in software channel
+    change page (bsc#1211062)
 
 -------------------------------------------------------------------
 Tue Apr 25 15:38:09 CEST 2023 - jgonzalez@suse.com

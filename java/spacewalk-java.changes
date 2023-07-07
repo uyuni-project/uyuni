@@ -1,36 +1,49 @@
-- show error message in action result even on parser error
-- restrict registration on pure PAYG Server
-- Added taskomatic job to compute and store billing dimensions for PAYG
-- Access SUSE Manager Proxy repositories from cloud rmt infrastructure
-- Detect a Cloud PAYG instance and connect it to the RMT infrastructure
-- cache debian package metadata snippets in DB
-- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
-  Management Management/Operations on SSM -> Provisioning
-- catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
-- Improve handling of websocket exceptions
-- Release DB connection in RHN Message Dispatcher thread
-- Disable jinja processing for the roster file (bsc#1211650)
-- regenerate random passwords with new cipher algorithm
-- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
-- Fix image size entries in xml-rpc
-- Do not throw on missing saltboot group
-- Fix server error in HTTP API authentication (bsc#1210394)
-- Fix Internal Server Error when downloading static assets (bsc#1207691)
-- Add systems and hibernate metrics collectors
-- Allow processing big state results (bsc#1210957)
-- Fix issue with `aclChannelTypeCapable` that prevented errata view in
-  deb arch
-- Refresh pillars after setting custom values via SSM (bsc#1210659)
-- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
-- show virtualization host info in systems overview page
-- OES credentials do not allow access to SCC. Skip them when an
-  SCCClientException is thrown and move forward (bsc#1212550)
-- set swap memory value if available
-- set primary FQDN to hostname if none is set (bsc#1209156)
-- fix ISE when neither SCC credentials nor a local mirror is configured
-- only set self_update URL if functionality is not disabled in
-  distro or profile
-- execute highstate on registration with a user if available
+-------------------------------------------------------------------
+Tue Jun 27 23:23:45 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.61-1
+  * Filter out modules properly with 'none' matcher (bsc#1212770)
+
+-------------------------------------------------------------------
+Tue Jun 27 16:11:29 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.60-1
+  * Show reasons for state apply errors in UI
+  * Fix system tab not visible in Ansible / Inventories tab (bsc#1211897)
+  * Show recurring states names in events history (bsc#1211929)
+  * show error message in action result even on parser error
+  * Restrict registration on pure pay-as-you-go Server
+  * Added taskomatic job to compute and store billing dimensions for pay-as-you-go
+  * Access SUSE Manager Proxy repositories from cloud RMT infrastructure
+  * Detect a Cloud pay-as-you-go instance and connect it to the RMT infrastructure
+  * Cache debian package metadata snippets in DB
+  * Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+    Management Management/Operations on SSM -> Provisioning
+  * Catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
+  * Improve handling of websocket exceptions
+  * Release DB connection in RHN Message Dispatcher thread
+  * Disable jinja processing for the roster file (bsc#1211650)
+  * Regenerate random passwords with new cipher algorithm
+  * Fix misleading error message regarding SCC credentials removal (bsc#1207941)
+  * Fix image size entries in xml-rpc
+  * Do not throw on missing saltboot group
+  * Fix server error in HTTP API authentication (bsc#1210394)
+  * Fix Internal Server Error when downloading static assets (bsc#1207691)
+  * Add systems and hibernate metrics collectors
+  * Allow processing big state results (bsc#1210957)
+  * Fix issue with `aclChannelTypeCapable` that prevented errata view in
+    deb arch
+  * Refresh pillars after setting custom values via SSM (bsc#1210659)
+  * Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+  * Show virtualization host info in systems overview page
+  * OES credentials do not allow access to SCC. Skip them when an
+    SCCClientException is thrown and move forward (bsc#1212550)
+  * Set swap memory value if available
+  * Set primary FQDN to hostname if none is set (bsc#1209156)
+  * Fix ISE when neither SCC credentials nor a local mirror is configured
+  * Only set self_update URL if functionality is not disabled in
+    distro or profile
+  * Execute highstate on registration with a user if available
 
 -------------------------------------------------------------------
 Mon Jun 19 17:35:09 CEST 2023 - marina.latini@suse.com

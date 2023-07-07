@@ -1,4 +1,8 @@
-- Drop Python2 compatibility (bsc#1212588)
+-------------------------------------------------------------------
+Tue Jun 27 16:24:45 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.5-1
+  * Drop Python2 compatibility (bsc#1212588)
 
 -------------------------------------------------------------------
 Wed May 04 15:21:53 CEST 2022 - jgonzalez@suse.com

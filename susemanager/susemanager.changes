@@ -1,4 +1,9 @@
-- Adjust product name in setup script output (bsc#1195380)
+-------------------------------------------------------------------
+Tue Jun 27 21:21:38 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.28-1
+  * Add missing Salt 3006.0 dependencies to bootstrap repo definitions (bsc#1212700)
+  * Adjust product name in setup script output (bsc#1195380)
 
 -------------------------------------------------------------------
 Fri Jun 02 16:36:51 CEST 2023 - marina.latini@suse.com

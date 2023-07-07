@@ -1,5 +1,9 @@
-- Drop Python2 compatibility
-- spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
+-------------------------------------------------------------------
+Tue Jun 27 21:18:22 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.17-1
+  * Drop Python2 compatibility
+  * spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
 
 -------------------------------------------------------------------
 Wed Jan 11 12:41:12 CET 2023 - jgonzalez@suse.com

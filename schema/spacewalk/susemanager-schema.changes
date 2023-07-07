@@ -1,6 +1,10 @@
-- Added PAYG dimension computation taskomatic job configuration
-- Added new tables to handle PAYG instances computations
-- speedup old schema migration
+-------------------------------------------------------------------
+Tue Jun 27 16:22:24 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.19-1
+  * Added pay-as-you-go dimension computation taskomatic job configuration
+  * Added new tables to handle pay-as-you-go instances computations
+  * Speedup old schema migration
 
 -------------------------------------------------------------------
 Mon Apr 24 09:14:00 CEST 2023 - jgonzalez@suse.com

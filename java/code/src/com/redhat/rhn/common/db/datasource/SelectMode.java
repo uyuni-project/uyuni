@@ -80,6 +80,15 @@ public class SelectMode extends BaseMode implements Serializable {
     }
 
     /**
+     * Remove an elaborator query.
+     * @param elaboratorName Elaborator query name to remove.
+     */
+    public void removeElaboratorByName(String elaboratorName) {
+        elaborators.removeIf(x -> x.getName().equals(elaboratorName));
+    }
+
+
+    /**
      * Returns the list of elaborator queries.
      * @return List of elaborator queries.
      */

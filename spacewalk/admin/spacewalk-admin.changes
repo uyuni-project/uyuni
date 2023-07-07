@@ -1,4 +1,8 @@
-- add mgr-check-payg service
+-------------------------------------------------------------------
+Tue Jun 27 16:19:30 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.12-1
+  * Add mgr-check-payg service
 
 -------------------------------------------------------------------
 Mon Apr 24 09:14:18 CEST 2023 - jgonzalez@suse.com

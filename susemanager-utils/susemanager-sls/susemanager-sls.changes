@@ -1,5 +1,9 @@
-- Prevent product installation from being executed before executing product migration (bsc#1210475)
-- Fix enabling bundle build via custom info
+-------------------------------------------------------------------
+Tue Jun 27 16:16:56 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.34-1
+  * Prevent product installation from being executed before executing product migration (bsc#1210475)
+  * Fix enabling bundle build via custom info
 
 -------------------------------------------------------------------
 Wed May 03 09:17:26 CEST 2023 - jgonzalez@suse.com
