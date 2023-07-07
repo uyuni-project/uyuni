@@ -23,6 +23,7 @@ data:
   NO_SSL: "Y"
   MANAGER_MAIL_FROM: {{ .Values.uyuniMailFrom }}
   UYUNI_FQDN: {{ .Values.fqdn }}
+  TZ: {{ .Values.timeZone | default "Etc/UTC" }} 
 kind: ConfigMap
 metadata:
   name: uyuni-config

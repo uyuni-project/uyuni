@@ -61,6 +61,7 @@ install -D -m 644 uyuni-server.service %{buildroot}%{_unitdir}/uyuni-server.serv
 ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rcuyuni-server
 
 install -m 755 uyuni-server.sh %{buildroot}%{_sbindir}/uyuni-server.sh
+install -m 755 setup_podman_timezone.sh %{buildroot}%{_sbindir}/setup_podman_timezone.sh
 
 %check
 
@@ -106,5 +107,7 @@ install -m 755 uyuni-server.sh %{buildroot}%{_sbindir}/uyuni-server.sh
 %endif
 %{_sysconfdir}/uyuni
 %{_sbindir}/uyuni-server.sh
+%{_sbindir}/setup_podman_timezone.sh
+
 
 %changelog
