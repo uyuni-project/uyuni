@@ -56,6 +56,7 @@ export const t = <Message extends string>(
    *
    * DOM nodes, React components, etc can also be used, e.g. `"example <bold>text</bold>"` and `{ bold: str => <b>{str}</b> }` would give `"example <b>text</b>"`.
    */
+  // We could optionally ` | Record<string, any>` here if we wanted to be more lax about values in some contexts while keeping autocomplete
   values?: Values<Message>
 ) => {
   // react-intl is unhappy when an emtpy string is used as an id
