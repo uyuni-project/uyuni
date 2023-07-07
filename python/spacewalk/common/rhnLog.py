@@ -100,7 +100,7 @@ def initLOG(log_file="stderr", level=0, component=""):
 
         # fetch uid, gid so we can do a "chown ..."
         with cfg_component(component=None) as CFG:
-            apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
+            apache_uid, apache_gid = getUidGid(CFG.get('httpd_user', 'wwwrun'), CFG.get('httpd_group', 'www'))
 
         try:
             os.makedirs(log_path)
@@ -187,7 +187,7 @@ class rhnLog:
             set_close_on_exec(self.fd)
             if newfileYN:
                 with cfg_component(component=None) as CFG:
-                    apache_uid, apache_gid = getUidGid(CFG.httpd_user, CFG.httpd_group)
+                    apache_uid, apache_gid = getUidGid(CFG.get('httpd_user', 'wwwrun'), CFG.get('httpd_group', 'www'))
                 os.chown(self.file, apache_uid, apache_gid)
                 os.chmod(self.file, int('0660', 8))
         except:

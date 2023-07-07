@@ -301,9 +301,9 @@ def createPath(path, user=None, group=None, chmod=int('0755', 8)):
     """
     with cfg_component(component=None) as CFG:
         if user is None:
-            user = CFG.httpd_user
+            user = CFG.get('httpd_user', 'wwwrun')
         if group is None:
-            group = CFG.httpd_group
+            group = CFG.get('httpd_group', 'www')
 
     path = cleanupAbsPath(path)
     if not os.path.exists(path):
@@ -324,7 +324,7 @@ def setPermsPath(path, user=None, group='root', chmod=int('0750', 8)):
     """chown user.group and set permissions to chmod"""
     if user is None:
         with cfg_component(component=None) as CFG:
-            user = CFG.httpd_user
+            user = CFG.get('httpd_user', 'wwwrun')
 
     if not os.path.exists(path):
         raise OSError("*** ERROR: Path doesn't exist (can't set permissions): %s" % path)

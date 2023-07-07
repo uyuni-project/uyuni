@@ -100,6 +100,9 @@ class RHNOptions:
     def modifiedYN(self):
         """returns last modified time diff if rhn.conf has changed."""
 
+        if not os.path.exists(self.filename):
+            return 0
+
         try:
             si = os.stat(self.filename)
         except OSError:
@@ -142,7 +145,8 @@ class RHNOptions:
 
         # Now that we parsed the defaults, we parse the multi-key
         # self.filename configuration (ie, /etc/rhn/rhn.conf)
-        self.__parsedConfig = parse_file(self.filename)
+        if os.path.exists(self.filename):
+            self.__parsedConfig = parse_file(self.filename)
 
         # And now generate and cache the current component
         self.__merge()
