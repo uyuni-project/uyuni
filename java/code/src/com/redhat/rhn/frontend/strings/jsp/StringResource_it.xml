@@ -29423,6 +29423,10 @@ caratteri.</target>
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
