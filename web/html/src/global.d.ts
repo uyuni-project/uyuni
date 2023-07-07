@@ -1,3 +1,5 @@
+import type { tType } from "core/intl";
+
 declare global {
   interface Window {
     // See java/code/webapp/WEB-INF/includes/leftnav.jsp
@@ -41,8 +43,8 @@ declare global {
     }
   }
 
-  function t(msg: string, ...args: any[]): string;
-  function t(msg: JSX.Element, ...args: any[]): JSX.Element;
+  const t: tType;
+
   var onDocumentReadyInitOldJS: Function;
   var ace: any;
   var d3: d3;

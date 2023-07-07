@@ -1,6 +1,8 @@
 import { createIntl, createIntlCache } from "@formatjs/intl";
 import Gettext from "node-gettext";
 
+import type { Values } from "./inferValues";
+
 const gt = new Gettext();
 const domain = "messages";
 const poData = getPoAsJson(window.preferredLocale);
@@ -21,13 +23,13 @@ function getPoAsJson(locale?: string) {
   }
 }
 
-// Proxy every translation request through to gettext so we can use the po files as-is
+// We proxy every translation request directly to gettext so we can use the po files as-is without any transformations
 const alwaysExists = { configurable: true, enumerable: true };
 const messages = new Proxy(
   {},
   {
-    get(_, prop) {
-      return gt.gettext(prop);
+    get(_, key) {
+      return gt.gettext(key);
     },
     getOwnPropertyDescriptor() {
       return alwaysExists;
@@ -46,7 +48,8 @@ const intl = createIntl(
   cache
 );
 
-export const t2 = <Message extends string, Values extends Record<string, any>>(
+// TODO: Make this global?
+export const t = <Message extends string>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
   /**
@@ -54,8 +57,8 @@ export const t2 = <Message extends string, Values extends Record<string, any>>(
    *
    * DOM nodes, React components, etc can also be used, e.g. `"example <bold>text</bold>"` and `{ bold: str => <b>{str}</b> }` would give `"example <b>text</b>"`.
    */
-  values?: Values
-) => {
+  values?: Values<Message>
+): string | React.ReactNode => {
   console.log(`getting for "${defaultMessage}"`);
   return intl.formatMessage(
     {
@@ -65,3 +68,11 @@ export const t2 = <Message extends string, Values extends Record<string, any>>(
     values
   );
 };
+
+export type tType = typeof t;
+
+window.t = t;
+
+console.log("fire?", t);
+
+export default {};
