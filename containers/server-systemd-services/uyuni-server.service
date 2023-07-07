@@ -15,7 +15,6 @@ Restart=on-failure
 ExecStartPre=/bin/rm \
     -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStart=/usr/bin/podman run \
-    --tz=local \
     --conmon-pidfile %t/uyuni-server.pid \
     --cidfile=%t/%n.ctr-id \
     --cgroups=no-conmon \
