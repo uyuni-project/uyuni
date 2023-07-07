@@ -8,8 +8,6 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils/Loading";
 
-import { stringToReact } from "utils";
-
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
