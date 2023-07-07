@@ -236,7 +236,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
         )}
         {!(this.props.data.actionType === "CUSTOMSTATE" && this.state.details) ? null : (
           <div className="row">
-            <h3>{t("State configuration for {0}", this.props.data.targetName)}</h3>
+            <h3>{t("State configuration for {name}", { name: this.props.data.targetName })}</h3>
             <Table
               identifier={(item) => item.position}
               selectable={false}

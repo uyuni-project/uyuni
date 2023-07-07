@@ -241,10 +241,9 @@ class ImageProfiles extends React.Component<Props, State> {
             <span>
               {DEPRECATED_unsafeEquals(this.state.selectedItems.length, 1)
                 ? t("Are you sure you want to delete the selected profile?")
-                : t(
-                    "Are you sure you want to delete selected profiles? ({0} profiles selected)",
-                    this.state.selectedItems.length
-                  )}
+                : t("Are you sure you want to delete selected profiles? ({count} profiles selected)", {
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.deleteProfiles(this.state.selectedItems)}

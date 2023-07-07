@@ -40,6 +40,7 @@ declare global {
 const msgMap = {
   not_found: "Image cannot be found.",
   cluster_info_err:
+    // TODO: Fix this {0}
     "Cannot retrieve data from cluster '{0}'. Please check the logs and make sure the cluster API is accessible.",
   image_overview_not_found: "Image overview not found.",
 };
@@ -736,17 +737,16 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             <span>
               {this.state.selectedItems.length === 1
                 ? t("Are you sure you want to delete the selected image?")
-                : t(
-                    "Are you sure you want to delete selected images? ({0} images selected)",
-                    this.state.selectedItems.length
-                  )}
+                : t("Are you sure you want to delete selected images? ({count} images selected)", {
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.props.onDelete(this.state.selectedItems)}
         />
         <PopUp
           id="instance-details-popup"
-          title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
+          title={t("Instance Details for '{name}'", { name: this.state.instancePopupContent.name })}
           content={this.state.instancePopupContent.content}
         />
       </div>

@@ -29,7 +29,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
       <LinkButton
         id={`edit-filter-${filter.id}`}
         icon="fa-edit"
-        title={t("Edit Filter {0}", filter.name)}
+        title={t("Edit Filter {name}", { name: filter.name })}
         className="pull-right js-spa"
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
