@@ -111,7 +111,11 @@ const PageSelector = (props: PageSelectorProps) => {
       </div>
     );
   } else {
-    return <div className="table-page-information">{t("Page {0} of {1}", props.currentValue, props.lastPage)}</div>;
+    return (
+      <div className="table-page-information">
+        {t("Page {current} of {total}", { current: props.currentValue, total: props.lastPage })}
+      </div>
+    );
   }
 };
 
