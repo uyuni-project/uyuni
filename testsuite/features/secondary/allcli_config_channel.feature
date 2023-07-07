@@ -95,6 +95,7 @@ Feature: Management of configuration of all types of clients in a single channel
 @sle_client
   Scenario: Check that file has been created on traditional client
     When I run "rhn_check -vvv" on "sle_client"
+    When I wait until file "/etc/s-mgr/config" exists on "sle_client"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
 
 @sle_minion
