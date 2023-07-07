@@ -60,9 +60,13 @@ Feature: Manage a group of systems
     And I should see "rhlike_minion" as link
     And I should see "sle_minion" as link
 
-  Scenario: Install some formula on the server
-    When I manually install the "locale" formula on the server
-    And I synchronize all Salt dynamic modules on "sle_minion"
+   #container already has locale formula installed
+   @skip_if_container_server 
+   Scenario: Install the locale formula package on the server
+     When I manually install the "locale" formula on the server
+
+   Scenario: I synchronize all Salt dynamic modules on "sle_minion"
+     When I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: New formula page is rendered for the system group
     When I follow the left menu "Systems > System Groups"
