@@ -19,7 +19,6 @@ CREATE TABLE suseOVALPackageState
     id                  VARCHAR NOT NULL
                            CONSTRAINT suse_oval_pkg_state_id_pk PRIMARY KEY,
     operator            VARCHAR,
-    comment             VARCHAR,
     arch_state_id       NUMERIC
                            REFERENCES suseOVALPackageArchState(id),
     version_state_id    NUMERIC
