@@ -10,7 +10,6 @@ import java.util.Optional;
 public class OVALPackageState {
     private String id;
     private LogicOperatorType operator;
-    private String comment;
     @ManyToOne
     @JoinColumn(name = "arch_state_id")
     @Access(AccessType.FIELD)
@@ -43,15 +42,6 @@ public class OVALPackageState {
 
     public void setOperator(LogicOperatorType operator) {
         this.operator = operator;
-    }
-
-    @Column(name = "comment")
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Optional<OVALPackageArchStateEntity> getPackageArchState() {

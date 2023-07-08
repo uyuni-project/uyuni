@@ -158,7 +158,6 @@ public class OVALCachingFactory extends HibernateFactory {
             ObjectType objectType = objectManager.get(testType.getObject().getObjectRef());
             OVALPackageObject ovalPackageObject = new OVALPackageObject();
             ovalPackageObject.setId(objectType.getId());
-            ovalPackageObject.setComment(objectType.getComment());
             ovalPackageObject.setPackageName(objectType.getPackageName());
             ovalPackageObject.setRpm(true);
 
@@ -170,7 +169,6 @@ public class OVALCachingFactory extends HibernateFactory {
 
             OVALPackageState ovalPackageState = new OVALPackageState();
             ovalPackageState.setId(stateType.getId());
-            ovalPackageState.setComment(stateType.getComment());
             ovalPackageState.setOperator(stateType.getOperator());
             ovalPackageState.setRpm(true);
 

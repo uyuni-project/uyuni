@@ -11,7 +11,6 @@ public class OVALPackageObject {
 
     private String id;
     private String packageName;
-    private String comment;
     private boolean isRpm;
 
     @Id
@@ -30,15 +29,6 @@ public class OVALPackageObject {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
-    }
-
-    @Column(name = "comment")
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Column(name = "isRpm")

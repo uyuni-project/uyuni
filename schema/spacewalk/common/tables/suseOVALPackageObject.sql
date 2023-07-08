@@ -19,6 +19,5 @@ CREATE TABLE suseOVALPackageObject
     id         VARCHAR NOT NULL
                   CONSTRAINT suse_oval_pkg_object_id_pk PRIMARY KEY,
     name       VARCHAR NOT NULL,
-    comment    VARCHAR,
     isRpm      BOOLEAN NOT NULL
 );
