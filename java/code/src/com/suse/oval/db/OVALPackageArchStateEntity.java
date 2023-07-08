@@ -16,7 +16,8 @@ public class OVALPackageArchStateEntity {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_oval_pkg_arch_state_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkg_arch_state_id_seq")
+    @SequenceGenerator(name = "pkg_arch_state_id_seq", sequenceName = "suse_oval_pkg_arch_state_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
