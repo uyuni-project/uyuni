@@ -319,6 +319,14 @@ Before('@debian11_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_ssh_minion']
 end
 
+Before('@debian12_minion') do
+  skip_this_scenario unless $debian12_minion
+end
+
+Before('@debian12_ssh_minion') do
+  skip_this_scenario unless $debian12_ssh_minion
+end
+
 Before('@sle12sp4_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_minion']
 end
