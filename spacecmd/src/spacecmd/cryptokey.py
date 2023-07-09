@@ -51,54 +51,8 @@ options:
 
 
 def do_cryptokey_create(self, args):
-    arg_parser = get_argument_parser()
-    arg_parser.add_argument('-t', '--type')
-    arg_parser.add_argument('-d', '--description')
-    arg_parser.add_argument('-f', '--file')
-
-    (args, options) = parse_command_arguments(args, arg_parser)
-    options.contents = None
-
-    if is_interactive(options):
-        options.type = prompt_user(_('GPG or SSL [G/S]:'))
-
-        options.description = ''
-        while options.description == '':
-            options.description = prompt_user(_('Description:'))
-
-        if self.user_confirm(_('Read an existing file [y/N]:'),
-                             nospacer=True, ignore_yes=True):
-            options.file = prompt_user('File:')
-        else:
-            options.contents = editor(delete=True)
-    else:
-        if not options.type:
-            logging.error(_N('The key type is required'))
-            return 1
-
-        if not options.description:
-            logging.error(_N('A description is required'))
-            return 1
-
-        if not options.file:
-            logging.error(_N('A file containing the key is required'))
-            return 1
-
-    # read the file the user specified
-    if options.file:
-        options.contents = read_file(options.file)
-
-    if not options.contents:
-        logging.error(_N('No contents of the file'))
-        return 1
-
-    # translate the key type to what the server expects
-    if re.match('G', options.type, re.I):
-        options.type = 'GPG'
-    elif re.match('S', options.type, re.I):
-        options.type = 'SSL'
-    else:
-        logging.error(_N('Invalid key type'))
+    options = _cryptokey_process_options(self, args)
+    if options is None:
         return 1
 
     self.client.kickstart.keys.create(self.session,
@@ -122,6 +76,21 @@ options:
 
 
 def do_cryptokey_update(self, args):
+    options = _cryptokey_process_options(self, args)
+    if options is None:
+        return 1
+
+    self.client.kickstart.keys.update(self.session,
+                                      options.description,
+                                      options.type,
+                                      options.contents)
+
+    return 0
+
+####################
+
+
+def _cryptokey_process_options(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-t', '--type')
     arg_parser.add_argument('-d', '--description')
@@ -145,15 +114,15 @@ def do_cryptokey_update(self, args):
     else:
         if not options.type:
             logging.error(_N('The key type is required'))
-            return 1
+            return None
 
         if not options.description:
             logging.error(_N('A description is required'))
-            return 1
+            return None
 
         if not options.file:
             logging.error(_N('A file containing the key is required'))
-            return 1
+            return None
 
     # read the file the user specified
     if options.file:
@@ -161,7 +130,7 @@ def do_cryptokey_update(self, args):
 
     if not options.contents:
         logging.error(_N('No contents of the file'))
-        return 1
+        return None
 
     # translate the key type to what the server expects
     if re.match('G', options.type, re.I):
@@ -170,14 +139,9 @@ def do_cryptokey_update(self, args):
         options.type = 'SSL'
     else:
         logging.error(_N('Invalid key type'))
-        return 1
+        return None
 
-    self.client.kickstart.keys.update(self.session,
-                                      options.description,
-                                      options.type,
-                                      options.contents)
-
-    return 0
+    return options
 
 ####################
 
