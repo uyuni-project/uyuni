@@ -53,6 +53,7 @@ mgr_remove_salt_master_key:
   file.absent:
      - name: {{ salt_config_dir }}/pki/minion_master.pub
 
+{%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 mgr_disable_salt:
   cmd.run:
     - name: systemctl disable {{ salt_minion_name }}
@@ -67,4 +68,5 @@ mgr_stop_salt:
     - order: last
     - require:
       - file: mgr_remove_salt_config
+{% endif %}
 {% endif %}
