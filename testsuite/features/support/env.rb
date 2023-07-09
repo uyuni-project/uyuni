@@ -323,6 +323,14 @@ Before('@debian11_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_ssh_minion']
 end
 
+Before('@debian12_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_minion']
+end
+
+Before('@debian12_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_ssh_minion']
+end
+
 Before('@sle12sp4_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_client']
 end
