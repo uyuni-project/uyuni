@@ -484,6 +484,22 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
 @debian11_minion
   Scenario: Add Debian 11
     When I use spacewalk-common-channel to add channel "debian-11-pool-amd64-uyuni debian-11-amd64-main-updates-uyuni debian-11-amd64-main-security-uyuni debian-11-amd64-uyuni-client-devel" with arch "amd64-deb"
+	
+@susemanager
+@debian12_minion
+  Scenario: Add Debian 12
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Debian 12" as the filtered product description
+    And I select "Debian 12" as a product
+    Then I should see the "Debian 12" selected
+    When I click the Add Product button
+     And I wait until I see "Debian 12" product has been added
+
+@uyuni
+@debian12_minion
+  Scenario: Add Debian 12
+    When I use spacewalk-common-channel to add channel "debian-12-pool-amd64-uyuni debian-12-amd64-main-updates-uyuni debian-12-amd64-main-security-uyuni debian-12-amd64-uyuni-client-devel" with arch "amd64-deb"
 
 @susemanager
 @proxy

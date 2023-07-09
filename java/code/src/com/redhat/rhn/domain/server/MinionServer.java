@@ -174,7 +174,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() || isRocky8() ||
-                isRocky9() || isDebian11() || isDebian10();
+                isRocky9() || isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
