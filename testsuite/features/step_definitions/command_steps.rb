@@ -974,6 +974,7 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
   log 'Creating the boostrap repository on the server:'
   log '  ' + cmd
   $server.run(cmd)
+  $server.wait_while_process_running('mgr-create-bootstrap-repo')
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
