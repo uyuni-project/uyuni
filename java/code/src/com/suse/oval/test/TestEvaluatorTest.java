@@ -90,7 +90,7 @@ public class TestEvaluatorTest {
         t10 = newOVALPackageTest(o2, s5);
         t11 = newOVALPackageTest(o4, s6);
 
-        testEvaluator = new TestEvaluator(systemCvePatchStatusList);
+        testEvaluator = new TestEvaluator(null, null);
     }
 
     /**
