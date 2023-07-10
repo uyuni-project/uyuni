@@ -37,10 +37,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Show the VNC graphical console for KVM
     When I click on "Graphical Console" in row "test-vm"
-    And I switch to last opened window
-    Then I wait until I see the VNC graphical console
 
-  Scenario: Cleanup: Close the VNC graphical console
+@window_switching
+  Scenario: Switch to opened graphical console
+    When I switch to last opened window
+    Then I wait until I see the VNC graphical console
     When I close the last opened window
 
   Scenario: Suspend a KVM virtual machine
@@ -173,7 +174,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Virtualization" in the content area
     And I wait until I do not see "Loading..." text
     And I click on "Graphical Console" in row "test-v2"
-    And I switch to last opened window
+
+@window_switching
+  Scenario: Switch to opened graphical console
+    When I switch to last opened window
     Then I wait until I see the spice graphical console
     When I close the last opened window
 
@@ -411,7 +415,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: VNC console for the auto installing KVM virtual machine
     When I click on "Graphical Console" in row "test-v2"
-    And I switch to last opened window
+
+@scc_credentials
+@window_switching
+  Scenario: Switch to opened graphical console
+    When I switch to last opened window
     And I wait until I see the VNC graphical console
     And I close the last opened window
 
