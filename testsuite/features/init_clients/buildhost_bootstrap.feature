@@ -10,6 +10,7 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Update the SLES activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
+    And I wait until I see "Container Build Host" text
     And I check "container_build_host"
     And I check "osimage_build_host"
     And I click on "Update Activation Key"
@@ -63,6 +64,7 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Cleanup: Restore the SLES activation key to its original state
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
+    And I wait until I see "Container Build Host" text
     And I uncheck "container_build_host"
     And I uncheck "osimage_build_host"
     And I click on "Update Activation Key"
