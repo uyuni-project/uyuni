@@ -1,8 +1,7 @@
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.manager.OvalObjectManager;
-import com.suse.oval.manager.OvalStateManager;
-import com.suse.oval.manager.OvalTestManager;
+import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
 
 import java.util.ArrayList;
@@ -12,10 +11,8 @@ import java.util.stream.Collectors;
 
 public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesExtractor {
 
-    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition,
-                                          OvalObjectManager ovalObjectManager, OvalTestManager ovalTestManager,
-                                          OvalStateManager ovalStateManager) {
-        super(vulnerabilityDefinition, ovalObjectManager, ovalTestManager, ovalStateManager);
+    public SUSEVulnerablePackageExtractor(OVALDefinition vulnerabilityDefinition) {
+        super(vulnerabilityDefinition);
     }
 
     @Override
@@ -45,21 +42,24 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             String comment = packageCriterion.getComment();
             String testId = packageCriterion.getTestRef();
 
-            TestType testType = ovalTestManager.get(testId);
-            Optional<StateType> stateType = testType.getStateRef().map(ovalStateManager::get);
-            ObjectType objectType = ovalObjectManager.get(testType.getObject().getObjectRef());
+            OVALPackageTest ovalPackageTest = OVALCachingFactory.lookupPackageTestById(testId);
 
-            String packageName = objectType.getPackageName();
+            Optional<OVALPackageState> ovalPackageStateOpt = ovalPackageTest.getPackageState();
+            OVALPackageObject ovalPackageObject = ovalPackageTest.getPackageObject();
+
+            String packageName = ovalPackageObject.getPackageName();
 
             VulnerablePackage vulnerablePackage = new VulnerablePackage();
             vulnerablePackage.setName(packageName);
 
-            if (stateType.isEmpty()) {
+            if (ovalPackageStateOpt.isEmpty()) {
                 throw new IllegalStateException("Found an empty state");
             }
 
             if (comment.endsWith("is installed")) {
-                String evr = stateType.get().getPackageEVR().getValue();
+                String evr = ovalPackageStateOpt
+                        .flatMap(OVALPackageState::getPackageEvrState)
+                        .map(OVALPackageEvrStateEntity::getEvr).orElse("");
                 vulnerablePackage.setFixVersion(evr);
             } else if (comment.endsWith("is affected")) {
                 // Affected packages don't have a fix version yet.
@@ -78,8 +78,8 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
         for (String product : products) {
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
-            vulnerableProduct.setCve(vulnerabilityDefinition.getMetadata().getTitle());
-            vulnerableProduct.setProduct(product);
+            vulnerableProduct.setCve(vulnerabilityDefinition.getTitle());
+            vulnerableProduct.setProductCpe(product);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
             result.add(vulnerableProduct);
@@ -105,15 +105,16 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
         }
 
         boolean allProductsAffected = true;
-        for (CriterionType productCriterion : productCriterions) {
+        // TODO: We're now storing cpe instead of the full product name in the databse
+/*        for (CriterionType productCriterion : productCriterions) {
             String comment = productCriterion.getComment();
             String product = comment.replace(" is installed", "");
 
-            if (vulnerabilityDefinition.getMetadata().getAffected().get(0).getPlatforms().stream().noneMatch(product::equals)) {
+            if (vulnerabilityDefinition.getAffectedPlatforms().stream().map(OVALPlatform::getCpe).noneMatch(product::equals)) {
                 allProductsAffected = false;
                 break;
             }
-        }
+        }*/
 
         return allProductsAffected;
     }
