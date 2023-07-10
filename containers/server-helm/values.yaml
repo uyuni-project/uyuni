@@ -104,6 +104,8 @@ uyuniMailFrom: "notifications@uyuni.local"
 ## fqdn is the user accessible fully qualified domain name of the uyuni server
 fqdn: "uyuni.local"
 
+## TZ is the timezone
+TZ: "Etc/UTC"
 ## sccUser is the SUSE Customer Center login
 # sccUser: ""
 
