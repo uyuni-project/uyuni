@@ -1127,11 +1127,9 @@ public class CVEAuditManager {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
-            }
-            else if (allChannelsForOneErrataAssigned) {
-                return PatchStatus.AFFECTED_PATCH_APPLICABLE;
-            }
-            else if (patchInSuccessorProduct) {
+            } else if (allChannelsForOneErrataAssigned) {
+                return PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE;
+            } else if (patchInSuccessorProduct) {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {
