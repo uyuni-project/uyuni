@@ -34,24 +34,24 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.TestEvaluator;
+import com.suse.oval.db.OVALDefinition;
+import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
+import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -903,6 +903,95 @@ public class CVEAuditManager {
                         system.getChannels(),
                         system.getErratas()
                 )).collect(Collectors.toList());
+    }
+
+    public static List<CVEAuditServer> listSystemsByPatchStatus_OVAL(User user, String cveIdentifier) {
+        List<CVEAuditServer> result = new ArrayList<>();
+
+        Optional<OVALDefinition> cveDefinitionOpt = OVALCachingFactory.lookupVulnerabilityDefinitionByCve(cveIdentifier);
+        if (cveDefinitionOpt.isEmpty()) {
+            log.warn("The provided CVE does not match any OVAL definition in the database.");
+            return Collections.emptyList();
+        }
+
+        OVALDefinition ovalDefinition = cveDefinitionOpt.get();
+        if (ovalDefinition.getCriteriaTree() == null) {
+            log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
+            return result;
+        }
+
+        AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
+                new SUSEVulnerablePackageExtractor(ovalDefinition);
+
+        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
+                .collect(Collectors.toList());
+
+        // Group the results by system
+        Map<Long, List<CVEPatchStatus>> resultsBySystem =
+                results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
+
+        Set<Server> clients = user.getServers();
+        for (Server clientServer : clients) {
+            CVEAuditSystemBuilder cveAuditServer = new CVEAuditSystemBuilder(clientServer.getId());
+            cveAuditServer.setSystemName(clientServer.getName());
+
+            List<PackageListItem> allInstalledPackages = new ArrayList<>(PackageManager
+                    .systemPackageList(clientServer.getId(), new PageControl(1, 1000)));
+
+            TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
+
+            boolean vulnerabilityEvaluation = ovalDefinition.getCriteriaTree().evaluate(testEvaluator);
+
+            if (!vulnerabilityEvaluation) {
+                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
+                continue;
+            }
+
+            List<CVEPatchStatus> systemResults = resultsBySystem.get(clientServer.getId()).stream()
+                    .filter(CVEPatchStatus::isChannelAssigned)
+                    .collect(Collectors.toList());
+
+            Set<VulnerablePackage> productVulnerablePackagesFromOVAL = new HashSet<>();
+
+            List<ProductVulnerablePackages> productToVulnerablePackagesMappings = vulnerablePackagesExtractor.extract();
+
+            for (ProductVulnerablePackages productToVulnerablePackagesMapping : productToVulnerablePackagesMappings) {
+                if (Objects.equals(productToVulnerablePackagesMapping.getProductCpe(), clientServer.getCpe())) {
+                    productVulnerablePackagesFromOVAL.addAll(productToVulnerablePackagesMapping.getVulnerablePackages());
+                }
+            }
+
+            int listSizeBefore = productVulnerablePackagesFromOVAL.size();
+
+            productVulnerablePackagesFromOVAL = productVulnerablePackagesFromOVAL
+                    .stream().filter(
+                            p -> systemResults.stream()
+                                    .anyMatch(cps -> Objects.equals(cps.packageName.orElse(""), p.getName())))
+                    .collect(Collectors.toSet()
+                    );
+
+            int listSizeAfter = productVulnerablePackagesFromOVAL.size();
+
+            if (listSizeAfter == 0) {
+                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
+            } else if (listSizeAfter < listSizeBefore) {
+                cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
+            } else {
+                boolean allPackagesAffected = productVulnerablePackagesFromOVAL
+                        .stream()
+                        .allMatch(p -> p.getFixVersion().isEmpty());
+
+                if (allPackagesAffected) {
+                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
+                } else {
+                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
+                }
+            }
+
+            log.error("Patch Status: {}", cveAuditServer.getPatchStatus());
+        }
+
+        return result;
     }
 
     /**
