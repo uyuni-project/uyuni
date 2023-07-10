@@ -147,6 +147,7 @@ public class OVALCachingFactory extends HibernateFactory {
 
         for (int i = 0; i < ovalTests.size(); i++) {
             TestType testType = ovalTests.get(i);
+
             OVALPackageTest ovalPackageTest = new OVALPackageTest();
             ovalPackageTest.setId(testType.getId());
             ovalPackageTest.setComment(testType.getComment());
@@ -181,13 +182,39 @@ public class OVALCachingFactory extends HibernateFactory {
                 return result;
             }).orElse(null);
 
+            OVALPackageArchStateEntity ovalPackageArchStateEntity = stateType.getPackageArch().map(archType -> {
+                OVALPackageArchStateEntity result = new OVALPackageArchStateEntity();
+                result.setOperation(archType.getOperation());
+                result.setValue(archType.getValue());
+
+                return result;
+            }).orElse(null);
+
+            OVALPackageVersionStateEntity ovalPackageVersionStateEntity = stateType.getPackageVersion().map(versionType -> {
+                OVALPackageVersionStateEntity result = new OVALPackageVersionStateEntity();
+                result.setValue(versionType.getValue());
+                result.setOperation(versionType.getOperation());
+
+                return result;
+            }).orElse(null);
+
             ovalPackageTest.setPackageState(ovalPackageState);
             ovalPackageTest.setPackageObject(ovalPackageObject);
 
             HibernateFactory.doWithoutAutoFlushing(() -> {
                 if (ovalPackageEvrStateEntity != null) {
                     ovalPackageState.setPackageEvrState(ovalPackageEvrStateEntity);
-                    getSession().save(ovalPackageEvrStateEntity);
+                    instance.saveObject(ovalPackageEvrStateEntity, false);
+                }
+
+                if (ovalPackageArchStateEntity != null) {
+                    ovalPackageState.setPackageArchState(ovalPackageArchStateEntity);
+                    instance.saveObject(ovalPackageArchStateEntity, false);
+                }
+
+                if (ovalPackageVersionStateEntity != null) {
+                    ovalPackageState.setPackageVersionState(ovalPackageVersionStateEntity);
+                    instance.saveObject(ovalPackageVersionStateEntity, false);
                 }
 
                 getSession().merge(ovalPackageState);
