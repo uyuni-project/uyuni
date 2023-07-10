@@ -129,16 +129,16 @@ public class StateType {
         this.packageEVR = packageEVR;
     }
 
-    public ArchType getPackageArch() {
-        return packageArch;
+    public Optional<ArchType> getPackageArch() {
+        return Optional.ofNullable(packageArch);
     }
 
     public void setPackageArch(ArchType packageArch) {
         this.packageArch = packageArch;
     }
 
-    public VersionType getPackageVersion() {
-        return packageVersion;
+    public Optional<VersionType> getPackageVersion() {
+        return Optional.ofNullable(packageVersion);
     }
 
     public void setPackageVersion(VersionType packageVersion) {
