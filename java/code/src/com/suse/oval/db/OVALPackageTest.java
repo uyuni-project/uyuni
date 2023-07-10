@@ -64,6 +64,9 @@ public class OVALPackageTest {
     @Column(name = "state_operator")
     @Enumerated(EnumType.STRING)
     public LogicOperatorType getStateOperator() {
+        if (stateOperator == null) {
+            return LogicOperatorType.OR;
+        }
         return stateOperator;
     }
 
