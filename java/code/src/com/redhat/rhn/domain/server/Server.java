@@ -139,6 +139,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private MaintenanceSchedule maintenanceSchedule;
     private Boolean hasConfigFeature;
 
+    private String cpe;
+
     public static final String VALID_CNAMES = "valid_cnames_";
 
     /**
@@ -2354,6 +2356,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("11");
     }
 
+    boolean isSLES() {
+        return ServerConstants.SLES.equals(getOs());
+    }
+
     /**
      * @return true if the installer type is of SLE Micro
      */
@@ -2370,6 +2376,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+
+    boolean isLeap() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs());
     }
 
     /**
@@ -2398,6 +2408,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
     }
 
+    boolean isUbuntu() {
+        return ServerConstants.UBUNTU.equals(getOs());
+    }
+
     boolean isDebian11() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
     }
@@ -2423,6 +2437,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isRedHat9() {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
+    }
+
+    boolean isRedHat() {
+        return ServerConstants.REDHAT.equals(getOsFamily());
     }
 
     boolean isAlibaba2() {
@@ -2459,4 +2477,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
         this.osFamily = osFamilyIn;
     }
 
+    public String getCpe() {
+        return cpe;
+    }
+
+    public void setCpe(String cpe) {
+        this.cpe = cpe;
+    }
 }
