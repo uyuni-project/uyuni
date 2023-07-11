@@ -160,6 +160,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "add_disk"
     And I select "test-pool0" from "disk1_source_pool"
     And I select "disk1.qcow2" from "disk1_source_file"
+    And I wait until button "Create" becomes enabled
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
     And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-v2" is completed

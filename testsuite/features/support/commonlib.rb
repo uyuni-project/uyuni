@@ -127,7 +127,7 @@ def format_detail(message, last_result, report_result)
 end
 
 def click_button_and_wait(locator = nil, **options)
-  click_button(find(locator, visible: false), options)
+  click_button(locator, options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
