@@ -79,7 +79,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
             vulnerableProduct.setCve(vulnerabilityDefinition.getTitle());
-            // TODO: Cpe should be different between products. Fixed in branch *support-debian*
+            // TODO: Cpe should be different between products
             vulnerableProduct.setProductCpe("cpe:/o:opensuse:leap:15.4");
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
@@ -106,7 +106,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
         }
 
         boolean allProductsAffected = true;
-        // TODO: We're now storing cpe instead of the full product name in the databse. Fixed in branch *support-debian*
+        // TODO: We're now storing cpe instead of the full product name in the databse
 /*        for (CriterionType productCriterion : productCriterions) {
             String comment = productCriterion.getComment();
             String product = comment.replace(" is installed", "");

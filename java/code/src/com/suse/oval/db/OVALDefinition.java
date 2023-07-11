@@ -2,9 +2,13 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALDefinitionSource;
-import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
@@ -20,29 +24,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import static java.util.stream.Collectors.groupingBy;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "suseOVALDefinition")
@@ -122,8 +105,8 @@ public class OVALDefinition {
         return affectedPlatforms;
     }
 
-    public void setAffectedPlatforms(List<OVALPlatform> affectedPlatformsIn) {
-        this.affectedPlatforms = affectedPlatformsIn;
+    public void setAffectedPlatforms(List<OVALPlatform> affectedPlatforms) {
+        this.affectedPlatforms = affectedPlatforms;
     }
 
     @OneToOne
@@ -132,8 +115,8 @@ public class OVALDefinition {
         return cve;
     }
 
-    public void setCve(Cve cveIn) {
-        this.cve = cveIn;
+    public void setCve(Cve cve) {
+        this.cve = cve;
     }
 
     @Enumerated(EnumType.STRING)
@@ -184,20 +167,30 @@ public class OVALDefinition {
      * Evaluate the given {@code clientServer} vulnerability state against this definition's {@code criteriaTree}
      *
      * @param clientServer The client server to evaluate its vulnerability state
+     * @param clientProductVulnerablePackages the set of vulnerable packages that made client product vulnerable to this vulnerability definition
      *
      * @return {@code True} of clientServer is in a vulnerable state and {@code False} if it's not.
      * Also returns {@code False} if definition doesn't have a criteria tree
      *
      * */
-    public boolean evaluate(Server clientServer, List<SystemPackage> allInstalledPackages) {
+    public boolean evaluate(Server clientServer, Set<VulnerablePackage> clientProductVulnerablePackages) {
         if (criteriaTree == null) {
             return false;
         }
 
-        Map<String, List<SystemPackage>> allInstalledPackagesByName = allInstalledPackages
-                .stream().collect(groupingBy(SystemPackage::getName));
+        // TODO: Only load packages that are vulnerable
+        List<PackageListItem> allInstalledPackages = new ArrayList<>();
+        for (VulnerablePackage vulnerablePackage : clientProductVulnerablePackages) {
+            LOG.error("Client Product Package {}, {}", vulnerablePackage.getName(), vulnerablePackage.getFixVersion());
+            allInstalledPackages.addAll(PackageManager.systemPackagesWithName(clientServer.getId(), vulnerablePackage.getName()));
+        }
 
-        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackagesByName, clientServer.getPackageType());
+        allInstalledPackages.forEach(installed -> {
+            installed.setEvr(PackageEvrFactory.lookupPackageEvrById(installed.getEvrId()).toUniversalEvrString());
+            LOG.error("Installed Package {}, {}, {}", installed.getName(), installed.getEvr(), installed.getSummary());
+        });
+
+        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
 
         return criteriaTree.evaluate(testEvaluator);
     }
