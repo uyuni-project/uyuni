@@ -2,9 +2,11 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALDefinitionSource;
 import com.suse.oval.TestEvaluator;
@@ -15,6 +17,8 @@ import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -34,6 +38,7 @@ import java.util.*;
 })
 @DynamicUpdate
 public class OVALDefinition {
+    private static Logger LOG = LogManager.getLogger(OVALDefinition.class);
     private String id;
     private DefinitionClassEnum defClass;
     private String title;
@@ -174,8 +179,16 @@ public class OVALDefinition {
         }
 
         // TODO: Only load packages that are vulnerable
-        List<PackageListItem> allInstalledPackages = new ArrayList<>(PackageManager
-                .systemPackageList(clientServer.getId(), new PageControl(1, 1000)));
+        List<PackageListItem> allInstalledPackages = new ArrayList<>();
+        for (VulnerablePackage vulnerablePackage : clientProductVulnerablePackages) {
+            LOG.error("Client Product Package {}, {}", vulnerablePackage.getName(), vulnerablePackage.getFixVersion());
+            allInstalledPackages.addAll(PackageManager.systemPackagesWithName(clientServer.getId(), vulnerablePackage.getName()));
+        }
+
+        allInstalledPackages.forEach(installed -> {
+            installed.setEvr(PackageEvrFactory.lookupPackageEvrById(installed.getEvrId()).toUniversalEvrString());
+            LOG.error("Installed Package {}, {}, {}", installed.getName(), installed.getEvr(), installed.getSummary());
+        });
 
         TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
 
