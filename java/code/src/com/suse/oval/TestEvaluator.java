@@ -1,28 +1,23 @@
 package com.suse.oval;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TestEvaluator {
     private static final Logger LOG = LogManager.getLogger(CVEAuditManager.class);
-    private final List<PackageListItem> systemCvePatchStatusList;
+    private final Map<String, List<SystemPackage>> systemInstalledPackagesByName;
     private final PackageType packageType;
 
-    public TestEvaluator(List<PackageListItem> systemCvePatchStatusList, PackageType packageType) {
-        this.systemCvePatchStatusList = systemCvePatchStatusList == null ? new ArrayList<>() : systemCvePatchStatusList;
+    public TestEvaluator(Map<String, List<SystemPackage>> systemInstalledPackagesByName, PackageType packageType) {
+        this.systemInstalledPackagesByName = systemInstalledPackagesByName == null ? new HashMap<>() : systemInstalledPackagesByName;
         this.packageType = packageType;
     }
 
@@ -34,7 +29,7 @@ public class TestEvaluator {
         }
 
         OVALPackageObject packageObject = packageTest.getPackageObject();
-        List<PackageListItem> packageVersionsOnSystem = listPackageVersionsInstalledOnSystem(packageObject.getPackageName());
+        List<SystemPackage> packageVersionsOnSystem = systemInstalledPackagesByName.getOrDefault(packageObject.getPackageName(), Collections.emptyList());
         long packageVersionsCount = packageVersionsOnSystem.size();
 
         ExistenceEnum checkExistence = packageTest.getCheckExistence();
@@ -71,8 +66,8 @@ public class TestEvaluator {
         return combineBooleans(packageTest.getStateOperator(), stateEvaluations);
     }
 
-    private boolean evaluatePackageState(List<PackageListItem> packageVersionsOnSystem, OVALPackageState expectedState) {
-        return packageVersionsOnSystem.stream().anyMatch(cvePatchStatus -> {
+    private boolean evaluatePackageState(List<SystemPackage> packageVersionsOnSystem, OVALPackageState expectedState) {
+        return packageVersionsOnSystem.stream().anyMatch(systemPackage -> {
             // This list holds the evaluation results of each of the specified state entities .e.g. arch,
             // evr, version, etc.
             List<Boolean> stateEntitiesEvaluations = new ArrayList<>();
@@ -84,7 +79,7 @@ public class TestEvaluator {
                 LOG.error("System Package Name {} ", cvePatchStatus.getName());
                 LOG.error("aa {}", cvePatchStatus.toString());*/
 
-                PackageEvr packageOnSystemEVR = PackageEvrFactory.lookupPackageEvrById(cvePatchStatus.getEvrId());
+                PackageEvr packageOnSystemEVR = PackageEvr.parsePackageEvr(packageType, systemPackage.getEvr());
 
                 PackageEvr packageOnOvalEVR = PackageEvr
                         .parsePackageEvr(toPackageType(expectedEvr.getDatatype()), expectedEvr.getEvr());
@@ -103,7 +98,7 @@ public class TestEvaluator {
             if (expectedArchOpt.isPresent()) {
                 OVALPackageArchStateEntity expectedArch = expectedArchOpt.get();
 
-                stateEntitiesEvaluations.add(checkPackageArch(cvePatchStatus.getArch(),
+                stateEntitiesEvaluations.add(checkPackageArch(systemPackage.getArch(),
                         expectedArch.getValue(), expectedArch.getOperation()));
             }
 
@@ -111,7 +106,7 @@ public class TestEvaluator {
             if (expectedVersionOpt.isPresent()) {
                 OVALPackageVersionStateEntity expectedVersion = expectedVersionOpt.get();
 
-                PackageEvr packageOnSystemEVR = PackageEvrFactory.lookupPackageEvrById(cvePatchStatus.getEvrId());
+                PackageEvr packageOnSystemEVR = PackageEvr.parsePackageEvr(packageType, systemPackage.getEvr());
 
                 stateEntitiesEvaluations.add(checkPackageVersion(packageOnSystemEVR.getVersion(),
                         expectedVersion.getValue(), expectedVersion.getOperation()));
@@ -149,12 +144,6 @@ public class TestEvaluator {
         }
 
         return systemPackageVersion.equals(expectedVersion);
-    }
-
-    private List<PackageListItem> listPackageVersionsInstalledOnSystem(String packageName) {
-        return systemCvePatchStatusList.stream()
-                .filter(cvePatchStatus -> packageName.equals(cvePatchStatus.getName()))
-                .collect(Collectors.toList());
     }
 
     private PackageType toPackageType(EVRDataTypeEnum evrDataTypeEnum) {

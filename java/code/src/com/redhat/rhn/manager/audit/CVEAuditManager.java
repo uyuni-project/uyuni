@@ -30,22 +30,18 @@ import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.TestEvaluator;
+import com.suse.oval.SystemPackage;
 import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
 import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -933,18 +929,36 @@ public class CVEAuditManager {
 
         Set<Server> clients = user.getServers();
         for (Server clientServer : clients) {
-            CVEAuditSystemBuilder cveAuditServer = new CVEAuditSystemBuilder(clientServer.getId());
-            cveAuditServer.setSystemName(clientServer.getName());
+            CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
+            cveAuditServerBuilder.setSystemName(clientServer.getName());
 
             Set<VulnerablePackage> clientProductVulnerablePackages =
                     vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe());
 
-            boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, clientProductVulnerablePackages);
+            List<SystemPackage> allInstalledPackages =
+                    PackageManager.systemPackageList(clientServer.getId());
+
+            if (clientProductVulnerablePackages.isEmpty()) {
+                cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
+                CVEAuditServer cveAuditServer = new CVEAuditServer(
+                        cveAuditServerBuilder.getSystemID(), cveAuditServerBuilder.getSystemName(),
+                        cveAuditServerBuilder.getPatchStatus(), Collections.emptySet(), Collections.emptySet());
+
+                result.add(cveAuditServer);
+                continue;
+            }
+
+            boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, allInstalledPackages);
 
             log.error("Evaluation: {}", isClientServerVulnerable);
 
             if (!isClientServerVulnerable) {
-                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
+                cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
+                CVEAuditServer cveAuditServer = new CVEAuditServer(
+                        cveAuditServerBuilder.getSystemID(), cveAuditServerBuilder.getSystemName(),
+                        cveAuditServerBuilder.getPatchStatus(), Collections.emptySet(), Collections.emptySet());
+
+                result.add(cveAuditServer);
                 continue;
             }
 
@@ -954,32 +968,38 @@ public class CVEAuditManager {
 
             int listSizeBefore = clientProductVulnerablePackages.size();
 
-            clientProductVulnerablePackages = clientProductVulnerablePackages
-                    .stream().filter(
-                            p -> systemResults.stream()
-                                    .anyMatch(cps -> Objects.equals(cps.packageName.orElse(""), p.getName())))
-                    .collect(Collectors.toSet()
-                    );
+            clientProductVulnerablePackages.removeIf(
+                    p -> systemResults.stream()
+                            .anyMatch(cps -> Objects.equals(cps.packageName.orElse(""), p.getName()))
+            );
+
+            log.error(clientProductVulnerablePackages);
 
             int listSizeAfter = clientProductVulnerablePackages.size();
 
-            if (listSizeAfter == 0) {
-                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
+            if (listSizeBefore > 0 && listSizeAfter == 0) {
+                cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
             } else if (listSizeAfter < listSizeBefore) {
-                cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
+                cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
             } else {
                 boolean allPackagesAffected = clientProductVulnerablePackages
                         .stream()
                         .allMatch(p -> p.getFixVersion().isEmpty());
 
                 if (allPackagesAffected) {
-                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
+                    cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
                 } else {
-                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
+                    cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
                 }
             }
 
-            log.error("Patch Status: {}", cveAuditServer.getPatchStatus());
+            log.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
+
+            CVEAuditServer cveAuditServer = new CVEAuditServer(
+                    cveAuditServerBuilder.getSystemID(), cveAuditServerBuilder.getSystemName(),
+                    cveAuditServerBuilder.getPatchStatus(), Collections.emptySet(), Collections.emptySet());
+
+            result.add(cveAuditServer);
         }
 
         return result;
