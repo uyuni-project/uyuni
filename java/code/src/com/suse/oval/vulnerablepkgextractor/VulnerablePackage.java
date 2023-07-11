@@ -21,4 +21,9 @@ public class VulnerablePackage {
     public void setFixVersion(String fixedVersion) {
         this.fixVersion = fixedVersion;
     }
+
+    @Override
+    public String toString() {
+        return name + "-" + fixVersion;
+    }
 }
