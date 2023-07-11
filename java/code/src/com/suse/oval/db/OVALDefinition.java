@@ -2,9 +2,18 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.TestEvaluator;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
+import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
+import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
@@ -12,7 +21,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "suseOVALDefinition")
@@ -123,5 +132,53 @@ public class OVALDefinition {
 
     public void setCriteriaTree(CriteriaType criteriaTree) {
         this.criteriaTree = criteriaTree;
+    }
+
+    /**
+     * Extract the list of vulnerable packages from the OVAL definition that matches the given product cpe
+     *
+     * @param productCpe the cpe of the product to get vulnerable packages for
+     * @return The list of vulnerable packages that made systems of {@code cpe} vulnerable to this vulnerability definition
+     */
+    @Transient
+    public Set<VulnerablePackage> extractVulnerablePackages(String productCpe) {
+        AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
+                new SUSEVulnerablePackageExtractor(this);
+
+        Set<VulnerablePackage> productVulnerablePackages = new HashSet<>();
+
+        List<ProductVulnerablePackages> productToVulnerablePackagesMappings = vulnerablePackagesExtractor.extract();
+
+        for (ProductVulnerablePackages productToVulnerablePackagesMapping : productToVulnerablePackagesMappings) {
+            if (Objects.equals(productToVulnerablePackagesMapping.getProductCpe(), productCpe)) {
+                productVulnerablePackages.addAll(productToVulnerablePackagesMapping.getVulnerablePackages());
+            }
+        }
+
+        return productVulnerablePackages;
+    }
+
+    /**
+     * Evaluate the given {@code clientServer} vulnerability state against this definition's {@code criteriaTree}
+     *
+     * @param clientServer The client server to evaluate its vulnerability state
+     * @param clientProductVulnerablePackages the set of vulnerable packages that made client product vulnerable to this vulnerability definition
+     *
+     * @return {@code True} of clientServer is in a vulnerable state and {@code False} if it's not.
+     * Also returns {@code False} if definition doesn't have a criteria tree
+     *
+     * */
+    public boolean evaluate(Server clientServer, Set<VulnerablePackage> clientProductVulnerablePackages) {
+        if (criteriaTree == null) {
+            return false;
+        }
+
+        // TODO: Only load packages that are vulnerable
+        List<PackageListItem> allInstalledPackages = new ArrayList<>(PackageManager
+                .systemPackageList(clientServer.getId(), new PageControl(1, 1000)));
+
+        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
+
+        return criteriaTree.evaluate(testEvaluator);
     }
 }
