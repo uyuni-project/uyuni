@@ -2,13 +2,9 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.dto.PackageListItem;
-import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.audit.CVEAuditManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
@@ -26,6 +22,8 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Entity
 @Table(name = "suseOVALDefinition")
@@ -167,30 +165,20 @@ public class OVALDefinition {
      * Evaluate the given {@code clientServer} vulnerability state against this definition's {@code criteriaTree}
      *
      * @param clientServer The client server to evaluate its vulnerability state
-     * @param clientProductVulnerablePackages the set of vulnerable packages that made client product vulnerable to this vulnerability definition
      *
      * @return {@code True} of clientServer is in a vulnerable state and {@code False} if it's not.
      * Also returns {@code False} if definition doesn't have a criteria tree
      *
      * */
-    public boolean evaluate(Server clientServer, Set<VulnerablePackage> clientProductVulnerablePackages) {
+    public boolean evaluate(Server clientServer, List<SystemPackage> allInstalledPackages) {
         if (criteriaTree == null) {
             return false;
         }
 
-        // TODO: Only load packages that are vulnerable
-        List<PackageListItem> allInstalledPackages = new ArrayList<>();
-        for (VulnerablePackage vulnerablePackage : clientProductVulnerablePackages) {
-            LOG.error("Client Product Package {}, {}", vulnerablePackage.getName(), vulnerablePackage.getFixVersion());
-            allInstalledPackages.addAll(PackageManager.systemPackagesWithName(clientServer.getId(), vulnerablePackage.getName()));
-        }
+        Map<String, List<SystemPackage>> allInstalledPackagesByName = allInstalledPackages
+                .stream().collect(groupingBy(SystemPackage::getName));
 
-        allInstalledPackages.forEach(installed -> {
-            installed.setEvr(PackageEvrFactory.lookupPackageEvrById(installed.getEvrId()).toUniversalEvrString());
-            LOG.error("Installed Package {}, {}, {}", installed.getName(), installed.getEvr(), installed.getSummary());
-        });
-
-        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
+        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackagesByName, clientServer.getPackageType());
 
         return criteriaTree.evaluate(testEvaluator);
     }
