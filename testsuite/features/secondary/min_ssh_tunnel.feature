@@ -45,7 +45,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I follow "Install"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check "milkyway-dummy" in the list
+    And I check row with "milkyway-dummy" and arch of "ssh_minion"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
