@@ -354,6 +354,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Virtual Networks" text
     And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
 
+  Scenario: Cleanup: Delete virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I wait until I do not see "Loading..." text
+    When I click on "Delete" in row "test-net2"
+    And I click on "Delete" in "Delete Network" modal
+    Then I wait until I do not see "test-net2" text
+    And I should not see a "test-net2" virtual network on "kvm_server"
+
 # Start provisioning scenarios
 
 @scc_credentials
