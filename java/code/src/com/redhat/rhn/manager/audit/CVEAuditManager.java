@@ -941,6 +941,8 @@ public class CVEAuditManager {
 
             boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, clientProductVulnerablePackages);
 
+            log.error("Evaluation: {}", isClientServerVulnerable);
+
             if (!isClientServerVulnerable) {
                 cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
                 continue;
