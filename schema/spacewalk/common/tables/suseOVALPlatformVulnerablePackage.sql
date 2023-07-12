@@ -14,7 +14,7 @@
 --
 
 
-CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
+CREATE TABLE suseOVALPlatformVulnerablePackage
 (
     platform_id          NUMERIC NOT NULL
                             REFERENCES suseOVALPlatform (id),

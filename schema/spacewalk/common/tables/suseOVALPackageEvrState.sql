@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-DROP TABLE IF EXISTS suseOVALPackageEvrState;
 CREATE TABLE suseOVALPackageEvrState
 (
     id           NUMERIC NOT NULL

@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE IF NOT EXISTS suseOVALDefinition
+CREATE TABLE suseOVALDefinition
 (
     id              VARCHAR NOT NULL
                        CONSTRAINT suse_oval_definition_id_pk PRIMARY KEY,

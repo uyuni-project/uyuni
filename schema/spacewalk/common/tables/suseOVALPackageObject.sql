@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-DROP TABLE IF EXISTS suseOVALPackageObject;
 CREATE TABLE suseOVALPackageObject
 (
     id         VARCHAR NOT NULL

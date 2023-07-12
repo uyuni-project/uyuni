@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-DROP TABLE IF EXISTS suseOVALPackageArchState;
 CREATE TABLE suseOVALPackageArchState
 (
     id           NUMERIC NOT NULL

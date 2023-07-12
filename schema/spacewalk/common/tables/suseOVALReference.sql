@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE IF NOT EXISTS suseOVALReference
+CREATE TABLE suseOVALReference
 (
     ref_id    VARCHAR NOT NULL,
     definition_id    VARCHAR NOT NULL
