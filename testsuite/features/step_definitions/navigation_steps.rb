@@ -70,7 +70,7 @@ end
 When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
   next if has_no_text?(text, wait: 3)
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
-    break if has_no_text?(text, wait: 3)
+    break if has_no_text?(text, wait: 5)
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
