@@ -49,7 +49,7 @@ $SNIPPET('spacewalk/sles_no_signature_checks')
   <networking>
     <keep_install_network config:type="boolean">true</keep_install_network>
     <dns>
-      <hostname>test-vm2</hostname>
+      <hostname>test-v2</hostname>
     </dns>
   </networking>
   <software>
