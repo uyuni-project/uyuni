@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE IF NOT EXISTS suseOVALVulnerablePackage
+CREATE TABLE suseOVALVulnerablePackage
 (
     id             NUMERIC NOT NULL
                       CONSTRAINT suse_oval_vulnerable_pkg_id_pk PRIMARY KEY,

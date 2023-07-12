@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-DROP TABLE IF EXISTS suseOVALDefinitionAffectedPlatform;
 CREATE TABLE suseOVALDefinitionAffectedPlatform
 (
     definition_id    VARCHAR NOT NULL

@@ -256,7 +256,7 @@ suseOVALPackageState               :: suseOVALPackageArchState suseOVALPackageVe
 suseOVALPackageTest                :: suseOVALPackageObject suseOVALPackageState
 suseOVALPackageVersionState        ::
 suseOVALPlatform                   ::
-suseOVALPlatformVulnerablePackage  :: suseOVALPlatform rhnCve suseOVALVulnerablePackage
+suseOVALPlatformVulnerablePackage  :: suseOVALPlatform rhnCVE suseOVALVulnerablePackage
 suseOVALReference                  :: suseOVALDefinition
 suseOVALVulnerablePackage          ::
 susePackageEula                    :: rhnPackage suseEula
