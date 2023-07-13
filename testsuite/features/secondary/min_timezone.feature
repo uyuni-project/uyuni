@@ -77,10 +77,12 @@ Feature: Correct timezone display
     Then I should see a "MalaysianUser" link
 
   Scenario: Cleanup: Log in as admin user again and remove scheduled actions
-    Given I am authorized for the "Admin" section
+    Given I am logged in API as user "admin" and password "admin"
     And I cancel all scheduled actions
+    And I logout from API
 
   Scenario: Cleanup: Remove role
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Users > User List > Active"
     And I follow "MalaysianUser"
     And I uncheck "role_org_admin"
