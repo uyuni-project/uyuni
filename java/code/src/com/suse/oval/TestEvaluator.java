@@ -2,7 +2,6 @@ package com.suse.oval;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TestEvaluator {
-    private static final Logger LOG = LogManager.getLogger(CVEAuditManager.class);
+    private static final Logger LOG = LogManager.getLogger(TestEvaluator.class);
     private final Map<String, List<SystemPackage>> systemInstalledPackagesByName;
     private final PackageType packageType;
 
