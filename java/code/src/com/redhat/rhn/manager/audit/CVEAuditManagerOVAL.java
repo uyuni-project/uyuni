@@ -40,23 +40,15 @@ public class CVEAuditManagerOVAL {
         Set<Server> clients = user.getServers();
         for (Server clientServer : clients) {
             CVEAuditSystemBuilder systemAuditResult;
+            // We need this initially to be able to get errata and audit channels information for the OVAL
+            // implementation.
+            // TODO: We could make a custom query that would get us only the data we're interested in instead of relying
+            //  on CVEAuditManager#doAuditManager implementation.
             CVEAuditSystemBuilder auditWithChannelsResult = CVEAuditManager.doAuditSystem(clientServer.getId(), results);
 
-            if (isOVALSyncedFor(clientServer)) {
-                Optional<OVALDefinition> vulnerabilityDefinitionOpt = OVALCachingFactory
-                        .lookupVulnerabilityDefinitionByCve(cveIdentifier);
+            if (doesSupportOVALAuditing(clientServer)) {
+                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
 
-                if (vulnerabilityDefinitionOpt.isEmpty()) {
-                    log.warn("The provided CVE does not match any OVAL definition in the database.");
-                }
-
-                OVALDefinition vulnerabilityDefinition = vulnerabilityDefinitionOpt.get();
-                if (vulnerabilityDefinition.getCriteriaTree() == null) {
-                    log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
-                }
-
-                systemAuditResult = doAuditSystem(vulnerabilityDefinition,
-                        resultsBySystem.get(clientServer.getId()), clientServer);
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
             } else {
@@ -76,13 +68,26 @@ public class CVEAuditManagerOVAL {
         return result;
     }
 
-    public static boolean isOVALSyncedFor(Server clientServer) {
+    public static boolean doesSupportOVALAuditing(Server clientServer) {
         // TODO: check if OVAL is synced and client product is Red Hat, Debian, Ubuntu or SUSE
         return true;
     }
 
-    public static CVEAuditSystemBuilder doAuditSystem(OVALDefinition vulnerabilityDefinition,
-                                                      List<CVEAuditManager.CVEPatchStatus> results, Server clientServer) {
+    public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier, List<CVEAuditManager.CVEPatchStatus> results,
+                                                      Server clientServer) {
+
+        Optional<OVALDefinition> vulnerabilityDefinitionOpt = OVALCachingFactory
+                .lookupVulnerabilityDefinitionByCve(cveIdentifier);
+
+        if (vulnerabilityDefinitionOpt.isEmpty()) {
+            log.warn("The provided CVE does not match any OVAL definition in the database.");
+        }
+
+        OVALDefinition vulnerabilityDefinition = vulnerabilityDefinitionOpt.get();
+        if (vulnerabilityDefinition.getCriteriaTree() == null) {
+            log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
+        }
+
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
 
