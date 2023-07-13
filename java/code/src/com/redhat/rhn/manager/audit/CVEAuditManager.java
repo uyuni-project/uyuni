@@ -38,11 +38,6 @@ import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.SystemPackage;
-import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -599,7 +594,7 @@ public class CVEAuditManager {
      *   - contained in a certain channel
      * in order to detect if the system is affected or not by a certain CVE
      */
-    private static class CVEPatchStatus {
+    static class CVEPatchStatus {
 
         private final long systemId;
         private final String systemName;
@@ -811,8 +806,8 @@ public class CVEAuditManager {
      * assigned/unassigned channels having any of the erratas, while keeping a list of relevant patches and their
      * suggested channels per server.
      */
-    private static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
-        String cveIdentifier) {
+    public static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
+                                                           String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_systems_by_patch_status");
 
@@ -853,6 +848,36 @@ public class CVEAuditManager {
     }
 
     /**
+     * List visible systems with their patch status regarding a given CVE identifier.
+     *
+     * @param user the calling user
+     * @param cveIdentifier the CVE identifier to lookup
+     * @param patchStatuses the patch statuses
+     * @return list of system records with patch status
+     * @throws UnknownCVEIdentifierException if the CVE number is not known
+     */
+    public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
+                                                                String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+            throws UnknownCVEIdentifierException {
+        if (isCVEIdentifierUnknown(cveIdentifier)) {
+            throw new UnknownCVEIdentifierException();
+        }
+
+        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
+                .collect(Collectors.toList());
+
+        return listSystemsByPatchStatus(results, patchStatuses)
+                .stream()
+                .map(system -> new CVEAuditServer(
+                        system.getId(),
+                        system.getSystemName(),
+                        system.getPatchStatus(),
+                        system.getChannels(),
+                        system.getErratas()
+                )).collect(Collectors.toList());
+    }
+
+    /**
      * List visible images with their patch status regarding a given CVE identifier.
      *
      * @param user the calling user
@@ -880,133 +905,6 @@ public class CVEAuditManager {
                         system.getChannels(),
                         system.getErratas()
                 )).collect(Collectors.toList());
-    }
-
-    /**
-     * List visible systems with their patch status regarding a given CVE identifier.
-     *
-     * @param user the calling user
-     * @param cveIdentifier the CVE identifier to lookup
-     * @param patchStatuses the patch statuses
-     * @return list of system records with patch status
-     * @throws UnknownCVEIdentifierException if the CVE number is not known
-     */
-    public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
-                                                                EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
-        if (isCVEIdentifierUnknown(cveIdentifier)) {
-            throw new UnknownCVEIdentifierException();
-        }
-
-        List<CVEAuditServer> result = new ArrayList<>();
-
-        Optional<OVALDefinition> vulnerabilityDefinitionOpt = OVALCachingFactory.lookupVulnerabilityDefinitionByCve(cveIdentifier);
-        if (vulnerabilityDefinitionOpt.isEmpty()) {
-            log.warn("The provided CVE does not match any OVAL definition in the database.");
-        }
-
-        OVALDefinition vulnerabilityDefinition = vulnerabilityDefinitionOpt.get();
-        if (vulnerabilityDefinition.getCriteriaTree() == null) {
-            log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
-        }
-
-        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
-                .collect(Collectors.toList());
-
-        // Group the results by system
-        Map<Long, List<CVEPatchStatus>> resultsBySystem =
-                results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
-
-        Set<Server> clients = user.getServers();
-        for (Server clientServer : clients) {
-            CVEAuditSystemBuilder systemAuditResult;
-            CVEAuditSystemBuilder auditWithChannelsResult = auditSystemWithChannels(clientServer.getId(), results);
-
-            if (isOVALSyncedFor(clientServer)) {
-                systemAuditResult = auditSystemWithOVAL(vulnerabilityDefinition,
-                        resultsBySystem.get(clientServer.getId()), clientServer);
-                systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
-                systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
-            } else {
-                systemAuditResult = auditWithChannelsResult;
-            }
-
-            if (patchStatuses.contains(systemAuditResult.getPatchStatus())) {
-                result.add(new CVEAuditServer(
-                        systemAuditResult.getId(),
-                        systemAuditResult.getSystemName(),
-                        systemAuditResult.getPatchStatus(),
-                        systemAuditResult.getChannels(),
-                        systemAuditResult.getErratas()));
-            }
-        }
-
-        return result;
-    }
-
-    public static boolean isOVALSyncedFor(Server clientServer) {
-        // TODO: check if OVAL is synced and client product is Red Hat, Debian, Ubuntu or SUSE
-        return true;
-    }
-
-    public static CVEAuditSystemBuilder auditSystemWithOVAL(OVALDefinition vulnerabilityDefinition,
-                                                             List<CVEPatchStatus> results, Server clientServer) {
-        CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
-        cveAuditServerBuilder.setSystemName(clientServer.getName());
-
-        Set<VulnerablePackage> clientProductVulnerablePackages =
-                vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe());
-
-        List<SystemPackage> allInstalledPackages =
-                PackageManager.systemPackageList(clientServer.getId());
-
-        if (clientProductVulnerablePackages.isEmpty()) {
-            cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
-            return cveAuditServerBuilder;
-        }
-
-        boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, allInstalledPackages);
-
-        log.error("Evaluation: {}", isClientServerVulnerable);
-
-        if (!isClientServerVulnerable) {
-            cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
-            return cveAuditServerBuilder;
-        }
-
-        List<CVEPatchStatus> systemResults = results.stream()
-                .filter(CVEPatchStatus::isChannelAssigned)
-                .collect(Collectors.toList());
-
-        int listSizeBefore = clientProductVulnerablePackages.size();
-
-        clientProductVulnerablePackages.removeIf(
-                p -> systemResults.stream()
-                        .anyMatch(cps -> Objects.equals(cps.packageName.orElse(null), p.getName()))
-        );
-
-        log.error(clientProductVulnerablePackages);
-
-        int listSizeAfter = clientProductVulnerablePackages.size();
-
-        if (listSizeBefore > 0 && listSizeAfter == 0) {
-            cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
-        } else if (listSizeAfter < listSizeBefore) {
-            cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
-        } else {
-            boolean allPackagesAffected = clientProductVulnerablePackages
-                    .stream()
-                    .allMatch(p -> p.getFixVersion().isEmpty());
-
-            if (allPackagesAffected) {
-                cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
-            } else {
-                cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
-            }
-        }
-
-        log.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
-
-        return cveAuditServerBuilder;
     }
 
     /**
@@ -1041,7 +939,7 @@ public class CVEAuditManager {
 
         // Loop for each system, calculating the patch status individually
         for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {
-            CVEAuditSystemBuilder system = auditSystemWithChannels(systemResultMap.getKey(), systemResultMap.getValue());
+            CVEAuditSystemBuilder system = doAuditSystem(systemResultMap.getKey(), systemResultMap.getValue());
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(system.getPatchStatus())) {
@@ -1053,7 +951,7 @@ public class CVEAuditManager {
         return ret;
     }
 
-    private static CVEAuditSystemBuilder auditSystemWithChannels(Long systemId, List<CVEPatchStatus> systemResults) {
+    public static CVEAuditSystemBuilder doAuditSystem(Long systemId, List<CVEPatchStatus> systemResults) {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemId);
         system.setSystemName(systemResults.get(0).getSystemName());
 
