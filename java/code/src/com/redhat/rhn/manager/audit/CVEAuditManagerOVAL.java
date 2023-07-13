@@ -142,6 +142,21 @@ public class CVEAuditManagerOVAL {
         return cveAuditServerBuilder;
     }
 
+    /**
+     * List visible images with their patch status regarding a given CVE identifier.
+     *
+     * @param user the calling user
+     * @param cveIdentifier the CVE identifier to lookup
+     * @param patchStatuses the patch statuses
+     * @return list of images records with patch status
+     * @throws UnknownCVEIdentifierException if the CVE number is not known
+     */
+    public static List<CVEAuditImage> listImagesByPatchStatus(User user,
+                                                              String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+            throws UnknownCVEIdentifierException {
+        return CVEAuditManager.listImagesByPatchStatus(user, cveIdentifier, patchStatuses);
+    }
+
     public static List<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
         return CVEAuditManager.populateCVEChannels(auditTarget);
     }
