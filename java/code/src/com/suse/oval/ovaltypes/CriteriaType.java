@@ -109,9 +109,9 @@ public class CriteriaType implements BaseCriteria {
     public boolean evaluate(TestEvaluator testEvaluator) {
         switch (operator) {
             case OR:
-                return negate ^ evaluateOR(testEvaluator);
+                return isNegate() ^ evaluateOR(testEvaluator);
             case AND:
-                return negate ^ evaluateAND(testEvaluator);
+                return isNegate() ^ evaluateAND(testEvaluator);
             case ONE:
             case XOR:
                 //TODO: Implement
