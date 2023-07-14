@@ -154,6 +154,7 @@ module LavandaBasic
     cmd_prefixed = cmd
     if @in_has_uyunictl
       cmd_prefixed = "uyunictl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'"
+      print "#{cmd_prefixed}\n"
     end
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
