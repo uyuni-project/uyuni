@@ -589,7 +589,10 @@ SELECT PN.name as NAME,
                pn.id || '|' || pe.id || '|' || pa.id as id_combo,
                pn.name as name,
                pa.label as arch,
-               evr_t_as_vre_simple(pe.evr) AS evr
+               pe.epoch as epoch,
+               pe.version as version,
+               pe.release as release,
+               pe.type AS type
         FROM rhnPackageName pn
                  INNER JOIN rhnServerPackage sp ON sp.name_id = pn.id
                  INNER JOIN rhnServer s ON sp.server_id = s.id

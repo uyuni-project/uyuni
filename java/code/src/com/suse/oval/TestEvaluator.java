@@ -21,7 +21,7 @@ public class TestEvaluator {
     }
 
     public boolean evaluate(OVALPackageTest packageTest) {
-        // LOG.error("Evaluating OVAL test '{}', comment '{}'", packageTest.getId(), packageTest.getComment());
+        LOG.error("Evaluating OVAL test '{}', comment '{}'", packageTest.getId(), packageTest.getComment());
 
         if (packageTest.getPackageObject() == null) {
             throw new IllegalStateException();
@@ -71,23 +71,26 @@ public class TestEvaluator {
             // evr, version, etc.
             List<Boolean> stateEntitiesEvaluations = new ArrayList<>();
 
+            LOG.error("Hey {}", expectedState.getId());
+            LOG.error("System Package EVR {} ", systemPackage.getPackageEVR().toUniversalEvrString());
+            LOG.error("System Package Name {} ", systemPackage.getName());
+            LOG.error("aa {}", systemPackage.toString());
+
             Optional<OVALPackageEvrStateEntity> expectedEvrOpt = expectedState.getPackageEvrState();
             if (expectedEvrOpt.isPresent()) {
                 OVALPackageEvrStateEntity expectedEvr = expectedEvrOpt.get();
-       /*         LOG.error("System Package EVR {} ", cvePatchStatus.getEvra());
-                LOG.error("System Package Name {} ", cvePatchStatus.getName());
-                LOG.error("aa {}", cvePatchStatus.toString());*/
 
-                PackageEvr packageOnSystemEVR = PackageEvr.parsePackageEvr(packageType, systemPackage.getEvr());
+
+                PackageEvr packageOnSystemEVR = systemPackage.getPackageEVR();
 
                 PackageEvr packageOnOvalEVR = PackageEvr
                         .parsePackageEvr(toPackageType(expectedEvr.getDatatype()), expectedEvr.getEvr());
 
                 int evrComparisonResult = packageOnSystemEVR.compareTo(packageOnOvalEVR);
 
-       /*         LOG.error("EVR Comparison result: {}", evrComparisonResult);
+                LOG.error("EVR Comparison result: {}", evrComparisonResult);
                 LOG.error("EVR on System: {}", packageOnSystemEVR.toUniversalEvrString());
-                LOG.error("EVR in OVAL: {}", packageOnOvalEVR.toUniversalEvrString());*/
+                LOG.error("EVR in OVAL: {}", packageOnOvalEVR.toUniversalEvrString());
 
                 stateEntitiesEvaluations.add(checkPackageEVR(evrComparisonResult, expectedEvr.getOperation()));
             }
@@ -105,7 +108,11 @@ public class TestEvaluator {
             if (expectedVersionOpt.isPresent()) {
                 OVALPackageVersionStateEntity expectedVersion = expectedVersionOpt.get();
 
-                PackageEvr packageOnSystemEVR = PackageEvr.parsePackageEvr(packageType, systemPackage.getEvr());
+                LOG.error("Expected version '{}'", expectedVersion.getValue());
+
+                PackageEvr packageOnSystemEVR = systemPackage.getPackageEVR();
+
+                LOG.error("Package on System Version '{}'", packageOnSystemEVR.getVersion());
 
                 stateEntitiesEvaluations.add(checkPackageVersion(packageOnSystemEVR.getVersion(),
                         expectedVersion.getValue(), expectedVersion.getOperation()));
