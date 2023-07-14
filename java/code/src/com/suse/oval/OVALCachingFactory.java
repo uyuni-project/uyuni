@@ -59,7 +59,6 @@ public class OVALCachingFactory extends HibernateFactory {
             if (i % 60 == 0) {
                 LOG.error(definitionType.getId());
                 getSession().flush();
-                getSession().clear();
             }
         }
     }
@@ -225,9 +224,12 @@ public class OVALCachingFactory extends HibernateFactory {
             if (i % 60 == 0) {
                 LOG.error("Saving '{}'", testType.getId());
                 getSession().flush();
-                getSession().clear();
             }
         }
+    }
+
+    public static OVALDefinition lookupDefinitionById(String id) {
+        return getSession().byId(OVALDefinition.class).load(id);
     }
 
     private OVALPackageObject lookupOrInsetPackageObject(OVALPackageObject ovalPackageObject) {
