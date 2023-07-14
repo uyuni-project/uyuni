@@ -1176,7 +1176,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
     next unless refresh_result.include? node
     node_refreshes += "^#{refresh_id}|"
   end
-  cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
+  cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('\|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
     result, code = $server.run(cmd, check_errors: false)
     sleep 1
