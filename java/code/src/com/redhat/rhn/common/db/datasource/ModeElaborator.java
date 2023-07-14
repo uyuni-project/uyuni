@@ -17,7 +17,7 @@ package com.redhat.rhn.common.db.datasource;
 
 import org.hibernate.Session;
 
-import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +25,9 @@ import java.util.Map;
 /**
  * ModeElaborator
  */
-public class ModeElaborator implements Elaborator, Serializable {
+public class ModeElaborator implements Elaborator {
     private SelectMode mode;
-    private Map params;
+    private final HashMap<String, Object> params;
 
     // increase this number on any data change
     private static final long serialVersionUID = 1L;
@@ -36,9 +36,14 @@ public class ModeElaborator implements Elaborator, Serializable {
      * @param select Select mode
      * @param elabParams elaborator params
      */
-    public ModeElaborator(SelectMode select, Map elabParams) {
+    public ModeElaborator(SelectMode select, Map<String, Object> elabParams) {
         mode = select;
-        params = elabParams;
+        if (elabParams != null) {
+            params = new HashMap<>(elabParams);
+        }
+        else {
+            params = null;
+        }
     }
 
     /**
