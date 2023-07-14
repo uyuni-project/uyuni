@@ -40,6 +40,16 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.db.OVALDefinition;
+import com.suse.oval.db.OVALPackageTest;
+import com.suse.oval.manager.OvalObjectManager;
+import com.suse.oval.manager.OvalStateManager;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -471,6 +481,16 @@ public class ErrataTestUtils {
         return result;
     }
 
+    public static OVALDefinition createOVALDefinition(DefinitionType definitionType) {
+        OVALCachingFactory.saveDefinitions(
+                List.of(definitionType), OVALDefinitionSource.SUSE
+        );
+
+        HibernateFactory.getSession().flush();
+
+        return OVALCachingFactory.lookupDefinitionById(definitionType.getId());
+    }
+
     /**
      * Copy errata details as in {@link ErrataFactory}.
      * @param copy
@@ -495,5 +515,16 @@ public class ErrataTestUtils {
 
         // Copy the packages
         copy.setPackages(new HashSet<>(original.getPackages()));
+    }
+
+    public static OVALPackageTest createOVALTest(TestType testType, ObjectType objectType, StateType stateType) {
+        OvalObjectManager objectManager = new OvalObjectManager(List.of(objectType));
+        OvalStateManager stateManager = new OvalStateManager(List.of(stateType));
+
+        OVALCachingFactory.savePackageTests(List.of(testType), objectManager, stateManager);
+
+        HibernateFactory.getSession().flush();
+
+        return OVALCachingFactory.lookupPackageTestById(testType.getId());
     }
 }

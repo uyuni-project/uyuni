@@ -594,7 +594,7 @@ public class CVEAuditManager {
      *   - contained in a certain channel
      * in order to detect if the system is affected or not by a certain CVE
      */
-    static class CVEPatchStatus {
+    public static class CVEPatchStatus {
 
         private final long systemId;
         private final String systemName;
