@@ -31,23 +31,43 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
     OvalParser ovalParser = new OvalParser();
 
-    Package leap15_4_Pkg;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-    }
-
     @Test
-    void testDoAuditSystemNotAffected() {
+    void testDoAuditSystemNotAffected() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.5"); // Not Leap 15.4
+
+        createOVALDefinition(definitionType);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.NOT_AFFECTED, systemAuditResult.getPatchStatus());
     }
 
     @Test
     void testDoAuditSystemPatched() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/testDoAuditSystemNotAffected.oval.xml"));
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
         // TODO: Compute object hash to make sure we update tests whenever test OVAL files changes
         DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
@@ -87,8 +107,97 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     }
 
     @Test
-    void testDoAuditSystemAffectedPatchUnavailable() {
+    void testDoAuditSystemAffectedFullPatchAvailable() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
+        // TODO: Compute object hash to make sure we update tests whenever test OVAL files changes
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        createOVALDefinition(definitionType);
+
+        Package unpatched = createTestPackage(user, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
+
+        Package patched = createTestPackage(user, errata, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
+
+        log.error(unpatched.getPackageEvr().toUniversalEvrString());
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(unpatched, server);
+
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+
+        CVEAuditManager.populateCVEChannels();
+
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        log.error(server.getName());
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE, systemAuditResult.getPatchStatus());
+    }
+
+
+    @Test
+    void testDoAuditSystemAffectedPatchUnavailable() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-2.xml"));
+
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2008-2934");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        createOVALDefinition(definitionType);
+
+        Package affected =  createTestPackage(user, channel, "noarch", "MozillaFirefox");
+        createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(affected, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_PATCH_UNAVAILABLE, systemAuditResult.getPatchStatus());
     }
 
     /**
@@ -96,11 +205,8 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
      * it's abstracted here
      * */
     private static Package createLeap15_4_Package(User user, Errata errata, Channel channel) throws Exception {
-        Package unpatched2 = createTestPackage(user, channel, "noarch");
-        unpatched2.setPackageName(createTestPackageName("openSUSE-release"));
-        Package patched2 = createLaterTestPackage(user, errata, channel, unpatched2,
+        return createTestPackage(user, channel, "noarch", "openSUSE-release",
                 "0", "15.4", "0");
-        return patched2;
     }
 
     /**
