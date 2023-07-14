@@ -84,6 +84,6 @@ public class CriterionType implements BaseCriteria {
 
     @Override
     public boolean evaluate(TestEvaluator testEvaluator) {
-        return negate ^ testEvaluator.evaluate(OVALCachingFactory.lookupPackageTestById(testRef));
+        return isNegate() ^ testEvaluator.evaluate(OVALCachingFactory.lookupPackageTestById(testRef));
     }
 }
