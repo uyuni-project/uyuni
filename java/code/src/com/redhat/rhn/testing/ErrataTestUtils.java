@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -58,6 +59,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
 
 
 /**
@@ -361,6 +364,40 @@ public class ErrataTestUtils {
         }
 
         return result;
+    }
+
+    public static Package createTestPackage(User user, Errata errata, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        Package result = createTestPackage(user, errata, channel, arch);
+
+        PackageEvr pevr =
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, result.getPackageType());
+
+        result.setRpmVersion(result.getRpmVersion());
+        result.setDescription(result.getDescription());
+        result.setSummary(result.getSummary());
+        result.setPackageSize(result.getPackageSize());
+        result.setPayloadSize(result.getPayloadSize());
+        result.setBuildHost(result.getBuildHost());
+        result.setVendor(result.getVendor());
+        result.setPayloadFormat(result.getPayloadFormat());
+        result.setCompat(result.getCompat());
+        result.setPath(result.getPath());
+        result.setHeaderSignature(result.getHeaderSignature());
+        result.setCopyright(result.getCopyright());
+        result.setCookie(result.getCookie());
+        result.setPackageName(createTestPackageName(name));
+        result.setPackageEvr(pevr);
+        result.setPackageGroup(result.getPackageGroup());
+
+        TestUtils.saveAndFlush(result);
+
+        return result;
+    }
+
+    public static Package createTestPackage(User user, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        return createTestPackage(user,null, channel, arch, name, epoch, version, release);
     }
 
     /**
