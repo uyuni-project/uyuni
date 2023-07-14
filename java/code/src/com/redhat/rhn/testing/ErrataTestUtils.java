@@ -400,6 +400,10 @@ public class ErrataTestUtils {
         return createTestPackage(user,null, channel, arch, name, epoch, version, release);
     }
 
+    public static Package createTestPackage(User user, Channel channel, String arch, String name) {
+        return createTestPackage(user,null, channel, arch, name, "1", "0", "1");
+    }
+
     /**
      * Create a {@link Package} which has a greater version number than another.
      * @param user the package owner
