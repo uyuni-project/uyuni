@@ -101,8 +101,6 @@ public class OVALCachingFactory extends HibernateFactory {
                 .uniqueResult();
     }
 
-    private static Map<String, OVALPlatform> platformsMap = new HashMap<>(100);
-
     /**
      * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
      *
@@ -110,10 +108,6 @@ public class OVALCachingFactory extends HibernateFactory {
      * @return the platform
      */
     public static OVALPlatform lookupOrInsertPlatformByCpe(String cpe) {
-        if (platformsMap.containsKey(cpe)) {
-            return platformsMap.get(cpe);
-        }
-
         OVALPlatform platform = lookupPlatformByCpe(cpe);
         if (platform == null) {
             OVALPlatform newPlatform = new OVALPlatform();
@@ -123,10 +117,7 @@ public class OVALCachingFactory extends HibernateFactory {
             platform = newPlatform;
         }
 
-        platformsMap.put(cpe, platform);
-
         return platform;
-
     }
 
     public static OVALPlatform lookupPlatformByCpe(String cpe) {
@@ -138,7 +129,8 @@ public class OVALCachingFactory extends HibernateFactory {
 
         criteriaQuery.where(builder.equal(root.get("cpe"), cpe));
 
-        return session.createQuery(criteriaQuery).uniqueResult();
+        return session.createQuery(criteriaQuery)
+                .setCacheable(true).uniqueResult();
     }
 
     public static void savePackageTests(List<TestType> ovalTests,
