@@ -29,7 +29,7 @@ def processCommandline():
 
     options = [
         Option('--ca-cert',      action='store', default=DEFAULT_TRUSTED_CERT, type="string",
-               help='public CA certificate, default is %s' % DEFAULT_TRUSTED_CERT),
+               help='public CA certificate, default is %s. If the value is \'-\' the CA is read from STDIN' % DEFAULT_TRUSTED_CERT),
         Option('--label',        action='store', default='RHN-ORG-TRUSTED-SSL-CERT', type="string",
                help='FOR TESTING ONLY - alternative database label for this CA certificate, '
                + 'default is "RHN-ORG-TRUSTED-SSL-CERT"'),
@@ -45,7 +45,9 @@ def processCommandline():
                "--help): %s\n" % repr(args))
         raise ValueError(msg)
 
-    if not os.path.exists(values.ca_cert):
+    if values.ca_cert == '-':
+        values.ca_cert = sys.stdin.read().strip()
+    elif not os.path.exists(values.ca_cert):
         sys.stderr.write("ERROR: can't find CA certificate at this location: "
                          "%s\n" % values.ca_cert)
         sys.exit(10)
