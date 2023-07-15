@@ -14,8 +14,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.manager.audit.CVEAuditManager.isCVEIdentifierUnknown;
-
 /**
  * The OVAL version of the {@link CVEAuditManager}. This what should be used the other implementation is legacy.
  */
@@ -81,11 +79,13 @@ public class CVEAuditManagerOVAL {
 
         if (vulnerabilityDefinitionOpt.isEmpty()) {
             log.warn("The provided CVE does not match any OVAL definition in the database.");
+            return new CVEAuditSystemBuilder(clientServer.getId());
         }
 
         OVALDefinition vulnerabilityDefinition = vulnerabilityDefinitionOpt.get();
         if (vulnerabilityDefinition.getCriteriaTree() == null) {
             log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
+            return new CVEAuditSystemBuilder(clientServer.getId());
         }
 
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
@@ -115,8 +115,9 @@ public class CVEAuditManagerOVAL {
                 .filter(CVEAuditManager.CVEPatchStatus::isChannelAssigned)
                 .collect(Collectors.toList());
 
-        int listSizeBefore = clientProductVulnerablePackages.size();
+        int unpatchedAndPatchedPackagesCount= clientProductVulnerablePackages.size();
 
+        // Remove vulnerable packages that have a patch in the assigned channel(s)
         clientProductVulnerablePackages.removeIf(
                 p -> systemResults.stream()
                         .anyMatch(cps -> Objects.equals(cps.getPackageName().orElse(null), p.getName()))
@@ -124,13 +125,18 @@ public class CVEAuditManagerOVAL {
 
         log.error(clientProductVulnerablePackages);
 
-        int listSizeAfter = clientProductVulnerablePackages.size();
+        int unpatchedPackagesCount = clientProductVulnerablePackages.size();
 
-        if (listSizeBefore > 0 && listSizeAfter == 0) {
+        boolean allVulnerablePackagesHavePatches = unpatchedPackagesCount == 0;
+        boolean someVulnerablePackagesHavePatches = unpatchedPackagesCount < unpatchedAndPatchedPackagesCount;
+        boolean noneOfTheVulnerablePackagesHavePatches = unpatchedPackagesCount == unpatchedAndPatchedPackagesCount;
+
+        if (allVulnerablePackagesHavePatches) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
-        } else if (listSizeAfter < listSizeBefore) {
+        } else if (someVulnerablePackagesHavePatches) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
-        } else {
+        } else if (noneOfTheVulnerablePackagesHavePatches) {
+            // Check if all packages have not received any patches (updating or adding new channels won't help)
             boolean allPackagesAffected = clientProductVulnerablePackages
                     .stream()
                     .allMatch(p -> p.getFixVersion().isEmpty());
