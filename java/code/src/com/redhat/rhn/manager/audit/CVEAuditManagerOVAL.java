@@ -21,10 +21,7 @@ public class CVEAuditManagerOVAL {
     private static Logger log = LogManager.getLogger(CVEAuditManagerOVAL.class);
 
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
-                                                                EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
-        if (isCVEIdentifierUnknown(cveIdentifier)) {
-            throw new UnknownCVEIdentifierException();
-        }
+                                                                EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditServer> result = new ArrayList<>();
 
@@ -91,11 +88,13 @@ public class CVEAuditManagerOVAL {
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
 
-        Set<VulnerablePackage> clientProductVulnerablePackages =
-                vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe());
-
         List<SystemPackage> allInstalledPackages =
                 PackageManager.systemPackageList(clientServer.getId());
+         
+        Set<VulnerablePackage> clientProductVulnerablePackages =
+                vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe())
+                        .stream().filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
+                        .collect(Collectors.toSet());
 
         if (clientProductVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
@@ -151,6 +150,11 @@ public class CVEAuditManagerOVAL {
         log.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
 
         return cveAuditServerBuilder;
+    }
+
+    private static boolean isPackageInstalled(VulnerablePackage pkg, List<SystemPackage> allInstalledPackages) {
+        return allInstalledPackages.stream()
+                .anyMatch(installed -> Objects.equals(installed.getName(), pkg.getName()));
     }
 
     /**
