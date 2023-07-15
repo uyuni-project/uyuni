@@ -504,6 +504,25 @@ def deployPg(server_key_content):
 
         log("""$> systemctl restart postgresql.service """)
 
+def deployCAInDB(certData):
+    if not os.path.exists("/usr/bin/rhn-ssl-dbstore"):
+        # not a Uyuni Server - skip deploying into DB
+        return
+
+    for h, ca in certData.items():
+        if ca["root"]:
+            out = subprocess.run(
+                ["/usr/bin/rhn-ssl-dbstore", "--ca-cert", "-"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                input=ca["content"],
+            )
+            if out.returncode:
+                log_error("Failed to upload CA Certificate to DB: {}".format(out.stderr.decode("utf-8")))
+                raise OSError("Failed to upload CA Certificate to DB")
+            break
+
+
 def deployCAUyuni(certData):
     for h, ca in certData.items():
         if ca["root"]:
@@ -557,6 +576,7 @@ def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_con
     apache_cert_content = generateApacheCert(server_cert_content, certData)
     if not apache_cert_content:
         raise CertCheckError("Failed to generate certificates")
+    deployCAInDB(certData)
     return apache_cert_content
 
 
@@ -594,6 +614,7 @@ def _main():
     deployPg(files_content.server_key)
     deployJabberd(jabber_cert_content)
     deployCAUyuni(certData)
+    deployCAInDB(certData)
 
 
 def main():
