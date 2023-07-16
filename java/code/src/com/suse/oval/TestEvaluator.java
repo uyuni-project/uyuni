@@ -65,8 +65,12 @@ public class TestEvaluator {
         return combineBooleans(packageTest.getStateOperator(), stateEvaluations);
     }
 
-    private boolean evaluatePackageState(List<SystemPackage> packageVersionsOnSystem, OVALPackageState expectedState) {
-        return packageVersionsOnSystem.stream().anyMatch(systemPackage -> {
+    /**
+     * Returns {@code true} if any of the installed versions of the package match the given OVAL state.
+     * If package is not installed (the list is empty) it should return {@code false}
+     * */
+    private boolean evaluatePackageState(List<SystemPackage> packageInstalledVersions, OVALPackageState expectedState) {
+        return packageInstalledVersions.stream().anyMatch(systemPackage -> {
             // This list holds the evaluation results of each of the specified state entities .e.g. arch,
             // evr, version, etc.
             List<Boolean> stateEntitiesEvaluations = new ArrayList<>();
