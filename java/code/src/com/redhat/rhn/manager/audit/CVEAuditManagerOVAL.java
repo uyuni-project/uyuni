@@ -96,6 +96,8 @@ public class CVEAuditManagerOVAL {
                         .stream().filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
                         .collect(Collectors.toSet());
 
+        log.error("Vul packages: {}", clientProductVulnerablePackages);
+
         if (clientProductVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
             return cveAuditServerBuilder;
@@ -122,9 +124,11 @@ public class CVEAuditManagerOVAL {
                         .anyMatch(cps -> Objects.equals(cps.getPackageName().orElse(null), p.getName()))
         );
 
-        log.error(clientProductVulnerablePackages);
+        log.error("Patched + Unpatched packages: {}", clientProductVulnerablePackages);
 
         int unpatchedPackagesCount = clientProductVulnerablePackages.size();
+
+        log.error("Unpatched packages: {}", clientProductVulnerablePackages);
 
         boolean allVulnerablePackagesHavePatches = unpatchedPackagesCount == 0;
         boolean someVulnerablePackagesHavePatches = unpatchedPackagesCount < unpatchedAndPatchedPackagesCount;
