@@ -200,6 +200,54 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         assertEquals(PatchStatus.AFFECTED_PATCH_UNAVAILABLE, systemAuditResult.getPatchStatus());
     }
 
+    @Test
+    void testDoAuditSystemAffectedPartialPatchAvailable_FalsePositive() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
+
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2008-2934");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        createOVALDefinition(definitionType);
+
+        createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
+        Package unpatched =  createTestPackage(user, channel, "noarch", "MozillaFirefox", "0", "2.3.0", "150400.1.12");
+
+        // The 'MozillaFirefox-devel' package is vulnerable and should be patched according to the OVAL data,
+        // but is not installed on the system.
+        // Therefore, even though 'MozillaFirefox-devel' doesn't have a patch in the assigned channels,
+        // the algorithm should return AFFECTED_FULL_PATCH_APPLICABLE(because 'MozillaFirefox' has a patch)
+        // instead of AFFECTED_PARTIAL_PATCH_APPLICABLE
+        createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(unpatched, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE, systemAuditResult.getPatchStatus());
+    }
+
     /**
      * This package is used to distinguish openSUSE Leap 15.4 distributions. We use very often in tests, so
      * it's abstracted here
