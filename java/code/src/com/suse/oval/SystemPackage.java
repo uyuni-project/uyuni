@@ -1,6 +1,7 @@
 package com.suse.oval;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.frontend.dto.IdComboDto;
 
 public class SystemPackage extends IdComboDto {
@@ -17,6 +18,30 @@ public class SystemPackage extends IdComboDto {
     public SystemPackage() {
     }
 
+    public SystemPackage(String name, PackageType type, String evr, String arch) {
+        this.name = name;
+        this.type = type.getDbString();
+        this.arch = arch;
+
+        PackageEvr packageEvr = PackageEvr.parsePackageEvr(type, evr);
+        this.epoch = packageEvr.getEpoch();
+        this.version = packageEvr.getVersion();
+        this.release = packageEvr.getRelease();
+    }
+
+    public SystemPackage(String name, PackageType type, String evr) {
+        this(name, type, evr, "noarch");
+    }
+
+    public SystemPackage(String name, String evr) {
+        this(name, PackageType.RPM, evr);
+    }
+    public SystemPackage(String name, String evr, String arch) {
+        this(name, PackageType.RPM, evr, arch);
+    }
+
+
+
     /**
      * @return Returns the Id.
      */
@@ -24,6 +49,7 @@ public class SystemPackage extends IdComboDto {
     public Long getId() {
         return id;
     }
+
     /**
      * @param idIn The Id to set.
      */
@@ -48,14 +74,13 @@ public class SystemPackage extends IdComboDto {
     }
 
     /**
-     *
      * @return Returns the packageId
      */
     public Long getPackageId() {
         return packageId;
     }
+
     /**
-     *
      * @param packageIdIn The packageId to set
      */
     public void setPackageId(Long packageIdIn) {

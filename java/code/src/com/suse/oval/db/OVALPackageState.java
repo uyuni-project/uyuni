@@ -37,7 +37,11 @@ public class OVALPackageState {
     @Column(name = "operator")
     @Enumerated(EnumType.STRING)
     public LogicOperatorType getOperator() {
-        return operator;
+        if (operator == null) {
+            return LogicOperatorType.AND;
+        } else {
+            return operator;
+        }
     }
 
     public void setOperator(LogicOperatorType operator) {
