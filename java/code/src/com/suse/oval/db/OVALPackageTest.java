@@ -44,6 +44,9 @@ public class OVALPackageTest {
     @Column(name = "check_exist")
     @Enumerated(EnumType.STRING)
     public ExistenceEnum getCheckExistence() {
+        if (checkExistence == null) {
+            return ExistenceEnum.AT_LEAST_ONE_EXISTS;
+        }
         return checkExistence;
     }
 
@@ -65,9 +68,10 @@ public class OVALPackageTest {
     @Enumerated(EnumType.STRING)
     public LogicOperatorType getStateOperator() {
         if (stateOperator == null) {
-            return LogicOperatorType.OR;
+            return LogicOperatorType.AND;
+        } else {
+            return stateOperator;
         }
-        return stateOperator;
     }
 
     public void setStateOperator(LogicOperatorType stateOperator) {

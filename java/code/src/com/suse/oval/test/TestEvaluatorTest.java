@@ -1,5 +1,7 @@
 package com.suse.oval.test;
 
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
 import com.suse.oval.UyuniAPI;
 import com.suse.oval.db.*;
@@ -9,9 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
+import static java.util.stream.Collectors.groupingBy;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,20 +37,13 @@ public class TestEvaluatorTest {
     @BeforeEach
     void setUp() {
 
-        List<UyuniAPI.CVEPatchStatus> systemCvePatchStatusList = List.of(
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("libsoftokn3-hmac-32bit"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:3.68.3-150400.1.7")), true),
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("libsha1detectcoll1"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:3.68.2-150400.1.7")), true),
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("libsha1detectcoll1"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:3.68.3-150400.1.7")), true),
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("libsha1detectcoll1"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:3.68.4-150400.1.7")), true, Optional.of("aarch64")),
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("postgresql12-plperl"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:3.68.3-150400.1.7")), true, Optional.of("aarch64")),
-                new UyuniAPI.CVEPatchStatus(1, Optional.of("sles-release"),
-                        Optional.of(UyuniAPI.PackageEvr.parseRpm("0:15.4-0")), true)
-        );
+        List<SystemPackage> systemInstalledPackages = List.of(
+                new SystemPackage("libsoftokn3-hmac-32bit", "0:3.68.3-150400.1.7"),
+                new SystemPackage("libsha1detectcoll1","0:3.68.2-150400.1.7"),
+                new SystemPackage("libsha1detectcoll1", "0:3.68.3-150400.1.7"),
+                new SystemPackage("libsha1detectcoll1", "0:3.68.4-150400.1.7", "aarch64"),
+                new SystemPackage("postgresql12-plperl", "0:3.68.3-150400.1.7", "aarch64"),
+                new SystemPackage("sles-release", "0:15.4-0"));
 
         OVALPackageObject o1 = newOVALPackageObject("libsoftokn3-hmac-32bit");
         OVALPackageObject o2 = newOVALPackageObject("libsha1detectcoll1");
@@ -90,7 +88,10 @@ public class TestEvaluatorTest {
         t10 = newOVALPackageTest(o2, s5);
         t11 = newOVALPackageTest(o4, s6);
 
-        testEvaluator = new TestEvaluator(null, null);
+        Map<String, List<SystemPackage>> packagesGroupedByName =
+                systemInstalledPackages.stream().collect(groupingBy(SystemPackage::getName));
+
+        testEvaluator = new TestEvaluator(packagesGroupedByName, PackageType.RPM);
     }
 
     /**
