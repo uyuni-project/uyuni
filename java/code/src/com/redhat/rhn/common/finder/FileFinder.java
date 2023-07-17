@@ -49,7 +49,7 @@ class FileFinder implements Finder {
         if (!startDir.exists()) {
             // Shouldn't ever happen, because the FinderFactory should only
             // return a FileFinder.
-            return null;
+            return Collections.emptyList();
         }
         String[] fileList = startDir.list();
 
