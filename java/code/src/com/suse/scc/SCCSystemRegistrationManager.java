@@ -147,7 +147,14 @@ public class SCCSystemRegistrationManager {
         items.forEach(cacheItem -> {
             try {
                 Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                if (cacheItem.getOptServer().filter(s -> s.isForeign()).isEmpty()) {
+                /*
+                    If a system is PAYG, we don't want to send (at least for now) information to SCC
+                    so that the customer is not charged twice for the same machine. In the future we'll
+                    send the machine with the flag `is_payg` set to true, but that will be done when the SCC
+                    team supports it.
+                     */
+                if (cacheItem.getOptServer().filter(s -> s.isForeign()).isEmpty() &&
+                        cacheItem.getOptServer().filter(s -> s.isPayg()).isEmpty()) {
                     LOG.debug("Forward registration of {}", cacheItem);
                     SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
                             getPayload(cacheItem),
@@ -157,7 +164,7 @@ public class SCCSystemRegistrationManager {
                     cacheItem.setSccLogin(systemCredentials.getLogin());
                     cacheItem.setSccPasswd(systemCredentials.getPassword());
                 }
-                // Foreign systems will not be send to SCC
+                // Foreign systems and PAYG will not be sent to SCC
                 // but we need the entry in case it is a hypervisor and we need to send
                 // virtualization host data to SCC
                 cacheItem.setSccRegistrationRequired(false);
