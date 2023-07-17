@@ -5,6 +5,7 @@ from collections import namedtuple
 import hashlib
 import io
 import logging
+import re
 
 # Import Salt libs
 import salt.cache
@@ -89,7 +90,7 @@ class UyuniRoster:
                 )
             )
 
-        log.trace("db_connect string: %s", self.db_connect_str)
+        log.trace("db_connect string: %s", re.sub(r"password='[^']*'", "password='******'", self.db_connect_str))
         log.debug("ssh_pre_flight_script: %s", self.ssh_pre_flight_script)
         log.debug("ssh_push_port_https: %d", self.ssh_push_port_https)
         log.debug("ssh_push_sudo_user: %s", self.ssh_push_sudo_user)
