@@ -1534,8 +1534,10 @@ When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   _hostname, local, remote, node_code = node.test_and_store_results_together('hostname', 'root', 500)
   command_output, _code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
 
-  until command_output.include?("done")
+  repeat_until_timeout(report_result: true) do
     command_output, code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
+    break if command_output.include?("done")
+    sleep 2
     raise StandardError 'Error during cloud-init.' if code == 1
   end
 end
