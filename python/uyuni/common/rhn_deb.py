@@ -21,6 +21,7 @@ import sys
 import tempfile
 
 from debian import debfile
+from debian.deb822 import Deb822
 
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import checksum
@@ -33,6 +34,25 @@ DEB_CHECKSUM_TYPE = 'sha256'       # FIXME: this should be a configuration optio
 
 
 class deb_Header:
+
+    # this is a workaround for issue in python-debian 
+    # https://www.mail-archive.com/pkg-python-debian-maint@alioth-lists.debian.net/msg00598.html
+    # after the issue is fixed, remove this function
+    def get_file(self, control, fname):
+        if fname.startswith('./'):
+            fname = fname[2:]
+        elif fname.startswith('/'):
+            fname = fname[1:]
+
+        try:
+            fobj = control.tgz().extractfile(fname)
+        except KeyError:
+            raise debfile.DebError("control.tar.* not found inside package")
+
+        if fobj is None:
+            raise debfile.DebError("control.tar.* not found inside package")
+
+        return fobj
 
     "Wrapper class for an deb header - we need to store a flag is_source"
 
@@ -50,7 +70,14 @@ class deb_Header:
 
         try:
             # Fill info about package
-            debcontrol = self.deb.debcontrol()
+            try:
+                debcontrol = self.deb.debcontrol()
+            except debfile.DebError:
+                # this is a workaround for issue in python-debian 
+                # https://www.mail-archive.com/pkg-python-debian-maint@alioth-lists.debian.net/msg00598.html
+                debcontrol = Deb822(self.get_file(self.deb.control, 'control'))
+
+
             self.hdr = {
                 'name': debcontrol.get_as_string('Package'),
                 'arch': debcontrol.get_as_string('Architecture') + '-deb',
