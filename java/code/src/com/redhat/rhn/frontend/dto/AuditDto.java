@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.dto;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * AuditDto
@@ -27,7 +28,7 @@ public class AuditDto extends BaseDto {
     private int milli;
     private String node;
 
-    private LinkedHashMap<String, String> kvmap;
+    private Map<String, String> kvmap;
 
     private String type;
 
@@ -39,8 +40,7 @@ public class AuditDto extends BaseDto {
      * @param nodeIn Audit generating node
      * @param kvmapIn HashMap of audit data
      */
-    public AuditDto(int serialIn, Date timeIn, int milliIn, String nodeIn,
-                LinkedHashMap<String, String> kvmapIn) {
+    public AuditDto(int serialIn, Date timeIn, int milliIn, String nodeIn, Map<String, String> kvmapIn) {
         this.id = (long) serialIn;
         this.serial = serialIn;
         this.time = timeIn;
@@ -91,7 +91,7 @@ public class AuditDto extends BaseDto {
     /**
      * @return Returns the key-value audit data.
      */
-    public LinkedHashMap<String, String> getKvmap() {
+    public Map<String, String> getKvmap() {
         return kvmap;
     }
 
