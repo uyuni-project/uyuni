@@ -548,13 +548,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
 
         try (DigestInputStream digestStream = new DigestInputStream(stream, MessageDigest.getInstance(checksumAlgo))) {
 
-            try {
-                byte[] bytes = new byte[10];
-                while (digestStream.read(bytes) != -1) {
-                    // no-op, just consume the stream
-                }
-            }
-            catch (IOException e) {
+            if (!computeDigest(digestStream)) {
                 return null;
             }
 
@@ -569,6 +563,19 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         catch (IOException | NoSuchAlgorithmException nsae) {
             throw new RepomdRuntimeException(nsae);
         }
+    }
+
+    private static boolean computeDigest(DigestInputStream digestStream) {
+        try {
+            byte[] bytes = new byte[10];
+            while (digestStream.read(bytes) != -1) {
+                // no-op, just fully consume the stream so that the digest is computed
+            }
+        }
+        catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
