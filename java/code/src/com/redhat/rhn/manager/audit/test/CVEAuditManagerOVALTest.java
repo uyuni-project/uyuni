@@ -26,6 +26,7 @@ import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPa
 import static com.redhat.rhn.testing.ErrataTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
 
@@ -51,6 +52,47 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.5"); // Not Leap 15.4
+
+        createOVALDefinition(definitionType);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.NOT_AFFECTED, systemAuditResult.getPatchStatus());
+    }
+
+    /**
+     * If the system's OS is flagged as vulnerable based on OVAL, it doesn't necessarily mean that the system
+     * is vulnerable. For example, if none of the vulnerable packages are installed on the system,
+     * it means that the system is by definition NOT_AFFECTED.
+     * This test verifies this scenario.
+     * */
+    @Test
+    void testDoAuditSystemNotAffected_WhenOSIsAffected() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4"); // openSUSE Leap 15.4, same as the affected OS in OVAL
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
 
         createOVALDefinition(definitionType);
 
@@ -201,6 +243,51 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     }
 
     @Test
+    void testDoAuditSystemAffectedPartialPatchAvailable() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
+
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2008-2934");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        createOVALDefinition(definitionType);
+
+        // Only package 'MozillaFirefox' has a patch in the assigned channels
+        createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
+
+        Package unpatched1 =  createTestPackage(user, channel, "noarch", "MozillaFirefox", "0", "2.3.0", "150400.1.12");
+        Package unpatched2 =  createTestPackage(user, channel, "noarch", "MozillaFirefox-devel", "0", "2.3.0", "150400.1.12");
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(unpatched1, server);
+        createTestInstalledPackage(unpatched2, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE, systemAuditResult.getPatchStatus());
+    }
+
+    @Test
     void testDoAuditSystemAffectedPartialPatchAvailable_FalsePositive() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
@@ -226,11 +313,12 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
         Package unpatched =  createTestPackage(user, channel, "noarch", "MozillaFirefox", "0", "2.3.0", "150400.1.12");
 
-        // The 'MozillaFirefox-devel' package is vulnerable and should be patched according to the OVAL data,
-        // but is not installed on the system.
-        // Therefore, even though 'MozillaFirefox-devel' doesn't have a patch in the assigned channels,
-        // the algorithm should return AFFECTED_FULL_PATCH_APPLICABLE(because 'MozillaFirefox' has a patch)
-        // instead of AFFECTED_PARTIAL_PATCH_APPLICABLE
+        // The 'MozillaFirefox-devel' package is identified as vulnerable based on the OVAL data,
+        // but it is not currently installed on the system.
+        // Although 'MozillaFirefox-devel' does not have a patch available in the assigned channels,
+        // the algorithm should return AFFECTED_FULL_PATCH_APPLICABLE instead of AFFECTED_PARTIAL_PATCH_APPLICABLE.
+        // This decision is made because the 'MozillaFirefox' package,
+        // which is installed, has a patch that can be applied.
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
@@ -246,6 +334,61 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
         assertEquals(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE, systemAuditResult.getPatchStatus());
+    }
+
+    @Test
+    void testDoAuditSystemAffectedPatchInapplicable() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        // TODO: Compute object hash to make sure we update tests whenever test OVAL files changes
+        DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
+
+        saveAllOVALTests(ovalRoot);
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user);
+
+        // This channel is not assigned to server
+        Channel otherChannel = createTestChannel(user, errata);
+        Set<Channel> assignedChannels = Set.of(channel);
+        Server server = createTestServer(user, assignedChannels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        createOVALDefinition(definitionType);
+
+        Package unpatched = createTestPackage(user, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
+
+        // Patch exists in an unassigned channel
+        createTestPackage(user, errata, otherChannel, "noarch",
+                "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
+
+        log.error(unpatched.getPackageEvr().toUniversalEvrString());
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(unpatched, server);
+
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+
+        CVEAuditManager.populateCVEChannels();
+
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        log.error(server.getName());
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, systemAuditResult.getPatchStatus());
     }
 
     /**
