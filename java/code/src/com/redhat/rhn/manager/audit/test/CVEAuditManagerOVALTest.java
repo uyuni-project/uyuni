@@ -26,6 +26,7 @@ import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPa
 import static com.redhat.rhn.testing.ErrataTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
 
