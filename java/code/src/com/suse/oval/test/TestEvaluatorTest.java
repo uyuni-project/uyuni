@@ -3,7 +3,6 @@ package com.suse.oval.test;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
-import com.suse.oval.UyuniAPI;
 import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 import static java.util.stream.Collectors.groupingBy;
