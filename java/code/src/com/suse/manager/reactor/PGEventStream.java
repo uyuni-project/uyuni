@@ -101,9 +101,9 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             connection = (PGConnection) dataSource.getConnection();
             connection.addNotificationListener(this);
 
-            Statement stmt = connection.createStatement();
-            stmt.execute("LISTEN suseSaltEvent");
-            stmt.close();
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("LISTEN suseSaltEvent");
+            }
 
             startConnectionWatchdog();
 

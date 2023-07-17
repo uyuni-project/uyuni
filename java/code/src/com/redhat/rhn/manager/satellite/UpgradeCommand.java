@@ -60,6 +60,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -316,10 +317,12 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     // list of directories with given prefix and natural number suffix in the salt root
     private Set<Path> listDirsWithPrefix(String prefix) throws IOException {
-        return Files.list(saltRootPath)
+        try (Stream<Path> pathStream = Files.list(saltRootPath)) {
+            return pathStream
                 .filter(path -> path.getFileName().toString().matches("^" + prefix + "\\d*$") &&
-                        path.toFile().isDirectory())
+                    path.toFile().isDirectory())
                 .collect(Collectors.toSet());
+        }
     }
 
     /**

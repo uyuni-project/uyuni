@@ -595,11 +595,12 @@ public class PackagesHandler extends BaseHandler {
         }
 
         byte[] toReturn = new byte[(int) file.length()];
-        BufferedInputStream br = new BufferedInputStream(new FileInputStream(file));
-        if (br.read(toReturn) != file.length()) {
-            throw new PackageDownloadException("api.package.download.ioerror");
+        try (BufferedInputStream br = new BufferedInputStream(new FileInputStream(file))) {
+            if (br.read(toReturn) != file.length()) {
+                throw new PackageDownloadException("api.package.download.ioerror");
+            }
+            return toReturn;
         }
-        return toReturn;
     }
 
 }

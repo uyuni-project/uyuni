@@ -476,11 +476,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private void generateBadRepo(Channel channel, String prefix) {
         log.warn("No repo will be generated for channel {}", channel.getLabel());
         deleteRepomdFiles(channel.getLabel(), false);
-        try {
-            FileWriter norepo = new FileWriter(prefix + NOREPO_FILE);
-            norepo.write("No repo will be generated for channel " +
-                    channel.getLabel() + ".\n");
-            norepo.close();
+        try (FileWriter norepo = new FileWriter(prefix + NOREPO_FILE)) {
+            norepo.write("No repo will be generated for channel " + channel.getLabel() + ".\n");
         }
         catch (IOException e) {
             log.warn("Cannot create " + NOREPO_FILE + " file.");
@@ -549,29 +546,29 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             return null;
         }
 
-        DigestInputStream digestStream;
-        try {
-            digestStream = new DigestInputStream(stream, MessageDigest
-                    .getInstance(checksumAlgo));
+        try (DigestInputStream digestStream = new DigestInputStream(stream, MessageDigest.getInstance(checksumAlgo))) {
+
+            try {
+                byte[] bytes = new byte[10];
+                while (digestStream.read(bytes) != -1) {
+                    // no-op, just consume the stream
+                }
+            }
+            catch (IOException e) {
+                return null;
+            }
+
+            Date timeStamp = new Date(metadataFile.lastModified());
+
+            return new RepomdIndexData(
+                StringUtil.getHexString(digestStream.getMessageDigest().digest()),
+                null,
+                timeStamp
+            );
         }
-        catch (NoSuchAlgorithmException nsae) {
+        catch (IOException | NoSuchAlgorithmException nsae) {
             throw new RepomdRuntimeException(nsae);
         }
-        byte[] bytes = new byte[10];
-
-        try {
-            while (digestStream.read(bytes) != -1) {
-                // no-op
-            }
-        }
-        catch (IOException e) {
-            return null;
-        }
-
-        Date timeStamp = new Date(metadataFile.lastModified());
-
-        return new RepomdIndexData(StringUtil.getHexString(digestStream
-                .getMessageDigest().digest()), null, timeStamp);
     }
 
     /**
