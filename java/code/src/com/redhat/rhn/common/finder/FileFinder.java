@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,13 +42,6 @@ class FileFinder implements Finder {
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<String> find(String endStr) {
-        return findExcluding(null, endStr);
-    }
-
-    /** {@inheritDoc} */
     @Override
     public List<String> findExcluding(String[] excludes, String endStr) {
         List<String> results = new LinkedList<>();

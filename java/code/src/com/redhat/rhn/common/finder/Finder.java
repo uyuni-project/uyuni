@@ -31,7 +31,9 @@ public interface Finder {
      * @return a list of all classes within the package that end with the
      *         specified string
      */
-    List<String> find(String endStr);
+    default List<String> find(String endStr) {
+        return findExcluding(null, endStr);
+    }
 
     /**
      * Find all files within a package that end with the specified string
