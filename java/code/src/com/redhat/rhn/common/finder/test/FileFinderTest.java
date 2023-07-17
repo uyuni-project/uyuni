@@ -51,7 +51,7 @@ public class FileFinderTest extends RhnBaseTestCase {
         assertNotNull(f);
 
         List<String> result = f.find(".class");
-        assertEquals(6, result.size());
+        assertEquals(7, result.size());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class FileFinderTest extends RhnBaseTestCase {
         assertNotNull(f);
         String[] sarr = {"Test"};
         List<String> result = f.findExcluding(sarr, "class");
-        assertEquals(4, result.size());
+        assertEquals(5, result.size());
     }
 }
 
