@@ -383,6 +383,8 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
       $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
+
+      raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
       sleep 1
       next
     end
@@ -391,8 +393,6 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
-
-    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
 
