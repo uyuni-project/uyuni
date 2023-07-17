@@ -149,10 +149,6 @@ public class SessionSwap {
 
 
         if (log.isDebugEnabled()) {
-            log.debug("Data     : [{}]", joinedText);
-            log.debug("Key      : [{}]", swapKey);
-        }
-        if (log.isDebugEnabled()) {
             log.debug("retval: {}", retval);
         }
         return retval;
