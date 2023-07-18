@@ -180,7 +180,7 @@ end
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
     log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 40)
   end
 end
 
