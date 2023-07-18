@@ -1576,7 +1576,7 @@
       </trans-unit>
       <trans-unit id="header.jsp.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target>Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -29631,10 +29631,10 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
         <source>Security updates unknown, disabled on settings.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
