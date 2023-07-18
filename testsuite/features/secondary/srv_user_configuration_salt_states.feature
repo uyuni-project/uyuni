@@ -6,9 +6,12 @@
 @scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states
 
+@skip_if_container_server
   Scenario: Apply configuration salt state to server
     When I manually install the "uyuni-config" formula on the server
-    And I apply "setup_users_configuration" local salt state on "server"
+
+  Scenario: Apply setup_users_configuration state to server
+    When I apply "setup_users_configuration" local salt state on "server"
 
   Scenario: Organization my_org was correctly created
     Given I am authorized as "my_org_user" with password "my_org_user"
@@ -66,6 +69,9 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
 
   Scenario: Cleanup: apply configuration teardown salt state to server
     When I apply "teardown_users_configuration" local salt state on "server"
+
+@skip_if_container_server
+  Scenario: Cleanup: uninstall the uyuni-config formula from the server
     And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: Cleanup: all organizations were successfully removed
