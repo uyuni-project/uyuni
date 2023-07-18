@@ -12,8 +12,6 @@ COPY add_repos.sh /usr/bin
 COPY timezone_alignment.sh /usr/bin
 RUN sh add_repos.sh ${PRODUCT_REPO}
 
-# Copy Uyuni setup script
-COPY uyuni-setup.service 	/usr/lib/systemd/system/
 COPY timezone_alignment.service /usr/lib/systemd/system/
 
 COPY remove_unused.sh .  
@@ -73,7 +71,6 @@ COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
 RUN systemctl enable prometheus-node_exporter; \
-    systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment;
 
 # LABELs
