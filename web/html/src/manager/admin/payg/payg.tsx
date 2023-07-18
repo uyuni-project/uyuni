@@ -105,34 +105,33 @@ const Payg = (props: Props) => {
         }}
       />
 
-      {!props.readOnly &&
-      <>
-        <PaygSshDataEdit
-          paygSshData={payg.properties}
-          paygId={payg.id}
-          isInstance={true}
-          labelPrefix={"Instance"}
-          editing={!props.readOnly}
-          onChange={(projectWithNewProperties) => {
-            setPayg(projectWithNewProperties);
-            cancelAction();
-          }}
-        />
-      
-        <PaygSshDataEdit
-          paygSshData={payg.properties}
-          paygId={payg.id}
-          isInstance={false}
-          labelPrefix={"Bastion"}
-          editing={!props.readOnly}
-          onChange={(projectWithNewProperties) => {
-            setPayg(projectWithNewProperties);
-            cancelAction();
-          }}
-        />
-      </>
-      }
-      
+      {!props.readOnly && (
+        <>
+          <PaygSshDataEdit
+            paygSshData={payg.properties}
+            paygId={payg.id}
+            isInstance={true}
+            labelPrefix={"Instance"}
+            editing={!props.readOnly}
+            onChange={(projectWithNewProperties) => {
+              setPayg(projectWithNewProperties);
+              cancelAction();
+            }}
+          />
+
+          <PaygSshDataEdit
+            paygSshData={payg.properties}
+            paygId={payg.id}
+            isInstance={false}
+            labelPrefix={"Bastion"}
+            editing={!props.readOnly}
+            onChange={(projectWithNewProperties) => {
+              setPayg(projectWithNewProperties);
+              cancelAction();
+            }}
+          />
+        </>
+      )}
     </TopPanel>
   );
 };
