@@ -198,11 +198,14 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
 end
 
 # Salt formulas
+
+@skip_if_container_server
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive refresh")
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
+@skip_if_container_server
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
   $server.run("zypper --non-interactive remove #{package}-formula")
   # Remove automatically installed dependency if needed
