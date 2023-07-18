@@ -55,9 +55,10 @@ public class GathererJsonIOTest  {
                 FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
         Map<String, GathererModule> mods = new GathererJsonIO().readGathererModules(json);
 
-        assertEquals(2, mods.keySet().size());
+        assertEquals(3, mods.keySet().size());
         assertTrue(mods.keySet().contains("VMware"));
         assertTrue(mods.keySet().contains("SUSECloud"));
+        assertTrue(mods.keySet().contains("Libvirt"));
 
         for (GathererModule g : mods.values()) {
             if (g.getName().equals("VMware")) {
@@ -75,6 +76,11 @@ public class GathererJsonIOTest  {
                 assertTrue(g.getParameters().containsKey("password"));
                 assertTrue(g.getParameters().containsKey("protocol"));
                 assertTrue(g.getParameters().containsKey("tenant"));
+            }
+            else if (g.getName().equals("Libvirt")) {
+                assertTrue(g.getParameters().containsKey("uri"));
+                assertTrue(g.getParameters().containsKey("sasl_username"));
+                assertTrue(g.getParameters().containsKey("sasl_password"));
             }
             else {
                 fail("Unknown Module");
