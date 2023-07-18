@@ -417,7 +417,7 @@ def checkCompleteCAChain(server_cert_content, certData):
 
 def generateJabberCert(server_cert_content, server_key_content, certData):
     certWithChain = generateCertWithChainFile(server_cert_content, certData)
-    key = getRsaKey(server_key_content)
+    key = getPrivateKey(server_key_content)
     if not key:
         return None
     return certWithChain + key
