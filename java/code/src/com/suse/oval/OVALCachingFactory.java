@@ -25,6 +25,7 @@ import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +56,10 @@ public class OVALCachingFactory extends HibernateFactory {
         for (int i = 0; i < definitionTypes.size(); i++) {
             DefinitionType definitionType = definitionTypes.get(i);
 
+            if(definitionType.getDefinitionClass() != DefinitionClassEnum.VULNERABILITY) {
+                continue;
+            }
+
             OVALDefinition definition = new OVALDefinition();
             definition.setId(definitionType.getId());
             definition.setTitle(definitionType.getMetadata().getTitle());
@@ -73,9 +78,11 @@ public class OVALCachingFactory extends HibernateFactory {
                     () -> saveDefinition(definition, affectedCpeList, definitionType.getMetadata().getReference())
             );
 
+
             if (i % 60 == 0) {
                 LOG.error(definitionType.getId());
                 getSession().flush();
+                getSession().clear();
             }
         }
     }
@@ -172,6 +179,12 @@ public class OVALCachingFactory extends HibernateFactory {
             ovalPackageObject.setId(objectType.getId());
             ovalPackageObject.setPackageName(objectType.getPackageName());
             ovalPackageObject.setRpm(true);
+
+            LOG.error("Package name: '{}'", objectType.getPackageName());
+            // Debian OVAL data sometimes contains null objects
+            if (objectType.getPackageName() == null || StringUtils.isEmpty(objectType.getPackageName())) {
+                continue;
+            }
 
             StateType stateType = testType.getStateRef().map(stateManager::get).orElse(null);
             // TODO: fix!
@@ -390,9 +403,13 @@ public class OVALCachingFactory extends HibernateFactory {
             throw new IllegalStateException("Definition doesn't have a source property");
         }
         switch (source) {
-            case SUSE:
+            case openSUSE_LEAP:
+            case SUSE_ENTERPRISE_SERVER:
+            case SUSE_ENTERPRISE_DESKTOP:
+            case openSUSE:
                 return definition.getTitle();
             case DEBIAN:
+                return definition.getTitle().split("\\s+")[0];
             case REDHAT:
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + source + "' OVAL definitions");

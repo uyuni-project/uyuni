@@ -70,6 +70,7 @@ public class CveFactory extends HibernateFactory {
             Cve newCve = new Cve();
             newCve.setName(name);
             save(newCve);
+            getSession().flush();
             return newCve;
         }
     }

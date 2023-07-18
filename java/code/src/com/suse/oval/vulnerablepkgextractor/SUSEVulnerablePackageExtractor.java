@@ -16,7 +16,9 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
     }
 
     @Override
-    protected List<ProductVulnerablePackages> extractItem(CriteriaType criteriaType) {
+    protected List<ProductVulnerablePackages> extractItem(BaseCriteria criteria) {
+        CriteriaType criteriaType = (CriteriaType) criteria;
+
         BaseCriteria productCriteriaRootNode = criteriaType.getChildren().get(0);
         BaseCriteria packageCriteriaRootNode = criteriaType.getChildren().get(1);
 
@@ -90,15 +92,20 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
     }
 
     @Override
-    protected boolean test(CriteriaType criteria) {
-        boolean hasTwoChildren = criteria.getChildren().size() == 2;
-        boolean hasOperatorAND = criteria.getOperator() == LogicOperatorType.AND;
+    protected boolean test(BaseCriteria criteria) {
+        if (!(criteria instanceof CriteriaType)) {
+            return false;
+        }
+        CriteriaType criteriaType = (CriteriaType) criteria;
+
+        boolean hasTwoChildren = criteriaType.getChildren().size() == 2;
+        boolean hasOperatorAND = criteriaType.getOperator() == LogicOperatorType.AND;
 
         if (!(hasOperatorAND && hasTwoChildren)) {
             return false;
         }
 
-        BaseCriteria productCriteriaRootNode = criteria.getChildren().get(0);
+        BaseCriteria productCriteriaRootNode = criteriaType.getChildren().get(0);
         List<CriterionType> productCriterions = collectCriterions(productCriteriaRootNode);
 
         if (productCriterions.isEmpty()) {

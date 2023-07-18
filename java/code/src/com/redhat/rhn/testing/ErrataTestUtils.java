@@ -525,7 +525,7 @@ public class ErrataTestUtils {
 
     public static OVALDefinition createOVALDefinition(DefinitionType definitionType) {
         OVALCachingFactory.saveDefinitions(
-                List.of(definitionType), OVALDefinitionSource.SUSE
+                List.of(definitionType), OVALDefinitionSource.openSUSE_LEAP
         );
 
         HibernateFactory.getSession().flush();

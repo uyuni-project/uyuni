@@ -28,15 +28,15 @@ public abstract class AbstractVulnerablePackagesExtractor {
         this.criteriaRoot = vulnerabilityDefinition.getCriteriaTree();
     }
 
-    protected abstract List<ProductVulnerablePackages> extractItem(CriteriaType criteriaType);
+    protected abstract List<ProductVulnerablePackages> extractItem(BaseCriteria criteriaType);
 
     /**
      * Tests whether the extractor can extract package vulnerability information from the given criteria node or not
      */
-    protected abstract boolean test(CriteriaType criteria);
+    protected abstract boolean test(BaseCriteria criteria);
 
     public final List<ProductVulnerablePackages> extract() {
-        List<CriteriaType> matchedCriteriaList = walkCriteriaTree();
+        List<BaseCriteria> matchedCriteriaList = walkCriteriaTree();
 
         return matchedCriteriaList.stream().map(this::extractItem)
                 .flatMap(Collection::stream)
@@ -70,26 +70,25 @@ public abstract class AbstractVulnerablePackagesExtractor {
         }
     }
 
-    private List<CriteriaType> walkCriteriaTree() {
-        List<CriteriaType> matches = new ArrayList<>();
+    private List<BaseCriteria> walkCriteriaTree() {
+        List<BaseCriteria> matches = new ArrayList<>();
 
         walkCriteriaTreeHelper(criteriaRoot, matches);
 
         return matches;
     }
 
-    private void walkCriteriaTreeHelper(CriteriaType criteria, List<CriteriaType> matches) {
+    private void walkCriteriaTreeHelper(BaseCriteria criteria, List<BaseCriteria> matches) {
         if (criteria == null) {
             return;
         }
         else if (test(criteria)) {
             matches.add(criteria);
         }
-        for (BaseCriteria childCriteria : criteria.getChildren()) {
-            if (childCriteria instanceof CriteriaType) {
-                walkCriteriaTreeHelper((CriteriaType) childCriteria, matches);
+        if (criteria instanceof CriteriaType) {
+            for (BaseCriteria childCriteria : ((CriteriaType) criteria).getChildren()) {
+                walkCriteriaTreeHelper(childCriteria, matches);
             }
         }
-
     }
 }
