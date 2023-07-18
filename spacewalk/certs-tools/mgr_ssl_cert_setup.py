@@ -494,7 +494,7 @@ def deployCAInDB(certData):
                 ["/usr/bin/rhn-ssl-dbstore", "--ca-cert", "-"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                input=ca["content"],
+                input=ca["content"].encode("utf-8"),
             )
             if out.returncode:
                 log_error("Failed to upload CA Certificate to DB: {}".format(out.stderr.decode("utf-8")))
