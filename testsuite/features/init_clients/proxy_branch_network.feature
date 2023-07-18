@@ -21,6 +21,7 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
+@skip_if_container_server
   Scenario: Install or update branch network formulas on the server
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server

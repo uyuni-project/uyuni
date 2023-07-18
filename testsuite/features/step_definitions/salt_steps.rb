@@ -198,6 +198,7 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
 end
 
 # Salt formulas
+
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   get_target('server').run('zypper --non-interactive refresh')
   get_target('server').run("zypper --non-interactive install --force #{package}-formula")

@@ -165,6 +165,7 @@ Feature: Use salt formulas
      And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
+  @skip_if_container_server
   Scenario: Cleanup: uninstall formula package from the server
      When I manually uninstall the "locale" formula from the server
 
