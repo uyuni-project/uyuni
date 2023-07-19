@@ -13,6 +13,9 @@ Feature: Register a Salt system to be managed via SSH tunnel
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Pre-requisite: remove package before ssh tunnel test
+    When I remove package "milkyway-dummy" from this "ssh_minion" without error control
+
   Scenario: Delete the Salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Delete System"
