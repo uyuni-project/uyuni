@@ -59,4 +59,15 @@ public class CustomDataKeyTest extends RhnBaseTestCase {
 
         return key;
     }
+
+    public static CustomDataKey createTestCustomDataKey(User user, String label) {
+        CustomDataKey key = new CustomDataKey();
+        key.setCreator(user);
+        key.setLabel(label);
+        key.setDescription("testkey description");
+        key.setOrg(user.getOrg());
+        TestUtils.saveAndFlush(key);
+
+        return key;
+    }
 }
