@@ -105,6 +105,7 @@ Feature: Manage a group of systems
 
   # Red Hat-like minion is intentionally not removed from group
 
+  @skip_if_container_server 
   Scenario: Cleanup: uninstall formula from the server
     When I manually uninstall the "locale" formula from the server
 
