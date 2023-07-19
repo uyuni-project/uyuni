@@ -555,7 +555,6 @@ def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_con
     apache_cert_content = generateApacheCert(server_cert_content, certData)
     if not apache_cert_content:
         raise CertCheckError("Failed to generate certificates")
-    deployCAInDB(certData)
     return apache_cert_content
 
 
