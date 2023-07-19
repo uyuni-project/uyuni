@@ -44,7 +44,17 @@ def system_exit(code, messages=None):
 
 
 def is_payg_instance():
-    return os.path.isfile('/usr/sbin/registercloudguest')
+    flavor_check = "/usr/bin/instance-flavor-check"
+    if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
+        return False
+
+    try:
+        result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
+    except subprocess.CalledProcessError:
+        return False
+
+    return result == "PAYG"
+
 
 
 SuseCloudInfo = namedtuple('SuseCloudInfo', ['header_auth', 'hostname'])
@@ -80,6 +90,7 @@ def _get_instance_identification():
         "X-Instance-Version:" + os_release["VERSION_ID"],
         "X-Instance-Arch:" + platform.machine()
     ]
+
 
 
 def _extract_http_auth(credentials):
