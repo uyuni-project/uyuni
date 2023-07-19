@@ -46,6 +46,10 @@ if [ ! $? -eq 0 ]; then
     exit 1
 fi
 
+if [[ ! -z "$TZ" ]]; then
+    timedatectl set-timezone $TZ
+fi
+
 TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
