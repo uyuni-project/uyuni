@@ -16,12 +16,8 @@
 package com.redhat.rhn.taskomatic.task.payg;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
-import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 
@@ -39,10 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class PaygAuthDataExtractor {
 
@@ -227,25 +219,11 @@ public class PaygAuthDataExtractor {
      * @throws Exception
      */
     public PaygInstanceInfo extractAuthData(PaygSshData instance) throws Exception {
-        if (instance.getHost().equals("localhost")) {
-            PaygInstanceInfo paygInstanceInfo = extractAuthDataLocal();
-            RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
-            List<PaygProductInfo> slemtProductInfos = Stream.concat(
-                    SUSEProductFactory.listAllSLEMTProducts()
-                            // TODO: deb not yet available on RMT
-                            .filter(p -> p.getArch().getArchType().getLabel().equals(PackageFactory.ARCH_TYPE_RPM)),
-                    SUSEProductFactory.listAllSMPProducts()
-                            .filter(p -> rpmVersionComparator.compare(p.getVersion(), "4.2") >= 0))
-                    .filter(p -> Objects.nonNull(p.getArch()))
-                    .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch().getLabel()))
-                    .collect(Collectors.toList());
-            paygInstanceInfo.getProducts().addAll(slemtProductInfos);
+        if (instance.isSUSEManagerPayg()) {
+            return extractAuthDataLocal();
+        }
 
-            return paygInstanceInfo;
-        }
-        else {
-            return extractAuthDataSSH(instance);
-        }
+        return extractAuthDataSSH(instance);
     }
 
     private StringBuilder getCommandOutput(InputStream channelStdout) throws IOException {
