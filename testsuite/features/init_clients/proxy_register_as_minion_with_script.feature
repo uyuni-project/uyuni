@@ -4,7 +4,7 @@
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil)
 #
-# Alternative: Bootstrap the proxy as Salt minion from GUI
+# Alternative: Bootstrap the proxy as a Salt minion from script
 
 @scope_proxy
 @proxy
@@ -20,18 +20,29 @@ Feature: Setup Uyuni proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
+@skip_if_salt_bundle
+  Scenario: Create the bootstrap script for the proxy and use it
+    When I execute mgr-bootstrap "--activation-keys=1-PROXY-KEY-x86_64 --script=bootstrap-proxy.sh"
+    Then I should get "* bootstrap script (written):"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
+    And I run "sh ./bootstrap-proxy.sh" on "proxy"
+
+@salt_bundle
+  Scenario: Create the bundle-aware bootstrap script for the proxy and use it
+    When I execute mgr-bootstrap "--activation-keys=1-PROXY-KEY-x86_64 --script=bootstrap-proxy.sh"
+    Then I should get "* bootstrap script (written):"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
+    When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
+    And I run "sh ./bootstrap-proxy.sh" on "proxy"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap the proxy as a Salt minion
-    When I follow the left menu "Systems > Bootstrapping"
-    Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "proxy" as "hostname"
-    And I enter "22" as "port"
-    And I enter "root" as "user"
-    And I enter "linux" as "password"
-    And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+  Scenario: Accept the key for the proxy
+    When I follow the left menu "Salt > Keys"
+    And I wait until I see "pending" text, refreshing the page
+    And I accept "proxy" key
 
   Scenario: Wait until the proxy appears
     When I wait until onboarding is completed for "proxy"
@@ -59,6 +70,6 @@ Feature: Setup Uyuni proxy
     Then I should see "proxy" hostname
     Then I should see a "Proxy" link in the content area
 
-  Scenario: Check events history for failures on the proxy
-    Given I am on the Systems overview page of this "proxy"
-    Then I check for failed events on history event page
+  Scenario: Cleanup: remove proxy bootstrap scripts
+    When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
+    And I run "rm /root/bootstrap-proxy.sh" on "proxy"
