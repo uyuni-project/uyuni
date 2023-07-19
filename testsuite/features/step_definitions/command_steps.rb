@@ -455,8 +455,7 @@ When(/I wait until all synchronized channels have finished$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch = 'x86_64'
-  $command_output, _code = $server.run("mgr-bootstrap --activation-keys=1-SUSE-KEY-#{arch} #{arg1}")
+  $command_output, _code = $server.run("mgr-bootstrap #{arg1}")
 end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|

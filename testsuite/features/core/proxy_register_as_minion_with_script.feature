@@ -21,7 +21,7 @@ Feature: Setup SUSE Manager proxy
 
 @skip_if_salt_bundle
   Scenario: Create the bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date"
+    When I execute mgr-bootstrap "--activation-keys=1-SUSE-KEY-x86_64 --script=bootstrap-proxy.sh --no-up2date"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
@@ -29,7 +29,7 @@ Feature: Setup SUSE Manager proxy
 
 @salt_bundle
   Scenario: Create the bundle-aware bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
+    When I execute mgr-bootstrap "--activation-keys=1-SUSE-KEY-x86_64 --script=bootstrap-proxy.sh --no-up2date --force-bundle"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
