@@ -89,9 +89,7 @@ public class MirrorCredentialsRenderer {
             creds = new MirrorCredentialsDto(user, password);
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Saving credentials: {}:{}", user, password);
-        }
+        logger.debug("Saving credentials for user '{}'", user);
         try {
             credsManager.storeMirrorCredentials(creds, request);
         }

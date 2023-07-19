@@ -62,6 +62,16 @@ plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
 plugin_command "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
 
+section_header "Crypto Policy"
+
+if [ -f /etc/crypto-policies/config ]; then
+	plugin_command "cat /etc/crypto-policies/config"
+elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
+	plugin_message "FIPS"
+else
+	plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+fi
+
 
 plugin_command "psql --version"
 plugin_command "cat /var/lib/pgsql/data/PG_VERSION"
