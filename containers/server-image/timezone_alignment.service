@@ -1,0 +1,10 @@
+[Unit]
+Description=Timezone alignment
+After=postgresql.service
+
+[Service]
+ExecStart=timezone_alignment.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
