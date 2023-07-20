@@ -119,6 +119,7 @@ BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  log4j
+BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty
 BuildRequires:  objectweb-asm >= 9.2
@@ -206,6 +207,7 @@ Requires:       jpa-api
 Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
+Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
@@ -363,6 +365,7 @@ Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
+Requires:       log4j-jcl
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
