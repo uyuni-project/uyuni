@@ -20,6 +20,7 @@ The default editor can be specified by setting the EDITOR environment variable.
   -f, --feature         set the feature name to use as a filename part
   -u, --username        set the username to use as a filename part
   -r, --remove          remove existing changelog file
+  -n, --no-wrap         do not wrap automatically the message at 67 characters
   -h, --help            display this help and exit
 
 Uyuni project: <https://github.com/uyuni-project/uyuni>
@@ -44,6 +45,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -r|--remove)
             REMOVE=1
+            shift
+            ;;
+        -n|--no-wrap)
+            NO_WRAP=true
             shift
             ;;
         *)
@@ -140,7 +145,11 @@ if ! [ -z $REMOVE ]; then
 fi
 
 # Add the new entry
-echo "- $1" > $CHFILE.new
+if [ "$NO_WRAP" = true ]; then
+    echo "- $1" > $CHFILE.new
+else
+    echo "$1" | fold -s -w 65 | sed '1s/^.*$/- &/;2,$s/^.*$/  &/' > $CHFILE.new
+fi
 
 # Append older entries
 cat $CHFILE >> $CHFILE.new 2>/dev/null
