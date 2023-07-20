@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * The OVAL version of the {@link CVEAuditManager}. This what should be used the other implementation is legacy.
+ * The OVAL version of the {@link CVEAuditManager}. This what should be used, the other implementation is legacy.
  */
 public class CVEAuditManagerOVAL {
     private static Logger log = LogManager.getLogger(CVEAuditManagerOVAL.class);
@@ -89,6 +89,9 @@ public class CVEAuditManagerOVAL {
             log.warn("The provided CVE does not match any OVAL definition in the database.");
             return new CVEAuditSystemBuilder(clientServer.getId());
         }
+
+        // Although it's rare, but I encountered cases where the criteria tree will be empty
+        vulnerabilityDefinitionList.removeIf(definition -> definition.getCriteriaTree() == null);
 
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
