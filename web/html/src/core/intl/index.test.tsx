@@ -41,7 +41,7 @@ describe("new t()", () => {
   // This behavior allows existing `handleResponseError` implementations to pass `{ arg: undefined }` even when there is no arg
   test("extra args are ignored", () => {
     const input = "foo bar";
-    const inputArgs = { tea: "cup" };
+    const inputArgs = { tea: "cup", and: undefined };
     const expected = "foo bar";
 
     expect(t(input, inputArgs)).toEqual(expected);

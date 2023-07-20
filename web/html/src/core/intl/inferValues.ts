@@ -1,5 +1,6 @@
 /**
- * Infer possible placeholder and tag values for a given translatable string
+ * Infer possible placeholder and tag values for a given translatable string, e.g. for `"example {foo}"`, infer
+ * `PartialRecord<"foo", any>`.
  * See https://stackoverflow.com/a/71906104/1470607
  *
  * If we ever find a case where this breaks, drop it and replace it with a simple `Record<string, any>`, however

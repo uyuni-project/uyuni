@@ -48,7 +48,8 @@ const intl = createIntl(
   cache
 );
 
-const t = <Message extends string>(
+// This is exported for tests, everywhere else feel free to use the global reference
+export const t = <Message extends string>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
   /**
