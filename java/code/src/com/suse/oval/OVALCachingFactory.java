@@ -68,6 +68,8 @@ public class OVALCachingFactory extends HibernateFactory {
             definition.setCriteriaTree(definitionType.getCriteria());
 
             definition.setSource(source);
+            // TODO: Set from a passed argument
+            definition.setOsVersion("15.4");
 
             // TODO: affected cpe list is not present in all OVAL files.
             List<String> affectedCpeList = definitionType.getMetadata().getAdvisory()

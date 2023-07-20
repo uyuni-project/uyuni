@@ -48,6 +48,7 @@ public class OVALDefinition {
     private List<OVALPlatform> affectedPlatforms;
     private Cve cve;
     private OVALDefinitionSource source;
+    private String osVersion;
     private CriteriaType criteriaTree;
 
     @Id
@@ -130,6 +131,15 @@ public class OVALDefinition {
         this.source = source;
     }
 
+    @Column(name = "os_version")
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
     @Type(type = "json")
     @Column(name = "criteria_tree")
     public CriteriaType getCriteriaTree() {
@@ -194,9 +204,5 @@ public class OVALDefinition {
         TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
 
         return criteriaTree.evaluate(testEvaluator);
-    }
-
-    public String getOsVersion() {
-        throw new NotImplementedException("Store affected OS version along OVAL definition");
     }
 }

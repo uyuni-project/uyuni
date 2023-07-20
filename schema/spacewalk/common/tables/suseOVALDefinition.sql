@@ -23,5 +23,6 @@ CREATE TABLE suseOVALDefinition
     cve_id          NUMERIC
                        REFERENCES rhnCve(id),
     source          VARCHAR,
+    os_version      VARCHAR,
     criteria_tree   JSON
 );
