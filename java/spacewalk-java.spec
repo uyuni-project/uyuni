@@ -137,6 +137,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  log4j
+BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty < 4.1.45
 BuildRequires:  objectweb-asm
@@ -218,6 +219,7 @@ Requires:       joda-time
 Requires:       jose4j
 Requires:       jpa-api
 Requires:       libsolv-tools
+Requires:       log4j-jcl
 Requires:       mgr-libmod
 Requires:       netty < 4.1.45
 Requires:       objectweb-asm
@@ -388,6 +390,7 @@ Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
+Requires:       log4j-jcl
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
