@@ -1,0 +1,2 @@
+- Add saltboot redeploy and repartition based on pillars
+  (jsc#SUMA-158)
