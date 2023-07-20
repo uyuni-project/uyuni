@@ -5672,8 +5672,7 @@ public class SystemHandler extends BaseHandler {
                     break;
                 }
 
-                try {
-                    BufferedReader br = new BufferedReader(new FileReader(file));
+                try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                     String line;
                     String[] header = null;
                     Integer systemIdPos = null, uuidPos = null;
@@ -5719,7 +5718,6 @@ public class SystemHandler extends BaseHandler {
                             }
                        }
                     }
-                    br.close();
                 }
                 catch (IOException e) {
                     log.warn("Cannot read {}", file.getName());
