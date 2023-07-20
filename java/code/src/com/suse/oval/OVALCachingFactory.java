@@ -334,11 +334,11 @@ public class OVALCachingFactory extends HibernateFactory {
                 .getResultList();
     }
 
-    public static Optional<OVALDefinition> lookupVulnerabilityDefinitionByCve(String cve) {
+    public static List<OVALDefinition> lookupVulnerabilityDefinitionsByCve(String cve) {
         return getSession()
                 .createNamedQuery("OVALDefinition.getVulnerabilityDefinitionByCve", OVALDefinition.class)
                 .setParameter("cve", cve)
-                .uniqueResultOptional();
+                .getResultList();
     }
 
     public static List<OVALVulnerablePackage> lookupVulnerablePackagesByPlatformAndCve(long platformId, String cve) {

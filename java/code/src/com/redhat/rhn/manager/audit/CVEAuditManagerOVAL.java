@@ -82,17 +82,11 @@ public class CVEAuditManagerOVAL {
     public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier, List<CVEAuditManager.CVEPatchStatus> results,
                                                       Server clientServer) {
 
-        Optional<OVALDefinition> vulnerabilityDefinitionOpt = OVALCachingFactory
-                .lookupVulnerabilityDefinitionByCve(cveIdentifier);
+        List<OVALDefinition> vulnerabilityDefinitionList = OVALCachingFactory
+                .lookupVulnerabilityDefinitionsByCve(cveIdentifier);
 
-        if (vulnerabilityDefinitionOpt.isEmpty()) {
+        if (vulnerabilityDefinitionList.isEmpty()) {
             log.warn("The provided CVE does not match any OVAL definition in the database.");
-            return new CVEAuditSystemBuilder(clientServer.getId());
-        }
-
-        OVALDefinition vulnerabilityDefinition = vulnerabilityDefinitionOpt.get();
-        if (vulnerabilityDefinition.getCriteriaTree() == null) {
-            log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
             return new CVEAuditSystemBuilder(clientServer.getId());
         }
 
@@ -101,10 +95,12 @@ public class CVEAuditManagerOVAL {
 
         List<SystemPackage> allInstalledPackages =
                 PackageManager.systemPackageList(clientServer.getId());
-         
+
+        // We collect vulnerable packages from each of the matching definitions and merge them
         Set<VulnerablePackage> clientProductVulnerablePackages =
-                vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe())
-                        .stream().filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
+                vulnerabilityDefinitionList.stream()
+                        .flatMap(definition -> definition.extractVulnerablePackages(clientServer.getCpe()).stream())
+                        .filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
                         .collect(Collectors.toSet());
 
         log.error("Vul packages: {}", clientProductVulnerablePackages);
@@ -114,7 +110,10 @@ public class CVEAuditManagerOVAL {
             return cveAuditServerBuilder;
         }
 
-        boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, allInstalledPackages);
+        // If any of the vulnerability definitions matching the CVE evaluates to True, then system
+        // is in a vulnerable state.
+        boolean isClientServerVulnerable = vulnerabilityDefinitionList.stream()
+                .anyMatch(definition -> definition.evaluate(clientServer, allInstalledPackages));
 
         log.error("Evaluation: {}", isClientServerVulnerable);
 
