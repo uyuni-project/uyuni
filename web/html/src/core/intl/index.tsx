@@ -1,6 +1,8 @@
 import { createIntl, createIntlCache } from "@formatjs/intl";
 import Gettext from "node-gettext";
 
+import { jsFormatPreferredLocale } from "core/user-preferences";
+
 import type { Values } from "./inferValues";
 
 const gt = new Gettext();
@@ -37,18 +39,16 @@ const messages = new Proxy(
   }
 );
 
-// TODO: Lift this out and share with `web-calendar.tsx`
-const jsFormatLocale = window.preferredLocale ? window.preferredLocale.replace("_", "-") : "en-US";
 const cache = createIntlCache();
 const intl = createIntl(
   {
-    locale: jsFormatLocale,
+    locale: jsFormatPreferredLocale,
     messages,
   },
   cache
 );
 
-export const t = <Message extends string>(
+const t = <Message extends string>(
   // This is always the default string in English, even if the page is in another locale
   defaultMessage: Message,
   /**
