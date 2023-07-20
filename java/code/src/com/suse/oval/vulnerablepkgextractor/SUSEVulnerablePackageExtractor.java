@@ -1,15 +1,24 @@
 package com.suse.oval.vulnerablepkgextractor;
 
 import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.cpe.Cpe;
+import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.db.*;
 import com.suse.oval.ovaltypes.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesExtractor {
+    private static final Pattern FIND_SP_REGEX = Pattern.compile(".*\\sSP(?<sp>[0-9])\\s.*");
+    private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
 
     public SUSEVulnerablePackageExtractor(OVALDefinition vulnerabilityDefinition) {
         super(vulnerabilityDefinition);
@@ -81,8 +90,8 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
             vulnerableProduct.setCve(vulnerabilityDefinition.getTitle());
-            // TODO: Cpe should be different between products
-            vulnerableProduct.setProductCpe("cpe:/o:opensuse:leap:15.4");
+
+            vulnerableProduct.setProductCpe(deriveCpe(product).asString());
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
             result.add(vulnerableProduct);
@@ -112,18 +121,30 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             return false;
         }
 
-        boolean allProductsAffected = true;
-        // TODO: We're now storing cpe instead of the full product name in the databse
-/*        for (CriterionType productCriterion : productCriterions) {
-            String comment = productCriterion.getComment();
-            String product = comment.replace(" is installed", "");
+        String osProduct = vulnerabilityDefinition.getSource().fullname();
 
-            if (vulnerabilityDefinition.getAffectedPlatforms().stream().map(OVALPlatform::getCpe).noneMatch(product::equals)) {
-                allProductsAffected = false;
-                break;
-            }
-        }*/
+        // Making sure that the product criterions contain indeed product names
+        return productCriterions.stream()
+                .map(CriterionType::getComment)
+                .anyMatch(comment -> comment.startsWith(osProduct));
+    }
 
-        return allProductsAffected;
+    public Cpe deriveCpe(String product) {
+        OVALDefinitionSource osProduct = vulnerabilityDefinition.getSource();
+        return new CpeBuilder()
+                .withVendor(osProduct.vendor())
+                .withProduct(osProduct.shortname())
+                .withVersion(vulnerabilityDefinition.getOsVersion())
+                .withUpdate(deriveSP(product).orElse(""))
+                .build();
+    }
+
+    public Optional<String> deriveSP(String product) {
+        Matcher matcher = FIND_SP_REGEX.matcher(product);
+        if (matcher.matches()) {
+            return Optional.ofNullable(FIND_SP_REGEX.matcher(product).reset()
+                    .group("sp"));
+        }
+        return Optional.empty();
     }
 }

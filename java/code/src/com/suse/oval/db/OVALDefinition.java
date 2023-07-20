@@ -17,6 +17,7 @@ import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
@@ -193,5 +194,9 @@ public class OVALDefinition {
         TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
 
         return criteriaTree.evaluate(testEvaluator);
+    }
+
+    public String getOsVersion() {
+        throw new NotImplementedException("Store affected OS version along OVAL definition");
     }
 }

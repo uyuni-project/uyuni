@@ -19,39 +19,49 @@ public class Cpe {
         return vendor;
     }
 
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
+    void setVendor(String vendor) {
+        if (vendor != null) {
+            this.vendor = vendor;
+        }
     }
 
     public String getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    void setProduct(String product) {
+        if (product != null) {
+            this.product = product;
+        }
     }
 
     public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    void setVersion(String version) {
+        if (version != null) {
+            this.version = version;
+        }
     }
 
     public String getUpdate() {
         return update;
     }
 
-    public void setUpdate(String update) {
-        this.update = update;
-    }
-
-    public String toURI() {
-        return "cpe/o:" + vendor + ":" + product + ":" + vendor + ":" + update;
+    void setUpdate(String update) {
+        if (update != null) {
+            this.update = update;
+        }
     }
 
     public Cpe parse(String cpe) {
         return cpeParser.parse(cpe);
+    }
+
+    public String asString() {
+        String cpe = "cpe:/o:" + vendor + ":" + product + ":" + version + ":" + update;
+        // Removing trailing colons ':'
+        return cpe.replaceAll(":*$", "");
     }
 }

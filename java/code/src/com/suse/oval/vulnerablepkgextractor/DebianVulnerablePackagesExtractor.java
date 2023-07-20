@@ -1,5 +1,8 @@
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.cpe.Cpe;
+import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
@@ -42,12 +45,21 @@ public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackage
         vulnerablePackage.setFixVersion(evr);
 
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
-        //TODO: Set correct CPE
-        productVulnerablePackages.setProductCpe("");
+        productVulnerablePackages.setProductCpe(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
         productVulnerablePackages.setCve(vulnerabilityDefinition.getCve().getName());
 
         return List.of(productVulnerablePackages);
+    }
+
+    public Cpe deriveCpe() {
+        String osVersion = vulnerabilityDefinition.getOsVersion();
+
+        return new CpeBuilder()
+                .withVendor("debian")
+                .withProduct("debian_linux")
+                .withVersion(osVersion)
+                .build();
     }
 
     @Override

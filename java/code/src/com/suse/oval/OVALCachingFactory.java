@@ -82,7 +82,6 @@ public class OVALCachingFactory extends HibernateFactory {
             if (i % 60 == 0) {
                 LOG.error(definitionType.getId());
                 getSession().flush();
-                getSession().clear();
             }
         }
     }
@@ -404,13 +403,13 @@ public class OVALCachingFactory extends HibernateFactory {
         }
         switch (source) {
             case openSUSE_LEAP:
-            case SUSE_ENTERPRISE_SERVER:
-            case SUSE_ENTERPRISE_DESKTOP:
+            case SUSE_LINUX_ENTERPRISE_SERVER:
+            case SUSE_LINUX_ENTERPRISE_DESKTOP:
             case openSUSE:
                 return definition.getTitle();
             case DEBIAN:
                 return definition.getTitle().split("\\s+")[0];
-            case REDHAT:
+            case REDHAT_ENTERPRISE_LINUX:
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + source + "' OVAL definitions");
         }
