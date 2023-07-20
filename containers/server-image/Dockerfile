@@ -6,6 +6,11 @@ FROM $INIT_BASE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
+COPY timezone_alignment.sh /usr/bin
+
+# Copy timezone link update service
+COPY timezone_alignment.service /usr/lib/systemd/system/
+
 COPY remove_unused.sh .
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 
@@ -61,7 +66,11 @@ COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
-RUN systemctl enable prometheus-node_exporter
+RUN chmod -R 755 /usr/bin/timezone_alignment.sh
+
+RUN systemctl enable prometheus-node_exporter; \
+    systemctl enable uyuni-setup; \
+    systemctl enable timezone_alignment;
 
 # LABELs
 ARG PRODUCT=Uyuni
