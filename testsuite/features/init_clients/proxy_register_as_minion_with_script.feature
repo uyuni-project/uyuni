@@ -30,7 +30,7 @@ Feature: Setup Uyuni proxy
 
 @salt_bundle
   Scenario: Create the bundle-aware bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--activation-keys=1-PROXY-KEY-x86_64 --script=bootstrap-proxy.sh"
+    When I execute mgr-bootstrap "--activation-keys=1-PROXY-KEY-x86_64 --script=bootstrap-proxy.sh --force-bundle"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
