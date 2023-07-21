@@ -9,6 +9,7 @@ Feature: Run Cobbler Sync via WebUI
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
+    And I backup Cobbler settings file
 
   @uyuni
   Scenario: Check that the Cobbler Settings Page exists

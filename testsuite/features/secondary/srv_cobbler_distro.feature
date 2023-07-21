@@ -6,6 +6,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
+    And I backup Cobbler settings file
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
