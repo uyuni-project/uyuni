@@ -221,7 +221,6 @@ When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isoli
 end
 
 # backup step
-
 When(/^I backup Cobbler settings file$/) do
   $server.run('cp /etc/cobbler/settings.yaml /etc/cobbler/settings.yaml.bak 2> /dev/null', check_errors: false)
 end
