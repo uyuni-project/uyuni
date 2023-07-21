@@ -11,9 +11,13 @@ Feature: Use salt formulas
    Scenario: Log in as admin user
       Given I am authorized for the "Admin" section
 
+   #container already has locale formula installed
+   @skip_if_container_server 
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
-     And I synchronize all Salt dynamic modules on "sle_minion"
+
+   Scenario: I synchronize all Salt dynamic modules on "sle_minion"
+     When I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: The new formula appears on the server
      When I follow the left menu "Salt > Formula Catalog"

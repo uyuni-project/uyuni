@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,13 +63,11 @@ public class AuditManager /* extends BaseManager */ {
      * @param username User marking the review
      * @throws IOException Thrown when the audit review log isn't writeable
      */
-    public static void markReviewed(String machine, Long start, Long end,
-            String username) throws IOException {
-        FileWriter fwr = new FileWriter(reviewFile, true); // append!
-
-        fwr.write(machine + "," + (start / 1000) + "," + (end / 1000) + "," +
-            username + "," + (new Date().getTime() / 1000) + "\n");
-        fwr.close();
+    public static void markReviewed(String machine, Long start, Long end, String username) throws IOException {
+        try (FileWriter fwr = new FileWriter(reviewFile, true)) { // append!
+            fwr.write(machine + "," + (start / 1000) + "," + (end / 1000) + "," +
+                username + "," + (new Date().getTime() / 1000) + "\n");
+        }
     }
 
     /**
@@ -371,87 +370,74 @@ public class AuditManager /* extends BaseManager */ {
      * @throws IOException Throws when the audit review file is unreadable
      * @return An AuditReviewDto, possibly with review info set
      */
-    public static AuditReviewDto getReviewInfo(String machine, long start,
-            long end) throws IOException {
-        BufferedReader brdr;
+    public static AuditReviewDto getReviewInfo(String machine, long start, long end) throws IOException {
         Date reviewedOn = null;
         String str, part1, reviewedBy = null;
         String[] revInfo;
 
         part1 = machine + "," + (start / 1000) + "," + (end / 1000) + ",";
 
-        brdr = new BufferedReader(new FileReader(reviewFile));
+        try (BufferedReader brdr = new BufferedReader(new FileReader(reviewFile))) {
 
-        while ((str = brdr.readLine()) != null) {
-            if (str.startsWith(part1)) {
-                revInfo = str.split(",");
-                reviewedBy = revInfo[3];
-                reviewedOn = new Date(Long.parseLong(revInfo[4]) * 1000);
-                break;
+            while ((str = brdr.readLine()) != null) {
+                if (str.startsWith(part1)) {
+                    revInfo = str.split(",");
+                    reviewedBy = revInfo[3];
+                    reviewedOn = new Date(Long.parseLong(revInfo[4]) * 1000);
+                    break;
+                }
             }
+
+            return new AuditReviewDto(machine, new Date(start), new Date(end), reviewedBy, reviewedOn);
         }
-
-        brdr.close();
-
-        return new AuditReviewDto(machine, new Date(start), new Date(end),
-            reviewedBy, reviewedOn);
     }
 
-    private static List readAuditFile(File aufile, String[] types, Long start,
-            Long end) throws IOException {
-        int milli = 0, serial = -1;
-        BufferedReader brdr;
-        LinkedHashMap<String, String> hmap;
-        LinkedList<AuditDto> events;
-        Long time = -1L;
-        String node = null, str, strtime = null;
+    private static List<AuditDto> readAuditFile(File aufile, String[] types, Long start, Long end) throws IOException {
+        List<AuditDto> events = new LinkedList<>();
 
-        brdr = new BufferedReader(new FileReader(aufile));
-        events = new LinkedList<>();
-        hmap = new LinkedHashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(aufile))) {
+            Map<String, String> hmap = new LinkedHashMap<>();
 
-        for (str = brdr.readLine(); str != null; str = brdr.readLine()) {
-            if (str.equals("")) {
-                strtime = hmap.remove("seconds");
+            for (String str = reader.readLine(); str != null; str = reader.readLine()) {
+                if (str.equals("")) {
+                    int serial = getSerial(hmap);
+                    long time = getTime(hmap);
 
-                try {
-                    serial = Integer.parseInt(hmap.remove("serial"));
-                }
-                catch (NumberFormatException nfex) {
-                    serial = -1;
-                }
-
-                try {
-                    time = Long.parseLong(strtime) * 1000;
-                }
-                catch (NumberFormatException nfex) {
-                    time = 0L;
-                }
-
-                if (time >= start && time <= end) {
-                    for (String type : types) {
-                        if (type.equals(hmap.get("type"))) {
-                            events.add(new AuditDto(
-                                serial, new Date(time), milli, node, hmap));
-                            break;
-                        }
+                    if (time >= start && time <= end && Arrays.asList(types).contains(hmap.get("type"))) {
+                        events.add(new AuditDto(serial, new Date(time), 0, null, hmap));
                     }
+
+                    hmap.clear();
                 }
+                else if (str.indexOf('=') >= 0) {
+                    hmap.put(
+                        str.substring(0, str.indexOf('=')).trim(),
+                        str.substring(str.indexOf('=') + 1).trim());
+                }
+                else {
+                    log.debug("unknown string: {}", str);
+                }
+            }
 
-                hmap.clear();
-            }
-            else if (str.indexOf('=') >= 0) {
-                hmap.put(
-                    str.substring(0, str.indexOf('=')).trim(),
-                    str.substring(str.indexOf('=') + 1).trim());
-            }
-            else {
-                log.debug("unknown string: {}", str);
-            }
+            return events;
         }
+    }
 
-        brdr.close();
+    private static Long getTime(Map<String, String> hmap) {
+        try {
+            return Long.parseLong(hmap.remove("seconds")) * 1000;
+        }
+        catch (NumberFormatException ex) {
+            return 0L;
+        }
+    }
 
-        return events;
+    private static int getSerial(Map<String, String> hmap) {
+        try {
+            return Integer.parseInt(hmap.remove("serial"));
+        }
+        catch (NumberFormatException nfex) {
+            return -1;
+        }
     }
 }

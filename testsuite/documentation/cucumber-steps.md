@@ -466,10 +466,10 @@ Note that the text area variant handles the new lines characters while the other
   When I execute mgr-sync "list channels -e" with user "admin" and password "admin"
 ```
 
-* Execute mgr-bootstrap
+* Execute mgr-bootstrap to create a bootstrap script
 
 ```gherkin
-  When I execute mgr-bootstrap "--script=bootstrap-test.sh"
+  When I execute mgr-bootstrap "--activation-keys=1-AK-KEY-NAME --script=bootstrap-test.sh"
 ```
 
 * Execute mgr-create-bootstrap-repo

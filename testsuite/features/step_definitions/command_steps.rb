@@ -369,6 +369,8 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
       $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
+
+      raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
       sleep 1
       next
     end
@@ -377,8 +379,6 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
-
-    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
 
@@ -449,8 +449,7 @@ When(/I wait until all synchronized channels have finished$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch = 'x86_64'
-  $command_output, _code = $server.run("mgr-bootstrap --activation-keys=1-SUSE-KEY-#{arch} #{arg1}")
+  $command_output, _code = $server.run("mgr-bootstrap #{arg1}")
 end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
@@ -966,6 +965,7 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
   base_channel = BASE_CHANNEL_BY_CLIENT[host]
   channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
   parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  $server.wait_while_process_running('mgr-create-bootstrap-repo')
   cmd = if parent_channel.nil?
           "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
         else
@@ -1534,8 +1534,10 @@ When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   _hostname, local, remote, node_code = node.test_and_store_results_together('hostname', 'root', 500)
   command_output, _code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
 
-  until command_output.include?("done")
+  repeat_until_timeout(report_result: true) do
     command_output, code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
+    break if command_output.include?("done")
+    sleep 2
     raise StandardError 'Error during cloud-init.' if code == 1
   end
 end

@@ -59,10 +59,18 @@ def db_init():
 
 
 def src_package_query():
-    query = """select p.id
-                 from rhnPackage p
+    query = """select p.source_rpm_id
+                 from rhnPackageSource p
                 where p.path like :filename"""
     return query
+
+
+def package_find_by_src_id():
+    query = """select id
+                 from rhnPackage p
+                 where source_rpm_id = :id"""
+    return query
+
 
 def package_query(options, bind_path=False):
     query = """select %s
@@ -353,8 +361,15 @@ def is_orphaned_srpm(path, file):
     if is_srpm(file):
         query = src_package_query()
         h = rhnSQL.prepare(query)
-        wildcard_filename = "%/" + file.replace('src','%')
+        wildcard_filename = "%/" + os.path.basename(file)
         h.execute(filename=wildcard_filename)
+        row = h.fetchone_dict()
+        if not row:
+            log(0, f"SRPM not in DB: {path}")
+            return True
+        query = package_find_by_src_id()
+        h = rhnSQL.prepare(query)
+        h.execute(id=row['source_rpm_id'])
         row = h.fetchone_dict()
         if not row:
             log(0, "SRPM without matching RPM in db: %s" % (path))

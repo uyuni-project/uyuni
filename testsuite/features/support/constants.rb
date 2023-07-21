@@ -422,6 +422,23 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-devtools15-sp4-updates-x86_64
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
+    sle-module-suse-manager-proxy-4.3-pool-x86_64
+    sle-module-suse-manager-proxy-4.3-updates-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64-proxy-4.3
+    sle-module-server-applications15-sp4-updates-x86_64-proxy-4.3
+    sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
+    sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
+    sle-product-suse-manager-proxy-4.3-pool-x86_64
+    sle-product-suse-manager-proxy-4.3-updates-x86_64
+    sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
+    sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
+    sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
+    sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3
+    sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3
+    sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
+    sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
+    sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3
   ],
   '8' =>
   %w[

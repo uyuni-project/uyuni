@@ -92,10 +92,19 @@ plugin_command "salt-minion --versions-report"
 
 plugin_command "cp /var/log/zypper.log $LOG"
 
+section_header "Crypto Policy"
+
+if [ -f /etc/crypto-policies/config ]; then
+        plugin_command "cat /etc/crypto-policies/config"
+elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
+        plugin_message "FIPS"
+else
+        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+fi
+
 section_header "Proxy Containers Configuration Files"
 
 plugin_command "ls -l /etc/uyuni/proxy/"
-
 
 section_header "Proxy Containers Systems Status"
 

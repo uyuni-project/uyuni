@@ -16,13 +16,14 @@ package com.redhat.rhn.common.db.datasource;
 
 import org.hibernate.Session;
 
+import java.io.Serializable;
 import java.util.List;
 
 
 /**
  * Elaboratable
  */
-public interface Elaborator {
+public interface Elaborator extends Serializable {
 
     /**
      * Returns an elaborated list for the given List of objects

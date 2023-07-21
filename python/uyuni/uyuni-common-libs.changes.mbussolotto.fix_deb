@@ -1,0 +1,1 @@
+- Workaround for python3-debian bug about collecting control file (bsc#1211525, bsc#1208692)

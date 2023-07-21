@@ -148,7 +148,7 @@ public class MenuTree {
                             .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
                             .withVisibility(adminRoles.get("org")))
                     .addChild(new MenuItem("Inactive")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=awol"))
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
                     .addChild(new MenuItem("Recently Registered")
                             .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
                     .addChild(new MenuItem("Proxy")

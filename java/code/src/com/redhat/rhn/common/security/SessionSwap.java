@@ -147,11 +147,6 @@ public class SessionSwap {
 
         String joinedText = StringUtils.join(text.iterator(), "\0");
 
-
-        if (log.isDebugEnabled()) {
-            log.debug("Data     : [{}]", joinedText);
-            log.debug("Key      : [{}]", swapKey);
-        }
         String retval = HMAC.sha256(joinedText, swapKey.toString());
         if (log.isDebugEnabled()) {
             log.debug("retval: {}", retval);

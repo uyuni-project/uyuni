@@ -1307,7 +1307,7 @@ public class PackageManager extends BaseManager {
                     .from("rhnPackageSource PS " +
                             "inner join rhnSourceRPM SRPM on PS.source_rpm_id = SRPM.id " +
                             "left join rhnPackage P on SRPM.id = P.source_rpm_id " +
-                            "left join rhnChannelPackage CP on CP.package_id")
+                            "left join rhnChannelPackage CP on CP.package_id = P.id ")
                     .where("PS.org_id = :org_id AND CP.package_id is null")
                     .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
         }
