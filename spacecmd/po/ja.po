@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 15:18+0200\n"
+"POT-Creation-Date: 2023-07-21 15:08+0200\n"
 "PO-Revision-Date: 2023-06-26 16:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -269,8 +269,8 @@ msgstr "activationkey_delete: アクティベーションキーを削除"
 msgid "usage: activationkey_delete KEY"
 msgstr "使用方法: activationkey_delete キー"
 
-#: ../src/spacecmd/activationkey.py:831 ../src/spacecmd/cryptokey.py:141
-#: ../src/spacecmd/cryptokey.py:200 ../src/spacecmd/custominfo.py:97
+#: ../src/spacecmd/activationkey.py:831 ../src/spacecmd/cryptokey.py:176
+#: ../src/spacecmd/cryptokey.py:235 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
 msgstr "パラメータ %s に合致するキーはありません"
@@ -940,13 +940,13 @@ msgstr "ラベル:       %s"
 msgid "Name:        %s"
 msgstr "名前:        %s"
 
-#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:217
+#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:252
 #: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:683
 #, python-format
 msgid "Description: %s"
 msgstr "説明: %s"
 
-#: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:218
+#: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:253
 #: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
 #: ../src/spacecmd/kickstart.py:1976
 #, python-format
@@ -991,7 +991,7 @@ msgstr "名前:"
 msgid "Label:"
 msgstr "ラベル:"
 
-#: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:67
+#: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:107
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:205
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
 #: ../src/spacecmd/system.py:3798
@@ -1079,7 +1079,7 @@ msgstr "リビジョンは整数でなければなりません"
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:638 ../src/spacecmd/configchannel.py:946
-#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2033
+#: ../src/spacecmd/cryptokey.py:109 ../src/spacecmd/kickstart.py:2033
 #: ../src/spacecmd/snippet.py:143
 msgid "Read an existing file [y/N]:"
 msgstr "既存のファイルの読み込み [y/N]:"
@@ -1563,59 +1563,81 @@ msgstr ""
 "  -d 説明\n"
 "  -f 鍵ファイル"
 
-#: ../src/spacecmd/cryptokey.py:63
+#: ../src/spacecmd/cryptokey.py:69
+#, fuzzy
+msgid "cryptokey_update: Update a cryptographic key"
+msgstr "cryptokey_create: 暗号鍵を作成"
+
+#: ../src/spacecmd/cryptokey.py:70
+#, fuzzy
+msgid ""
+"usage: cryptokey_update [options])\n"
+"\n"
+"options:\n"
+"  -t GPG or SSL\n"
+"  -d DESCRIPTION\n"
+"  -f KEY_FILE"
+msgstr ""
+"使用方法: cryptokey_create [オプション])\n"
+"\n"
+"オプション:\n"
+"  -t GPG または SSL\n"
+"  -d 説明\n"
+"  -f 鍵ファイル"
+
+#: ../src/spacecmd/cryptokey.py:103
 msgid "GPG or SSL [G/S]:"
 msgstr "GPG または SSL [G/S]:"
 
-#: ../src/spacecmd/cryptokey.py:76
+#: ../src/spacecmd/cryptokey.py:116
 msgid "The key type is required"
 msgstr "キーの種類を指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:80
+#: ../src/spacecmd/cryptokey.py:120
 msgid "A description is required"
 msgstr "説明を指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:84
+#: ../src/spacecmd/cryptokey.py:124
 msgid "A file containing the key is required"
 msgstr "キーを含むファイルを指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:92
+#: ../src/spacecmd/cryptokey.py:132
 msgid "No contents of the file"
 msgstr "ファイルの内容がありません"
 
-#: ../src/spacecmd/cryptokey.py:101
+#: ../src/spacecmd/cryptokey.py:141
 msgid "Invalid key type"
 msgstr "鍵の種類が正しくありません"
 
-#: ../src/spacecmd/cryptokey.py:115
+#: ../src/spacecmd/cryptokey.py:150
 msgid "cryptokey_delete: Delete a cryptographic key"
 msgstr "cryptokey_delete: 暗号鍵を削除"
 
-#: ../src/spacecmd/cryptokey.py:116
+#: ../src/spacecmd/cryptokey.py:151
 msgid "usage: cryptokey_delete NAME"
 msgstr "使用方法: cryptokey_delete 名前"
 
-#: ../src/spacecmd/cryptokey.py:147
+#: ../src/spacecmd/cryptokey.py:182
 msgid "Delete key(s) [y/N]:"
 msgstr "鍵を削除します [y/N]:"
 
-#: ../src/spacecmd/cryptokey.py:158
+#: ../src/spacecmd/cryptokey.py:193
 msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
 msgstr "cryptokey_list: 全ての暗号鍵 (SSL, GPG) を表示"
 
-#: ../src/spacecmd/cryptokey.py:159
+#: ../src/spacecmd/cryptokey.py:194
 msgid "usage: cryptokey_list"
 msgstr "使用方法: cryptokey_list"
 
-#: ../src/spacecmd/cryptokey.py:177
+#: ../src/spacecmd/cryptokey.py:212
 msgid "cryptokey_details: Show the contents of a cryptographic key"
 msgstr "cryptokey_details: 暗号鍵の内容を表示"
 
-#: ../src/spacecmd/cryptokey.py:178
+#: ../src/spacecmd/cryptokey.py:213
 msgid "usage: cryptokey_details KEY ..."
 msgstr "使用方法: cryptokey_details 鍵 ..."
 
-#: ../src/spacecmd/cryptokey.py:210
+#: ../src/spacecmd/cryptokey.py:245
 #, python-format
 msgid "%s is not a valid crypto key"
 msgstr "%s は正しい暗号鍵ではありません"
