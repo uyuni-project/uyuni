@@ -12,17 +12,11 @@ import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-
+import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
-import com.suse.oval.ovaltypes.DefinitionType;
-import com.suse.oval.ovaltypes.ObjectType;
-import com.suse.oval.ovaltypes.OvalRootType;
-import com.suse.oval.ovaltypes.StateType;
-import com.suse.oval.ovaltypes.TestType;
-
+import com.suse.oval.ovaltypes.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,9 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
-    private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVALTest.class);
+    private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
 
-    private OvalParser ovalParser = new OvalParser();
+    OvalParser ovalParser = new OvalParser();
 
     @Test
     void testDoAuditSystemNotAffected() throws Exception {
@@ -60,7 +54,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.5"); // Not Leap 15.4
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         CVEAuditManager.populateCVEChannels();
 
@@ -101,7 +95,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         CVEAuditManager.populateCVEChannels();
 
@@ -135,7 +129,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Package unpatched = createTestPackage(user, channel, "noarch");
         unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
@@ -177,7 +171,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Package unpatched = createTestPackage(user, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
@@ -185,22 +179,22 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package patched = createTestPackage(user, errata, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        LOG.error(unpatched.getPackageEvr().toUniversalEvrString());
+        log.error(unpatched.getPackageEvr().toUniversalEvrString());
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
 
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        LOG.error(server.getName());
-        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        log.error(server.getName());
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -229,7 +223,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Package affected =  createTestPackage(user, channel, "noarch", "MozillaFirefox");
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
@@ -242,7 +236,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -270,7 +264,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         // Only package 'MozillaFirefox' has a patch in the assigned channels
         createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
@@ -287,7 +281,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -315,7 +309,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
         Package unpatched =  createTestPackage(user, channel, "noarch", "MozillaFirefox", "0", "2.3.0", "150400.1.12");
@@ -336,7 +330,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -367,7 +361,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, assignedChannels);
         server.setCpe("cpe:/o:opensuse:leap:15.4");
 
-        createOVALDefinition(definitionType);
+        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Package unpatched = createTestPackage(user, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
@@ -376,22 +370,22 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, otherChannel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        LOG.error(unpatched.getPackageEvr().toUniversalEvrString());
+        log.error(unpatched.getPackageEvr().toUniversalEvrString());
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
 
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        LOG.error(server.getName());
-        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        log.error(server.getName());
+        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 

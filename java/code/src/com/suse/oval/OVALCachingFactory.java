@@ -52,7 +52,7 @@ public class OVALCachingFactory extends HibernateFactory {
      * <p>
      * Also inserts the affected platforms and references information (if not already inserted) into the relevant tables
      */
-    public static void saveDefinitions(List<DefinitionType> definitionTypes, OVALDefinitionSource source) {
+    public static void saveDefinitions(List<DefinitionType> definitionTypes, OsFamily osFamily, String osVersion) {
         for (int i = 0; i < definitionTypes.size(); i++) {
             DefinitionType definitionType = definitionTypes.get(i);
 
@@ -67,9 +67,8 @@ public class OVALCachingFactory extends HibernateFactory {
             definition.setDescription(definitionType.getMetadata().getDescription());
             definition.setCriteriaTree(definitionType.getCriteria());
 
-            definition.setSource(source);
-            // TODO: Set from a passed argument
-            definition.setOsVersion("15.4");
+            definition.setOsFamily(osFamily);
+            definition.setOsVersion(osVersion);
 
             // TODO: affected cpe list is not present in all OVAL files.
             List<String> affectedCpeList = definitionType.getMetadata().getAdvisory()
@@ -399,7 +398,7 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     private static String extractCveFromDefinition(OVALDefinition definition) {
-        OVALDefinitionSource source = definition.getSource();
+        OsFamily source = definition.getOsFamily();
         if (source == null) {
             throw new IllegalStateException("Definition doesn't have a source property");
         }

@@ -2,13 +2,9 @@ package com.suse.oval.db;
 
 
 import com.redhat.rhn.domain.errata.Cve;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.dto.PackageListItem;
-import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.audit.CVEAuditManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.OsFamily;
+import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
@@ -17,7 +13,6 @@ import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,6 +22,8 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Entity
 @Table(name = "suseOVALDefinition")
@@ -47,7 +44,7 @@ public class OVALDefinition {
     private List<OVALReference> references;
     private List<OVALPlatform> affectedPlatforms;
     private Cve cve;
-    private OVALDefinitionSource source;
+    private OsFamily osFamily;
     private String osVersion;
     private CriteriaType criteriaTree;
 
@@ -122,13 +119,13 @@ public class OVALDefinition {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "source")
-    public OVALDefinitionSource getSource() {
-        return source;
+    @Column(name = "os_family")
+    public OsFamily getOsFamily() {
+        return osFamily;
     }
 
-    public void setSource(OVALDefinitionSource source) {
-        this.source = source;
+    public void setOsFamily(OsFamily osFamily) {
+        this.osFamily = osFamily;
     }
 
     @Column(name = "os_version")
@@ -178,30 +175,19 @@ public class OVALDefinition {
      * Evaluate the given {@code clientServer} vulnerability state against this definition's {@code criteriaTree}
      *
      * @param clientServer The client server to evaluate its vulnerability state
-     * @param clientProductVulnerablePackages the set of vulnerable packages that made client product vulnerable to this vulnerability definition
      *
      * @return {@code True} of clientServer is in a vulnerable state and {@code False} if it's not.
      * Also returns {@code False} if definition doesn't have a criteria tree
-     *
      * */
-    public boolean evaluate(Server clientServer, Set<VulnerablePackage> clientProductVulnerablePackages) {
+    public boolean evaluate(Server clientServer, List<SystemPackage> allInstalledPackages) {
         if (criteriaTree == null) {
             return false;
         }
 
-        // TODO: Only load packages that are vulnerable
-        List<PackageListItem> allInstalledPackages = new ArrayList<>();
-        for (VulnerablePackage vulnerablePackage : clientProductVulnerablePackages) {
-            LOG.error("Client Product Package {}, {}", vulnerablePackage.getName(), vulnerablePackage.getFixVersion());
-            allInstalledPackages.addAll(PackageManager.systemPackagesWithName(clientServer.getId(), vulnerablePackage.getName()));
-        }
+        Map<String, List<SystemPackage>> allInstalledPackagesByName = allInstalledPackages
+                .stream().collect(groupingBy(SystemPackage::getName));
 
-        allInstalledPackages.forEach(installed -> {
-            installed.setEvr(PackageEvrFactory.lookupPackageEvrById(installed.getEvrId()).toUniversalEvrString());
-            LOG.error("Installed Package {}, {}, {}", installed.getName(), installed.getEvr(), installed.getSummary());
-        });
-
-        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackages, clientServer.getPackageType());
+        TestEvaluator testEvaluator = new TestEvaluator(allInstalledPackagesByName, clientServer.getPackageType());
 
         return criteriaTree.evaluate(testEvaluator);
     }

@@ -1,6 +1,6 @@
 package com.suse.oval;
 
-public enum OVALDefinitionSource {
+public enum OsFamily {
     openSUSE("openSUSE", "opensuse", "opensuse"),
     openSUSE_LEAP("openSUSE Leap", "leap", "opensuse"),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse"),
@@ -15,12 +15,12 @@ public enum OVALDefinitionSource {
     private final String shortname;
 
 
-    OVALDefinitionSource(String fullname, String shortname, String vendor) {
+    OsFamily(String fullname, String shortname, String vendor) {
         this.fullname = fullname;
         this.shortname = shortname;
         this.vendor = vendor;
     }
-    OVALDefinitionSource(String fullname, String vendor) {
+    OsFamily(String fullname, String vendor) {
         this(fullname, fullname.toLowerCase(), vendor);
     }
 

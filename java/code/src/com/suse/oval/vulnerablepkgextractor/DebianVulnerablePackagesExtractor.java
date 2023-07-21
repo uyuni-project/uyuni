@@ -1,6 +1,5 @@
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.OVALDefinitionSource;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.db.OVALDefinition;

@@ -1,7 +1,7 @@
 package com.suse.oval.vulnerablepkgextractor;
 
 import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.db.*;
@@ -121,7 +121,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             return false;
         }
 
-        String osProduct = vulnerabilityDefinition.getSource().fullname();
+        String osProduct = vulnerabilityDefinition.getOsFamily().fullname();
 
         // Making sure that the product criterions contain indeed product names
         return productCriterions.stream()
@@ -130,7 +130,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
     }
 
     public Cpe deriveCpe(String product) {
-        OVALDefinitionSource osProduct = vulnerabilityDefinition.getSource();
+        OsFamily osProduct = vulnerabilityDefinition.getOsFamily();
         return new CpeBuilder()
                 .withVendor(osProduct.vendor())
                 .withProduct(osProduct.shortname())

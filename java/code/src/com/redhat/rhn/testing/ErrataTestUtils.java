@@ -43,7 +43,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
 import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.OVALDefinitionSource;
+import com.suse.oval.OsFamily;
 import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.db.OVALPackageTest;
 import com.suse.oval.manager.OvalObjectManager;
@@ -523,10 +523,8 @@ public class ErrataTestUtils {
         return result;
     }
 
-    public static OVALDefinition createOVALDefinition(DefinitionType definitionType) {
-        OVALCachingFactory.saveDefinitions(
-                List.of(definitionType), OVALDefinitionSource.openSUSE_LEAP
-        );
+    public static OVALDefinition createOVALDefinition(DefinitionType definitionType, OsFamily osFamily, String osVersion) {
+        OVALCachingFactory.saveDefinitions(List.of(definitionType), osFamily, osVersion);
 
         HibernateFactory.getSession().flush();
 
