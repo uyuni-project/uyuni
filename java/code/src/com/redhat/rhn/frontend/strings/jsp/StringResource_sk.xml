@@ -1576,7 +1576,7 @@
       </trans-unit>
       <trans-unit id="header.jsp.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target>Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
