@@ -29,6 +29,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I select "1-PROXY-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
