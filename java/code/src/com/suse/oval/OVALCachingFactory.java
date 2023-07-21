@@ -89,6 +89,13 @@ public class OVALCachingFactory extends HibernateFactory {
 
 
     private static void saveDefinition(OVALDefinition definition, List<String> affectedCpeList, List<ReferenceType> references) {
+        String cve = extractCveFromDefinition(definition);
+        definition.setCve(CveFactory.lookupOrInsertByName(cve));
+
+        if (definition.getOsFamily() == OsFamily.DEBIAN) {
+            convertDebianTestRefs(definition.getCriteriaTree(), definition.getOsVersion());
+        }
+
         definition.setAffectedPlatforms(
                 affectedCpeList.stream()
                         .map(OVALCachingFactory::lookupOrInsertPlatformByCpe)
@@ -107,10 +114,30 @@ public class OVALCachingFactory extends HibernateFactory {
                 }).collect(Collectors.toList())
         );
 
-        String cve = extractCveFromDefinition(definition);
-        definition.setCve(CveFactory.lookupOrInsertByName(cve));
-
         instance.saveObject(definition);
+    }
+
+    private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
+        if (root instanceof CriteriaType) {
+            for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
+                convertDebianTestRefs(criteria, osVersion);
+            }
+        } else {
+            CriterionType criterionType = (CriterionType) root;
+            criterionType.setTestRef(convertDebianId(criterionType.getTestRef(), osVersion));
+        }
+    }
+
+    private static String convertDebianId(String id, String osVersion) {
+        String versionName = "";
+        if ("10.0".equals(osVersion)) {
+            versionName = "buster";
+        } else if ("11.0".equals(osVersion)) {
+            versionName = "bullseye";
+        } else if ("12.0".equals(osVersion)) {
+            versionName = "bookworm";
+        }
+        return id.replaceAll("debian", "debian-" + versionName);
     }
 
 
@@ -160,8 +187,8 @@ public class OVALCachingFactory extends HibernateFactory {
                 .setCacheable(true).uniqueResult();
     }
 
-    public static void savePackageTests(List<TestType> ovalTests,
-                                        OvalObjectManager objectManager, OvalStateManager stateManager) {
+    public static void savePackageTests(List<TestType> ovalTests, OvalObjectManager objectManager, OvalStateManager stateManager,
+                                        OsFamily osFamily, String osVersion) {
 
         for (int i = 0; i < ovalTests.size(); i++) {
             TestType testType = ovalTests.get(i);
@@ -239,6 +266,12 @@ public class OVALCachingFactory extends HibernateFactory {
                 if (ovalPackageVersionStateEntity != null) {
                     ovalPackageState.setPackageVersionState(ovalPackageVersionStateEntity);
                     instance.saveObject(ovalPackageVersionStateEntity, false);
+                }
+
+                if (osFamily == OsFamily.DEBIAN) {
+                    ovalPackageTest.setId(convertDebianId(ovalPackageTest.getId(), osVersion));
+                    ovalPackageState.setId(convertDebianId(ovalPackageState.getId(), osVersion));
+                    ovalPackageObject.setId(convertDebianId(ovalPackageObject.getId(), osVersion));
                 }
 
                 getSession().merge(ovalPackageState);
