@@ -1855,6 +1855,8 @@ class RepoSync(object):
             url.query = ""
             if 'extra_auth' in credentials and credentials['extra_auth']:
                 headers = json.loads(credentials['extra_auth'].tobytes())
+                if not headers:
+                    log2(0, 0, "Empty extra auth headers. Possibly the PAYG instance is down?")
         return {"url": url.getURL(), "http_headers": headers}
 
     def upload_patches(self, notices):

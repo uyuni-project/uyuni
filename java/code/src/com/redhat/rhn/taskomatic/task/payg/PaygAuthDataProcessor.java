@@ -147,6 +147,20 @@ public class PaygAuthDataProcessor {
         return credentials;
     }
 
+    /**
+     * Invalidate PAYG Instance credentials
+     * @param instance the instance
+     */
+    public void invalidateCredentials(PaygSshData instance) {
+        Optional.ofNullable(instance.getCredentials())
+                .ifPresent(c -> {
+                    Map<String, String> headers = new HashMap<>();
+                    c.setExtraAuthData(GSON.toJson(headers).getBytes());
+                    c.setPassword("invalidated");
+                    CredentialsFactory.storeCredentials(c);
+                });
+    }
+
     private Set<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
         return products.stream()
                 .map(product -> {
