@@ -20,10 +20,10 @@ import static com.redhat.rhn.domain.server.test.CustomDataValueTest.createTestCu
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -342,8 +342,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         Set<Pillar> pillars = new HashSet<>();
         pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), minion));
         minion.setPillars(pillars);
-        TestUtils.saveAndFlush(minion);
-        minion = reload(minion);
+        minion = TestUtils.saveAndReload(minion);
 
         assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
 
@@ -405,8 +404,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         Set<Pillar> pillars = new HashSet<>();
         pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
-        TestUtils.saveAndFlush(hwtypeGroup);
-        hwtypeGroup = reload(hwtypeGroup);
+        hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
         assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
@@ -463,15 +461,13 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         Set<Pillar> pillars = new HashSet<>();
         pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
-        TestUtils.saveAndFlush(hwtypeGroup);
-        hwtypeGroup = reload(hwtypeGroup);
+        hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
         // Override by system pillar with redeploy flag
         pillars = new HashSet<>();
         pillars.add(new Pillar(FORMULA, createSaltbootTestData(true, true), minion));
         minion.setPillars(pillars);
-        TestUtils.saveAndFlush(minion);
-        minion = reload(minion);
+        minion = TestUtils.saveAndReload(minion);
 
         assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
         assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
@@ -545,8 +541,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         Set<Pillar> pillars = new HashSet<>();
         pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
-        TestUtils.saveAndFlush(hwtypeGroup);
-        hwtypeGroup = reload(hwtypeGroup);
+        hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
         assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());

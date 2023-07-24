@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult.BootImage;
-import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -115,22 +114,31 @@ public class SaltbootUtils {
         String distroToUse;
         if (bootImage == null || bootImage.isEmpty()) {
             SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(org.getId() + "-"))
-                    .sorted(saltbootCompare).collect(Collectors.toList()).stream().findFirst().orElseThrow(
-                            () -> new SaltbootException("No registered image found"));
+            distroToUse = Distro.list(con)
+                    .stream()
+                    .map(d -> d.getName())
+                    .filter(s -> s.startsWith(org.getId() + "-"))
+                    .min(saltbootCompare)
+                    .orElseThrow(() -> new SaltbootException("No registered image found"));
         }
         else if (bootImageVersion == null || bootImageVersion.isEmpty()) {
             SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(org.getId() + "-" +
-                            bootImage)).sorted(saltbootCompare).collect(Collectors.toList()).stream().findFirst()
+            distroToUse = Distro.list(con)
+                    .stream()
+                    .map(d -> d.getName())
+                    .filter(s -> s.startsWith(org.getId() + "-" + bootImage))
+                    .min(saltbootCompare)
                     .orElseThrow(() -> new SaltbootException("Specified image name is not known"));
         }
         else if (!bootImageVersion.contains("-")) {
             // bootImageVersion does not have revision
             SaltbootVersionCompare saltbootCompare = new SaltbootVersionCompare();
-            distroToUse = Distro.list(con).stream().map(d -> d.getName()).filter(s -> s.startsWith(org.getId() + "-" +
-                            bootImage + "-" + bootImageVersion)).sorted(saltbootCompare).collect(Collectors.toList())
-                    .stream().findFirst().orElseThrow(() -> new SaltbootException("Specified image name is not known"));
+            distroToUse = Distro.list(con)
+                    .stream()
+                    .map(d -> d.getName())
+                    .filter(s -> s.startsWith(org.getId() + "-" + bootImage + "-" + bootImageVersion))
+                    .min(saltbootCompare)
+                    .orElseThrow(() -> new SaltbootException("Specified image name is not known"));
         }
         else {
             distroToUse = org.getId() + "-" + bootImage + "-" + bootImageVersion;
@@ -253,15 +261,14 @@ public class SaltbootUtils {
      * @param minionId
      */
     public static void resetSaltbootRedeployFlags(String minionId) {
-        Opt.consume(MinionServerFactory.findByMinionId(minionId),
-            () -> LOG.error("Trying to reset saltboot flag for nonexisting minion {}", minionId),
+        MinionServerFactory.findByMinionId(minionId).ifPresentOrElse(
             minion -> {
                 // Look for custom_info or formula_saltboot category.
                 // If flag is set somewhere else, then we can't reset it
                 removeSaltbootRedeployPillar(minion);
                 removeSaltbootRedeployCustomInfo(minion);
-            }
-        );
+            },
+            () -> LOG.error("Trying to reset saltboot flag for nonexisting minion {}", minionId));
     }
 
     /**
