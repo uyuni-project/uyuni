@@ -16,12 +16,14 @@
 package com.redhat.rhn.taskomatic.task.payg.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -133,6 +135,72 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
         assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
                 UserNotificationFactory.listAllNotificationMessages().get(0).getType());
+    }
+
+    /**
+     * Test PAYG Instance shutdown. On first Error the credentials should not yet been invalidated.
+     * This should happen on the second try which failed. When the connection is restored,
+     * the credentials should be restored as well.
+     * @throws Exception
+     */
+    @Test
+    public void testPaygDataExtractExceptionInvalidateCredentials() throws Exception {
+        CONTEXT.checking(new Expectations() {
+            {
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(paygInstanceInfo));
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(returnValue(paygInstanceInfo));
+            }});
+        // first call successfull - set credentials and a header
+        PAYG_DATA_TASK.execute(null);
+        paygData = HibernateFactory.reload(paygData);
+        assertEquals(paygData.getStatus(), PaygSshData.Status.S);
+        Credentials creds = paygData.getCredentials();
+        assertNotNull(creds);
+        assertEquals("0e248802", creds.getPassword());
+        assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
+                new String(creds.getExtraAuthData()));
+
+        // second call failed - set status to Error, but keep credentials
+        PAYG_DATA_TASK.execute(null);
+        paygData = HibernateFactory.reload(paygData);
+
+        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        assertEquals(paygData.getStatus(), PaygSshData.Status.E);
+        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
+        assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
+                UserNotificationFactory.listAllNotificationMessages().get(0).getType());
+        creds = paygData.getCredentials();
+        assertNotNull(creds);
+        assertEquals("0e248802", creds.getPassword());
+        assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
+                new String(creds.getExtraAuthData()));
+
+        // third call failed - invalidate credentials
+        PAYG_DATA_TASK.execute(null);
+        paygData = HibernateFactory.reload(paygData);
+
+        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        assertEquals(paygData.getStatus(), PaygSshData.Status.E);
+        creds = paygData.getCredentials();
+        assertNotNull(creds);
+        assertEquals("invalidated", creds.getPassword());
+        assertEquals("{}", new String(creds.getExtraAuthData()));
+
+        // forth call successfull - restore credentials and a header again
+        PAYG_DATA_TASK.execute(null);
+        paygData = HibernateFactory.reload(paygData);
+        assertEquals(paygData.getStatus(), PaygSshData.Status.S);
+        creds = paygData.getCredentials();
+        assertNotNull(creds);
+        assertEquals("0e248802", creds.getPassword());
+        assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
+                new String(creds.getExtraAuthData()));
     }
 
     @Test
