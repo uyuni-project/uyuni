@@ -190,11 +190,12 @@ public class RecurringActionController {
      */
     public static String getStatesConfig(Request request, Response response, User user) {
         String target = request.queryParams("target");
+        String idParam = request.queryParams("id");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
 
         Set<StateConfigJson> result = new HashSet<>(); // use a set to avoid duplicates
-        if (request.queryParams("id") != null) {
-            Long id = Long.parseLong(request.queryParams("id"));
+        if (idParam != null) {
+            Long id = Long.parseLong(idParam);
             Optional<RecurringAction> action = RecurringActionManager.find(id);
             if (action.isEmpty()) {
                 return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
