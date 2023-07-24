@@ -65,7 +65,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Update a distribution via the API
     When I update a kickstart tree via the API
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow this "fedora_kickstart_distro_api" link
+    And I follow "fedora_kickstart_distro_api"
     Then option "Generic RPM" is selected as "installtype"
     And I should see "self_update=0" in field identified by "kernelopts"
     And I should see "self_update=1" in field identified by "postkernelopts"
