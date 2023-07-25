@@ -276,7 +276,7 @@ public class SaltbootUtils {
      * @param minion
      */
     private static void removeSaltbootRedeployPillar(MinionServer minion) {
-        minion.getPillarByCategory("formula-saltboot").ifPresent(
+        minion.getPillarByCategory("tuning-saltboot").ifPresent(
             pillar -> {
                 Map<String, Object> pillarData = pillar.getPillar();
                 Map<String, String> saltboot = (Map<String, String>)pillarData.get("saltboot");
