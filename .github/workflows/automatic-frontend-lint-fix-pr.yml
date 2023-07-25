@@ -44,7 +44,7 @@ jobs:
 
     # If there's any changes, create a PR, see https://github.com/marketplace/actions/create-pull-request
     - name: Create PR
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v5
       with:
         # Delete the branch after merger
         delete-branch: true
