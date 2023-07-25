@@ -193,6 +193,13 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * @param pillarIn value of pillar
+     */
+    public void addPillar(Pillar pillarIn) {
+        pillars.add(pillarIn);
+    }
+
+    /**
      * Get the pillar corresponding to a category.
      *
      * @param category the category of the pillar to look for
