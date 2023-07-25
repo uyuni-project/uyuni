@@ -15,6 +15,7 @@
 
 package com.suse.manager.saltboot;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -272,7 +273,7 @@ public class SaltbootUtils {
     }
 
     /**
-     * Remove saltboot:force_redeploy and saltboot:force_repartition from saltboot formula data
+     * Remove saltboot:force_redeploy and saltboot:force_repartition from saltboot pillar data
      * @param minion
      */
     private static void removeSaltbootRedeployPillar(MinionServer minion) {
@@ -280,6 +281,15 @@ public class SaltbootUtils {
             pillar -> {
                 Map<String, Object> pillarData = pillar.getPillar();
                 Map<String, String> saltboot = (Map<String, String>)pillarData.get("saltboot");
+
+                // Check if saltboot data are present at all, remove pillar if there is nothing else
+                if (saltboot == null) {
+                    if (pillarData.isEmpty()) {
+                        minion.getPillars().remove(pillar);
+                        HibernateFactory.getSession().remove(pillar);
+                    }
+                    return;
+                }
                 boolean changed = false;
                 if (saltboot.remove("force_redeploy") != null) {
                     changed = true;
@@ -289,7 +299,14 @@ public class SaltbootUtils {
                 }
                 if (changed) {
                     LOG.debug("saltboot redeploy flags removed");
-                    pillar.setPillar(pillarData);
+                    if (saltboot.isEmpty() && pillarData.size() == 1) {
+                        // Remove pillar completely if we cleared saltboot data and it was the only entry
+                        minion.getPillars().remove(pillar);
+                        HibernateFactory.getSession().remove(pillar);
+                    }
+                    else {
+                        pillar.setPillar(pillarData);
+                    }
                 }
             }
         );

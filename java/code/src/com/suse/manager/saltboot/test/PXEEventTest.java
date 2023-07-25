@@ -130,6 +130,10 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     }
 
     private Map<String, Object> createSaltbootTestData(Boolean repartition, Boolean redeploy) {
+        return createSaltbootTestData(repartition, redeploy, null);
+    }
+
+    private Map<String, Object> createSaltbootTestData(Boolean repartition, Boolean redeploy, Boolean extraData) {
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> saltbootData = new HashMap<>();
         if (repartition != null) {
@@ -137,6 +141,9 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         }
         if (redeploy != null) {
             saltbootData.put("force_redeploy", redeploy);
+        }
+        if (extraData != null && extraData) {
+            saltbootData.put("extraData", "are here");
         }
         data.put("saltboot", saltbootData);
         return data;
@@ -342,7 +349,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Add pillar data without any redeployment flag
         Set<Pillar> pillars = new HashSet<>();
-        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(null, null), minion));
+        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(null, null, true), minion));
         minion.setPillars(pillars);
         minion = TestUtils.saveAndReload(minion);
 
@@ -408,9 +415,14 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         pillars.add(new Pillar(SALTBOOT_FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
         hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
-
-        assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
+
+        // Add pillar data without any redeployment flag
+        pillars = new HashSet<>();
+        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(false, null), minion));
+        minion.setPillars(pillars);
+        minion = TestUtils.saveAndReload(minion);
+        assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
 
         // Do the thing
         action.execute(pxemsg);
@@ -472,7 +484,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Override by system pillar with redeploy flag
         pillars = new HashSet<>();
-        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(true, true), minion));
+        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(true, true, true), minion));
         minion.setPillars(pillars);
         minion = TestUtils.saveAndReload(minion);
 
