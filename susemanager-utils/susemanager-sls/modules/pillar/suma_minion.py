@@ -156,11 +156,13 @@ def ext_pillar(minion_id, pillar, *args):
         ret = load_global_pillars(cursor, ret)
         ret = load_org_pillars(minion_id, cursor, ret)
         group_formulas, ret = load_group_pillars(minion_id, cursor, ret)
-        system_formulas, ret= load_system_pillars(minion_id, cursor, ret)
+        system_formulas, ret = load_system_pillars(minion_id, cursor, ret)
 
     # Including formulas into pillar data
     try:
-        ret.update(formula_pillars(system_formulas, group_formulas, ret))
+        ret = salt.utils.dictupdate.merge(ret,
+                   formula_pillars(system_formulas, group_formulas, ret),
+                   strategy='recurse')
     except Exception as error:
         log.error('Error accessing formula pillar data: %s', error)
 
