@@ -64,7 +64,7 @@ public class TaskoQuartzHelper {
                     triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
         }
         catch (SchedulerException e) {
-            // be silent
+            log.error("Unable to remove scheduled trigger {}", trigger.getJobKey(), e);
         }
     }
 
@@ -73,8 +73,9 @@ public class TaskoQuartzHelper {
      * @param schedule schedule as a job template
      * @return date of first schedule
      * @throws InvalidParamException thrown in case of invalid cron expression
+     * @throws SchedulerException
      */
-    public static Date createJob(TaskoSchedule schedule) throws InvalidParamException {
+    public static Date createJob(TaskoSchedule schedule) throws InvalidParamException, SchedulerException {
         // create trigger
         Trigger trigger = null;
         if (isCronExpressionEmpty(schedule.getCronExpr())) {
@@ -113,16 +114,9 @@ public class TaskoQuartzHelper {
         jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        try {
-            Date date =
-                    SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
-            log.info("Job {} scheduled successfully.", schedule.getJobLabel());
-            return date;
-        }
-        catch (SchedulerException e) {
-            log.warn("Job {} failed to schedule.", schedule.getJobLabel());
-            return null;
-        }
+        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
+        log.info("Job {} scheduled successfully.", schedule.getJobLabel());
+        return date;
     }
 
     /**
@@ -131,21 +125,17 @@ public class TaskoQuartzHelper {
      * @param schedule for the job to be rescheduled
      * @param startAtDate trigger time
      * @return the date of the trigger or null if scheduling was not successful
+     * @throws SchedulerException
      */
-    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate) {
+    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate) throws SchedulerException {
         // create trigger
         String timestamp = TIMESTAMP_FORMAT.format(startAtDate);
         TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp,
                 getGroupName(schedule.getOrgId()));
-        try {
-            Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
-            if (retryTrigger != null) {
-                log.warn("Retry trigger {} already exists", retryTriggerKey);
-                return retryTrigger.getStartTime();
-            }
-        }
-        catch (SchedulerException e) {
-            log.warn("no trigger found {}", retryTriggerKey);
+        Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
+        if (retryTrigger != null) {
+            log.warn("Retry trigger {} already exists", retryTriggerKey);
+            return retryTrigger.getStartTime();
         }
         Trigger trigger = newTrigger()
                     .withIdentity(schedule.getJobLabel() +  "-retry" + timestamp, getGroupName(schedule.getOrgId()))
@@ -166,33 +156,24 @@ public class TaskoQuartzHelper {
         jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        try {
-            Date date =
-                    SchedulerKernel.getScheduler().scheduleJob(trigger);
-            log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
-            return date;
-        }
-        catch (SchedulerException e) {
-            log.info("Job {} failed to be reschedule with trigger {}", schedule.getJobLabel(), trigger.getKey(), e);
-            return null;
-        }
+        Date date = SchedulerKernel.getScheduler().scheduleJob(trigger);
+        log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
+        return date;
     }
 
     /**
      * unschedules job
-     * @param orgId organization id
+     *
+     * @param orgId    organization id
      * @param jobLabel job name
-     * @return 1 if successful
      */
-    public static Integer destroyJob(Integer orgId, String jobLabel) {
+    public static void destroyJob(Integer orgId, String jobLabel) {
         try {
-            SchedulerKernel.getScheduler()
-                    .unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
+            SchedulerKernel.getScheduler().unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
             log.info("Job {} unscheduled successfully.", jobLabel);
-            return 1;
         }
         catch (SchedulerException e) {
-            return null;
+            log.error("Unable to unschedule job {} of organization # {}", jobLabel, orgId, e);
         }
     }
 

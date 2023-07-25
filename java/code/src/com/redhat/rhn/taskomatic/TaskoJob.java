@@ -27,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
@@ -148,7 +149,7 @@ public class TaskoJob implements Job {
         return false;
     }
 
-    private boolean checkThreadAvailable(TaskoSchedule schedule, RhnJob job, TaskoTask task) {
+    private boolean checkThreadAvailable(TaskoSchedule schedule, RhnJob job, TaskoTask task) throws SchedulerException {
         if (!isTaskThreadAvailable(job, task)) {
             int rescheduleSeconds = job.getRescheduleTime();
             log.info("{} RESCHEDULED in {} seconds", schedule.getJobLabel(), rescheduleSeconds);
