@@ -10,7 +10,7 @@ ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 # Add distro and product repos
 COPY add_repos.sh /usr/bin
 COPY timezone_alignment.sh /usr/bin
-RUN sh add_repos.sh
+RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Copy Uyuni setup script
 COPY uyuni-setup.service 	/usr/lib/systemd/system/
