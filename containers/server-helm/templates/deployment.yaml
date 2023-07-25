@@ -389,16 +389,13 @@ spec:
           - containerPort: 8000
           - containerPort: 8001
 {{- end }}
-{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
         env:
+          - name: TZ
+            value: {{ .Values.timezone | default "Etc/UTC" }}
+{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
-        envFrom:
-          - configMapRef:
-              name: uyuni-config
-          - secretRef:
-              name: uyuni-secret
         volumeMounts:
           - mountPath: /run
             name: tmp
