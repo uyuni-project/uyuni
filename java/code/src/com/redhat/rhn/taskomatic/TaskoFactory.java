@@ -29,6 +29,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.quartz.SchedulerException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -513,23 +514,19 @@ public class TaskoFactory extends HibernateFactory {
      * @param schedule schedule to reinit
      * @param now time to set
      * @return schedule
+     * @throws SchedulerException when scheduling the task fails
+     * @throws InvalidParamException when scheduling the task fails due to wrong parameters
      */
-    public static TaskoSchedule reinitializeScheduleFromNow(TaskoSchedule schedule,
-            Date now) {
+    public static TaskoSchedule reinitializeScheduleFromNow(TaskoSchedule schedule, Date now)
+        throws InvalidParamException, SchedulerException {
         TaskoQuartzHelper.destroyJob(schedule.getOrgId(), schedule.getJobLabel());
         schedule.setActiveFrom(now);
         if (!schedule.isCronSchedule()) {
             schedule.setActiveTill(now);
         }
         TaskoFactory.save(schedule);
-        try {
-            TaskoQuartzHelper.createJob(schedule);
-            return schedule;
-        }
-        catch (InvalidParamException e) {
-            // Pech gehabt()
-        }
-        return null;
+        TaskoQuartzHelper.createJob(schedule);
+        return schedule;
     }
 
     private static boolean runBelongToOrg(Integer orgId, TaskoRun run) {
