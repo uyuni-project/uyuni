@@ -66,48 +66,5 @@ ingress: "traefik"
 ##   cert-manager.io/cluster-issuer: uyuniIssuer
 # ingressSslAnnotations:
 
-## uyuniUser is the login of the user accessing the database
-uyuniUser: "spacewalk"
-## uyuniPass is the password of the user accessing the database
-uyuniPass: "spacewalk"
-
-## uyuniEnableTftp toggles TFTP service
-uyuniEnableTftp: true
-
-## reportDbHost is the report database FQDN.
-## Only set when using an external report database
-# reportDbHost: "uyuni.local"
-
-## reportDbPort is the report database port to connect to.
-## Only set when using an external report database
-# reportDbPort: "5432"
-
-## reportDbUser is the username to use to connect to the report database.
-## Only set when using an external report database
-# reportDbUser: ""
-
-## reportDbPass is the password to use to connect to the report database.
-## Only set when using an external report database
-# reportDbPass: "
-
-## reportDbName is the report database name.
-## Only set when using an external report database
-# reportDbName: ""
-
-# TODO Add reportDbCaCert value and handle it
-
-## uyuniAdminEmail is the email where all Uyuni notifications are sent
-uyuniAdminEmail: "galaxy-noise@suse.de"
-## uyuniMailFrom is the address in the from field of the emails sent by Uyuni
-uyuniMailFrom: "notifications@uyuni.local"
-
-## fqdn is the user accessible fully qualified domain name of the uyuni server
-fqdn: "uyuni.local"
-
-## TZ is the timezone
-TZ: "Etc/UTC"
-## sccUser is the SUSE Customer Center login
-# sccUser: ""
-
-## sccPass is the SUSE Customer Center password
-# sccPass: ""
+# The time zone to set in the containers
+timezone: "Etc/UTC"
