@@ -62,7 +62,9 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
     private MockConnection cobblerMock;
     private static final String MINION_ID = "minion.local";
-    private static final String FORMULA = "formula-saltboot";
+    private static final String SALTBOOT_PILLAR = "tuning-saltboot";
+
+    private static final String SALTBOOT_FORMULA = "formula-saltboot";
     private static final String BOOT_IMAGE = "POS_Image_JeOS7-7.0.0-1";
     private static final String SALTBOOT_GROUP = "groupPrefix";
 
@@ -315,7 +317,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests default PXE event handling
      *
-     * Processing the event, when repart or redeploy flags are not set and when saltboot-formula is minion formula
+     * Processing the event, when repart or redeploy flags are not set and when tuning-saltboot is minion pillar
      * @throws Exception
      */
     @Test
@@ -340,19 +342,19 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Add pillar data without any redeployment flag
         Set<Pillar> pillars = new HashSet<>();
-        pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), minion));
+        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(null, null), minion));
         minion.setPillars(pillars);
         minion = TestUtils.saveAndReload(minion);
 
-        assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
+        assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
 
         // Do the thing
         action.execute(pxemsg);
 
         // Validate pillar data, there shouldn't be any saltboot redeploy pillars
         minion = reload(minion);
-        assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
-        Pillar returnedPillar = minion.getPillarByCategory(FORMULA).get();
+        assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        Pillar returnedPillar = minion.getPillarByCategory(SALTBOOT_PILLAR).get();
         Map<String, Object> saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
@@ -375,6 +377,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
      * Tests default PXE event handling
      *
      * Processing the event, when repart or redeploy flags are not set and when saltboot-formula is group formula
+     * Check we do not do any modifications
      * @throws Exception
      */
     @Test
@@ -402,12 +405,12 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Create group saltboot pillar
         Set<Pillar> pillars = new HashSet<>();
-        pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
+        pillars.add(new Pillar(SALTBOOT_FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
         hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
-        assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
+        assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
 
         // Do the thing
         action.execute(pxemsg);
@@ -415,9 +418,9 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         // Validate pillar data
         minion = reload(minion);
         hwtypeGroup = reload(hwtypeGroup);
-        assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
-        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(FORMULA).get();
+        assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
+        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
         Map<String, Object> saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
@@ -435,6 +438,10 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertNotNull(SystemRecord.lookupByName(cobblerMock, user.getOrg().getId() + "-" + minion.getMinionId()));
     }
 
+    /**
+     * Test we clear redeploy and repartition pillar when they are set for minion
+     * @throws Exception
+     */
     @Test
     public void testPXEEventActionPillarOnly() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -459,23 +466,23 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Generic group pillar
         Set<Pillar> pillars = new HashSet<>();
-        pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
+        pillars.add(new Pillar(SALTBOOT_FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
         hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
         // Override by system pillar with redeploy flag
         pillars = new HashSet<>();
-        pillars.add(new Pillar(FORMULA, createSaltbootTestData(true, true), minion));
+        pillars.add(new Pillar(SALTBOOT_PILLAR, createSaltbootTestData(true, true), minion));
         minion.setPillars(pillars);
         minion = TestUtils.saveAndReload(minion);
 
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
-        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(FORMULA).get();
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
+        assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
         Map<String, Object> saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
-        returnedPillar = minion.getPillarByCategory(FORMULA).get();
+        returnedPillar = minion.getPillarByCategory(SALTBOOT_PILLAR).get();
         saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNotNull(saltboot.get("force_redeploy"));
         assertNotNull(saltboot.get("force_repartition"));
@@ -487,13 +494,13 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         // group data should not be touched, minion data should be reset
         minion = reload(minion);
         hwtypeGroup = reload(hwtypeGroup);
-        assertTrue(minion.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
-        returnedPillar = hwtypeGroup.getPillarByCategory(FORMULA).get();
+        assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
+        returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
         saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
-        returnedPillar = minion.getPillarByCategory(FORMULA).get();
+        returnedPillar = minion.getPillarByCategory(SALTBOOT_PILLAR).get();
         saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
@@ -512,9 +519,10 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Tests default PXE event handling
+     * Tests PXE event handling with custom info set to redeployment
      *
      * Processing the event, when repart or redeploy flags are not set and when saltboot-formula is group formula
+     * Check that we do not modify group formula
      * @throws Exception
      */
     @Test
@@ -539,12 +547,12 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         PXEEventMessageAction action = new PXEEventMessageAction();
 
         Set<Pillar> pillars = new HashSet<>();
-        pillars.add(new Pillar(FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
+        pillars.add(new Pillar(SALTBOOT_FORMULA, createSaltbootTestData(null, null), hwtypeGroup));
         hwtypeGroup.setPillars(pillars);
         hwtypeGroup = TestUtils.saveAndReload(hwtypeGroup);
 
-        assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
+        assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
 
         CustomDataKey saltbootRedeploy = createTestCustomDataKey(user, "saltboot_force_redeploy");
         CustomDataKey saltbootRepart = createTestCustomDataKey(user, "saltboot_force_repartition");
@@ -561,9 +569,9 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         // Validate pillar data
         minion = reload(minion);
         hwtypeGroup = reload(hwtypeGroup);
-        assertFalse(minion.getPillarByCategory(FORMULA).isPresent());
-        assertTrue(hwtypeGroup.getPillarByCategory(FORMULA).isPresent());
-        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(FORMULA).get();
+        assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
+        assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
+        Pillar returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
         Map<String, Object> saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
         assertNull(saltboot.get("force_redeploy"));
         assertNull(saltboot.get("force_repartition"));
