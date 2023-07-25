@@ -98,6 +98,7 @@ public class ProductsController {
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
         get("/manager/api/admin/products", withUser(ProductsController::data));
+        get("/manager/api/admin/products/metadata", withUser(ProductsController::getMetadata));
         post("/manager/api/admin/mandatoryChannels", withUser(ProductsController::getMandatoryChannels));
         post("/manager/admin/setup/products",
                 withProductAdmin(ProductsController::addProduct));
@@ -122,19 +123,34 @@ public class ProductsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
+        return new ModelAndView(getMetadataMap(), "templates/products/show.jade");
+    }
+
+    /**
+     * Retrieves the metadata of the products page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON object containing the metadata
+     */
+    public static String getMetadata(Request request, Response response, User user) {
+        return json(response, getMetadataMap());
+    }
+
+    private static Map<String, Object> getMetadataMap() {
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
-
-        Map<String, Object> data = new HashMap<>();
         ContentSyncManager csm = new ContentSyncManager();
-        data.put(ISS_MASTER, String.valueOf(IssFactory.getCurrentMaster() == null));
-        data.put(REFRESH_NEEDED, String.valueOf(csm.isRefreshNeeded(null)));
-        data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
-        data.put(REFRESH_FILE_LOCKED, String.valueOf(FileLocks.SCC_REFRESH_LOCK.isLocked()));
-        data.put(NO_TOOLS_CHANNEL_SUBSCRIPTION,
-                String.valueOf(!(ConfigDefaults.get().isUyuni() ||
-                        csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT())));
 
-        return new ModelAndView(data, "templates/products/show.jade");
+        Map<String, Object> metadataMap = new HashMap<>();
+        metadataMap.put(ISS_MASTER, IssFactory.getCurrentMaster() == null);
+        metadataMap.put(REFRESH_NEEDED, csm.isRefreshNeeded(null));
+        metadataMap.put(REFRESH_RUNNING, latestRun != null && latestRun.getEndTime() == null);
+        metadataMap.put(REFRESH_FILE_LOCKED, FileLocks.SCC_REFRESH_LOCK.isLocked());
+        metadataMap.put(NO_TOOLS_CHANNEL_SUBSCRIPTION, !(ConfigDefaults.get().isUyuni() ||
+            csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT()));
+
+        return metadataMap;
     }
 
     /**
