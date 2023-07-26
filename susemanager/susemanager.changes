@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 26 15:15:04 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.30-1
+  * Make mgr-salt-ssh to properly fix HOME environment to avoid issues with gitfs (bsc#1210994)
+
+-------------------------------------------------------------------
 Wed Jul 19 10:30:52 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.29-1
