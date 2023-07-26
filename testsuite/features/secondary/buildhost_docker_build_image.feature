@@ -65,11 +65,13 @@ Feature: Build container images
     And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
     And I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
+    And I wait until no Salt job is running on "build_host"
 
   Scenario: Build same images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 1000 seconds until all "5" container images are built correctly in the Image List page
+    And I wait until no Salt job is running on "build_host"
 
   Scenario: Delete image via API calls
     When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
@@ -81,6 +83,7 @@ Feature: Build container images
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 1000 seconds until all "5" container images are built correctly in the Image List page
+    And I wait until no Salt job is running on "build_host"
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
@@ -88,6 +91,7 @@ Feature: Build container images
     And I enter "GUI_BUILT_IMAGE" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_BUILT_IMAGE" text
 
   Scenario: Login as Docker image administrator and build an image
@@ -97,6 +101,7 @@ Feature: Build container images
     And I enter "GUI_DOCKERADMIN" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_DOCKERADMIN" text
 
   Scenario: Cleanup: delete all images
