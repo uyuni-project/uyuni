@@ -54,7 +54,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 15 SP2 x86_64 " as a product
-    And I should see the "SUSE Linux Enterprise Server LTSS 15 SP2 x86_64 " selected
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP2 x86_64 " selected
     And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
     And I select "Desktop Applications Module 15 SP2 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP2 x86_64" selected
