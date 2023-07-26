@@ -13,7 +13,7 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I force picking pending events on "sle_client" if necessary
+    When I force picking pending events on "sle_client" if necessary
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
 @sle_client
@@ -35,7 +35,8 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
 @sle_minion
   Scenario: Minion grains are displayed correctly on the details page
@@ -56,7 +57,8 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "rhlike_minion"
 
 @rhlike_minion
   Scenario: Red Hat-like minion grains are displayed correctly on the details page
@@ -77,7 +79,8 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "deblike_minion"
 
 @deblike_minion
   Scenario: Debian-like minion grains are displayed correctly on the details page
@@ -98,9 +101,10 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "ssh_minion"
 
-@ssh_minion
+  @ssh_minion
   Scenario: SSH-managed minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "ssh_minion"
     Then the hostname for "ssh_minion" should be correct

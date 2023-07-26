@@ -319,6 +319,12 @@ When(/^I wait until there is no pillar refresh salt job active$/) do
   end
 end
 
+When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*)"$/) do |salt_module, minion|
+  target = get_target(minion)
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}")
+end
+
 def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
