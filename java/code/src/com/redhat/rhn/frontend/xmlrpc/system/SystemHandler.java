@@ -82,6 +82,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
+import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -8591,6 +8592,64 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
         return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
+    }
+
+    /**
+     * Get system pillar
+     *
+     * @param loggedInUser The Current User
+     * @param systemId the system id
+     * @param category category of the pillar data
+     * @return the pillar
+     *
+     * @apidoc.doc Get pillar data of given category for given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemId")
+     * @apidoc.param #param("string", "category")
+     * @apidoc.returntype #param("struct", "the pillar data")
+     */
+    @ReadOnly
+    public Map<String, Object> getPillar(User loggedInUser, Integer systemId, String category) {
+        ensureImageAdmin(loggedInUser);
+        Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
+        if (!opt.isPresent()) {
+            throw new NoSuchSystemException();
+        }
+        return opt.get().getPillarByCategory(category)
+                .map(p -> p.getPillar())
+                .orElseGet(() -> new HashMap<String, Object>());
+    }
+
+    /**
+     * Set system pillar
+     *
+     * @param loggedInUser The Current User
+     * @param systemId the systemd id
+     * @param category category to store the pillar data under
+     * @param pillarData the new pillar
+     * @return 1 on success
+     *
+     * @apidoc.doc Set pillar data of a system.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemId")
+     * @apidoc.param #param("struct", "pillarData")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int setPillar(User loggedInUser, Integer systemId, String category, Map<String, Object> pillarData) {
+        ensureImageAdmin(loggedInUser);
+        Optional<MinionServer> opt = MinionServerFactory.lookupById(systemId.longValue());
+        if (!opt.isPresent()) {
+            throw new NoSuchSystemException();
+        }
+        MinionServer minion = opt.get();
+        minion.getPillarByCategory(category).ifPresentOrElse(
+                p -> p.setPillar(pillarData),
+                () -> {
+                    Pillar newPillar = new Pillar(category, pillarData, minion);
+                    HibernateFactory.getSession().save(newPillar);
+                    minion.addPillar(newPillar);
+                });
+        return 1;
     }
 
     /**
