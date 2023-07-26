@@ -3453,6 +3453,43 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     /**
+     * Test the SystemHandler.getPillar method
+     * @throws Exception if anything fail
+     */
+    @Test
+    public void testGetPillar() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        Pillar newPillar = new Pillar("new_pillar", Collections.singletonMap("key", "value"), minion);
+        minion.addPillar(newPillar);
+        minion = TestUtils.saveAndReload(minion);
+        assertEquals(2, minion.getPillars().size());
+
+        SystemHandler systemHandler = getMockedHandler();
+        Map<String, Object> pillar = systemHandler.getPillar(admin, minion.getId().intValue(), "new_pillar");
+        assertNotNull(pillar);
+        assertEquals("value", pillar.get("key"));
+    }
+
+    /**
+     * Test the SystemHandler.setPillar method
+     * @throws Exception if anything fail
+     */
+    @Test
+    public void testSetPillar() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(admin);
+        assertEquals(1, minion.getPillars().size());
+
+        SystemHandler systemHandler = getMockedHandler();
+        Map<String, Object> pillarData = Collections.singletonMap("key", "value");
+        systemHandler.setPillar(admin, minion.getId().intValue(), "stored_pillar", pillarData);
+
+        minion = reload(minion);
+        assertEquals(2, minion.getPillars().size());
+        assertTrue(minion.getPillarByCategory("stored_pillar").isPresent());
+        assertEquals("value", minion.getPillarByCategory("stored_pillar").get().getPillar().get("key"));
+    }
+
+    /**
      * Test the SystemHandler.changeProxy method
      * @throws Exception if anything failed
      */
