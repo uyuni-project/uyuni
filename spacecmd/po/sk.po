@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-12 15:06+0200\n"
-"PO-Revision-Date: 2023-05-15 18:14+0000\n"
+"PO-Revision-Date: 2023-07-26 17:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "sk/>\n"
@@ -3250,7 +3250,7 @@ msgstr " * Podrobnosti->Voľby jadra"
 #: ../src/spacecmd/kickstart.py:2570
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
-msgstr " * Podrobnosti->Voľby jadra po : %s"
+msgstr " * Podrobnosti->Následné voľby jadra : %s"
 
 #: ../src/spacecmd/kickstart.py:2586
 msgid "no kickstart label given"
