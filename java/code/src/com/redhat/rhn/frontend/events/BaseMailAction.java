@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MailHelper;
 
+import org.apache.logging.log4j.Logger;
+
 /**
  * BaseMailAction - basic abstract class to encapsulate some common Action logic.
  */
@@ -37,7 +39,12 @@ public abstract class BaseMailAction {
      */
     public void execute(EventMessage msg) {
         BaseEvent aevt = (BaseEvent) msg;
-        MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toText());
+        try {
+            MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toText());
+        }
+        catch (Exception e) {
+            getLogger().error("Unable to configure a mailer: {}", e.getMessage(), e);
+        }
     }
 
     /**
@@ -58,4 +65,12 @@ public abstract class BaseMailAction {
             return new SmtpMail();
         }
     }
+
+    /**
+     * Get the Logger for the derived class so log messages show up on the
+     * correct class
+     * @return Logger for this class.
+     */
+    protected abstract Logger getLogger();
+
 }
