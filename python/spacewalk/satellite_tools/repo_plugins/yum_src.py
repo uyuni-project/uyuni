@@ -138,6 +138,7 @@ class ZyppoSync:
                line_l = line.decode().split(":")
                if line_l[0] == "sig" and "selfsig" in line_l[10]:
                    spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
+            log(3, "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]))
 
             # Collect GPG keys from reposync Zypper RPM database
             process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
@@ -145,6 +146,7 @@ class ZyppoSync:
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
                     zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
+            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))
 
             # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
             for key in zypper_gpg_keys:
@@ -154,12 +156,25 @@ class ZyppoSync:
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
                     os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
+                    log(3, "new version available for gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]))
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
             # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            log(3, "rpmkeys -vv --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            process = subprocess.Popen(["rpmkeys", "-vv", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH, "--import", f.name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            try:
+                outs, errs = process.communicate(timeout=15)
+                if process.returncode is None or process.returncode > 0:
+                    log(0, "Failed to import keys into rpm database ({}): {}".format(process.returncode, outs.decode('utf-8')))
+                else:
+                    log(3, "CMD out: {}".format(outs.decode('utf-8')))
+            except TimeoutExpired:
+                process.kill()
+                log(0, "Timeout exceeded while importing keys to rpm database")
+            keycont = f.read()
+            rhnLog.log_clean(5, keycont.decode('utf-8'))
 
 
 class ZypperRepo:
