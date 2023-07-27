@@ -87,7 +87,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param mailerIn the mailer
      */
     public static void setMailer(Mail mailerIn) {
-        singleton.mailer = mailerIn;
+        mailer = mailerIn;
     }
 
     /**
@@ -98,9 +98,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return new UserNotification
      */
     public static UserNotification create(User userIn, NotificationMessage messageIn) {
-        UserNotification userNotification =
-                new UserNotification(userIn, messageIn);
-        return userNotification;
+        return new UserNotification(userIn, messageIn);
     }
 
     /**
@@ -141,8 +139,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return new notificationMessage
      */
     public static NotificationMessage createNotificationMessage(NotificationData notification) {
-        NotificationMessage notificationMessage = new NotificationMessage(notification);
-        return notificationMessage;
+        return new NotificationMessage(notification);
     }
 
     /**
@@ -176,8 +173,8 @@ public class UserNotificationFactory extends HibernateFactory {
                 if (!StringUtils.isBlank(data.getDetails())) {
                     message += "\n\n" + data.getDetails();
                 }
-                MailHelper.withMailer(singleton.mailer)
-                        .sendEmail(receipients, subject, message.replaceAll("\\<.*?\\>", ""));
+                MailHelper.withMailer(mailer)
+                        .sendEmail(receipients, subject, message.replaceAll("<.+>", ""));
             }
         }
         // Update Notification WebSocket Sessions right now
@@ -326,7 +323,7 @@ public class UserNotificationFactory extends HibernateFactory {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<NotificationMessage> delete = builder.createCriteriaDelete(NotificationMessage.class);
         Root<NotificationMessage> root = delete.from(NotificationMessage.class);
-        delete.where(builder.lessThan(root.<Date>get("created"), before));
+        delete.where(builder.lessThan(root.get("created"), before));
         return getSession().createQuery(delete).executeUpdate();
     }
 
