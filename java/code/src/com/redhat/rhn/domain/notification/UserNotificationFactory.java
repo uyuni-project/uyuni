@@ -53,13 +53,21 @@ import javax.persistence.criteria.Root;
  */
 public class UserNotificationFactory extends HibernateFactory {
 
-    private static UserNotificationFactory singleton = new UserNotificationFactory();
     private static Logger log = LogManager.getLogger(UserNotificationFactory.class);
-
+    private static UserNotificationFactory singleton = new UserNotificationFactory();
     private static Mail mailer;
 
     private UserNotificationFactory() {
         super();
+        try {
+            configureMailer();
+        }
+        catch (Exception e) {
+            log.error("Unable to configure the mailer: {}", e.getMessage(), e);
+        }
+    }
+
+    private static void configureMailer() {
         String clazz = Config.get().getString("web.mailer_class");
         if (clazz == null) {
             mailer = new SmtpMail();
@@ -158,7 +166,7 @@ public class UserNotificationFactory extends HibernateFactory {
                                         .filter(user -> user.getEmailNotify() == 1)
                                         .map(User::getEmail)
                                         .toArray(String[]::new);
-            if (receipients.length > 0) {
+            if (receipients.length > 0 && mailer != null) {
                 String subject = String.format("%s Notification from %s: %s",
                         MailHelper.PRODUCT_PREFIX,
                         ConfigDefaults.get().getHostname(),
