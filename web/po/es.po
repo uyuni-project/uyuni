@@ -7,18 +7,17 @@
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/components/input/Range.tsx:60
+#: ../html/src/core/intl/index.test.tsx:9
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
-#: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 15:18+0200\n"
+"POT-Creation-Date: 2023-07-28 15:10+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -47,34 +46,35 @@ msgstr ""
 "Se ha guardado la fórmula. No es necesario aplicar el estado alto en esta "
 "fórmula."
 
-#: ../html/src/components/FormulaForm.tsx:169
-msgid "Please input required fields: {0}"
+#: ../html/src/components/FormulaForm.tsx:168
+#, fuzzy
+msgid "Please input required fields: {fields}"
 msgstr "Rellene los campos obligatorios: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:172
-msgid "Invalid format of fields: {0}"
+#: ../html/src/components/FormulaForm.tsx:171
+msgid "Invalid format of fields: {fields}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:217
+#: ../html/src/components/FormulaForm.tsx:216
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:272
+#: ../html/src/components/FormulaForm.tsx:271
 msgid "Expand All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:279
+#: ../html/src/components/FormulaForm.tsx:278
 msgid "Collapse All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:344
+#: ../html/src/components/FormulaForm.tsx:343
 #, fuzzy
 msgid "Unnamed"
 msgstr "Nombre de usuario"
 
-#: ../html/src/components/FormulaForm.tsx:353
+#: ../html/src/components/FormulaForm.tsx:352
 msgid "Search by formula's group name"
 msgstr ""
 
@@ -130,13 +130,20 @@ msgstr ""
 msgid "Next year"
 msgstr "Siguiente"
 
+#. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-msgid "Are you sure you want to {0} {1} "
-msgstr ""
+#, fuzzy
+msgid "Are you sure you want to {action} {name}"
+msgstr "¿Confirma que quiere eliminar la imagen"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
+#, fuzzy
+msgid ""
+"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
+"selected)"
 msgstr ""
+"¿Confirma que quiere eliminar las imágenes seleccionadas? (se seleccionaron "
+"{0})"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -144,9 +151,9 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:128
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:105
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:109
 #: ../html/src/manager/images/image-view-overview.tsx:741
 #: ../html/src/manager/images/image-view-overview.tsx:742
 #: ../html/src/manager/images/image-view-overview.tsx:814
@@ -162,7 +169,8 @@ msgstr "Cancelar"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
-#: ../html/src/manager/admin/payg/payg.tsx:70
+#: ../html/src/manager/admin/payg/payg.tsx:73
+#: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -268,38 +276,27 @@ msgstr ""
 msgid "No flavor"
 msgstr ""
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:83
-#: ../html/src/manager/state/highstate.tsx:65
-msgid "Action has been successfully added to the action chain '{0}'."
+#: ../html/src/components/package/PackageListActionScheduler.tsx:82
+#: ../html/src/manager/state/highstate.tsx:64
+msgid ""
+"Action has been successfully added to the action chain <link>'{name}'</link>."
 msgstr ""
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:88
-#: ../html/src/manager/images/image-build.tsx:211
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
-#: ../html/src/manager/state/highstate.tsx:71
-#: ../html/src/manager/systems/proxy.tsx:70
-#: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:382
-msgid "scheduled"
-msgstr "programado"
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:88
+#: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #, fuzzy
-msgid "The action has been {0}."
+msgid "The action has been <link>scheduled</link>."
 msgstr "La acción se ha "
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:94
+#: ../html/src/components/package/PackageListActionScheduler.tsx:98
 #, fuzzy
 msgid "Unable to clear selection"
 msgstr "Volver a la selección de sistema"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:103
+#: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
 msgstr ""
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:176
+#: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
 #: ../html/src/manager/admin/setup/products/products.tsx:1160
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
@@ -309,20 +306,20 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:185
+#: ../html/src/components/package/PackageListActionScheduler.tsx:189
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
 msgid "Back to list"
 msgstr ""
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:204
-#: ../html/src/components/package/PackageListActionScheduler.tsx:237
+#: ../html/src/components/package/PackageListActionScheduler.tsx:208
+#: ../html/src/components/package/PackageListActionScheduler.tsx:241
 #: ../html/src/manager/packages/list.tsx:144
 #, fuzzy
 msgid "Filter by package name"
 msgstr "Filtrar por nombre de sistema"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:210
-#: ../html/src/components/package/PackageListActionScheduler.tsx:242
+#: ../html/src/components/package/PackageListActionScheduler.tsx:214
+#: ../html/src/components/package/PackageListActionScheduler.tsx:246
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
@@ -361,18 +358,12 @@ msgid "Last"
 msgstr "Apellido(s)"
 
 #: ../html/src/components/pagination.tsx:93
-msgid "Page"
-msgstr "Página"
+msgid "Page <dropdown></dropdown> of {total}"
+msgstr ""
 
-#: ../html/src/components/pagination.tsx:108
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:447
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
-msgid "of"
-msgstr "de"
-
-#: ../html/src/components/pagination.tsx:114
-msgid "Page {0} of {1}"
+#: ../html/src/components/pagination.tsx:115
+#, fuzzy
+msgid "Page {current} of {total}"
 msgstr "Página {0} de {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
@@ -473,7 +464,8 @@ msgid "There are no entries to show."
 msgstr "No hay ninguna entrada que mostrar."
 
 #: ../html/src/components/salt-state-popup.tsx:50
-msgid "Configuration Channel: {0}"
+#, fuzzy
+msgid "Configuration Channel: {name}"
 msgstr "Canal de configuración: {0}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
@@ -524,8 +516,8 @@ msgstr ""
 "asignar estados."
 
 #: ../html/src/components/states-picker.tsx:327
-#: ../html/src/manager/images/image-view.tsx:816
-#: ../html/src/manager/images/image-view.tsx:818
+#: ../html/src/manager/images/image-view.tsx:815
+#: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -540,8 +532,8 @@ msgid "Back"
 msgstr "Atrás"
 
 #: ../html/src/components/states-picker.tsx:337
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:182
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
@@ -554,24 +546,16 @@ msgstr "Estado de acción"
 msgid "Reorder"
 msgstr "Reordenar"
 
-#: ../html/src/components/states-picker.tsx:386
-#: ../html/src/components/states-picker.tsx:406
-#, fuzzy
-msgid "states"
-msgstr "Estado"
-
-#: ../html/src/components/states-picker.tsx:386
-#: ../html/src/components/states-picker.tsx:406
-#, fuzzy
-msgid "configuration channels"
-msgstr "Canales de configuración"
-
 #: ../html/src/components/states-picker.tsx:385
 #, fuzzy
-msgid "Search in {0}"
-msgstr "Buscar"
+msgid "Search in states"
+msgstr "Mostrar lista de sistemas"
 
-#: ../html/src/components/states-picker.tsx:392
+#: ../html/src/components/states-picker.tsx:385
+msgid "Search in configuration channels"
+msgstr "Buscar en canales de configuración"
+
+#: ../html/src/components/states-picker.tsx:391
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -579,59 +563,51 @@ msgstr "Buscar"
 msgid "Search"
 msgstr "Buscar"
 
-#: ../html/src/components/states-picker.tsx:402
-#: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:318
-#: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
-msgid "State"
-msgstr "Estado"
+#: ../html/src/components/states-picker.tsx:401
+#, fuzzy
+msgid "Edit State Ranks"
+msgstr "Estado de acción"
 
-#: ../html/src/components/states-picker.tsx:402
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
-#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
-#: ../html/src/manager/packages/list.tsx:102
-msgid "Channel"
-msgstr "Canal"
+#: ../html/src/components/states-picker.tsx:401
+#, fuzzy
+msgid "Edit Channel Ranks"
+msgstr "Canales"
 
-#: ../html/src/components/states-picker.tsx:402
-msgid "Edit {0} Ranks"
-msgstr ""
+#: ../html/src/components/states-picker.tsx:404
+#, fuzzy
+msgid "Edit the ranking of the states by dragging them."
+msgstr "Arrastre los canales de configuración para editar su jerarquía."
 
 #: ../html/src/components/states-picker.tsx:405
 #, fuzzy
-msgid "Edit the ranking of the {0} by dragging them."
+msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Arrastre los canales de configuración para editar su jerarquía."
 
-#: ../html/src/components/states-picker.tsx:412
+#: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
 msgstr "No hay ningún estado asignado."
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:418
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 #, fuzzy
 msgid "State Name"
 msgstr "Apellido(s)"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:418
 msgid "Channel Name"
 msgstr "Nombre del canal"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:419
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 #, fuzzy
 msgid "State Label"
 msgstr "Canales de sóftwer"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:419
 msgid "Channel Label"
 msgstr "Etiqueta del canal"
 
-#: ../html/src/components/states-picker.tsx:422
+#: ../html/src/components/states-picker.tsx:420
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -647,7 +623,7 @@ msgstr "Etiqueta del canal"
 msgid "Description"
 msgstr "Descripción"
 
-#: ../html/src/components/states-picker.tsx:423
+#: ../html/src/components/states-picker.tsx:421
 msgid "Assign"
 msgstr "Asignar"
 
@@ -673,7 +649,7 @@ msgid "Non-Virtual System"
 msgstr "Sistemas virtuales alojados"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
 msgid "Proxy"
 msgstr ""
 
@@ -703,21 +679,22 @@ msgstr "Filtros"
 msgid "Select a filter"
 msgstr "Crear un filtro nuevo"
 
-#: ../html/src/components/table/SearchPanel.tsx:56
-msgid "Items {0} - {1} of {2}"
+#: ../html/src/components/table/SearchPanel.tsx:57
+#, fuzzy
+msgid "Items {from} - {to} of {total}"
 msgstr "Elementos {0} - {1} de {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:59
-msgid "({0} selected)"
+#: ../html/src/components/table/SearchPanel.tsx:62
+msgid "({selectedCount} selected)"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:61
+#: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:363
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
 msgid "Clear"
 msgstr "Vaciar"
 
-#: ../html/src/components/table/SearchPanel.tsx:68
+#: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr "Seleccionar todo"
 
@@ -780,6 +757,19 @@ msgstr "(ninguno)"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
+msgstr ""
+
+#: ../html/src/core/intl/index.test.tsx:7
+msgid "foo"
+msgstr ""
+
+#: ../html/src/core/intl/index.test.tsx:8
+msgid "undefined"
+msgstr ""
+
+#: ../html/src/core/intl/index.test.tsx:16
+#: ../html/src/core/intl/index.test.tsx:17
+msgid "foo {insert} bar"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
@@ -867,7 +857,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/all-list.tsx:21
 #: ../html/src/manager/systems/all-list.tsx:76
@@ -1055,7 +1045,7 @@ msgstr "Filtrar por cualquier valor"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
 msgid "Host"
 msgstr ""
 
@@ -1080,6 +1070,12 @@ msgstr ""
 #, fuzzy
 msgid "never"
 msgstr "Gravedad"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:166
+#: ../html/src/manager/admin/setup/products/products.tsx:447
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
+msgid "of"
+msgstr "de"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
@@ -1109,7 +1105,7 @@ msgstr "Se actualizaron las propiedades del proyecto correctamente"
 msgid "Edit Information"
 msgstr "Información adicional"
 
-#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:57
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
 msgid "Editing properties.."
 msgstr "Editando propiedades…"
@@ -1124,7 +1120,7 @@ msgstr "Fecha de inicio"
 msgid "Edit "
 msgstr "Editar"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
 msgstr ""
 
@@ -1135,13 +1131,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
 msgid "SSH Port"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
 #, fuzzy
 msgid "User"
 msgstr "Usuarios"
@@ -1149,42 +1145,42 @@ msgstr "Usuarios"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:90
+#: ../html/src/manager/login/susemanager/login.tsx:92
 #: ../html/src/manager/login/uyuni/login.tsx:86
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Contraseña"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
 msgid "SSH Private Key"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
 msgid "SSH Private Key Passphrase"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:60
+#: ../html/src/manager/admin/payg/payg.tsx:61
 #, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "El proyecto que buscaba no existe o se ha eliminado"
 
-#: ../html/src/manager/admin/payg/payg.tsx:67
+#: ../html/src/manager/admin/payg/payg.tsx:68
 #, fuzzy
-msgid "Instance Hostname: {0}"
+msgid "Instance Hostname: {host}"
 msgstr "Detalles de ejemplar para «{0}»"
 
-#: ../html/src/manager/admin/payg/payg.tsx:76
+#: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Delete Pay-as-you-go"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:79
+#: ../html/src/manager/admin/payg/payg.tsx:86
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr "¿Confirma que quiere eliminar el proyecto"
@@ -1221,7 +1217,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
@@ -1246,7 +1242,8 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
 msgid ""
-"The following channel installations for '{0}' failed. Please check log files."
+"The following channel installations for '{product}' failed. Please check log "
+"files."
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
@@ -1632,6 +1629,14 @@ msgstr ""
 msgid "Patch available but needs to be cloned into Channel."
 msgstr ""
 
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
+#: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
+#: ../html/src/manager/packages/list.tsx:102
+msgid "Channel"
+msgstr "Canal"
+
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
 msgid "Errata"
 msgstr ""
@@ -1659,30 +1664,31 @@ msgstr ""
 msgid "You can also trigger a first run now by clicking the button below."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:106
-msgid "Matching data is currently being recomputed, it was started {0}."
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
 msgid ""
-"Latest successful match data was computed {0}, you can trigger a new run by "
-"clicking the button below."
+"Matching data is currently being recomputed, it was started {timeFromNow}."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:122
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
+msgid ""
+"Latest successful match data was computed {timeFromNow}, you can trigger a "
+"new run by clicking the button below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:124
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
 msgid "change the task schedule from the administration page"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:130
 msgid "). "
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:149
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:153
 msgid "Refresh matching data"
 msgstr ""
 
@@ -2070,7 +2076,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:106
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
@@ -2232,7 +2238,7 @@ msgid "Last Build"
 msgstr "Última modificación"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:121
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
 msgid "Environment Lifecycle"
 msgstr "Ciclo de vida de entorno"
 
@@ -2241,8 +2247,9 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "El proyecto que buscaba no existe o se ha eliminado"
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-msgid "Content Lifecycle Project - {0}"
-msgstr ""
+#, fuzzy
+msgid "Content Lifecycle Project - {name}"
+msgstr "Proyectos de ciclo de vida de contenido"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
@@ -2440,12 +2447,13 @@ msgstr "Activada"
 msgid "disable all modules"
 msgstr "Activada"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
-msgid "Build ({0})"
-msgstr ""
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
+#, fuzzy
+msgid "Build ({count})"
+msgstr "Anfitrión de compilación"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:71
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:134
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
 #: ../html/src/manager/images/image-build.tsx:402
 #: ../html/src/manager/images/image-profiles.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:626
@@ -2454,30 +2462,32 @@ msgstr ""
 msgid "Build"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:83
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
 msgid "Build Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:89
-msgid "Building project.."
-msgstr ""
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
+#, fuzzy
+msgid "Building project"
+msgstr "Anfitrión de compilación"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:97
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:109
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
 msgid "Version Message"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-msgid "Version {0} history"
-msgstr ""
+#, fuzzy
+msgid "Version {version} history"
+msgstr "Histórico de versiones"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-msgid "Version {0} successfully built into {1}"
+msgid "Version {version} successfully built into {environmentName}"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
@@ -2498,34 +2508,35 @@ msgstr "Etiqueta"
 msgid "Insert before"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:43
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:41
 msgid "Add Environment"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:54
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:52
 msgid "Environment created successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:68
 msgid "Creating the environment..."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:86
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:84
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:103
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:119
-msgid "Environment {0} deleted successfully"
-msgstr ""
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#, fuzzy
+msgid "Environment {name} deleted successfully"
+msgstr "Se eliminó el filtro correctamente"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:143
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
 msgid ""
-"This environment cannot be deleted since it is being used in an {0}"
-"autoinstallation distribution{1}."
+"This environment cannot be deleted since it is being used in an "
+"<link>autoinstallation distribution</link>."
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
@@ -2573,8 +2584,9 @@ msgid "Create New Filter"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-msgid "Edit Filter {0}"
-msgstr ""
+#, fuzzy
+msgid "Edit Filter {name}"
+msgstr "Nombre del filtro"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
@@ -2610,7 +2622,7 @@ msgid "No version to promote or colliding environment build in progress"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:60
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:113
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:116
 msgid "Promote"
 msgstr ""
 
@@ -2623,15 +2635,15 @@ msgid "Target environment"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
-msgid "Promote version {0} into {1}"
+msgid "Promote version {version} into {environmentName}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:114
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:117
 msgid "Promote environment"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:128
-msgid "Version {0} successfully promoted into {1}"
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
+msgid "Version {version} successfully promoted into {environmentName}"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:16
@@ -2753,7 +2765,7 @@ msgid "Page Not Found"
 msgstr "No se encontró la página"
 
 #: ../html/src/manager/errors/not-found.tsx:8
-msgid "The page you requested, {0}, was not found."
+msgid "The page you requested, {currentUrl}, was not found."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:12
@@ -2802,7 +2814,7 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
-#: ../html/src/manager/state/highstate.tsx:140
+#: ../html/src/manager/state/highstate.tsx:142
 msgid "Highstate"
 msgstr ""
 
@@ -2832,7 +2844,7 @@ msgstr "Sistemas"
 
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:665
-#: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/systems/all-list.tsx:25
 #: ../html/src/manager/systems/all-list.tsx:106
 msgid "Packages"
@@ -2840,7 +2852,7 @@ msgstr "Paquetes"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:652
-#: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/images/image-view.tsx:788
 #: ../html/src/manager/systems/all-list.tsx:24
 #: ../html/src/manager/systems/all-list.tsx:93
 msgid "Patches"
@@ -2877,6 +2889,16 @@ msgstr ""
 msgid "Building the image has been "
 msgstr ""
 
+#: ../html/src/manager/images/image-build.tsx:211
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
+#: ../html/src/manager/systems/proxy.tsx:70
+#: ../html/src/manager/systems/proxy.tsx:74
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:382
+msgid "scheduled"
+msgstr "programado"
+
 #: ../html/src/manager/images/image-build.tsx:241
 #, fuzzy
 msgid "Profile Summary"
@@ -2904,7 +2926,7 @@ msgstr "Ruta"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:229
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
 msgid "Activation Key"
 msgstr "Clave de activación"
 
@@ -2968,7 +2990,7 @@ msgstr "Importar"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:386
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vaciar campos"
@@ -3074,9 +3096,11 @@ msgstr "Eliminar perfiles seleccionados"
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
-#: ../html/src/manager/images/image-profiles.tsx:245
+#: ../html/src/manager/images/image-profiles.tsx:244
+#, fuzzy
 msgid ""
-"Are you sure you want to delete selected profiles? ({0} profiles selected)"
+"Are you sure you want to delete selected profiles? ({count} profiles "
+"selected)"
 msgstr ""
 "¿Confirma que quiere eliminar los perfiles seleccionados? (se seleccionaron "
 "{0})"
@@ -3086,7 +3110,7 @@ msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:79
+#: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3144,12 +3168,16 @@ msgstr ""
 msgid "Are you sure you want to delete the selected store?"
 msgstr ""
 
-#: ../html/src/manager/images/image-stores.tsx:238
-msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
+#: ../html/src/manager/images/image-stores.tsx:237
+#, fuzzy
+msgid ""
+"Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr ""
+"¿Confirma que quiere eliminar los perfiles seleccionados? (se seleccionaron "
+"{0})"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
-#: ../html/src/manager/images/image-view.tsx:791
+#: ../html/src/manager/images/image-view.tsx:790
 #, fuzzy
 msgid "Build Log"
 msgstr "Anfitrión de compilación"
@@ -3267,8 +3295,9 @@ msgid "Edit store"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:749
-msgid "Instance Details for '{0}'"
+#: ../html/src/manager/images/image-view.tsx:748
+#, fuzzy
+msgid "Instance Details for '{name}'"
 msgstr "Detalles de ejemplar para «{0}»"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
@@ -3465,7 +3494,7 @@ msgid "Unknown"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:603
-#: ../html/src/manager/images/image-view.tsx:792
+#: ../html/src/manager/images/image-view.tsx:791
 msgid "Runtime"
 msgstr ""
 
@@ -3501,13 +3530,15 @@ msgstr "Eliminar imágenes seleccionadas"
 msgid "Are you sure you want to delete the selected image?"
 msgstr "¿Confirma que quiere eliminar la imagen seleccionada?"
 
-#: ../html/src/manager/images/image-view.tsx:740
-msgid "Are you sure you want to delete selected images? ({0} images selected)"
+#: ../html/src/manager/images/image-view.tsx:739
+#, fuzzy
+msgid ""
+"Are you sure you want to delete selected images? ({count} images selected)"
 msgstr ""
 "¿Confirma que quiere eliminar las imágenes seleccionadas? (se seleccionaron "
 "{0})"
 
-#: ../html/src/manager/images/image-view.tsx:788
+#: ../html/src/manager/images/image-view.tsx:787
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "Visión de conjunto"
@@ -3553,12 +3584,12 @@ msgid ""
 "one interface."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:44
-msgid "_blank"
+#: ../html/src/manager/login/susemanager/login.tsx:43
+msgid "<link>Learn more</link> about {product}."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:78
-#: ../html/src/manager/login/susemanager/login.tsx:104
+#: ../html/src/manager/login/susemanager/login.tsx:80
+#: ../html/src/manager/login/susemanager/login.tsx:106
 #: ../html/src/manager/login/uyuni/login.tsx:48
 #: ../html/src/manager/login/uyuni/login.tsx:94
 msgid "Sign In"
@@ -3588,33 +3619,33 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:78
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:80
 msgid "Skip to the next maintenance window"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:118
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:120
 #, fuzzy
 msgid "There are no more past maintenance windows"
 msgstr "No hay ningún estado asignado."
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:152
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:154
 #, fuzzy
 msgid "There are no more future maintenance windows"
 msgstr "No hay ninguna entrada que mostrar."
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:320
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:321
 msgid "Today"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:330
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:331
 msgid "Month"
 msgstr ""
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:334
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:335
 msgid "Day"
 msgstr ""
 
@@ -3671,7 +3702,7 @@ msgid "Delete maintenance schedule"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
 #, fuzzy
 msgid "Assigned Systems"
 msgstr "Sistemas"
@@ -3705,11 +3736,11 @@ msgstr ""
 msgid "Schedule Details"
 msgstr "Detalles del filtro"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
-msgid "Maintenance schedule has been assigned to {0} system(s)"
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:154
+msgid "Maintenance schedule has been assigned to {count} system(s)"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:114
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3717,18 +3748,18 @@ msgstr ""
 msgid "Cancel affected actions"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:194
 #, fuzzy
 msgid "Search systems"
 msgstr "Mostrar lista de sistemas"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:213
 #, fuzzy
 msgid "Current Schedule"
 msgstr "Memoria actual"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-msgid "Url '{0}' is invalid"
+msgid "Url '{url}' is invalid"
 msgstr ""
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
@@ -3896,7 +3927,7 @@ msgid "Maintenance Schedules"
 msgstr ""
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
-msgid "Assign a maintenance schedule to {0} system(s)"
+msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr ""
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
@@ -3992,7 +4023,7 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
-#: ../html/src/manager/state/highstate.tsx:119
+#: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr ""
 
@@ -4005,8 +4036,9 @@ msgid "Schedule playbook execution"
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-msgid "Playbook '{0}'"
-msgstr ""
+#, fuzzy
+msgid "Playbook '{name}'"
+msgstr "Nombre del filtro"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
@@ -4101,6 +4133,15 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:336
 msgid "Package States"
 msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.tsx:344
+#: ../html/src/manager/proxy/container-config.tsx:318
+#: ../html/src/manager/salt/keys/key-management.tsx:188
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
+msgid "State"
+msgstr "Estado"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:37
 msgid "Package states have been saved."
@@ -4415,7 +4456,7 @@ msgid "Proxy SSH port"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:218
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "Port range: 1 - 65535"
 msgstr ""
 
@@ -4615,7 +4656,7 @@ msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
 #, fuzzy
-msgid "State configuration for {0}"
+msgid "State configuration for {name}"
 msgstr "Canal de estados de configuración"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
@@ -4707,8 +4748,8 @@ msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
 msgid ""
-"The below times are displayed in the server time zone {0}. The scheduled "
-"time will be the server time."
+"The below times are displayed in the server time zone {timeZone}. The "
+"scheduled time will be the server time."
 msgstr ""
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
@@ -4809,7 +4850,7 @@ msgid "No minions matched the target expression."
 msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:490
-msgid "Server returned an error: {0}"
+msgid "Server returned an error: {message}"
 msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:558
@@ -4894,7 +4935,7 @@ msgid "Manager"
 msgstr ""
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-msgid "State Summary for {0}"
+msgid "State Summary for {name}"
 msgstr ""
 
 #: ../html/src/manager/state/display-highstate.tsx:79
@@ -4942,14 +4983,14 @@ msgid "System Group"
 msgstr "Grupo de sistemas"
 
 #: ../html/src/manager/state/highstate.tsx:71
-msgid "Applying the highstate has been {0}."
+msgid "Applying the highstate has been <link>scheduled</link>."
 msgstr ""
 
-#: ../html/src/manager/state/highstate.tsx:127
+#: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
 msgstr ""
 
-#: ../html/src/manager/state/highstate.tsx:136
+#: ../html/src/manager/state/highstate.tsx:138
 #, fuzzy
 msgid "Create Recurring"
 msgstr "Crear proyecto"
@@ -5055,114 +5096,108 @@ msgid ""
 "check if your minion was bootstrapped correctly."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
-msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr ""
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
-msgid "systems"
-msgstr ""
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
 msgid ""
-"shortly. If it is a transactional system, please reboot it to finish "
-"registration"
+"Successfully bootstrapped host! Your system should appear in <link>systems</"
+"link> shortly. If it is a transactional system, please reboot it to finish "
+"registration."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
 msgid "Loading SSH Private Key.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
 msgid "Bootstrap"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:403
 msgid "e.g., ••••••••••••"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:414
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:419
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "Leave empty for no passphrase"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
 msgid "Bootstrap Minions"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
 msgid ""
-"You can add systems to be managed by providing SSH credentials only. {0} "
-"will prepare the system remotely and will perform the registration."
+"You can add systems to be managed by providing SSH credentials only. "
+"{productName} will prepare the system remotely and will perform the "
+"registration."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:493
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
-"key is deployed during the bootstrap procedure."
+"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
+"{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:544
 msgid "Ansible control node"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Ninguna"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
 #, fuzzy
 msgid "Reactivation Key"
 msgstr "Clave de activación"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:581
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:627
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:643
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:659
 #, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
@@ -5581,12 +5616,9 @@ msgid "Nutanix AHV"
 msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-msgid "Virtual Host Manager"
-msgstr ""
-
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-msgid "Add a {0}"
-msgstr ""
+#, fuzzy
+msgid "Add a {type} Virtual Host Manager"
+msgstr "Editar gestores de anfitriones virtuales"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5607,8 +5639,9 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-msgid "{0} selected"
-msgstr ""
+#, fuzzy
+msgid "{name} selected"
+msgstr "Sistema bloqueado"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
@@ -6586,23 +6619,24 @@ msgstr ""
 msgid "HTTP Error code "
 msgstr ""
 
-#: ../html/src/utils/test-utils/setup/t.test.ts:5
-msgid "foo"
-msgstr ""
+#~ msgid "Page"
+#~ msgstr "Página"
 
-#: ../html/src/utils/test-utils/setup/t.test.ts:6
-msgid "undefined"
-msgstr ""
-
-#: ../html/src/utils/test-utils/setup/t.test.ts:11
-#: ../html/src/utils/test-utils/setup/t.test.ts:12
-#: ../html/src/utils/test-utils/setup/t.test.ts:13
 #, fuzzy
-msgid "foo {0} tea {1}"
-msgstr "Página {0} de {1}"
+#~ msgid "states"
+#~ msgstr "Estado"
 
-#~ msgid "Search in configuration channels"
-#~ msgstr "Buscar en canales de configuración"
+#, fuzzy
+#~ msgid "configuration channels"
+#~ msgstr "Canales de configuración"
+
+#, fuzzy
+#~ msgid "Search in {0}"
+#~ msgstr "Buscar"
+
+#, fuzzy
+#~ msgid "foo {0} tea {1}"
+#~ msgstr "Página {0} de {1}"
 
 #, fuzzy
 #~ msgid "Documentation"
