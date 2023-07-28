@@ -553,7 +553,11 @@ end
 
 Then(/^I should be logged in$/) do
   xpath_query = "//a[@href='/rhn/Logout.do']"
-  raise 'User is not logged in' unless find(:xpath, xpath_query)
+  if has_selector?(:xpath, xpath_query)
+    # The element is present
+  else
+    raise 'User is not logged in' unless find(:xpath, xpath_query)
+  end
 end
 
 Then(/^I am logged in$/) do
