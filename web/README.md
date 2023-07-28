@@ -10,6 +10,13 @@ The `web` subdirectory consists of roughly the following main chunks:
  - `web/html/src/components`, `web/html/src/core`, `web/html/src/manager`, `web/html/src/utils`: Source code for the web UI.
  - `web/html/dist`: Output directory for the frontend build, do not check this directory in nor modify it directly, your changes will be overwritten by the next build.  
 
+## Frontend development quick start
+
+ - Install [Node](https://nodejs.org/en/download)  
+ - Install [Yarn](https://classic.yarnpkg.com/en/docs/install)  
+ - In the repository root, run `yarn install`  
+ - Run development against a server of your choice `yarn proxy https://server.example.com`  
+
 ## Scripts
 
 We use [Yarn](https://yarnpkg.com/) as the package manager and script runner for the frontend codebase. All scripts are scoped to `web/html/src`.  
