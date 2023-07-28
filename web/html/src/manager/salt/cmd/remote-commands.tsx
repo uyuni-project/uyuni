@@ -487,7 +487,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           } else if (event.code === "ERR_TARGET_NO_MATCH") {
             globalErr = [t("No minions matched the target expression.")];
           } else if (!event.minion) {
-            globalErr = [t("Server returned an error: {0}", event.message)];
+            globalErr = [t("Server returned an error: {message}", { message: event.message })];
           }
 
           const noPending =

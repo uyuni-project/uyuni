@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -72,7 +73,7 @@ public class ChannelRepodataWorker implements QueueWorker {
         Channel channelToProcess = ChannelFactory.lookupByLabel(channelLabelToProcess);
         // if the channelExists in the db still
         if (channelToProcess != null &&
-            channelToProcess.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
+            channelToProcess.getChannelArch().getArchType().getLabel().equalsIgnoreCase(PackageFactory.ARCH_TYPE_DEB)) {
             repoWriter = new DebRepositoryWriter(prefixPath, mountPoint);
         }
         else {

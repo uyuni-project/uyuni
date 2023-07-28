@@ -145,8 +145,8 @@ class RecurringActions extends React.Component<Props, State> {
             {
               severity: "warning",
               text: t(
-                "The below times are displayed in the server time zone {0}. The scheduled time will be the server time.",
-                localizedMoment.serverTimeZone
+                "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time.",
+                { timeZone: localizedMoment.serverTimeZone }
               ),
             },
           ]}

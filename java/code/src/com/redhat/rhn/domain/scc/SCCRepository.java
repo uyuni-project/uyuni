@@ -277,17 +277,17 @@ public class SCCRepository extends BaseDomainHelper {
         Optional<SCCRepositoryAuth> result = Optional.empty();
         for (SCCRepositoryAuth a : getRepositoryAuth()) {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
-                if (!a.getOptionalCredentials().isPresent()) {
+                if (a.getOptionalCredentials().isEmpty()) {
                     return Optional.of(a);
                 }
             }
             // Credentials present
             else if (a.getOptionalCredentials().isPresent()) {
                 Credentials ct = a.getOptionalCredentials().get(); //NOSONAR empty option is check in previous line
-                if (ct.getType().getLabel().equals(Credentials.TYPE_CLOUD_RMT)) {
+                if (ct.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
                     // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
                     if (result.flatMap(SCCRepositoryAuth::getOptionalCredentials)
-                            .map(c -> !Credentials.TYPE_SCC.equals(c.getType().getLabel()))
+                            .map(c -> !c.isTypeOf(Credentials.TYPE_SCC))
                             .orElse(true)) {
                         result = Optional.of(a);
                     }

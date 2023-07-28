@@ -25,7 +25,8 @@ import com.redhat.rhn.testing.httpservermock.Responder;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCClientFactory;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
@@ -217,8 +218,7 @@ public class SCCClientTest  {
                 "/com/suse/scc/test/connect/organizations/repositories.json"),
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
-            SCCClient scc = SCCClientFactory.getInstance(null, null, null,
-                    tmpDir.getAbsolutePath(), null);
+            SCCClient scc = new SCCFileClient(new SCCConfig(tmpDir.getAbsolutePath()));
             List<SCCRepositoryJson> repos = scc.listRepositories();
 
             // Assertions

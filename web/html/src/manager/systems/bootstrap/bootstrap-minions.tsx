@@ -331,11 +331,16 @@ class BootstrapMinions extends React.Component<Props, State> {
     if (this.state.success) {
       alertMessages = MessagesUtils.success(
         <p>
-          {t("Successfully bootstrapped host! Your system should appear in")}{" "}
-          <a className="js-spa" href="/rhn/manager/systems/list/all">
-            {t("systems")}
-          </a>{" "}
-          {t("shortly. If it is a transactional system, please reboot it to finish registration")}.
+          {t(
+            "Successfully bootstrapped host! Your system should appear in <link>systems</link> shortly. If it is a transactional system, please reboot it to finish registration.",
+            {
+              link: (str) => (
+                <a className="js-spa" href="/rhn/manager/systems/list/all">
+                  {str}
+                </a>
+              ),
+            }
+          )}
         </p>
       );
     } else if (this.state.errors.length > 0) {
@@ -439,8 +444,8 @@ class BootstrapMinions extends React.Component<Props, State> {
       <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
         <p>
           {t(
-            "You can add systems to be managed by providing SSH credentials only. {0} will prepare the system remotely and will perform the registration.",
-            productName
+            "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration.",
+            { productName }
           )}
         </p>
         <Messages items={alertMessages} />
@@ -490,8 +495,8 @@ class BootstrapMinions extends React.Component<Props, State> {
                 <div className="help-block">
                   <i className="fa fa-exclamation-triangle" />
                   {t(
-                    "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH key is deployed during the bootstrap procedure.",
-                    productName
+                    "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure.",
+                    { productName }
                   )}
                 </div>
               )}

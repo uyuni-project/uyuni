@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class ModulemdApi {
 
     private static final String MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
-    private static final String API_EXE = "mgr-libmod";
+    private static final String API_EXE = "/usr/bin/mgr-libmod";
     public static final Gson GSON =
             new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 

@@ -140,11 +140,7 @@ public class RecurringActionManager extends BaseManager {
                                                                      long minionId, User user) {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
-        MinionRecurringAction action = new MinionRecurringAction(
-                createRecurringActionType(actionType),
-                true, minion, user
-        );
-        return action;
+        return new MinionRecurringAction(createRecurringActionType(actionType), true, minion, user);
     }
 
     /**
@@ -160,10 +156,7 @@ public class RecurringActionManager extends BaseManager {
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
         }
-        GroupRecurringAction action = new GroupRecurringAction(
-                createRecurringActionType(actionType),
-                true, group, user);
-        return action;
+        return new GroupRecurringAction(createRecurringActionType(actionType), true, group, user);
     }
 
     /**

@@ -69,7 +69,7 @@ public abstract class HibernateFactory {
 
     private static ConnectionManager connectionManager = ConnectionManagerFactory.defaultConnectionManager();
     private static final Logger LOG = LogManager.getLogger(HibernateFactory.class);
-    private static final int LIST_BATCH_MAX_SIZE = 1000;
+    public static final int LIST_BATCH_MAX_SIZE = 1000;
 
     public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
 

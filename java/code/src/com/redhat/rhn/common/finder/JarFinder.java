@@ -41,13 +41,6 @@ class JarFinder implements Finder {
         url = packageUrl;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<String> find(String endStr) {
-        return findExcluding(null, endStr);
-    }
-
-    /** {@inheritDoc} */
     @Override
     public List<String> findExcluding(String[] excludes, String endStr) {
         try {

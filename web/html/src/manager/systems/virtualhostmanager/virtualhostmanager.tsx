@@ -152,7 +152,7 @@ class VirtualHostManager extends React.Component<Props, State> {
     if (action === "details") {
       return this.state.selected.label;
     } else if (action === "create") {
-      return t("Add a {0}", msgModuleTypes[this.state.id] + " " + t("Virtual Host Manager"));
+      return t("Add a {type} Virtual Host Manager", { type: msgModuleTypes[this.state.id] });
     } else {
       return t("Virtual Host Managers");
     }

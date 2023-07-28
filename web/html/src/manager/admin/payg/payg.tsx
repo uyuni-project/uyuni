@@ -42,6 +42,7 @@ export type PaygFullType = {
 type Props = {
   payg: PaygFullType;
   wasFreshlyCreatedMessage?: string;
+  readOnly?: boolean;
 };
 
 const Payg = (props: Props) => {
@@ -64,10 +65,16 @@ const Payg = (props: Props) => {
 
   return (
     <TopPanel
-      title={t("Instance Hostname: {0}", payg.properties.host)}
+      title={t("Instance Hostname: {host}", { host: payg.properties.host })}
       button={
         <div className="pull-right btn-group">
-          <ModalButton className="btn-danger" title={t("Delete")} text={t("Delete")} target="delete-payg-modal" />
+          <ModalButton
+            className="btn-danger"
+            title={t("Delete")}
+            text={t("Delete")}
+            target="delete-payg-modal"
+            disabled={props.readOnly}
+          />
         </div>
       }
     >
@@ -91,6 +98,7 @@ const Payg = (props: Props) => {
       />
       <PaygInfoEdit
         payg={payg}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
@@ -101,7 +109,7 @@ const Payg = (props: Props) => {
         paygId={payg.id}
         isInstance={true}
         labelPrefix={"Instance"}
-        editing={true}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
@@ -112,7 +120,7 @@ const Payg = (props: Props) => {
         paygId={payg.id}
         isInstance={false}
         labelPrefix={"Bastion"}
-        editing={true}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();

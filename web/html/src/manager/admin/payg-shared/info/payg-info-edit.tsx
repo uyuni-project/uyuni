@@ -12,7 +12,7 @@ import { Loading } from "components/utils";
 type Props = {
   payg: PaygFullType;
   onChange: Function;
-  editing?: boolean;
+  readOnly?: boolean;
 };
 
 const PaygInfoEdit = (props: Props) => {
@@ -46,6 +46,7 @@ const PaygInfoEdit = (props: Props) => {
           setItem(props.payg);
           setErrors(null);
         }}
+        disableEditing={props.readOnly}
         renderContent={() => (
           <React.Fragment>
             <PaygInfoView payg={props.payg} />

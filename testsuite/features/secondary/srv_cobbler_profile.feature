@@ -14,6 +14,7 @@ Feature: Edit Cobbler profiles
 
   Scenario: Copy cobbler profiles on the server
     When I copy autoinstall mocked files on server
+    And I backup Cobbler settings file
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"

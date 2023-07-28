@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -1012,14 +1013,14 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return whether the channel is a RPM chanel or not
      */
     public boolean isTypeRpm() {
-        return "rpm".equalsIgnoreCase(getArchTypeLabel());
+        return PackageFactory.ARCH_TYPE_RPM.equalsIgnoreCase(getArchTypeLabel());
     }
 
     /**
      * @return whether the channel is a DEB chanel or not
      */
     public boolean isTypeDeb() {
-        return "deb".equalsIgnoreCase(getArchTypeLabel());
+        return PackageFactory.ARCH_TYPE_DEB.equalsIgnoreCase(getArchTypeLabel());
     }
 
     /**

@@ -18,7 +18,7 @@ function SystemAssignment(props: { systems: string[] }) {
         icon="fa-clock-o"
         header={
           <div className="page-summary">
-            <p>{t("Assign a maintenance schedule to {0} system(s)", props.systems.length)}</p>
+            <p>{t("Assign a maintenance schedule to {count} system(s)", { count: props.systems.length })}</p>
             <p>{t("Assigning a schedule will replace any prior assignments in all of the systems in the set.")}</p>
           </div>
         }

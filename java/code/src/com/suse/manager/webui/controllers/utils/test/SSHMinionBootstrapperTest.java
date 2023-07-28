@@ -44,7 +44,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        bootstrapper = new SSHMinionBootstrapper(saltServiceMock, saltServiceMock);
+        bootstrapper = new SSHMinionBootstrapper(saltServiceMock, saltServiceMock, paygManager);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
 
     private SSHMinionBootstrapper mockRegistrationBootstrapper(
             Optional<String> activationKeyLabel) {
-        return new SSHMinionBootstrapper(saltServiceMock, saltServiceMock) {
+        return new SSHMinionBootstrapper(saltServiceMock, saltServiceMock, paygManager) {
             @Override
             protected RegisterMinionEventMessageAction getRegisterAction() {
                 RegisterMinionEventMessageAction action =
