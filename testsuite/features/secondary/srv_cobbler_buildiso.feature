@@ -7,6 +7,7 @@ Feature: Cobbler buildiso
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
+    And I backup Cobbler settings file
 
   Scenario: Log in as testing user in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"

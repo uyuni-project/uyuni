@@ -7,7 +7,6 @@
 ## Core - Initialize clients BEGIN ##
 
 - features/init_clients/allcli_update_activationkeys.feature
-- features/init_clients/sle_client.feature
 - features/init_clients/srv_check_reposync.feature
 
 # Proxy
@@ -17,6 +16,7 @@
 - features/init_clients/proxy_register_as_minion_with_script.feature
 - features/init_clients/proxy_branch_network.feature
 
+- features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/sle_ssh_minion.feature
 - features/init_clients/min_rhlike_salt.feature

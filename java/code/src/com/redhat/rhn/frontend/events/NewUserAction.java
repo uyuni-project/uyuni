@@ -81,7 +81,12 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
                 getMessage("email.newuser.subject", evt.getUserLocale(), subjectArgs);
         String body = LocalizationService.getInstance().
                 getMessage("email.newuser.body", evt.getUserLocale(), bodyArgs);
-        MailHelper.withMailer(getMail()).sendEmail(getEmails(evt), subject, body);
+        try {
+            MailHelper.withMailer(getMail()).sendEmail(getEmails(evt), subject, body);
+        }
+        catch (Exception e) {
+            logger.error("Unable to get a mailer: {}", e.getMessage(), e);
+        }
 
         if (logger.isDebugEnabled()) {
             logger.debug("execute(EventMessage) - end");
@@ -134,5 +139,10 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
     @Override
     public boolean needsTransactionHandling() {
         return false;
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return logger;
     }
 }

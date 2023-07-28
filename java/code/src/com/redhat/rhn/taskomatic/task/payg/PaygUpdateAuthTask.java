@@ -150,6 +150,11 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
         }
+        else {
+            // was in error state before. At least second time failed to get the data
+            // invalidate existing credentials
+            paygDataProcessor.invalidateCredentials(instance);
+        }
         instance.setStatus(PaygSshData.Status.E);
         instance.setErrorMessage(errorMessage);
         PaygSshDataFactory.savePaygSshData(instance);
