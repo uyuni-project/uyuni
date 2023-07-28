@@ -18,7 +18,6 @@ task :extract_undesired_env_variables do
   undesired_env_variables = []
   indestructible_hulk = %w[SERVER PROXY MONITORING_SERVER]
   # Use split to get the content between '## NODES BEGIN' and '## NODES END'
-  # nodes_content = bashrc_content.split(/(?<=## NODES BEGIN\n).*?(?=\n## NODES END)/m)[0]
   nodes_content = bashrc_content.match(/## NODES BEGIN\n(.*?)\n## NODES END/m)
 
   # Use scan to find all 'export' statements and extract the environment variable names
@@ -32,21 +31,14 @@ task :extract_undesired_env_variables do
   puts "Undesired Environment Variables:"
   puts undesired_env_variables
 
-  # Store the undesired_env_variables in a file for later use in the Rake task
-  File.open("undesired_env_variables.txt", "w") do |file|
-    undesired_env_variables.each do |var|
-      file.puts(var)
-    end
-  end
 end
-
 
 # Define your desired task here
 desc "Your desired task"
 task :desired_task_name do
   task_name = Rake.application.top_level_tasks.first
   match_data = /[^_]+_[^_]+$/.match(task_name)
-
+  # Extract current node run by task
   if match_data
     extracted_portion = match_data[0]
     extracted_portion_upcase = extracted_portion.upcase
@@ -54,9 +46,8 @@ task :desired_task_name do
   else
     puts "Regex pattern didn't match the task name."
   end
-  # Your task code here
-  extracted_portion_upcase = "SLE15SP1_MINION" # Replace this with the actual value extracted
   puts "Extracted Portion: #{extracted_portion_upcase}"
+
 end
 
 
