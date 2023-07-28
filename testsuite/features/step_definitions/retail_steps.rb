@@ -60,6 +60,8 @@ end
 def compute_kiwi_profile_name(host)
   image = compute_image(host)
   case image
+  when 'sles15sp4', 'sles15sp4o'
+    'POS_Image_JeOS7_42'
   when 'sles15sp3', 'sles15sp3o'
     'POS_Image_JeOS7_42'
     # $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head' for HEAD branch

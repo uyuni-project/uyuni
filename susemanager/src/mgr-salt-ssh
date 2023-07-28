@@ -18,6 +18,8 @@ if __name__ == "__main__":
     if os.geteuid() == 0:
         try:
             chugid("salt", "salt")
+            # Change HOME according to salt user
+            os.environ["HOME"] = os.path.expanduser("~salt")
         except (KeyError, CommandExecutionError):
             print("Error: Unable to setuid to `salt` user!", file=sys.stderr)
             exit(1)
