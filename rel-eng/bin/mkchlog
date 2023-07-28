@@ -27,7 +27,7 @@ Uyuni project: <https://github.com/uyuni-project/uyuni>
 EOF
 }
 
-ARGS=$(getopt -n mkchlog -o rhf:u: --long remove,help,feature:username: -- "$@")
+ARGS=$(getopt -n mkchlog -o rhnf:u: --long remove,help,no-wrap,feature:username: -- "$@")
 if [ $? -ne 0 ]; then
     exit 1
 fi
