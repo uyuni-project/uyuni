@@ -65,7 +65,7 @@ const Payg = (props: Props) => {
 
   return (
     <TopPanel
-      title={t("Instance Hostname: {0}", payg.properties.host)}
+      title={t("Instance Hostname: {host}", { host: payg.properties.host })}
       button={
         <div className="pull-right btn-group">
           <ModalButton

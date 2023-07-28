@@ -12,6 +12,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment";
 
+import { jsFormatPreferredLocale } from "core/user-preferences";
+
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 
 import Network from "utils/network";
@@ -306,8 +308,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         ref={calendarRef}
         timeZone={""} // Prevent FullCalendar from using the browsers set timezone
         locales={allLocales}
-        // locale strings come with '_' from the backend but FullCalendar expects them with '-' so we exchange these
-        locale={window.preferredLocale ? window.preferredLocale.replace("_", "-") : "en-US"}
+        locale={jsFormatPreferredLocale}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         customButtons={{
           skipBackButton: {
