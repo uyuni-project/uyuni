@@ -17,7 +17,6 @@ window.pageRenderers.spa.reactRenderers = window.pageRenderers.spa.reactRenderer
 window.pageRenderers.spa.previousReactRenderers = window.pageRenderers.spa.previousReactRenderers || [];
 
 function addReactApp(appName: string) {
-  // getTranslationData();
   window.pageRenderers?.spa?.reactAppsName?.push(appName);
 }
 
@@ -29,8 +28,6 @@ function renderGlobalReact(element: JSX.Element, container: Element | null | und
   if (container == null) {
     throw new Error("The DOM element is not present.");
   }
-
-  // getTranslationData();
 
   function registerGlobalRender(instance) {
     window.pageRenderers?.spa?.globalRenderersToUpdate?.push(instance);
