@@ -1379,7 +1379,7 @@ public class SaltServerActionService {
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
-            LOG.error(errorMsg);
+            LOG.error(errorMsg, e);
             scriptAction.getServerActions().stream()
                     .filter(entry -> entry.getServer().asMinionServer()
                             .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
@@ -2468,7 +2468,7 @@ public class SaltServerActionService {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
-                    LOG.error("Error executing Salt call for action: {}on minion {}",
+                    LOG.error("Error executing Salt call for action: {} on minion {}",
                             action.getName(), minion.getMinionId(), e);
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
@@ -2516,8 +2516,7 @@ public class SaltServerActionService {
                                 ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
                             }
                             catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId());
-                                LOG.error(e);
+                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
                             }
                         }
                     });

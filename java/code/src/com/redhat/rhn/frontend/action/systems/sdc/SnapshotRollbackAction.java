@@ -121,8 +121,7 @@ public class SnapshotRollbackAction extends RhnAction {
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule rollbacks:");
-            log.error(e);
+            log.error("Could not schedule rollbacks:", e);
             createErrorMessage(request, "taskscheduler.down", null);
         }
 

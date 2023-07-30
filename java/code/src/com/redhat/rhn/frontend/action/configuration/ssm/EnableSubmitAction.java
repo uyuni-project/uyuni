@@ -95,8 +95,7 @@ public class EnableSubmitAction extends RhnListDispatchAction {
             return mapping.findForward("default");
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule configuration enablement:");
-            log.error(e);
+            log.error("Could not schedule configuration enablement:", e);
             ValidatorError verrors = new ValidatorError("taskscheduler.down");
             ActionErrors errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
             getStrutsDelegate().saveMessages(request, errors);

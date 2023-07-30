@@ -88,8 +88,7 @@ public class PackageIndexAction extends LookupDispatchAction {
             SdcHelper.ssmCheck(request, sid, user);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package refresh action:");
-            log.error(e);
+            log.error("Could not schedule package refresh action:", e);
 
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError("taskscheduler.down", errors);

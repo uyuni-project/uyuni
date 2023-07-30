@@ -141,16 +141,16 @@ public final class SSOController {
                 return response;
             }
             catch (LookupException e) {
-                LOG.error("Unable to find user: {}", e.getMessage());
+                LOG.error("Unable to find user: {}", e.getMessage(), e);
                 return "Internal error during SSO authentication phase. Have you created the corresponding user in " +
                         "SUSE Manager? See product documentation";
             }
             catch (SettingsException e) {
-                LOG.error("Unable to parse settings for SSO: {}", e.getMessage());
+                LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
                 return "Internal error during SSO authentication phase - please check the logs " + e.getMessage();
             }
             catch (Exception e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
             }
         }
         return null;
@@ -182,10 +182,10 @@ public final class SSOController {
                 }
             }
             catch (IOException | SettingsException | Error | CertificateEncodingException e) {
-                LOG.error("Unable to parse settings for SSO and/or certificate error: {}", e.getMessage());
+                LOG.error("Unable to parse settings for SSO and/or certificate error: {}", e.getMessage(), e);
             }
             catch (Exception e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.getMessage(), e);
             }
             return response;
         }
@@ -210,7 +210,7 @@ public final class SSOController {
                 return response;
             }
             catch (SettingsException | IOException | XMLEntityException e) {
-                LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage());
+                LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage(), e);
             }
         }
 
@@ -234,10 +234,10 @@ public final class SSOController {
                 return "You have been logged out";
             }
             catch (ServletException | SettingsException e) {
-                LOG.error("Unable to parse settings for SSO: {}", e.getMessage());
+                LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
             }
             catch (Exception e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.getMessage(), e);
             }
         }
         return null;

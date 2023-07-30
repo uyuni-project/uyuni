@@ -137,8 +137,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
                 MinionActionManager.scheduleStagingJobsForMinions(singletonList(update), user.getOrg());
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule errata application:");
-                log.error(e);
+                log.error("Could not schedule errata application:", e);
                 return createErrorMessage(mapping, formIn, request, strutsDelegate,
                         "taskscheduler.down");
             }

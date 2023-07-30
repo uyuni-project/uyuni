@@ -248,7 +248,7 @@ public class SmtpMail implements Mail {
             buf.append(this.message.getContent());
         }
         catch (IOException | MessagingException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
         return buf.toString();
     }

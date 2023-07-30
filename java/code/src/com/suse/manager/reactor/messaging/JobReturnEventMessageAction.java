@@ -88,7 +88,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                 jobReturnEvent.getData().getResult(JsonElement.class));
         }
         catch (JsonSyntaxException e) {
-            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+            LOG.error("JSON syntax error while decoding into a StateApplyResult:", e);
             LOG.error(jobReturnEvent.getData().getResult(JsonElement.class).toString());
         }
         return jsonResult;
@@ -306,8 +306,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     }
                      catch (JsonParseException e) {
                         LOG.warn("Could not determine if packages changed in call to {} because of a parse error",
-                                 function);
-                        LOG.warn(e);
+                                 function, e);
                     }
                     return fullPackageRefreshNeeded;
                 })
@@ -333,7 +332,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                 ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer, earliest);
             }
             catch (TaskomaticApiException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
             }
         });
     }

@@ -110,8 +110,7 @@ public class InProgressSystemsAction extends RhnSetAction {
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not unschedule action:");
-            log.error(e);
+            log.error("Could not unschedule action:", e);
             ActionErrors errors = new ActionErrors();
             strutsDelegate.addError(errors, "taskscheduler.down");
             strutsDelegate.saveMessages(request, errors);

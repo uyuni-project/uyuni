@@ -144,8 +144,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                     }
                 }
                 catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule package lock action:");
-                    LOG.error(e);
+                    LOG.error("Could not schedule package lock action:", e);
                     this.getStrutsDelegate().addError(errorMessages, "taskscheduler.down");
                 }
             }

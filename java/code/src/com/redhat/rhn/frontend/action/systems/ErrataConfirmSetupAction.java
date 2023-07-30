@@ -179,8 +179,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
                         hparams);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule errata application:");
-                log.error(e);
+                log.error("Could not schedule errata application:", e);
                 ActionErrors errors = new ActionErrors();
                 strutsDelegate.addError(errors, "taskscheduler.down");
                 strutsDelegate.saveMessages(request, errors);

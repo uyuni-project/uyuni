@@ -101,8 +101,7 @@ public class SystemHardwareAction extends RhnAction {
                     createMessage(request, "message.refeshScheduled", messageParams);
                 }
                 catch (TaskomaticApiException e) {
-                    log.error("Could not unschedule action:");
-                    log.error(e);
+                    log.error("Could not unschedule action:", e);
                     createErrorMessage(request, "taskscheduler.down", StringUtils.EMPTY);
                 }
 
