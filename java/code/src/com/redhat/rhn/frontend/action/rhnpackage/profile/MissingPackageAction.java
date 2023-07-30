@@ -160,8 +160,7 @@ public class MissingPackageAction extends BaseProfilesAction {
             syncToVictim(context, sid, pkgIdCombos, ProfileManager.OPTION_REMOVE);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package synchronization:");
-            log.error(e);
+            log.error("Could not schedule package synchronization:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);
@@ -195,8 +194,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                     ProfileManager.OPTION_SUBSCRIBE);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package synchronization:");
-            log.error(e);
+            log.error("Could not schedule package synchronization:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);

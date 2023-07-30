@@ -123,7 +123,7 @@ public class TaskQueue {
                 unsetTaskQueueDone();
             }
             catch (InterruptedException e) {
-                queueDriver.getLogger().error(e);
+                queueDriver.getLogger().error(e.getMessage(), e);
                 HibernateFactory.commitTransaction();
                 HibernateFactory.closeSession();
                 HibernateFactory.getSession();
@@ -137,7 +137,7 @@ public class TaskQueue {
                 waitForEmptyQueue();
             }
             catch (InterruptedException e) {
-                queueDriver.getLogger().error(e);
+                queueDriver.getLogger().error(e.getMessage(), e);
                 HibernateFactory.commitTransaction();
                 HibernateFactory.closeSession();
                 HibernateFactory.getSession();
@@ -181,7 +181,7 @@ public class TaskQueue {
                 Thread.sleep(100);
             }
             catch (InterruptedException e) {
-                queueDriver.getLogger().error(e);
+                queueDriver.getLogger().error(e.getMessage(), e);
                 return;
             }
         }

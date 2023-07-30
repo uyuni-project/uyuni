@@ -136,7 +136,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
             getStrutsDelegate().saveMessages(req, ve.getResult());
         }
         catch (Exception e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         // If we got here, something went wrong - try again
         return getStrutsDelegate().forwardParams(

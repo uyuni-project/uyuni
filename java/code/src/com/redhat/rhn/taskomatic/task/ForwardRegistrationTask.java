@@ -114,7 +114,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             }
         }
         catch (URISyntaxException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 }

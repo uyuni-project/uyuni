@@ -126,7 +126,7 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
             createErrorMessage(request,
                     "message.actionCancelServerFailure.taskscheduler.down",
                     StringUtils.EMPTY);

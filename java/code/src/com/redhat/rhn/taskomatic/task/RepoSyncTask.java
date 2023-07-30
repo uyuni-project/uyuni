@@ -96,7 +96,7 @@ public class RepoSyncTask extends RhnJavaJob {
                     }
 
 
-                    log.error(e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                         new ChannelSyncFinished(channel.getId(), channel.getName())
@@ -118,7 +118,7 @@ public class RepoSyncTask extends RhnJavaJob {
             UbuntuErrataManager.sync(new HashSet<>(channelIds));
         }
         catch (IOException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 

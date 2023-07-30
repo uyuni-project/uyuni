@@ -316,8 +316,8 @@ public class SaltReactor {
                             ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: {}", minionServer.getMinionId());
-                            LOG.error(e);
+                            LOG.error("Could not schedule package refresh for minion: {}",
+                                    minionServer.getMinionId(), e);
                         }
                     }))
             );

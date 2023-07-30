@@ -55,7 +55,7 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
             }
         }
         catch (TaskomaticApiException | RuntimeException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
             throw new RescheduleException(e);
         }
         result.setSuccess(true);
