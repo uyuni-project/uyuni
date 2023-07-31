@@ -1,0 +1,1 @@
+- fix "more then one method candidate found" for API function (bsc#1211100)
