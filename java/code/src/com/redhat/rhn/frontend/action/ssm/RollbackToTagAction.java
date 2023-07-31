@@ -62,8 +62,7 @@ public class RollbackToTagAction extends RhnAction implements Listable {
                 rollback(context, tagId);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule rollback to tag:");
-                log.error(e);
+                log.error("Could not schedule rollback to tag:", e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError(errors, "taskscheduler.down");
                 getStrutsDelegate().saveMessages(request, errors);

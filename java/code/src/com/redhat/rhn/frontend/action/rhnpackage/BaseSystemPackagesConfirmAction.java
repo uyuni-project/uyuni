@@ -227,8 +227,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package action:");
-            log.error(e);
+            log.error("Could not schedule package action:", e);
             ActionErrors errors = new ActionErrors();
             strutsDelegate.addError("taskscheduler.down", errors);
             strutsDelegate.saveMessages(request, errors);

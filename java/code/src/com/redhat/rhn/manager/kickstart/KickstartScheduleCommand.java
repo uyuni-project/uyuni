@@ -521,8 +521,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return storeInternal();
         }
         catch (TaskomaticApiException e) {
-            log.error("Taskomatic Exception during kickstart schedule:");
-            log.error(e);
+            log.error("Taskomatic Exception during kickstart schedule:", e);
             return new ValidatorError("taskscheduler.down");
         }
     }

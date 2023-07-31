@@ -212,7 +212,7 @@ public class PaygAuthDataExtractor {
             return processOutput(exitStatus, error, output);
         }
         catch (IOException | InterruptedException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         return null;
     }

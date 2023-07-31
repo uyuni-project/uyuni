@@ -146,8 +146,7 @@ public class FailedSystemsAction extends RhnAction implements Listable {
             getStrutsDelegate().saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not reschedule action:");
-            log.error(e);
+            log.error("Could not reschedule action:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);

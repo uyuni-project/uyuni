@@ -174,7 +174,7 @@ public class FilterApiController {
                     createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
                 }
                 catch (ModulemdApiException e) {
-                    LOG.error(e);
+                    LOG.error(e.getMessage(), e);
                     return json(GSON, res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
                 }
                 break;

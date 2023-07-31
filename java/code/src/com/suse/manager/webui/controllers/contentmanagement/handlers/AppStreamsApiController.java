@@ -66,10 +66,11 @@ public class AppStreamsApiController {
             return json(res, ResultJson.success(API.getAllModulesInChannel(channel)));
         }
         catch (NumberFormatException e) {
+            LOG.error(e.getMessage(), e);
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
         catch (ModulemdApiException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
             return json(res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
         }
     }

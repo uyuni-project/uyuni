@@ -135,7 +135,7 @@ public class ChannelRepodataWorker implements QueueWorker {
             }
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
             parentQueue.getQueueRun().failed();
             // unmark channel to be worked on

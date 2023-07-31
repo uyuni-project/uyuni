@@ -96,8 +96,7 @@ public class SystemRebootAction extends RhnAction implements MaintenanceWindowsA
                 }
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule rollback to tag:");
-                log.error(e);
+                log.error("Could not schedule rollback to tag:", e);
                 createErrorMessage(request, "taskscheduler.down", StringUtils.EMPTY);
             }
 

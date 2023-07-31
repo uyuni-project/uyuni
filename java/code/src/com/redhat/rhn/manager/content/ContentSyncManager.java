@@ -223,7 +223,7 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(ChannelFamilyJson.class));
         }
         catch (IOException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Read {} channel families from {}", channelFamilies.size(),
@@ -356,7 +356,7 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(SCCRepositoryJson.class));
         }
         catch (IOException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
         return repos;
@@ -396,7 +396,7 @@ public class ContentSyncManager {
                     SCCClientUtils.toListType(SCCProductJson.class));
         }
         catch (IOException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         return fixAdditionalProducts(additionalProducts);
     }
@@ -1342,7 +1342,7 @@ public class ContentSyncManager {
             }
         }
         catch (URISyntaxException e) {
-            LOG.error("Invalid URL:{}", e.getMessage());
+            LOG.error("Invalid URL: {}", e.getMessage(), e);
             return new ArrayList<>();
         }
         refreshSubscriptionCache(subscriptions, credentials);
@@ -1401,7 +1401,7 @@ public class ContentSyncManager {
             }
         }
         catch (URISyntaxException e) {
-            LOG.error("Invalid URL:{}", e.getMessage());
+            LOG.error("Invalid URL: {}", e.getMessage(), e);
         }
         List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(c);
         for (SCCOrderJson order : orders) {
@@ -1637,7 +1637,7 @@ public class ContentSyncManager {
                         SCCClientUtils.toListType(ProductTreeEntry.class));
             }
             catch (IOException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
             }
         }
         else {
@@ -2521,7 +2521,7 @@ public class ContentSyncManager {
             return accessibleUrl(url, username, password);
         }
         catch (URISyntaxException e) {
-            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage(), e);
         }
         return false;
     }
@@ -2557,10 +2557,10 @@ public class ContentSyncManager {
             }
         }
         catch (IOException e) {
-            LOG.error("accessibleUrl: {} IOException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} IOException {}", url, e.getMessage(), e);
         }
         catch (URISyntaxException e) {
-            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage());
+            LOG.error("accessibleUrl: {} URISyntaxException {}", url, e.getMessage(), e);
         }
         return false;
     }
