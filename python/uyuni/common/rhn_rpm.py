@@ -89,6 +89,14 @@ class RPM_Header:
             item = sstr(item)
         elif isinstance(item, list):
             item = [sstr(i) if isinstance(i, bytes) else i for i in item]
+
+        # Workaround to make it possible to overlap empty release with 0
+        # to prevent tracebacks on synchronization the packages with empty release.
+        # Actually there is no way to set values back to the header,
+        # so __setitem__ is useless in this class.
+        if name == "release" and item == "":
+            item = "0"
+
         return item
 
     def __contains__(self, name):
@@ -101,12 +109,7 @@ class RPM_Header:
         del self.hdr[name]
 
     def __getattr__(self, name):
-        item = getattr(self.hdr, name)
-        if isinstance(item, bytes):
-            item = sstr(item)
-        elif isinstance(item, list):
-            item = [sstr(i) if isinstance(i, bytes) else i for i in item]
-        return item
+        return __getitem__(name)
 
     def __len__(self):
         return len(self.hdr)
@@ -220,7 +223,7 @@ class RPM_Package(A_Package):
             e = sys.exc_info()[1]
             raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
         except:
-            raise_with_tb(InvalidPackageError, sys.exc_info()[2])
+            raise_with_tb(InvalidPackageError(), sys.exc_info()[2])
         self.checksum_type = self.header.checksum_type()
 
     def _get_header_byte_range(self):

@@ -1180,6 +1180,10 @@ password={passwd}
         for pack in pkglist:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
+            # Prevent repeating to download the package with empty release on each run.
+            # Release should be specified in the package. Assuming empty release as 0.
+            if release == "":
+                release = "0"
             new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
             new_pack.unique_id = RawSolvablePackage(pack)
             checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
