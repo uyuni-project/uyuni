@@ -12,59 +12,6 @@ junit_results = '-f junit -o results_junit'
 build_number = ENV['BUILD_NUMBER']
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
-namespace :cucumber do
-  # Create results folder
-  sh "mkdir -p #{result_folder}", verbose: false
-  # Rake::Task['utils:extract_undesired_env_variables'].invoke
-  bashrc_content = File.read("/root/.bashrc")
-  undesired_env_variables = []
-  indestructible_hulk = %w[SERVER PROXY MONITORING_SERVER]
-  # Use split to get the content between '## NODES BEGIN' and '## NODES END'
-  nodes_content = bashrc_content.match(/## NODES BEGIN\n(.*?)\n## NODES END/m)
-
-  # Use scan to find all 'export' statements and extract the environment variable names
-  matches = nodes_content[1].scan(/export\s+(\w+)/)
-
-  # Extract the environment variable names from the matches
-  matches.each do |match|
-    variable_name = match[0]
-
-    if indestructible_hulk.include?(variable_name)
-    else
-      undesired_env_variables << variable_name
-      ENV.delete(variable_name)
-    end
-  end
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
-    Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
-      filename = File.basename(entry, '.yml').to_sym
-      timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      node_name = ENV['NODE']
-      node_result_extension = node_name.nil? ? '' : "_#{node_name}"
-      json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
-      profiles = ENV['PROFILE']
-      # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
-      # it will act as an intersection of tags, not as an union of them.
-      include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
-      tags = ENV['TAGS']
-      # We provide the list of tags including the '@', so if necessary we can provide a negative tag '~@' on this list.
-      # We generate the tags list as an union of tags (using 'or' between them),
-      # not as an intersection of them (using 'and')
-      include_tags =  tags.nil? ? [] : ['--tags', tags]
-      cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
-        %w[-f pretty -r features] + include_tags
-      # Immediately fail core if any feature is failing
-      if filename.to_s.include?('core')
-        cucumber_opts << '--fail-fast'
-      end
-      features = YAML.safe_load(File.read(entry))
-      t.cucumber_opts = cucumber_opts + features unless features.nil?
-    end
-  end
-  # Rake::Task[utils:extract_undesired_env_variables].reenable
-end
-
 namespace :parallel do
   Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
     run_set = File.basename(entry, '.yml').to_sym
@@ -202,16 +149,30 @@ namespace :utils do
   end
 
   desc "Extract undesired environment variables"
-  task :extract_undesired_env_variables do
-    bashrc_content = File.read("/root/.bashrc")
+  # task :disable_not_tested_nodes, [:file_name] do |_t, args|
+  task :disable_not_tested_nodes do
+    file_name = 'test_not_minion.yml'
+    bashrc_content = File.read("/home/maxime/.bash_test")
     undesired_env_variables = []
-    indestructible_hulk = %w[SERVER PROXY MONITORING_SERVER]
-    indestructible_hulk << ENV['NODE_NAME']
     # Use split to get the content between '## NODES BEGIN' and '## NODES END'
     nodes_content = bashrc_content.match(/## NODES BEGIN\n(.*?)\n## NODES END/m)
-
     # Use scan to find all 'export' statements and extract the environment variable names
     matches = nodes_content[1].scan(/export\s+(\w+)/)
+    # Rake::Task['utils:desired_task_name'].invoke(args[:file_name])
+    Rake::Task['utils:desired_task_name'].invoke(file_name, matches)
+
+
+    indestructible_hulk_list = ENV['INDESTRUCTIBLE_HULK'].split(',')
+    puts indestructible_hulk_list
+    puts "____________________"
+    # Extract the environment variable names from the matches
+    # Use the reject method to filter out undesired environment variables
+    matches.reject { |match| indestructible_hulk_list.include?(match[0]) }.each do |match|
+      undesired_env_variables << match[0]
+      ENV.delete(match[0])
+    end
+    puts undesired_env_variables
+
 
     # Extract the environment variable names from the matches
     matches.each do |match|
@@ -221,18 +182,22 @@ namespace :utils do
   end
 
   desc "Your desired task"
-  task :desired_task_name do
-    task_name = Rake.application.top_level_tasks.first
-    match_data = /[^_]+_[^_]+$/.match(task_name)
+  task :desired_task_name, [:file_name, :matches] do |_t, args|
+    # task_name = Rake.application.top_level_tasks.first
+    indestructible_hulk = %w[SERVER PROXY MONITORING_SERVER]
+    # Remove the .yml extension using gsub
+    file_name_without_extension = args[:file_name].gsub(/\.yml$/, '')
+    match_data = /[^_]+_[^_]+$/.match(file_name_without_extension)
     # Extract current node run by task
-    if match_data
+    if match_data && args[:matches].include?(match_data[0])
       extracted_portion = match_data[0]
       extracted_portion_upcase = extracted_portion.upcase
       puts "Extracted Portion: #{extracted_portion_upcase}"
-      ENV['NODE_NAME'] = extracted_portion_upcase
+      indestructible_hulk << extracted_portion_upcase
     else
-      puts "Regex pattern didn't match the task name."
+      puts "No specific minion tested during this scenario."
     end
+    ENV['INDESTRUCTIBLE_HULK'] = indestructible_hulk.join(',')
   end
 end
 
@@ -327,4 +292,61 @@ namespace :jenkins do
     Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].invoke(instances)
     Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].reenable
   end
+end
+
+namespace :cucumber do
+  # Create results folder
+  sh "mkdir -p #{result_folder}", verbose: false
+  # # Rake::Task['utils:extract_undesired_env_variables'].invoke
+  # bashrc_content = File.read("/root/.bashrc")
+  # undesired_env_variables = []
+  # indestructible_hulk = %w[SERVER PROXY MONITORING_SERVER]
+  # # Use split to get the content between '## NODES BEGIN' and '## NODES END'
+  # nodes_content = bashrc_content.match(/## NODES BEGIN\n(.*?)\n## NODES END/m)
+  #
+  # # Use scan to find all 'export' statements and extract the environment variable names
+  # matches = nodes_content[1].scan(/export\s+(\w+)/)
+  #
+  # # Extract the environment variable names from the matches
+  # matches.each do |match|
+  #   variable_name = match[0]
+  #
+  #   if indestructible_hulk.include?(variable_name)
+  #   else
+  #     undesired_env_variables << variable_name
+  #     ENV.delete(variable_name)
+  #   end
+  # end
+  #
+
+  Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
+    Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
+      filename = File.basename(entry, '.yml').to_sym
+      timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+      node_name = ENV['NODE']
+      node_result_extension = node_name.nil? ? '' : "_#{node_name}"
+      json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
+      html_results = "-f html -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
+      profiles = ENV['PROFILE']
+      # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
+      # it will act as an intersection of tags, not as an union of them.
+      include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
+      tags = ENV['TAGS']
+      # We provide the list of tags including the '@', so if necessary we can provide a negative tag '~@' on this list.
+      # We generate the tags list as an union of tags (using 'or' between them),
+      # not as an intersection of them (using 'and')
+      include_tags =  tags.nil? ? [] : ['--tags', tags]
+      cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
+        %w[-f pretty -r features] + include_tags
+      # Immediately fail core if any feature is failing
+      if filename.to_s.include?('core')
+        cucumber_opts << '--fail-fast'
+      end
+      Rake::Task['utils:disable_not_tested_nodes'].invoke(filename)
+      features = YAML.safe_load(File.read(entry))
+      t.cucumber_opts = cucumber_opts + features unless features.nil?
+      Rake::Task['utils:disable_not_tested_nodes'].reenable
+    end
+  end
+  # Rake::Task[utils:extract_undesired_env_variables].reenable
 end
