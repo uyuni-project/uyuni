@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-28 15:10+0200\n"
-"PO-Revision-Date: 2023-07-29 17:15+0000\n"
+"PO-Revision-Date: 2023-07-31 21:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -45,14 +45,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Prosím, zadajte požadované polia: {0}"
+msgstr "Prosím, zadajte požadované polia: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "Neplatný formát polí: {0}"
+msgstr "Neplatný formát polí: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:216
 msgid ""
@@ -138,11 +136,12 @@ msgid "Are you sure you want to {action} {name}"
 msgstr "Naozaj chcete {action} {name}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
+msgstr ""
+"Naozaj chcete {action} vybrané položky {name}? ({count} položiek {name} "
+"vybraných)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -358,7 +357,7 @@ msgstr "Posledná"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "Stránka <dropdown></dropdown> z {total}"
 
 #: ../html/src/components/pagination.tsx:115
 #, fuzzy
