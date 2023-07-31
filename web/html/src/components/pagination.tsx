@@ -90,28 +90,31 @@ const PageSelector = (props: PageSelectorProps) => {
   if (props.lastPage > 1) {
     return (
       <div className="table-page-information">
-        {t("Page")}
-        &nbsp;
-        <select
-          className="display-number small-select"
-          defaultValue={props.currentValue}
-          value={props.currentValue}
-          onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-        >
-          {Array.from(Array(props.lastPage)).map((o, i) => (
-            <option value={i + 1} key={i + 1}>
-              {i + 1}
-            </option>
-          ))}
-        </select>
-        &nbsp;
-        {t("of")}
-        &nbsp;
-        {props.lastPage}
+        {t("Page <dropdown></dropdown> of {total}", {
+          dropdown: () => (
+            <select
+              className="display-number small-select"
+              value={props.currentValue}
+              onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
+              key="select"
+            >
+              {Array.from(Array(props.lastPage)).map((_, i) => (
+                <option value={i + 1} key={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+          ),
+          total: props.lastPage,
+        })}
       </div>
     );
   } else {
-    return <div className="table-page-information">{t("Page {0} of {1}", props.currentValue, props.lastPage)}</div>;
+    return (
+      <div className="table-page-information">
+        {t("Page {current} of {total}", { current: props.currentValue, total: props.lastPage })}
+      </div>
+    );
   }
 };
 

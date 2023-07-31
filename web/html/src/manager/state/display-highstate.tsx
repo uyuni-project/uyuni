@@ -6,7 +6,7 @@ import HighstateSummary from "./highstate-summary";
 function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {
   return (
     <div className="row">
-      <h3>{t("State Summary for {0}", minion.name)}</h3>
+      <h3>{t("State Summary for {name}", { name: minion.name })}</h3>
       <HighstateSummary minionId={minion.id} />
     </div>
   );

@@ -159,7 +159,7 @@ export function ListTab(props: Props) {
           icon={action.icon}
           className="btn-default"
           text={action.name}
-          title={t("{0} selected", action.name)}
+          title={t("{name} selected", { name: action.name })}
           disabled={selectedItems.length === 0}
           handler={() => {
             // Mark the corresponding bulk modal as shown

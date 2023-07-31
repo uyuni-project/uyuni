@@ -234,10 +234,9 @@ class ImageStores extends React.Component<Props, State> {
             <span>
               {DEPRECATED_unsafeEquals(this.state.selectedItems.length, 1)
                 ? t("Are you sure you want to delete the selected store?")
-                : t(
-                    "Are you sure you want to delete selected stores? ({0} stores selected)",
-                    this.state.selectedItems.length
-                  )}
+                : t("Are you sure you want to delete selected stores? ({count} stores selected)", {
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.deleteStores(this.state.selectedItems)}

@@ -101,7 +101,7 @@ const Project = (props: Props) => {
   const hasChannelsWithUnsyncedPatches = project.softwareSources.filter((s) => s.hasUnsyncedPatches).length > 0;
   return (
     <TopPanel
-      title={t("Content Lifecycle Project - {0}", project.properties.name)}
+      title={t("Content Lifecycle Project - {name}", { name: project.properties.name })}
       helpUrl="reference/clm/clm-projects.html" // icon="fa-plus"
       button={
         hasEditingPermissions && (

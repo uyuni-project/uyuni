@@ -6,4 +6,3 @@ export * from "./jsx";
 export * from "./network";
 export * from "./produce";
 export * from "./stringToReact";
-export * from "./translate";

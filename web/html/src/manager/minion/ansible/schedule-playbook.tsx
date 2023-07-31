@@ -104,7 +104,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   return (
     <>
       <Messages items={messages} />
-      <InnerPanel title={t("Playbook '{0}'", playbook.name)} icon="fa-file-text-o" buttons={buttons}>
+      <InnerPanel title={t("Playbook '{name}'", { name: playbook.name })} icon="fa-file-text-o" buttons={buttons}>
         <div className="panel panel-default">
           <div className="panel-heading">
             <div>
