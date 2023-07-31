@@ -1,15 +1,17 @@
-# Running the server-image on kubernetes
+# Prerequisites
 
-## Prerequisites
+The following assumes you have either a single-node RKE2 or K3s cluster ready or a server with Podman installed and enough resources for the Uyuni server.
+When installing on a Kubernetes cluster, it also assumes that `kubectl` and `helm` are installed on the server and configured to connect to the cluster.
 
-The following assumes you have a single-node rke2 or k3s cluster ready with enough resources for the Uyuni server.
-It also assumes that `kubectl` and `helm` are installed on your machine and configured to connect to the cluster.
+# Preparing the installation
 
-## Setting up the resources
+## Podman specific setup
 
-### RKE2 specific setup
+There is nothing to prepare for a Podman installation.
 
-Copy the `rke2-ingress-nginx-config.yaml` file to `/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml` on your rke2 node.
+## RKE2 specific setup
+
+Copy the `rke2-ingress-nginx-config.yaml` file to `/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml` on your RKE2 node.
 Wait for the ingress controller to restart.
 Run this command to watch it restart:
 
@@ -17,10 +19,10 @@ Run this command to watch it restart:
 watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=rke2-ingress-nginx
 ```
 
-### K3s specific setup
+## K3s specific setup
 
 
-Copy the `k3s-traefik-config.yaml` file to `/var/lib/rancher/k3s/server/manifests/` on your k3s node.
+Copy the `k3s-traefik-config.yaml` file to `/var/lib/rancher/k3s/server/manifests/` on your K3s node.
 Wait for trafik to restart.
 Run this commant to watch it restart:
 
@@ -28,7 +30,107 @@ Run this commant to watch it restart:
 watch kubectl get -n kube-system pod -lapp.kubernetes.io/name=traefik
 ```
 
-***Offline installation:*** with k3s it is possible to preload the container images and avoid it to be fetched from a registry.
+# Offline installation
+
+
+## For K3s
+
+With K3s it is possible to preload the container images and avoid it to be fetched from a registry.
+For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
+For example:
+
+⚠️ **TODO**: Verify instructions
+```
+for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
+  podman pull quay.io/jetstack/$image
+  podman save --output $image.tar quay.io/jetstack/$image:latest
+done
+
+podman pull registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+
+podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+```
+
+or
+
+⚠️ **TODO**: Verify instructions
+```
+for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
+    skopeo copy docker://quay.io/jetstack/$image:latest docker-archive:$image.tar:quay.io/jetstack/$image:latest
+done
+
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+```
+
+Copy the `cert-manager` and `uyuni/server` helm charts locally:
+
+⚠️ **TODO**: verify instructions
+
+```
+helm pull --repo https://charts.jetstack.io --destination . cert-manager
+helm pull --destination . oci://registry.opensuse.org/uyuni/server
+```
+
+Transfer the resulting `*.tar` images to the K3s node and load them using the following command:
+
+```
+for archive in `ls *.tar`; do
+    k3s ctr images import $archive 
+done
+```
+
+In order to tell K3s to not pull the images, set the image pull policy needs to be set to `Never`.
+This needs to be done for both Uyuni and cert-manager helm charts.
+
+For the Uyuni helm chart, set the `pullPolicy` chart value to `Never` by passing a `--helm-uyuni-values=uyuni-values.yaml` parameter to `uyuniadm install` with the following `uyuni-values.yaml` file content:
+
+```
+pullPolicy: Never
+```
+
+For the cert-manager helm chart, create a `cert-values.yaml` file with the following content and pass `--helm-certmanager-values=values.yaml` parameter to `uyuniadm install`:
+
+```
+image:
+  pullPolicy: Never
+```
+
+⚠️ **TODO**: verify the file names
+To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server.tgz` and `--helm-certmanager-chart=cert-manager.tgz` or add the following to the `uyuniadm` configuration file:
+
+```
+helm:
+  uyuni:
+    chart: server.tgz
+    values: uyuni-values.yaml
+  certmanager:
+    chart: cert-manager.tgz
+    values: cert.values.yaml
+```
+
+## For RKE2
+
+RKE2 doesn't allow to preload images on the nodes.
+Instead, use `skopeo` to import the images in a local registry and use this one to install.
+
+Copy the `cert-manager` and `uyuni/server` helm charts locally:
+
+⚠️ **TODO**: verify instructions
+
+```
+helm pull --repo https://charts.jetstack.io --destination . cert-manager
+helm pull --destination . oci://registry.opensuse.org/uyuni/server
+```
+
+⚠️  **TODO** Prepare instructions
+```
+# TODO Copy the cert-manager and uyuni images
+# TODO Set the uyuniadm parameters
+```
+
+## For Podman
+
+With K3s it is possible to preload the container images and avoid it to be fetched from a registry.
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
 For example:
 
@@ -43,19 +145,24 @@ or
 skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
 ```
 
-Transfer the resulting `server-image.tar` to the k3s node and load it using the following command:
+Transfer the resulting `server-image.tar` to the server and load it using the following command:
 
 ```
-k3s ctr images import server-image.tar
+podman load -i server-image.tar
 ```
 
-In order to tell k3s to not pull the image, add `imagePullPolicy: Never` to all `initContainer`s and `container` in the `server.yaml` file:
+# Migrating from a regular server
 
-```
-sed 's/^\( \+\)image:\(.*\)$/\1image: \2\n\1imagePullPolicy: Never/' -i server.yaml
-```
+In order to migrate a regular Uyuni server to containers, a new machine is required: it is not possible to perform an in-place migration.
+The old server is designated as the source server and the new machine is the destination one.
 
-### Migrating from a regular server
+The migration procedure does not perform any hostname rename.
+The fully qualified domain name will be the same on the new server than on the source one.
+This means the DNS records need to be adjusted after the migration to use the new server.
+
+## Preparing
+
+### Stop the source server
 
 Stop the source services:
 
@@ -64,164 +171,124 @@ spacewalk-service stop
 systemctl stop postgresql
 ```
 
-Create a password-less SSH key and create a kubernetes secret with it:
+### Preparing the SSH connection
+
+The `SSH` configuration and agent should be ready on the host for a password less connection to the source server.
+The migration script only uses the source server fully qualified domain name in the SSH command.
+This means that every other configuration required to connect needs to be defined in the `~/.ssh/config` file.
+
+For a password less connection, the migration script will use an SSH agent on the server.
+If none is running yet, run `eval $(ssh-agent)`.
+Add the SSH key to the running agent using `ssh-add /path/to/the/private/key`.
+The private key password will be prompted.
+
+### Prepare for Kubernetes
+
+Since the migration job will start the container from scratch the Persistent Volumes need to be defined before running the `uyuniadm migrate command`.
+Refer to the installation section for more details on the volumes preparation.
+
+## Migrating
+
+Run the following command to install a new Uyuni server from the source one after replacing the `uyuni.source.fqdn` by the proper source server FQDN:
+This command will synchronize all the data from the source server to the new one: this can take time!
 
 ```
-ssh-keygen
-kubectl create secret generic migration-ssh-key --from-file=id_rsa=$HOME/.ssh/id_rsa --from-file=id_rsa.pub=$HOME/.ssh/id_rsa.pub
-```
-Add the generated public key to the server to migrate authorized keys.
-
-Run the migration job:
-
-```
-kubectl apply -f migration-job.yaml
+uyuniadm migrate uyuni.source.fqdn
 ```
 
-To follow the progression of the process, check the generated container log:
+## Notes for Kubernetes
 
-```
-kubectl logs (kubectl get pod -ljob-name=uyuni-migration -o custom-columns=NAME:.metadata.name --no-hea
-ders)
-```
+⚠️ **TODO** Revisit this section!
 
 Once done, both the job and its pod will remain until the user deletes them to allow checking logs.
 
-Proceed with the next steps.
-
-***Hostname***: this procedure doesn't handle any hostname change.
 Certificates migration also needs to be documented, but that can be guessed for now with the instructions to setup a server from scratch.
 
 
-### CA certificates using `rhn-ssl-tool`
+# Installing Uyuni
 
-On the cluster node, prepare the volume with the CA password in the `/var/uyuni/ssl-build/password` file:
+## Volumes preparation 
 
-```
-mkdir -p /var/uyuni/ssl-build
-chmod 700 /var/uyuni
-vim /var/uyuni/ssl-build/password
-chmod 500 /var/uyuni/ssl-build/password
-```
+### For Kubernetes
 
-Edit the `rhn-ssl-tool.yaml` file to match your FQDN and subject.
-Generate the CA certificate and server certificate and key using `rhn-ssl-tool` by running:
+⚠️ **TODO** Document this
 
-```
-kubectl apply -f rhn-ssl-tool.yaml
-```
+### For Podman
 
-**Note** that it pulls the big server container image and thus takes quite some time to complete.
-Wait for the generated pod to be in `COMPLETED` state before continuing.
+⚠️ **TODO** Document this
 
-Create the TLS secret holding the server SSL certificates by running this on the cluster node:
+## Installing
+
+The installation using `uyuniadm install` will ask for the password if those are not provided using the command line parameters or the configuration file.
+For security reason, using command line parameters to specify passwords should be avoided: use the configuration file with proper permissions instead.
+
+Prepare an `uyuniadm.yaml` file like the following:
 
 ```
-kubectl create secret tls uyuni-cert --key /var/uyuni/ssl-build/<servername>/server.key --cert /var/uyuni/ssl-build/<servername>/server.crt
+db:
+  password: MySuperSecretDBPass
+cert:
+  password: MySuperSecretCAPass
 ```
 
-Create a `ConfigMap` with the CA certificate by running this on the cluster node:
+To dismiss the email prompts add the `email` and `emailFrom` configurations to the above file or use the `--email` and `--emailFrom` parameters for `uyuniadm install`.
+
+Run the following command to install after replacing the `uyuni.example.com` by the FQDN of the server to install:
 
 ```
-kubectl create configmap uyuni-ca --from-file=ca.crt=/var/uyuni/ssl-build/RHN-ORG-TRUSTED-SSL-CERT
+uyuniadm -c uyuniadm.yaml install --image registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server uyuni.example.com
 ```
 
-### CA certificates using Cert-Manager
+### Podman specific configuration
 
-Install cert-manager on the cluster.
-The [default static install](https://cert-manager.io/docs/installation/#default-static-install) is enoughfor the testing use case:
-
-```
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
-```
-
-`cert-manager` now needs to be configured to issue certificates.
-The following instructions will document setting up a self signed CA and the corresponding issuers.
-Check the [documentation](https://cert-manager.io/docs/configuration/acme/) on how to set up other issuers like Let's Encrypt.
-
-Edit the `cert-manager-selfsigned-issuer.yaml` file to match the server FQDN and subject and then apply it:
+Additional parameters can be passed to Podman using `--podman-arg` parameters or configuration like the following in `uyuniadm.yaml`:
 
 ```
-kubectl apply -f cert-manager-selfsigned-issuer.yaml
+podman:
+  arg:
+    - -p 8000:8000
+    - -p 8001:8001
 ```
 
-For security reason, copy the CA certificate into a separate config map, to not mount the CA secret on the pod:
+is equivalent to passing `--podman-arg "-p 8000:8000" --podman-arg "-p 8001:8001"` to `uyuniadm install`
+
+This can be usefull to expose ports like the Java debugging ones or mount additional volumes.
+
+### Kubernetes specific configuration
+
+The `uyuniadm install` command comes with parameters and thus configuration values for advanced helm chart configuration.
+To pass additional values to the Uyuni helm chart at installation time, use the `--helm-uyuni-values chart-values.yaml` parameter or a configuration like the following:
 
 ```
-kubectl get secret uyuni-ca -o=jsonpath='{.data.ca\.crt}' | base64 -d >ca.crt
-kubectl create configmap uyuni-ca --from-file=ca.crt
-rm ca.crt
+helm:
+  uyuni:
+    values: chart-values.yaml
 ```
 
-Run the following command to append the ingress annotation to use the new CA when applying the helm chart later:
+The path set as value for this configuration is a YAML file passed to the Uyuni Helm chart.
+Be aware that some of the values in this file will be overriden by the `uyuniadm install` parameters.
 
-```
-cat >values.yaml << EOF
-ingressSslAnnotations:
-  cert-manager.io/issuer: uyuni-ca-issuer
-EOF
-```
-
-
-### Deploy the pod and its resources
-
-
-Change the hostname associated to the persistent volumes to match the hostname of your node:
-
-```
-sed 's/uyuni-dev/youhostname/' -i pvs.yaml
-```
-
-Define the persistent volumes by running `kubectl apply -f pvs.yaml`.
-The volumes are folders on the cluster node and need to be manually created:
-
-```
-mkdir -p `kubectl get pv -o jsonpath='{.items[*].spec.local.path}'`
-```
-
-Run the following to add the helm chart configuration values but replace the `uyuni-dev.world-co.com` by your server's FQDN:
-
-```
-CAT >>values.yaml << EOF
-repository: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni
-storageClass: local-storage
-exposeJavaDebug: true
-uyuniMailFrom: notifications@uyuni-dev.world-co.com
-fqdn: uyuni-dev.world-co.com
-EOF
-```
-
-If deploying on `rke2`, add the `ingress: nginx` line to the `values.yaml` file.
-
+For example, to expose the Java debugging ports, add the `exposeJavaDebug: true` line to the helm chart values file.
 You can also set more variables like `sccUser` or `sccPass`.
 Check the [server-helm/values.yaml](https://github.com/uyuni-project/uyuni/blob/server-container/containers/server-helm/values.yaml) file for the complete list.
 
-Install the helm chart from the source's `containers` folder:
-
-```
-helm install uyuni server-helm -f values
-```
+If deploying on RKE2, add the `ingress: nginx` line to the Helm chart values file.
 
 Note that the Helm chart installs a deployment with one replica.
-The pod name is automatically generated by kubernetes and changes at every start.
+The pod name is automatically generated by Kubernetes and changes at every start.
 
-The pod takes a while to start as it needs to initialize the mounts and run the setup.
-Run `kubectl get pod -lapp=uyuni` and wait for it to be in `RUNNING` state.
-Even after this, give it time to complete the setup during first boot.
 
-You can monitor the progress of the setup with `kubectl exec $(kubectl get pod -lapp=uyuni -o jsonpath={.items[0].metadata.name}) -- tail -f /var/log/susemanager_setup.log`
+# Using Uyuni in containers
 
-## Using the pod
+To getting a shell in the pod run `uyunictl exec -ti bash`.
+Note that this command can be use to run any command to run inside the server like `uyunictl exec tail /var/log/rhn/rhn_web_ui.log`
 
-To getting a shell in the pod run `kubectl exec -ti $(kubectl get pod -lapp=uyuni -o jsonpath={.items[0].metadata.name}) -- sh`.
-Note that the part after the `--` can be any command to run inside the server.
+To copy files to the server, use the `uyunictl cp <local_path> server:<remote_path>` command.
+Conversely to copy files from the server use `uyunictl cp server:<remote_path> <local_path>`.
 
-To copy files to the server, use the `kubectl cp <local_path> $(kubectl get pod -lapp=uyuni -o jsonpath={.items[0].metadata.name}):<remote_path>` command.
-Run `kubectl cp --help` for more details on how to use it.
+# Developping with the containers
 
-## Developping with the pod
-
-###  Deploying code
+##  Deploying code
 
 To deploy java code on the pod change to the `java` directory and run:
 
@@ -233,7 +300,7 @@ In case you changed the pod namespace, pass the corresponding `-Ddeploy.namespac
 
 **Note** To deploy TSX or Salt code, use the `deploy-static-resources-kube` and `deploy-salt-files-kube` tasks of the ant file.
 
-### Attaching a java debugger
+## Attaching a java debugger
 
 First enable the JDWP options in both tomcat and taskomatic using the following command:
 
@@ -249,16 +316,12 @@ ant -f manager-build.xml restart-tomcat-kube restart-taskomatic-kube
 
 The debugger can now be attached to the usual ports (8000 for tomcat and 8001 for taskomatic) on the host FQDN.
 
-## Throwing everything away
+# Uninstalling
 
-If you want to create from a fresh pod, run `helm uninstall uyuni`.
-
-Then run this command on the cluster node to cleanup the volumes:
+To remove everything including the volumes, run the following command:
 
 ```
-for v in `ls /var/uyuni/`; do
-    rm -r /var/uyuni/$v; mkdir /var/uyuni/$v
-done
+uyuniadm uninstall --purge-volumes
 ```
 
-To create the pod again, just run the Helm install again and wait.
+Note that `cert-manager` will not be uninstalled if it was not installed by `uyuniadm`.
