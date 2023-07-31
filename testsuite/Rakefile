@@ -163,6 +163,7 @@ namespace :utils do
 
 
     indestructible_hulk_list = ENV['INDESTRUCTIBLE_HULK'].split(',')
+    puts "____________________"
     puts indestructible_hulk_list
     puts "____________________"
     # Extract the environment variable names from the matches
@@ -174,11 +175,11 @@ namespace :utils do
     puts undesired_env_variables
 
 
-    # Extract the environment variable names from the matches
-    matches.each do |match|
-      undesired_env_variables << match[0]
-      ENV.delete(match[0])
-    end
+    # # Extract the environment variable names from the matches
+    # matches.each do |match|
+    #   undesired_env_variables << match[0]
+    #   ENV.delete(match[0])
+    # end
   end
 
   desc "Your desired task"
