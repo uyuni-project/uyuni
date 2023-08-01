@@ -4,21 +4,27 @@ import { Select } from "components/input";
 import { Form } from "components/input/Form";
 import { SelectSearchField } from "components/table/SelectSearchField";
 
-const renderSearchField = (props) => {
-  const { field } = props;
-  const selectedOption = props.filterOptions.find((it) => it.value === field);
+const renderSearchField = ({ filterOptions, field, criteria, onSearch, placeholder, name }) => {
+  const selectedOption = filterOptions.find((it) => it.value === field);
   if (selectedOption?.filterOptions) {
-    return <SelectSearchField label={selectedOption.label} options={selectedOption.filterOptions} {...props} />;
+    return (
+      <SelectSearchField
+        label={selectedOption.label}
+        options={selectedOption.filterOptions}
+        criteria={criteria}
+        onSearch={onSearch}
+      />
+    );
   }
   return (
     <div className="form-group">
       <input
         className="form-control"
-        value={props.criteria || ""}
-        placeholder={props.placeholder}
+        value={criteria || ""}
+        placeholder={placeholder}
         type="text"
-        onChange={(e) => props.onSearch?.(e.target.value)}
-        name={props.name}
+        onChange={(e) => onSearch?.(e.target.value)}
+        name={name}
       />
     </div>
   );
@@ -26,7 +32,7 @@ const renderSearchField = (props) => {
 
 export const TableFilter = (props) => {
   // Dummy model and onChange to reuse the Select component as it requires a Form
-  let model = {};
+  const model = {};
   const onChange = () => {};
 
   const [selectedFilter, setSelectedFilter] = useState(props.field || "");

@@ -4,22 +4,27 @@ import { Select } from "components/input";
 
 const ALL_OPTION = { value: "ALL", label: t("All") };
 
-export const SelectSearchField = (props) => {
-  const [searchValue, setSearchValue] = useState(props.criteria || "");
+export const SelectSearchField = ({ label, criteria, options, onSearch }) => {
+  const [searchValue, setSearchValue] = useState(criteria || "");
 
   const handleSearchValueChange = (value) => {
     setSearchValue(value);
-    props.onSearch?.(value === ALL_OPTION.value ? "" : value);
+    onSearch?.(value === ALL_OPTION.value ? "" : value);
   };
 
-  const options = [ALL_OPTION].concat(props.options);
+  const allOptions = [ALL_OPTION].concat(options);
+
+  // Avoid invalid value selected when changing field.
+  if (!allOptions.some((it) => it.value === searchValue)) {
+    handleSearchValueChange(ALL_OPTION.value);
+  }
 
   return (
     <Select
       name="selectSearchField"
-      placeholder={props.label}
+      placeholder={label}
       defaultValue={searchValue}
-      options={options}
+      options={allOptions}
       onChange={(_name, value) => handleSearchValueChange(value)}
     />
   );
