@@ -6,7 +6,7 @@
 # generic file management steps
 
 When(/^I destroy "([^"]*)" directory on server$/) do |directory|
-  $server.run("rm -rf #{directory}")
+  get_target('server').run("rm -rf #{directory}")
 end
 
 When(/^I destroy "([^"]*)" directory on "([^"]*)"$/) do |directory, host|
@@ -20,7 +20,7 @@ When(/^I remove "([^"]*)" from "([^"]*)"$/) do |filename, host|
 end
 
 Then(/^file "([^"]*)" should exist on server$/) do |filename|
-  $server.run("test -f #{filename}")
+  get_target('server').run("test -f #{filename}")
 end
 
 Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
@@ -34,7 +34,7 @@ Then(/^file "([^"]*)" should have ([0-9]+) permissions on "([^"]*)"$/) do |filen
 end
 
 Then(/^file "([^"]*)" should not exist on server$/) do |filename|
-  $server.run("test ! -f #{filename}")
+  get_target('server').run("test ! -f #{filename}")
 end
 
 Then(/^file "([^"]*)" should not exist on "([^"]*)"$/) do |filename, host|
@@ -49,14 +49,14 @@ end
 
 When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
-  target = $proxy
-  if target_type.include? 'server' or $proxy.nil?
+  target = get_target('proxy')
+  if target_type.include? 'server' or get_target('proxy').nil?
     log 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
-    target = $server
+    target = get_target('server')
   end
 
   # Prepare bootstrap script for different types of clients
-  force_bundle = $use_salt_bundle ? '--force-bundle' : ''
+  force_bundle = use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
@@ -94,5 +94,5 @@ end
 
 Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
+  node.run("sed -i \'s/#{get_target('server').full_hostname}//\' /etc/hosts")
 end
