@@ -741,21 +741,21 @@
       </trans-unit>
       <trans-unit id="Management" xml:space="preserve">
         <source>Management</source>
-        <target/>
+        <target>Управување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage" xml:space="preserve">
         <source>Manage</source>
-        <target/>
+        <target>Управа</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Repositories" xml:space="preserve">
         <source>Manage Repositories</source>
-        <target/>
+        <target>Управување на складишта</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -839,21 +839,21 @@
       </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
-        <target/>
+        <target>Трансфер</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target>Пакети</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Search" xml:space="preserve">
         <source>Package Search</source>
-        <target/>
+        <target>Пребарување на пакети</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
