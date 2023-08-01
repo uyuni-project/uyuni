@@ -81,7 +81,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   system_name = get_system_name(host)
   output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
-    log output
+    log output.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => '_')
     raise "Bootstrap didn't finish properly"
   end
 end
