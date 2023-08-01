@@ -57,7 +57,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Edit a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
@@ -79,7 +80,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Add a network interface to a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
     And I click on "Update"
@@ -88,7 +90,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a network interface from a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "remove_network1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -96,7 +99,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Add a disk and a cdrom to a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "add_disk"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
@@ -109,7 +113,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Attach an image to a cdrom on a KVM virtual machine
     When I click on "Edit" in row "test-vm"
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I enter "/tmp/test-image.iso" as "disk2_source_file"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -117,7 +122,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a disk from a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "remove_disk2"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -243,7 +249,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a virtual volume
     When I follow "Storage"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I open the sub-list of the product "tmp"
     And I click on "Delete" in tree item "test-net0.xml"
     And I click on "Delete" in "Delete Virtual Storage Volume" modal
@@ -400,4 +407,3 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Cleanup: Remove the TFTP boot package from the server
     When I remove package "tftpboot-installation-SLE-15-SP3-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP3-x86_64" to be uninstalled on "server"
-

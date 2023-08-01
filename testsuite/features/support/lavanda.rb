@@ -166,8 +166,8 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_ok(cmd)
-    repeat_until_timeout(report_result: true) do
+  def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT)
+    repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
       break if code.zero?
       sleep 2
@@ -180,8 +180,8 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_fail(cmd)
-    repeat_until_timeout(report_result: true) do
+  def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT)
+    repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
       break if code.nonzero?
       sleep 2
