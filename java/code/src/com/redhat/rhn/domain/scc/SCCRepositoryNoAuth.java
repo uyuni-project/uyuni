@@ -14,11 +14,7 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.function.Function;
 
@@ -44,7 +40,7 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     @Override
     @Transient
     public String getUrl() {
-        if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
+        if (getCredentials() == null) {
             return MgrSyncUtils.urlToFSPath(getRepo().getUrl(), getRepo().getName()).toString();
         }
         return getRepo().getUrl();
@@ -57,16 +53,5 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
             Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
             Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return noAuth.apply(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .appendSuper(super.toString())
-                .append("authType", "none")
-                .toString();
     }
 }

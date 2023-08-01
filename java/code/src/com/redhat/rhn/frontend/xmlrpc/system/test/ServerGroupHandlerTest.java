@@ -42,7 +42,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -64,10 +63,8 @@ import java.util.List;
 public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private SaltApi saltApi = new TestSaltApi();
     private SystemQuery systemQuery = new TestSystemQuery();
-    private CloudPaygManager paygManager = new CloudPaygManager();
-    private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper

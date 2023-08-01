@@ -20,9 +20,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -188,13 +186,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     }
 
     /**
-     * @return {@link Optional} {@link SCCRepositoryCloudRmtAuth}
-     */
-    public Optional<SCCRepositoryCloudRmtAuth> cloudRmtAuth() {
-        return fold(b -> Optional.empty(), n -> Optional.empty(), t -> Optional.empty(), Optional::of);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -219,16 +210,5 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
             .append(getCredentials())
             .append(getRepo())
             .toHashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", getId())
-                .append("repo", Objects.toString(getRepo()))
-                .toString();
     }
 }

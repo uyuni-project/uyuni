@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -61,10 +60,9 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      * getInstance.
      * @param systemQueryIn systemQuery to use
      * @param saltApiIn saltApi to use
-     * @param paygMgrIn cloudPaygManager to use
      */
-    public SSHMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
-        super(systemQueryIn, saltApiIn, paygMgrIn);
+    public SSHMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        super(systemQueryIn, saltApiIn);
     }
 
     @Override
@@ -138,7 +136,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction(systemQuery, saltApi, paygManager);
+        return new RegisterMinionEventMessageAction(systemQuery, saltApi);
     }
 
     /**

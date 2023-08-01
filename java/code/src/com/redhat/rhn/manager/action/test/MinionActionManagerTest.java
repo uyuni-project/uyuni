@@ -55,7 +55,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -105,10 +104,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
-    private final CloudPaygManager paygManager = new CloudPaygManager();
-    private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper

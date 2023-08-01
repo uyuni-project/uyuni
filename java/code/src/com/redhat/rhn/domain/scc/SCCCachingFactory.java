@@ -17,12 +17,10 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
@@ -34,13 +32,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -325,29 +323,30 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return true if refresh is needed, false otherwise
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
-        return getSession()
-                .createQuery(
-                        "SELECT MAX(modified) FROM Credentials WHERE type.label IN ('scc', 'cloudrmt')", Date.class)
-                .uniqueResultOptional()
-                .map(lastModified -> {
-                    // When was the cache last modified?
-                    return Opt.fold(
-                            lastRefreshDateIn,
-                            () -> {
-                                log.debug("REFRESH NEEDED - never refreshed");
-                                return true;
-                            },
-                            modifiedCache -> {
-                                log.debug("COMPARE: {} and {} : {}", modifiedCache, lastModified,
-                                        lastModified.compareTo(modifiedCache));
-                                return lastModified.compareTo(modifiedCache) > 0;
-                            }
-                    );
-                })
-                .orElseGet(() -> {
-                    log.debug("REFRESH NEEDED - no credentials found");
+        Session session = getSession();
+        Criteria c = session.createCriteria(Credentials.class);
+        c.add(Restrictions.eq("type", CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
+        c = c.setProjection(Projections.max("modified"));
+        Date modifiedCreds = (Date) c.uniqueResult();
+        if (modifiedCreds == null) {
+            log.debug("REFRESH NEEDED - no credentials found");
+            return true;
+        }
+
+        // When was the cache last modified?
+        return Opt.fold(
+                lastRefreshDateIn,
+                () -> {
+                    log.debug("REFRESH NEEDED - never refreshed");
                     return true;
-                });
+                },
+                modifiedCache -> {
+                    log.debug("COMPARE: {} and {} : {}", modifiedCache, modifiedCreds,
+                            modifiedCache.compareTo(modifiedCreds));
+                    return modifiedCache.compareTo(modifiedCreds) < 0;
+                }
+        );
     }
 
     /**
@@ -457,50 +456,24 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return list of {@link SCCRepository} for the given channel family label
      */
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
-        return getSession().createNamedQuery("SCCRepository.lookupByChannelFamily", SCCRepository.class)
+        return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
                 .setParameter("channelFamily", channelFamily).getResultList();
     }
 
     /**
-     * Returns a set of repositories for a product, independent of the version, and arch.
+     * Returns a list of repositories for a product, independent of the version, and arch.
      *
      * @param productName name of the product we want to filter
      * @param archName arch name we want to filter
-     * @return Set of repositories for all version of one product and arch
+     * @return List of repositories for all version of one product and arch
      */
-    public static Set<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
-            String productName, String archName) {
-        return new HashSet<>(getSession()
-                .createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
+    public static List<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(String productName,
+                                                                                    String archName) {
+        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg")
                 .setParameter("product_name", productName)
                 .setParameter("arch_name", archName)
-                .list());
+                .getResultList();
     }
-
-    /**
-     * Returns a set of repositories for a root product
-     *
-     * @param productName name of the product we want to filter
-     * @param productVersion version of the product we want to filter
-     * @param archName arch name we want to filter
-     * @return Set of repositories for one root product with extensions
-     */
-    public static Set<SCCRepository> lookupRepositoriesByRootProductNameVersionArchForPayg(
-            String productName, String productVersion, String archName) {
-        SUSEProduct product = SUSEProductFactory.findSUSEProduct(productName, productVersion, null, archName, true);
-        if (product == null) {
-            return Collections.emptySet();
-        }
-        List<SUSEProduct> prds = SUSEProductFactory.findAllExtensionsOfRootProduct(product);
-        prds.add(product);
-        List<String> cfList = List.of(product.getChannelFamily().getLabel(),
-                ChannelFamilyFactory.MODULE_CHANNEL_FAMILY_LABEL);
-        return prds.stream()
-                .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
-                .flatMap(p -> p.getRepositories().stream())
-                .map(SUSEProductSCCRepository::getRepository)
-                .collect(Collectors.toSet());
-        }
 
     /**
      * Find a compatible SCCRepository using a json repository

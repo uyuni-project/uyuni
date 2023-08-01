@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -58,7 +57,6 @@ import java.util.Optional;
 public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCaseWithUser {
 
     protected SaltService saltServiceMock;
-    protected CloudPaygManager paygManager;
 
     // tested object, initialized in subclasses
     protected AbstractMinionBootstrapper bootstrapper;
@@ -69,7 +67,6 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        paygManager = new CloudPaygManager();
     }
 
     /**

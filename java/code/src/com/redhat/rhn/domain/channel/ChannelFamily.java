@@ -29,6 +29,8 @@ import java.util.Set;
  */
 public class ChannelFamily extends BaseDomainHelper {
 
+    public static final String TOOLS_CHANNEL_FAMILY_LABEL = "SLE-M-T";
+
     private Long id;
     private String name;
     private String label;

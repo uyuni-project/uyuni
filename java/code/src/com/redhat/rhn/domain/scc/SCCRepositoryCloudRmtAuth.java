@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.scc;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,16 +80,5 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
             Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
             Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return cloudRmtAuth.apply(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .appendSuper(super.toString())
-                .append("authType", "rmtAuth")
-                .toString();
     }
 }

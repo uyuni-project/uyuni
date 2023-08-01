@@ -97,7 +97,7 @@ public class PaygSshDataFactory extends HibernateFactory {
      * @return list of payg ssh daa objects
      */
     public static List<PaygSshData> lookupPaygSshData() {
-        return getSession().createQuery("FROM PaygSshData", PaygSshData.class).list();
+        return getSession().createQuery("FROM PaygSshData").list();
     }
 
     /**

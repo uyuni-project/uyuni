@@ -22,63 +22,38 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.function.Function;
 
 /**
- * Allows to maps enum in a custom way
- * @param <T> enum class
- * @param <K> type class
+ * CustomEnumType
+ * @param <T> type
  */
-public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
+public class CustomEnumType<T extends Enum<T>> implements UserType {
 
-    private final Class<T> enumClass;
-
-    private final Class<K> typeClass;
-    private final Function<T, K> toDb;
-    private final Function<K, T> fromDb;
+    private final Class<T> clazz;
+    private final Function<T, String> toDb;
+    private final Function<String, T> fromDb;
 
     /**
      * Constructor
-     * @param enumClassIn the enum class
-     * @param typeClassIn the type class to store in the database. Currently supported: String, Integer
+     * @param clazzIn the class
      * @param toDbIn to db
      * @param fromDbIn from db
      */
-    protected CustomEnumType(Class<T> enumClassIn, Class<K> typeClassIn, Function<T, K> toDbIn,
-                             Function<K, T> fromDbIn) {
-        // Enforce type check
-        if (!typeClassIn.equals(Integer.class) && !typeClassIn.equals(String.class)) {
-            throw new IllegalArgumentException("Unsupported type class " + typeClassIn.getSimpleName());
-        }
-
-        this.enumClass = enumClassIn;
-        this.typeClass = typeClassIn;
+    public CustomEnumType(Class<T> clazzIn, Function<T, String> toDbIn, Function<String, T> fromDbIn) {
+        this.clazz = clazzIn;
         this.toDb = toDbIn;
         this.fromDb = fromDbIn;
     }
 
-    /**
-     * Defines the sql type to use
-     * @return a value from {@link java.sql.SQLType}
-     */
-    public int getSqlType() {
-        if (typeClass.equals(String.class)) {
-            return Types.VARCHAR;
-        }
-
-        // Return numeric as type check is enforced in the constructor
-        return Types.NUMERIC;
-    }
-
     @Override
     public int[] sqlTypes() {
-        return new int[]{getSqlType()};
+        return new int[]{12};
     }
 
     @Override
     public Class<T> returnedClass() {
-        return enumClass;
+        return clazz;
     }
 
     @Override
@@ -95,7 +70,7 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object o)
             throws HibernateException, SQLException {
         String name = names[0];
-        K value = resultSet.getObject(name, typeClass);
+        String value = resultSet.getString(name);
         if (resultSet.wasNull()) {
             return null;
         }
@@ -107,12 +82,12 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     @Override
     public void nullSafeSet(PreparedStatement statement, Object value, int position,
             SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        K jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
+        String jdbcValue = value == null ? null : toDb.apply((T)value);
         if (jdbcValue == null) {
             statement.setNull(position, 12);
         }
         else {
-            statement.setObject(position, jdbcValue, getSqlType());
+            statement.setString(position, jdbcValue);
         }
     }
 

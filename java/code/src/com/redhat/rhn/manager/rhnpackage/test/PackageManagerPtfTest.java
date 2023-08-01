@@ -120,6 +120,8 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
 
         PackageTestUtils.installPackagesOnServer(List.of(ptfPackage, ptfMaster, standard), server);
 
+        commitAndCloseSession();
+
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
         ServerFactory.updateServerNeededCache(server.getId());
 

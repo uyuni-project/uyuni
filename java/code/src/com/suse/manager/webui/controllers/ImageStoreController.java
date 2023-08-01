@@ -210,7 +210,8 @@ public class ImageStoreController {
             json.addProperty("uri", s.getUri());
             json.addProperty("storeType", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
+            if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
+                    Credentials.TYPE_REGISTRY)) {
                 Credentials dc = s.getCreds();
                 json.addProperty("username", dc.getUsername());
                 json.addProperty("password", dc.getPassword());
@@ -250,7 +251,8 @@ public class ImageStoreController {
             json.addProperty("uri", uriPrefix + s.getUri());
             json.addProperty("storeType", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
+            if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
+                    Credentials.TYPE_REGISTRY)) {
                 Credentials dc = s.getCreds();
                 json.addProperty("username", dc.getUsername());
                 json.addProperty("password", dc.getPassword());

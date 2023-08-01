@@ -85,18 +85,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param family the channel family
      * @return the newly created SUSE product
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
-        return createTestSUSEProduct(family, TestUtils.randomString().toLowerCase());
-    }
-        /**
-         * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
-         * @param family the channel family
-         * @param name the product name
-         * @return the newly created SUSE product
-         * @throws Exception if anything goes wrong
-         */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family, String name) throws Exception {
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) {
         SUSEProduct product = new SUSEProduct();
+        String name = TestUtils.randomString().toLowerCase();
         product.setName(name);
         product.setVersion("1");
         product.setFriendlyName("SUSE Test product " + name);

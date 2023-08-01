@@ -46,7 +46,6 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.PackageTestUtils;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -105,10 +104,9 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        CloudPaygManager paygMgr = new CloudPaygManager();
 
-        RegularMinionBootstrapper regularBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi, paygMgr);
-        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygMgr);
+        RegularMinionBootstrapper regularBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
+        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
         XmlRpcSystemHelper xmlRpcHelper = new XmlRpcSystemHelper(regularBootstrapper, sshBootstrapper);
 
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);

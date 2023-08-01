@@ -143,7 +143,4 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'system-overview-update-queue
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'system-profile-refresh', 'com.redhat.rhn.taskomatic.task.SystemProfileRefreshTask');
 
-INSERT INTO rhnTaskoTask (id, name, class)
-VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'payg-dimension-computation', 'com.redhat.rhn.taskomatic.task.payg.PaygComputeDimensionsTask');
-
 commit;

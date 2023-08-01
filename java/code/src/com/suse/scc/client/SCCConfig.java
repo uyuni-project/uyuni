@@ -16,9 +16,6 @@ package com.suse.scc.client;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * SCC configuration container class.
@@ -60,8 +57,6 @@ public class SCCConfig {
     /** Path to the logging directory. */
     private String loggingDir;
 
-    private Map<String, String> additionalHeaders;
-
     /** True to skip owner setting in tests */
     private boolean skipOwner = false;
 
@@ -71,7 +66,7 @@ public class SCCConfig {
      * @param localResourcePathIn the local resource path
      */
     public SCCConfig(String localResourcePathIn) {
-        this(DEFAULT_URL, null, null, null, localResourcePathIn, DEFAULT_LOGGING_DIR, false, null);
+        this(DEFAULT_URL, null, null, null, localResourcePathIn, DEFAULT_LOGGING_DIR, false);
     }
 
     /**
@@ -82,20 +77,7 @@ public class SCCConfig {
      * @param uuidIn the UUID
      */
     public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn) {
-        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR, false, null);
-    }
-
-    /**
-     * Instantiates a new SCC config to read from SCC with default logging directory.
-     * @param urlIn the url
-     * @param usernameIn the username
-     * @param passwordIn the password
-     * @param uuidIn the UUID
-     * @param additionalHeadersIn additional headers for the request
-     */
-    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
-                     Map<String, String> additionalHeadersIn) {
-        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR, false, additionalHeadersIn);
+        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR, false);
     }
 
     /**
@@ -108,25 +90,8 @@ public class SCCConfig {
      * @param loggingDirIn the logging dir
      * @param skipOwnerIn skip owner setting for testing
      */
-    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn, String localResourcePathIn,
-                     String loggingDirIn, boolean skipOwnerIn) {
-        this(urlIn, usernameIn, passwordIn, uuidIn, localResourcePathIn, loggingDirIn, skipOwnerIn, null);
-    }
-
-    /**
-     * Full constructor.
-     * @param urlIn the url
-     * @param usernameIn the username
-     * @param passwordIn the password
-     * @param uuidIn the UUID
-     * @param localResourcePathIn the local resource path
-     * @param loggingDirIn the logging dir
-     * @param skipOwnerIn skip owner setting for testing
-     * @param additionalHeadersIn map of additional headers to set for the request
-     */
     public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
-            String localResourcePathIn, String loggingDirIn, boolean skipOwnerIn,
-                     Map<String, String> additionalHeadersIn) {
+            String localResourcePathIn, String loggingDirIn, boolean skipOwnerIn) {
         url = urlIn;
         username = usernameIn;
         password = passwordIn;
@@ -134,7 +99,6 @@ public class SCCConfig {
         localResourcePath = localResourcePathIn;
         loggingDir = loggingDirIn;
         skipOwner = skipOwnerIn;
-        additionalHeaders = additionalHeadersIn;
     }
 
     /**
@@ -190,12 +154,5 @@ public class SCCConfig {
      */
     public boolean isSkipOwner() {
         return skipOwner;
-    }
-
-    /**
-     * @return additional headers
-     */
-    public Map<String, String> getAdditionalHeaders() {
-        return Optional.ofNullable(additionalHeaders).orElse(new HashMap<>());
     }
 }

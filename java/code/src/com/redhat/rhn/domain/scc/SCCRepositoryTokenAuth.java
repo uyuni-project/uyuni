@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -94,14 +93,4 @@ public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
         return tokenAuth.apply(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .appendSuper(super.toString())
-                .append("authType", "token")
-                .toString();
-    }
 }

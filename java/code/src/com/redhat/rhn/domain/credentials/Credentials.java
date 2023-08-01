@@ -25,8 +25,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Optional;
-
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
  *
@@ -216,19 +214,7 @@ public class Credentials extends BaseDomainHelper {
      * is at the moment denoted by having the url field set.
      */
     public boolean isPrimarySCCCredential() {
-        return isTypeOf(TYPE_SCC) && url != null;
-    }
-
-    /**
-     * Check if this credential is of type credentialType
-     * @param credentialType type to check for
-     * @return true if the type match, otherwise false
-     */
-    public boolean isTypeOf(String credentialType) {
-        return Optional.ofNullable(getType())
-                .map(CredentialsType::getLabel)
-                .filter(s -> s.equals(credentialType))
-                .isPresent();
+        return type.getLabel().equals(TYPE_SCC) && url != null;
     }
 
     /**
@@ -241,12 +227,10 @@ public class Credentials extends BaseDomainHelper {
         }
         Credentials otherCredentials = (Credentials) other;
         return new EqualsBuilder()
-                .append(getType(), otherCredentials.getType())
-                .append(getUsername(), otherCredentials.getUsername())
-                .append(getPassword(), otherCredentials.getPassword())
-                .append(getUrl(), otherCredentials.getUrl())
-                .append(getExtraAuthData(), otherCredentials.getExtraAuthData())
-                .isEquals();
+            .append(getType(), otherCredentials.getType())
+            .append(getUsername(), otherCredentials.getUsername())
+            .append(getPassword(), otherCredentials.getPassword())
+            .isEquals();
     }
 
     /**

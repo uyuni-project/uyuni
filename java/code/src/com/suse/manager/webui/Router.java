@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -116,13 +115,12 @@ public class Router implements SparkApplication {
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
-        CloudPaygManager paygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
         ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
-                new NotificationMessageController(systemQuery, saltApi, paygManager);
+                new NotificationMessageController(systemQuery, saltApi);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);

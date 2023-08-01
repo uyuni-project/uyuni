@@ -15,7 +15,7 @@ type Props = {
   isInstance: boolean;
   labelPrefix: string;
   onChange: Function;
-  readOnly?: boolean;
+  editing?: boolean;
 };
 
 const PaygSshDataEdit = (props: Props) => {
@@ -60,7 +60,6 @@ const PaygSshDataEdit = (props: Props) => {
           setItem(props.paygSshData);
           setErrors(null);
         }}
-        disableEditing={props.readOnly}
         renderContent={() => (
           <React.Fragment>
             <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />

@@ -15,24 +15,21 @@
 
 package com.redhat.rhn.taskomatic.task.payg;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 
-import com.suse.cloud.CloudPaygManager;
-import com.suse.manager.admin.PaygAdminManager;
-
 import com.jcraft.jsch.JSchException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.util.Collections;
@@ -43,7 +40,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
     private final PaygAuthDataProcessor paygDataProcessor = new PaygAuthDataProcessor();
     private PaygAuthDataExtractor paygDataExtractor = new PaygAuthDataExtractor();
 
-    private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final Logger LOG = LogManager.getLogger(PaygUpdateAuthTask.class);
 
     private static final String KEY_ID = "sshData_id";
 
@@ -52,35 +49,9 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         return "payg";
     }
 
-    private void manageLocalHostPayg() {
-        if (cloudPaygManager.isPaygInstance()) {
-            if (PaygSshDataFactory.lookupByHostname("localhost").isEmpty()) {
-                PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
-                paygSshData.setHost("localhost");
-                paygSshData.setDescription("SUSE Manager Pay-as-you-go");
-                paygSshData.setUsername("root");
-                PaygSshDataFactory.savePaygSshData(paygSshData);
-                HibernateFactory.getSession().flush();
-                HibernateFactory.commitTransaction();
-            }
-        }
-        else {
-            try {
-                PaygAdminManager pam = new PaygAdminManager(new TaskomaticApi());
-                pam.delete("localhost");
-            }
-            catch (LookupException e) {
-                log.debug("No localhost PAYG instance found, noting to delete");
-            }
-        }
-    }
-
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         log.debug("Running PaygUpdateAuthTask");
-
-        manageLocalHostPayg();
-
         if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
             Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(
                     Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
@@ -100,17 +71,11 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         this.paygDataExtractor = paygDataExtractorIn;
     }
 
-    /**
-     * Need for automatic tests
-     * @param mgrIn
-     */
-    public void setCloudPaygManager(CloudPaygManager mgrIn) {
-        cloudPaygManager = mgrIn;
-    }
-
     private void updateInstanceData(PaygSshData instance) {
+        PaygInstanceInfo paygData;
+        LocalizationService ls = LocalizationService.getInstance();
         try {
-            PaygInstanceInfo paygData = paygDataExtractor.extractAuthData(instance);
+            paygData = paygDataExtractor.extractAuthData(instance);
             paygDataProcessor.processPaygInstanceData(instance, paygData);
             instance.setStatus(PaygSshData.Status.S);
             instance.setErrorMessage("");
@@ -118,12 +83,12 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
         }
         catch (PaygDataExtractException | JSchException e) {
-            log.error("error getting instance data ", e);
+            LOG.error("error getting instance data ", e);
             saveError(instance,  e.getMessage());
 
         }
         catch (Exception e) {
-            log.error("error processing instance data", e);
+            LOG.error("error processing instance data", e);
             // Error message will be empty because we don't want to show this error on UI
             saveError(instance, "");
         }

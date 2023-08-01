@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -80,10 +79,10 @@ public class ArchType extends BaseDomainHelper {
     public PackageType getPackageType() {
         String archType = getLabel();
 
-        if (archType.equals(PackageFactory.ARCH_TYPE_DEB)) {
+        if (archType.equals("deb")) {
             return PackageType.DEB;
         }
-        else if (archType.equals(PackageFactory.ARCH_TYPE_RPM)) {
+        else if (archType.equals("rpm")) {
             return PackageType.RPM;
         }
         else {

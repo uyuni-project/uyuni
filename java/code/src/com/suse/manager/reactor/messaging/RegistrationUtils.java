@@ -26,7 +26,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -85,8 +84,6 @@ public class RegistrationUtils {
     private static final String OS_ARCH = "osarch";
 
     private static final Logger LOG = LogManager.getLogger(RegistrationUtils.class);
-    public static final String OS_MAJOR_RELEASE = "osmajorrelease";
-    public static final String OS_RELEASE = "osrelease";
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -353,47 +350,11 @@ public class RegistrationUtils {
         );
     }
 
-    /**
-     * Check if the products installed on the minion are allowed for free
-     * use on a SUSE Manager PAYG Server
-     * @param systemQuery query api
-     * @param minionId the minionId
-     * @param channels assigned channels
-     * @param grains the system grains
-     * @return true if the use is allowed
-     */
-    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId,
-                                          Set<Channel> channels, ValueMap grains) {
-        boolean isPaygClient = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
-        if (isPaygClient) {
-            return true;
-        }
-        return identifyProduct(systemQuery, minionId, grains.getValueAsString(OS_ARCH), channels, grains)
-                .stream()
-                .allMatch(p -> {
-                    if (p.getFree()) {
-                        return true;
-                    }
-                    ChannelFamily cf = p.getChannelFamily();
-                    if (cf != null) {
-                        return cf.getLabel().equals("SMP") || cf.getLabel().equals("SLE-M-T");
-                    }
-                    return false;
-                });
-    }
-
     private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, MinionServer server, ValueMap grains) {
-        return identifyProduct(systemQuery, server.getMinionId(), server.getServerArch().getLabel(),
-                server.getChannels(), grains);
-    }
-    private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, String minionId, String arch,
-                                                    Set<Channel> channels, ValueMap grains) {
-        String osGrain = grains.getValueAsString(OS);
-        String osArchGrain = grains.getValueAsString(OS_ARCH);
-        if ("suse".equalsIgnoreCase(osGrain)) {
+        if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
-                    systemQuery.getProducts(minionId);
-            return productList.stream().flatMap(pl -> pl.stream()
+                    systemQuery.getProducts(server.getMinionId());
+            return Opt.stream(productList).flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();
                         String osVersion = pi.getVersion();
@@ -402,47 +363,48 @@ public class RegistrationUtils {
                         Optional<SUSEProduct> suseProduct =
                                 ofNullable(SUSEProductFactory.findSUSEProduct(osName,
                                         osVersion, osRelease, osArch, true));
-                        if (suseProduct.isEmpty()) {
+                        if (!suseProduct.isPresent()) {
                             LOG.warn("No product match found for: {} {} {} {}", osName, osVersion, osRelease, osArch);
                         }
-                        return suseProduct.stream();
+                        return Opt.stream(suseProduct);
                     })).collect(toSet());
         }
         else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
-                .contains(osGrain.toLowerCase())) {
+                .contains(grains.getValueAsString(OS).toLowerCase())) {
 
-            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(minionId);
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            channels, arch, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
+                            server, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
                             x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
                             x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
 
                 if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
-                            rhel.getRelease(), arch);
+                            rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
                     return Stream.empty();
                 }
                 return rhel.getAllSuseProducts().stream();
             }).collect(toSet());
         }
-        else if ("ubuntu".equalsIgnoreCase(osGrain)) {
+        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
             SUSEProduct product = SUSEProductFactory.findSUSEProduct("ubuntu-client",
-                    grains.getValueAsString(OS_RELEASE), null, osArchGrain + "-deb", false);
+                    grains.getValueAsString("osrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
             if (product != null) {
                 return Collections.singleton(product);
             }
         }
-        else if ("debian".equalsIgnoreCase(osGrain)) {
+        else if ("debian".equalsIgnoreCase(grains.getValueAsString(OS))) {
            SUSEProduct product = SUSEProductFactory.findSUSEProduct("debian-client",
-                   grains.getValueAsString(OS_MAJOR_RELEASE), null, osArchGrain + "-deb", false);
+                   grains.getValueAsString("osmajorrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
            if (product != null) {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is {}, arch is {}", osGrain, osArchGrain);
+        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS),
+                grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 

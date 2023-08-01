@@ -20,7 +20,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
 import java.util.List;
@@ -90,8 +93,15 @@ public class CredentialsFactory extends HibernateFactory {
      * Helper method for looking up SCC credentials.
      * @return credentials or null
      */
-    public static List<Credentials> listSCCCredentials() {
-        return listCredentialsByType(Credentials.TYPE_SCC);
+    @SuppressWarnings("unchecked")
+    public static List<Credentials> lookupSCCCredentials() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(Credentials.class);
+        c.add(Restrictions.eq("type", CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
+        c.addOrder(Order.asc("url"));
+        c.addOrder(Order.asc("id"));
+        return c.list();
     }
 
     /**
@@ -154,9 +164,11 @@ public class CredentialsFactory extends HibernateFactory {
      * @param username - the username
      * @param password - the password
      * @param credentialsType - credentials type
+     * @param params - optional paramaters
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(String username, String password, String credentialsType) {
+    public static Credentials createCredentials(String username, String password,
+            String credentialsType, Map<String, String> params) {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
@@ -185,17 +197,6 @@ public class CredentialsFactory extends HibernateFactory {
         CredentialsFactory.storeCredentials(credentials);
 
         return credentials;
-    }
-
-    /**
-     * @param type the credential type label
-     * @return return a list of credentials of the given type
-     */
-    public static List<Credentials> listCredentialsByType(String type) {
-        return getSession()
-                .createNamedQuery("Credentials.listByType", Credentials.class)
-                .setParameter("type", findCredentialsTypeByLabel(type))
-                .list();
     }
 
     @Override
