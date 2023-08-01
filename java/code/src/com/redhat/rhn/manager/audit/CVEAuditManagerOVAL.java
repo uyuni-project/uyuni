@@ -64,7 +64,7 @@ public class CVEAuditManagerOVAL {
     }
 
     public static boolean doesSupportOVALAuditing(Server clientServer) {
-        // TODO: check if OVAL is synced and client product is Red Hat, Debian, Ubuntu or SUSE
+        // TODO: check if OVAL is synced and client product is support .e.g. Red Hat, Debian, Ubuntu or SUSE
         return true;
     }
 
