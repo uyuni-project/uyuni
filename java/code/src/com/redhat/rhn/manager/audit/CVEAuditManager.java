@@ -793,21 +793,8 @@ public class CVEAuditManager {
 
     }
 
-    /**
-     * KNOW YOUR DATA!
-     * The 'results' list contains the result from the CVE audit SQL query,
-     * structured as a joined product of following entities: Server x Errata x Package x Channel
-     *
-     * Therefore, the number of entries in the result will be equal to:
-     * [# affected/patched servers] * [# errata involved in CVE] *
-     *     [total # packages in all the erratas] * [# channels involving any of the erratas]
-     *
-     * Processing this data, the algorithm determines a system's patch status as affected/patched and any
-     * assigned/unassigned channels having any of the erratas, while keeping a list of relevant patches and their
-     * suggested channels per server.
-     */
     public static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
-                                                           String cveIdentifier) {
+        String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_systems_by_patch_status");
 
@@ -857,7 +844,7 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
-                                                                String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+        String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
