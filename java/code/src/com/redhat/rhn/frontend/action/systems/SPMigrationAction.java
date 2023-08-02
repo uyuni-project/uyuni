@@ -317,7 +317,9 @@ public class SPMigrationAction extends RhnAction {
 
             // Setup list of channels to subscribe to
             List<Long> channelIDs = new ArrayList<>();
-            channelIDs.addAll(Arrays.asList(targetChildChannels));
+            if (targetChildChannels != null) {
+                channelIDs.addAll(Arrays.asList(targetChildChannels));
+            }
             channelIDs.add(targetBaseChannel);
 
             // Schedule the dist upgrade action
@@ -354,6 +356,8 @@ public class SPMigrationAction extends RhnAction {
                 request.setAttribute(TARGET_PRODUCTS, migrationTargets);
 
                 ActionErrors errors = new ActionErrors();
+                // We do not support migration with individual channels in UI. So we only
+                // need 1 error message as the second case can only happens in API
                 getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
                 getStrutsDelegate().saveMessages(request, errors);
 
@@ -522,7 +526,9 @@ public class SPMigrationAction extends RhnAction {
      */
     private SUSEProductSet createProductSet(Long baseProduct, Long[] addonProducts) {
         List<Long> addonProductsList = new ArrayList<>();
-        addonProductsList.addAll(Arrays.asList(addonProducts));
+        if (addonProducts != null) {
+            addonProductsList.addAll(Arrays.asList(addonProducts));
+        }
         return new SUSEProductSet(baseProduct, addonProductsList);
     }
 

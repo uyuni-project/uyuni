@@ -7882,9 +7882,8 @@ public class SystemHandler extends BaseHandler {
                 throw new TaskomaticApiException(e.getMessage());
             }
             catch (DistUpgradePaygException e) {
-                // We are not allowing product migration in SUMA PAYG instance
-                throw new FaultException(-1, "productMigrationNotAllowedPayg",
-                        "Product migration in SUSE Manager PAYG is not allowed");
+                // We forbid product migration in SUMA PAYG instance in certain situations
+                throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
             }
         }
 
@@ -7975,9 +7974,8 @@ public class SystemHandler extends BaseHandler {
                     earliestOccurrence, cloudPaygManager.isPaygInstance());
         }
         catch (DistUpgradePaygException e) {
-            // We are not allowing product migration in SUMA PAYG instance
-            throw new FaultException(-1, "productMigrationNotAllowedPayg",
-                    "Product migration in SUSE Manager PAYG is not allowed");
+            // We forbid product migration in SUMA PAYG instance in certain situations
+            throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
