@@ -39,6 +39,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.UserPreferenceUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -296,9 +297,10 @@ public class SystemDetailsEditAction extends RhnAction {
 
                     log.debug("adding entitlement success msg");
                     if (ConfigDefaults.get().isDocAvailable()) {
-                        createSuccessMessage(request,
+                        createMessage(request,
                                 "system.entitle.added." + e.getLabel(),
-                                s.getId().toString());
+                                s.getId().toString(),
+                                GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(user));
                     }
                     else {
                         createSuccessMessage(request,

@@ -104,6 +104,16 @@ public class UserPreferenceUtils {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
 
+        return getDocsLocale(user);
+    }
+
+    /**
+     * Get the user's configured documentation locale. If no user is available return the config default
+     *
+     * @param user the current user
+     * @return the users documentation locale
+     */
+    public String getDocsLocale(User user) {
         if (isUserAuthenticated(user)) {
             String locale = user.getPreferredDocsLocale();
             if (locale != null) {
