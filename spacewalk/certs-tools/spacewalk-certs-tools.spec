@@ -87,7 +87,7 @@ sed -i 's|etc/httpd/conf|etc/apache2|g' ssl-howto.txt
 %install
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 
-sed -i '1s|python\b|python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap client_config_update.py
+sed -i '1s|python\b|python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
@@ -126,7 +126,6 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %doc %{_mandir}/man1/mgr-*.1*
 %doc ssl-howto-simple.txt ssl-howto.txt
 %license LICENSE
-%{pub_bootstrap_dir}/client_config_update.py*
 %dir %{rhnroot}
 %dir %{pub_dir}
 %dir %{pub_bootstrap_dir}
