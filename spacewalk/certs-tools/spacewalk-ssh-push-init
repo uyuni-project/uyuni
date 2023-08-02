@@ -268,7 +268,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt"
   cleanup_temp_files
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
@@ -278,5 +278,5 @@ elif [ -n "${BOOTSTRAP}" ]; then
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files remotely"
-  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt"
 fi
