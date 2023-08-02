@@ -22,3 +22,6 @@ CREATE TABLE suseOVALReference
     url    VARCHAR,
     CONSTRAINT suse_oval_reference_id_pk PRIMARY KEY (ref_id, definition_id)
 );
+
+CREATE INDEX suse_oval_reference_definition_id_index
+    ON suseOVALReference(definition_id);

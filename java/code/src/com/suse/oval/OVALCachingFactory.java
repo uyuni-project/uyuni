@@ -1,5 +1,8 @@
 package com.suse.oval;
 
+import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
@@ -18,25 +21,32 @@ import com.suse.oval.db.OVALVulnerablePackage;
 import com.suse.oval.manager.OvalObjectManager;
 import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.ovaltypes.Advisory;
+import com.suse.oval.ovaltypes.BaseCriteria;
+import com.suse.oval.ovaltypes.CriteriaType;
+import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.ReferenceType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 
+import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -117,6 +127,68 @@ public class OVALCachingFactory extends HibernateFactory {
         instance.saveObject(definition);
     }
 
+    public static void saveDefinitions_Optimized(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_definition");
+
+        for (DefinitionType definition : definitions) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", definition.getId());
+            params.put("class", definition.getDefinitionClass().toString());
+            params.put("title", definition.getMetadata().getTitle());
+            params.put("cve_name", definition.getMetadata().getTitle());
+            params.put("description", definition.getMetadata().getDescription());
+            params.put("os_family", osFamily.toString());
+            params.put("os_version", osVersion);
+            params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(definition.getCriteria()));
+
+            mode.execute(params, new HashMap<>());
+        }
+
+        saveAffectedPlatforms(definitions);
+        saveReferences(definitions);
+
+        getSession().clear();
+        getSession().flush();
+    }
+
+    private static void saveAffectedPlatforms(List<DefinitionType> definitions) {
+        WriteMode deleteOldAffectedPlatformsMode = ModeFactory.getWriteMode("oval_queries", "delete_affected_platforms_from_definition");
+        CallableMode addAffectedPlatformToDefinitionMode = ModeFactory.getCallableMode("oval_queries", "add_affected_platform_to_definition");
+
+        for (DefinitionType definition : definitions) {
+            deleteOldAffectedPlatformsMode.executeUpdate(Map.of("definition_id", definition.getId()));
+
+            for (String affectedPlatform : definition.getMetadata().getAffected().get(0).getPlatforms()) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("definition_id", definition.getId());
+                params.put("platform_name", affectedPlatform);
+
+                addAffectedPlatformToDefinitionMode.execute(params, Collections.emptyMap());
+            }
+        }
+
+    }
+
+    private static void saveReferences(List<DefinitionType> definitions) {
+        WriteMode deleteOldReferencesMode = ModeFactory.getWriteMode("oval_queries", "delete_references_from_definition");
+        WriteMode addReferenceToDefinitionMode = ModeFactory.getWriteMode("oval_queries", "add_reference_to_definition");
+
+        for (DefinitionType definition : definitions) {
+            deleteOldReferencesMode.executeUpdate(Map.of("definition_id", definition.getId()));
+
+            for (ReferenceType reference : definition.getMetadata().getReference()) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("ref_id", reference.getRefId());
+                params.put("definition_id", definition.getId());
+                params.put("source", reference.getSource());
+                params.put("url", reference.getRefUrl().orElse(""));
+
+                addReferenceToDefinitionMode.executeUpdate(params);
+            }
+        }
+    }
+
+
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {
             for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
@@ -171,9 +243,6 @@ public class OVALCachingFactory extends HibernateFactory {
         return platform;
     }
 
-    /**
-     *
-     * */
     public static OVALPlatform lookupPlatformByCpe(String cpe) {
         Session session = HibernateFactory.getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -326,9 +395,6 @@ public class OVALCachingFactory extends HibernateFactory {
 
     }
 
-    /**
-     *
-     * */
     public static void savePackageState(OVALPackageState pkgState) {
 
     }
@@ -341,9 +407,6 @@ public class OVALCachingFactory extends HibernateFactory {
         return getSession().byId(OVALPackageTest.class).load(id);
     }
 
-    /**
-     *
-     * */
     public static OVALPackageState lookupPackageStateById(String id) {
         return getSession().byId(OVALPackageState.class).load(id);
     }

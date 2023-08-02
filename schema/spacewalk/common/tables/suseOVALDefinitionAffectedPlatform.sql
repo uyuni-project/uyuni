@@ -18,10 +18,9 @@ CREATE TABLE suseOVALDefinitionAffectedPlatform
     definition_id    VARCHAR NOT NULL
                        REFERENCES suseOVALDefinition(id),
     platform_id      NUMERIC
-                        REFERENCES suseOVALPlatform(id)
+                        REFERENCES suseOVALPlatform(id),
+    CONSTRAINT suse_oval_def_affected_plat_uq UNIQUE (definition_id, platform_id)
 );
 
-
-CREATE UNIQUE INDEX suse_oval_def_affected_plat_uq
-    ON suseOVALDefinitionAffectedPlatform (definition_id, platform_id)
-;
+CREATE INDEX suse_oval_definition_aff_platforms_definition_id_index
+    ON suseOVALDefinitionAffectedPlatform(definition_id);

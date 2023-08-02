@@ -1,0 +1,39 @@
+<datasource_modes>
+    <callable-mode name="insert_definition">
+        <query params="id, class, title, description, cve_name, os_family, criteria_tree, os_version">
+            { call create_definition(:id, :class, :title, :description, :cve_name, :os_family, :os_version, :criteria_tree) }
+        </query>
+    </callable-mode>
+
+    <callable-mode name="add_affected_platform_to_definition">
+        <query params="definition_id, platform_name">
+            { call add_affected_platform_to_definition(:definition_id, :platform_name) }
+        </query>
+    </callable-mode>
+
+    <write-mode name="add_reference_to_definition">
+        <query params="ref_id, definition_id, source, url">
+            INSERT INTO suseOVALReference(ref_id, definition_id, source, url)
+            VALUES (:ref_id, :definition_id, :source, :url)
+            ON CONFLICT DO NOTHING;
+        </query>
+    </write-mode>
+
+    <write-mode name="delete_affected_platforms_from_definition">
+        <query params="definition_id">
+            DELETE FROM suseOVALDefinitionAffectedPlatform WHERE definition_id = :definition_id;
+        </query>
+    </write-mode>
+
+    <write-mode name="delete_references_from_definition">
+        <query params="definition_id">
+            DELETE FROM suseOVALReference WHERE definition_id = :definition_id;
+        </query>
+    </write-mode>
+
+    <callable-mode name="add_product_vulnerable_package">
+        <query params="package_name, fix_version, product_name, cve_name">
+            call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
+        </query>
+    </callable-mode>
+</datasource_modes>
