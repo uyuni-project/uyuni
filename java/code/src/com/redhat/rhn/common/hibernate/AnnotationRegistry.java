@@ -84,7 +84,17 @@ import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-import com.suse.oval.db.*;
+import com.suse.oval.db.OVALDefinition;
+import com.suse.oval.db.OVALPackageArchStateEntity;
+import com.suse.oval.db.OVALPackageEvrStateEntity;
+import com.suse.oval.db.OVALPackageObject;
+import com.suse.oval.db.OVALPackageState;
+import com.suse.oval.db.OVALPackageTest;
+import com.suse.oval.db.OVALPackageVersionStateEntity;
+import com.suse.oval.db.OVALPlatform;
+import com.suse.oval.db.OVALPlatformVulnerablePackage;
+import com.suse.oval.db.OVALReference;
+import com.suse.oval.db.OVALVulnerablePackage;
 
 import java.util.List;
 

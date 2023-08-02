@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class encapsulates information about a product, a cve and the packages that made the product vulnerable to the cve
+ * This class encapsulates information about a product, a cve and the packages that made the product
+ * vulnerable to the cve
  */
 public class ProductVulnerablePackages {
     private String cve;
     private String product;
     private final List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
 
+    /**
+     *
+     * */
     public ProductVulnerablePackages() {
 
     }

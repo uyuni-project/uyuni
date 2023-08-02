@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALDefinitionSource;
 import com.suse.oval.db.OVALDefinition;

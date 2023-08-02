@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+
 import org.quartz.JobExecutionContext;
 
 import java.util.Date;

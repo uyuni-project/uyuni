@@ -4,7 +4,16 @@ import com.suse.oval.ovaltypes.CheckEnum;
 import com.suse.oval.ovaltypes.ExistenceEnum;
 import com.suse.oval.ovaltypes.LogicOperatorType;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Optional;
 
 @Entity

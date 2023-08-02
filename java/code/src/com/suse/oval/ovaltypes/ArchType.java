@@ -1,6 +1,10 @@
 package com.suse.oval.ovaltypes;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * This is the architecture for which the package was built, like : i386, ppc, sparc, noarch.
