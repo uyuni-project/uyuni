@@ -53,5 +53,5 @@ const allListOptions = [
 ];
 
 export const SystemsListFilter = (props) => {
-  return <TableFilter filterOptions={allListOptions} {...props} />;
+  return <TableFilter filterOptions={allListOptions} name="criteria" {...props} />;
 };
