@@ -606,6 +606,7 @@ public class DistUpgradeManager extends BaseManager {
 
     /**
      * Schedule a distribution upgrade for a given server.
+     * (private as it does not take PAYG into account)
      *
      * @param user the user who is scheduling
      * @param server the server to migrate
@@ -618,7 +619,7 @@ public class DistUpgradeManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Long scheduleDistUpgrade(User user, Server server,
+    private static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,
             boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
         // Create action details
@@ -704,13 +705,29 @@ public class DistUpgradeManager extends BaseManager {
 
         if (isPayg) {
             /*
-            In the future we probably would like to allow product migrations to same product but different
-            version and just forbid migrating from different products. At the moment we are just blocking
-            all product migrations on SUMA PAYG instance.
-            I.e: Allow migration from SLES 15 SP4 to SLES 15 SP5.
-                 Forbid migration from OpenSUSE Leap 15.4 to SLES 15 SP4
+            Changing product family I.e
+              - SLES 15 SP5 to SLES for SAP 15 SP4 or
+              - from OpenSUSE Leap 15.4 to SLES 15 SP4
+            is not allowed.
+            Only SP migrations should be possible.
+            Also individual assigning channels to perform a migration is forbidden
             */
-            throw new DistUpgradePaygException("In PAYG SUMA instances, products migrations is forbidden");
+            SUSEProduct installedBaseProduct = server.getInstalledProductSet()
+                    .map(SUSEProductSet::getBaseProduct)
+                    .orElseThrow(() ->
+                            new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
+            if (targetSet != null) {
+                SUSEProduct targetBaseProduct = targetSet.getBaseProduct();
+                if (targetBaseProduct.getChannelFamily() == null ||
+                        installedBaseProduct.getChannelFamily() == null ||
+                        !targetBaseProduct.getChannelFamily().equals(installedBaseProduct.getChannelFamily())) {
+                    throw new DistUpgradePaygException(
+                            "In PAYG SUMA instances, changing the product family is forbidden");
+                }
+            }
+            else {
+                throw new DistUpgradePaygException("In PAYG SUMA instances, individual migrations are forbidden");
+            }
         }
 
         return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
