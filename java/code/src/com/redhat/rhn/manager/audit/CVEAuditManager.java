@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.audit;
 
-import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -30,29 +28,31 @@ import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.TestEvaluator;
-import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.ovaltypes.CriteriaType;
-import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
-import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -61,9 +61,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 
 /**
  * CVESearchManager.
@@ -130,7 +128,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-        }).collect(Collectors.toList());
+                }).collect(Collectors.toList());
 
         m.executeUpdates(parameterList);
     }
@@ -155,7 +153,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-        }).collect(Collectors.toList());
+                }).collect(Collectors.toList());
 
         m.executeUpdates(parameterList);
     }
@@ -172,12 +170,12 @@ public class CVEAuditManager {
 
         Root<Channel> root = query.from(Channel.class);
         query.select(root.get("product").get("id"))
-             .distinct(true)
-             .where(
-                 builder.and(
-                     root.get("id").in(channelIDs)
-                 )
-             );
+                .distinct(true)
+                .where(
+                        builder.and(
+                                root.get("id").in(channelIDs)
+                        )
+                );
         return getSession().createQuery(query).list();
     }
 
@@ -193,7 +191,7 @@ public class CVEAuditManager {
      * @return list of channels relevant for given channel products
      */
     public static List<Channel> findProductChannels(List<Long> channelProductIDs,
-            Long parentChannelID) {
+                                                    Long parentChannelID) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<Channel> query = builder.createQuery(Channel.class);
 
@@ -216,7 +214,7 @@ public class CVEAuditManager {
      * @return list of mandatory and optional channels
      */
     public static List<Channel> findSUSEProductChannels(long suseProductID,
-            long baseChannelId) {
+                                                        long baseChannelId) {
         // Look it up in the cache
         List<Channel> result = suseProductChannelCache.get(suseProductID);
         if (result != null) {
@@ -454,17 +452,17 @@ public class CVEAuditManager {
         CachingSUSEProductFactory productFactory = new CachingSUSEProductFactory();
 
         Map<Server, List<RankedChannel>> relevantServerChannels = servers.stream()
-            .collect(Collectors.toMap(
-                Function.identity(),
-                server -> populateCVEChannels(new ServerAuditTarget(server, productFactory))
-            ));
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        server -> populateCVEChannels(new ServerAuditTarget(server, productFactory))
+                ));
 
         insertRelevantServerChannels(relevantServerChannels);
 
         Map<ImageInfo, List<RankedChannel>> relevantImageChannels =
                 ImageInfoFactory.list().stream().collect(Collectors.toMap(
-                    Function.identity(),
-                    imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo, productFactory))
+                        Function.identity(),
+                        imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo, productFactory))
                 ));
 
         insertRelevantImageChannels(relevantImageChannels);
@@ -581,7 +579,7 @@ public class CVEAuditManager {
      * @return the channel ID
      */
     public static Long getBaseProductChannelId(SUSEProductDto baseProduct,
-            ChannelArch arch) {
+                                               ChannelArch arch) {
         Long baseProductID = baseProduct.getId();
         if (baseProductID != null) {
             EssentialChannelDto channel =
@@ -605,7 +603,7 @@ public class CVEAuditManager {
      *   - contained in a certain channel
      * in order to detect if the system is affected or not by a certain CVE
      */
-    private static class CVEPatchStatus {
+    public static class CVEPatchStatus {
 
         private final long systemId;
         private final String systemName;
@@ -637,12 +635,12 @@ public class CVEAuditManager {
          * @param channelRankIn channelRank
          */
         CVEPatchStatus(long systemIdIn, String systemNameIn,
-                Optional<Long> errataIdIn, String errataAdvisoryIn,
-                Optional<Long> packageIdIn, Optional<String> packageNameIn,
-                Optional<PackageEvr> evrIn, boolean packageInstalledIn,
-                Optional<Long> channelIdIn, String channelNameIn,
-                String channelLabelIn, boolean channelAssignedIn,
-                Optional<Long> channelRankIn) {
+                       Optional<Long> errataIdIn, String errataAdvisoryIn,
+                       Optional<Long> packageIdIn, Optional<String> packageNameIn,
+                       Optional<PackageEvr> evrIn, boolean packageInstalledIn,
+                       Optional<Long> channelIdIn, String channelNameIn,
+                       String channelLabelIn, boolean channelAssignedIn,
+                       Optional<Long> channelRankIn) {
             this.systemId = systemIdIn;
             this.systemName = systemNameIn;
             this.errataId = errataIdIn;
@@ -763,7 +761,7 @@ public class CVEAuditManager {
     }
 
     private static Stream<CVEPatchStatus> listImagesByPatchStatus(User user,
-        String cveIdentifier) {
+                                                                  String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_images_by_patch_status");
 
@@ -804,8 +802,8 @@ public class CVEAuditManager {
 
     }
 
-    private static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
-        String cveIdentifier) {
+    public static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
+                                                                  String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_systems_by_patch_status");
 
@@ -845,7 +843,6 @@ public class CVEAuditManager {
 
     }
 
-
     /**
      * List visible systems with their patch status regarding a given CVE identifier.
      *
@@ -856,7 +853,7 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
-        String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+                                                                String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -886,7 +883,7 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
-            String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+                                                              String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -904,85 +901,6 @@ public class CVEAuditManager {
                         system.getChannels(),
                         system.getErratas()
                 )).collect(Collectors.toList());
-    }
-
-    public static List<CVEAuditServer> listSystemsByPatchStatus_OVAL(User user, String cveIdentifier) {
-        List<CVEAuditServer> result = new ArrayList<>();
-
-        Optional<OVALDefinition> cveDefinitionOpt = OVALCachingFactory.lookupVulnerabilityDefinitionByCve(cveIdentifier);
-        if (cveDefinitionOpt.isEmpty()) {
-            log.warn("The provided CVE does not match any OVAL definition in the database.");
-            return Collections.emptyList();
-        }
-
-        OVALDefinition vulnerabilityDefinition = cveDefinitionOpt.get();
-        if (vulnerabilityDefinition.getCriteriaTree() == null) {
-            log.warn("Vulnerability criteria tree for '{}' is unavailable", cveIdentifier);
-            return result;
-        }
-
-        AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
-                new SUSEVulnerablePackageExtractor(vulnerabilityDefinition);
-
-        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
-                .collect(Collectors.toList());
-
-        // Group the results by system
-        Map<Long, List<CVEPatchStatus>> resultsBySystem =
-                results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
-
-        Set<Server> clients = user.getServers();
-        for (Server clientServer : clients) {
-            CVEAuditSystemBuilder cveAuditServer = new CVEAuditSystemBuilder(clientServer.getId());
-            cveAuditServer.setSystemName(clientServer.getName());
-
-            Set<VulnerablePackage> clientProductVulnerablePackages =
-                    vulnerabilityDefinition.extractVulnerablePackages(clientServer.getCpe());
-
-            boolean isClientServerVulnerable = vulnerabilityDefinition.evaluate(clientServer, clientProductVulnerablePackages);
-
-            log.error("Evaluation: {}", isClientServerVulnerable);
-
-            if (!isClientServerVulnerable) {
-                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
-                continue;
-            }
-
-            List<CVEPatchStatus> systemResults = resultsBySystem.get(clientServer.getId()).stream()
-                    .filter(CVEPatchStatus::isChannelAssigned)
-                    .collect(Collectors.toList());
-
-            int listSizeBefore = clientProductVulnerablePackages.size();
-
-            clientProductVulnerablePackages = clientProductVulnerablePackages
-                    .stream().filter(
-                            p -> systemResults.stream()
-                                    .anyMatch(cps -> Objects.equals(cps.packageName.orElse(""), p.getName())))
-                    .collect(Collectors.toSet()
-                    );
-
-            int listSizeAfter = clientProductVulnerablePackages.size();
-
-            if (listSizeAfter == 0) {
-                cveAuditServer.setPatchStatus(PatchStatus.PATCHED);
-            } else if (listSizeAfter < listSizeBefore) {
-                cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
-            } else {
-                boolean allPackagesAffected = clientProductVulnerablePackages
-                        .stream()
-                        .allMatch(p -> p.getFixVersion().isEmpty());
-
-                if (allPackagesAffected) {
-                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
-                } else {
-                    cveAuditServer.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
-                }
-            }
-
-            log.error("Patch Status: {}", cveAuditServer.getPatchStatus());
-        }
-
-        return result;
     }
 
     /**
@@ -1007,7 +925,7 @@ public class CVEAuditManager {
      * @return list of system records with patch status
      */
     private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
-            EnumSet<PatchStatus> patchStatuses) {
+                                                                        EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 
@@ -1017,91 +935,7 @@ public class CVEAuditManager {
 
         // Loop for each system, calculating the patch status individually
         for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {
-            CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemResultMap.getKey());
-            List<CVEPatchStatus> systemResults = systemResultMap.getValue();
-            system.setSystemName(systemResults.get(0).getSystemName());
-
-            // The relevant channels assigned to the system
-            Set<AuditChannelInfo> assignedChannels = new HashSet<>();
-
-            // Group results for the system further by package names, filtering out 'not-affected' entries
-            Map<String, List<CVEPatchStatus>> resultsByPackage =
-                    systemResults.stream().filter(r -> r.getErrataId().isPresent())
-                            .filter(r -> r.getChannelRank().orElse(0L) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
-                            .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
-
-            // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
-            // Keep a list of package names to be ignored.
-            Set<String> livePatchedPackages = resultsByPackage.keySet().stream()
-                    .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
-                    .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
-
-            AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
-            AtomicBoolean patchesInstalled = new AtomicBoolean(false);
-            Set<ErrataIdAdvisoryPair> successorErratas = new HashSet<>();
-
-            // Loop through affected packages one by one
-            for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
-                if (livePatchedPackages.contains(packageResults.getKey())) {
-                    // This package is substituted with live patching, ignore it
-                    continue;
-                }
-
-                // Get the result row with the top ranked channel containing the package,
-                // or empty if the package is already patched
-                Optional<CVEPatchStatus> patchCandidateResult = getPatchCandidateResult(packageResults.getValue());
-
-                patchCandidateResult.ifPresentOrElse(result -> {
-                    // The package is not patched. Keep a list of the missing patch and the top candidate channel
-                    AuditChannelInfo channel = new AuditChannelInfo(result.getChannelId().get(),
-                            result.getChannelName(), result.getChannelLabel(), result.getChannelRank().orElse(0L));
-                    ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(result.getErrataId().get(),
-                            result.getErrataAdvisory());
-                    system.addErrata(errata);
-                    system.addChannel(channel);
-
-                    if (result.isChannelAssigned()) {
-                        assignedChannels.add(channel);
-                    }
-                    else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
-                        patchInSuccessorProduct.set(true);
-                        successorErratas.add(errata);
-                    }
-                }, () -> {
-                    patchesInstalled.set(true);
-                });
-            }
-
-            boolean allChannelsForOneErrataAssigned = assignedChannels.containsAll(system.getChannels());
-            // Filter out channels that are part of a successor or predecessor product. This is to make sure the
-            // current product is chosen as the most suitable candidate if there is a patch available for it or
-            // a patch is already installed, even though it might not contain a patch for all the packages e.g.
-            // because some versions are to old to be affected.
-            if (patchInSuccessorProduct.get()) {
-                Set<ErrataIdAdvisoryPair> erratasNotInSuccessor = system.getErratas().stream().filter(errata ->
-                                !successorErratas.contains(errata)).collect(Collectors.toSet());
-                Set<AuditChannelInfo> filteredChannels = system.getChannels().stream().filter(channel ->
-                        channel.getRank() < SUCCESSOR_PRODUCT_RANK_BOUNDARY).collect(Collectors.toSet());
-
-                // If there are no erratas found that are not part of a successor product and there are already
-                // patches installed we assume that the system is already patched
-                if (erratasNotInSuccessor.isEmpty() && patchesInstalled.get()) {
-                    system.setChannels(Collections.emptySet());
-                    system.setErratas(Collections.emptySet());
-                }
-                else if (!filteredChannels.isEmpty()) {
-                    allChannelsForOneErrataAssigned = assignedChannels.containsAll(filteredChannels);
-                    if (allChannelsForOneErrataAssigned) {
-                        // Don't display the patches and channels that belong to successor products
-                        system.setChannels(filteredChannels);
-                        system.setErratas(erratasNotInSuccessor);
-                    }
-                }
-            }
-
-            system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
-                    allChannelsForOneErrataAssigned, !resultsByPackage.isEmpty(),
-                    patchInSuccessorProduct.get()));
+            CVEAuditSystemBuilder system = doAuditSystem(systemResultMap.getKey(), systemResultMap.getValue());
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(system.getPatchStatus())) {
@@ -1111,6 +945,95 @@ public class CVEAuditManager {
 
         debugLog(ret);
         return ret;
+    }
+
+    public static CVEAuditSystemBuilder doAuditSystem(Long systemId, List<CVEPatchStatus> systemResults) {
+        CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemId);
+        system.setSystemName(systemResults.get(0).getSystemName());
+
+        // The relevant channels assigned to the system
+        Set<AuditChannelInfo> assignedChannels = new HashSet<>();
+
+        // Group results for the system further by package names, filtering out 'not-affected' entries
+        Map<String, List<CVEPatchStatus>> resultsByPackage =
+                systemResults.stream().filter(r -> r.getErrataId().isPresent())
+                        .filter(r -> r.getChannelRank().orElse(0L) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
+                        .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
+
+        // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
+        // Keep a list of package names to be ignored.
+        Set<String> livePatchedPackages = resultsByPackage.keySet().stream()
+                .map(p -> Pattern.compile("^(?:kgraft-patch|kernel-livepatch)-.*-([^-]*)$").matcher(p))
+                .filter(Matcher::matches).map(m -> "kernel-" + m.group(1)).collect(Collectors.toSet());
+
+        AtomicBoolean patchInSuccessorProduct = new AtomicBoolean(false);
+        AtomicBoolean patchesInstalled = new AtomicBoolean(false);
+        Set<ErrataIdAdvisoryPair> successorErratas = new HashSet<>();
+
+        // Loop through affected packages one by one
+        for (Map.Entry<String, List<CVEPatchStatus>> packageResults : resultsByPackage.entrySet()) {
+            if (livePatchedPackages.contains(packageResults.getKey())) {
+                // This package is substituted with live patching, ignore it
+                continue;
+            }
+
+            // Get the result row with the top ranked channel containing the package,
+            // or empty if the package is already patched
+            Optional<CVEPatchStatus> patchCandidateResult = getPatchCandidateResult(packageResults.getValue());
+
+            patchCandidateResult.ifPresentOrElse(result -> {
+                // The package is not patched. Keep a list of the missing patch and the top candidate channel
+                AuditChannelInfo channel = new AuditChannelInfo(result.getChannelId().get(),
+                        result.getChannelName(), result.getChannelLabel(), result.getChannelRank().orElse(0L));
+                ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(result.getErrataId().get(),
+                        result.getErrataAdvisory());
+                system.addErrata(errata);
+                system.addChannel(channel);
+
+                if (result.isChannelAssigned()) {
+                    assignedChannels.add(channel);
+                }
+                else if (result.getChannelRank().get() >= SUCCESSOR_PRODUCT_RANK_BOUNDARY) {
+                    patchInSuccessorProduct.set(true);
+                    successorErratas.add(errata);
+                }
+            }, () -> {
+                patchesInstalled.set(true);
+            });
+        }
+
+        boolean allChannelsForOneErrataAssigned = assignedChannels.containsAll(system.getChannels());
+        // Filter out channels that are part of a successor or predecessor product. This is to make sure the
+        // current product is chosen as the most suitable candidate if there is a patch available for it or
+        // a patch is already installed, even though it might not contain a patch for all the packages e.g.
+        // because some versions are to old to be affected.
+        if (patchInSuccessorProduct.get()) {
+            Set<ErrataIdAdvisoryPair> erratasNotInSuccessor = system.getErratas().stream().filter(errata ->
+                    !successorErratas.contains(errata)).collect(Collectors.toSet());
+            Set<AuditChannelInfo> filteredChannels = system.getChannels().stream().filter(channel ->
+                    channel.getRank() < SUCCESSOR_PRODUCT_RANK_BOUNDARY).collect(Collectors.toSet());
+
+            // If there are no erratas found that are not part of a successor product and there are already
+            // patches installed we assume that the system is already patched
+            if (erratasNotInSuccessor.isEmpty() && patchesInstalled.get()) {
+                system.setChannels(Collections.emptySet());
+                system.setErratas(Collections.emptySet());
+            }
+            else if (!filteredChannels.isEmpty()) {
+                allChannelsForOneErrataAssigned = assignedChannels.containsAll(filteredChannels);
+                if (allChannelsForOneErrataAssigned) {
+                    // Don't display the patches and channels that belong to successor products
+                    system.setChannels(filteredChannels);
+                    system.setErratas(erratasNotInSuccessor);
+                }
+            }
+        }
+
+        system.setPatchStatus(getPatchStatus(system.getErratas().isEmpty(),
+                allChannelsForOneErrataAssigned, !resultsByPackage.isEmpty(),
+                patchInSuccessorProduct.get()));
+
+        return system;
     }
 
     /**
@@ -1230,7 +1153,7 @@ public class CVEAuditManager {
      * @return true as soon as at least one channel record has been added
      */
     private static boolean addRelevantChannels(List<RankedChannel> relevantChannels,
-        List<Channel> channels, int ranking) {
+                                               List<Channel> channels, int ranking) {
         boolean added = false;
         for (Channel c : channels) {
             boolean result = relevantChannels.add(new RankedChannel(c.getId(), ranking));

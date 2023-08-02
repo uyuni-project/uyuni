@@ -163,7 +163,7 @@ public class OVALDefinition {
         List<ProductVulnerablePackages> productToVulnerablePackagesMappings = vulnerablePackagesExtractor.extract();
 
         for (ProductVulnerablePackages productToVulnerablePackagesMapping : productToVulnerablePackagesMappings) {
-            if (Objects.equals(productToVulnerablePackagesMapping.getProductCpe(), productCpe)) {
+            if (Objects.equals(productToVulnerablePackagesMapping.getProduct(), productCpe)) {
                 productVulnerablePackages.addAll(productToVulnerablePackagesMapping.getVulnerablePackages());
             }
         }

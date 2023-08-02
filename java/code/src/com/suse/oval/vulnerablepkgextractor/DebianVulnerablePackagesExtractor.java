@@ -44,7 +44,7 @@ public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackage
         vulnerablePackage.setFixVersion(evr);
 
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
-        productVulnerablePackages.setProductCpe(deriveCpe().asString());
+        productVulnerablePackages.setProduct(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
         productVulnerablePackages.setCve(vulnerabilityDefinition.getCve().getName());
 

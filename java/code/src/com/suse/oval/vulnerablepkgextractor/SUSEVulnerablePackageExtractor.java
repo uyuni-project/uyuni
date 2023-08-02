@@ -91,7 +91,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
             vulnerableProduct.setCve(vulnerabilityDefinition.getTitle());
 
-            vulnerableProduct.setProductCpe(deriveCpe(product).asString());
+            vulnerableProduct.setProduct(deriveCpe(product).asString());
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
             result.add(vulnerableProduct);
