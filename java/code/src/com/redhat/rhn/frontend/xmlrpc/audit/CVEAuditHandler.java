@@ -19,7 +19,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
-import com.redhat.rhn.manager.audit.*;
+import com.redhat.rhn.manager.audit.CVEAuditImage;
+import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
+import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -53,7 +57,7 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
-            String cveIdentifier) {
+                                                         String cveIdentifier) {
         return listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
     }
 
@@ -168,7 +172,8 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
-            String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
+                                                       String cveIdentifier, List<String> patchStatusLabels)
+            throws FaultException {
 
         // Convert list of strings to patch status objects
         EnumSet<PatchStatus> patchStatuses = EnumSet.noneOf(PatchStatus.class);

@@ -4,10 +4,25 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 
-import com.suse.oval.db.*;
+import com.suse.oval.db.OVALDefinition;
+import com.suse.oval.db.OVALPackageArchStateEntity;
+import com.suse.oval.db.OVALPackageEvrStateEntity;
+import com.suse.oval.db.OVALPackageObject;
+import com.suse.oval.db.OVALPackageState;
+import com.suse.oval.db.OVALPackageTest;
+import com.suse.oval.db.OVALPackageVersionStateEntity;
+import com.suse.oval.db.OVALPlatform;
+import com.suse.oval.db.OVALPlatformVulnerablePackage;
+import com.suse.oval.db.OVALReference;
+import com.suse.oval.db.OVALVulnerablePackage;
 import com.suse.oval.manager.OvalObjectManager;
 import com.suse.oval.manager.OvalStateManager;
-import com.suse.oval.ovaltypes.*;
+import com.suse.oval.ovaltypes.Advisory;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.ReferenceType;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +33,9 @@ import org.hibernate.Session;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -120,6 +137,9 @@ public class OVALCachingFactory extends HibernateFactory {
         return platform;
     }
 
+    /**
+     *
+     * */
     public static OVALPlatform lookupPlatformByCpe(String cpe) {
         Session session = HibernateFactory.getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -260,6 +280,9 @@ public class OVALCachingFactory extends HibernateFactory {
         instance.saveObject(pkgTest);
     }
 
+    /**
+     *
+     * */
     public static void savePackageState(OVALPackageState pkgState) {
         instance.saveObject(pkgState);
     }
@@ -272,6 +295,9 @@ public class OVALCachingFactory extends HibernateFactory {
         return getSession().byId(OVALPackageTest.class).load(id);
     }
 
+    /**
+     *
+     * */
     public static OVALPackageState lookupPackageStateById(String id) {
         return getSession().byId(OVALPackageState.class).load(id);
     }

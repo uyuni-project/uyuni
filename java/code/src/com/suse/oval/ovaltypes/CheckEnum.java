@@ -19,36 +19,36 @@ public enum CheckEnum {
 
 
     /**
-     * A value of 'all' means that a final result of true is given if all the individual results under consideration are true.
-     * 
+     * A value of 'all' means that a final result of true is given if all the individual
+     * results under consideration are true.
      */
     @XmlEnumValue("all")
     ALL("all"),
 
     /**
-     * A value of 'at least one' means that a final result of true is given if at least one of the individual results under consideration is true.
-     * 
+     * A value of 'at least one' means that a final result of true is given if at least one of the individual results
+     * under consideration is true.
      */
     @XmlEnumValue("at least one")
     AT_LEAST_ONE("at least one"),
 
     /**
-     * A value of 'none exists' means that a test evaluates to true if no matching object exists that satisfy the data requirements.
-     * 
+     * A value of 'none exists' means that a test evaluates to true if no matching object exists that satisfy
+     * the data requirements.
      */
     @XmlEnumValue("none exist")
     NONE_EXIST("none exist"),
 
     /**
-     * A value of 'none satisfy' means that a final result of true is given if none the individual results under consideration are true.
-     * 
+     * A value of 'none satisfy' means that a final result of true is given if none the individual results
+     * under consideration are true.
      */
     @XmlEnumValue("none satisfy")
     NONE_SATISFY("none satisfy"),
 
     /**
-     * A value of 'only one' means that a final result of true is given if one and only one of the individual results under consideration are true.
-     * 
+     * A value of 'only one' means that a final result of true is given if one and only one of the individual results
+     * under consideration are true.
      */
     @XmlEnumValue("only one")
     ONLY_ONE("only one");
@@ -58,10 +58,6 @@ public enum CheckEnum {
         value = v;
     }
 
-    public String value() {
-        return value;
-    }
-
     public static CheckEnum fromValue(String v) {
         for (CheckEnum c: CheckEnum.values()) {
             if (c.value.equals(v)) {
@@ -69,6 +65,10 @@ public enum CheckEnum {
             }
         }
         throw new IllegalArgumentException(v);
+    }
+
+    public String value() {
+        return value;
     }
 
 }

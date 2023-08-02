@@ -1,17 +1,25 @@
 package com.suse.oval.test;
 
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+
 import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
-import com.suse.oval.db.*;
-import com.suse.oval.ovaltypes.*;
+import com.suse.oval.db.OVALPackageArchStateEntity;
+import com.suse.oval.db.OVALPackageEvrStateEntity;
+import com.suse.oval.db.OVALPackageObject;
+import com.suse.oval.db.OVALPackageState;
+import com.suse.oval.db.OVALPackageTest;
+import com.suse.oval.db.OVALPackageVersionStateEntity;
+import com.suse.oval.ovaltypes.EVRDataTypeEnum;
+import com.suse.oval.ovaltypes.OperationEnumeration;
+
 import org.apache.commons.lang3.RandomStringUtils;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-
 
 import static java.util.stream.Collectors.groupingBy;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,27 +27,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestEvaluatorTest {
     TestEvaluator testEvaluator;
-    OVALPackageTest t1;
-    OVALPackageTest t2;
-    OVALPackageTest t3;
-    OVALPackageTest t4;
-    OVALPackageTest t5;
-    OVALPackageTest t6;
-    OVALPackageTest t7;
-    OVALPackageTest t8;
-    OVALPackageTest t9;
-    OVALPackageTest t10;
-    OVALPackageTest t11;
+    private OVALPackageTest t1;
+    private OVALPackageTest t2;
+    private OVALPackageTest t3;
+    private OVALPackageTest t4;
+    private OVALPackageTest t5;
+    private OVALPackageTest t6;
+    private OVALPackageTest t7;
+    private OVALPackageTest t8;
+    private OVALPackageTest t9;
+    private OVALPackageTest t10;
+    private OVALPackageTest t11;
 
     @BeforeEach
     void setUp() {
 
         List<SystemPackage> systemInstalledPackages = List.of(
-                new SystemPackage("libsoftokn3-hmac-32bit", "0:3.68.3-150400.1.7"),
-                new SystemPackage("libsha1detectcoll1","0:3.68.2-150400.1.7"),
-                new SystemPackage("libsha1detectcoll1", "0:3.68.3-150400.1.7"),
-                new SystemPackage("libsha1detectcoll1", "0:3.68.4-150400.1.7", "aarch64"),
-                new SystemPackage("postgresql12-plperl", "0:3.68.3-150400.1.7", "aarch64"),
+                new SystemPackage("libsoftokn3-hmac-32bit", "0:3.68.3-150400.1.7")
+                , new SystemPackage("libsha1detectcoll1", "0:3.68.2-150400.1.7")
+                , new SystemPackage("libsha1detectcoll1", "0:3.68.3-150400.1.7")
+                , new SystemPackage("libsha1detectcoll1", "0:3.68.4-150400.1.7", "aarch64")
+                , new SystemPackage("postgresql12-plperl", "0:3.68.3-150400.1.7", "aarch64"),
                 new SystemPackage("sles-release", "0:15.4-0"));
 
         OVALPackageObject o1 = newOVALPackageObject("libsoftokn3-hmac-32bit");
@@ -92,8 +100,8 @@ public class TestEvaluatorTest {
     }
 
     /**
-     * Test T1 ensures that if the evr state operation is LESS_THAN and the system has a package with an evr less than the
-     * state evr, then the evaluation should return 'true'
+     * Test T1 ensures that if the evr state operation is LESS_THAN and the system has a package with
+     * an evr less than the state evr, then the evaluation should return 'true'
      */
     @Test
     void testT1() {
@@ -183,7 +191,7 @@ public class TestEvaluatorTest {
             state.setId(RandomStringUtils.randomAlphabetic(24));
         }
 
-        public OVALStateBuilder withEVR(String evr, OperationEnumeration operation) {
+        OVALStateBuilder withEVR(String evr, OperationEnumeration operation) {
             OVALPackageEvrStateEntity evrState = new OVALPackageEvrStateEntity();
             evrState.setDatatype(EVRDataTypeEnum.RPM_EVR);
             evrState.setOperation(operation);
@@ -194,7 +202,7 @@ public class TestEvaluatorTest {
             return this;
         }
 
-        public OVALStateBuilder withArch(String arch, OperationEnumeration operation) {
+        OVALStateBuilder withArch(String arch, OperationEnumeration operation) {
             OVALPackageArchStateEntity archState = new OVALPackageArchStateEntity();
             archState.setValue(arch);
             archState.setOperation(operation);
@@ -204,7 +212,7 @@ public class TestEvaluatorTest {
             return this;
         }
 
-        public OVALStateBuilder withVersion(String version, OperationEnumeration operation) {
+        OVALStateBuilder withVersion(String version, OperationEnumeration operation) {
             OVALPackageVersionStateEntity versionState = new OVALPackageVersionStateEntity();
             versionState.setValue(version);
             versionState.setOperation(operation);

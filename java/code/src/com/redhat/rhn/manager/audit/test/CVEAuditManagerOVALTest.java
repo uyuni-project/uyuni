@@ -12,10 +12,17 @@ import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.oval.OvalParser;
-import com.suse.oval.ovaltypes.*;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.OvalRootType;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
-    private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
+    private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVALTest.class);
 
-    OvalParser ovalParser = new OvalParser();
+    private OvalParser ovalParser = new OvalParser();
 
     @Test
     void testDoAuditSystemNotAffected() throws Exception {
@@ -178,22 +185,22 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package patched = createTestPackage(user, errata, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        log.error(unpatched.getPackageEvr().toUniversalEvrString());
+        LOG.error(unpatched.getPackageEvr().toUniversalEvrString());
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
-        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
 
-        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        log.error(server.getName());
-        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        LOG.error(server.getName());
+        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -235,7 +242,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -280,7 +287,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -329,7 +336,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -369,22 +376,22 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, otherChannel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        log.error(unpatched.getPackageEvr().toUniversalEvrString());
+        LOG.error(unpatched.getPackageEvr().toUniversalEvrString());
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
-        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
 
-        server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
+        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
 
-        log.error(server.getName());
-        results.forEach(r -> log.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
+        LOG.error(server.getName());
+        results.forEach(r -> LOG.error(r.getPackageName() + ":" + r.getPackageEvr() + ":" + r.isPackageInstalled() + ":" + r.getSystemName()));
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 

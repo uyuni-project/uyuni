@@ -1,6 +1,10 @@
 package com.suse.oval.ovaltypes;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * This represents the epoch, version, and release fields as a single version string. It has the form "EPOCH:VERSION-RELEASE".

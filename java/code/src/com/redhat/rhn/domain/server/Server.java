@@ -2465,7 +2465,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return cpe;
     }
 
-    public void setCpe(String cpe) {
-        this.cpe = cpe;
+    public void setCpe(String cpeIn) {
+        this.cpe = cpeIn;
     }
 }

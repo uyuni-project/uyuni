@@ -4,14 +4,22 @@ package com.redhat.rhn.manager.audit;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.SystemPackage;
 import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +28,9 @@ import java.util.stream.Collectors;
 public class CVEAuditManagerOVAL {
     private static Logger log = LogManager.getLogger(CVEAuditManagerOVAL.class);
 
+    /**
+     *
+     * */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
                                                                 EnumSet<PatchStatus> patchStatuses) {
 
