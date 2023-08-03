@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 SUSE LLC
+# Copyright (c) 2016-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -7,7 +7,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Register this SSH minion for service pack migration
+  Scenario: Bootstrap a SLES SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
