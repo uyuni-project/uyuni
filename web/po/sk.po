@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-28 15:10+0200\n"
-"PO-Revision-Date: 2023-08-01 22:15+0000\n"
+"PO-Revision-Date: 2023-08-03 21:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1143,9 +1143,8 @@ msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "Hľadaný inštancia neexistuje alebo bola vymazaná"
 
 #: ../html/src/manager/admin/payg/payg.tsx:68
-#, fuzzy
 msgid "Instance Hostname: {host}"
-msgstr "Názov hostiteľa inštancie: {0}"
+msgstr "Názov hostiteľa inštancie: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Delete Pay-as-you-go"
@@ -1216,13 +1215,12 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
 msgstr ""
-"Nasledujúce inštalácie kanálov pre '{0}' zlyhali. Skontrolujte, prosím, "
-"súbory záznamov."
+"Nasledujúce inštalácie kanálov pre '{product}' zlyhali. Skontrolujte, "
+"prosím, súbory záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid ""
@@ -1658,19 +1656,19 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "Môžete tiež teraz spustiť prvý beh kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-#, fuzzy
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené {0}."
+msgstr ""
+"Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené "
+"{timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-#, fuzzy
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
 msgstr ""
-"Najnovšie úspešné dáta priradenia boli vypočítané {0}, nový beh môžete "
-"spustiť kliknutím na tlačidlo nižšie."
+"Najnovšie úspešné dáta priradenia boli vypočítané {timeFromNow}, nový beh "
+"môžete spustiť kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2255,9 +2253,8 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-#, fuzzy
 msgid "Content Lifecycle Project - {name}"
-msgstr "Projekt životného cyklu obsahu - {0}"
+msgstr "Projekt životného cyklu obsahu - {name}"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
@@ -2450,9 +2447,8 @@ msgid "disable all modules"
 msgstr "zakázať všetky moduly"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
-#, fuzzy
 msgid "Build ({count})"
-msgstr "Zostaviť ({0})"
+msgstr "Zostaviť ({count})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
@@ -2485,14 +2481,12 @@ msgid "Version Message"
 msgstr "Správa o verzii"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-#, fuzzy
 msgid "Version {version} history"
-msgstr "História verzie {0}"
+msgstr "História verzie {version}"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-#, fuzzy
 msgid "Version {version} successfully built into {environmentName}"
-msgstr "Verzia {0} bola úspešne zabudovaná do {1}"
+msgstr "Verzia {version} bola úspešne zabudovaná do {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -2533,9 +2527,8 @@ msgid "Environment updated successfully"
 msgstr "Prostredie bolo úspešne aktualizované"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
-#, fuzzy
 msgid "Environment {name} deleted successfully"
-msgstr "Prostredie {0} bolo úspešne vymazané"
+msgstr "Prostredie {name} bolo úspešne vymazané"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
 msgid ""
@@ -2590,9 +2583,8 @@ msgid "Create New Filter"
 msgstr "Vytvoriť nový filter"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
 msgid "Edit Filter {name}"
-msgstr "Upraviť filter {0}"
+msgstr "Upraviť filter {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
