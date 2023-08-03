@@ -27,6 +27,12 @@ Uyuni project: <https://github.com/uyuni-project/uyuni>
 EOF
 }
 
+# Out of the box macOS ships with BSD getopt which doesn't support long args
+if [ "$(uname -s)" == "Darwin" ] && $(man getopt | grep -i -q "bsd"); then
+    echo "Error: This tool requires GNU getopt, but your system is using BSD getopt. Please install GNU getopt and add it to your PATH."
+    exit 1
+fi
+
 ARGS=$(getopt -n mkchlog -o rhnf:u: --long remove,help,no-wrap,feature:username: -- "$@")
 if [ $? -ne 0 ]; then
     exit 1
