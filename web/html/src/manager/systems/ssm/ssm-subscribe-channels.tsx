@@ -28,7 +28,7 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   taskomatic_error: t("Error scheduling job in Taskomatic. Please check the logs."),
   no_base_channel_guess: t("Could not determine system default channel."),
   invalid_change: t("Channel change is invalid."),
@@ -789,7 +789,9 @@ class ResultPage extends React.Component<ResultPageProps> {
               ) : (
                 <span className="text-danger">
                   <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
-                  {dto.errorMessage ? msgMap[dto.errorMessage] : t("Unknown error. Could not schedule channel change")}
+                  {dto.errorMessage
+                    ? messageMap[dto.errorMessage]
+                    : t("Unknown error. Could not schedule channel change")}
                 </span>
               );
             }}
@@ -904,7 +906,9 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   }
 
   handleResponseError = (jqXHR, arg = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
 
     // check if partially successful
     if (jqXHR.responseJSON.data) {

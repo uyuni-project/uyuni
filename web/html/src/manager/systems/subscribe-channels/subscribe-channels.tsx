@@ -20,7 +20,7 @@ import { JsonResult } from "utils/network";
 
 declare var actionChains: Array<ActionChain>;
 
-const msgMap = {
+const messageMap = {
   taskomatic_error: t("Error scheduling job in Taskomatic. Please check the logs."),
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
   child_not_found_or_not_authorized: t("Child channel not found or not authorized."),
@@ -219,7 +219,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     this.setState({ messages: this.state.messages.concat(msg) });
   };
 

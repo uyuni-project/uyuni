@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   not_found: t("Image store cannot be found."),
   delete_success: t("Image store has been deleted."),
   delete_success_p: t("Image stores have been deleted."),
@@ -99,7 +99,7 @@ class ImageStores extends React.Component<Props, State> {
               items={[
                 {
                   severity: "success",
-                  text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"],
+                  text: messageMap[idList.length > 1 ? "delete_success_p" : "delete_success"],
                 },
               ]}
             />
@@ -112,7 +112,7 @@ class ImageStores extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),
