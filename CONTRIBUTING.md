@@ -18,15 +18,15 @@ The guidelines noted here describe the expectations that should be met when subm
 
 ### Pull Request Creators
 
-1. Please fill out the Pull Request template.
-2. Please provide a description for someone not familiar with your code changes to be still able to understand your changes in the context of the project.
-3. Please enable the reviewer with the provided information in the description to understand the PR without opening any external resources like bug reports.
-4. Please ensure that before hitting the "Create" button on GitHub you have read and understood the `CONTRIBUTING.md` and linked GitHub Wiki pages.
-5. Please ensure all automation on GitHub receives a positive result checkmark.
-6. Please state in a comment why a negative result - if occurring - is incorrect or not your fault.
-7. Please use the GitHub functionality of re-requesting a review in case you haven't gotten a review after a reasonable time.
-8. Please re-request a review in case you made substantial changes to the Pull Request.
-9. Please write detailed and meaningful commit messages. Avoid the usage of generic messages like "fix bug". Further information can be found here:
+- Please fill out the Pull Request template.
+- Please provide a description for someone not familiar with your code changes to be still able to understand your changes in the context of the project.
+- Please enable the reviewer with the provided information in the description to understand the PR without opening any external resources like bug reports.
+- Please ensure that before hitting the "Create" button on GitHub you have read and understood the `CONTRIBUTING.md` and linked GitHub Wiki pages.
+- Please ensure all automation on GitHub receives a positive result checkmark.
+- Please state in a comment why a negative result - if occurring - is incorrect or not your fault.
+- Please use the GitHub functionality of re-requesting a review in case you haven't gotten a review after a reasonable time.
+- Please re-request a review in case you made substantial changes to the Pull Request.
+- Please write detailed and meaningful commit messages. Avoid the usage of generic messages like "fix bug". Further information can be found here:
     - https://cbea.ms/git-commit/
     - https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/
 
@@ -36,11 +36,11 @@ As a Pull Request Reviewer, the most important point is that the Creator is foll
 
 Once the points above are fulfilled there are a number of things that should be taken care of:
 
-1. Check that the style guides that cannot be automatically enforced, are fulfilled.
-2. Verify that the description of the Pull Request matches the code that was submitted.
-3. Check that the submitted changes make sense in the context of the project and branch. A not acceptable example would be a feature backport after the target branch was already declared end of life.
-4. Verify that the new and modified test cases are useful to the codebase.
-5. Check that you can understand the code. If you don't understand it the likelihood of a required change is almost given.
+- Check that the style guides that cannot be automatically enforced, are fulfilled.
+- Verify that the description of the Pull Request matches the code that was submitted.
+- Check that the submitted changes make sense in the context of the project and branch. A not acceptable example would be a feature backport after the target branch was already declared end of life.
+- Verify that the new and modified test cases are useful to the codebase.
+- Check that you can understand the code. If you don't understand it the likelihood of a required change is almost given.
 
 Optionally you additionally do the following things as well:
 
