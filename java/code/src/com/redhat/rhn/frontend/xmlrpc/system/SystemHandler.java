@@ -1930,7 +1930,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setGroupMembership(User loggedInUser, Integer sid, Integer sgid,
-            boolean member) throws FaultException {
+            Boolean member) throws FaultException {
         // Get the logged in user and server
         ensureSystemGroupAdmin(loggedInUser);
         Server server = lookupServer(loggedInUser, sid);
@@ -3480,7 +3480,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids, List<Integer> errataIds,
                                           Date earliestOccurrence, Boolean allowModules,
-                                          Boolean onlyRelevant, boolean allowVendorChange) {
+                                          Boolean onlyRelevant, Boolean allowVendorChange) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = sids.stream()
@@ -3633,7 +3633,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
-                                         Date earliestOccurrence, Boolean allowModules, boolean onlyRelevant) {
+                                         Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
         return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
                 onlyRelevant, false);
 
@@ -3787,7 +3787,7 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      */
     private Long[] schedulePackagesAction(User loggedInUser, List<Integer> sids,
-            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, boolean allowModules) {
+            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, Boolean allowModules) {
 
         List<Long> actionIds = new ArrayList<Long>();
 
@@ -5237,7 +5237,7 @@ public class SystemHandler extends BaseHandler {
      *
      *  @xmlrpc.returntype #return_int_success()
      */
-    public Integer setLockStatus(User loggedInUser, Integer sid, boolean lockStatus) {
+    public Integer setLockStatus(User loggedInUser, Integer sid, Boolean lockStatus) {
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(sid.longValue(),
@@ -7170,7 +7170,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                    List<String> optionalChildChannels, boolean dryRun, Date earliestOccurrence) {
+                                    List<String> optionalChildChannels, Boolean dryRun, Date earliestOccurrence) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliestOccurrence);
     }
@@ -7216,7 +7216,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliestOccurrence) {
+            List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange, Date earliestOccurrence) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliestOccurrence);
     }
@@ -7260,7 +7260,7 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
                                     Date earliestOccurrence) {
        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, false, earliestOccurrence);
@@ -7307,8 +7307,8 @@ public class SystemHandler extends BaseHandler {
      */
     @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            boolean allowVendorChange, Date earliestOccurrence) {
+            String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+            Boolean allowVendorChange, Date earliestOccurrence) {
         return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
                 dryRun, allowVendorChange, earliestOccurrence);
     }
@@ -7345,7 +7345,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, Date earliestOccurrence) {
+                                         List<String> optionalChildChannels, Boolean dryRun, Date earliestOccurrence) {
         return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliestOccurrence);
     }
@@ -7384,7 +7384,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-                                         List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange,
+                                         List<String> optionalChildChannels, Boolean dryRun, Boolean allowVendorChange,
                                          Date earliestOccurrence) {
         return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliestOccurrence);
@@ -7462,8 +7462,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
-                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-                                         boolean allowVendorChange, Date earliestOccurrence) {
+                                         String baseChannelLabel, List<String> optionalChildChannels, Boolean dryRun,
+                                         Boolean allowVendorChange, Date earliestOccurrence) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -8058,7 +8058,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test) {
         return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid), earliestOccurrence, test);
     }
 
@@ -8078,7 +8078,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -8121,7 +8121,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         return scheduleApplyStates(loggedInUser, Arrays.asList(sid), stateNames,
                 earliestOccurrence, test);
     }
@@ -8145,7 +8145,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
-            Date earliestOccurrence, boolean test) {
+            Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)

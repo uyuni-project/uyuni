@@ -187,7 +187,7 @@ public class ProfileHandler extends BaseHandler {
      *      ks.cfg and all %include fragments will be copied to /root.")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setCfgPreservation(User loggedInUser, String ksLabel, boolean preserve) {
+    public int setCfgPreservation(User loggedInUser, String ksLabel, Boolean preserve) {
         checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         if (data == null) {
@@ -217,7 +217,7 @@ public class ProfileHandler extends BaseHandler {
      *      the post section of a kickstart to /root/ks-post.log")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setLogging(User loggedInUser, String ksLabel, boolean pre, boolean post) {
+    public int setLogging(User loggedInUser, String ksLabel, boolean pre, Boolean post) {
         checkKickstartPerms(loggedInUser);
         KickstartData data = lookupKsData(ksLabel, loggedInUser.getOrg());
         data.setPreLog(pre);
@@ -585,7 +585,7 @@ public class ProfileHandler extends BaseHandler {
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
-            String interpreter, String type, boolean chroot) {
+            String interpreter, String type, Boolean chroot) {
         return addScript(loggedInUser, ksLabel, name, contents, interpreter, type,
                 chroot, false);
     }
@@ -621,7 +621,7 @@ public class ProfileHandler extends BaseHandler {
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
-            String interpreter, String type, boolean chroot, boolean template) {
+            String interpreter, String type, Boolean chroot, Boolean template) {
         return addScript(loggedInUser, ksLabel, name, contents, interpreter, type, chroot,
                 template, false);
     }
@@ -660,8 +660,8 @@ public class ProfileHandler extends BaseHandler {
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
-            String interpreter, String type, boolean chroot, boolean template,
-            boolean erroronfail) {
+            String interpreter, String type, Boolean chroot, Boolean template,
+            Boolean erroronfail) {
         checkKickstartPerms(loggedInUser);
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 

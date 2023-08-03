@@ -293,7 +293,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setLocale(User loggedInUser, String ksLabel, String locale,
-            boolean useUtc) throws FaultException {
+            Boolean useUtc) throws FaultException {
 
         ensureConfigAdmin(loggedInUser);
 
