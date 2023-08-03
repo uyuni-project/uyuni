@@ -130,6 +130,7 @@ public class OVALCachingFactory extends HibernateFactory {
     public static void saveDefinitions_Optimized(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_definition");
 
+        int i = 0;
         for (DefinitionType definition : definitions) {
             Map<String, Object> params = new HashMap<>();
             params.put("id", definition.getId());
@@ -142,6 +143,12 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(definition.getCriteria()));
 
             mode.execute(params, new HashMap<>());
+
+            if (i % 60 == 0) {
+                LOG.error(definition.getId());
+            }
+
+            i++;
         }
 
         saveAffectedPlatforms(definitions);

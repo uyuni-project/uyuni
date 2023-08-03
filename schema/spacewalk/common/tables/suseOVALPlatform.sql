@@ -22,3 +22,6 @@ CREATE TABLE suseOVALPlatform
 
 
 CREATE SEQUENCE suse_oval_platform_id_seq START WITH 101;
+
+CREATE UNIQUE INDEX suse_oval_aff_platform_cpe_uq
+    ON suseovalplatform(cpe);
