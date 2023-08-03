@@ -10,7 +10,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, { groupId, formulaId }) => {
-  const msgMap = {
+  const messageMap = {
     formula_saved: t("Formula saved. Apply the <link>Highstate</link> for the changes to take effect.", {
       link: (str) => (
         <a href={"/rhn/manager/groups/details/highstate?sgid=" + groupId} key="link">
@@ -53,7 +53,7 @@ export const renderer = (renderId, { groupId, formulaId }) => {
         return "/rhn/manager/groups/details/formula/" + id + "?sgid=" + groupId;
       }}
       scope="group"
-      messageTexts={msgMap}
+      messageTexts={messageMap}
     />,
     document.getElementById(renderId)
   );

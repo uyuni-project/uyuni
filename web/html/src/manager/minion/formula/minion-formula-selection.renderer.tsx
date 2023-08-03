@@ -10,7 +10,7 @@ import Network from "utils/network";
 const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, { serverId, warningMessage }) => {
-  const msgMap = {
+  const messageMap = {
     formulas_saved: t(
       "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect.",
       {
@@ -25,7 +25,7 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
   };
 
   function getMessageText(msg: string) {
-    return msgMap[msg] || msg;
+    return messageMap[msg] || msg;
   }
 
   function saveRequest(component, selectedFormulas) {

@@ -32,7 +32,7 @@ const typeMap = {
   kiwi: { name: "Kiwi", storeType: "os_image" },
 };
 
-const msgMap = {
+const messageMap = {
   invalid_type: "Invalid image type.",
   activation_key_required: "Please give an activation key",
   "": "There was an error.",
@@ -200,7 +200,7 @@ class CreateImageProfile extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),
@@ -226,7 +226,7 @@ class CreateImageProfile extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),
