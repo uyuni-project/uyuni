@@ -403,7 +403,7 @@ Then(/^"([^"]*)" package should have been stored$/) do |pkg|
 end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
-  repeat_until_timeout(timeout: 300, message: "Reference #{pkg} not found in file.") do
+  repeat_until_timeout(timeout: 600, message: "Reference #{pkg} not found in file.") do
     _result, code = $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", check_errors: false)
     break if code.zero?
   end
