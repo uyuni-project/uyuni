@@ -842,7 +842,7 @@ When(/^I enter "([^"]*)" as the filtered snippet name$/) do |input|
 end
 
 When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
-  find("input[placeholder='Filter by formula name: ']").set(input)
+  find("input[placeholder='Filter by formula name']").set(input)
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
