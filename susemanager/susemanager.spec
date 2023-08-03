@@ -30,7 +30,6 @@
 %global salt_group root
 %global serverdir %{_sharedstatedir}
 %global wwwroot %{_localstatedir}/www
-%global wwwdocroot %{wwwroot}/html
 %endif
 
 %if 0%{?suse_version}
@@ -41,8 +40,9 @@
 %global salt_group salt
 %global serverdir /srv
 %global wwwroot %{serverdir}/www
-%global wwwdocroot %{wwwroot}/htdocs
 %endif
+
+%global reporoot %{_datarootdir}/susemanager/gpg/
 
 %global debug_package %{nil}
 
@@ -156,6 +156,7 @@ Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
+Requires:       uyuni-build-keys
 BuildRequires:  docbook-utils
 
 %description tools
@@ -189,13 +190,15 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
+mkdir -p %{buildroot}/etc/apache2/conf.d
+install empty-repo.conf %{buildroot}/etc/apache2/conf.d/empty-repo.conf
 
 # empty repo for rhel base channels
-mkdir -p %{buildroot}%{wwwdocroot}/pub/repositories/
-cp -r pub/empty %{buildroot}%{wwwdocroot}/pub/repositories/
+mkdir -p %{buildroot}%{reporoot}/repositories/
+cp -r pub/empty %{buildroot}%{reporoot}/repositories/
 
 # empty repo for Ubuntu base fake channel
-cp -r pub/empty-deb %{buildroot}%{wwwdocroot}/pub/repositories/
+cp -r pub/empty-deb %{buildroot}%{reporoot}/repositories/
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
@@ -291,11 +294,13 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
-%dir %{wwwdocroot}/pub
-%dir %{wwwdocroot}/pub/repositories
-%dir %{wwwdocroot}/pub/repositories/empty
-%dir %{wwwdocroot}/pub/repositories/empty/repodata
-%dir %{wwwdocroot}/pub/repositories/empty-deb
+%dir %{reporoot}
+%dir %{reporoot}/repositories
+%dir %{reporoot}/repositories/empty
+%dir %{reporoot}/repositories/empty/repodata
+%dir %{reporoot}/repositories/empty-deb
+%dir /etc/apache2
+%dir /etc/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_bindir}/mgr-salt-ssh
@@ -318,8 +323,9 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{_datadir}/susemanager/__pycache__/
 %endif
 %{_mandir}/man8/mgr-sync.8*
-%{wwwdocroot}/pub/repositories/empty/repodata/*.xml*
-%{wwwdocroot}/pub/repositories/empty-deb/Packages
-%{wwwdocroot}/pub/repositories/empty-deb/Release
+%{reporoot}/repositories/empty/repodata/*.xml*
+%{reporoot}/repositories/empty-deb/Packages
+%{reporoot}/repositories/empty-deb/Release
+/etc/apache2/conf.d/empty-repo.conf
 
 %changelog
