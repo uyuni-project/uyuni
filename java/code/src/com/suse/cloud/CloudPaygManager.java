@@ -116,7 +116,7 @@ public class CloudPaygManager {
      */
     protected String getInstanceType() throws ExecutionException {
         try {
-            Process proc = Runtime.getRuntime().exec("/usr/bin/instance-flavor-check");
+            Process proc = Runtime.getRuntime().exec("sudo /usr/bin/instance-flavor-check");
             proc.waitFor();
 
             try (InputStream inputStream = proc.getInputStream()) {
