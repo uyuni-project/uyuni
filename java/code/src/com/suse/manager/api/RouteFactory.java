@@ -157,7 +157,7 @@ public class RouteFactory {
                 requestParams.putAll(requestParser.parseBody(req.body()));
             }
             catch (ParseException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
             }
 

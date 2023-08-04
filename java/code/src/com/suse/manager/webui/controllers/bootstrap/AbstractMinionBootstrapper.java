@@ -188,7 +188,7 @@ public abstract class AbstractMinionBootstrapper {
             }
         }
         catch (CommandExecutionException | IOException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
             return new BootstrapResult(false, contactMethod,
                     LOC.getMessage("bootstrap.minion.error.permcmdexec", SALT_SSH_DIR_PATH + "/known_hosts"));
         }

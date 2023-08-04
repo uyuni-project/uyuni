@@ -3,7 +3,7 @@
 #
 # This feature can cause failures in:
 # - features/core/srv_create_activationkey.feature
-# - features/core/srv_create_repository.feature
+# - features/reposync/srv_create_repository.feature
 # - features/init_client/sle_minion.feature
 # - features/init_client/sle_ssh_minion.feature
 # - features/init_client/min_rhlike.feature

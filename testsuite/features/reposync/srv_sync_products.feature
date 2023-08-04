@@ -16,12 +16,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "RHEL" as the filtered product description
+    And I enter "RHEL or SLES ES" as the filtered product description
     Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
     When I select "x86_64" in the dropdown list of the architecture filter
     Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
 
 @scc_credentials
+@susemanager
   Scenario: View the channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -61,31 +62,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
 
-@scc_credentials
 @uyuni
-  Scenario: Add SLES 15 SP4 product with recommended sub-products
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
-    And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
-    Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
-    And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
-    When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
-    And I should see the "Basesystem Module 15 SP4 x86_64" selected
-    And I should see the "Server Applications Module 15 SP4 x86_64" selected
-    When I select "Desktop Applications Module 15 SP4 x86_64" as a product
-    And I select "Development Tools Module 15 SP4 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
-    And I should see the "Development Tools Module 15 SP4 x86_64" selected
-    When I select "Containers Module 15 SP4 x86_64" as a product
-    Then I should see the "Containers Module 15 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
-    Then the SLE15 SP4 product should be added
+  Scenario: Add openSUSE Leap 15.4 product, inlcuding Uyuni Client Tools
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_4 opensuse_leap15_4-non-oss opensuse_leap15_4-non-oss-updates opensuse_leap15_4-updates opensuse_leap15_4-backports-updates opensuse_leap15_4-sle-updates uyuni-proxy-devel-leap opensuse_leap15_4-uyuni-client" with arch "x86_64"
 
 @proxy
 @susemanager
@@ -112,6 +91,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
 
 @scc_credentials
+@susemanager
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"

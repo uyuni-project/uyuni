@@ -81,7 +81,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
                         Integer.toString(result.size()));
             }
             catch (TaskomaticApiException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
                 createErrorMessage(request,
                         "system.event.pending.canceled.taskscheduler.down",
                         StringUtils.EMPTY);

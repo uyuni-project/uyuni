@@ -83,7 +83,7 @@ public class MapBuilder {
             }
         }
         catch (Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
             throw new RuntimeException("Caught error trying to describe a bean. ", e);
         }
         return retval;

@@ -3,7 +3,7 @@ import * as React from "react";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-const msgMap = {
+const messageMap = {
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
   child_not_found_or_not_authorized: t("Child channel not found or not authorized."),
   invalid_channel_id: t("Invalid channel id"),
@@ -131,7 +131,9 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   };
 
   handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     this.setState((prevState) => ({
       messages: prevState.messages.concat(msg),
     }));

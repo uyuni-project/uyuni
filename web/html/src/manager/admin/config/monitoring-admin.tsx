@@ -22,7 +22,7 @@ const { capitalize } = Utils;
 
 const msgRestart = t("Restart is needed for the configuration changes to take effect.");
 
-const msgMap = {
+const messageMap = {
   internal_error: t("An internal error has occurred. See the server logs for details."),
   enabling_failed: t("Enabling monitoring failed. See the server logs for details."),
   enabling_failed_partially: t(
@@ -78,7 +78,7 @@ const ExporterIcon = (props: {
         ? "item-enabled-pending"
         : "item-enabled";
     if (props.message) {
-      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + props.message];
+      tooltip = t("Enabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Enabled");
     }
@@ -88,7 +88,7 @@ const ExporterIcon = (props: {
         ? "item-error-pending"
         : "item-error";
     if (props.message) {
-      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + props.message];
+      tooltip = t("Disabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Disabled");
     }
@@ -192,7 +192,7 @@ const ExportersMessages = (props: {
           .map((key) => (
             <li key={key}>
               <Icon type="system-warn" className="fa-1-5x" />
-              {msgMap[key + "_msg_" + props.messages[key]]}
+              {messageMap[key + "_msg_" + props.messages[key]]}
             </li>
           ))}
       </ul>
@@ -219,7 +219,9 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
   } = useMonitoringApi();
 
   const handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     setMessages(msg);
   };
 
@@ -234,9 +236,9 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
     changeStatus(enable)
       .then((result: any) => {
         if (result.success) {
-          setMessages(MessagesUtils.success(msgMap[result.message]));
+          setMessages(MessagesUtils.success(messageMap[result.message]));
         } else {
-          setMessages(MessagesUtils.error(result.message in msgMap ? msgMap[result.message] : result.message));
+          setMessages(MessagesUtils.error(result.message in messageMap ? messageMap[result.message] : result.message));
         }
       })
       .catch(handleResponseError);

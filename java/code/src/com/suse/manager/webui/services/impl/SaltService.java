@@ -594,7 +594,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     }
                 }
                 catch (JavaMailException javaMailException) {
-                    LOG.error("Error sending email: {}", javaMailException.getMessage());
+                    LOG.error("Error sending email: {}", javaMailException.getMessage(), javaMailException);
                 }
                 catch (InterruptedException e1) {
                     LOG.error("Interrupted during sleep", e1);
@@ -1063,7 +1063,7 @@ public class SaltService implements SystemQuery, SaltApi {
             }
         }
         catch (RuntimeException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         return uptime;
     }

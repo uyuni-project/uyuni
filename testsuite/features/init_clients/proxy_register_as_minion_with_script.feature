@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -73,3 +73,25 @@ Feature: Setup Uyuni proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
     When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
     And I run "rm /root/bootstrap-proxy.sh" on "proxy"
+
+@uyuni
+  Scenario: Assign the correct channels to the proxy
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "openSUSE 15.4 non oss (x86_64)"
+    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.4 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page

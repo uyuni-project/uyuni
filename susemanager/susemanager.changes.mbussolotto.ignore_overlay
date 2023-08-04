@@ -1,0 +1,1 @@
+- Skip swap creation and BTRFS check when we have overlayfs

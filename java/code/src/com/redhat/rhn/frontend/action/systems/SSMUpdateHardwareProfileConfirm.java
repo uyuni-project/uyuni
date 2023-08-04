@@ -101,8 +101,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
                         mapping.findForward("success"), params);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule hardware refresh:");
-                log.error(e);
+                log.error("Could not schedule hardware refresh:", e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError(errors, "taskscheduler.down");
                 getStrutsDelegate().saveMessages(request, errors);

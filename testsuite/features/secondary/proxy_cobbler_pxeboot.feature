@@ -141,7 +141,7 @@ Feature: PXE boot a terminal with Cobbler
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: delete the PXE boot minion
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
+    Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"

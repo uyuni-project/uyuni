@@ -182,8 +182,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package installs:");
-            log.error(e);
+            log.error("Could not schedule package installs:", e);
             ActionErrors errors = new ActionErrors();
             strutsDelegate.addError(errors, "taskscheduler.down");
             strutsDelegate.saveMessages(request, errors);

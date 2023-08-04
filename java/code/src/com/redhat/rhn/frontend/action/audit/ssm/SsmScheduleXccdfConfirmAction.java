@@ -91,8 +91,7 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
                 new ActionMessage("message.entitlement.missing", e.getMessage()));
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule XCCDF evaluation:");
-            log.error(e);
+            log.error("Could not schedule XCCDF evaluation:", e);
             strutsDelegate.addError(errors, "taskscheduler.down");
         }
 

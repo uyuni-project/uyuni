@@ -122,8 +122,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
                 }
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule configuration deploy:");
-                log.error(e);
+                log.error("Could not schedule configuration deploy:", e);
             }
         }
 

@@ -1,0 +1,1 @@
+- Only build 'uyuni-base-server' package for server and not for client tools

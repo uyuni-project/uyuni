@@ -27,31 +27,36 @@ Uyuni project: <https://github.com/uyuni-project/uyuni>
 EOF
 }
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
+ARGS=$(getopt -n mkchlog -o rhnf:u: --long remove,help,no-wrap,feature:username: -- "$@")
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+eval set -- "$ARGS"
+while [ : ]; do
+    case "$1" in
         -h|--help)
             usage
             exit
             ;;
         -f|--feature)
             FEATURE=$2
-            shift
-            shift
+            shift 2
             ;;
         -u|--username)
             USER=$2
-            shift
-            shift
+            shift 2
             ;;
         -r|--remove)
             REMOVE=1
             shift
             ;;
         -n|--no-wrap)
-            NO_WRAP=true
+            NO_WRAP=1
             shift
             ;;
-        *)
+        --)
+            shift
             break
             ;;
     esac
@@ -62,11 +67,16 @@ if ! command -v git &>/dev/null; then
     exit 1
 fi
 
-GITROOT=`git rev-parse --show-toplevel`
-CURDIR=`git rev-parse --show-prefix`
-GITMAIL=`git config --get user.email`
+GITROOT=`git rev-parse --show-toplevel 2>/dev/null`
+if [ $? -ne 0 ] || ! [ -d $GITROOT/rel-eng/packages ]; then
+    echo "Error: Not in Uyuni working directory."
+    exit 1
+fi
+
+CURDIR=`git rev-parse --show-prefix` || exit 1
 
 if [ -z "$USER" ]; then
+    GITMAIL=`git config --get user.email 2>/dev/null`
     if [ -n "$GITMAIL" ]; then
         USER=${GITMAIL%@*}
     else
@@ -75,7 +85,7 @@ if [ -z "$USER" ]; then
 fi
 
 if [ -z "$FEATURE" ]; then
-    FEATURE=`git rev-parse --abbrev-ref HEAD`
+    FEATURE=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
     if [ -z "$FEATURE" ] || [ "HEAD" == "$FEATURE" ]; then
         echo "Cannot read the branch name from the current HEAD. Omitting the feature name part."
         unset FEATURE
@@ -115,7 +125,7 @@ function getEditorCmd() {
 
     # Specific CLI options for common text editors
     case "$cmd" in
-        vi | vim)
+        vi*)
             cmd="$cmd +1 +startinsert!"
             ;;
         *)
@@ -145,10 +155,10 @@ if ! [ -z $REMOVE ]; then
 fi
 
 # Add the new entry
-if [ "$NO_WRAP" = true ]; then
-    echo "- $1" > $CHFILE.new
-else
+if [ -z $NO_WRAP ]; then
     echo "$1" | fold -s -w 65 | sed '1s/^.*$/- &/;2,$s/^.*$/  &/' > $CHFILE.new
+else
+    echo "- $1" > $CHFILE.new
 fi
 
 # Append older entries

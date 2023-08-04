@@ -133,13 +133,22 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 # For containers we do not have SCC, so we set the Fake Base Channel
 # for sle_minion
 sle_base_channel =
-  if ENV['PROVIDER'].include? 'podman'
+  if $is_container_provider
     'Fake Base Channel'
+  elsif $product == 'Uyuni'
+    'openSUSE Leap 15.4 (x86_64)'
   else
     'SLES15-SP4-Pool'
   end
 
-BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
+proxy_base_channel =
+  if $product == 'Uyuni'
+    'openSUSE Leap 15.4 (x86_64)'
+  else
+    'SLE-Product-SUSE-Manager-Proxy-4.3-Pool'
+  end
+
+BASE_CHANNEL_BY_CLIENT = { 'proxy' => proxy_base_channel,
                            'sle_minion' => sle_base_channel,
                            'ssh_minion' => 'SLES15-SP4-Pool',
                            'rhlike_minion' => 'RHEL8-Pool for x86_64',

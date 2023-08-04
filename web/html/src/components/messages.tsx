@@ -82,7 +82,7 @@ export class Messages extends React.Component<Props> {
 
     var msgs = items.map((item, index) => (
       <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
-        {Array.isArray(item.text) ? item.text.map((txt, i) => <div key={i}>{txt}</div>) : item.text}
+        {item.text}
       </div>
     ));
 

@@ -337,8 +337,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
                     }
                 }
                 catch (TaskomaticApiException e) {
-                    log.error("Could not schedule remote command:");
-                    log.error(e);
+                    log.error("Could not schedule remote command:", e);
                     getStrutsDelegate().addError(errorMessages, "taskscheduler.down");
                 }
             }

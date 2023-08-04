@@ -20,8 +20,8 @@ import { Loading } from "./utils";
 
 const capitalize = Utils.capitalize;
 
-const defaultMessageTexts = {
-  pillar_only_formula_saved: <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>,
+const defaultMessageMap = {
+  pillar_only_formula_saved: t("Formula saved. Applying the highstate is not needed for this formula."),
 };
 
 export enum SectionState {
@@ -204,11 +204,8 @@ class FormulaForm extends React.Component<Props, State> {
     }
   };
 
-  getMessageText = (msg) => {
-    if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
-      return defaultMessageTexts[msg];
-    }
-    return this.props.messageTexts[msg] ? this.props.messageTexts[msg] : msg;
+  getMessageText = (msg: string) => {
+    return this.props.messageTexts[msg] || defaultMessageMap[msg] || msg;
   };
 
   render() {
