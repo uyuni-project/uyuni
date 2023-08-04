@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -52,8 +53,15 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext arg0) {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
-            log.debug("Forwarding registrations disabled");
-            return;
+            if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
+                    CredentialsFactory.listSCCCredentials().size() > 0) {
+                log.warn("SUSE Manager pay-as-you-go instances must forward registration data to SCC when " +
+                        "credentials are provided. Data will be sent independently of the configuration setting.");
+            }
+            else {
+                log.debug("Forwarding registrations disabled");
+                return;
+            }
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
