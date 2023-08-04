@@ -39,7 +39,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.utils.UserPreferenceUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
