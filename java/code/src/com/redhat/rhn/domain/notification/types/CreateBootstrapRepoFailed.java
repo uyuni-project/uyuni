@@ -74,6 +74,6 @@ public class CreateBootstrapRepoFailed implements NotificationData {
      */
     @Override
     public String getDetails() {
-        return details;
+        return String.format("<pre>%s</pre>", details);
     }
 }
