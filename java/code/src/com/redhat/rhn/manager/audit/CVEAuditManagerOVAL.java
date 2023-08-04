@@ -293,10 +293,6 @@ public class CVEAuditManagerOVAL {
         return CVEAuditManager.listImagesByPatchStatus(user, cveIdentifier, patchStatuses);
     }
 
-    public static List<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
-        return CVEAuditManager.populateCVEChannels(auditTarget);
-    }
-
     public static void populateCVEChannels() {
         CVEAuditManager.populateCVEChannels();
     }
