@@ -137,14 +137,11 @@ public class LoginController {
         model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
 
         // Pay as you go code
-        boolean sccForwardWarning = false;
+        boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
+                CredentialsFactory.listSCCCredentials().size() > 0 &&
+                !ConfigDefaults.get().isForwardRegistrationEnabled();
 
-        if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() && CredentialsFactory.listSCCCredentials().size() > 0 &&
-                !ConfigDefaults.get().isForwardRegistrationEnabled()) {
-            sccForwardWarning = true;
-        }
-
-        model.put("sccForwardWarning", Json.GSON.toJson(sccForwardWarning));
+        model.put("sccForwardWarning", sccForwardWarning);
 
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
