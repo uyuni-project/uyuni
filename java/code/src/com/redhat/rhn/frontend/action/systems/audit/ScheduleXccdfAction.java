@@ -109,8 +109,7 @@ public class ScheduleXccdfAction extends ScapSetupAction {
             return msgs;
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package refresh:");
-            log.error(e);
+            log.error("Could not schedule package refresh:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             return errors;

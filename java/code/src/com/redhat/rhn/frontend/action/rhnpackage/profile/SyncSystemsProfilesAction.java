@@ -120,8 +120,7 @@ public class SyncSystemsProfilesAction extends BaseProfilesAction {
                     params);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package synchronization:");
-            log.error(e);
+            log.error("Could not schedule package synchronization:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);

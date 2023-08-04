@@ -14,7 +14,7 @@ import { MessageType } from "components/messages";
 import { JsonResult } from "utils/network";
 import Network from "utils/network";
 
-const msgMap = {
+const messageMap = {
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
   child_not_found_or_not_authorized: t("Child channel not found or not authorized."),
   invalid_channel_id: t("Invalid channel id"),
@@ -63,7 +63,9 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
           setRequiredByChannels(dependencies.requiredByChannels);
         })
         .catch((jqXHR: JQueryXHR, arg: string = "") => {
-          const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+          const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+            messageMap[msg] ? t(messageMap[msg], arg) : null
+          );
           setMessages(messages.concat(msg));
         })
         .finally(() => setIsDependencyDataLoaded(true));

@@ -68,26 +68,27 @@ export class ActionConfirm extends React.Component<Props, State> {
             )}
             {this.props.selected.length === 1 && (
               <span>
-                {t(
-                  "Are you sure you want to {0} {1} ",
-                  this.state.force && this.props.forceName
-                    ? this.props.forceName.toLowerCase()
-                    : this.props.name.toLowerCase(),
-                  this.props.itemName.toLowerCase()
-                )}
+                {/* TODO: Here and below, this translation logic needs to be changed to whole sentences from parents */}
+                {t("Are you sure you want to {action} {name}", {
+                  action:
+                    this.state.force && this.props.forceName
+                      ? this.props.forceName.toLowerCase()
+                      : this.props.name.toLowerCase(),
+                  name: this.props.itemName.toLowerCase(),
+                })}
                 <strong>{this.props.selected[0].name}</strong>?
               </span>
             )}
             {this.props.selected.length > 1 && (
               <span>
-                {t(
-                  "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)",
-                  this.state.force && this.props.forceName
-                    ? this.props.forceName.toLowerCase()
-                    : this.props.name.toLowerCase(),
-                  this.props.itemName.toLowerCase(),
-                  this.props.selected.length
-                )}
+                {t("Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)", {
+                  action:
+                    this.state.force && this.props.forceName
+                      ? this.props.forceName.toLowerCase()
+                      : this.props.name.toLowerCase(),
+                  name: this.props.itemName.toLowerCase(),
+                  count: this.props.selected.length,
+                })}
                 ?
               </span>
             )}

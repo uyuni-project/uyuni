@@ -112,7 +112,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
       }
       validateUrl(params.url)
         ? props.onEdit(params)
-        : props.messages(MessagesUtils.error(t("Url '{0}' is invalid", params.url)));
+        : props.messages(MessagesUtils.error(t("Url '{url}' is invalid", { url: params.url })));
     },
   }));
 

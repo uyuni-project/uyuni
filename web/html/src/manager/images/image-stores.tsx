@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   not_found: t("Image store cannot be found."),
   delete_success: t("Image store has been deleted."),
   delete_success_p: t("Image stores have been deleted."),
@@ -99,7 +99,7 @@ class ImageStores extends React.Component<Props, State> {
               items={[
                 {
                   severity: "success",
-                  text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"],
+                  text: messageMap[idList.length > 1 ? "delete_success_p" : "delete_success"],
                 },
               ]}
             />
@@ -112,7 +112,7 @@ class ImageStores extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),
@@ -234,10 +234,9 @@ class ImageStores extends React.Component<Props, State> {
             <span>
               {DEPRECATED_unsafeEquals(this.state.selectedItems.length, 1)
                 ? t("Are you sure you want to delete the selected store?")
-                : t(
-                    "Are you sure you want to delete selected stores? ({0} stores selected)",
-                    this.state.selectedItems.length
-                  )}
+                : t("Are you sure you want to delete selected stores? ({count} stores selected)", {
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.deleteStores(this.state.selectedItems)}

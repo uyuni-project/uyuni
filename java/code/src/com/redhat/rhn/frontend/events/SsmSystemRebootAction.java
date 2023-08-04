@@ -52,8 +52,7 @@ public class SsmSystemRebootAction implements MessageAction {
                 event.getEarliest(), actionChain);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule reboot:");
-            log.error(e);
+            log.error("Could not schedule reboot:", e);
             throw new RuntimeException(e);
         }
         SsmOperationManager.completeOperation(user,

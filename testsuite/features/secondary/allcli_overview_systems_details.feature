@@ -31,7 +31,7 @@ Feature: The system details of each minion and client provides an overview of th
 
 @sle_minion
   Scenario: SLE minion hardware refresh
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I navigate to the Systems overview page of this "sle_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text

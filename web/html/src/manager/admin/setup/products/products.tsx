@@ -44,7 +44,7 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   // Nothing for now
 };
 
@@ -267,7 +267,7 @@ class ProductsPageWrapper extends React.Component {
               </>
             )),
             true,
-            t("The following channel installations for '{0}' failed. Please check log files.", product)
+            t("The following channel installations for '{product}' failed. Please check log files.", { product })
           );
         }
         this.setState({
@@ -281,7 +281,9 @@ class ProductsPageWrapper extends React.Component {
   };
 
   handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     this.setState({ errors: this.state.errors.concat(msg) });
   };
 

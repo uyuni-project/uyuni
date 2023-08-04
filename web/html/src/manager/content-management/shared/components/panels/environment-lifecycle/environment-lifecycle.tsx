@@ -8,8 +8,6 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils/Loading";
 
-import { stringToReact } from "utils";
-
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
@@ -116,7 +114,7 @@ const EnvironmentLifecycle = (props: Props) => {
                           closeDialog().then(() => {
                             props.onChange(projectWithDeleteddEnvironment);
                           });
-                          showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
+                          showSuccessToastr(t("Environment {name} deleted successfully", { name: environment.label }));
                         })
                         .catch((error) => {
                           showErrorToastr(error.messages, { autoHide: false });
@@ -137,13 +135,15 @@ const EnvironmentLifecycle = (props: Props) => {
                             <Messages
                               items={MsgUtils.warning(
                                 <>
-                                  {/* TODO: Remove this wrapper once https://github.com/SUSE/spacewalk/issues/20449 is implemented */}
-                                  {stringToReact(
-                                    t(
-                                      "This environment cannot be deleted since it is being used in an {0}autoinstallation distribution{1}.",
-                                      '<a target="_blank" href="/rhn/kickstart/ViewTrees.do">',
-                                      "</a>"
-                                    )
+                                  {t(
+                                    "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>.",
+                                    {
+                                      link: (str) => (
+                                        <a target="_blank" href="/rhn/kickstart/ViewTrees.do">
+                                          {str}
+                                        </a>
+                                      ),
+                                    }
                                   )}
                                 </>
                               )}

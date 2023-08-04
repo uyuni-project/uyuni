@@ -5,7 +5,7 @@ import { Messages, MessageType } from "components/messages";
 
 import Network from "utils/network";
 
-const msgMap = {
+const messageMap = {
   // Nothing for now
 };
 
@@ -136,7 +136,9 @@ class SCCDialog extends React.Component<Props> {
       currentStep.inProgress = false;
       currentStep.success = false;
     }
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     this.setState({ steps: stepList, errors: this.state.errors.concat(msg) });
   };
 

@@ -26,7 +26,7 @@ type State = {
   messages: MessageType[];
 };
 
-const msgMap = {
+const messageMap = {
   invalid_systemid: t("Not a system id"),
   unknown_system: t("Unknown System"),
   system_not_mgr_server: t("System is not a peripheral server"),
@@ -53,7 +53,7 @@ class MgrServer extends React.Component<Props, State> {
           });
         } else {
           this.setState({
-            messages: MessagesUtils.error(data.messages.map((m) => msgMap[m])),
+            messages: MessagesUtils.error(data.messages.map((m) => messageMap[m])),
           });
         }
       })
@@ -64,7 +64,7 @@ class MgrServer extends React.Component<Props, State> {
 
   handleResponseError = (jqXHR, arg = "") => {
     this.setState({
-      messages: Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : msg)),
+      messages: Network.responseErrorMessage(jqXHR, (status, msg) => (messageMap[msg] ? t(messageMap[msg], arg) : msg)),
     });
   };
 

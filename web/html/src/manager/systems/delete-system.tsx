@@ -8,7 +8,7 @@ import { Utils as MessagesUtils } from "components/messages";
 
 import Network from "utils/network";
 
-const msgMap = {
+const messageMap = {
   minion_unreachable: t("Cleanup timed out. Please check if the machine is reachable."),
   apply_result_missing: t("No result found in state apply response."),
 };
@@ -41,7 +41,7 @@ class DeleteSystem extends React.Component<Props, State> {
           this.props.onDeleteSuccess();
         } else {
           this.setState({
-            messages: MessagesUtils.error(data.messages.map((m) => msgMap[m])),
+            messages: MessagesUtils.error(data.messages.map((m) => messageMap[m])),
           });
           this.showErrorDialog();
         }
@@ -53,7 +53,9 @@ class DeleteSystem extends React.Component<Props, State> {
 
   handleResponseError = (jqXHR, arg = "") => {
     this.setState({
-      messages: Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null)),
+      messages: Network.responseErrorMessage(jqXHR, (status, msg) =>
+        messageMap[msg] ? t(messageMap[msg], arg) : null
+      ),
     });
     this.showErrorDialog();
   };

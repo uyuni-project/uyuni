@@ -191,7 +191,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         catch (Exception e) {
             parentQueue.getQueueRun().failed();
             parentQueue.changeRun(null);
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
         finally {
             parentQueue.workerDone();

@@ -91,7 +91,7 @@ public class ErrataCacheWorker implements QueueWorker {
             HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
             HibernateFactory.rollbackTransaction();
         }
         finally {

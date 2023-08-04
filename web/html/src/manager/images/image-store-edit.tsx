@@ -26,7 +26,7 @@ const typeMap = {
   os_image: "OS Image",
 };
 
-const msgMap = {
+const messageMap = {
   // Nothing for now
 };
 
@@ -104,7 +104,7 @@ class CreateImageStore extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),
@@ -128,7 +128,7 @@ class CreateImageStore extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),

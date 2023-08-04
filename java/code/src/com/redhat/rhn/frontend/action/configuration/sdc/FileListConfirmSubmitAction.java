@@ -124,8 +124,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule config upload:");
-            log.error(e);
+            log.error("Could not schedule config upload:", e);
             return createErrorMessage(request, mapping, formIn, server.getId(),
                     "taskscheduler.down");
         }
@@ -201,8 +200,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule config actions:");
-            log.error(e);
+            log.error("Could not schedule config actions:", e);
             return createErrorMessage(request, mapping, form, sid, "taskscheduler.down");
         }
 

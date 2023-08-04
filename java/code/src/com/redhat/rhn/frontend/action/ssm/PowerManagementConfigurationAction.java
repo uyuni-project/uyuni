@@ -87,7 +87,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
                     }
                 }
                 catch (XmlRpcException e) {
-                    log.error(e);
+                    log.error(e.getMessage(), e);
                 }
             }
 

@@ -13,7 +13,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-const msgMap = {
+const messageMap = {
   not_found: t("Image store not found"),
   build_scheduled: t("The image import has been scheduled."),
   taskomatic_error: t(
@@ -188,7 +188,9 @@ class ImageImport extends React.Component {
             Utils.urlBounce("/rhn/manager/cm/images");
           } else {
             this.setState({
-              messages: MessagesUtils.error(msgMap[data.messages[0]] ? msgMap[data.messages[0]] : data.messages[0]),
+              messages: MessagesUtils.error(
+                messageMap[data.messages[0]] ? messageMap[data.messages[0]] : data.messages[0]
+              ),
             });
           }
         })

@@ -547,7 +547,8 @@ end
 
 Then(/^I should be logged in$/) do
   xpath_query = "//a[@href='/rhn/Logout.do']"
-  raise 'User is not logged in' unless find(:xpath, xpath_query)
+  # Check if the user is logged in, using the specified wait_time
+  raise 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 2)
 end
 
 Then(/^I am logged in$/) do
@@ -832,6 +833,10 @@ end
 
 When(/^I enter "([^"]*)" as the filtered snippet name$/) do |input|
   find("input[placeholder='Filter by Snippet Name: ']").set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
+  find("input[placeholder='Filter by formula name']").set(input)
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|

@@ -20,8 +20,8 @@ import { Loading } from "./utils";
 
 const capitalize = Utils.capitalize;
 
-const defaultMessageTexts = {
-  pillar_only_formula_saved: <p>{t("Formula saved. Applying the highstate is not needed for this formula.")}</p>,
+const defaultMessageMap = {
+  pillar_only_formula_saved: t("Formula saved. Applying the highstate is not needed for this formula."),
 };
 
 export enum SectionState {
@@ -134,10 +134,9 @@ class FormulaForm extends React.Component<Props, State> {
         else {
           if (data.formula_list.filter((formula) => formula === data.formula_name).length > 1) {
             this.state.warnings.push(
-              t(
-                'Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!',
-                capitalize(data.formula_name)
-              )
+              t('Multiple Group formulas detected. Only one formula for "{name}" can be used on each system!', {
+                name: capitalize(data.formula_name),
+              })
             );
           }
           const rawLayout = data.layout;
@@ -166,10 +165,10 @@ class FormulaForm extends React.Component<Props, State> {
     if (data.errors) {
       const messages: string[] = [];
       if (data.errors.required && data.errors.required.length > 0) {
-        messages.push(t("Please input required fields: {0}", data.errors.required.join(", ")));
+        messages.push(t("Please input required fields: {fields}", { fields: data.errors.required.join(", ") }));
       }
       if (data.errors.invalid && data.errors.invalid.length > 0) {
-        messages.push(t("Invalid format of fields: {0}", data.errors.invalid.join(", ")));
+        messages.push(t("Invalid format of fields: {fields}", { fields: data.errors.invalid.join(", ") }));
       }
       this.setState({
         messages: [],
@@ -205,11 +204,8 @@ class FormulaForm extends React.Component<Props, State> {
     }
   };
 
-  getMessageText = (msg) => {
-    if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
-      return defaultMessageTexts[msg];
-    }
-    return this.props.messageTexts[msg] ? this.props.messageTexts[msg] : msg;
+  getMessageText = (msg: string) => {
+    return this.props.messageTexts[msg] || defaultMessageMap[msg] || msg;
   };
 
   render() {
