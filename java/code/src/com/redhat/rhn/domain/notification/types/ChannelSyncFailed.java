@@ -84,6 +84,6 @@ public class ChannelSyncFailed implements NotificationData {
      */
     @Override
     public String getDetails() {
-        return details;
+        return String.format("<pre>%s</pre>", details);
     }
 }
