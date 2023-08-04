@@ -25,11 +25,20 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.ShallowSystemPackage;
+
+import com.suse.oval.OsFamily;
+import com.suse.oval.OvalParser;
+import com.suse.oval.manager.OvalObjectManager;
+import com.suse.oval.manager.OvalStateManager;
+import com.suse.oval.ovaldownloader.OVALDownloader;
+import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -290,5 +299,70 @@ public class CVEAuditManagerOVAL {
 
     public static void populateCVEChannels() {
         CVEAuditManager.populateCVEChannels();
+    }
+
+    static List<OVALProduct> productsToSync = new ArrayList<>();
+    static {
+        productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));
+        productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.3"));
+        productsToSync.add(new OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, "15"));
+        productsToSync.add(new OVALProduct(OsFamily.DEBIAN, "10"));
+    }
+    public static void syncOVAL() {
+        OVALDownloader ovalDownloader = new OVALDownloader();
+        for (OVALProduct product : productsToSync) {
+            log.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            File ovalFile;
+            try {
+                ovalFile = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to download OVAL data", e);
+            }
+            log.debug("Downloading finished");
+
+            OvalParser ovalParser = new OvalParser();
+            OvalRootType ovalRoot = ovalParser.parse(ovalFile);
+
+            OvalStateManager ovalStateManager = new OvalStateManager(ovalRoot.getStates().getStates());
+            OvalObjectManager ovalObjectManager = new OvalObjectManager(ovalRoot.getObjects().getObjects());
+
+            log.debug("Saving OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.saveDefinitions_Optimized(ovalRoot.getDefinitions(), product.getOsFamily(), product.getOsVersion());
+            log.debug("Finished saving OVAL definitions");
+            OVALCachingFactory.savePackageTests(
+                    ovalRoot.getTests().getTests(),
+                    ovalObjectManager,
+                    ovalStateManager,
+                    product.getOsFamily(),
+                    product.getOsVersion()
+            );
+            log.debug("Saving OVAL finished");
+        }
+    }
+
+    public static class OVALProduct {
+        private OsFamily osFamily;
+        private String osVersion;
+
+        public OVALProduct(OsFamily osFamily, String osVersion) {
+            this.osFamily = osFamily;
+            this.osVersion = osVersion;
+        }
+
+        public OsFamily getOsFamily() {
+            return osFamily;
+        }
+
+        public void setOsFamily(OsFamily osFamily) {
+            this.osFamily = osFamily;
+        }
+
+        public String getOsVersion() {
+            return osVersion;
+        }
+
+        public void setOsVersion(String osVersion) {
+            this.osVersion = osVersion;
+        }
     }
 }

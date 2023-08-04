@@ -51,6 +51,7 @@ public class OVALDownloader {
         File localOVALFile = new File(DOWNLOAD_PATH + streamInfo.localFileName() +
                 streamInfo.getCompressionMethod().extension());
 
+        // Start downloading
         FileUtils.copyURLToFile(remoteOVALFileURL, localOVALFile, 5000, 5000);
 
         OVALCompressionMethod compressionMethod = streamInfo.getCompressionMethod();
