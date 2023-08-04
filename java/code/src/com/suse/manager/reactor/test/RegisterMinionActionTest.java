@@ -1819,6 +1819,53 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                        will(returnValue(getSystemInfo(MINION_ID, "byos", key)));
+                        List<ProductInfo> pil = new ArrayList<>();
+                        ProductInfo pi = new ProductInfo(
+                                product.getName(),
+                                product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                                true, true, "productline", Optional.of("registerrelease"),
+                                "test", "repo", "shortname", "summary", "vendor",
+                                product.getVersion());
+                        pil.add(pi);
+                        allowing(saltServiceMock).getProducts(with(any(String.class)));
+                        will(returnValue(Optional.of(pil)));
+                    }},
+                    ACTIVATION_KEY_SUPPLIER,
+                    (optMinion, machineId, key) -> assertTrue(optMinion.isEmpty()),
+                    DEFAULT_CONTACT_METHOD);
+        }
+        catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            assertContains(e.getMessage(), MINION_ID);
+            assertContains(e.getMessage(), "To manage BYOS (Bring-your-own-Subscription) clients " +
+                    "you have to configure SCC Credentials");
+            return;
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+        fail("Expected Exception not thrown");
+    }
+
+    /**
+     * Test a registration of a non-free DC client at a PAYG SUMA Server.
+     * @throws Exception
+     */
+    @Test
+    public void testRegisterMinionDConPAYG() throws Exception {
+        cloudManager4Test = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+        };
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        product.setFree(false);
+        try {
+            executeTest(
+                    (key) -> new Expectations() {{
+                        allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                         will(returnValue(getSystemInfo(MINION_ID, null, key)));
                         List<ProductInfo> pil = new ArrayList<>();
                         ProductInfo pi = new ProductInfo(
@@ -1837,8 +1884,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
             assertContains(e.getMessage(), MINION_ID);
-            assertContains(e.getMessage(), "To manage BYOS (Bring-your-own-Subscription) or Datacenter clients " +
-                    "you have to configure SCC Credentials");
+            assertContains(e.getMessage(), "To manage Datacenter clients you have to configure SCC Credentials");
             return;
         }
         finally {
