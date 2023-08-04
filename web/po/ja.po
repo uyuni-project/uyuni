@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-28 15:10+0200\n"
+"POT-Creation-Date: 2023-08-04 14:19+0200\n"
 "PO-Revision-Date: 2023-06-27 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -55,7 +55,7 @@ msgstr "必須の項目に入力を行なってください: {0}"
 msgid "Invalid format of fields: {fields}"
 msgstr "項目の書式が正しくありません: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:216
+#: ../html/src/components/FormulaForm.tsx:213
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -63,19 +63,19 @@ msgstr ""
 "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
 "を行なうことができます。"
 
-#: ../html/src/components/FormulaForm.tsx:271
+#: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
 msgstr "すべてのセクションを展開"
 
-#: ../html/src/components/FormulaForm.tsx:278
+#: ../html/src/components/FormulaForm.tsx:275
 msgid "Collapse All Sections"
 msgstr "すべてのセクションを折りたたむ"
 
-#: ../html/src/components/FormulaForm.tsx:343
+#: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
 msgstr "名前なし"
 
-#: ../html/src/components/FormulaForm.tsx:352
+#: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
 msgstr "数式のグループ名で検索"
 
@@ -162,8 +162,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:814
 #: ../html/src/manager/images/image-view-overview.tsx:815
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
-#: ../html/src/manager/systems/delete-system.tsx:78
-#: ../html/src/manager/systems/delete-system.tsx:79
+#: ../html/src/manager/systems/delete-system.tsx:80
+#: ../html/src/manager/systems/delete-system.tsx:81
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
@@ -180,9 +180,9 @@ msgstr "取り消し"
 #: ../html/src/manager/images/image-profiles.tsx:210
 #: ../html/src/manager/images/image-stores.tsx:136
 #: ../html/src/manager/images/image-stores.tsx:204
-#: ../html/src/manager/images/image-view.tsx:349
-#: ../html/src/manager/images/image-view.tsx:359
-#: ../html/src/manager/images/image-view.tsx:696
+#: ../html/src/manager/images/image-view.tsx:351
+#: ../html/src/manager/images/image-view.tsx:361
+#: ../html/src/manager/images/image-view.tsx:698
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:44
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -229,7 +229,7 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:299
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:62
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 msgid "Formulas"
 msgstr "Formula"
@@ -304,11 +304,11 @@ msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1160
+#: ../html/src/manager/admin/setup/products/products.tsx:1162
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:675
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
 msgstr "確認"
 
@@ -341,19 +341,19 @@ msgstr "最初"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:436
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:668
+#: ../html/src/manager/admin/setup/products/products.tsx:438
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
 msgid "Prev"
 msgstr "前へ"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:442
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:565
+#: ../html/src/manager/admin/setup/products/products.tsx:444
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
 msgid "Next"
 msgstr "次へ"
 
@@ -403,7 +403,7 @@ msgstr "土曜"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
 msgid "Schedule Name"
 msgstr "スケジュール名"
 
@@ -518,8 +518,8 @@ msgstr ""
 "てください。"
 
 #: ../html/src/components/states-picker.tsx:327
-#: ../html/src/manager/images/image-view.tsx:815
 #: ../html/src/manager/images/image-view.tsx:817
+#: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -632,11 +632,13 @@ msgid "Unprovisioned System"
 msgstr "未登録のシステム"
 
 #: ../html/src/components/systems.tsx:26
+#: ../html/src/manager/systems/list-filter.tsx:7
 #, fuzzy
 msgid "Virtual Guest"
 msgstr "仮想ホスト"
 
 #: ../html/src/components/systems.tsx:31
+#: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/virtual-list.tsx:65
 msgid "Virtual Host"
 msgstr "仮想ホスト"
@@ -648,6 +650,7 @@ msgstr "仮想システム"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
+#: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
 msgstr "プロキシ"
 
@@ -666,12 +669,12 @@ msgid "System Locked"
 msgstr "システムはロック済み"
 
 #: ../html/src/components/table/SearchField.tsx:49
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
+#: ../html/src/components/table/TableFilter.tsx:45
 msgid "Filter"
 msgstr "フィルタ"
 
 #: ../html/src/components/table/SearchField.tsx:53
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
+#: ../html/src/components/table/TableFilter.tsx:49
 msgid "Select a filter"
 msgstr "フィルタの選択"
 
@@ -686,7 +689,7 @@ msgid "({selectedCount} selected)"
 msgstr "削除を選択しました"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:363
+#: ../html/src/manager/admin/setup/products/products.tsx:365
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
 msgid "Clear"
 msgstr "消去"
@@ -694,6 +697,11 @@ msgstr "消去"
 #: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr "すべてを選択"
+
+#: ../html/src/components/table/SelectSearchField.tsx:5
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+msgid "All"
+msgstr "すべて"
 
 #: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
@@ -715,8 +723,8 @@ msgstr "ヘルプ"
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:632
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:633
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:464
@@ -855,8 +863,8 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:21
-#: ../html/src/manager/systems/all-list.tsx:76
+#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
@@ -917,29 +925,29 @@ msgstr "ドキュメンテーション"
 msgid " to learn how to consume these metrics."
 msgstr " をお読みください。メトリックの消費方法が書かれています。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:296
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:318
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:258
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:278
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:298
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:320
 msgid "Enable"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:303
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:326
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:265
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:285
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:305
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:328
 msgid "Disable"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:339
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "SUSE Manager 設定 - モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:344
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -947,38 +955,38 @@ msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 msgid "General"
 msgstr "全般"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 msgid "Bootstrap Script"
 msgstr "ブートストラップスクリプト"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:362
 msgid "Organizations"
 msgstr "組織"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:367
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:372
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:377
 msgid "Bare-metal systems"
 msgstr "ベアメタルシステム"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:381
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
 msgid "Monitoring"
 msgstr "モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid "Restarting"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:410
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1024,7 +1032,7 @@ msgid "Bastion SSH connection data"
 msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:294
+#: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "Setup Wizard"
 msgstr "セットアップウィザード"
 
@@ -1062,8 +1070,8 @@ msgid "never"
 msgstr "なし"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:447
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
+#: ../html/src/manager/admin/setup/products/products.tsx:449
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "／"
 
@@ -1172,35 +1180,35 @@ msgstr "従量課金制を削除"
 msgid "Are you sure you want to delete project"
 msgstr "プロジェクトを削除してよろしいですか"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:146
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "SUSE カスタマーセンターから製品カタログを更新"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:178
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:180
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
-#: ../html/src/manager/images/image-view.tsx:373
+#: ../html/src/manager/images/image-view.tsx:375
 #: ../html/src/manager/notifications/notification-messages.tsx:451
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "更新"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:181
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:183
 msgid "Please be patient, this might take several minutes."
 msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:186
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
 #: ../html/src/manager/images/image-view-overview.tsx:141
 msgid "Completed"
 msgstr "完了しました"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:191
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
 msgid "Operation not successful: Empty reply from the server"
 msgstr "操作は成功しませんでした: サーバからの応答が空です"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:192
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:687
+#: ../html/src/manager/images/image-view.tsx:689
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
@@ -1239,7 +1247,7 @@ msgstr ""
 "「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してく"
 "ださい。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:319
+#: ../html/src/manager/admin/setup/products/products.tsx:321
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1247,28 +1255,28 @@ msgstr ""
 "製品データの更新処理が裏で動作しています。しばらくしてからやり直してくださ"
 "い。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:324
+#: ../html/src/manager/admin/setup/products/products.tsx:326
 msgid "The product catalog is still refreshing, please wait."
 msgstr "まだ製品カタログを更新しています。しばらくお待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:326
+#: ../html/src/manager/admin/setup/products/products.tsx:328
 msgid "Select some product first."
 msgstr "まずは製品を選択してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:335
-#: ../html/src/manager/admin/setup/products/products.tsx:343
+#: ../html/src/manager/admin/setup/products/products.tsx:337
+#: ../html/src/manager/admin/setup/products/products.tsx:345
 msgid "Add products"
 msgstr "製品の追加"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:362
+#: ../html/src/manager/admin/setup/products/products.tsx:364
 msgid "Clear products selection"
 msgstr "製品の選択解除"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:403
+#: ../html/src/manager/admin/setup/products/products.tsx:405
 msgid "Why aren't all products displayed in the list?"
 msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:406
+#: ../html/src/manager/admin/setup/products/products.tsx:408
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1276,7 +1284,7 @@ msgstr ""
 "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
 "(ミラークレデンシャル) に直接結びついています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:411
+#: ../html/src/manager/admin/setup/products/products.tsx:413
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1284,7 +1292,7 @@ msgstr ""
 "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
 "報を追加していることをご確認ください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:421
+#: ../html/src/manager/admin/setup/products/products.tsx:423
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1292,20 +1300,20 @@ msgstr ""
 "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
 "スター上でのみ管理することができます。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:498
+#: ../html/src/manager/admin/setup/products/products.tsx:500
 msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:593
+#: ../html/src/manager/admin/setup/products/products.tsx:595
 msgid "Filter by product Description"
 msgstr "製品説明でフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:669
+#: ../html/src/manager/admin/setup/products/products.tsx:671
 msgid "Product Description"
 msgstr "製品説明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:675
-#: ../html/src/manager/admin/setup/products/products.tsx:1053
+#: ../html/src/manager/admin/setup/products/products.tsx:677
+#: ../html/src/manager/admin/setup/products/products.tsx:1055
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1313,104 +1321,104 @@ msgstr "製品説明"
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:677
+#: ../html/src/manager/admin/setup/products/products.tsx:679
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:684
+#: ../html/src/manager/admin/setup/products/products.tsx:686
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:855
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid " channels sync failed"
 msgstr " チャンネル同期に失敗しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:863
+#: ../html/src/manager/admin/setup/products/products.tsx:865
 msgid " channels sync in progress"
 msgstr " チャンネル同期を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:871
+#: ../html/src/manager/admin/setup/products/products.tsx:873
 msgid " channels synced"
 msgstr " チャンネルを同期しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:896
+#: ../html/src/manager/admin/setup/products/products.tsx:898
 msgid "To enable this product, the parent product should be selected first"
 msgstr "この製品を有効化するには、先に親製品を選択しておく必要があります"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:897
+#: ../html/src/manager/admin/setup/products/products.tsx:899
 msgid "Select this product"
 msgstr "この製品を選択"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:909
+#: ../html/src/manager/admin/setup/products/products.tsx:911
 msgid "This product is mirrored."
 msgstr "この製品はミラーされています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:938
+#: ../html/src/manager/admin/setup/products/products.tsx:940
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:545
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
 msgid "recommended"
 msgstr "推奨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:956
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:592
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
 msgid "include recommended"
 msgstr "推奨を含める"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:998
+#: ../html/src/manager/admin/setup/products/products.tsx:1000
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 製品カタログの更新を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1001
+#: ../html/src/manager/admin/setup/products/products.tsx:1003
 msgid "Scheduling channels product resync"
 msgstr "チャンネル製品の再同期をスケジュールしています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1004
+#: ../html/src/manager/admin/setup/products/products.tsx:1006
 msgid "Channels product resync scheduled"
 msgstr "チャンネル製品の再同期をスケジュールしました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1007
+#: ../html/src/manager/admin/setup/products/products.tsx:1009
 msgid "Schedule channels product resync"
 msgstr "チャンネル製品の再同期をスケジュール"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1067
+#: ../html/src/manager/admin/setup/products/products.tsx:1069
 msgid "Show product's channels"
 msgstr "製品チャンネルの表示"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1133
+#: ../html/src/manager/admin/setup/products/products.tsx:1135
 msgid "Product Channels - "
 msgstr "製品チャンネル - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1138
+#: ../html/src/manager/admin/setup/products/products.tsx:1140
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "追加したいオプションのチャンネルを選択して確認します。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1142
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 msgid "Mandatory Channels"
 msgstr "必須チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1144
+#: ../html/src/manager/admin/setup/products/products.tsx:1146
 msgid "Optional Channels"
 msgstr "任意チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1180
+#: ../html/src/manager/admin/setup/products/products.tsx:1182
 msgid "not synced"
 msgstr "同期されていません"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1183
+#: ../html/src/manager/admin/setup/products/products.tsx:1185
 msgid "sync in progress"
 msgstr "同期を行なっています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1186
+#: ../html/src/manager/admin/setup/products/products.tsx:1188
 msgid "synced"
 msgstr "同期済み"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1189
+#: ../html/src/manager/admin/setup/products/products.tsx:1191
 msgid "sync failed"
 msgstr "同期が失敗しました"
 
@@ -1572,7 +1580,7 @@ msgstr "SUSEセキュリティCVEリンク"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:641
+#: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
@@ -1589,7 +1597,7 @@ msgstr "名前"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:681
+#: ../html/src/manager/images/image-view.tsx:683
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:202
@@ -2102,7 +2110,7 @@ msgstr "エポック"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:374
-#: ../html/src/manager/images/image-view.tsx:642
+#: ../html/src/manager/images/image-view.tsx:644
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
 msgstr "バージョン"
@@ -2193,7 +2201,7 @@ msgstr "使用されていないものを選択"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:144
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-stores.tsx:137
-#: ../html/src/manager/images/image-view.tsx:350
+#: ../html/src/manager/images/image-view.tsx:352
 msgid "Delete selected"
 msgstr "削除を選択しました"
 
@@ -2444,12 +2452,6 @@ msgstr "名前を指定したパッケージを含むもの"
 msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
-msgid "All"
-msgstr "すべて"
-
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
 msgid "Fixes Package Name"
 msgstr "修正パッケージ名"
@@ -2473,7 +2475,7 @@ msgstr "ビルド ({0})"
 #: ../html/src/manager/images/image-profiles.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:626
 #: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:669
+#: ../html/src/manager/images/image-view.tsx:671
 msgid "Build"
 msgstr "ビルド"
 
@@ -2573,13 +2575,13 @@ msgid "Waiting for repositories data to be generated"
 msgstr "リポジトリデータが生成されるのを待機しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr "構築済み"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view-overview.tsx:81
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr "失敗"
 
@@ -2716,7 +2718,7 @@ msgstr "新しいベースチャンネルとして選択すべきチャンネル
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:603
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr "子チャンネル"
 
@@ -2742,7 +2744,7 @@ msgstr "このチャンネルは必須チャンネルです"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:550
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:552
 msgid "mandatory"
 msgstr "必須"
 
@@ -2754,7 +2756,7 @@ msgstr "子チャンネル無し"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:513
 #: ../html/src/manager/state/highstate-summary.tsx:73
@@ -2828,43 +2830,31 @@ msgstr ""
 "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
 "た"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
+"the <link>Highstate</link> for the changes to take effect."
 msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
 
-#. Value options for filtering by Action Type in recurring actions list
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:17
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:17
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
-#: ../html/src/manager/state/highstate.tsx:142
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:18
-msgid " for the changes to take effect."
-msgstr " 変更した設定を反映させるには、再起動が必要です。"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:21
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:24
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:21
 msgid "Invalid target type."
 msgstr "ターゲットタイプが正しくありません。"
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid "Formula saved. Apply the "
-msgstr "formula を保存しました。下記を適用します "
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
+#, fuzzy
+msgid ""
+"Formula saved. Apply the <link>Highstate</link> for the changes to take "
+"effect."
+msgstr ""
+"formula を保存しました。この formula に対する highstate の適用は不要です。"
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -2872,18 +2862,18 @@ msgid "Systems"
 msgstr "システム"
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:665
-#: ../html/src/manager/images/image-view.tsx:789
-#: ../html/src/manager/systems/all-list.tsx:25
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/images/image-view.tsx:667
+#: ../html/src/manager/images/image-view.tsx:791
+#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "パッケージ"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:652
-#: ../html/src/manager/images/image-view.tsx:788
-#: ../html/src/manager/systems/all-list.tsx:24
-#: ../html/src/manager/systems/all-list.tsx:93
+#: ../html/src/manager/images/image-view.tsx:654
+#: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "パッチ"
 
@@ -2909,8 +2899,8 @@ msgstr ""
 "ていることをご確認ください。"
 
 #: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1039
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:373
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1043
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:375
 msgid "Action has been successfully added to the Action Chain "
 msgstr "動作を動作チェーンに追加しました "
 
@@ -2924,7 +2914,7 @@ msgstr "イメージの構築を "
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:51
 #: ../html/src/manager/systems/proxy.tsx:70
 #: ../html/src/manager/systems/proxy.tsx:74
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:382
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:384
 msgid "scheduled"
 msgstr "スケジュールしました"
 
@@ -2942,7 +2932,7 @@ msgid "Image Type"
 msgstr "イメージタイプ"
 
 #: ../html/src/manager/images/image-build.tsx:266
-#: ../html/src/manager/images/image-import.tsx:254
+#: ../html/src/manager/images/image-import.tsx:256
 msgid "Image Store"
 msgstr "イメージストア"
 
@@ -2952,7 +2942,7 @@ msgid "Path"
 msgstr "パス"
 
 #: ../html/src/manager/images/image-build.tsx:274
-#: ../html/src/manager/images/image-import.tsx:229
+#: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
 msgid "Activation Key"
@@ -2967,7 +2957,7 @@ msgid "Image Profile"
 msgstr "イメージプロファイル"
 
 #: ../html/src/manager/images/image-build.tsx:380
-#: ../html/src/manager/images/image-import.tsx:289
+#: ../html/src/manager/images/image-import.tsx:291
 msgid "Build Host"
 msgstr "構築ホスト"
 
@@ -2979,43 +2969,43 @@ msgstr "イメージストアが見つかりませんでした"
 msgid "The image import has been scheduled."
 msgstr "イメージの取り込みをスケジュールしました。"
 
-#: ../html/src/manager/images/image-import.tsx:222
+#: ../html/src/manager/images/image-import.tsx:224
 #: ../html/src/manager/images/image-profile-edit.tsx:386
 msgid "There are no channels assigned to this key."
 msgstr "このキーに割り当てられているチャンネルはありません。"
 
-#: ../html/src/manager/images/image-import.tsx:242
+#: ../html/src/manager/images/image-import.tsx:244
 msgid "Import Image"
 msgstr "イメージの取り込み"
 
-#: ../html/src/manager/images/image-import.tsx:244
+#: ../html/src/manager/images/image-import.tsx:246
 msgid "You can import Container images only using this feature."
 msgstr ""
 "この機能を利用することによってのみ、コンテナイメージを取り込むことができま"
 "す。"
 
-#: ../html/src/manager/images/image-import.tsx:270
+#: ../html/src/manager/images/image-import.tsx:272
 msgid "Image name"
 msgstr "イメージ名"
 
-#: ../html/src/manager/images/image-import.tsx:272
+#: ../html/src/manager/images/image-import.tsx:274
 msgid "Image name is required."
 msgstr "イメージ名を指定する必要があります。"
 
-#: ../html/src/manager/images/image-import.tsx:279
+#: ../html/src/manager/images/image-import.tsx:281
 msgid "Image version"
 msgstr "イメージバージョン"
 
-#: ../html/src/manager/images/image-import.tsx:281
+#: ../html/src/manager/images/image-import.tsx:283
 msgid "Image version is required."
 msgstr "イメージバージョンを指定する必要があります。"
 
-#: ../html/src/manager/images/image-import.tsx:305
-#: ../html/src/manager/images/image-view.tsx:368
+#: ../html/src/manager/images/image-import.tsx:307
+#: ../html/src/manager/images/image-view.tsx:370
 msgid "Import"
 msgstr "取り込み"
 
-#: ../html/src/manager/images/image-import.tsx:312
+#: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:386
@@ -3209,7 +3199,7 @@ msgstr ""
 "選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
-#: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/images/image-view.tsx:792
 msgid "Build Log"
 msgstr "構築ログ"
 
@@ -3227,13 +3217,13 @@ msgstr "構築ログは利用できません。"
 #: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:69
 #: ../html/src/manager/images/image-view-runtime.tsx:106
-#: ../html/src/manager/images/image-view.tsx:480
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view.tsx:482
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "No information"
 msgstr "情報無し"
 
 #: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Queued"
 msgstr "キュー済み"
 
@@ -3270,7 +3260,7 @@ msgstr " は失敗しました"
 
 #: ../html/src/manager/images/image-view-overview.tsx:105
 #: ../html/src/manager/images/image-view-overview.tsx:106
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Built externally"
 msgstr "外部で構築済み"
 
@@ -3283,37 +3273,37 @@ msgid "Picked Up"
 msgstr "ピックアップ済み"
 
 #: ../html/src/manager/images/image-view-overview.tsx:186
-#: ../html/src/manager/images/image-view.tsx:555
+#: ../html/src/manager/images/image-view.tsx:557
 msgid "Cluster"
 msgstr "クラスタ"
 
 #: ../html/src/manager/images/image-view-overview.tsx:187
-#: ../html/src/manager/images/image-view.tsx:556
-#: ../html/src/manager/images/image-view.tsx:608
+#: ../html/src/manager/images/image-view.tsx:558
+#: ../html/src/manager/images/image-view.tsx:610
 msgid "Instances"
 msgstr "インスタンス"
 
 #: ../html/src/manager/images/image-view-overview.tsx:197
 #: ../html/src/manager/images/image-view-overview.tsx:234
-#: ../html/src/manager/images/image-view.tsx:517
-#: ../html/src/manager/images/image-view.tsx:566
+#: ../html/src/manager/images/image-view.tsx:519
+#: ../html/src/manager/images/image-view.tsx:568
 msgid "Waiting for update ..."
 msgstr "更新を待っています..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:214
-#: ../html/src/manager/images/image-view.tsx:583
+#: ../html/src/manager/images/image-view.tsx:585
 msgid "View cluster summary"
 msgstr "クラスタ概要の表示"
 
 #: ../html/src/manager/images/image-view-overview.tsx:245
 #: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view.tsx:525
+#: ../html/src/manager/images/image-view.tsx:527
 msgid "All instances are consistent with SUSE Manager"
 msgstr "全てのインスタンスが SUSE Manager と同期できています"
 
 #: ../html/src/manager/images/image-view-overview.tsx:260
 #: ../html/src/manager/images/image-view-overview.tsx:261
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view.tsx:533
 msgid "Outdated instances found"
 msgstr "古いインスタンスが見つかりました"
 
@@ -3326,32 +3316,33 @@ msgid "Edit store"
 msgstr "ストアの編集"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:748
+#: ../html/src/manager/images/image-view.tsx:750
 #, fuzzy
 msgid "Instance Details for '{name}'"
 msgstr "'{0}' に対するインスタンスの詳細"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
-#: ../html/src/manager/images/image-view.tsx:482
+#: ../html/src/manager/images/image-view.tsx:484
+#: ../html/src/manager/systems/list-filter.tsx:26
 msgid "Critical updates available"
 msgstr "重大な更新があります"
 
 #: ../html/src/manager/images/image-view-overview.tsx:527
 #: ../html/src/manager/images/image-view-overview.tsx:528
-#: ../html/src/manager/images/image-view.tsx:485
+#: ../html/src/manager/images/image-view.tsx:487
 msgid "Non-critical updates available"
 msgstr "重大ではない更新があります"
 
 #: ../html/src/manager/images/image-view-overview.tsx:534
 #: ../html/src/manager/images/image-view-overview.tsx:535
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Package updates available"
 msgstr "パッケージの更新があります"
 
 #: ../html/src/manager/images/image-view-overview.tsx:541
 #: ../html/src/manager/images/image-view-overview.tsx:542
-#: ../html/src/manager/images/image-view.tsx:490
+#: ../html/src/manager/images/image-view.tsx:492
 msgid "Image is up to date"
 msgstr "イメージは最新の状態です"
 
@@ -3389,13 +3380,13 @@ msgid "Custom Image Information"
 msgstr "カスタムイメージの情報"
 
 #: ../html/src/manager/images/image-view-overview.tsx:678
-#: ../html/src/manager/images/image-view.tsx:360
-#: ../html/src/manager/images/image-view.tsx:718
+#: ../html/src/manager/images/image-view.tsx:362
+#: ../html/src/manager/images/image-view.tsx:720
 msgid "Delete Image"
 msgstr "イメージの削除"
 
 #: ../html/src/manager/images/image-view-overview.tsx:681
-#: ../html/src/manager/images/image-view.tsx:721
+#: ../html/src/manager/images/image-view.tsx:723
 msgid "Are you sure you want to delete image"
 msgstr "イメージを削除してよろしいですか"
 
@@ -3497,70 +3488,70 @@ msgstr "ポッド"
 msgid "Namespace"
 msgstr "ネームスペース"
 
-#: ../html/src/manager/images/image-view.tsx:307
+#: ../html/src/manager/images/image-view.tsx:309
 msgid "Deleted successfully."
 msgstr "削除を行ないました。"
 
-#: ../html/src/manager/images/image-view.tsx:319
+#: ../html/src/manager/images/image-view.tsx:321
 msgid "Image inspect has been scheduled."
 msgstr "イメージの検査をスケジュールしました。"
 
-#: ../html/src/manager/images/image-view.tsx:335
+#: ../html/src/manager/images/image-view.tsx:337
 msgid "Image build has been scheduled."
 msgstr "イメージの構築をスケジュールしました。"
 
-#: ../html/src/manager/images/image-view.tsx:383
+#: ../html/src/manager/images/image-view.tsx:385
 msgid "Images"
 msgstr "イメージ"
 
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Building"
 msgstr "構築しています"
 
-#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/images/image-view.tsx:511
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
 msgid "Unknown"
 msgstr "不明"
 
-#: ../html/src/manager/images/image-view.tsx:603
-#: ../html/src/manager/images/image-view.tsx:791
+#: ../html/src/manager/images/image-view.tsx:605
+#: ../html/src/manager/images/image-view.tsx:793
 msgid "Runtime"
 msgstr "実行時間"
 
-#: ../html/src/manager/images/image-view.tsx:623
+#: ../html/src/manager/images/image-view.tsx:625
 msgid "Show obsolete"
 msgstr "非推奨の表示"
 
-#: ../html/src/manager/images/image-view.tsx:645
+#: ../html/src/manager/images/image-view.tsx:647
 msgid "Revision"
 msgstr "リビジョン"
 
-#: ../html/src/manager/images/image-view.tsx:647
+#: ../html/src/manager/images/image-view.tsx:649
 msgid "(obsolete)"
 msgstr "(非推奨)"
 
-#: ../html/src/manager/images/image-view.tsx:649
-#: ../html/src/manager/systems/all-list.tsx:23
-#: ../html/src/manager/systems/all-list.tsx:82
+#: ../html/src/manager/images/image-view.tsx:651
+#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:90
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-view.tsx:673
+#: ../html/src/manager/images/image-view.tsx:675
 msgid "Last Modified"
 msgstr "最終変更"
 
-#: ../html/src/manager/images/image-view.tsx:734
+#: ../html/src/manager/images/image-view.tsx:736
 msgid "Delete Selected Image(s)"
 msgstr "選択したイメージの削除"
 
-#: ../html/src/manager/images/image-view.tsx:738
+#: ../html/src/manager/images/image-view.tsx:740
 msgid "Are you sure you want to delete the selected image?"
 msgstr "選択したイメージを削除してよろしいですか？"
 
-#: ../html/src/manager/images/image-view.tsx:739
+#: ../html/src/manager/images/image-view.tsx:741
 #, fuzzy
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
@@ -3568,7 +3559,7 @@ msgstr ""
 "選択したイメージを削除してよろしいですか？ ({0} 個のイメージが選択されていま"
 "す)"
 
-#: ../html/src/manager/images/image-view.tsx:787
+#: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "概要"
@@ -4111,7 +4102,7 @@ msgstr "動作を"
 msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:62
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:65
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
 msgid "Configuration"
 msgstr "設定"
@@ -4577,9 +4568,10 @@ msgstr "2文字の国コード"
 msgid "City"
 msgstr "市区町村"
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4709,7 +4701,7 @@ msgstr "定期的なアクションをスケジュールする"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr "動作タイプ"
 
@@ -4738,22 +4730,22 @@ msgid "Frequency"
 msgstr "頻度"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:180
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:15
 msgid "Target Type"
 msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:14
 msgid "Target Name"
 msgstr "ターゲット名"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 msgid "Minion"
 msgstr "minion"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
 msgid "Group"
 msgstr "グループ"
 
@@ -4772,15 +4764,13 @@ msgstr ""
 "サーバのタイムゾーン {0} には、以下の時間が表示されます。スケジュールされた時"
 "間はサーバ時間になります。"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-msgid "Select an Action Type"
-msgstr "動作タイプの選択"
+#. Value options for filtering by Action Type in recurring actions list
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
+#: ../html/src/manager/state/highstate.tsx:142
+msgid "Highstate"
+msgstr "Highstate"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-msgid "Select a Target Type"
-msgstr "ターゲットタイプの選択"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:9
 msgid "Custom State"
 msgstr "カスタム状態"
 
@@ -5041,59 +5031,40 @@ msgstr ""
 "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
 "をサブスクライブします。"
 
-#: ../html/src/manager/systems/all-list.tsx:22
-#, fuzzy
-msgid "System Kind"
-msgstr "システム名"
-
-#: ../html/src/manager/systems/all-list.tsx:26
-#: ../html/src/manager/systems/all-list.tsx:120
-#, fuzzy
-msgid "Extra Packages"
-msgstr "パッケージ"
-
-#: ../html/src/manager/systems/all-list.tsx:27
-#: ../html/src/manager/systems/all-list.tsx:134
-#, fuzzy
-msgid "Config Diffs"
-msgstr "設定 URL"
-
-#: ../html/src/manager/systems/all-list.tsx:28
-#: ../html/src/manager/systems/all-list.tsx:149
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:577
-msgid "Base Channel"
-msgstr "ベースチャンネル"
-
-#: ../html/src/manager/systems/all-list.tsx:29
-#: ../html/src/manager/systems/all-list.tsx:160
-#, fuzzy
-msgid "System Type"
-msgstr "ストアの種類"
-
-#: ../html/src/manager/systems/all-list.tsx:30
-msgid "Requires Reboot"
-msgstr ""
-
-#: ../html/src/manager/systems/all-list.tsx:31
-#, fuzzy
-msgid "Registered Days"
-msgstr "登録済みシステム"
-
-#: ../html/src/manager/systems/all-list.tsx:32
-#, fuzzy
-msgid "Groups"
-msgstr "グループ"
-
-#: ../html/src/manager/systems/all-list.tsx:51
+#: ../html/src/manager/systems/all-list.tsx:37
 #, fuzzy
 msgid " Systems "
 msgstr "システム"
 
-#: ../html/src/manager/systems/all-list.tsx:71
+#: ../html/src/manager/systems/all-list.tsx:57
 #, fuzzy
 msgid "No Systems."
 msgstr "システム"
+
+#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/list-filter.tsx:46
+#, fuzzy
+msgid "Extra Packages"
+msgstr "パッケージ"
+
+#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/list-filter.tsx:47
+#, fuzzy
+msgid "Config Diffs"
+msgstr "設定 URL"
+
+#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/list-filter.tsx:48
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
+msgid "Base Channel"
+msgstr "ベースチャンネル"
+
+#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/list-filter.tsx:49
+#, fuzzy
+msgid "System Type"
+msgstr "ストアの種類"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -5137,6 +5108,7 @@ msgid "Loading SSH Private Key.."
 msgstr "SSH 機密鍵を読み込んでいます.."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
+#: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
@@ -5240,12 +5212,12 @@ msgstr ""
 msgid "No result found in state apply response."
 msgstr "状態の適用に対する応答結果が見つかりませんでした。"
 
-#: ../html/src/manager/systems/delete-system.tsx:70
-#: ../html/src/manager/systems/delete-system.tsx:71
+#: ../html/src/manager/systems/delete-system.tsx:72
+#: ../html/src/manager/systems/delete-system.tsx:73
 msgid "Delete Profile Without Cleanup"
 msgstr "クリーンアップ無しでのプロファイル削除"
 
-#: ../html/src/manager/systems/delete-system.tsx:91
+#: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
 msgstr "クリーンアップ処理中にエラーが発生しました"
 
@@ -5291,6 +5263,120 @@ msgstr "レポーティングデータベースパスワードの生成"
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
 msgstr "削除の確認"
+
+#: ../html/src/manager/systems/list-filter.tsx:4
+#, fuzzy
+msgid "Manager Server"
+msgstr "Manager"
+
+#: ../html/src/manager/systems/list-filter.tsx:5
+#, fuzzy
+msgid "Physical"
+msgstr "物理機能"
+
+#: ../html/src/manager/systems/list-filter.tsx:12
+#, fuzzy
+msgid "Ansible Control Node"
+msgstr "Ansible 制御ノード"
+
+#: ../html/src/manager/systems/list-filter.tsx:14
+#, fuzzy
+msgid "Container Build Host"
+msgstr "構築ホスト"
+
+#: ../html/src/manager/systems/list-filter.tsx:15
+msgid "Foreign"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:16
+#, fuzzy
+msgid "Management"
+msgstr "管理ノード"
+
+#: ../html/src/manager/systems/list-filter.tsx:17
+msgid "Monitored Host"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:18
+#, fuzzy
+msgid "OS Image Build Host"
+msgstr "構築ホスト"
+
+#: ../html/src/manager/systems/list-filter.tsx:19
+msgid "Salt"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:20
+#, fuzzy
+msgid "Virtualization Host"
+msgstr "仮想ホスト"
+
+#: ../html/src/manager/systems/list-filter.tsx:24
+#, fuzzy
+msgid "Actions scheduled"
+msgstr "スケジュールしました"
+
+#: ../html/src/manager/systems/list-filter.tsx:25
+#, fuzzy
+msgid "All updates scheduled"
+msgstr "チャンネル変更をスケジュールしました。"
+
+#: ../html/src/manager/systems/list-filter.tsx:27
+#, fuzzy
+msgid "Kickstart in progress"
+msgstr " は処理中です"
+
+#: ../html/src/manager/systems/list-filter.tsx:28
+#, fuzzy
+msgid "System is up to date"
+msgstr "イメージは最新の状態です"
+
+#: ../html/src/manager/systems/list-filter.tsx:29
+msgid "System not checking in"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:30
+#, fuzzy
+msgid "System not entitled"
+msgstr "システムはロック済み"
+
+#: ../html/src/manager/systems/list-filter.tsx:31
+msgid "System requires reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:32
+#, fuzzy
+msgid "Updates available"
+msgstr "パッケージの更新があります"
+
+#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "はい"
+
+#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "いいえ"
+
+#: ../html/src/manager/systems/list-filter.tsx:42
+#, fuzzy
+msgid "System Kind"
+msgstr "システム名"
+
+#: ../html/src/manager/systems/list-filter.tsx:50
+msgid "Requires Reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/list-filter.tsx:51
+#, fuzzy
+msgid "Registered Days"
+msgstr "登録済みシステム"
+
+#: ../html/src/manager/systems/list-filter.tsx:52
+#, fuzzy
+msgid "Groups"
+msgstr "グループ"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
@@ -5401,12 +5487,12 @@ msgid "Desired base Channel"
 msgstr "必要なベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:463
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:465
 msgid "SUSE Channels"
 msgstr "SUSE チャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:489
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:491
 msgid "Custom Channels"
 msgstr "カスタムチャンネル"
 
@@ -5494,29 +5580,29 @@ msgstr "チャンネル変更の動作"
 msgid "Scheduled"
 msgstr "スケジュール済み"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:792
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
 msgid "Unknown error. Could not schedule channel change"
 msgstr ""
 "不明なエラーが発生しました。チャンネル変更をスケジュールできませんでした"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:913
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:917
 msgid "Some changes scheduled successfully."
 msgstr "いくつかの変更をスケジュールしました。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1050
 msgid "Channel changes scheduled."
 msgstr "チャンネル変更をスケジュールしました。"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:238
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:452
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:240
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:454
 msgid "(none, disable service)"
 msgstr "(なし、サービスを無効にする)"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:381
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:383
 msgid "Changing the channels has been "
 msgstr "チャンネル変更を "
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:582
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
@@ -5526,7 +5612,7 @@ msgstr ""
 "できます。すべてのソフトウェアチャンネルからサブスクライブを中止して、新しい"
 "ベースソフトウエアチャンネルにサブスクライブさせます。"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:608
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
@@ -5536,14 +5622,14 @@ msgstr ""
 "クボックスが無効化されている場合は、そのチャンネルが手動ではサブスクライブも"
 "しくはサブスクライブ中止できないものであることを示しています。"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:627
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:628
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:706
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:707
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:630
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:708
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:709
 msgid "No child channels available."
 msgstr "利用可能な子チャンネルがありません。"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:660
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
 msgid "Confirm Software Channel Change"
 msgstr "ソフトウェアチャンネルの変更確認"
 
@@ -6390,14 +6476,6 @@ msgstr "プールまたはボリューム名でフィルタ"
 msgid "Partition separator"
 msgstr "パーティションの区切り"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "はい"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "いいえ"
-
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
 msgid "Host name"
 msgstr "ホスト名"
@@ -6641,6 +6719,18 @@ msgstr "リソースが見つかりませんでした。"
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 
+#~ msgid " for the changes to take effect."
+#~ msgstr " 変更した設定を反映させるには、再起動が必要です。"
+
+#~ msgid "Formula saved. Apply the "
+#~ msgstr "formula を保存しました。下記を適用します "
+
+#~ msgid "Select an Action Type"
+#~ msgstr "動作タイプの選択"
+
+#~ msgid "Select a Target Type"
+#~ msgstr "ターゲットタイプの選択"
+
 #~ msgid "The action has been {0}."
 #~ msgstr "動作は {0} でした。"
 
@@ -6813,9 +6903,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Edit properties"
 #~ msgstr "プロパティの編集"
-
-#~ msgid "Management node"
-#~ msgstr "管理ノード"
 
 #~ msgid "System group"
 #~ msgstr "システムグループ"
