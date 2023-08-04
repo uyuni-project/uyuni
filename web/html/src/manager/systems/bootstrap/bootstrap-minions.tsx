@@ -332,7 +332,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       alertMessages = MessagesUtils.success(
         <p>
           {t(
-            "Successfully bootstrapped host! Your system should appear in <link>systems</link> shortly. If it is a transactional system, please reboot it to finish registration.",
+            "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process.",
             {
               link: (str) => (
                 <a className="js-spa" href="/rhn/systems/SystemList.do">
