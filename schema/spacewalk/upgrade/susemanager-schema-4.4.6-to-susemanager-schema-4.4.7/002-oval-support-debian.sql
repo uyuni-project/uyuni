@@ -51,6 +51,75 @@ begin
 end;
 $$;
 
+create or replace function insert_package_evr_state(evr_in varchar, operation_in varchar, datatype_in varchar) returns numeric
+    language plpgsql
+as
+$$
+declare
+    evr_state_id   numeric;
+begin
+
+    INSERT INTO suseovalpackageevrstate(id, evr, datatype, operation)
+    VALUES (nextval('suse_oval_pkg_evr_state_id_seq'), evr_in, datatype_in, operation_in)
+    ON CONFLICT(evr, datatype, operation) DO NOTHING;
+
+    SELECT id
+    INTO evr_state_id
+    FROM suseovalpackageevrstate
+    WHERE evr = evr_in
+      AND operation = operation_in
+      AND datatype = datatype_in;
+
+    return evr_state_id;
+end;
+$$;
+
+
+create or replace function insert_package_arch_state(arch_in varchar, operation_in varchar) returns numeric
+    language plpgsql
+as
+$$
+declare
+    arch_state_id   numeric;
+begin
+
+    INSERT INTO suseovalpackagearchstate(id, value, operation)
+    VALUES (nextval('suse_oval_pkg_arch_state_id_seq'), arch_in, operation_in)
+    ON CONFLICT(value, operation) DO NOTHING;
+
+    SELECT id
+    INTO arch_state_id
+    FROM suseovalpackagearchstate
+    WHERE value = arch_in
+      AND operation = operation_in;
+
+    return arch_state_id;
+end;
+$$;
+
+
+create or replace function insert_package_version_state(version_in varchar, operation_in varchar) returns numeric
+    language plpgsql
+as
+$$
+declare
+    version_state_id   numeric;
+begin
+
+    INSERT INTO suseovalpackageversionstate(id, value, operation)
+    VALUES (nextval('suse_oval_pkg_version_state_id_seq'), version_in, operation_in)
+    ON CONFLICT(value, operation) DO NOTHING;
+
+    SELECT id
+    INTO version_state_id
+    FROM suseovalpackageversionstate
+    WHERE value = version_in
+      AND operation = operation_in;
+
+    return version_state_id;
+end;
+$$;
+
 CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_aff_platform_cpe_uq
     ON suseovalplatform(cpe);
 

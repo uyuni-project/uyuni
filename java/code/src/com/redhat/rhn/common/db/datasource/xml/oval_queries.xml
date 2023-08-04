@@ -36,4 +36,45 @@
             call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
         </query>
     </callable-mode>
+
+    <write-mode name="insert_package_object">
+        <query params="id, name, isrpm">
+            INSERT INTO suseOVALPackageObject(id, name, isrpm)
+            VALUES (:id, :name, :isrpm)
+            ON CONFLICT(id) DO UPDATE
+                SET name  = EXCLUDED.name,
+                    isrpm = EXCLUDED.isrpm;
+        </query>
+    </write-mode>
+
+    <write-mode name="insert_package_state">
+        <query params="id, operator, isrpm, arch_state_id, version_state_id, evr_state_id">
+            INSERT INTO suseOVALPackageState(id, operator, arch_state_id, version_state_id, evr_state_id, isrpm)
+            VALUES (:id, :operator, :arch_state_id, :version_state_id, :evr_state_id, :isrpm)
+            ON CONFLICT(id) DO UPDATE
+            SET operator = EXCLUDED.operator,
+                arch_state_id = EXCLUDED.arch_state_id,
+                version_state_id = EXCLUDED.version_state_id,
+                evr_state_id = EXCLUDED.evr_state_id,
+                isrpm = EXCLUDED.isrpm
+        </query>
+    </write-mode>
+
+    <callable-mode name="insert_package_evr_state">
+        <query params="evr, operation, datatype">
+            {:evrStateId = call insert_package_evr_state(:evr, :operation, :datatype)}
+        </query>
+    </callable-mode>
+
+    <callable-mode name="insert_package_arch_state">
+        <query params="arch, operation">
+            {:archStateId = call insert_package_arch_state(:arch, :operation)}
+        </query>
+    </callable-mode>
+
+    <callable-mode name="insert_package_version_state">
+        <query params="version, operation">
+            {:versionStateId = call insert_package_version_state(:version, :operation)}
+        </query>
+    </callable-mode>
 </datasource_modes>

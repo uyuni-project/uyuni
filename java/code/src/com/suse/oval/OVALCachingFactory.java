@@ -1,6 +1,7 @@
 package com.suse.oval;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -21,16 +22,19 @@ import com.suse.oval.db.OVALVulnerablePackage;
 import com.suse.oval.manager.OvalObjectManager;
 import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.ovaltypes.Advisory;
+import com.suse.oval.ovaltypes.ArchType;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.EVRType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.ReferenceType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 
+import com.suse.oval.ovaltypes.VersionType;
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -43,6 +47,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -157,6 +163,108 @@ public class OVALCachingFactory extends HibernateFactory {
         getSession().clear();
         getSession().flush();
     }
+
+    public static void savePackageObjects_Optimized(List<ObjectType> packageObjects) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_object");
+
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
+        for (int i = 0; i < packageObjects.size(); i++) {
+            ObjectType packageObject = packageObjects.get(i);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", packageObject.getId());
+            params.put("name", packageObject.getPackageName());
+            params.put("isrpm", packageObject.isRpm());
+
+            batch.add(params);
+
+            if (i % 60 == 0) {
+                mode.executeBatchUpdates(batch);
+                batch.clear();
+                LOG.warn("Saved 60 more objects");
+            }
+        }
+
+        mode.executeBatchUpdates(batch);
+    }
+
+    public static void savePackageState_Optimized(List<StateType> packageStates) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_state");
+
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
+        for (int i = 0; i < packageStates.size(); i++) {
+            StateType packageState = packageStates.get(i);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", packageState.getId());
+            params.put("operator", packageState.getOperator().toString());
+            // TODO: Fix this!
+            params.put("isrpm", true);
+            // These fields are optional and may not exist for every package state, so we set them to null as a default
+            params.put("version_state_id", null);
+            params.put("arch_state_id", null);
+            params.put("evr_state_id", null);
+
+            packageState.getPackageEVR().ifPresent(evr ->
+                    params.put("evr_state_id", savePackageEvrState_Optimized(evr)));
+
+            packageState.getPackageArch().ifPresent(arch ->
+                    params.put("arch_state_id", savePackageArchState_Optimized(arch)));
+
+            packageState.getPackageVersion().ifPresent(version ->
+                    params.put("version_state_id", savePackageVersionState_Optimized(version)));
+
+            batch.add(params);
+
+            if (i % 60 == 0) {
+                mode.executeBatchUpdates(batch);
+                batch.clear();
+                LOG.warn("Saved 60 more states");
+            }
+        }
+
+        mode.executeBatchUpdates(batch);
+    }
+
+    public static long savePackageEvrState_Optimized(EVRType evr) {
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_evr_state");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("evr", evr.getValue());
+        params.put("operation", evr.getOperation().toString());
+        params.put("datatype", evr.getDatatype().toString());
+
+        Map<String, Integer> outParams = new HashMap<>();
+        outParams.put("evrStateId", Types.NUMERIC);
+
+        return (long) mode.execute(params, outParams).get("evrStateId");
+    }
+
+    public static long savePackageArchState_Optimized(ArchType arch) {
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_arch_state");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("arch", arch.getValue());
+        params.put("operation", arch.getOperation().toString());
+
+        Map<String, Integer> outParams = new HashMap<>();
+        outParams.put("archStateId", Types.NUMERIC);
+
+        return (long) mode.execute(params, outParams).get("archStateId");
+    }
+    public static long savePackageVersionState_Optimized(VersionType version) {
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_version_state");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("version", version.getValue());
+        params.put("operation", version.getOperation().toString());
+
+        Map<String, Integer> outParams = new HashMap<>();
+        outParams.put("versionStateId", Types.NUMERIC);
+
+        return (long) mode.execute(params, outParams).get("versionStateId");
+    }
+
 
     private static void saveAffectedPlatforms(List<DefinitionType> definitions) {
         WriteMode deleteOldAffectedPlatformsMode = ModeFactory.getWriteMode("oval_queries", "delete_affected_platforms_from_definition");
