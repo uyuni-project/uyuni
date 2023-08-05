@@ -149,15 +149,20 @@ public class TestType {
     /**
      * Gets the value of the object property.
      */
-    public ObjectRefType getObject() {
-        return object;
+    public String getObjectRef() {
+        if (object == null) {
+            throw new IllegalStateException("Objects cannot be null");
+        }
+        return object.objectRef;
     }
 
     /**
      * Sets the value of the object property.
      */
-    public void setObject(ObjectRefType value) {
-        this.object = value;
+    public void setObjectRef(String value) {
+        ObjectRefType refType = new ObjectRefType();
+        refType.setObjectRef(value);
+        this.object = refType;
     }
 
     /**
@@ -190,5 +195,12 @@ public class TestType {
 
     public void setStates(List<StateRefType> states) {
         this.states = states;
+    }
+
+    public void setStateRef(String value) {
+        states.clear();
+        StateRefType stateRef = new StateRefType();
+        stateRef.setStateRef(value);
+        states.add(stateRef);
     }
 }

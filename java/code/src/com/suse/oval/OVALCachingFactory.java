@@ -68,7 +68,12 @@ public class OVALCachingFactory extends HibernateFactory {
     private static TestType cleanupPackageTest(TestType packageTest, OsFamily osFamily, String osVersion) {
         if (osFamily == OsFamily.DEBIAN) {
             packageTest.setId(convertDebianId(packageTest.getId(), osVersion));
+            packageTest.setObjectRef(convertDebianId(packageTest.getObjectRef(), osVersion));
+            if (packageTest.getStateRef().isPresent()) {
+                packageTest.setStateRef(convertDebianId(packageTest.getStateRef().get(), osVersion));
+            }
         }
+
         return packageTest;
     }
 
@@ -160,7 +165,7 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("test_check", packageTest.getCheck().toString());
             params.put("state_operator", packageTest.getStateOperator().toString());
             params.put("isrpm", true);
-            params.put("pkg_object_id", packageTest.getObject().getObjectRef());
+            params.put("pkg_object_id", packageTest.getObjectRef());
             params.put("pkg_state_id", packageTest.getStateRef().orElse(null));
 
             batch.add(params);
@@ -388,13 +393,15 @@ public class OVALCachingFactory extends HibernateFactory {
      * To be workaround this, we insert the codename of the version into the id string before storage
      */
     private static String convertDebianId(String id, String osVersion) {
-        String codename = "";
-        if ("10.0".equals(osVersion)) {
+        String codename;
+        if ("10.0".equals(osVersion) || "10".equals(osVersion)) {
             codename = "buster";
-        } else if ("11.0".equals(osVersion)) {
+        } else if ("11.0".equals(osVersion) || "11".equals(osVersion)) {
             codename = "bullseye";
-        } else if ("12.0".equals(osVersion)) {
+        } else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
             codename = "bookworm";
+        } else {
+            throw new IllegalArgumentException("Invalid debian version: " + osVersion);
         }
         return id.replaceAll("debian", "debian-" + codename);
     }
