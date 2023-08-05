@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-04 14:19+0200\n"
-"PO-Revision-Date: 2023-06-25 15:15+0000\n"
+"PO-Revision-Date: 2023-08-05 22:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -45,14 +45,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Prosím, zadajte požadované polia: {0}"
+msgstr "Prosím, zadajte požadované polia: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "Neplatný formát polí: {0}"
+msgstr "Neplatný formát polí: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -134,16 +132,16 @@ msgstr "Nasledujúci rok"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "Naozaj chcete {0} {1} "
+msgstr "Naozaj chcete {action} {name}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
+msgstr ""
+"Naozaj chcete {action} vybrané položky {name}? ({count} položiek {name} "
+"vybraných)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -282,15 +280,13 @@ msgstr "Žiadny druh"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:82
 #: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
 msgid ""
 "Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "Akcia bola úspešne pridaná do reťazca akcií '{0}'."
+msgstr "Akcia bola úspešne pridaná do reťazca akcií <link>'{name}'</link>."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
-msgstr "Import obrazu bol naplánovaný."
+msgstr "Akcia bola <link>naplánovaná</link>."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -361,12 +357,11 @@ msgstr "Posledná"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "Stránka <dropdown></dropdown> z {total}"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "Stránka {0} z {1}"
+msgstr "Stránka {current} z {total}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -467,9 +462,8 @@ msgid "There are no entries to show."
 msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
 #: ../html/src/components/salt-state-popup.tsx:50
-#, fuzzy
 msgid "Configuration Channel: {name}"
-msgstr "Konfiguračný kanál: {0}"
+msgstr "Konfiguračný kanál: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -548,9 +542,8 @@ msgid "Reorder"
 msgstr "Preusporiadať"
 
 #: ../html/src/components/states-picker.tsx:385
-#, fuzzy
 msgid "Search in states"
-msgstr "Vyhľadať systémy"
+msgstr "Hľadať v stavoch"
 
 #: ../html/src/components/states-picker.tsx:385
 msgid "Search in configuration channels"
@@ -565,24 +558,20 @@ msgid "Search"
 msgstr "Hľadať"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit State Ranks"
-msgstr "Upraviť {0} poradia"
+msgstr "Upraviť poradia stavov"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit Channel Ranks"
-msgstr "Upraviť {0} poradia"
+msgstr "Upraviť poradia kanálov"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit the ranking of the states by dragging them."
-msgstr "Upraviť poradie {0} ich pretiahnutím."
+msgstr "Upraviť poradie kanálov ich pretiahnutím."
 
 #: ../html/src/components/states-picker.tsx:405
-#, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "Upraviť poradie {0} ich pretiahnutím."
+msgstr "Upraviť poradie konfiguračných kanálov ich pretiahnutím."
 
 #: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
@@ -676,14 +665,12 @@ msgid "Select a filter"
 msgstr "Vybrať filter"
 
 #: ../html/src/components/table/SearchPanel.tsx:57
-#, fuzzy
 msgid "Items {from} - {to} of {total}"
-msgstr "Položky {0} - {1} z {2}"
+msgstr "Položky {from} - {to} z {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:62
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "Vymazať vybrané"
+msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:365
@@ -771,7 +758,7 @@ msgstr "nedefinované"
 #: ../html/src/core/intl/index.test.tsx:16
 #: ../html/src/core/intl/index.test.tsx:17
 msgid "foo {insert} bar"
-msgstr ""
+msgstr "foo {insert} panel"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -1164,9 +1151,8 @@ msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "Hľadaný inštancia neexistuje alebo bola vymazaná"
 
 #: ../html/src/manager/admin/payg/payg.tsx:68
-#, fuzzy
 msgid "Instance Hostname: {host}"
-msgstr "Názov hostiteľa inštancie: {0}"
+msgstr "Názov hostiteľa inštancie: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Delete Pay-as-you-go"
@@ -1237,7 +1223,6 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:270
-#, fuzzy
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
@@ -1679,19 +1664,19 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "Môžete tiež teraz spustiť prvý beh kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-#, fuzzy
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené {0}."
+msgstr ""
+"Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené "
+"{timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-#, fuzzy
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
 msgstr ""
-"Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené "
-"{timeFromNow}."
+"Najnovšie úspešné dáta priradenia boli vypočítané {timeFromNow}, nový beh "
+"môžete spustiť kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2276,9 +2261,8 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-#, fuzzy
 msgid "Content Lifecycle Project - {name}"
-msgstr "Projekt životného cyklu obsahu - {0}"
+msgstr "Projekt životného cyklu obsahu - {name}"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
@@ -2465,9 +2449,8 @@ msgid "disable all modules"
 msgstr "zakázať všetky moduly"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
-#, fuzzy
 msgid "Build ({count})"
-msgstr "Zostaviť ({0})"
+msgstr "Zostaviť ({count})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
@@ -2484,9 +2467,8 @@ msgid "Build Project"
 msgstr "Zostaviť projekt"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
-#, fuzzy
 msgid "Building project"
-msgstr "Zostavuje sa projekt.."
+msgstr "Zostavovanie projektu"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
 msgid ""
@@ -2501,14 +2483,12 @@ msgid "Version Message"
 msgstr "Správa o verzii"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-#, fuzzy
 msgid "Version {version} history"
-msgstr "História verzie {0}"
+msgstr "História verzie {version}"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-#, fuzzy
 msgid "Version {version} successfully built into {environmentName}"
-msgstr "Verzia {0} bola úspešne zabudovaná do {1}"
+msgstr "Verzia {version} bola úspešne zabudovaná do {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -2549,12 +2529,10 @@ msgid "Environment updated successfully"
 msgstr "Prostredie bolo úspešne aktualizované"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
-#, fuzzy
 msgid "Environment {name} deleted successfully"
-msgstr "Prostredie {0} bolo úspešne vymazané"
+msgstr "Prostredie {name} bolo úspešne vymazané"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
-#, fuzzy
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
@@ -2607,9 +2585,8 @@ msgid "Create New Filter"
 msgstr "Vytvoriť nový filter"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
 msgid "Edit Filter {name}"
-msgstr "Upraviť filter {0}"
+msgstr "Upraviť filter {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
@@ -2659,18 +2636,16 @@ msgid "Target environment"
 msgstr "Cieľové prostredie"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
-#, fuzzy
 msgid "Promote version {version} into {environmentName}"
-msgstr "Povýšiť verziu {0} na {1}"
+msgstr "Povýšiť verziu {version} do {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:117
 msgid "Promote environment"
 msgstr "Povýšiť prostredie"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
-#, fuzzy
 msgid "Version {version} successfully promoted into {environmentName}"
-msgstr "Verzia {0} bola úspešne povýšená na {1}"
+msgstr "Verzia {version} bola úspešne povýšená do {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:16
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:55
@@ -2787,9 +2762,8 @@ msgid "Page Not Found"
 msgstr "Stránka nenájdená"
 
 #: ../html/src/manager/errors/not-found.tsx:8
-#, fuzzy
 msgid "The page you requested, {currentUrl}, was not found."
-msgstr "Požadovaná stránka {0} sa nenašla."
+msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:12
 msgid ""
@@ -2833,13 +2807,12 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
 msgstr ""
 "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
-"použiť "
+"použiť <link>Highstate</link>, aby sa zmeny prejavili."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2850,11 +2823,11 @@ msgstr "Neplatný typ cieľa."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-#, fuzzy
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
-msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
+msgstr ""
+"Vzorec bol uložený. Použite <link>Highstate</link>, aby sa zmeny prejavili."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3116,11 +3089,10 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "Naozaj chcete vymazať vybraný profil?"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
-msgstr "Naozaj chcete vymazať vybrané profily? ({0} vybraných profilov)"
+msgstr "Naozaj chcete vymazať vybrané profily? ({count} vybraných profilov)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3186,10 +3158,9 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "Naozaj chcete vymazať vybrané úložisko?"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr "Naozaj chcete vymazať vybrané úložiská? ({0} vybraných úložísk)"
+msgstr "Naozaj chcete vymazať vybrané úložiská? ({count} vybraných úložísk)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3310,9 +3281,8 @@ msgstr "Upraviť úložisko"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:750
-#, fuzzy
 msgid "Instance Details for '{name}'"
-msgstr "Podrobnosti inštancie pre '{0}'"
+msgstr "Podrobnosti inštancie pre '{name}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -4976,9 +4946,8 @@ msgid "System Group"
 msgstr "Systémová skupina"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been <link>scheduled</link>."
-msgstr "Použitie highstate bolo {0}."
+msgstr "Použitie highstate bolo <link>naplánované</link>."
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
@@ -5068,7 +5037,6 @@ msgstr ""
 "Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
-#, fuzzy
 msgid ""
 "Successfully bootstrapped host! Your system should appear in <link>systems</"
 "link> shortly. If it is a transactional system, please reboot it to finish "
@@ -5301,14 +5269,12 @@ msgid "Actions scheduled"
 msgstr "naplánované"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
-#, fuzzy
 msgid "All updates scheduled"
-msgstr "Zmeny kanálov naplánované."
+msgstr "Všetky aktualizácie naplánované"
 
 #: ../html/src/manager/systems/list-filter.tsx:27
-#, fuzzy
 msgid "Kickstart in progress"
-msgstr " prebieha"
+msgstr "Kickstart prebieha"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
 #, fuzzy
