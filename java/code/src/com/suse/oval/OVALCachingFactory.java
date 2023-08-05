@@ -5,41 +5,33 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 
 import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.db.OVALPackageArchStateEntity;
-import com.suse.oval.db.OVALPackageEvrStateEntity;
 import com.suse.oval.db.OVALPackageObject;
 import com.suse.oval.db.OVALPackageState;
 import com.suse.oval.db.OVALPackageTest;
-import com.suse.oval.db.OVALPackageVersionStateEntity;
 import com.suse.oval.db.OVALPlatform;
 import com.suse.oval.db.OVALPlatformVulnerablePackage;
 import com.suse.oval.db.OVALReference;
 import com.suse.oval.db.OVALVulnerablePackage;
-import com.suse.oval.manager.OvalObjectManager;
-import com.suse.oval.manager.OvalStateManager;
-import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.ArchType;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
-import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.EVRType;
 import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.ovaltypes.ReferenceType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
+
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -50,7 +42,6 @@ import javax.persistence.criteria.Root;
 
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,76 +59,21 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Save all OVAL constructs (definitions, tests, objects and states) associated with the given {@code rootType}
+     * */
+    public static void saveOVAL(OvalRootType rootType, OsFamily osFamily, String osVersion) {
+        saveDefinitions(rootType.getDefinitions(), osFamily, osVersion);
+        savePackageObjects(rootType.getObjects().getObjects());
+        savePackageStates(rootType.getStates().getStates());
+        savePackageTests(rootType.getTests().getTests(), osFamily, osVersion);
+    }
+
+    /**
      * Insert the passed OVAL definitions into the database.
      * <p>
      * Also inserts the affected platforms and references information (if not already inserted) into the relevant tables
      */
-    public static void saveDefinitions(List<DefinitionType> definitionTypes, OsFamily osFamily, String osVersion) {
-        for (int i = 0; i < definitionTypes.size(); i++) {
-            DefinitionType definitionType = definitionTypes.get(i);
-
-            if(definitionType.getDefinitionClass() != DefinitionClassEnum.VULNERABILITY) {
-                continue;
-            }
-
-            OVALDefinition definition = new OVALDefinition();
-            definition.setId(definitionType.getId());
-            definition.setTitle(definitionType.getMetadata().getTitle());
-            definition.setDefClass(definitionType.getDefinitionClass());
-            definition.setDescription(definitionType.getMetadata().getDescription());
-            definition.setCriteriaTree(definitionType.getCriteria());
-
-            definition.setOsFamily(osFamily);
-            definition.setOsVersion(osVersion);
-
-            // TODO: affected cpe list is not present in all OVAL files.
-            List<String> affectedCpeList = definitionType.getMetadata().getAdvisory()
-                    .map(Advisory::getAffectedCpeList)
-                    .orElse(Collections.emptyList());
-
-            HibernateFactory.doWithoutAutoFlushing(
-                    () -> saveDefinition(definition, affectedCpeList, definitionType.getMetadata().getReference())
-            );
-
-
-            if (i % 60 == 0) {
-                LOG.error(definitionType.getId());
-                getSession().flush();
-            }
-        }
-    }
-
-
-    private static void saveDefinition(OVALDefinition definition, List<String> affectedCpeList, List<ReferenceType> references) {
-        String cve = extractCveFromDefinition(definition);
-        definition.setCve(CveFactory.lookupOrInsertByName(cve));
-
-        if (definition.getOsFamily() == OsFamily.DEBIAN) {
-            convertDebianTestRefs(definition.getCriteriaTree(), definition.getOsVersion());
-        }
-
-        definition.setAffectedPlatforms(
-                affectedCpeList.stream()
-                        .map(OVALCachingFactory::lookupOrInsertPlatformByCpe)
-                        .collect(Collectors.toList())
-        );
-
-        definition.setReferences(
-                references.stream().map(ref -> {
-                    OVALReference ovalRef = new OVALReference();
-                    ovalRef.setDefinition(definition);
-                    ovalRef.setRefId(ref.getRefId());
-                    ovalRef.setSource(ref.getSource());
-                    ovalRef.setRefURL(ref.getRefUrl().orElse(""));
-
-                    return ovalRef;
-                }).collect(Collectors.toList())
-        );
-
-        instance.saveObject(definition);
-    }
-
-    public static void saveDefinitions_Optimized(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
+    public static void saveDefinitions(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_definition");
 
         int i = 0;
@@ -150,7 +86,12 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("description", definition.getMetadata().getDescription());
             params.put("os_family", osFamily.toString());
             params.put("os_version", osVersion);
-            params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(definition.getCriteria()));
+
+            CriteriaType criteriaRoot = definition.getCriteria();
+            if (osFamily == OsFamily.DEBIAN) {
+                convertDebianTestRefs(criteriaRoot, osVersion);
+            }
+            params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(criteriaRoot));
 
             mode.execute(params, new HashMap<>());
 
@@ -161,14 +102,11 @@ public class OVALCachingFactory extends HibernateFactory {
             i++;
         }
 
-        LOG.error("Start");
-        TimeUtils.logTime(LOG, "Saving affected", () -> saveAffectedPlatforms(definitions));
-        LOG.error("Finished Saving Affected");
+        saveAffectedPlatforms(definitions);
         saveReferences(definitions);
-        LOG.error("Finished Saving References");
     }
 
-    public static void savePackageTests_Optimized(List<TestType> packageTests) {
+    public static void savePackageTests(List<TestType> packageTests, OsFamily osFamily, String osVersion) {
         WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_test");
 
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
@@ -182,8 +120,18 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("test_check", packageTest.getCheck().toString());
             params.put("state_operator", packageTest.getStateOperator().toString());
             params.put("isrpm", true);
-            params.put("pkg_object_id", packageTest.getObject().getObjectRef());
-            params.put("pkg_state_id", packageTest.getStateRef().orElse(null));
+
+            String objectId = packageTest.getObject().getObjectRef();
+            String stateId = packageTest.getStateRef().orElse(null);
+
+            if (osFamily == OsFamily.DEBIAN) {
+                objectId = convertDebianId(objectId, osVersion);
+                if (stateId != null) {
+                    stateId = convertDebianId(stateId, osVersion);
+                }
+            }
+            params.put("pkg_object_id", objectId);
+            params.put("pkg_state_id", stateId);
 
             batch.add(params);
 
@@ -197,7 +145,7 @@ public class OVALCachingFactory extends HibernateFactory {
         mode.executeBatchUpdates(batch);
     }
 
-    public static void savePackageObjects_Optimized(List<ObjectType> packageObjects) {
+    public static void savePackageObjects(List<ObjectType> packageObjects) {
         WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_object");
 
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
@@ -221,7 +169,7 @@ public class OVALCachingFactory extends HibernateFactory {
         mode.executeBatchUpdates(batch);
     }
 
-    public static void savePackageState_Optimized(List<StateType> packageStates) {
+    public static void savePackageStates(List<StateType> packageStates) {
         WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_state");
 
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
@@ -239,13 +187,13 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("evr_state_id", null);
 
             packageState.getPackageEVR().ifPresent(evr ->
-                    params.put("evr_state_id", savePackageEvrState_Optimized(evr)));
+                    params.put("evr_state_id", savePackageEvrState(evr)));
 
             packageState.getPackageArch().ifPresent(arch ->
-                    params.put("arch_state_id", savePackageArchState_Optimized(arch)));
+                    params.put("arch_state_id", savePackageArchState(arch)));
 
             packageState.getPackageVersion().ifPresent(version ->
-                    params.put("version_state_id", savePackageVersionState_Optimized(version)));
+                    params.put("version_state_id", savePackageVersionState(version)));
 
             batch.add(params);
 
@@ -259,7 +207,7 @@ public class OVALCachingFactory extends HibernateFactory {
         mode.executeBatchUpdates(batch);
     }
 
-    public static long savePackageEvrState_Optimized(EVRType evr) {
+    private static long savePackageEvrState(EVRType evr) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_evr_state");
 
         Map<String, Object> params = new HashMap<>();
@@ -273,7 +221,7 @@ public class OVALCachingFactory extends HibernateFactory {
         return (long) mode.execute(params, outParams).get("evrStateId");
     }
 
-    public static long savePackageArchState_Optimized(ArchType arch) {
+    private static long savePackageArchState(ArchType arch) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_arch_state");
 
         Map<String, Object> params = new HashMap<>();
@@ -285,7 +233,7 @@ public class OVALCachingFactory extends HibernateFactory {
 
         return (long) mode.execute(params, outParams).get("archStateId");
     }
-    public static long savePackageVersionState_Optimized(VersionType version) {
+    private static long savePackageVersionState(VersionType version) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "insert_package_version_state");
 
         Map<String, Object> params = new HashMap<>();
@@ -314,15 +262,6 @@ public class OVALCachingFactory extends HibernateFactory {
         })).collect(Collectors.toList());
 
         toBatches(collect).forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
-    }
-
-    public static <T> Stream<List<T>> toBatches(List<T> source) {
-        int size = source.size();
-        if (size == 0)
-            return Stream.empty();
-        int fullChunks = (size - 1) / BATCH_SIZE;
-        return IntStream.range(0, fullChunks + 1).mapToObj(
-                n -> source.subList(n * 60, n == fullChunks ? size : (n + 1) * 60));
     }
 
     private static void saveReferences(List<DefinitionType> definitions) {
@@ -385,7 +324,22 @@ public class OVALCachingFactory extends HibernateFactory {
         mode.executeBatchUpdates(batch);
     }
 
+    private static <T> Stream<List<T>> toBatches(List<T> source) {
+        int size = source.size();
+        if (size == 0)
+            return Stream.empty();
+        int fullChunks = (size - 1) / BATCH_SIZE;
+        return IntStream.range(0, fullChunks + 1).mapToObj(
+                n -> source.subList(n * 60, n == fullChunks ? size : (n + 1) * 60));
+    }
 
+
+    /**
+     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
+     * same id but different content for different versions of Debian.
+     * <p>
+     * To be workaround this, we insert the codename of the version into the id string before storage
+     */
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {
             for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
@@ -397,16 +351,22 @@ public class OVALCachingFactory extends HibernateFactory {
         }
     }
 
+    /**
+     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
+     * same id but different content for different versions of Debian.
+     * <p>
+     * To be workaround this, we insert the codename of the version into the id string before storage
+     */
     private static String convertDebianId(String id, String osVersion) {
-        String versionName = "";
+        String codename = "";
         if ("10.0".equals(osVersion)) {
-            versionName = "buster";
+            codename = "buster";
         } else if ("11.0".equals(osVersion)) {
-            versionName = "bullseye";
+            codename = "bullseye";
         } else if ("12.0".equals(osVersion)) {
-            versionName = "bookworm";
+            codename = "bookworm";
         }
-        return id.replaceAll("debian", "debian-" + versionName);
+        return id.replaceAll("debian", "debian-" + codename);
     }
 
 
@@ -453,105 +413,6 @@ public class OVALCachingFactory extends HibernateFactory {
                 .setCacheable(true).uniqueResult();
     }
 
-    public static void savePackageTests(List<TestType> ovalTests, OvalObjectManager objectManager, OvalStateManager stateManager,
-                                        OsFamily osFamily, String osVersion) {
-
-        for (int i = 0; i < ovalTests.size(); i++) {
-            TestType testType = ovalTests.get(i);
-
-            OVALPackageTest ovalPackageTest = new OVALPackageTest();
-            ovalPackageTest.setId(testType.getId());
-            ovalPackageTest.setComment(testType.getComment());
-            ovalPackageTest.setCheck(testType.getCheck());
-            ovalPackageTest.setCheckExistence(testType.getCheckExistence());
-            // TODO: fix!
-            ovalPackageTest.setRpm(true);
-
-            ObjectType objectType = objectManager.get(testType.getObject().getObjectRef());
-            OVALPackageObject ovalPackageObject = new OVALPackageObject();
-            ovalPackageObject.setId(objectType.getId());
-            ovalPackageObject.setPackageName(objectType.getPackageName());
-            ovalPackageObject.setRpm(true);
-
-            LOG.error("Package name: '{}'", objectType.getPackageName());
-            // Debian OVAL data sometimes contains null objects
-            if (objectType.getPackageName() == null || StringUtils.isEmpty(objectType.getPackageName())) {
-                continue;
-            }
-
-            StateType stateType = testType.getStateRef().map(stateManager::get).orElse(null);
-            // TODO: fix!
-            if (stateType == null) {
-                throw new IllegalStateException();
-            }
-
-            OVALPackageState ovalPackageState = new OVALPackageState();
-            ovalPackageState.setId(stateType.getId());
-            ovalPackageState.setOperator(stateType.getOperator());
-            ovalPackageState.setRpm(true);
-
-            OVALPackageEvrStateEntity ovalPackageEvrStateEntity = stateType.getPackageEVR().map(evrType -> {
-                OVALPackageEvrStateEntity result = new OVALPackageEvrStateEntity();
-                result.setEvr(evrType.getValue());
-                result.setDatatype(evrType.getDatatype());
-                result.setOperation(evrType.getOperation());
-
-                return result;
-            }).orElse(null);
-
-            OVALPackageArchStateEntity ovalPackageArchStateEntity = stateType.getPackageArch().map(archType -> {
-                OVALPackageArchStateEntity result = new OVALPackageArchStateEntity();
-                result.setOperation(archType.getOperation());
-                result.setValue(archType.getValue());
-
-                return result;
-            }).orElse(null);
-
-            OVALPackageVersionStateEntity ovalPackageVersionStateEntity = stateType.getPackageVersion().map(versionType -> {
-                OVALPackageVersionStateEntity result = new OVALPackageVersionStateEntity();
-                result.setValue(versionType.getValue());
-                result.setOperation(versionType.getOperation());
-
-                return result;
-            }).orElse(null);
-
-            ovalPackageTest.setPackageState(ovalPackageState);
-            ovalPackageTest.setPackageObject(ovalPackageObject);
-
-            HibernateFactory.doWithoutAutoFlushing(() -> {
-                if (ovalPackageEvrStateEntity != null) {
-                    ovalPackageState.setPackageEvrState(ovalPackageEvrStateEntity);
-                    instance.saveObject(ovalPackageEvrStateEntity, false);
-                }
-
-                if (ovalPackageArchStateEntity != null) {
-                    ovalPackageState.setPackageArchState(ovalPackageArchStateEntity);
-                    instance.saveObject(ovalPackageArchStateEntity, false);
-                }
-
-                if (ovalPackageVersionStateEntity != null) {
-                    ovalPackageState.setPackageVersionState(ovalPackageVersionStateEntity);
-                    instance.saveObject(ovalPackageVersionStateEntity, false);
-                }
-
-                if (osFamily == OsFamily.DEBIAN) {
-                    ovalPackageTest.setId(convertDebianId(ovalPackageTest.getId(), osVersion));
-                    ovalPackageState.setId(convertDebianId(ovalPackageState.getId(), osVersion));
-                    ovalPackageObject.setId(convertDebianId(ovalPackageObject.getId(), osVersion));
-                }
-
-                getSession().merge(ovalPackageState);
-                getSession().merge(ovalPackageObject);
-                getSession().merge(ovalPackageTest);
-            });
-
-            if (i % 60 == 0) {
-                LOG.error("Saving '{}'", testType.getId());
-                getSession().flush();
-            }
-        }
-    }
-
     public static OVALDefinition lookupDefinitionById(String id) {
         return getSession().byId(OVALDefinition.class).load(id);
     }
@@ -562,27 +423,6 @@ public class OVALCachingFactory extends HibernateFactory {
             instance.saveObject(ovalPackageObject);
 
             return ovalPackageObject;
-        }
-
-        return lookup;
-    }
-
-    private OVALPackageTest lookupOrInsetPackageTest(OVALPackageTest ovalPackageTest) {
-        OVALPackageTest lookup = lookupPackageTestById(ovalPackageTest.getId());
-        if (lookup == null) {
-            instance.saveObject(ovalPackageTest);
-            return ovalPackageTest;
-        }
-
-        return lookup;
-    }
-
-    private OVALPackageState lookupOrInsetPackageState(OVALPackageState ovalPackageState) {
-        OVALPackageState lookup = lookupPackageStateById(ovalPackageState.getId());
-        if (lookup == null) {
-            instance.saveObject(ovalPackageState);
-
-            return ovalPackageState;
         }
 
         return lookup;

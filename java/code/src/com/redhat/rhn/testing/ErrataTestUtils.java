@@ -561,7 +561,7 @@ public class ErrataTestUtils {
         OvalObjectManager objectManager = new OvalObjectManager(List.of(objectType));
         OvalStateManager stateManager = new OvalStateManager(List.of(stateType));
 
-        OVALCachingFactory.savePackageTests(List.of(testType), objectManager, stateManager, OsFamily.openSUSE_LEAP, "15.4");
+        OVALCachingFactory.savePackageTests(List.of(testType), OsFamily.openSUSE_LEAP, "15.4");
 
         HibernateFactory.getSession().flush();
 
