@@ -5,6 +5,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 
@@ -33,10 +34,10 @@ import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.ReferenceType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
-
 import com.suse.oval.ovaltypes.VersionType;
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -54,9 +55,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class OVALCachingFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(OVALCachingFactory.class);
+    public static final int BATCH_SIZE = 60;
     private static OVALCachingFactory instance = new OVALCachingFactory();
 
     private OVALCachingFactory() {
@@ -157,11 +161,40 @@ public class OVALCachingFactory extends HibernateFactory {
             i++;
         }
 
-        saveAffectedPlatforms(definitions);
+        LOG.error("Start");
+        TimeUtils.logTime(LOG, "Saving affected", () -> saveAffectedPlatforms(definitions));
+        LOG.error("Finished Saving Affected");
         saveReferences(definitions);
+        LOG.error("Finished Saving References");
+    }
 
-        getSession().clear();
-        getSession().flush();
+    public static void savePackageTests_Optimized(List<TestType> packageTests) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_test");
+
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
+        for (int i = 0; i < packageTests.size(); i++) {
+            TestType packageTest = packageTests.get(i);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", packageTest.getId());
+            params.put("comment", packageTest.getComment());
+            params.put("check_exist", packageTest.getCheckExistence().toString());
+            params.put("test_check", packageTest.getCheck().toString());
+            params.put("state_operator", packageTest.getStateOperator().toString());
+            params.put("isrpm", true);
+            params.put("pkg_object_id", packageTest.getObject().getObjectRef());
+            params.put("pkg_state_id", packageTest.getStateRef().orElse(null));
+
+            batch.add(params);
+
+            if (i % 60 == 0) {
+                mode.executeBatchUpdates(batch);
+                batch.clear();
+                LOG.warn("Saved 60 more tests");
+            }
+        }
+
+        mode.executeBatchUpdates(batch);
     }
 
     public static void savePackageObjects_Optimized(List<ObjectType> packageObjects) {
@@ -267,30 +300,37 @@ public class OVALCachingFactory extends HibernateFactory {
 
 
     private static void saveAffectedPlatforms(List<DefinitionType> definitions) {
-        WriteMode deleteOldAffectedPlatformsMode = ModeFactory.getWriteMode("oval_queries", "delete_affected_platforms_from_definition");
-        CallableMode addAffectedPlatformToDefinitionMode = ModeFactory.getCallableMode("oval_queries", "add_affected_platform_to_definition");
+        deleteOldAffectedPlatforms(definitions);
 
-        for (DefinitionType definition : definitions) {
-            deleteOldAffectedPlatformsMode.executeUpdate(Map.of("definition_id", definition.getId()));
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_affected_platform_to_definition");
 
-            for (String affectedPlatform : definition.getMetadata().getAffected().get(0).getPlatforms()) {
-                Map<String, Object> params = new HashMap<>();
-                params.put("definition_id", definition.getId());
-                params.put("platform_name", affectedPlatform);
+        List<Map<String, Object>> collect = definitions.stream().flatMap(definition ->
+                definition.getMetadata().getAffected().get(0).getPlatforms().stream().map(affectedPlatform -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("definition_id", definition.getId());
+            params.put("platform_name", affectedPlatform);
 
-                addAffectedPlatformToDefinitionMode.execute(params, Collections.emptyMap());
-            }
-        }
+            return params;
+        })).collect(Collectors.toList());
 
+        toBatches(collect).forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
+    }
+
+    public static <T> Stream<List<T>> toBatches(List<T> source) {
+        int size = source.size();
+        if (size == 0)
+            return Stream.empty();
+        int fullChunks = (size - 1) / BATCH_SIZE;
+        return IntStream.range(0, fullChunks + 1).mapToObj(
+                n -> source.subList(n * 60, n == fullChunks ? size : (n + 1) * 60));
     }
 
     private static void saveReferences(List<DefinitionType> definitions) {
-        WriteMode deleteOldReferencesMode = ModeFactory.getWriteMode("oval_queries", "delete_references_from_definition");
-        WriteMode addReferenceToDefinitionMode = ModeFactory.getWriteMode("oval_queries", "add_reference_to_definition");
+        deleteOldReferences(definitions);
+
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "add_reference_to_definition");
 
         for (DefinitionType definition : definitions) {
-            deleteOldReferencesMode.executeUpdate(Map.of("definition_id", definition.getId()));
-
             for (ReferenceType reference : definition.getMetadata().getReference()) {
                 Map<String, Object> params = new HashMap<>();
                 params.put("ref_id", reference.getRefId());
@@ -298,9 +338,51 @@ public class OVALCachingFactory extends HibernateFactory {
                 params.put("source", reference.getSource());
                 params.put("url", reference.getRefUrl().orElse(""));
 
-                addReferenceToDefinitionMode.executeUpdate(params);
+                mode.executeUpdate(params);
             }
         }
+    }
+
+    private static void deleteOldReferences(List<DefinitionType> definitions) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "delete_references_from_definition");
+
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
+        for (int i = 0; i < definitions.size(); i++) {
+            DefinitionType definition = definitions.get(i);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("definition_id", definition.getId());
+
+            batch.add(params);
+
+            if (i % 60 == 0) {
+                mode.executeBatchUpdates(batch);
+                batch.clear();
+                LOG.warn("Deleted 60 more references");
+            }
+        }
+        mode.executeBatchUpdates(batch);
+    }
+
+    private static void deleteOldAffectedPlatforms(List<DefinitionType> definitions) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "delete_affected_platforms_from_definition");
+
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
+        for (int i = 0; i < definitions.size(); i++) {
+            DefinitionType definition = definitions.get(i);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("definition_id", definition.getId());
+
+            batch.add(params);
+
+            if (i % 60 == 0) {
+                mode.executeBatchUpdates(batch);
+                batch.clear();
+                LOG.warn("Deleted 60 more affected platforms");
+            }
+        }
+        mode.executeBatchUpdates(batch);
     }
 
 

@@ -7,7 +7,7 @@
 
     <callable-mode name="add_affected_platform_to_definition">
         <query params="definition_id, platform_name">
-            { call add_affected_platform_to_definition(:definition_id, :platform_name) }
+            call add_affected_platform_to_definition(:definition_id, :platform_name)
         </query>
     </callable-mode>
 
@@ -36,6 +36,23 @@
             call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
         </query>
     </callable-mode>
+
+    <write-mode name="insert_package_test">
+        <query params="id, comment, check_exist, test_check, state_operator, isrpm, pkg_object_id, pkg_state_id">
+            INSERT INTO suseOVALPackageTest(id, comment, check_exist, test_check, state_operator, isrpm, pkg_object_id,
+                                            pkg_state_id)
+            VALUES (:id, :comment, :check_exist, :test_check, :state_operator, :isrpm, :pkg_object_id, :pkg_state_id)
+            ON CONFLICT(id) DO UPDATE
+                SET comment        = EXCLUDED.comment,
+                    check_exist    = EXCLUDED.check_exist,
+                    test_check     = EXCLUDED.test_check,
+                    state_operator = EXCLUDED.state_operator,
+                    isrpm          = EXCLUDED.isrpm,
+                    pkg_object_id  = EXCLUDED.pkg_object_id,
+                    pkg_state_id   = EXCLUDED.pkg_state_id;
+
+        </query>
+    </write-mode>
 
     <write-mode name="insert_package_object">
         <query params="id, name, isrpm">
