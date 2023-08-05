@@ -22,9 +22,6 @@ public class OVALDownloader {
             case openSUSE_LEAP:
                 streamInfo = new OpenSUSELeapOVALStreamInfo(osVersion);
                 break;
-            case openSUSE:
-                streamInfo = new OpenSUSEOVALStreamInfo(osVersion);
-                break;
             case REDHAT_ENTERPRISE_LINUX:
                 streamInfo = new RedHatOVALStreamInfo(osVersion);
                 break;
