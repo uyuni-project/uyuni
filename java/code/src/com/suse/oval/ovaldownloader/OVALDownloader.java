@@ -52,7 +52,7 @@ public class OVALDownloader {
                 streamInfo.getCompressionMethod().extension());
 
         // Start downloading
-        FileUtils.copyURLToFile(remoteOVALFileURL, localOVALFile, 5000, 5000);
+        FileUtils.copyURLToFile(remoteOVALFileURL, localOVALFile, 10_000, 10_000);
 
         OVALCompressionMethod compressionMethod = streamInfo.getCompressionMethod();
         if (compressionMethod == OVALCompressionMethod.GZIP) {
