@@ -58,14 +58,59 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
+    private static StateType cleanupPackageState(StateType packageState, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            packageState.setId(convertDebianId(packageState.getId(), osVersion));
+        }
+        return packageState;
+    }
+
+    private static TestType cleanupPackageTest(TestType packageTest, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            packageTest.setId(convertDebianId(packageTest.getId(), osVersion));
+        }
+        return packageTest;
+    }
+
+    private static ObjectType cleanupPackageObject(ObjectType packageObject, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            packageObject.setId(convertDebianId(packageObject.getId(), osVersion));
+        }
+        return packageObject;
+    }
+
+    private static DefinitionType cleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+        definition.setCve(extractCveFromDefinition(definition, osFamily));
+
+        CriteriaType criteriaRoot = definition.getCriteria();
+        if (osFamily == OsFamily.DEBIAN) {
+            convertDebianTestRefs(criteriaRoot, osVersion);
+        }
+
+        return definition;
+    }
+
     /**
-     * Save all OVAL constructs (definitions, tests, objects and states) associated with the given {@code rootType}
+     * Cleanup and save all OVAL constructs (definitions, tests, objects and states) associated with the given {@code rootType}
      * */
     public static void saveOVAL(OvalRootType rootType, OsFamily osFamily, String osVersion) {
-        saveDefinitions(rootType.getDefinitions(), osFamily, osVersion);
-        savePackageObjects(rootType.getObjects().getObjects());
-        savePackageStates(rootType.getStates().getStates());
-        savePackageTests(rootType.getTests().getTests(), osFamily, osVersion);
+        List<StateType> cleanPackageStates =
+                rootType.getStates().getStates().stream().map(state -> cleanupPackageState(state, osFamily, osVersion))
+                        .collect(Collectors.toList());
+        List<ObjectType> cleanPackageObjects =
+                rootType.getObjects().getObjects().stream().map(object -> cleanupPackageObject(object, osFamily, osVersion))
+                        .collect(Collectors.toList());
+        List<TestType> cleanPackageTests =
+                rootType.getTests().getTests().stream().map(test -> cleanupPackageTest(test, osFamily, osVersion))
+                        .collect(Collectors.toList());
+        List<DefinitionType> cleanDefinitions =
+                rootType.getDefinitions().stream().map(definition -> cleanupDefinition(definition, osFamily, osVersion))
+                        .collect(Collectors.toList());
+
+        saveDefinitions(cleanDefinitions, osFamily, osVersion);
+        savePackageObjects(cleanPackageObjects);
+        savePackageStates(cleanPackageStates);
+        savePackageTests(cleanPackageTests);
     }
 
     /**
@@ -82,16 +127,11 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("id", definition.getId());
             params.put("class", definition.getDefinitionClass().toString());
             params.put("title", definition.getMetadata().getTitle());
-            params.put("cve_name", definition.getMetadata().getTitle());
+            params.put("cve_name", definition.getCve());
             params.put("description", definition.getMetadata().getDescription());
             params.put("os_family", osFamily.toString());
             params.put("os_version", osVersion);
-
-            CriteriaType criteriaRoot = definition.getCriteria();
-            if (osFamily == OsFamily.DEBIAN) {
-                convertDebianTestRefs(criteriaRoot, osVersion);
-            }
-            params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(criteriaRoot));
+            params.put("criteria_tree", ObjectMapperWrapper.INSTANCE.toString(definition.getCriteria()));
 
             mode.execute(params, new HashMap<>());
 
@@ -106,7 +146,7 @@ public class OVALCachingFactory extends HibernateFactory {
         saveReferences(definitions);
     }
 
-    public static void savePackageTests(List<TestType> packageTests, OsFamily osFamily, String osVersion) {
+    public static void savePackageTests(List<TestType> packageTests) {
         WriteMode mode = ModeFactory.getWriteMode("oval_queries", "insert_package_test");
 
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(60));
@@ -120,18 +160,8 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("test_check", packageTest.getCheck().toString());
             params.put("state_operator", packageTest.getStateOperator().toString());
             params.put("isrpm", true);
-
-            String objectId = packageTest.getObject().getObjectRef();
-            String stateId = packageTest.getStateRef().orElse(null);
-
-            if (osFamily == OsFamily.DEBIAN) {
-                objectId = convertDebianId(objectId, osVersion);
-                if (stateId != null) {
-                    stateId = convertDebianId(stateId, osVersion);
-                }
-            }
-            params.put("pkg_object_id", objectId);
-            params.put("pkg_state_id", stateId);
+            params.put("pkg_object_id", packageTest.getObject().getObjectRef());
+            params.put("pkg_state_id", packageTest.getStateRef().orElse(null));
 
             batch.add(params);
 
@@ -530,22 +560,21 @@ public class OVALCachingFactory extends HibernateFactory {
         return LOG;
     }
 
-    private static String extractCveFromDefinition(OVALDefinition definition) {
-        OsFamily source = definition.getOsFamily();
-        if (source == null) {
+    private static String extractCveFromDefinition(DefinitionType definition, OsFamily osFamily) {
+        if (osFamily == null) {
             throw new IllegalStateException("Definition doesn't have a source property");
         }
-        switch (source) {
+        switch (osFamily) {
             case openSUSE_LEAP:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
             case openSUSE:
-                return definition.getTitle();
+                return definition.getMetadata().getTitle();
             case DEBIAN:
-                return definition.getTitle().split("\\s+")[0];
+                return definition.getMetadata().getTitle().split("\\s+")[0];
             case REDHAT_ENTERPRISE_LINUX:
             case UBUNTU:
-                throw new NotImplementedException("Cannot extract cve from '" + source + "' OVAL definitions");
+                throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
         }
         return "";
     }

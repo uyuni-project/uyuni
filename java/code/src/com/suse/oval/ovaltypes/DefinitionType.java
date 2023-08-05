@@ -1,5 +1,6 @@
 package com.suse.oval.ovaltypes;
 
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -40,6 +41,9 @@ public class DefinitionType {
     protected DefinitionClassEnum definitionClass;
     @XmlAttribute(name = "deprecated")
     protected Boolean deprecated;
+
+    @Transient
+    protected String cve;
 
     /**
      * Gets the value of the metadata property.
@@ -136,4 +140,11 @@ public class DefinitionType {
         this.deprecated = value;
     }
 
+    public String getCve() {
+        return cve;
+    }
+
+    public void setCve(String cve) {
+        this.cve = cve;
+    }
 }
