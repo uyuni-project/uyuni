@@ -31,7 +31,7 @@ end;
 $$;
 
 
-create or replace function add_affected_platform_to_definition(definition_id_in varchar, platform_name_in varchar) returns void
+create or replace procedure add_affected_platform_to_definition(definition_id_in varchar, platform_name_in varchar)
     language plpgsql
 as
 $$
