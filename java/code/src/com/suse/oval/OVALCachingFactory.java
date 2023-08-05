@@ -575,7 +575,6 @@ public class OVALCachingFactory extends HibernateFactory {
             case openSUSE_LEAP:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
-            case openSUSE:
                 return definition.getMetadata().getTitle();
             case DEBIAN:
                 return definition.getMetadata().getTitle().split("\\s+")[0];

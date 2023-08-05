@@ -1,7 +1,6 @@
 package com.suse.oval;
 
 public enum OsFamily {
-    openSUSE("openSUSE", "opensuse", "opensuse"),
     openSUSE_LEAP("openSUSE Leap", "leap", "opensuse"),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse"),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse"),

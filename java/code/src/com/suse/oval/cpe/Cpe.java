@@ -1,5 +1,11 @@
 package com.suse.oval.cpe;
 
+import static com.suse.oval.OsFamily.*;
+
+import com.suse.oval.OsFamily;
+
+import java.util.Optional;
+
 public class Cpe {
     private static final SimpleCpeParser cpeParser = new SimpleCpeParser();
 
@@ -55,7 +61,7 @@ public class Cpe {
         }
     }
 
-    public Cpe parse(String cpe) {
+    public static Cpe parse(String cpe) {
         return cpeParser.parse(cpe);
     }
 
@@ -63,5 +69,21 @@ public class Cpe {
         String cpe = "cpe:/o:" + vendor + ":" + product + ":" + version + ":" + update;
         // Removing trailing colons ':'
         return cpe.replaceAll(":*$", "");
+    }
+
+    public Optional<OsFamily> toOsFamily() {
+        if ("redhat".equals(vendor) && "enterprise_linux".equals(product)) {
+            return Optional.of(REDHAT_ENTERPRISE_LINUX);
+        }
+        else if("suse".equals(vendor) && "sles".equals(product)) {
+            return Optional.of(SUSE_LINUX_ENTERPRISE_SERVER);
+        }
+        else if ("suse".equals(vendor) && "sled".equals(product)) {
+            return Optional.of(SUSE_LINUX_ENTERPRISE_DESKTOP);
+        }
+        else if ("opensuse".equals(vendor) && "leap".equals(product)) {
+            return Optional.of(openSUSE_LEAP);
+        }
+        return Optional.empty();
     }
 }

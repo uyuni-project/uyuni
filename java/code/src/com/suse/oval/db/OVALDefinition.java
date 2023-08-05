@@ -1,18 +1,24 @@
 package com.suse.oval.db;
 
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.server.Server;
+
 import com.suse.oval.OsFamily;
 import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
+import com.suse.oval.cpe.Cpe;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
-import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
+
 import com.vladmihalcea.hibernate.type.json.JsonType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,10 +26,29 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import static java.util.stream.Collectors.groupingBy;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "suseOVALDefinition")
@@ -155,8 +180,14 @@ public class OVALDefinition {
      */
     @Transient
     public Set<VulnerablePackage> extractVulnerablePackages(String productCpe) {
+        Optional<OsFamily> osFamilyOpt = Cpe.parse(productCpe).toOsFamily();
+
+        if (osFamilyOpt.isEmpty()) {
+            throw new IllegalArgumentException("Product CPE doesn't belong to any of the supported products: " + productCpe);
+        }
+
         AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
-                new SUSEVulnerablePackageExtractor(this);
+                VulnerablePackagesExtractors.create(this, osFamilyOpt.get());
 
         Set<VulnerablePackage> productVulnerablePackages = new HashSet<>();
 
