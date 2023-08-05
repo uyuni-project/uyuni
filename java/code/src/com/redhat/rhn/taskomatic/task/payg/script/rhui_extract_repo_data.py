@@ -14,8 +14,10 @@
 import base64
 import glob
 import json
+import platform
 import re
 import subprocess
+import os
 import sys
 import traceback
 import urllib.request
@@ -37,6 +39,7 @@ TOKEN_URL = "http://169.254.169.254/latest/api/token"
 proxy_handler = urllib.request.ProxyHandler({})
 opener = urllib.request.build_opener(proxy_handler)
 
+cloud_vendor = "unknown"
 
 def system_exit(code, messages=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
@@ -58,12 +61,8 @@ def _get_token():
     req = urllib.request.Request(url=TOKEN_URL,
         data=b'', method='PUT')
     req.add_header(TOKEN_TTL_HEADER, '3600') # Time to live in seconds
-    try:
-        with opener.open(req) as response:
-            return response.read()
-    except urllib.error.URLError as e:
-        system_exit(3, ["Unable to get token ({})".format(e)])
-
+    with opener.open(req) as response:
+        return response.read()
 
 def _load_id(token):
     '''
@@ -82,6 +81,8 @@ def _load_signature(token):
     '''
     return _read_aws_metadata(ID_SIG_URL, token)
 
+def _get_arch():
+    return platform.processor()
 
 def is_rhui_instance():
     return is_rhui
@@ -92,9 +93,22 @@ def get_rhui_url(url):
     check the url if it is a RHUI url.
     If yes, return it, otherwise return an empty string
     """
-    urlparams = urlparse.urlparse(url.strip())
+    global cloud_vendor
+    surl = url.strip().replace(',', "")
+    urlparams = urlparse.urlparse(surl)
     if urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(".redhat.com"):
-        return url.strip()
+        cloud_vendor = "aws"
+        return surl
+    elif urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(".microsoft.com"):
+        cloud_vendor = "azure"
+        return surl
+    elif urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(".googlecloud.com"):
+        cloud_vendor = "gcp"
+        return surl
+    elif urlparams.hostname.startswith("packages.cloud.google.com"):
+        # this contains the package with the certificates
+        cloud_vendor = "gcp"
+        return surl
     return ""
 
 
@@ -106,7 +120,6 @@ def _parse_repositories():
 
     try:
         repos_out = subprocess.check_output(["yum", "repolist", "--all", "-v"], stderr=subprocess.PIPE, universal_newlines=True)
-        #repos_out = subprocess.check_output(["yum", "repolist", "-C", "--all", "-v"], stderr=subprocess.PIPE, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         system_exit(2, ["Got error when getting repo processed URL(error {}):".format(e)])
     repo_id = ""
@@ -133,38 +146,47 @@ def _parse_repositories():
     for repofile in glob.glob("/etc/yum.repos.d/*.repo"):
         with open(repofile, "r") as r:
             ident = ""
+            state = 0
             for line in r:
                 s = line.strip()
                 if re.match(PATTERN_SECTION, s):
                     ident = re.findall(PATTERN_SECTION, s)[0]
-                elif not (ident and ident in repo_dict):
-                    # skip repos we do not know yet
-                    continue
-                elif "=" in s:
-                    k,v = re.split(PATTERN_KV, s, 1)
-                    if k in ["sslclientcert", "sslclientkey", "sslcacert"]:
-                        repo_dict[ident][k] = v
-                elif s == "":
-                    ident = ""
-
+                    state = 1
+                    if '$basearch' in ident:
+                        ident = ident.replace('$basearch', _get_arch())
+                elif state == 1 and ident and ident in repo_dict:
+                    if "=" in s:
+                        k,v = re.split(PATTERN_KV, s, 1)
+                        if k in ["sslclientcert", "sslclientkey", "sslcacert"]:
+                            repo_dict[ident][k] = v
+                            if "sslcacert" not in repo_dict[ident]:
+                                repo_dict[ident]["sslcacert"] = "Bundle" # default
+                    elif s == "":
+                        ident = ""
+                        state = 0
     return repo_dict
 
 
 def _get_rhui_info():
     # Retrieve the Amazon metadata
-    token = _get_token()
-    id_doc = _load_id(token)
-    id_sig = _load_signature(token)
-    id_doc_header = ""
-    id_sig_header = ""
+    try:
+        token = _get_token()
+        id_doc = _load_id(token)
+        id_sig = _load_signature(token)
+        id_doc_header = ""
+        id_sig_header = ""
 
-    if id_doc and id_sig:
-        # Encode it so it can be inserted as an HTTP header
-        # Signature does not need to be encoded, it already is.
-        id_doc_header = base64.urlsafe_b64encode(id_doc).decode()
-        id_sig_header = base64.urlsafe_b64encode(id_sig).decode()
+        if id_doc and id_sig:
+            # Encode it so it can be inserted as an HTTP header
+            # Signature does not need to be encoded, it already is.
+            id_doc_header = base64.urlsafe_b64encode(id_doc).decode()
+            id_sig_header = base64.urlsafe_b64encode(id_sig).decode()
 
-    return {ID_DOC_HEADER: id_doc_header, ID_SIG_HEADER: id_sig_header}
+        return {ID_DOC_HEADER: id_doc_header, ID_SIG_HEADER: id_sig_header}
+    except urllib.error.URLError as e:
+        # not AWS cloud ?
+        return {}
+
 
 
 def _get_certificate_info():
@@ -172,15 +194,30 @@ def _get_certificate_info():
     Return a dict with all RHUI certificates and keys using
     the path as key
     """
+    usedCrts = set()
+    for d in repo_dict.values():
+        for k, v in d.items():
+            if k.startswith('ssl'):
+                usedCrts.add(v)
+
     certs = {}
-    for crt in glob.glob("/etc/pki/rhui/product/*.crt"):
-        with open(crt, "r") as c:
-            certs[crt] = c.read()
-
     for crt in glob.glob("/etc/pki/rhui/*.*"):
+        if crt not in usedCrts:
+            # get only the certificates we really need
+            continue
         with open(crt, "r") as c:
             certs[crt] = c.read()
 
+    for crt in glob.glob("/etc/pki/rhui/**/*.*"):
+        if crt not in usedCrts:
+            # get only the certificates we really need
+            continue
+        with open(crt, "r") as c:
+            certs[crt] = c.read()
+
+    if "Bundle" in usedCrts:
+        with open("/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem", "r") as c:
+            certs["Bundle"] = c.read()
     return certs
 
 
@@ -217,6 +254,6 @@ if __name__ == '__main__':
 # Error codes
 # 1- system is not a RHUI instance
 # 2- error returning existing repositories
-# 3- error when getting processed URL and Header from RHUI 
+# 3- error when getting processed URL and Header from RHUI
 # 6- CA file for cloud RMT server not found
 # 9- generic error
