@@ -301,38 +301,28 @@ public class CVEAuditManagerOVAL {
     static {
         productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));
         productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.3"));
-        productsToSync.add(new OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, "15"));
         productsToSync.add(new OVALProduct(OsFamily.DEBIAN, "10"));
     }
     public static void syncOVAL() {
         OVALDownloader ovalDownloader = new OVALDownloader();
         for (OVALProduct product : productsToSync) {
-            log.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            log.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
             File ovalFile;
             try {
                 ovalFile = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
             } catch (IOException e) {
                 throw new RuntimeException("Failed to download OVAL data", e);
             }
-            log.debug("Downloading finished");
+            log.warn("Downloading finished");
 
             OvalParser ovalParser = new OvalParser();
             OvalRootType ovalRoot = ovalParser.parse(ovalFile);
 
-            OvalStateManager ovalStateManager = new OvalStateManager(ovalRoot.getStates().getStates());
-            OvalObjectManager ovalObjectManager = new OvalObjectManager(ovalRoot.getObjects().getObjects());
+            log.warn("Saving OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
 
-            log.debug("Saving OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-            OVALCachingFactory.saveDefinitions_Optimized(ovalRoot.getDefinitions(), product.getOsFamily(), product.getOsVersion());
-            log.debug("Finished saving OVAL definitions");
-            OVALCachingFactory.savePackageTests(
-                    ovalRoot.getTests().getTests(),
-                    ovalObjectManager,
-                    ovalStateManager,
-                    product.getOsFamily(),
-                    product.getOsVersion()
-            );
-            log.debug("Saving OVAL finished");
+            OVALCachingFactory.saveOVAL(ovalRoot, product.getOsFamily(), product.getOsVersion());
+
+            log.warn("Saving OVAL finished");
         }
     }
 
