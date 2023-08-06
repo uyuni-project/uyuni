@@ -20,7 +20,7 @@ Feature: Bootstrap a SLE Micro 5.3 Salt minion
     And I select "1-slemicro53_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Reboot the SLE Micro 5.3 minion and wait until reboot is completed
     When I reboot the "slemicro53_minion" minion through SSH

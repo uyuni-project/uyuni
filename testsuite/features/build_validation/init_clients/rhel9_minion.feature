@@ -21,7 +21,7 @@ Feature: Bootstrap a Rhel 9 Salt minion
     And I select "1-rhel9_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "rhel9_minion"
 
 @proxy

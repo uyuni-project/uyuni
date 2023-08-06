@@ -31,7 +31,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "linux" as "password"
     And I select "1-proxy_key" from "activationKeys"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "proxy"
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion

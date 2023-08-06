@@ -14,7 +14,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I enter the hostname of "ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
 
