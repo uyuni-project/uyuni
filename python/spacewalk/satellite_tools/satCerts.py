@@ -39,7 +39,10 @@ def get_certificate_info(cert_str):
     not_before = cert.get_not_before().get_datetime()
     not_after = cert.get_not_after().get_datetime()
     subject = cert.get_subject()
-    cn = subject.CN
+    try:
+        cn = subject.CN
+    except:
+        cn = ""
     serial_number = cert.get_serial_number()
     return cn, serial_number, not_before, not_after
 
