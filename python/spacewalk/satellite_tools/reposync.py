@@ -371,10 +371,11 @@ def verify_certificates_dates(certs):
         if is_cert:
             cert += line + '\n'
         if is_cert and line.startswith("-----END CERTIFICATE"):
-            if not verify_certificate_dates(cert):
-                return False
-            cert = ""
             is_cert = False
+            if not verify_certificate_dates(cert):
+                cert = ""
+                continue
+            cert = ""
             has_valid_certs = True
     return has_valid_certs
 
