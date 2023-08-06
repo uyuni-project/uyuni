@@ -57,7 +57,7 @@ Feature: Migrate a Red Hat-like traditional client into a Salt minion
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"

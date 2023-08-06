@@ -24,7 +24,7 @@ Feature: Bootstrap a Ubuntu 18.04 Salt SSH minion
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ubuntu1804_ssh_minion"
 
   Scenario: Check events history for failures on SSH-managed Ubuntu 18.04 minion

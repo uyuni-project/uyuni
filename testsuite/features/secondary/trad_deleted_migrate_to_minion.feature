@@ -38,7 +38,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Wait until the Salt minion appears in a deleted client context
     When I wait until onboarding is completed for "sle_client" salt minion

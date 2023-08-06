@@ -19,7 +19,7 @@ Feature: Bootstrap a openSUSE 15.4 ARM Salt SSH minion
     And I select "1-opensuse154arm_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "opensuse154arm_ssh_minion"
 
 @proxy
