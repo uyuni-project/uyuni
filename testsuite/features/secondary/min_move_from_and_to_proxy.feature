@@ -31,7 +31,7 @@ Feature: Move a minion from a proxy to direct connection
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check the new bootstrapped minion in System Overview page

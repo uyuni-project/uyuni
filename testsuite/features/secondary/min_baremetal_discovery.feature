@@ -147,7 +147,7 @@ Feature: Bare metal discovery
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I follow "clear-ssm"

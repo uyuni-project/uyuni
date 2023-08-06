@@ -31,7 +31,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
     And I select "1-KVM-TEST" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "kvm_server"
 
   Scenario: Show the KVM host system overview
