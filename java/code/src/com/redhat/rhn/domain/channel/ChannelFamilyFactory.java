@@ -45,6 +45,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
     public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "SMS";
     public static final String PROXY_CHANNEL_FAMILY_LABEL = "SMP";
     public static final String MODULE_CHANNEL_FAMILY_LABEL = "MODULE";
+    public static final String OPENSUSE_CHANNEL_FAMILY_LABEL = "OPENSUSE";
 
     private ChannelFamilyFactory() {
         super();

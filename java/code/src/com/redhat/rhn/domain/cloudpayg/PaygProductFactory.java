@@ -170,7 +170,7 @@ public class PaygProductFactory extends HibernateFactory {
     public static List<PaygProductInfo> listAdditionalProductsForSUMAPayg() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
             .filter(p -> Objects.nonNull(p.getChannelFamily()) && Objects.nonNull(p.getArch()))
-            .filter(p -> isSupportedToolsProduct(p) || isSupportedProxyProduct(p))
+            .filter(p -> isSupportedToolsProduct(p) || isSupportedProxyProduct(p) || isSupportedOpenSUSEProduct(p))
             .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch().getLabel()))
             .collect(Collectors.toList());
     }
@@ -190,5 +190,11 @@ public class PaygProductFactory extends HibernateFactory {
 
         return ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL.equals(family.getLabel()) &&
             RPM_VERSION_COMPARATOR.compare(version, "4.2") >= 0;
+    }
+
+    private static boolean isSupportedOpenSUSEProduct(SUSEProduct product) {
+        ChannelFamily family = product.getChannelFamily();
+
+        return ChannelFamilyFactory.OPENSUSE_CHANNEL_FAMILY_LABEL.equals(family.getLabel());
     }
 }
