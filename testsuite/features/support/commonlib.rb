@@ -30,7 +30,12 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
-  do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
+  do_not_kill =
+    if $product == 'Uyuni'
+      CHANNEL_TO_SYNCH_BY_OS_VERSION['15.4']
+    else
+      CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
+    end
   [$minion, $build_host, $ssh_minion, $rhlike_minion].each do |node|
     next unless node
     os_version = node.os_version
