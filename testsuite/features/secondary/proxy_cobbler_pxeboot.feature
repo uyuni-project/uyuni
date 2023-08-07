@@ -96,8 +96,10 @@ Feature: PXE boot a terminal with Cobbler
     And I set the default PXE menu entry to the local boot on the "proxy"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I am on the Systems page
-    And I wait until I see the name of "pxeboot_minion", refreshing the page
+
+  Scenario: Assure the PXE boot minion is onboarded
+    Given I am on the Systems page
+    When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I wait until onboarding is completed for "pxeboot_minion"
     Then "pxeboot_minion" should have been reformatted
 

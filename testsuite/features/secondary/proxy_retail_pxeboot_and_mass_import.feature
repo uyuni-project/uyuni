@@ -190,8 +190,10 @@ Feature: PXE boot a Retail terminal
     When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I follow the left menu "Systems > Overview"
-    And I wait until I see the name of "pxeboot_minion", refreshing the page
+
+  Scenario: Assure the PXE boot minion is onboarded
+    Given I am on the Systems page
+    When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (none)" is completed
