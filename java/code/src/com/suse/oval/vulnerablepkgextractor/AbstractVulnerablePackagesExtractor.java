@@ -4,6 +4,7 @@ import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,15 +18,15 @@ import java.util.stream.Collectors;
  * differ depending on the source of the OVAL definition (SUSE, Ubuntu, etc.)
  */
 public abstract class AbstractVulnerablePackagesExtractor {
-    protected final OVALDefinition vulnerabilityDefinition;
+    protected final DefinitionType vulnerabilityDefinition;
     protected final CriteriaType criteriaRoot;
 
-    protected AbstractVulnerablePackagesExtractor(OVALDefinition vulnerabilityDefinition) {
+    protected AbstractVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition) {
         Objects.requireNonNull(vulnerabilityDefinition);
-        Objects.requireNonNull(vulnerabilityDefinition.getCriteriaTree());
+        Objects.requireNonNull(vulnerabilityDefinition.getCriteria());
 
         this.vulnerabilityDefinition = vulnerabilityDefinition;
-        this.criteriaRoot = vulnerabilityDefinition.getCriteriaTree();
+        this.criteriaRoot = vulnerabilityDefinition.getCriteria();
     }
 
     protected abstract List<ProductVulnerablePackages> extractItem(BaseCriteria criteriaType);

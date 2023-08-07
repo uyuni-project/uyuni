@@ -5,6 +5,8 @@ import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +20,7 @@ public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackage
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\w+) DPKG is earlier than (?<evr>.*)");
 
-    public DebianVulnerablePackagesExtractor(OVALDefinition vulnerabilityDefinition) {
+    public DebianVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition) {
         super(vulnerabilityDefinition);
     }
 
@@ -46,7 +48,7 @@ public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackage
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
         productVulnerablePackages.setProduct(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
-        productVulnerablePackages.setCve(vulnerabilityDefinition.getCve().getName());
+        productVulnerablePackages.setCve(vulnerabilityDefinition.getCve());
 
         return List.of(productVulnerablePackages);
     }

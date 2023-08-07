@@ -20,7 +20,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
     private static final Pattern FIND_SP_REGEX = Pattern.compile(".*\\sSP(?<sp>[0-9])\\s.*");
     private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
 
-    public SUSEVulnerablePackageExtractor(OVALDefinition vulnerabilityDefinition) {
+    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition) {
         super(vulnerabilityDefinition);
     }
 
@@ -89,7 +89,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
         for (String product : products) {
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
-            vulnerableProduct.setCve(vulnerabilityDefinition.getTitle());
+            vulnerableProduct.setCve(vulnerabilityDefinition.getCve());
 
             vulnerableProduct.setProduct(deriveCpe(product).asString());
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);

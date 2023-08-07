@@ -43,6 +43,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +181,7 @@ public class OVALDefinition {
      */
     @Transient
     public Set<VulnerablePackage> extractVulnerablePackages(String productCpe) {
+/*
         Optional<OsFamily> osFamilyOpt = Cpe.parse(productCpe).toOsFamily();
 
         if (osFamilyOpt.isEmpty()) {
@@ -198,8 +200,9 @@ public class OVALDefinition {
                 productVulnerablePackages.addAll(productToVulnerablePackagesMapping.getVulnerablePackages());
             }
         }
+*/
 
-        return productVulnerablePackages;
+        return Collections.emptySet();
     }
 
     /**

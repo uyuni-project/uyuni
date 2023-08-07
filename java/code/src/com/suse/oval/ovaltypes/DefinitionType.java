@@ -1,5 +1,7 @@
 package com.suse.oval.ovaltypes;
 
+import com.suse.oval.OsFamily;
+
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,6 +46,10 @@ public class DefinitionType {
 
     @Transient
     protected String cve;
+    @Transient
+    protected OsFamily osFamily;
+    @Transient
+    private String osVersion;
 
     /**
      * Gets the value of the metadata property.
@@ -146,5 +152,20 @@ public class DefinitionType {
 
     public void setCve(String cve) {
         this.cve = cve;
+    }
+    public OsFamily getOsFamily() {
+        return osFamily;
+    }
+
+    public void setOsFamily(OsFamily osFamily) {
+        this.osFamily = osFamily;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
     }
 }
