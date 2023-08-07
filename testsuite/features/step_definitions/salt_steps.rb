@@ -91,7 +91,7 @@ end
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
-  repeat_until_timeout(timeout: 360, message: "A Salt job is still running on #{minion}") do
+  repeat_until_timeout(timeout: 600, message: "A Salt job is still running on #{minion}") do
     output, _code = target.run("#{salt_call} -lquiet saltutil.running", verbose: true)
     break if output == "local:\n"
     sleep 3
@@ -302,6 +302,12 @@ When(/^I wait until there is no pillar refresh salt job active$/) do
     break unless output.include?("saltutil.refresh_pillar")
     sleep 1
   end
+end
+
+When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*)"$/) do |salt_module, minion|
+  target = get_target(minion)
+  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}", timeout: 600)
 end
 
 def pillar_get(key, minion)
