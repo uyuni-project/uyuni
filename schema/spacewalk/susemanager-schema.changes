@@ -1,4 +1,8 @@
-- Add schema directory for susemanager-schema-4.2.29
+-------------------------------------------------------------------
+Mon Aug 07 14:37:28 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.29-1
+  * Add schema directory for susemanager-schema-4.2.29
 
 -------------------------------------------------------------------
 Wed May 31 09:32:58 CEST 2023 - marina.latini@suse.com
