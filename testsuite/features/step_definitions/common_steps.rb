@@ -145,7 +145,7 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
     And I wait until I see "Pending Events" text
     And I follow "Pending"
     And I wait until I see "Pending Events" text
-    And I wait at most 180 seconds until I do not see "#{event}" text, refreshing the page
+    And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
