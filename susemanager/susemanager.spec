@@ -325,6 +325,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
+%dir %{reporoot}
 %dir %{reporoot}/repositories
 %dir %{reporoot}/repositories/empty
 %dir %{reporoot}/repositories/empty/repodata
