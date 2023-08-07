@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-04 14:19+0200\n"
-"PO-Revision-Date: 2023-08-05 22:15+0000\n"
+"PO-Revision-Date: 2023-08-07 20:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3515,10 +3515,9 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "Naozaj chcete vymazať vybraný obraz?"
 
 #: ../html/src/manager/images/image-view.tsx:741
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr "Naozaj chcete vymazať vybrané obrazy? ({0} vybraných obrazov)"
+msgstr "Naozaj chcete vymazať vybrané obrazy? ({count} vybraných obrazov)"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3581,7 +3580,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:43
 msgid "<link>Learn more</link> about {product}."
-msgstr ""
+msgstr "<link>Zistite viac</link> o {product}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:80
 #: ../html/src/manager/login/susemanager/login.tsx:106
@@ -3728,9 +3727,8 @@ msgid "Schedule Details"
 msgstr "Podrobnosti plánu"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:154
-#, fuzzy
 msgid "Maintenance schedule has been assigned to {count} system(s)"
-msgstr "Plán údržby bol priradený k {0} systému(om)"
+msgstr "Plán údržby bol priradený k {count} systému(om)"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
@@ -3749,9 +3747,8 @@ msgid "Current Schedule"
 msgstr "Aktuálny plán"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
 msgid "Url '{url}' is invalid"
-msgstr "Url '{0}' je neplatné"
+msgstr "Url '{url}' je neplatné"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
@@ -3917,9 +3914,8 @@ msgid "Maintenance Schedules"
 msgstr "Plány údržby"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
-#, fuzzy
 msgid "Assign a maintenance schedule to {count} system(s)"
-msgstr "Priradiť plán údržby k {0} systému(om)"
+msgstr "Priradiť plán údržby k {count} systému(om)"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
 msgid ""
@@ -4026,9 +4022,8 @@ msgid "Schedule playbook execution"
 msgstr "Naplánovať vykonanie scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-#, fuzzy
 msgid "Playbook '{name}'"
-msgstr "Scenár '{0}'"
+msgstr "Scenár '{name}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
@@ -4631,9 +4626,8 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "Naozaj chcete vymazať tento plán?"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
-#, fuzzy
 msgid "State configuration for {name}"
-msgstr "Konfigurácia stavu pre {0}"
+msgstr "Konfigurácia stavu pre {name}"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
 msgid "Order"
@@ -4715,13 +4709,12 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "Chyba pri vymazávaní akcie. Skontrolujte, či je spustený Taskomatic"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-#, fuzzy
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
 msgstr ""
-"Nižšie uvedené časy sa zobrazujú v časovom pásme servera {0}. Naplánovaný "
-"čas bude časom servera."
+"Nižšie uvedené časy sa zobrazujú v časovom pásme servera {timeZone}. "
+"Naplánovaný čas bude časom servera."
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
@@ -4816,9 +4809,8 @@ msgid "No minions matched the target expression."
 msgstr "Žiadni klienti minion sa nezhodovali s cieľovým výrazom."
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:490
-#, fuzzy
 msgid "Server returned an error: {message}"
-msgstr "Server vrátil chybu: {0}"
+msgstr "Server vrátil chybu: {message}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:558
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:567
@@ -4901,9 +4893,8 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {name}"
-msgstr "Súhrn stavu pre {0}"
+msgstr "Súhrn stavu pre {name}"
 
 #: ../html/src/manager/state/display-highstate.tsx:79
 msgid "There are no applicable systems."
