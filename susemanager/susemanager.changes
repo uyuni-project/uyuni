@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Aug 07 14:38:08 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.43-1
+  * Add missing Salt 3006.0 dependencies to bootstrap repo definitions (bsc#1212700)
+  * Make mgr-salt-ssh to properly fix HOME environment to avoid issues with gitfs (bsc#1210994)
+
+-------------------------------------------------------------------
 Fri Jun 02 17:52:44 CEST 2023 - marina.latini@suse.com
 
 - version 4.2.42-1
