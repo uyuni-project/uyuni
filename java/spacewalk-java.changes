@@ -1,7 +1,12 @@
-- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
-  Management Management/Operations on SSM -> Provisioning
-- Update copyright year (bsc#1212106)
-- Disable jinja processing for the roster file (bsc#1211650)
+-------------------------------------------------------------------
+Mon Aug 07 14:43:37 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.53-1
+  * Fix "more then one method candidate found" for API function (bsc#1211100)
+  * Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+    Management Management/Operations on SSM -> Provisioning
+  * Update copyright year (bsc#1212106)
+  * Disable jinja processing for the roster file (bsc#1211650)
 
 -------------------------------------------------------------------
 Mon Jun 19 16:57:39 CEST 2023 - marina.latini@suse.com
