@@ -2,7 +2,7 @@
 Description=SUSE Manager PAYG billing data service
 After=local-fs.target network.target postgresql.service
 Before=tomcat.service taskomatic.service
-Wants=postgresql.service
+Requires=postgresql.service
 
 [Service]
 Type=simple
