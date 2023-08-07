@@ -127,7 +127,7 @@ After do |scenario|
       click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
-      attach current_url, 'text/plain'
+      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
     rescue StandardError => e
       warn e.message
     ensure
