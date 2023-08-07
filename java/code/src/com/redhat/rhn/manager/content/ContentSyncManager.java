@@ -893,8 +893,11 @@ public class ContentSyncManager {
                     repo.getProducts().stream()
                         .map(SUSEProductSCCRepository::getProduct)
                         .filter(SUSEProduct::getFree)
-                        .anyMatch(p -> p.getChannelFamily().getLabel().startsWith("SLE-M-T") ||
-                                p.getChannelFamily().getLabel().startsWith("OPENSUSE"))) {
+                        .anyMatch(p -> {
+                            String cfLabel = p.getChannelFamily().getLabel();
+                            return cfLabel.startsWith(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL) ||
+                                    cfLabel.startsWith(ChannelFamilyFactory.OPENSUSE_CHANNEL_FAMILY_LABEL);
+                        })) {
                 LOG.debug("Free repo detected. Setting NoAuth for {}", repo.getUrl());
                 newAuth = new SCCRepositoryNoAuth();
             }
