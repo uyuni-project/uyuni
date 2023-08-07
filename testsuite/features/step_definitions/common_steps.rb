@@ -74,7 +74,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
   log "IPv6 address: #{ipv6_address}"
-  raise unless ipv6_addresses_list.include? ipv6_address
+  raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
