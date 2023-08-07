@@ -1,4 +1,9 @@
-- Use venv-salt-minion instead of salt for docker states (bsc#1212416)
+-------------------------------------------------------------------
+Mon Aug 07 14:36:21 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.35-1
+  * Do not disable salt-minion on salt-ssh managed clients
+  * Use venv-salt-minion instead of salt for docker states (bsc#1212416)
 
 -------------------------------------------------------------------
 Mon Jun 19 11:16:50 CEST 2023 - marina.latini@suse.com
