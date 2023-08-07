@@ -194,18 +194,17 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ $1 == 1 -a -e /etc/tomcat/server.xml ]; then
-#just during new installation. during upgrade the changes are already applied
-    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
-    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
-    xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
-fi
-
-if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
-#during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
+if [ -f /etc/rhn/rhn.conf -a $(filesize /etc/rhn/rhn.conf) -gt 1 ]; then
+    # rhn.conf is configured, this is an upgrade
+    # during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
+else
+    # rhn.conf does not exists or is empty, this is new installation or update of new installation
+    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+    xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
 
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
