@@ -172,15 +172,4 @@ public final class Asserts {
                     "'");
         }
     }
-
-    /**
-     * Assert that <code>coll</code> does not contain <code>elem</code>
-     * @param coll a collection
-     * @param elem the element that should not be in the collection
-     */
-    public static void assertNotContains(Collection coll, Object elem) {
-        if (coll.contains(elem)) {
-            fail("Expected " + elem + " to not be in " + coll);
-        }
-    }
 }

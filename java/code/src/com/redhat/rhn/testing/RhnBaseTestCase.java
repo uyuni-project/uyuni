@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -104,7 +105,7 @@ public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
      * @param elem the element that should not be in the collection
      */
     public static <A> void assertNotContains(Collection<A> coll, A elem) {
-        Asserts.assertNotContains(coll, elem);
+        assertFalse(coll.contains(elem));
     }
 
     /**
