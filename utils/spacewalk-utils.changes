@@ -1,4 +1,8 @@
-- Drop Python2 compatibility
+-------------------------------------------------------------------
+Mon Aug 07 14:32:56 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.20-1
+  * Drop Python2 compatibility
 
 -------------------------------------------------------------------
 Wed May 31 09:16:14 CEST 2023 - marina.latini@suse.com
