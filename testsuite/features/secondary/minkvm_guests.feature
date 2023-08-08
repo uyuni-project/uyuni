@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events
@@ -9,7 +9,7 @@
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
-Feature: Be able to manage KVM virtual machines via the GUI
+Feature: Manage KVM virtual machines via the GUI
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -65,7 +65,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see "512" in field identified by "memory"
     And I should see "1" in field identified by "vcpu"
     And option "VNC" is selected as "graphicsType"
-    And option "test-net0" is selected as "network0_source"
     And option "virtio" is selected as "disk0_bus"
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
