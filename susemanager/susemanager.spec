@@ -190,7 +190,8 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
-install empty-repo.conf $RPM_BUILD_ROOT/etc/apache2/conf.d/empty-repo.conf
+mkdir -p %{buildroot}/etc/apache2/conf.d
+install empty-repo.conf %{buildroot}/etc/apache2/conf.d/empty-repo.conf
 
 # empty repo for rhel base channels
 mkdir -p %{buildroot}%{reporoot}/repositories/
