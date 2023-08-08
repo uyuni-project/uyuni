@@ -779,7 +779,7 @@ When(/^I call spacewalk\-repo\-sync to sync the channel "(.*?)"$/) do |channel|
 end
 
 When(/^I call spacewalk\-repo\-sync to sync the parent channel "(.*?)"$/) do |channel|
-  @command_output, _code = $server.run("spacewalk-repo-sync -p #{channel}", check_errors: false)
+  @command_output, _code = get_target('server').run("spacewalk-repo-sync -p #{channel}", check_errors: false)
 end
 
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
