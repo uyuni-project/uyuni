@@ -80,9 +80,9 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
+  output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
-    log output
+    log output.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
     raise "Bootstrap didn't finish properly"
   end
 end

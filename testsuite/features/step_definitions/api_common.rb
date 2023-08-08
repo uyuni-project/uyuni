@@ -292,7 +292,6 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'ssh_minion', 'minion'
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
-  client.sub! 'monitoring_server', 'sle15sp4_minion'
   custom_channel = if client.include? 'alma9'
                      'no-appstream-alma-9-result-custom_channel_alma9_minion'
                    elsif client.include? 'liberty9'

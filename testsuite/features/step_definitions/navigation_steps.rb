@@ -527,6 +527,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
 
+  raise 'Login page is not correctly loaded' unless has_field?('username')
   fill_in('username', with: user)
   fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
