@@ -1,5 +1,9 @@
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.suse.utils.Opt;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Optional;
 
 public class VulnerablePackage {
@@ -15,6 +19,9 @@ public class VulnerablePackage {
     }
 
     public Optional<String> getFixVersion() {
+        if (StringUtils.isEmpty(fixVersion)) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(fixVersion);
     }
 

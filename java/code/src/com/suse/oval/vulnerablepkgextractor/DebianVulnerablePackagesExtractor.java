@@ -2,7 +2,6 @@ package com.suse.oval.vulnerablepkgextractor;
 
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
-import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionType;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackagesExtractor {
+public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtractor {
     private static Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\w+) DPKG is earlier than (?<evr>.*)");
@@ -48,13 +47,13 @@ public class DebianVulnerablePackagesExtractor extends AbstractVulnerablePackage
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
         productVulnerablePackages.setProduct(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
-        productVulnerablePackages.setCve(vulnerabilityDefinition.getCve());
+        productVulnerablePackages.setCve(definition.getCve());
 
         return List.of(productVulnerablePackages);
     }
 
     public Cpe deriveCpe() {
-        String osVersion = vulnerabilityDefinition.getOsVersion();
+        String osVersion = definition.getOsVersion();
 
         return new CpeBuilder()
                 .withVendor("debian")

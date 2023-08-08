@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesExtractor {
+public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern FIND_SP_REGEX = Pattern.compile(".*\\sSP(?<sp>[0-9])\\s.*");
     private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
 
@@ -89,7 +89,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
         for (String product : products) {
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
-            vulnerableProduct.setCve(vulnerabilityDefinition.getCve());
+            vulnerableProduct.setCve(definition.getCve());
 
             vulnerableProduct.setProduct(deriveCpe(product).asString());
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
@@ -121,7 +121,7 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
             return false;
         }
 
-        String osProduct = vulnerabilityDefinition.getOsFamily().fullname();
+        String osProduct = definition.getOsFamily().fullname();
 
         // Making sure that the product criterions contain indeed product names
         return productCriterions.stream()
@@ -130,11 +130,11 @@ public class SUSEVulnerablePackageExtractor extends AbstractVulnerablePackagesEx
     }
 
     public Cpe deriveCpe(String product) {
-        OsFamily osProduct = vulnerabilityDefinition.getOsFamily();
+        OsFamily osProduct = definition.getOsFamily();
         return new CpeBuilder()
                 .withVendor(osProduct.vendor())
                 .withProduct(osProduct.shortname())
-                .withVersion(vulnerabilityDefinition.getOsVersion())
+                .withVersion(definition.getOsVersion())
                 .withUpdate(deriveSP(product).orElse(""))
                 .build();
     }

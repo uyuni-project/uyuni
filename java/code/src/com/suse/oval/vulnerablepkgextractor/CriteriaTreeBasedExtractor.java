@@ -1,6 +1,5 @@
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
@@ -13,20 +12,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * This class responsible for the extraction of vulnerable packages and their fix versions from an OVAL vulnerability definition.
- * The extraction process depends on the way the vulnerability criteria tree is structured. Therefore, the implementations
- * differ depending on the source of the OVAL definition (SUSE, Ubuntu, etc.)
+ * An abstract implementation that provides utility methods to extract vulnerable package information from
+ * OVAL criteria trees
  */
-public abstract class AbstractVulnerablePackagesExtractor {
-    protected final DefinitionType vulnerabilityDefinition;
+public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesExtractor {
+    protected final DefinitionType definition;
     protected final CriteriaType criteriaRoot;
 
-    protected AbstractVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition) {
-        Objects.requireNonNull(vulnerabilityDefinition);
-        Objects.requireNonNull(vulnerabilityDefinition.getCriteria());
+    protected CriteriaTreeBasedExtractor(DefinitionType definition) {
+        Objects.requireNonNull(definition);
+        Objects.requireNonNull(definition.getCriteria());
 
-        this.vulnerabilityDefinition = vulnerabilityDefinition;
-        this.criteriaRoot = vulnerabilityDefinition.getCriteria();
+        this.definition = definition;
+        this.criteriaRoot = definition.getCriteria();
     }
 
     protected abstract List<ProductVulnerablePackages> extractItem(BaseCriteria criteriaType);
