@@ -13,6 +13,8 @@ gem 'rack-test', "~> 2.0"
 gem 'nokogiri', "~> 1.12.0"
 gem 'rake', "~> 13.0"
 gem 'jwt', "~> 2.6"
+# mini_mime > 1.1.2, requires ruby 2.6
+gem 'mini_mime', '1.1.2'
 gem 'mime-types', "~> 3.4"
 gem 'xmlrpc', "~> 0.3"
 gem 'faraday', '1.10.0'
