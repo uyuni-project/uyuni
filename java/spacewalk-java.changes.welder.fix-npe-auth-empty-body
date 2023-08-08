@@ -1,0 +1,1 @@
+- Fix NPE in auth endpoint when an empty body is provided
