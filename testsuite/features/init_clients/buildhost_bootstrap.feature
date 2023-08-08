@@ -11,8 +11,8 @@ Feature: Bootstrap a build host via the GUI
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I wait until I see "Container Build Host" text
-    And I check "container_build_host"
-    And I check "osimage_build_host"
+    And I check "Container Build Host"
+    And I check "OS Image Build Host"
     And I click on "Update Activation Key"
 
   Scenario: Bootstrap a build host
@@ -65,6 +65,6 @@ Feature: Bootstrap a build host via the GUI
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I wait until I see "Container Build Host" text
-    And I uncheck "container_build_host"
-    And I uncheck "osimage_build_host"
+    And I uncheck "Container Build Host"
+    And I uncheck "OS Image Build Host"
     And I click on "Update Activation Key"
