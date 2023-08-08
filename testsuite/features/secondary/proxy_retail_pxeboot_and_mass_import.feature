@@ -205,13 +205,13 @@ Feature: PXE boot a Retail terminal
     Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
@@ -224,7 +224,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
@@ -236,7 +236,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Cleanup: delete the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
