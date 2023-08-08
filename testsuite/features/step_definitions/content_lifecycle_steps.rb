@@ -94,10 +94,10 @@ end
 When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/srv/www/htdocs/pub/" + file
-  return_code = file_inject($server, source, dest)
+  return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $server.run("chmod 644 #{dest}")
-  url = "https://#{$server.full_hostname}/pub/" + file
+  get_target('server').run("chmod 644 #{dest}")
+  url = "https://#{get_target('server').full_hostname}/pub/" + file
   log "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end

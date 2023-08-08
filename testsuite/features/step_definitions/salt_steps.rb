@@ -14,7 +14,7 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   # 300 is the default 1st keepalive interval for the minion
   # where it realizes the connection is stuck
   repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}", report_result: true) do
-    out, _code = $server.run("salt #{system_name} test.ping")
+    out, _code = get_target('server').run("salt #{system_name} test.ping")
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
       log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
@@ -26,12 +26,12 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
 end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
-  $output, _code = $server.run("cat #{filename}")
+  $output, _code = get_target('server').run("cat #{filename}")
 end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -43,7 +43,7 @@ end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -55,7 +55,7 @@ end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -67,7 +67,7 @@ end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? "venv-salt-call" : "salt-call"
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
@@ -76,7 +76,7 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
     system_name = get_system_name(minion)
     unless system_name.empty?
-      output, return_code = $server.run(cmd, check_errors: false)
+      output, return_code = get_target('server').run(cmd, check_errors: false)
       break if return_code.zero? && output.include?(system_name)
     end
     sleep 1
@@ -84,7 +84,7 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
 end
 
 When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
-  salt_minion = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  salt_minion = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
 end
 
@@ -100,21 +100,21 @@ end
 
 When(/^I delete "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $output, _code = $server.run("salt-key -y -d #{system_name}", check_errors: false)
+  $output, _code = get_target('server').run("salt-key -y -d #{system_name}", check_errors: false)
 end
 
 When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   system_name = get_system_name(host)
-  $server.run("salt-key -y --accept=#{system_name}*")
+  get_target('server').run("salt-key -y --accept=#{system_name}*")
 end
 
 When(/^I list all Salt keys shown on the Salt master$/) do
-  $server.run("salt-key --list-all", check_errors: false, verbose: true)
+  get_target('server').run("salt-key --list-all", check_errors: false, verbose: true)
 end
 
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   system_name = get_system_name(host)
-  $output, _code = $server.run("salt #{system_name} grains.get osfullname")
+  $output, _code = get_target('server').run("salt #{system_name} grains.get osfullname")
 end
 
 Then(/^it should contain a "([^"]*?)" text$/) do |content|
@@ -130,16 +130,16 @@ end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} state.apply #{state}", verbose: true)
+  get_target('server').run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
-  $output, _code = $server.run("ss -ntl | grep #{port}")
+  $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/127.0.0.1:#{port}/, $output)
 end
 
 Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
-  $output, _code = $server.run("ss -ntl | grep #{port}")
+  $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/(0.0.0.0|\*|\[::\]):#{port}/, $output)
 end
 
@@ -159,7 +159,7 @@ end
 
 Then(/^"(.*?)" should have been reformatted$/) do |host|
   system_name = get_system_name(host)
-  output, _code = $server.run("salt #{system_name} file.file_exists /intact")
+  output, _code = get_target('server').run("salt #{system_name} file.file_exists /intact")
   raise "Minion #{host} is intact" unless output.include? 'False'
 end
 
@@ -199,38 +199,38 @@ end
 
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  $server.run("zypper --non-interactive refresh")
-  $server.run("zypper --non-interactive install --force #{package}-formula")
+  get_target('server').run("zypper --non-interactive refresh")
+  get_target('server').run("zypper --non-interactive install --force #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
-  $server.run("zypper --non-interactive remove #{package}-formula")
+  get_target('server').run("zypper --non-interactive remove #{package}-formula")
   # Remove automatically installed dependency if needed
   if package == 'uyuni-config'
-    $server.run("zypper --non-interactive remove #{package}-modules")
+    get_target('server').run("zypper --non-interactive remove #{package}-modules")
   end
 end
 
 When(/^I synchronize all Salt dynamic modules on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} saltutil.sync_all")
+  get_target('server').run("salt #{system_name} saltutil.sync_all")
 end
 
 When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_cache = $use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  salt_cache = use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
   file_delete(node, "#{salt_cache}#{filename}")
 end
 
 When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   file_delete(node, "#{salt_config}#{filename}")
 end
 
 When(/^I configure salt minion on "([^"]*)"$/) do |host|
   content = %(
-master: #{$server.full_hostname}
+master: #{get_target('server').full_hostname}
 server_id_use_crc: adler32
 enable_legacy_startup_events: False
 enable_fqdns_grains: False
@@ -242,7 +242,7 @@ start_event_grains:
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
-  salt_config = $use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
   step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
@@ -301,12 +301,12 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.full_hostname}' saltutil.refresh_pillar wait=True")
+  get_target('server').run("salt '#{get_target('sle_minion').full_hostname}' saltutil.refresh_pillar wait=True")
 end
 
 When(/^I wait until there is no pillar refresh salt job active$/) do
   repeat_until_timeout(message: "pillar refresh job still active") do
-    output, = $server.run("salt-run jobs.active")
+    output, = get_target('server').run("salt-run jobs.active")
     break unless output.include?("saltutil.refresh_pillar")
     sleep 1
   end
@@ -327,7 +327,7 @@ def pillar_get(key, minion)
   else
     raise 'Invalid target'
   end
-  $server.run("#{cmd} #{system_name} pillar.get #{key}")
+  get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
@@ -360,7 +360,7 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
-  url = "https://#{$server.full_hostname}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
+  url = "https://#{get_target('server').full_hostname}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
   url = "#{url}?#{@token}" if @token
   @download_path = nil
   @download_error = nil
@@ -400,7 +400,7 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? "venv-salt-call" : "salt-call"
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
@@ -457,10 +457,10 @@ Then(/^the salt event log on server should contain no failures$/) do
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject($server, source, dest)
+  return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
   # print failures from salt event log
-  output, _code = $server.run("python3 /tmp/#{file}")
+  output, _code = get_target('server').run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
   output = output.join.to_s if output.respond_to?(:join)
   # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
@@ -472,13 +472,13 @@ end
 # salt-ssh steps
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
+  pkgs = use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
   elsif deb_host?(host)
-    pkgs = "salt-common salt-minion" if $product != 'Uyuni'
+    pkgs = "salt-common salt-minion" if product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
 end
@@ -494,8 +494,8 @@ end
 # minion bootstrap steps
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $server.run('spacecmd -u admin -p admin clear_caches')
-  $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
+  get_target('server').run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
 When(/^I enter KVM Server password$/) do
@@ -504,7 +504,7 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  if $use_salt_bundle
+  if use_salt_bundle
     if rh_host?(host)
       node.run("yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion", check_errors: false)
     elsif deb_host?(host)
@@ -544,12 +544,12 @@ When(/^I install the package download endpoint pillar file on the server$/) do
   content = "pkg_download_point_protocol: #{uri.scheme}\n"\
             "pkg_download_point_host: #{uri.host}\n"\
             "pkg_download_point_port: #{uri.port}"
-  $server.run("echo -e \"#{content}\" > #{filepath}")
+  get_target('server').run("echo -e \"#{content}\" > #{filepath}")
 end
 
 When(/^I delete the package download endpoint pillar file from the server$/) do
   filepath = '/srv/pillar/pkg_endpoint.sls'
-  return_code = file_delete($server, filepath)
+  return_code = file_delete(get_target('server'), filepath)
   raise 'File deletion failed' unless return_code.zero?
 end
 
@@ -557,22 +557,22 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = "/srv/formula_metadata/" + formula + '/' + file
 
-  $server.run("mkdir -p /srv/formula_metadata/" + formula)
-  return_code = file_inject($server, source, dest)
+  get_target('server').run("mkdir -p /srv/formula_metadata/" + formula)
+  return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $server.run("chmod 644 " + dest)
+  get_target('server').run("chmod 644 " + dest)
 end
 
 When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
   node = get_target(host)
   system_name = node.full_hostname
   migrate = "salt #{system_name} state.apply util.mgr_switch_to_venv_minion"
-  $server.run(migrate, check_errors: true, verbose: true)
+  get_target('server').run(migrate, check_errors: true, verbose: true)
 end
 
 When(/^I purge salt-minion on "([^"]*)" after a migration$/) do |host|
   node = get_target(host)
   system_name = node.full_hostname
   cleanup = %(salt #{system_name} state.apply util.mgr_switch_to_venv_minion pillar='{"mgr_purge_non_venv_salt_files": True, "mgr_purge_non_venv_salt": True}')
-  $server.run(cleanup, check_errors: true, verbose: true)
+  get_target('server').run(cleanup, check_errors: true, verbose: true)
 end

@@ -72,10 +72,10 @@ class NamespaceSystem
   #   activation_key: The activation key to use for the system.
   #   salt_ssh: Boolean value determining if the system is SSH managed or not.
   def bootstrap_system(host, activation_key, salt_ssh)
-    if $proxy.nil?
+    if get_target('proxy').nil?
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, saltSSH: salt_ssh)
     else
-      proxy = @test.call('system.searchByName', sessionKey: @test.token, regexp: $proxy.full_hostname)
+      proxy = @test.call('system.searchByName', sessionKey: @test.token, regexp: get_target('proxy').full_hostname)
       proxy_id = proxy.map { |s| s['id'] }.first
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, proxyId: proxy_id, saltSSH: salt_ssh)
     end

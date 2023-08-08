@@ -5,8 +5,8 @@ require 'twopence'
 require 'timeout'
 
 # Extend the objects node VMs with useful methods needed for testsuite.
-# All function added here will be available like $server.run
-#  or $minion.run_until_ok etc.
+# All function added here will be available like get_target('server').run
+#  or get_target('sle_minion').run_until_ok etc.
 module LavandaBasic
   # init the hostnames, only one time
   def init_hostname(hostname)
