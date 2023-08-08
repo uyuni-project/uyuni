@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtractor {
     private static Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
-            .compile("(?<packageName>\\w+) DPKG is earlier than (?<evr>.*)");
+            .compile("(?<packageName>\\S+) DPKG is earlier than (?<evr>.*)");
 
     public DebianVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition) {
         super(vulnerabilityDefinition);
