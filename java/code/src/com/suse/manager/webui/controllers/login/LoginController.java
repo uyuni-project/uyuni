@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -160,13 +161,18 @@ public class LoginController {
 
         // External-auth didn't return a user - try local-auth
         if (user == null) {
-            try {
-                user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
-                log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+            if (creds == null) {
+                Spark.halt(HttpServletResponse.SC_BAD_REQUEST);
             }
-            catch (LoginException e) {
-                log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
-                errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+            else {
+                try {
+                    user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                    log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                }
+                catch (LoginException e) {
+                    log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                    errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+                }
             }
         }
         // External-auth returned a user and no errors
