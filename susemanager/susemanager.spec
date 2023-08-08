@@ -190,6 +190,7 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
+install empty-repo.conf $RPM_BUILD_ROOT/etc/apache2/conf.d/empty-repo.conf
 
 # empty repo for rhel base channels
 mkdir -p %{buildroot}%{reporoot}/repositories/
@@ -330,6 +331,8 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{reporoot}/repositories/empty
 %dir %{reporoot}/repositories/empty/repodata
 %dir %{reporoot}/repositories/empty-deb
+%dir /etc/apache2
+%dir /etc/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_bindir}/mgr-salt-ssh
@@ -355,5 +358,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty/repodata/*.xml*
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
+/etc/apache2/conf.d/empty-repo.conf
 
 %changelog
