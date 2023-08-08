@@ -1,5 +1,9 @@
-- Consider venv-salt-minion package update as salt update
-  to prevent backtraces on upgrading salt with itself (bsc#1211884)
+-------------------------------------------------------------------
+Tue Aug 08 15:39:02 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.54-1
+  * Consider venv-salt-minion package update as salt update to prevent
+    backtraces on upgrading salt with itself (bsc#1211884)
 
 -------------------------------------------------------------------
 Mon Aug 07 14:43:37 CEST 2023 - marina.latini@suse.com
