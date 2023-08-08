@@ -163,7 +163,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
   end
   # /etc/netplan/01-netcfg.yaml
-  nodes = [get_targer('deblike_minion')]
+  nodes = [get_target('deblike_minion')]
   source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
   dest = '/etc/netplan/01-netcfg.yaml'
   nodes.each do |node|
