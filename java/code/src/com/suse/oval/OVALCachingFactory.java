@@ -2,7 +2,6 @@ package com.suse.oval;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.Mode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -32,7 +31,7 @@ import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
 
-import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
@@ -90,7 +89,9 @@ public class OVALCachingFactory extends HibernateFactory {
         return packageObject;
     }
 
-    private static DefinitionType cleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+    public static DefinitionType cleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+        definition.setOsFamily(osFamily);
+        definition.setOsVersion(osVersion);
         definition.setCve(extractCveFromDefinition(definition, osFamily));
 
         CriteriaType criteriaRoot = definition.getCriteria();
@@ -377,7 +378,7 @@ public class OVALCachingFactory extends HibernateFactory {
                 return Stream.empty();
             }
 
-            AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
+            VulnerablePackagesExtractor vulnerablePackagesExtractor =
                     VulnerablePackagesExtractors.create(definition, osFamily);
 
             return vulnerablePackagesExtractor.extract().stream().flatMap(productVulnerablePackages ->

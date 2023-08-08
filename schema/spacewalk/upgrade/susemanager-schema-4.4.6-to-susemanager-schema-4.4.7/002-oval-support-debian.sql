@@ -131,5 +131,6 @@ CREATE INDEX IF NOT EXISTS suse_oval_definition_aff_platforms_definition_id_inde
 
 ALTER TABLE suseovaldefinitionaffectedplatform
     DROP CONSTRAINT IF EXISTS suse_oval_def_affected_plat_uq;
+
 ALTER TABLE suseovaldefinitionaffectedplatform
     ADD CONSTRAINT suse_oval_def_affected_plat_uq UNIQUE (definition_id, platform_id);

@@ -9,13 +9,9 @@ import com.redhat.rhn.domain.server.Server;
 import com.suse.oval.OsFamily;
 import com.suse.oval.SystemPackage;
 import com.suse.oval.TestEvaluator;
-import com.suse.oval.cpe.Cpe;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
-import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
-import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 
@@ -44,11 +40,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity

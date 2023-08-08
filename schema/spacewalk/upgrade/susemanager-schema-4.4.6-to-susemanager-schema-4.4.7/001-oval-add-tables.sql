@@ -122,9 +122,9 @@ CREATE TABLE IF NOT EXISTS suseOVALDefinitionAffectedPlatform
         REFERENCES suseOVALPlatform(id)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_def_affected_plat_uq
+/*CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_def_affected_plat_uq
     ON suseOVALDefinitionAffectedPlatform(definition_id, platform_id)
-;
+;*/
 
 CREATE TABLE IF NOT EXISTS suseOVALVulnerablePackage
 (

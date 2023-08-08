@@ -526,6 +526,7 @@ public class ErrataTestUtils {
     public static OVALDefinition createOVALDefinition(DefinitionType definitionType, OsFamily osFamily, String osVersion) {
         OVALCachingFactory.saveDefinitions(List.of(definitionType), osFamily, osVersion);
 
+        HibernateFactory.getSession().clear();
         HibernateFactory.getSession().flush();
 
         return OVALCachingFactory.lookupDefinitionById(definitionType.getId());
@@ -558,13 +559,20 @@ public class ErrataTestUtils {
     }
 
     public static OVALPackageTest createOVALTest(TestType testType, ObjectType objectType, StateType stateType) {
-        OvalObjectManager objectManager = new OvalObjectManager(List.of(objectType));
-        OvalStateManager stateManager = new OvalStateManager(List.of(stateType));
-
+        OVALCachingFactory.savePackageObjects(List.of(objectType));
+        OVALCachingFactory.savePackageStates(List.of(stateType));
         OVALCachingFactory.savePackageTests(List.of(testType));
 
         HibernateFactory.getSession().flush();
 
         return OVALCachingFactory.lookupPackageTestById(testType.getId());
+    }
+
+    public static void extractAndSaveVulnerablePackages(DefinitionType definition) {
+        definition.setOsFamily(OsFamily.openSUSE_LEAP);
+        definition.setOsVersion("15.4");
+        OVALCachingFactory.savePlatformsVulnerablePackages(List.of(definition), OsFamily.openSUSE_LEAP, "15.4");
+
+        HibernateFactory.getSession().flush();
     }
 }

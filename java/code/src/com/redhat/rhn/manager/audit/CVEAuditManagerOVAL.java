@@ -126,10 +126,13 @@ public class CVEAuditManagerOVAL {
         if (patched.isEmpty() && !unpatched.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         } else {
+            log.error(allInstalledPackages.stream().map(SystemPackage::getPackageEVR).collect(Collectors.toList()));
+            log.error("Hooo " + patched);
             boolean allPatchesInstalled = patched.stream().allMatch(patchedPackage ->
-                    allInstalledPackages.stream().anyMatch(systemPackage ->
-                            systemPackage.getPackageEVR()
-                                    .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) > 0));
+                    allInstalledPackages.stream()
+                            .anyMatch(systemPackage ->
+                            Objects.equals(systemPackage.getName(), patchedPackage.getName()) && systemPackage.getPackageEVR()
+                                    .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
 
             if (allPatchesInstalled) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
