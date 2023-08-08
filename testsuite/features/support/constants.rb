@@ -200,14 +200,14 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 sle_base_channel =
   if $is_container_provider
     'Fake Base Channel'
-  elsif $product == 'Uyuni'
+  elsif ENV['SERVER'].include? 'uyuni'
     'openSUSE Leap 15.4 (x86_64)'
   else
     'SLES15-SP4-Pool'
   end
 
 proxy_base_channel =
-  if $product == 'Uyuni'
+  if ENV['SERVER'].include? 'uyuni'
     'openSUSE Leap 15.4 (x86_64)'
   else
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool'
