@@ -2,7 +2,10 @@ package com.suse.oval;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Mode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Cve;
@@ -29,6 +32,9 @@ import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
 
+import com.suse.oval.vulnerablepkgextractor.AbstractVulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -357,6 +363,56 @@ public class OVALCachingFactory extends HibernateFactory {
             }
         }
         mode.executeBatchUpdates(batch);
+    }
+
+    public static void savePlatformsVulnerablePackages(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
+        List<DefinitionType> cleanDefinitions =
+                definitions.stream().map(definition -> cleanupDefinition(definition, osFamily, osVersion))
+                        .collect(Collectors.toList());
+
+        CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
+
+        List<Map<String, Object>> collect = cleanDefinitions.stream().flatMap(definition -> {
+            if (definition.getCriteria() == null) {
+                return Stream.empty();
+            }
+
+            AbstractVulnerablePackagesExtractor vulnerablePackagesExtractor =
+                    VulnerablePackagesExtractors.create(definition, osFamily);
+
+            return vulnerablePackagesExtractor.extract().stream().flatMap(productVulnerablePackages ->
+                    productVulnerablePackages.getVulnerablePackages().stream().map(vulnerablePackage -> {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("product_name", productVulnerablePackages.getProduct());
+                        params.put("cve_name", productVulnerablePackages.getCve());
+                        params.put("package_name", vulnerablePackage.getName());
+                        params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
+
+                        return params;
+                    }));
+        }).collect(Collectors.toList());
+
+        LOG.warn("Starting...");
+        toBatches(collect).forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
+        LOG.warn("Ending...");
+
+    }
+
+    public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
+        SelectMode mode = ModeFactory.getMode("oval_queries", "get_vulnerable_packages");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_name", cve);
+        params.put("product_cpe", productCpe);
+
+        DataResult<Row> result = mode.execute(params);
+
+        return result.stream().map(row -> {
+            VulnerablePackage vulnerablePackage = new VulnerablePackage();
+            vulnerablePackage.setName((String) row.get("vulnerablepkgname"));
+            vulnerablePackage.setFixVersion((String) row.get("vulnerablepkgfixversion"));
+            return vulnerablePackage;
+        }).collect(Collectors.toList());
     }
 
     private static <T> Stream<List<T>> toBatches(List<T> source) {

@@ -22,4 +22,6 @@ CREATE TABLE suseOVALVulnerablePackage
 );
 
 
-CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq START WITH 301;
+CREATE SEQUENCE suse_oval_vulnerable_pkg_id_seq START WITH 301;
+
+CREATE INDEX suse_oval_vulnerable_pkg_name_fix_version ON suseOVALVulnerablePackage(name, fix_version);
