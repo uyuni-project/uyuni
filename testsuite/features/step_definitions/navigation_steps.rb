@@ -110,7 +110,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
-  raise 'Overview System page didn\'t load' unless has_content?('System Overview')
+  raise 'Overview System page didn\'t load' unless has_content?('System Overview') || has_content?('Systems')
   system_name = get_system_name(host)
   step %(I wait until I see the "#{system_name}" system, refreshing the page)
 end
