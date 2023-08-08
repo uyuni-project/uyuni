@@ -31,7 +31,7 @@ end
 def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
   do_not_kill =
-    if $product == 'Uyuni'
+    if product == 'Uyuni'
       CHANNEL_TO_SYNCH_BY_OS_VERSION['15.4']
     else
       CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
