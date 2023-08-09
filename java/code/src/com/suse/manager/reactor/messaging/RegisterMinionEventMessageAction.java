@@ -26,7 +26,6 @@ import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -439,7 +438,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             ValueMap grains = systemInfo.getGrains();
 
-            if (cloudPaygManager.isPaygInstance() && CredentialsFactory.listSCCCredentials().size() == 0 &&
+            if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials() &&
                     !RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains)) {
 
                 // If the minion is not in the cloud

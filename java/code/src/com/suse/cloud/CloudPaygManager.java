@@ -15,6 +15,9 @@
 package com.suse.cloud;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -28,6 +31,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -36,8 +41,10 @@ import java.util.concurrent.ExecutionException;
 public class CloudPaygManager {
     private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
 
-    private boolean isPaygInstance;
+    private Boolean isPaygInstance;
+    private Boolean hasSCCCredentials;
     private CloudProvider cloudProvider;
+    private Date cacheTime;
     public enum CloudProvider {
         None,
         AWS,
@@ -48,24 +55,33 @@ public class CloudPaygManager {
      * Constructor
      */
     public CloudPaygManager() {
+        cacheTime = new Date(0L);
+        hasSCCCredentials = null;
         cloudProvider = CloudProvider.None;
+        isPaygInstance = null;
+    }
+
+    private CloudProvider detectCloudProvider() {
         if (isFileExecutable("/usr/bin/ec2metadata")) {
-            cloudProvider = CloudProvider.AWS;
+            return CloudProvider.AWS;
         }
         else if (isFileExecutable("/usr/bin/azuremetadata")) {
-            cloudProvider = CloudProvider.AZURE;
+            return CloudProvider.AZURE;
         }
         else if (isFileExecutable("/usr/bin/gcemetadata")) {
-            cloudProvider = CloudProvider.GCE;
+            return CloudProvider.GCE;
         }
-
-        isPaygInstance = detectPaygInstance();
+        return CloudProvider.None;
     }
 
     /**
      * @return the CloudProvider
      */
     public CloudProvider getCloudProvider() {
+        checkRefreshCache(false);
+        if (cloudProvider == CloudProvider.None) {
+            cloudProvider = detectCloudProvider();
+        }
         return cloudProvider;
     }
 
@@ -81,6 +97,10 @@ public class CloudPaygManager {
      * @return if this is a Pay-as-you-go cloud instance
      */
     public boolean isPaygInstance() {
+        checkRefreshCache(false);
+        if (isPaygInstance == null) {
+            isPaygInstance = detectPaygInstance();
+        }
         return isPaygInstance;
     }
 
@@ -90,6 +110,33 @@ public class CloudPaygManager {
      */
     public void setPaygInstance(boolean isPaygInstanceIn) {
         isPaygInstance = isPaygInstanceIn;
+    }
+
+    /**
+     * Only for testing - overwrite the detected hasSCCCredentials
+     * @param hasSCCCredentialsIn has scc credentials
+     */
+    public void setHasSCCCredentials(boolean hasSCCCredentialsIn) {
+        hasSCCCredentials = hasSCCCredentialsIn;
+    }
+
+    /**
+     * Check and perform a refresh of the stored data if needed
+     * @param force if true, force a refresh independent of the time
+     * @return true when a refresh happened, otherwise false
+     */
+    public boolean checkRefreshCache(boolean force) {
+        long now = new Date().getTime() / 1000L;
+        long cache = cacheTime.getTime() / 1000L;
+        if (force || (now - cache) > (2 * 60 * 60)) {
+            // cached values older than 2 hours - time to refresh
+            cloudProvider = detectCloudProvider();
+            isPaygInstance = detectPaygInstance();
+            hasSCCCredentials = detectHasSCCCredentials();
+            cacheTime = new Date();
+            return true;
+        }
+        return false;
     }
 
     private boolean detectPaygInstance() {
@@ -142,10 +189,36 @@ public class CloudPaygManager {
     }
 
     /**
+     * @return return true when we have SCC credentials
+     */
+    public boolean hasSCCCredentials() {
+        checkRefreshCache(false);
+        if (hasSCCCredentials == null) {
+            hasSCCCredentials = detectHasSCCCredentials();
+        }
+        return hasSCCCredentials;
+    }
+
+    private boolean detectHasSCCCredentials() {
+        List<Credentials> cl = CredentialsFactory.listSCCCredentials();
+        hasSCCCredentials = false;
+        if (cl.size() > 0) {
+            ContentSyncManager mgr = new ContentSyncManager();
+            for (Credentials c : cl) {
+                if (mgr.isSCCCredentials(c)) {
+                    hasSCCCredentials = true;
+                    break;
+                }
+            }
+        }
+        return hasSCCCredentials;
+    }
+    /**
      * Check if SUSE Manager PAYG is operating in a compliant mode
      * @return true if not payg or all components works as they should, otherwise false
      */
     public boolean isCompliant() {
+        checkRefreshCache(false);
         if (!isPaygInstance()) {
             return true;
         }

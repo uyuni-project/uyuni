@@ -55,7 +55,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
             if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
-                    CredentialsFactory.listSCCCredentials().size() > 0) {
+                    GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials()) {
                 log.warn("SUSE Manager pay-as-you-go instances must forward registration data to SCC when " +
                         "credentials are provided. Data will be sent independently of the configuration setting.");
             }

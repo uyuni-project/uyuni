@@ -1399,6 +1399,22 @@ public class ContentSyncManager {
     }
 
     /**
+     * Check if the provided Credentials are usable for SCC. OES credentials will return false.
+     * @param c the credentials
+     * @return true if they can be used for SCC, otherwise false
+     */
+    public boolean isSCCCredentials(Credentials c) {
+        try {
+            SCCClient scc = this.getSCCClient(c);
+            scc.listOrders();
+        }
+        catch (SCCClientException | URISyntaxException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Fetch new Order Items from SCC for the given credentials,
      * deletes all order items stored in the database below the given credentials
      * and inserts the new ones.
