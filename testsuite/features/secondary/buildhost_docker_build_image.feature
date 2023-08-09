@@ -96,7 +96,7 @@ Feature: Build container images
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
-    Then the list of packages of image "suse_simple" with version "Latest_simple" is not
+    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
     When I wait until no Salt job is running on "build_host"
 
   Scenario: Delete image via API calls
