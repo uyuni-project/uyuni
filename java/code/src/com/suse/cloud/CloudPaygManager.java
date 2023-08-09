@@ -91,6 +91,7 @@ public class CloudPaygManager {
      */
     public void setCloudProvider(CloudProvider providerIn) {
         cloudProvider = providerIn;
+        cacheTime = new Date();
     }
 
     /**
@@ -110,6 +111,7 @@ public class CloudPaygManager {
      */
     public void setPaygInstance(boolean isPaygInstanceIn) {
         isPaygInstance = isPaygInstanceIn;
+        cacheTime = new Date();
     }
 
     /**
@@ -118,6 +120,7 @@ public class CloudPaygManager {
      */
     public void setHasSCCCredentials(boolean hasSCCCredentialsIn) {
         hasSCCCredentials = hasSCCCredentialsIn;
+        cacheTime = new Date();
     }
 
     /**
