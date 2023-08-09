@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
-import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
@@ -241,20 +240,16 @@ public class MirrorCredentialsManager {
     public List<SubscriptionDto> getSubscriptions(MirrorCredentialsDto creds,
             HttpServletRequest request, boolean forceRefresh) {
         // Implicitly download subscriptions if requested
-        if (forceRefresh ||
-                SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
+        if (forceRefresh || SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
             if (log.isDebugEnabled()) {
                 log.debug("Downloading subscriptions for {}", creds.getUser());
             }
             try {
-                Credentials credentials =
-                        CredentialsFactory.lookupCredentialsById(creds.getId());
-                List<SCCSubscriptionJson> subscriptions = new ContentSyncManager().
-                        updateSubscriptions(credentials);
-                SetupWizardSessionCache.storeSubscriptions(
-                        makeDtos(subscriptions), creds, request);
+                Credentials credentials = CredentialsFactory.lookupCredentialsById(creds.getId());
+                List<SCCSubscriptionJson> subscriptions = new ContentSyncManager().updateSubscriptions(credentials);
+                SetupWizardSessionCache.storeSubscriptions(makeDtos(subscriptions), creds, request);
             }
-            catch (SCCClientException e) {
+            catch (ContentSyncException e) {
                 log.error("Error getting subscriptions for {}: {}", creds.getUser(), e.getMessage());
             }
         }
