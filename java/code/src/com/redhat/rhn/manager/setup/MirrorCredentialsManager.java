@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -25,6 +26,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
@@ -51,6 +53,23 @@ public class MirrorCredentialsManager {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(MirrorCredentialsManager.class);
+
+    private final CloudPaygManager cloudPaygManager;
+
+    /**
+     * Default Constructor
+     */
+    public MirrorCredentialsManager() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Constructore
+     * @param cloudPaygManagerIn the cloud manager
+     */
+    public MirrorCredentialsManager(CloudPaygManager cloudPaygManagerIn) {
+        cloudPaygManager = cloudPaygManagerIn;
+    }
 
     /**
      * Find all currently available mirror credentials and return them.
@@ -140,6 +159,8 @@ public class MirrorCredentialsManager {
         if (CredentialsFactory.listSCCCredentials().size() == 1) {
             makePrimaryCredentials(c.getId());
         }
+        // update info about hasSCCCredentials
+        cloudPaygManager.checkRefreshCache(true);
         return c.getId();
     }
 
@@ -203,6 +224,9 @@ public class MirrorCredentialsManager {
         // Link orphan content sources
         ContentSyncManager csm = new ContentSyncManager();
         csm.linkAndRefreshContentSource(null);
+
+        // update info about hasSCCCredentials
+        cloudPaygManager.checkRefreshCache(true);
     }
 
     /**
