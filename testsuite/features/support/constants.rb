@@ -428,17 +428,6 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     res8-manager-tools-pool-x86_64
     res8-manager-tools-updates-x86_64
     sll8-uyuni-client-x86_64
-  ],
-  '15.4' =>
-  %w[
-    opensuse_leap15_4-x86_64
-    opensuse_leap15_4-x86_64-non-oss
-    opensuse_leap15_4-x86_64-non-oss-updates
-    opensuse_leap15_4-x86_64-updates
-    opensuse_leap15_4-x86_64-backports-updates
-    opensuse_leap15_4-x86_64-sle-updates
-    uyuni-proxy-devel-leap-x86_64
-    opensuse_leap15_4-uyuni-client-x86_64
   ]
 }.freeze
 
