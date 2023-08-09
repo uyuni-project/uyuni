@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygProductFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -759,6 +760,10 @@ public class ContentSyncManager {
                 }
             }
             catch (ContentSyncException e) {
+                if (cloudPaygManager.isPaygInstance()) {
+                    LOG.debug("PAYG instance detected. Continue checking for refresh needed.");
+                    break;
+                }
                 // Can happen when neither SCC Credentials nor fromdir is configured
                 // in such a case, refresh makes no sense.
                 return false;
@@ -780,8 +785,10 @@ public class ContentSyncManager {
                     }
             );
         }
-        else if (CredentialsFactory.listSCCCredentials().isEmpty()) {
+        else if (CredentialsFactory.listSCCCredentials().isEmpty() && !(cloudPaygManager.isPaygInstance() &&
+                CloudRmtHostFactory.lookupByHostname("localhost").isPresent())) {
             // Can happen when neither SCC Credentials nor fromdir is configured
+            // Also when we are PAYG instance, but localhost connection is not configured
             // in such a case, refresh makes no sense.
             return false;
         }
