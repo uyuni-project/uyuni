@@ -1052,7 +1052,7 @@ When(/^I select the next maintenance window$/) do
 end
 
 When(/^I enter the server hostname as the redfish server address$/) do
-  step %(I enter "#{$server.full_hostname}:8443" as "powerAddress")
+  step %(I enter "#{get_target('server').full_hostname}:8443" as "powerAddress")
 end
 
 When(/^I clear browser cookies$/) do

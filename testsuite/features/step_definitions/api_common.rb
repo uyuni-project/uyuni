@@ -7,9 +7,9 @@ require 'json'
 require 'socket'
 
 $api_test = if $debug_mode
-              ApiTestXmlrpc.new($server.full_hostname)
+              ApiTestXmlrpc.new(get_target('server').full_hostname)
             else
-              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
+              product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname) : ApiTestXmlrpc.new(get_target('server').full_hostname)
             end
 
 ## system namespace
@@ -42,7 +42,7 @@ When(/^I call system\.bootstrap\(\) on a Salt minion with saltSSH = true, \
 but with activation key with default contact method, I should get an API fault$/) do
   exception_thrown = false
   begin
-    $api_test.system.bootstrap_system($minion.full_hostname, '1-SUSE-KEY-x86_64', true)
+    $api_test.system.bootstrap_system(get_target('sle_minion').full_hostname, '1-SUSE-KEY-x86_64', true)
   rescue
     exception_thrown = true
   end
@@ -73,7 +73,7 @@ When(/^I create a system record with name "([^"]*)" and kickstart label "([^"]*)
 end
 
 When(/^I wait for the OpenSCAP audit to finish$/) do
-  @sle_id = $api_test.system.retrieve_server_id($minion.full_hostname)
+  @sle_id = $api_test.system.retrieve_server_id(get_target('sle_minion').full_hostname)
   begin
     repeat_until_timeout(message: 'Process did not complete') do
       scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
@@ -173,7 +173,7 @@ end
 ## channel namespace
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
-  url = "http://#{$server.full_hostname}/pub/AnotherRepo/"
+  url = "http://#{get_target('server').full_hostname}/pub/AnotherRepo/"
   assert($api_test.channel.software.create_repo(label, url))
 end
 
