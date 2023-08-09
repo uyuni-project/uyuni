@@ -3,7 +3,7 @@
 ifeq ($(PRODUCT), SUSE-Manager)
 DOCKER_CONTAINER = registry.suse.de/devel/galaxy/manager/head/docker/containers/suma-head-cobbler
 else
-DOCKER_CONTAINER = registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-cobbler
+DOCKER_CONTAINER = registry.opensuse.org/home/deneb_alpha/branches/systemsmanagement/uyuni/master/docker/containers/uyuni-master-cobbler
 endif
 
 all :: cobbler_tests
