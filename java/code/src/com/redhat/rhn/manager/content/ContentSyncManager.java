@@ -776,7 +776,7 @@ public class ContentSyncManager {
                     () -> true,
                     modifiedCache -> {
                         LOG.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache, t);
-                        return t.after(modifiedCache) ? true : false;
+                        return t.after(modifiedCache);
                     }
             );
         }
@@ -814,11 +814,11 @@ public class ContentSyncManager {
             Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl, boolean withFix) {
         List<Long> repoIdsFromCredential = new LinkedList<>();
         List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
-                .map(r -> r.getSccId())
+                .map(SCCRepository::getSccId)
                 .collect(Collectors.toList());
         List<SCCRepositoryJson> ptfRepos = repositories.stream()
             .filter(r -> !availableRepoIds.contains(r.getSCCId()))
-            .filter(r -> r.isPtfRepository())
+            .filter(SCCRepositoryJson::isPtfRepository)
             .collect(Collectors.toList());
         generatePtfChannels(ptfRepos);
         Map<Long, SCCRepository> availableRepos = SCCCachingFactory.lookupRepositories().stream()
@@ -1317,8 +1317,7 @@ public class ContentSyncManager {
      * @param c credentials
      * @throws ContentSyncException in case of an error
      */
-    public void refreshSubscriptionCache(List<SCCSubscriptionJson> subscriptions,
-            Credentials c) {
+    public void refreshSubscriptionCache(List<SCCSubscriptionJson> subscriptions, Credentials c) {
         List<Long> cachedSccIDs = SCCCachingFactory.listSubscriptionsIdsByCredentials(c);
         Map<Long, SCCSubscription> subscriptionsBySccId = SCCCachingFactory.lookupSubscriptions()
                 .stream().collect(Collectors.toMap(SCCSubscription::getSccId, s -> s));
@@ -1343,9 +1342,9 @@ public class ContentSyncManager {
      * Additionally order items are fetched and put into the DB.
      * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
-     * @throws SCCClientException in case of an error
+     * @throws ContentSyncException in case of an error
      */
-    public List<SCCSubscriptionJson> updateSubscriptions(Credentials credentials) throws SCCClientException {
+    public List<SCCSubscriptionJson> updateSubscriptions(Credentials credentials) throws ContentSyncException {
         List<SCCSubscriptionJson> subscriptions = new LinkedList<>();
         try {
             SCCClient scc = this.getSCCClient(credentials);
@@ -1383,12 +1382,7 @@ public class ContentSyncManager {
                 // RMT report always empty subscriptions
                 continue;
             }
-            try {
-                subscriptions.addAll(updateSubscriptions(c));
-            }
-            catch (SCCClientException e) {
-                throw new ContentSyncException(e);
-            }
+            subscriptions.addAll(updateSubscriptions(c));
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Found {} available subscriptions.", subscriptions.size());
@@ -1402,9 +1396,9 @@ public class ContentSyncManager {
      * deletes all order items stored in the database below the given credentials
      * and inserts the new ones.
      * @param c the credentials
-     * @throws SCCClientException  in case of an error
+     * @throws ContentSyncException  in case of an error
      */
-    public void refreshOrderItemCache(Credentials c) throws SCCClientException  {
+    public void refreshOrderItemCache(Credentials c) throws ContentSyncException  {
         List<SCCOrderJson> orders = new LinkedList<>();
         try {
             SCCClient scc = this.getSCCClient(c);
@@ -1440,8 +1434,7 @@ public class ContentSyncManager {
      * @param subscriptions the subscriptions
      * @param credentials the credentials
      */
-    private void generateOEMOrderItems(List<SCCSubscriptionJson> subscriptions,
-            Credentials credentials) {
+    private void generateOEMOrderItems(List<SCCSubscriptionJson> subscriptions, Credentials credentials) {
         List<SCCOrderItem> existingOI = SCCCachingFactory.listOrderItemsByCredentials(credentials);
         subscriptions.stream()
                 .filter(sub -> "oem".equals(sub.getType()))
@@ -1493,8 +1486,7 @@ public class ContentSyncManager {
      * @param channelFamilies List of families.
      * @throws ContentSyncException in case of an error
      */
-    public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies)
-            throws ContentSyncException {
+    public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies) throws ContentSyncException {
         LOG.info("ContentSyncManager.updateChannelFamilies called");
         List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
