@@ -46,12 +46,13 @@ def system_exit(code, messages=None):
 def is_payg_instance():
     flavor_check = "/usr/bin/instance-flavor-check"
     if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
-        return False
+        system_exit(1, ["instance-flavor-check tool is not available.",
+                        "For a correct Pay-as-you-go detection please install 'python-instance-billing-flavor-check' package"])
 
     try:
         result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
-    except subprocess.CalledProcessError:
-        return False
+    except subprocess.CalledProcessError as e:
+        system_exit(1, ["Failed to execute instance-flavor-check tool.", e])
 
     return result == "PAYG"
 
