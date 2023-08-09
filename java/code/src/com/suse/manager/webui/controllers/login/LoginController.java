@@ -25,7 +25,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -139,7 +138,7 @@ public class LoginController {
 
         // Pay as you go code
         boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
-                CredentialsFactory.listSCCCredentials().size() > 0 &&
+                GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials() &&
                 !ConfigDefaults.get().isForwardRegistrationEnabled();
 
         model.put("sccForwardWarning", sccForwardWarning);
