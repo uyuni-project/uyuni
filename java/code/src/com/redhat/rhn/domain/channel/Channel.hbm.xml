@@ -600,12 +600,40 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
     <sql-query name="Channel.isAccessibleBy">
-        <return-scalar type="int" column="count"/>
-        SELECT COUNT(*) AS count
-          FROM rhnChannel c
-          JOIN rhnAvailableChannels ac ON c.id = ac.channel_id
-          WHERE c.label = :channel_label
-            AND ac.org_id = :org_id
+        <return-scalar type="int" column="result"/>
+         <![CDATA[SELECT case when (EXISTS (
+              SELECT 1
+              FROM rhnChannel c
+              JOIN rhnChannelFamilyMembers cfm ON cfm.channel_id = c.id
+              JOIN rhnPrivateChannelFamily pcf ON pcf.channel_family_id = cfm.channel_family_id
+              WHERE c.label = :channel_label
+              AND pcf.org_id = :org_id
+              LIMIT 1
+        ) OR EXISTS (
+              SELECT 1
+              FROM rhnChannel c
+              JOIN rhnChannelFamilyMembers cfm ON cfm.channel_id = c.id
+              JOIN rhnPublicChannelFamily pcf ON pcf.channel_family_id = cfm.channel_family_id
+              WHERE c.label = :channel_label
+              LIMIT 1
+        ) OR EXISTS (
+              SELECT 1
+              FROM rhnChannel c
+              JOIN rhnTrustedOrgs tr ON c.org_id = tr.org_id
+              WHERE c.parent_channel IS NULL AND c.channel_access = 'public'
+              AND c.label = :channel_label
+              AND tr.org_trust_id = :org_id
+              LIMIT 1
+        ) OR EXISTS (
+              SELECT 1
+              FROM rhnChannel c
+              JOIN rhnChannelTrust tr ON c.id = tr.channel_id
+              WHERE c.channel_access = 'protected'
+              AND c.label = :channel_label
+              AND tr.org_trust_id = :org_id
+              LIMIT 1
+        )) then 1 else 0 end AS result
+        ]]>
     </sql-query>
 
     <sql-query name="Channel.isAccessibleByUser">
