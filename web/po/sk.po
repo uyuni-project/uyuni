@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-04 14:10+0200\n"
-"PO-Revision-Date: 2023-08-07 20:15+0000\n"
+"PO-Revision-Date: 2023-08-10 16:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/>"
 "\n"
@@ -5015,14 +5015,13 @@ msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
-#, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
 "Systémy, ktoré sa majú spravovať, môžete pridať iba poskytnutím "
-"prihlasovacích údajov SSH. {0} pripraví systém vzdialene a vykoná "
+"prihlasovacích údajov SSH. {productName} pripraví systém vzdialene a vykoná "
 "registráciu."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
@@ -5030,7 +5029,6 @@ msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
-#, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5040,7 +5038,7 @@ msgstr ""
 "Používateľ bude mať účinok iba počas zavádzacieho procesu. Ďalšie pripojenia "
 "uskutoční používateľ uvedený v rhn.conf. Predvolený používateľ pre kľúč "
 "'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
-"kľúča SSH {0} počas zavádzacej procedúry."
+"kľúča SSH {productName} počas zavádzacej procedúry."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
@@ -5515,9 +5513,8 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-#, fuzzy
 msgid "Add a {type} Virtual Host Manager"
-msgstr "Upraviť správcov virtuálnych hostiteľov"
+msgstr "Pridať {type} správcu virtuálnych hostiteľov"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5540,9 +5537,8 @@ msgstr ""
 "sú načítané."
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-#, fuzzy
 msgid "{name} selected"
-msgstr "Vybrané {0}"
+msgstr "Vybrané {name}"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
