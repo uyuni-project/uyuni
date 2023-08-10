@@ -193,7 +193,7 @@ end
 # spacewalk errors steps
 Then(/^the up2date logs on client should contain no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
-  _out, code = $client.run(cmd)
+  _out, code = get_target('client').run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
@@ -209,7 +209,7 @@ end
 # bare metal
 When(/^I check the ram value$/) do
   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _local, _remote, _code = get_target('client').test_and_store_results_together(get_ram_value, 'root', 600)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
@@ -217,7 +217,7 @@ end
 
 When(/^I check the MAC address value$/) do
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _local, _remote, _code = get_target('client').test_and_store_results_together(get_mac_address, 'root', 600)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
@@ -225,7 +225,7 @@ end
 
 Then(/^I should see the CPU frequency of the client$/) do
   get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _local, _remote, _code = get_target('client').test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -302,7 +302,7 @@ end
 # these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-suse-channel')}/*primary.xml.gz"
@@ -311,7 +311,7 @@ end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-suse-channel')}/*primary.xml.gz"
@@ -320,7 +320,7 @@ end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  node = $client
+  node = get_target('client')
   arch, _code = node.run('uname -m')
   arch.chomp!
   dir_file = client_raw_repodata_dir("fake-rpm-suse-channel")

@@ -538,7 +538,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
 end
 
 Then(/^I should see a text describing the OS release$/) do
-  os_family = $client.os_family
+  os_family = get_target('client').os_family
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
 end

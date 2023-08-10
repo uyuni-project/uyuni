@@ -30,19 +30,19 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host                       | Ruby target              | Bash environment variable                                | Step host name           | sumaform module            |
-|---------------------------------|--------------------------|----------------------------------------------------------|--------------------------|----------------------------|
-| SUSE Manager server             | ```$server```            | ```$SERVER```                                            |                          | ```"suse_manager"```       |
-| SUSE Manager proxy              | ```$proxy```             | ```$PROXY```                                             | ```"proxy"```            | ```"suse_manager_proxy"``` |
-| SLES traditional client         | ```$client```            | ```$CLIENT```                                            | ```"sle_client"```       | ```"client"```             |
-| SLES Salt minion                | ```$minion```            | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
-| SLES Docker and Kiwi build host | ```$build_host```        | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
-| Monitoring Server               | ```$monitoring_server``` | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
-| SLES Salt SSH minion            | ```$ssh_minion```        | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
-| Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
-| Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
-| PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
-| KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
+| Test host                       | Bash environment variable                                | Step host name           | sumaform module            |
+|---------------------------------|----------------------------------------------------------|--------------------------|----------------------------|
+| SUSE Manager server             | ```$SERVER```                                            |                          | ```"suse_manager"```       |
+| SUSE Manager proxy              | ```$PROXY```                                             | ```"proxy"```            | ```"suse_manager_proxy"``` |
+| SLES traditional client         | ```$CLIENT```                                            | ```"sle_client"```       | ```"client"```             |
+| SLES Salt minion                | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
+| SLES Docker and Kiwi build host | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
+| Monitoring Server               | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
+| SLES Salt SSH minion            | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
+| Red Hat-like Salt minion        | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
+| Debian-like Salt minion         | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
+| PXE-boot minion                 | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
+| KVM virtual host minion         | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -700,11 +700,11 @@ of the underlying libraries, have a look at
 When implementing a step, to run a command on a target, use:
 
 ```ruby
-$server.run("uptime")
-$client.run("uptime", check_errors: false)
-$minion.run("uptime", check_errors: true)
-$minion.run("uptime", check_errors: true, timeout: 300)
-$client.run("uptime", check_errors: false, timeout: 500, user: 'root')
+get_target('server').run("uptime")
+get_target('client').run("uptime", check_errors: false)
+get_target('minion').run("uptime", check_errors: true)
+get_target('minion').run("uptime", check_errors: true, timeout: 300)
+get_target('client').run("uptime", check_errors: false, timeout: 500, user: 'root')
 ```
 
 Arguments taken by method ```run``` are:
@@ -722,7 +722,7 @@ retry several times until ```DEFAULT_TIMEOUT```.
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT.puts $client.full_hostname
+  STDOUT.puts get_target('client').full_hostname
 ```
 
 ### Converting between host name and target
