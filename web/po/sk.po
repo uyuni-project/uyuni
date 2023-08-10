@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-04 14:19+0200\n"
-"PO-Revision-Date: 2023-08-07 20:15+0000\n"
+"PO-Revision-Date: 2023-08-10 16:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5079,14 +5079,13 @@ msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
-#, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
 "Systémy, ktoré sa majú spravovať, môžete pridať iba poskytnutím "
-"prihlasovacích údajov SSH. {0} pripraví systém vzdialene a vykoná "
+"prihlasovacích údajov SSH. {productName} pripraví systém vzdialene a vykoná "
 "registráciu."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
@@ -5094,7 +5093,6 @@ msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
-#, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5104,7 +5102,7 @@ msgstr ""
 "Používateľ bude mať účinok iba počas zavádzacieho procesu. Ďalšie pripojenia "
 "uskutoční používateľ uvedený v rhn.conf. Predvolený používateľ pre kľúč "
 "'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
-"kľúča SSH {0} počas zavádzacej procedúry."
+"kľúča SSH {productName} počas zavádzacej procedúry."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
@@ -5208,56 +5206,48 @@ msgid "Confirm Deletion"
 msgstr "Potvrdiť vymazanie"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
-#, fuzzy
 msgid "Manager Server"
-msgstr "Manager"
+msgstr "Manager Server"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
-#, fuzzy
 msgid "Physical"
-msgstr "Fyzická funkcia"
+msgstr "Fyzický"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
-#, fuzzy
 msgid "Ansible Control Node"
 msgstr "Riadiaci uzol Ansible"
 
 #: ../html/src/manager/systems/list-filter.tsx:14
-#, fuzzy
 msgid "Container Build Host"
-msgstr "Zostaviť hostiteľa"
+msgstr "Hostiteľ zostavený kontajnermi"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Foreign"
-msgstr ""
+msgstr "Cudzie"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
-#, fuzzy
 msgid "Management"
-msgstr "Uzol správy"
+msgstr "Správa"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr ""
+msgstr "Monitorovaný hostiteľ"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
-#, fuzzy
 msgid "OS Image Build Host"
-msgstr "Zostaviť hostiteľa"
+msgstr "Hostiteľ zostavenia ISO obrazu"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
-#, fuzzy
 msgid "Virtualization Host"
-msgstr "Virtuálny hostiteľ"
+msgstr "Hostiteľ virtualizácie"
 
 #: ../html/src/manager/systems/list-filter.tsx:24
-#, fuzzy
 msgid "Actions scheduled"
-msgstr "naplánované"
+msgstr "Akcie naplánované"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
 msgid "All updates scheduled"
@@ -5268,28 +5258,24 @@ msgid "Kickstart in progress"
 msgstr "Kickstart prebieha"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
-#, fuzzy
 msgid "System is up to date"
-msgstr "Obraz je aktuálny"
+msgstr "Systém je aktuálny"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 msgid "System not checking in"
-msgstr ""
+msgstr "Systém, ktorý nie je prihlásený"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
-#, fuzzy
 msgid "System not entitled"
-msgstr "Systém uzamknutý"
+msgstr "Systém, ktorý nie je oprávnený"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
-#, fuzzy
 msgid "System requires reboot"
-msgstr "Vyžaduje reštart"
+msgstr "Systém vyžaduje reštart"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
-#, fuzzy
 msgid "Updates available"
-msgstr "K dispozícii sú aktualizácie balíkov"
+msgstr "K dispozícii sú aktualizácie"
 
 #: ../html/src/manager/systems/list-filter.tsx:36
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
@@ -5683,9 +5669,8 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-#, fuzzy
 msgid "Add a {type} Virtual Host Manager"
-msgstr "Upraviť správcov virtuálnych hostiteľov"
+msgstr "Pridať {type} správcu virtuálnych hostiteľov"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5708,9 +5693,8 @@ msgstr ""
 "sú načítané."
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-#, fuzzy
 msgid "{name} selected"
-msgstr "Vybrané {0}"
+msgstr "Vybrané {name}"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
