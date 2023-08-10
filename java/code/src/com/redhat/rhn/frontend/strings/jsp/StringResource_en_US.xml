@@ -23813,6 +23813,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <source>Collect data of managed clients for SUSE Manager Pay-as-you-go</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="schedule.jsp.noschedules" xml:space="preserve">
         <source>There're no schedules available.</source>
         <context-group name="ctx">
@@ -24239,6 +24245,12 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
         <source>System Profile Refresh</source>
+      </trans-unit>
+      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
+        <source>Pay-as-you-go Computation</source>
+      </trans-unit>
+       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+        <source>Execute Recurring Actions</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
