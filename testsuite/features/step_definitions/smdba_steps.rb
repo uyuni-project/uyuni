@@ -122,6 +122,11 @@ When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_d
   log "\n*** Taking backup, this might take a while ***\n"
 end
 
+Then(/^I take a backup with smdba in folder "(.*?)"$/) do |backup_dir|
+  command = "smdba backup-hot --enable=on --backup-dir=#{backup_dir}"
+  $output, _code = get_target('server').run(command, timeout: 600, check_errors: true)
+end
+
 Then(/^base backup is taken$/) do
   assert_includes($output, 'Finished')
 end
