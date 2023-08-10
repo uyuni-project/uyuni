@@ -859,14 +859,6 @@ public class ConfigDefaults {
     }
 
     /**
-     * is documentation available
-     * @return true if so
-     */
-    public boolean isDocAvailable() {
-        return !isSpacewalk();
-    }
-
-    /**
      * Returns Max taskomatic channel repodata workers
      * @return Max taskomatic channel repodata workers
      */

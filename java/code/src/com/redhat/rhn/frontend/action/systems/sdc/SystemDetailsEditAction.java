@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -295,17 +294,10 @@ public class SystemDetailsEditAction extends RhnAction {
                     }
 
                     log.debug("adding entitlement success msg");
-                    if (ConfigDefaults.get().isDocAvailable()) {
-                        createMessage(request,
-                                "system.entitle.added." + e.getLabel(),
-                                s.getId().toString(),
-                                GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(user));
-                    }
-                    else {
-                        createSuccessMessage(request,
-                                "system.entitle.added." + e.getLabel() + ".nodoc",
-                                s.getId().toString());
-                    }
+                    createMessage(request,
+                            "system.entitle.added." + e.getLabel(),
+                            s.getId().toString(),
+                            GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(user));
                 }
             }
             else if ((daForm.get(e.getLabel()) == null ||
