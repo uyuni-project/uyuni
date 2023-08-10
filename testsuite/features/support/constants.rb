@@ -201,14 +201,14 @@ sle_base_channel =
   if $is_container_provider
     'Fake Base Channel'
   elsif ENV['SERVER'].include? 'uyuni'
-    'openSUSE Leap 15.4 (x86_64)'
+    'openSUSE Leap 15.4 (x86_64) server includes uyuni'
   else
     'SLES15-SP4-Pool'
   end
 
 proxy_base_channel =
   if ENV['SERVER'].include? 'uyuni'
-    'openSUSE Leap 15.4 (x86_64)'
+    'openSUSE Leap 15.4 (x86_64) proxy, server includes uyuni'
   else
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool'
   end
