@@ -40,8 +40,6 @@
 - features/build_validation/init_clients/rocky9_minion.feature
 - features/build_validation/init_clients/rocky9_ssh_minion.feature
 
-- features/build_validation/init_clients/ubuntu1804_minion.feature
-- features/build_validation/init_clients/ubuntu1804_ssh_minion.feature
 - features/build_validation/init_clients/ubuntu2004_minion.feature
 - features/build_validation/init_clients/ubuntu2004_ssh_minion.feature
 - features/build_validation/init_clients/ubuntu2204_minion.feature
