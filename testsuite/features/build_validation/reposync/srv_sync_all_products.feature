@@ -276,16 +276,6 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9 x86_64" product has been added
 
-@ubuntu1804_minion
-  Scenario: Add Ubuntu 18.04
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 18.04" as the filtered product description
-    And I select "Ubuntu 18.04" as a product
-    Then I should see the "Ubuntu 18.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 18.04" product has been added
-
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
     When I follow the left menu "Admin > Setup Wizard > Products"
