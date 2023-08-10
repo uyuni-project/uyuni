@@ -18,7 +18,10 @@ import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -31,7 +34,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -44,21 +48,141 @@ public class CloudPaygManager {
     private Boolean isPaygInstance;
     private Boolean hasSCCCredentials;
     private CloudProvider cloudProvider;
-    private Date cacheTime;
+    private boolean isCompliant;
+    private Instant cacheTime;
     public enum CloudProvider {
         None,
         AWS,
         AZURE,
         GCE
     }
+
+    private final TaskomaticApi tapi;
+    private final ContentSyncManager mgr;
+
     /**
      * Constructor
      */
     public CloudPaygManager() {
-        cacheTime = new Date(0L);
+        tapi = new TaskomaticApi();
+        mgr = new ContentSyncManager(null, this);
+        cacheTime = Instant.MIN;
         hasSCCCredentials = null;
         cloudProvider = CloudProvider.None;
         isPaygInstance = null;
+        isCompliant = false;
+    }
+
+    /**
+     * Constructor
+     * @param tapiIn the taskomatic api object
+     * @param syncManagerIn the content sync manager object
+     */
+    public CloudPaygManager(TaskomaticApi tapiIn, ContentSyncManager syncManagerIn) {
+        tapi = tapiIn;
+        mgr = syncManagerIn;
+        cacheTime = Instant.MIN;
+        hasSCCCredentials = null;
+        cloudProvider = CloudProvider.None;
+        isPaygInstance = null;
+        isCompliant = false;
+    }
+
+    /**
+     * @return if this is a Pay-as-you-go cloud instance
+     */
+    public boolean isPaygInstance() {
+        checkRefreshCache(false);
+        if (isPaygInstance == null) {
+            isPaygInstance = detectPaygInstance();
+        }
+        return isPaygInstance;
+    }
+
+    /**
+     * @return the CloudProvider
+     */
+    public CloudProvider getCloudProvider() {
+        checkRefreshCache(false);
+        if (cloudProvider == CloudProvider.None) {
+            cloudProvider = detectCloudProvider();
+        }
+        return cloudProvider;
+    }
+
+    /**
+     * @return return true when we have SCC credentials
+     */
+    public boolean hasSCCCredentials() {
+        checkRefreshCache(false);
+        if (hasSCCCredentials == null) {
+            hasSCCCredentials = detectHasSCCCredentials();
+        }
+        return hasSCCCredentials;
+    }
+
+    /**
+     * Check if SUSE Manager PAYG is operating in a compliant mode
+     * @return true if not payg or all components works as they should, otherwise false
+     */
+    public boolean isCompliant() {
+        checkRefreshCache(false);
+        return isCompliant;
+    }
+
+    /**
+     * Check and perform a refresh of the stored data if needed
+     * @param force if true, force a refresh independent of the time
+     * @return true when a refresh happened, otherwise false
+     */
+    public boolean checkRefreshCache(boolean force) {
+        // if isCompliant is false, we re-detect
+        if (force || !isCompliant || Duration.between(cacheTime, Instant.now()).toHours() >= 1) {
+            // cached values older than 1 hour - time to refresh
+            cloudProvider = detectCloudProvider();
+            isPaygInstance = detectPaygInstance();
+            hasSCCCredentials = detectHasSCCCredentials();
+            isCompliant = detectIsCompliant();
+            cacheTime = Instant.now();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Only for testing - overwrite the detected provider
+     * @param providerIn the provider
+     */
+    public void setCloudProvider(CloudProvider providerIn) {
+        cloudProvider = providerIn;
+        cacheTime = Instant.now();
+    }
+
+    /**
+     * Only for testing - overwrite the detected isPaygInstance
+     * @param isPaygInstanceIn is payg instance
+     */
+    public void setPaygInstance(boolean isPaygInstanceIn) {
+        isPaygInstance = isPaygInstanceIn;
+        cacheTime = Instant.now();
+    }
+
+    /**
+     * Only for testing - overwrite the detected hasSCCCredentials
+     * @param hasSCCCredentialsIn has scc credentials
+     */
+    public void setHasSCCCredentials(boolean hasSCCCredentialsIn) {
+        hasSCCCredentials = hasSCCCredentialsIn;
+        cacheTime = Instant.now();
+    }
+
+    /**
+     * Only for testing - overwrite the detected isCompliant
+     * @param isCompliantIn is system compliant
+     */
+    public void setCompliant(boolean isCompliantIn) {
+        isCompliant = isCompliantIn;
+        cacheTime = Instant.now();
     }
 
     private CloudProvider detectCloudProvider() {
@@ -74,74 +198,6 @@ public class CloudPaygManager {
         return CloudProvider.None;
     }
 
-    /**
-     * @return the CloudProvider
-     */
-    public CloudProvider getCloudProvider() {
-        checkRefreshCache(false);
-        if (cloudProvider == CloudProvider.None) {
-            cloudProvider = detectCloudProvider();
-        }
-        return cloudProvider;
-    }
-
-    /**
-     * Only for testing - overwrite the detected provider
-     * @param providerIn the provider
-     */
-    public void setCloudProvider(CloudProvider providerIn) {
-        cloudProvider = providerIn;
-        cacheTime = new Date();
-    }
-
-    /**
-     * @return if this is a Pay-as-you-go cloud instance
-     */
-    public boolean isPaygInstance() {
-        checkRefreshCache(false);
-        if (isPaygInstance == null) {
-            isPaygInstance = detectPaygInstance();
-        }
-        return isPaygInstance;
-    }
-
-    /**
-     * Only for testing - overwrite the detected isPaygInstance
-     * @param isPaygInstanceIn is payg instance
-     */
-    public void setPaygInstance(boolean isPaygInstanceIn) {
-        isPaygInstance = isPaygInstanceIn;
-        cacheTime = new Date();
-    }
-
-    /**
-     * Only for testing - overwrite the detected hasSCCCredentials
-     * @param hasSCCCredentialsIn has scc credentials
-     */
-    public void setHasSCCCredentials(boolean hasSCCCredentialsIn) {
-        hasSCCCredentials = hasSCCCredentialsIn;
-        cacheTime = new Date();
-    }
-
-    /**
-     * Check and perform a refresh of the stored data if needed
-     * @param force if true, force a refresh independent of the time
-     * @return true when a refresh happened, otherwise false
-     */
-    public boolean checkRefreshCache(boolean force) {
-        long now = new Date().getTime() / 1000L;
-        long cache = cacheTime.getTime() / 1000L;
-        if (force || (now - cache) > (2 * 60 * 60)) {
-            // cached values older than 2 hours - time to refresh
-            cloudProvider = detectCloudProvider();
-            isPaygInstance = detectPaygInstance();
-            hasSCCCredentials = detectHasSCCCredentials();
-            cacheTime = new Date();
-            return true;
-        }
-        return false;
-    }
-
     private boolean detectPaygInstance() {
         if (!isFileExecutable("/usr/bin/instance-flavor-check")) {
             return false;
@@ -154,6 +210,56 @@ public class CloudPaygManager {
             LOG.error("Unable to identify the instance type. Fallback to BYOS.", ex);
             return false;
         }
+    }
+
+    private boolean detectHasSCCCredentials() {
+        List<Credentials> cl = CredentialsFactory.listSCCCredentials();
+        hasSCCCredentials = false;
+        if (cl.size() > 0) {
+            for (Credentials c : cl) {
+                if (mgr.isSCCCredentials(c)) {
+                    hasSCCCredentials = true;
+                    break;
+                }
+            }
+        }
+        return hasSCCCredentials;
+    }
+
+    private boolean detectIsCompliant() {
+        // do not use isPaygInstance() to prevent a loop
+        if (BooleanUtils.isFalse(isPaygInstance)) {
+            return true;
+        }
+
+        // Check if the payg-dimension-computation job is active
+        try {
+            if (tapi.lookupScheduleByBunchAndLabel(null, "payg-dimension-computation-bunch",
+                    "payg-dimension-computation-default") == null) {
+                LOG.error("payg-dimension-computation job is not active");
+                return false;
+            }
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to check payg-dimension-computation job is active");
+            LOG.info(e.getMessage(), e);
+            return false;
+        }
+
+        // we only need to check compliance for SUMA PAYG
+        try {
+            if (!requestUrl("http://localhost:18888/").equals("online")) {
+                LOG.error("Billing Data Service offline");
+                return false;
+            }
+        }
+        catch (IOException e) {
+            LOG.error("Billing Data Service down");
+            LOG.info(e.getMessage(), e);
+            return false;
+        }
+        //TODO: Check billing adapter report
+        return true;
     }
 
     /**
@@ -191,54 +297,6 @@ public class CloudPaygManager {
         }
     }
 
-    /**
-     * @return return true when we have SCC credentials
-     */
-    public boolean hasSCCCredentials() {
-        checkRefreshCache(false);
-        if (hasSCCCredentials == null) {
-            hasSCCCredentials = detectHasSCCCredentials();
-        }
-        return hasSCCCredentials;
-    }
-
-    private boolean detectHasSCCCredentials() {
-        List<Credentials> cl = CredentialsFactory.listSCCCredentials();
-        hasSCCCredentials = false;
-        if (cl.size() > 0) {
-            ContentSyncManager mgr = new ContentSyncManager();
-            for (Credentials c : cl) {
-                if (mgr.isSCCCredentials(c)) {
-                    hasSCCCredentials = true;
-                    break;
-                }
-            }
-        }
-        return hasSCCCredentials;
-    }
-    /**
-     * Check if SUSE Manager PAYG is operating in a compliant mode
-     * @return true if not payg or all components works as they should, otherwise false
-     */
-    public boolean isCompliant() {
-        checkRefreshCache(false);
-        if (!isPaygInstance()) {
-            return true;
-        }
-        // we only need to check compliance for SUMA PAYG
-        try {
-            if (!requestUrl("http://localhost:18888/").equals("online")) {
-                LOG.error("Billing Data Service offline");
-                return false;
-            }
-        }
-        catch (IOException e) {
-            LOG.error("Billing Data Service down", e);
-            return false;
-        }
-        //TODO: Check billing adapter report
-        return true;
-    }
 
     protected String requestUrl(String url) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
