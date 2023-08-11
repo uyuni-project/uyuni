@@ -26,12 +26,12 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
     iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
   else
     iso_path = "/tmp/#{name}.iso"
-    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
+    get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
   end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("mkdir -p #{mount_point}")
-  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
-  $server.run("umount #{iso_path}; mount #{iso_path}")
+  get_target('server').run("mkdir -p #{mount_point}")
+  get_target('server').run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
+  get_target('server').run("umount #{iso_path}; mount #{iso_path}")
 end
 
 Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
@@ -74,7 +74,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
   log "IPv6 address: #{ipv6_address}"
-  raise unless ipv6_addresses_list.include? ipv6_address
+  raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -143,12 +143,16 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
+    And I wait until I see "Pending Events" text
     And I follow "Pending"
+    And I wait until I see "Pending Events" text
     And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
+    And I wait until I see "This action will be executed after" text
+    And I wait until I see "#{event}" text
     And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
   )
 end
@@ -189,7 +193,7 @@ end
 # spacewalk errors steps
 Then(/^the up2date logs on client should contain no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
-  _out, code = $client.run(cmd)
+  _out, code = get_target('client').run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
@@ -205,7 +209,7 @@ end
 # bare metal
 When(/^I check the ram value$/) do
   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _local, _remote, _code = get_target('client').test_and_store_results_together(get_ram_value, 'root', 600)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
@@ -213,7 +217,7 @@ end
 
 When(/^I check the MAC address value$/) do
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _local, _remote, _code = get_target('client').test_and_store_results_together(get_mac_address, 'root', 600)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
@@ -221,7 +225,7 @@ end
 
 Then(/^I should see the CPU frequency of the client$/) do
   get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _local, _remote, _code = get_target('client').test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -298,7 +302,7 @@ end
 # these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-suse-channel')}/*primary.xml.gz"
@@ -307,7 +311,7 @@ end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-suse-channel')}/*primary.xml.gz"
@@ -316,7 +320,7 @@ end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise 'Invalid target.' unless host == 'sle_client'
-  node = $client
+  node = get_target('client')
   arch, _code = node.run('uname -m')
   arch.chomp!
   dir_file = client_raw_repodata_dir("fake-rpm-suse-channel")
@@ -339,14 +343,14 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
+  get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
-  $server.run(command, timeout: 500)
-  $server.run('ls -lR /var/spacewalk/packages', timeout: 500)
+  get_target('server').run(command, timeout: 500)
+  get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|

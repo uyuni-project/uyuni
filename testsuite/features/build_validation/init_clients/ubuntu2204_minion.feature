@@ -24,7 +24,7 @@ Feature: Bootstrap a Ubuntu 22.04 Salt minion
     And I select "1-ubuntu2204_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ubuntu2204_minion"
 
 @proxy

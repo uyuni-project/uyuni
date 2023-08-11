@@ -36,7 +36,7 @@ def index():
 
 
 _query_metering_data = rhnSQL.Statement("""
-    SELECT r.dimension, r.count
+    SELECT r.dimension usage_metric, r.count
       FROM susePaygDimensionResult r
      WHERE r.computation_id = (SELECT c.id
                                  FROM susePaygDimensionComputation c
@@ -50,4 +50,4 @@ def metering():
     h = rhnSQL.prepare(_query_metering_data)
     h.execute()
     result = h.fetchall_dict() or []
-    return json.dumps({ "dimensions" : result})
+    return json.dumps({ "usage_metrics" : result})

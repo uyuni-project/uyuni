@@ -150,6 +150,36 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void sccSystemRegistrationLifecycleForPAYGInstance() throws Exception {
+        Server testSystem = ServerTestUtils.createTestSystem();
+        ServerInfo serverInfo = testSystem.getServerInfo();
+        serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        testSystem.setServerInfo(serverInfo);
+        testSystem.setPayg(true);
+
+        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
+                new URI("https://localhost"), "username", "password", "uuid"));
+
+        SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
+        SCCCachingFactory.initNewSystemsToForward();
+
+        List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
+        List<SCCRegCacheItem> testSystems = allUnregistered.stream()
+                .filter(i -> i.getOptServer().get().equals(testSystem))
+                .collect(Collectors.toList());
+
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setUsername("username");
+        credentials.setPassword("password");
+        credentials.setUrl("https://scc.suse.com");
+        CredentialsFactory.storeCredentials(credentials);
+
+        sccSystemRegistrationManager.register(testSystems, credentials);
+        List<SCCRegCacheItem> afterRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
+        assertEquals(allUnregistered.size() - 1, afterRegistration.size());
+    }
+
+    @Test
     public void testUpdateSystems() throws Exception {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot

@@ -13,7 +13,7 @@ import billingdataservice
 @patch("billingdataservice.rhnSQL.Statement", MagicMock())
 @pytest.fixture
 def client():
-    testdata1 = [{"dimension": "1", "count": "10"}, {"dimension": "2", "count": "5"}]
+    testdata1 = [{"usage_metric": "managed_systems", "count": "10"}, {"usage_metric": "monitoring", "count": "5"}]
     client = billingdataservice.app.test_client()
     with patch(
             "billingdataservice.rhnSQL.fetchone_dict",
@@ -32,7 +32,7 @@ def test_index(client):
 
 def test_metering(client):
     """Call metering API"""
-    mock_fetchall_dict = MagicMock(name="mock2", return_value=[{"dimension": "1", "count": "10"}, {"dimension": "2", "count": "5"}])
+    mock_fetchall_dict = MagicMock(name="mock2", return_value=[{"usage_metric": "managed_systems", "count": "10"}, {"usage_metric": "monitoring", "count": "5"}])
     mock_cursor = MagicMock(name="mock1")
     mock_cursor.fetchall_dict = mock_fetchall_dict
 
@@ -40,12 +40,12 @@ def test_metering(client):
         rv = client.get('/metering')
         assert rv.status_code == 200
         r = json.loads(rv.data)
-        assert "dimensions" in r
-        for dim in r["dimensions"]:
-            assert "dimension" in dim
-            if dim["dimension"] == "1":
+        assert "usage_metrics" in r
+        for dim in r["usage_metrics"]:
+            assert "usage_metric" in dim
+            if dim["usage_metric"] == "managed_systems":
                 assert dim["count"] == "10"
-            elif dim["dimension"] == "2":
+            elif dim["usage_metric"] == "monitoring":
                 assert dim["count"] == "5"
             else:
                 assert False

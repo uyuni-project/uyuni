@@ -396,7 +396,6 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         rmtHost.put("ip", "18.156.40.199");
         rmtHost.put("server_ca", "-----BEGIN CERTIFICATE-----");
 
-        PaygInstanceInfo info = new PaygInstanceInfo(products, basicAuth, headerAuth, rmtHost);
-        return info;
+        return new PaygInstanceInfo(products, basicAuth, List.of(headerAuth), rmtHost);
     }
 }

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -59,6 +58,8 @@ public class SUSEProductFactory extends HibernateFactory {
 
     private static Logger log = LogManager.getLogger(SUSEProductFactory.class);
     private static SUSEProductFactory singleton = new SUSEProductFactory();
+
+    private static final RpmVersionComparator RPM_VERSION_COMPARATOR = new RpmVersionComparator();
 
     private SUSEProductFactory() {
         super();
@@ -131,10 +132,9 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
         c.add(Restrictions.eq("channelLabel", channelLabel));
-        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
         return ((List<SUSEProductSCCRepository>) c.list()).stream()
                 .sorted((a, b) ->
-                        rpmVersionComparator.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
+                        RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
                 .collect(Collectors.toList());
     }
 
@@ -231,11 +231,10 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSEProductSCCRepository entry with the newest product
      */
     public static Optional<SUSEProductSCCRepository> lookupByChannelLabelFirst(String channelLabel) {
-        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
         return  lookupByChannelLabel(channelLabel)
                 .stream()
                 // sort so we always choose the latest version
-                .sorted((a, b) ->  rpmVersionComparator.compare(b.getProduct().getVersion(),
+                .sorted((a, b) ->  RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(),
                         a.getProduct().getVersion()))
 
                 // We take the first item since there can be more than one entry.
@@ -674,26 +673,6 @@ public class SUSEProductFactory extends HibernateFactory {
                 .createNamedQuery("SUSEProductExtension.findAllExtensionsOfRootProduct", SUSEProduct.class)
                 .setParameter("rootId", root.getId())
                 .list();
-    }
-
-    /**
-     * @return a stream of products with channel family SLE-M-T (Tools Channel)
-     */
-    public static Stream<SUSEProduct> listAllSLEMTProducts() {
-        //TODO: replace with optimised query later
-        return findAllSUSEProducts().stream()
-                .filter(p -> p.getChannelFamily() != null)
-                .filter(p -> ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(p.getChannelFamily().getLabel()));
-    }
-
-    /**
-     * @return a stream of products with channel family SMP (SUSE Manager Proxy)
-     */
-    public static Stream<SUSEProduct> listAllSMPProducts() {
-        //TODO: replace with optimised query later
-        return findAllSUSEProducts().stream()
-                .filter(p -> p.getChannelFamily() != null)
-                .filter(p -> p.getChannelFamily().getLabel().equals(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL));
     }
 
     /**

@@ -27,8 +27,12 @@ perform_report_db_schema_upgrade() {
 }
 
 isPayg() {
-  # todo: improve this once the real check is available
-  test -f "/usr/share/susemanager/.ispayg"
+    if [ ! -x /usr/bin/instance-flavor-check ]; then
+        return 1
+    fi
+
+    TYPE=$(/usr/bin/instance-flavor-check)
+    [ "$TYPE" == "PAYG" ]
 }
 
 check_billing_service() {

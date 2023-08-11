@@ -28,6 +28,7 @@ BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       apache2
 Requires:       python3-Flask
+Requires:       spacewalk-backend-sql
 Requires:       spacewalk-taskomatic
 Requires:       tomcat
 

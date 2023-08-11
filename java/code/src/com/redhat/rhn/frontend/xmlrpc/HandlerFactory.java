@@ -147,7 +147,7 @@ public class HandlerFactory {
         );
         ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER);
 
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));

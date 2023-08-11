@@ -54,7 +54,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I enter "linux" as "privKeyPwd"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
     When I follow the left menu "Salt > Keys"

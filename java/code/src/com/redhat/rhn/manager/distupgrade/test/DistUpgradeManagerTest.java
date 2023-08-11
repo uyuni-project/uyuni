@@ -661,7 +661,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, false, scheduleDate);
+                user, server, targetSet, channelIDs, true, false, scheduleDate, false);
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
         assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());

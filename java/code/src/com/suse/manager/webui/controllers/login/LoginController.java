@@ -20,10 +20,12 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -133,6 +135,13 @@ public class LoginController {
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
         model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
+
+        // Pay as you go code
+        boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
+                CredentialsFactory.listSCCCredentials().size() > 0 &&
+                !ConfigDefaults.get().isForwardRegistrationEnabled();
+
+        model.put("sccForwardWarning", sccForwardWarning);
 
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }

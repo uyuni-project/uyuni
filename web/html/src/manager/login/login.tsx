@@ -52,6 +52,7 @@ type Props = {
   loginLength: string;
   passwordLength: string;
   diskspaceSeverity: string;
+  sccForwardWarning: boolean;
 };
 
 export type ThemeProps = Props & {

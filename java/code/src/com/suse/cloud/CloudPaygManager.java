@@ -14,19 +14,23 @@
  */
 package com.suse.cloud;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Public Cloud Pay-as-you-go management class
  */
 public class CloudPaygManager {
-    private final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
+    private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
 
-    private boolean isPaygInstance = false;
+    private boolean isPaygInstance;
     private CloudProvider cloudProvider;
     public enum CloudProvider {
         None,
@@ -48,7 +52,8 @@ public class CloudPaygManager {
         else if (isFileExecutable("/usr/bin/gcemetadata")) {
             cloudProvider = CloudProvider.GCE;
         }
-        detectPaygInstance();
+
+        isPaygInstance = detectPaygInstance();
     }
 
     /**
@@ -81,12 +86,17 @@ public class CloudPaygManager {
         isPaygInstance = isPaygInstanceIn;
     }
 
-    private void detectPaygInstance() {
-        isPaygInstance = false;
-        //TODO: replace with a real check. registercloudguest is available on all images
-        if (isFileExecutable("/usr/sbin/registercloudguest") &&
-                fileExists("/usr/share/susemanager/.ispayg")) {
-            isPaygInstance = true;
+    private boolean detectPaygInstance() {
+        if (!isFileExecutable("/usr/bin/instance-flavor-check")) {
+            return false;
+        }
+
+        try {
+            return "PAYG".equals(getInstanceType());
+        }
+        catch (ExecutionException ex) {
+            LOG.error("Unable to identify the instance type. Fallback to BYOS.", ex);
+            return false;
         }
     }
 
@@ -100,11 +110,29 @@ public class CloudPaygManager {
     }
 
     /**
-     * Check if files exists
-     * @param filename a filename to check
-     * @return returns true when file exists, otherwise false
+     * Executes the script to check the instance type and returns it.
+     * @return PAYG or BYOS depending on the instance type.
+     * @throws ExecutionException when the script is not successfully executed
      */
-    protected boolean fileExists(String filename) {
-        return Files.exists(Path.of(filename));
+    protected String getInstanceType() throws ExecutionException {
+        try {
+            Process proc = Runtime.getRuntime().exec("sudo /usr/bin/instance-flavor-check");
+            proc.waitFor();
+
+            try (InputStream inputStream = proc.getInputStream()) {
+                String type = StringUtils.trim(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
+                LOG.debug("Script execution returned {} with exit code {}", type, proc.exitValue());
+                return type;
+            }
+        }
+        catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+
+            throw new ExecutionException("Interrupted while checking the instance type", ex);
+        }
+        catch (Exception ex) {
+            throw new ExecutionException("Unexpected Error while checking the instance type", ex);
+        }
     }
+
 }

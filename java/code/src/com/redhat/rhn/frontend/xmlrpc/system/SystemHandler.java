@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -158,6 +159,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -180,6 +182,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
@@ -238,24 +241,34 @@ public class SystemHandler extends BaseHandler {
     private SystemEntitlementManager systemEntitlementManager;
     private SystemManager systemManager;
     private final ServerGroupManager serverGroupManager;
+    private CloudPaygManager cloudPaygManager;
 
     /**
      * Instantiates a new system handler.
      *
-     * @param taskomaticApiIn the taskomatic api
-     * @param xmlRpcSystemHelperIn the xml rpc system helper
+     * @param taskomaticApiIn            the taskomatic api
+     * @param xmlRpcSystemHelperIn       the xml rpc system helper
      * @param systemEntitlementManagerIn the system entitlement manager
-     * @param systemManagerIn the system manager
+     * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
+     * @param cloudPaygManagerIn         the pay-as-you-go manager. If null, the one from GlobalInstanceHolder is used.
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
-            SystemEntitlementManager systemEntitlementManagerIn,
-            SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn) {
+                         SystemEntitlementManager systemEntitlementManagerIn,
+                         SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
+                         CloudPaygManager cloudPaygManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
         this.systemManager = systemManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
+        if (cloudPaygManagerIn == null) {
+            this.cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+        }
+        else {
+            this.cloudPaygManager = cloudPaygManagerIn;
+        }
+
     }
 
     /**
@@ -7849,7 +7862,8 @@ public class SystemHandler extends BaseHandler {
                         channelIDs.add(channel.getId());
                     }
                     return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, allowVendorChange, earliestOccurrence);
+                            targetProducts, channelIDs, dryRun, allowVendorChange,
+                            earliestOccurrence, cloudPaygManager.isPaygInstance());
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -7859,12 +7873,17 @@ public class SystemHandler extends BaseHandler {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
                         return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, allowVendorChange, earliestOccurrence);
+                                targetProducts, channelIDs, dryRun, allowVendorChange,
+                                earliestOccurrence, cloudPaygManager.isPaygInstance());
                     }
                 }
             }
             catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
                 throw new TaskomaticApiException(e.getMessage());
+            }
+            catch (DistUpgradePaygException e) {
+                // We forbid product migration in SUMA PAYG instance in certain situations
+                throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
             }
         }
 
@@ -7951,7 +7970,12 @@ public class SystemHandler extends BaseHandler {
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
             return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, allowVendorChange, earliestOccurrence);
+                    channelIDs, dryRun, allowVendorChange,
+                    earliestOccurrence, cloudPaygManager.isPaygInstance());
+        }
+        catch (DistUpgradePaygException e) {
+            // We forbid product migration in SUMA PAYG instance in certain situations
+            throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());

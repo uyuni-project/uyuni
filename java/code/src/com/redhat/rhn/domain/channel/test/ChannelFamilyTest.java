@@ -63,14 +63,11 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
      * @param user the user
      * @param label the label
      * @return the channel family
-     * @throws Exception the exception if anything goes wrong
      */
-    public static ChannelFamily ensureChannelFamilyExists(User user, String label)
-        throws Exception {
+    public static ChannelFamily ensureChannelFamilyExists(User user, String label) {
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
         if (cf == null) {
-            cf = ChannelFamilyFactoryTest.createTestChannelFamily(user, true,
-                    TestUtils.randomString());
+            cf = ChannelFamilyFactoryTest.createTestChannelFamily(user, true, TestUtils.randomString());
             cf.setName(label);
             cf.setLabel(label);
             ChannelFamilyFactory.save(cf);
@@ -86,7 +83,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
     public static void ensurePrivateChannelFamilyExists(User user, ChannelFamily channelFamily) {
         Set<PrivateChannelFamily> families = channelFamily.getPrivateChannelFamilies();
 
-        if (families.size() == 0) {
+        if (families.isEmpty()) {
             PrivateChannelFamily privateChannelFamily = new PrivateChannelFamily();
             privateChannelFamily.setOrg(user.getOrg());
             privateChannelFamily.setChannelFamily(channelFamily);

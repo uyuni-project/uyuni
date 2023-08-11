@@ -110,6 +110,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
+  raise 'Overview System page didn\'t load' unless has_content?('System Overview') || has_content?('Systems')
   system_name = get_system_name(host)
   step %(I wait until I see the "#{system_name}" system, refreshing the page)
 end
@@ -526,6 +527,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
 
+  raise 'Login page is not correctly loaded' unless has_field?('username')
   fill_in('username', with: user)
   fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
@@ -1050,7 +1052,7 @@ When(/^I select the next maintenance window$/) do
 end
 
 When(/^I enter the server hostname as the redfish server address$/) do
-  step %(I enter "#{$server.full_hostname}:8443" as "powerAddress")
+  step %(I enter "#{get_target('server').full_hostname}:8443" as "powerAddress")
 end
 
 When(/^I clear browser cookies$/) do

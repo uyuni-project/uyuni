@@ -31,7 +31,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "linux" as "password"
     And I select "1-PROXY-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Wait until the proxy appears
     When I wait until onboarding is completed for "proxy"

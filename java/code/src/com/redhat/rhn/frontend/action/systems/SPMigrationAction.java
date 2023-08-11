@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.DynamicComparator;
@@ -40,6 +41,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -48,6 +50,7 @@ import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -110,14 +113,15 @@ public class SPMigrationAction extends RhnAction {
     private static final String MSG_SCHEDULED_MIGRATION = "spmigration.message.scheduled";
     private static final String MSG_SCHEDULED_DRYRUN =
             "spmigration.message.scheduled.dry-run";
+    private static final String MSG_ERROR_PAYG_MIGRATION = "spmigration.message.payg.error";
 
     /**
      * {@inheritDoc}
      */
     @Override
     public ActionForward execute(ActionMapping actionMapping,
-            ActionForm actionForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+                                 ActionForm actionForm, HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         // Bind the server object to the request
         RequestContext ctx = new RequestContext(request);
         Server server = ctx.lookupAndBindServer();
@@ -313,7 +317,9 @@ public class SPMigrationAction extends RhnAction {
 
             // Setup list of channels to subscribe to
             List<Long> channelIDs = new ArrayList<>();
-            channelIDs.addAll(Arrays.asList(targetChildChannels));
+            if (targetChildChannels != null) {
+                channelIDs.addAll(Arrays.asList(targetChildChannels));
+            }
             channelIDs.add(targetBaseChannel);
 
             // Schedule the dist upgrade action
@@ -321,7 +327,8 @@ public class SPMigrationAction extends RhnAction {
                     DatePicker.YEAR_RANGE_POSITIVE);
             try {
                 Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                        server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest);
+                        server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest,
+                        GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance());
 
                 // Display a message to the user
                 String product = targetProductSet.getBaseProduct().getFriendlyName();
@@ -337,6 +344,24 @@ public class SPMigrationAction extends RhnAction {
                         targetBaseChannel, targetChildChannels, allowVendorChange);
                 request.setAttribute(NO_MAINTENANCE_WINDOW, true);
                 forward = actionMapping.findForward(CONFIRM);
+            }
+            catch (DistUpgradePaygException e) {
+                Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+                List<SUSEProductSet> migrationTargets = getMigrationTargets(
+                        request,
+                        installedProducts,
+                        server.getServerArch().getCompatibleChannelArch(),
+                        ctx.getCurrentUser()
+                );
+                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
+
+                ActionErrors errors = new ActionErrors();
+                // We do not support migration with individual channels in UI. So we only
+                // need 1 error message as the second case can only happens in API
+                getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
+                getStrutsDelegate().saveMessages(request, errors);
+
+                forward = actionMapping.findForward(TARGET);
             }
         }
 
@@ -501,7 +526,9 @@ public class SPMigrationAction extends RhnAction {
      */
     private SUSEProductSet createProductSet(Long baseProduct, Long[] addonProducts) {
         List<Long> addonProductsList = new ArrayList<>();
-        addonProductsList.addAll(Arrays.asList(addonProducts));
+        if (addonProducts != null) {
+            addonProductsList.addAll(Arrays.asList(addonProducts));
+        }
         return new SUSEProductSet(baseProduct, addonProductsList);
     }
 

@@ -74,7 +74,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "linux" as "password"
     And I select the hostname of "containerized_proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -261,7 +261,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Cleanup: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"

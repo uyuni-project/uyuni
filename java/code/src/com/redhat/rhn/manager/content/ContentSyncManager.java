@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.cloudpayg.PaygProductFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
@@ -54,6 +55,7 @@ import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -598,6 +600,17 @@ public class ContentSyncManager {
                 catch (URISyntaxException e) {
                     throw new ContentSyncException(e);
                 }
+            }
+            else if (c.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+                // Retrieve the products associated with this credentials
+                List<PaygProductInfo> productsList = PaygProductFactory.getProductsForCredentials(c);
+                // If it's SUMA PAYG, check if we synced additional products we can access
+                if (c.getPaygSshData().isSUSEManagerPayg()) {
+                    productsList.addAll(PaygProductFactory.listAdditionalProductsForSUMAPayg());
+                }
+
+                List<SCCRepositoryAuth> repoAuths = PaygProductFactory.refreshRepositoriesAuths(c, productsList);
+                LOG.info("Refreshed {} repository auths associated to the PAYG credentials", repoAuths.size());
             }
             repos.addAll(getAdditionalRepositories());
             refreshRepositoriesAuthentication(repos, c, mirrorUrl);
@@ -1650,6 +1663,14 @@ public class ContentSyncManager {
                 catch (SCCClientException | URISyntaxException e) {
                     throw new ContentSyncException(e);
                 }
+            }
+
+            // If we have only RMT credentials
+            if (!credentials.isEmpty() &&
+                    credentials.stream().allMatch(c -> c != null && c.isTypeOf(Credentials.TYPE_CLOUD_RMT))) {
+                // Remove Ubuntu and Debian products until RMT supports them
+                tree.removeIf(productEntry -> productEntry.getChannelLabel().contains("amd64") ||
+                    productEntry.getParentChannelLabel().filter(label -> label.contains("amd64")).isPresent());
             }
         }
         return productTreeFix(

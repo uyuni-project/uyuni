@@ -99,6 +99,10 @@ const _COLS = {
   mix: { width: 13, um: "em" },
 };
 
+function loadMetadata() {
+  return Network.get("/rhn/manager/api/admin/products/metadata");
+}
+
 function reloadData() {
   return Network.get("/rhn/manager/api/admin/products");
 }
@@ -140,18 +144,33 @@ class ProductsPageWrapper extends React.Component {
 
   refreshServerData = () => {
     this.setState({ loading: true });
-    var currentObject = this;
-    let resultMessages: MessageType[] = currentObject.state.errors;
-    if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
-      resultMessages = MessagesUtils.warning(
-        t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown.")
-      );
-    }
+    const currentObject = this;
+
+    loadMetadata()
+      .then((metadata) => {
+        currentObject.setState({
+          issMaster: metadata.issMaster,
+          refreshNeeded: metadata.refreshNeeded,
+          refreshRunning: metadata.refreshRunning || metadata.refreshFileLocked,
+          noToolsChannelSubscription: metadata.noToolsChannelSubscription,
+        });
+
+        if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+          currentObject.setState({
+            errors: MessagesUtils.warning(
+              t(
+                "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+              )
+            ),
+          });
+        }
+      })
+      .catch(this.handleResponseError);
+
     reloadData()
       .then((data) => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
-          errors: resultMessages,
           loading: false,
           selectedItems: [],
           scheduleResyncItems: [],
