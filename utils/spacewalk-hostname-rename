@@ -638,6 +638,10 @@ if [ -e $MGR_SYNC_CONF ]; then
 fi
 print_status 0  # just simulate end
 
+echo -n "Changing postfix settings ... " | tee -a $LOG
+postconf -e myhostname=$HOSTNAME
+systemctl restart postfix
+
 echo -n "Starting spacewalk services ... " | tee -a $LOG
 if [ "$DB_SERVICE" != "" ]
 then
