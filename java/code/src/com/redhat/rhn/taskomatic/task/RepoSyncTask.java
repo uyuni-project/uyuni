@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
@@ -72,6 +74,16 @@ public class RepoSyncTask extends RhnJavaJob {
                     params.add("--" + p);
                 }
             }
+        }
+        if (!GlobalInstanceHolder.PAYG_MANAGER.isCompliant()) {
+            log.error("Synchronization of repositories is forbidden as SUSE Manager Server Pay-as-you-go " +
+                    "is unable to send accounting data to the cloud provider.");
+            NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                    new ChannelSyncFailed(null, null, LocalizationService.getInstance()
+                            .getMessage("notification.channelsyncfailed.notcompliant")));
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
+            return;
         }
 
         for (Long channelId : channelIds) {
