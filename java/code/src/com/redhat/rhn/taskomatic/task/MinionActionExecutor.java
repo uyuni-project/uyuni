@@ -111,7 +111,8 @@ public class MinionActionExecutor extends RhnJavaJob {
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. Wait for some minutes checking if it appears
         int waitedTime = 0;
-        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME &&
+                !allServerActionsFinished(action)) {
             action = ActionFactory.lookupById(actionId);
             try {
                 Thread.sleep(ACTION_DATABASE_POLL_TIME);
@@ -125,6 +126,14 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         if (action == null) {
             log.error("Action not found: {}", actionId);
+            return;
+        }
+
+        // Instead of putting the thread to sleep in the loop above, checking if all server actions have already
+        // finished (they might have been manually canceled, for example) will prevent blocking the Taskomatic for
+        // actions that will never appear in the database.
+        if (allServerActionsFinished(action)) {
+            log.warn("All server actions for action {} are finished. Skipping it.", actionId);
             return;
         }
 
@@ -191,5 +200,14 @@ public class MinionActionExecutor extends RhnJavaJob {
                      .stream()
                      .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
                      .count();
+    }
+
+    private boolean allServerActionsFinished(Action action) {
+        return action != null &&
+            !CollectionUtils.isEmpty(action.getServerActions()) &&
+            action.getServerActions().stream().allMatch(serverAction ->
+                    ActionFactory.STATUS_FAILED.equals(serverAction.getStatus()) ||
+                    ActionFactory.STATUS_COMPLETED.equals(serverAction.getStatus())
+            );
     }
 }
