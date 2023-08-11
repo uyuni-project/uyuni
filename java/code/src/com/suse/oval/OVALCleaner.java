@@ -32,7 +32,7 @@ public class OVALCleaner {
         root.getObjects().getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
     }
 
-    private DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+    public DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
         fillCves(definition, osFamily, osVersion);
         fillOsFamily(definition, osFamily);
         fillOsVersion(definition, osVersion);
@@ -75,6 +75,10 @@ public class OVALCleaner {
     private void doCleanupTest(TestType test, OsFamily osFamily, String osVersion) {
         if (osFamily == OsFamily.DEBIAN) {
             test.setId(convertDebianId(test.getId(), osVersion));
+            test.setObjectRef(convertDebianId(test.getObjectRef(), osVersion));
+            if (test.getStateRef().isPresent()) {
+                test.setStateRef(convertDebianId(test.getStateRef().get(), osVersion));
+            }
         }
     }
 

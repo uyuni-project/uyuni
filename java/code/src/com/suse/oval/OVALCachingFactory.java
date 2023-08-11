@@ -63,66 +63,13 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
-    private static StateType cleanupPackageState(StateType packageState, OsFamily osFamily, String osVersion) {
-        if (osFamily == OsFamily.DEBIAN) {
-            packageState.setId(convertDebianId(packageState.getId(), osVersion));
-        }
-        return packageState;
-    }
-
-    private static TestType cleanupPackageTest(TestType packageTest, OsFamily osFamily, String osVersion) {
-        if (osFamily == OsFamily.DEBIAN) {
-            packageTest.setId(convertDebianId(packageTest.getId(), osVersion));
-            packageTest.setObjectRef(convertDebianId(packageTest.getObjectRef(), osVersion));
-            if (packageTest.getStateRef().isPresent()) {
-                packageTest.setStateRef(convertDebianId(packageTest.getStateRef().get(), osVersion));
-            }
-        }
-
-        return packageTest;
-    }
-
-    private static ObjectType cleanupPackageObject(ObjectType packageObject, OsFamily osFamily, String osVersion) {
-        if (osFamily == OsFamily.DEBIAN) {
-            packageObject.setId(convertDebianId(packageObject.getId(), osVersion));
-        }
-        return packageObject;
-    }
-
-    public static DefinitionType cleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
-        definition.setOsFamily(osFamily);
-        definition.setOsVersion(osVersion);
-        definition.setSingleCve(extractCveFromDefinition(definition, osFamily));
-
-        CriteriaType criteriaRoot = definition.getCriteria();
-        if (osFamily == OsFamily.DEBIAN) {
-            convertDebianTestRefs(criteriaRoot, osVersion);
-        }
-
-        return definition;
-    }
-
     /**
-     * Cleanup and save all OVAL constructs (definitions, tests, objects and states) associated with the given {@code rootType}
+     * Save all OVAL constructs (definitions, tests, objects and states) associated with the given {@code rootType}
      * */
     public static void saveOVAL(OvalRootType rootType, OsFamily osFamily, String osVersion) {
-        List<StateType> cleanPackageStates =
-                rootType.getStates().getStates().stream().map(state -> cleanupPackageState(state, osFamily, osVersion))
-                        .collect(Collectors.toList());
-        List<ObjectType> cleanPackageObjects =
-                rootType.getObjects().getObjects().stream().map(object -> cleanupPackageObject(object, osFamily, osVersion))
-                        .collect(Collectors.toList());
-        List<TestType> cleanPackageTests =
-                rootType.getTests().getTests().stream().map(test -> cleanupPackageTest(test, osFamily, osVersion))
-                        .collect(Collectors.toList());
-        List<DefinitionType> cleanDefinitions =
-                rootType.getDefinitions().stream().map(definition -> cleanupDefinition(definition, osFamily, osVersion))
-                        .collect(Collectors.toList());
-
-        // saveDefinitions(cleanDefinitions, osFamily, osVersion);
-        savePackageObjects(cleanPackageObjects);
-        savePackageStates(cleanPackageStates);
-        savePackageTests(cleanPackageTests);
+        savePackageObjects(rootType.getObjects().getObjects());
+        savePackageStates(rootType.getStates().getStates());
+        savePackageTests(rootType.getTests().getTests());
     }
 
     /**
@@ -367,13 +314,9 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     public static void savePlatformsVulnerablePackages(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
-        List<DefinitionType> cleanDefinitions =
-                definitions.stream().map(definition -> cleanupDefinition(definition, osFamily, osVersion))
-                        .collect(Collectors.toList());
-
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
-        List<Map<String, Object>> collect = cleanDefinitions.stream().flatMap(definition -> {
+        List<Map<String, Object>> collect = definitions.stream().flatMap(definition -> {
             if (definition.getCriteria() == null) {
                 return Stream.empty();
             }
@@ -429,88 +372,6 @@ public class OVALCachingFactory extends HibernateFactory {
                 n -> source.subList(n * 60, n == fullChunks ? size : (n + 1) * 60));
     }
 
-
-    /**
-     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
-     * same id but different content for different versions of Debian.
-     * <p>
-     * To be workaround this, we insert the codename of the version into the id string before storage
-     */
-    private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
-        if (root instanceof CriteriaType) {
-            for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
-                convertDebianTestRefs(criteria, osVersion);
-            }
-        } else {
-            CriterionType criterionType = (CriterionType) root;
-            criterionType.setTestRef(convertDebianId(criterionType.getTestRef(), osVersion));
-        }
-    }
-
-    /**
-     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
-     * same id but different content for different versions of Debian.
-     * <p>
-     * To be workaround this, we insert the codename of the version into the id string before storage
-     */
-    private static String convertDebianId(String id, String osVersion) {
-        String codename;
-        if ("10.0".equals(osVersion) || "10".equals(osVersion)) {
-            codename = "buster";
-        } else if ("11.0".equals(osVersion) || "11".equals(osVersion)) {
-            codename = "bullseye";
-        } else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
-            codename = "bookworm";
-        } else {
-            throw new IllegalArgumentException("Invalid debian version: " + osVersion);
-        }
-        return id.replaceAll("debian", "debian-" + codename);
-    }
-
-
-    /**
-     * Looks up an {@link OVALReference} by id (reference and definition id)
-     */
-    public static OVALReference lookupReferenceByRefIdAndDefinition(String refId, String definitionId) {
-        return getSession()
-                .createNamedQuery("OVALReference.lookupReferenceByRefIdAndDefinition", OVALReference.class)
-                .setParameter("refId", refId)
-                .setParameter("definitionId", definitionId)
-                .uniqueResult();
-    }
-
-    /**
-     * Looks up an {@link OVALPlatform} or inserts it if it does not exist.
-     *
-     * @param cpe cpe of the platform
-     * @return the platform
-     */
-    public static OVALPlatform lookupOrInsertPlatformByCpe(String cpe) {
-        OVALPlatform platform = lookupPlatformByCpe(cpe);
-        if (platform == null) {
-            OVALPlatform newPlatform = new OVALPlatform();
-            newPlatform.setCpe(cpe);
-            instance.saveObject(newPlatform);
-
-            platform = newPlatform;
-        }
-
-        return platform;
-    }
-
-    public static OVALPlatform lookupPlatformByCpe(String cpe) {
-        Session session = HibernateFactory.getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        CriteriaQuery<OVALPlatform> criteriaQuery = builder.createQuery(OVALPlatform.class);
-        Root<OVALPlatform> root = criteriaQuery.from(OVALPlatform.class);
-
-        criteriaQuery.where(builder.equal(root.get("cpe"), cpe));
-
-        return session.createQuery(criteriaQuery)
-                .setCacheable(true).uniqueResult();
-    }
-
     public static OVALDefinition lookupDefinitionById(String id) {
         return getSession().byId(OVALDefinition.class).load(id);
     }
@@ -524,18 +385,6 @@ public class OVALCachingFactory extends HibernateFactory {
         }
 
         return lookup;
-    }
-
-    public static void savePackageTest(OVALPackageTest pkgTest) {
-
-    }
-
-    public static void savePackageState(OVALPackageState pkgState) {
-
-    }
-
-    public static void savePackageObject(OVALPackageObject pkgObject) {
-
     }
 
     public static OVALPackageTest lookupPackageTestById(String id) {
@@ -579,71 +428,8 @@ public class OVALCachingFactory extends HibernateFactory {
                 .getResultList();
     }
 
-    public static void assignVulnerablePackageToPlatform(String platformName, String cveName, String pkgName, String pkgFixVersion) {
-        OVALPlatform platform = lookupPlatformByCpe(platformName);
-        Cve cve = CveFactory.lookupByName(cveName);
-        OVALVulnerablePackage vulnerablePkg = lookupOrInsertVulnerablePackage(pkgName, pkgFixVersion);
-
-        OVALPlatformVulnerablePackage platformVulnerablePkg = new OVALPlatformVulnerablePackage();
-        platformVulnerablePkg.setPlatform(platform);
-        platformVulnerablePkg.setCve(cve);
-        platformVulnerablePkg.setVulnerablePackage(vulnerablePkg);
-
-        instance.saveObject(platformVulnerablePkg);
-    }
-
-    public static OVALVulnerablePackage lookupOrInsertVulnerablePackage(String pkgName, String fixVersion) {
-        OVALVulnerablePackage vulnerablePackage = lookupVulnerablePackageByNameAndFixVersion(pkgName, fixVersion);
-        if (vulnerablePackage != null) {
-            return vulnerablePackage;
-        } else {
-            OVALVulnerablePackage newVulnerablePackage = new OVALVulnerablePackage();
-            newVulnerablePackage.setName(pkgName);
-            newVulnerablePackage.setFixVersion(fixVersion);
-
-            instance.saveObject(newVulnerablePackage);
-
-            return newVulnerablePackage;
-        }
-    }
-
-    public static OVALVulnerablePackage lookupVulnerablePackageByNameAndFixVersion(String pkgName, String fixVersion) {
-        Session session = HibernateFactory.getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        CriteriaQuery<OVALVulnerablePackage> criteriaQuery = builder.createQuery(OVALVulnerablePackage.class);
-        Root<OVALVulnerablePackage> root = criteriaQuery.from(OVALVulnerablePackage.class);
-
-        criteriaQuery.where(builder.and(
-                        builder.equal(root.get("name"), pkgName),
-                        builder.equal(root.get("fixVersion"), fixVersion)
-                )
-        );
-
-        return session.createQuery(criteriaQuery).uniqueResult();
-    }
-
     @Override
     protected Logger getLogger() {
         return LOG;
-    }
-
-    private static String extractCveFromDefinition(DefinitionType definition, OsFamily osFamily) {
-        if (osFamily == null) {
-            throw new IllegalStateException("Definition doesn't have a source property");
-        }
-        switch (osFamily) {
-            case openSUSE_LEAP:
-            case SUSE_LINUX_ENTERPRISE_SERVER:
-            case SUSE_LINUX_ENTERPRISE_DESKTOP:
-                return definition.getMetadata().getTitle();
-            case DEBIAN:
-                return definition.getMetadata().getTitle().split("\\s+")[0];
-            case REDHAT_ENTERPRISE_LINUX:
-                return definition.getMetadata().getTitle().substring(0, 10);
-            case UBUNTU:
-                throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
-        }
-        return "";
     }
 }

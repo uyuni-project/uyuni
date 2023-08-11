@@ -13,6 +13,7 @@ import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
 import com.suse.oval.ovaltypes.*;
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
-
+    private final OVALCleaner ovalCleaner = new OVALCleaner();
     OvalParser ovalParser = new OvalParser();
 
     @Test
@@ -150,7 +151,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     }
 
     private void setupDefinition(DefinitionType definitionType, OsFamily osFamily, String osVersion) {
-        OVALCachingFactory.cleanupDefinition(definitionType, osFamily, osVersion);
+        ovalCleaner.doCleanupDefinition(definitionType, osFamily, osVersion);
     }
 
     @Test
