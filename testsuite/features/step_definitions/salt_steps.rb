@@ -31,7 +31,7 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -43,7 +43,7 @@ end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -55,7 +55,7 @@ end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
@@ -67,7 +67,7 @@ end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  salt_call = use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
@@ -84,13 +84,13 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
 end
 
 When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
-  salt_minion = use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  salt_minion = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   repeat_until_timeout(timeout: 600, message: "A Salt job is still running on #{minion}") do
     output, _code = target.run("#{salt_call} -lquiet saltutil.running", verbose: true)
     break if output == "local:\n"
@@ -218,13 +218,13 @@ end
 
 When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_cache = use_salt_bundle ? "/var/cache/venv-salt-minion/" : "/var/cache/salt/"
+  salt_cache = use_salt_bundle ? '/var/cache/venv-salt-minion/' : '/var/cache/salt/'
   file_delete(node, "#{salt_cache}#{filename}")
 end
 
 When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_config = use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
   file_delete(node, "#{salt_config}#{filename}")
 end
 
@@ -242,7 +242,7 @@ start_event_grains:
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
-  salt_config = use_salt_bundle ? "/etc/venv-salt-minion/minion.d/" : "/etc/salt/minion.d/"
+  salt_config = use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
   step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
@@ -305,16 +305,16 @@ When(/^I refresh the pillar data$/) do
 end
 
 When(/^I wait until there is no pillar refresh salt job active$/) do
-  repeat_until_timeout(message: "pillar refresh job still active") do
-    output, = get_target('server').run("salt-run jobs.active")
-    break unless output.include?("saltutil.refresh_pillar")
+  repeat_until_timeout(message: 'pillar refresh job still active') do
+    output, = get_target('server').run('salt-run jobs.active')
+    break unless output.include?('saltutil.refresh_pillar')
     sleep 1
   end
 end
 
 When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*)"$/) do |salt_module, minion|
   target = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}", timeout: 600)
 end
 
@@ -400,7 +400,7 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)
@@ -472,7 +472,7 @@ end
 # salt-ssh steps
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
+  pkgs = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif rh_host?(host)
