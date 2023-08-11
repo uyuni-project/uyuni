@@ -1,3 +1,6 @@
+- Require LTSS channels for SUSE Linux Enterprise 15 SP1/SP2/SP3
+  and SUSE Manager Proxy 4.2 (bsc#1214187)
+
 -------------------------------------------------------------------
 Mon Aug 07 14:38:08 CEST 2023 - marina.latini@suse.com
 
