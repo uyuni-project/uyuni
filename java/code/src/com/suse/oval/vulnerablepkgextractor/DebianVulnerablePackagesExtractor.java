@@ -47,7 +47,7 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
         productVulnerablePackages.setProductCpe(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
-        productVulnerablePackages.setCve(definition.getCve());
+        productVulnerablePackages.setSingleCve(definition.getSingleCve().orElseThrow());
 
         return List.of(productVulnerablePackages);
     }

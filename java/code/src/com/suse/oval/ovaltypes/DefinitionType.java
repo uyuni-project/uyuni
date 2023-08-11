@@ -10,7 +10,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -45,7 +48,7 @@ public class DefinitionType {
     protected Boolean deprecated;
 
     @Transient
-    protected String cve;
+    protected List<String> cves = new ArrayList<>();
     @Transient
     protected OsFamily osFamily;
     @Transient
@@ -146,13 +149,26 @@ public class DefinitionType {
         this.deprecated = value;
     }
 
-    public String getCve() {
-        return cve;
+    public Optional<String> getSingleCve() {
+        if (cves.isEmpty()) {
+            return Optional.empty();
+        }
+        return cves.stream().findFirst();
     }
 
-    public void setCve(String cve) {
-        this.cve = cve;
+    public void setSingleCve(String cve) {
+        this.cves.clear();
+        this.cves.add(cve);
     }
+
+    public List<String> getCves() {
+        return cves;
+    }
+
+    public void setCves(List<String> cves) {
+        this.cves = cves;
+    }
+
     public OsFamily getOsFamily() {
         return osFamily;
     }

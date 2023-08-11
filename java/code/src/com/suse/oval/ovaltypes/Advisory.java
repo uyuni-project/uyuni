@@ -15,6 +15,9 @@ public class Advisory {
     @XmlElement(name = "affected_cpe_list", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     private AffectedCpeList affectedCpeList;
 
+    @XmlElement(name = "cve", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+    private List<AdvisoryCveType> cveList;
+
     @XmlElement(name = "affected", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     private AdvisoryAffectedType affected;
 
@@ -31,6 +34,14 @@ public class Advisory {
     public List<String> getAffectedComponents() {
         return Optional.ofNullable(affected).map(AdvisoryAffectedType::getResolution)
                 .map(AdvisoryResolutionType::getAffectedComponents).orElse(Collections.emptyList());
+    }
+
+    public List<AdvisoryCveType> getCveList() {
+        return Optional.ofNullable(cveList).orElse(Collections.emptyList());
+    }
+
+    public void setCveList(List<AdvisoryCveType> cveList) {
+        this.cveList = cveList;
     }
 
     public void setAffected(AdvisoryAffectedType affected) {

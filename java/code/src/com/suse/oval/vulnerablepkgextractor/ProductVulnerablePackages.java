@@ -8,7 +8,7 @@ import java.util.List;
  * vulnerable to the cve
  */
 public class ProductVulnerablePackages {
-    private String cve;
+    private List<String> cves = new ArrayList<>();
     private String productCpe;
     private final List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
     private String productUserFriendlyName;
@@ -37,12 +37,17 @@ public class ProductVulnerablePackages {
         this.vulnerablePackages.addAll(vulnerablePackages);
     }
 
-    public String getCve() {
-        return cve;
+    public List<String> getCves() {
+        return cves;
     }
 
-    public void setCve(String cve) {
-        this.cve = cve;
+    public void setCves(List<String> cves) {
+        this.cves = cves;
+    }
+
+    public void setSingleCve(String cve) {
+        this.cves.clear();
+        cves.add(cve);
     }
 
     public void setProductUserFriendlyName(String product) {
@@ -56,16 +61,18 @@ public class ProductVulnerablePackages {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(cve).append("\n");
-        stringBuilder.append(productCpe).append("   +   ").append(productUserFriendlyName).append("\n");
-        stringBuilder.append("****************************************").append("\n");
-        for (VulnerablePackage vulnerablePackage : vulnerablePackages) {
-            stringBuilder.append(vulnerablePackage.getName())
-                    .append(" ")
-                    .append(vulnerablePackage.getFixVersion().orElse("none"))
-                    .append("\n");
+        for(String cve : cves) {
+            stringBuilder.append(cve).append("\n");
+            stringBuilder.append(productCpe).append("   +   ").append(productUserFriendlyName).append("\n");
+            stringBuilder.append("****************************************").append("\n");
+            for (VulnerablePackage vulnerablePackage : vulnerablePackages) {
+                stringBuilder.append(vulnerablePackage.getName())
+                        .append(" ")
+                        .append(vulnerablePackage.getFixVersion().orElse("none"))
+                        .append("\n");
+            }
+            stringBuilder.append("////////////////////////////////////////").append("\n");
         }
-        stringBuilder.append("////////////////////////////////////////").append("\n");
 
         return stringBuilder.toString();
     }

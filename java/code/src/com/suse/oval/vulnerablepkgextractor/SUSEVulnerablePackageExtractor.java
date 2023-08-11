@@ -91,7 +91,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                     .lookupPackageTestById(productCriterion.getTestRef());
 
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
-            vulnerableProduct.setCve(definition.getCve());
+            vulnerableProduct.setSingleCve(definition.getSingleCve().orElseThrow());
             vulnerableProduct.setProductCpe(deriveCpe(productTest).asString());
             vulnerableProduct.setProductUserFriendlyName(productUserFriendlyName);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);

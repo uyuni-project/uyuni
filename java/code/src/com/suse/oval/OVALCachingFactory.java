@@ -92,7 +92,7 @@ public class OVALCachingFactory extends HibernateFactory {
     public static DefinitionType cleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
         definition.setOsFamily(osFamily);
         definition.setOsVersion(osVersion);
-        definition.setCve(extractCveFromDefinition(definition, osFamily));
+        definition.setSingleCve(extractCveFromDefinition(definition, osFamily));
 
         CriteriaType criteriaRoot = definition.getCriteria();
         if (osFamily == OsFamily.DEBIAN) {
@@ -119,7 +119,7 @@ public class OVALCachingFactory extends HibernateFactory {
                 rootType.getDefinitions().stream().map(definition -> cleanupDefinition(definition, osFamily, osVersion))
                         .collect(Collectors.toList());
 
-        saveDefinitions(cleanDefinitions, osFamily, osVersion);
+        // saveDefinitions(cleanDefinitions, osFamily, osVersion);
         savePackageObjects(cleanPackageObjects);
         savePackageStates(cleanPackageStates);
         savePackageTests(cleanPackageTests);
@@ -139,7 +139,7 @@ public class OVALCachingFactory extends HibernateFactory {
             params.put("id", definition.getId());
             params.put("class", definition.getDefinitionClass().toString());
             params.put("title", definition.getMetadata().getTitle());
-            params.put("cve_name", definition.getCve());
+            params.put("cve_name", definition.getSingleCve());
             params.put("description", definition.getMetadata().getDescription());
             params.put("os_family", osFamily.toString());
             params.put("os_version", osVersion);
@@ -383,9 +383,13 @@ public class OVALCachingFactory extends HibernateFactory {
 
             return vulnerablePackagesExtractor.extract().stream().flatMap(productVulnerablePackages ->
                     productVulnerablePackages.getVulnerablePackages().stream().map(vulnerablePackage -> {
+                        if(osFamily == OsFamily.REDHAT_ENTERPRISE_LINUX) {
+                            LOG.warn(vulnerablePackage);
+                        }
+
                         Map<String, Object> params = new HashMap<>();
-                        params.put("product_name", productVulnerablePackages.getProduct());
-                        params.put("cve_name", productVulnerablePackages.getCve());
+                        params.put("product_name", productVulnerablePackages.getProductCpe());
+                        params.put("cve_name", productVulnerablePackages.getCves());
                         params.put("package_name", vulnerablePackage.getName());
                         params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
 
@@ -394,9 +398,9 @@ public class OVALCachingFactory extends HibernateFactory {
         }).collect(Collectors.toList());
 
         LOG.warn("Starting...");
-        toBatches(collect).forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
+        toBatches(collect).peek(params -> LOG.warn("Saved 1 batch of vulnerable packages"))
+                .forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
         LOG.warn("Ending...");
-
     }
 
     public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
@@ -636,6 +640,7 @@ public class OVALCachingFactory extends HibernateFactory {
             case DEBIAN:
                 return definition.getMetadata().getTitle().split("\\s+")[0];
             case REDHAT_ENTERPRISE_LINUX:
+                return definition.getMetadata().getTitle().substring(0, 10);
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
         }
