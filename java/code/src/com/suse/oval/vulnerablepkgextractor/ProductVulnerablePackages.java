@@ -9,8 +9,9 @@ import java.util.List;
  */
 public class ProductVulnerablePackages {
     private String cve;
-    private String product;
+    private String productCpe;
     private final List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
+    private String productUserFriendlyName;
 
     /**
      *
@@ -19,12 +20,12 @@ public class ProductVulnerablePackages {
 
     }
 
-    public String getProduct() {
-        return product;
+    public String getProductCpe() {
+        return productCpe;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setProductCpe(String productCpe) {
+        this.productCpe = productCpe;
     }
 
     public List<VulnerablePackage> getVulnerablePackages() {
@@ -44,11 +45,19 @@ public class ProductVulnerablePackages {
         this.cve = cve;
     }
 
+    public void setProductUserFriendlyName(String product) {
+        this.productUserFriendlyName = product;
+    }
+
+    public String getProductUserFriendlyName() {
+        return productUserFriendlyName;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(cve).append("\n");
-        stringBuilder.append(product).append("\n");
+        stringBuilder.append(productCpe).append("   +   ").append(productUserFriendlyName).append("\n");
         stringBuilder.append("****************************************").append("\n");
         for (VulnerablePackage vulnerablePackage : vulnerablePackages) {
             stringBuilder.append(vulnerablePackage.getName())

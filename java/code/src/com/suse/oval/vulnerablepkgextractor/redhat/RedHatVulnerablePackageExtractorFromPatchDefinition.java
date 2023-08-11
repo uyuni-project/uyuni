@@ -47,7 +47,7 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
         vulnerablePackage.setFixVersion(evr);
 
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
-        productVulnerablePackages.setProduct(deriveCpe().asString());
+        productVulnerablePackages.setProductCpe(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
         productVulnerablePackages.setCve(definition.getCve());
 
