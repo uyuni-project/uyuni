@@ -9408,6 +9408,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+        <source>Syncing channels forbidden</source>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ Pay-as-you-go is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.</source>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
       </trans-unit>
@@ -9536,6 +9543,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.action.rejection.reason">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
+      </trans-unit>
+      <trans-unit id="task.action.rejection.notcompliant">
+        <source>
+The action you attempted could not be executed because the @@PRODUCT_NAME@@ Pay-as-you-go system is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.
+	</source>
       </trans-unit>
     </body>
   </file>
