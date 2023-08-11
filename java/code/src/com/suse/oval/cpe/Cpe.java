@@ -4,6 +4,7 @@ import static com.suse.oval.OsFamily.*;
 
 import com.suse.oval.OsFamily;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Cpe {
@@ -85,5 +86,23 @@ public class Cpe {
             return Optional.of(openSUSE_LEAP);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Cpe cpe = (Cpe) o;
+        return Objects.equals(vendor, cpe.vendor) && Objects.equals(product, cpe.product) &&
+                Objects.equals(version, cpe.version) && Objects.equals(update, cpe.update);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vendor, product, version, update);
     }
 }

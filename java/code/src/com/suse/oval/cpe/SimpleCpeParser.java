@@ -23,6 +23,8 @@ public class SimpleCpeParser {
             throw new IllegalArgumentException("CPE is expected to be in URI format and for operating systems");
         }
 
+        cpeURI = cpeURI.replace("cpe:/o:", "");
+
         String[] parts = cpeURI.split(":");
 
         if (parts.length < 3) {
