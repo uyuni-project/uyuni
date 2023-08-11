@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
-    private static final Pattern FIND_SP_REGEX = Pattern.compile(".*\\sSP(?<sp>[0-9])\\s.*");
+    private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
+            "^\\s*(?<releasePackage>[-a-zA-Z_]+)\\s*.*==(?<releasePackageVersion>[0-9.]+)\\s*$");
     private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
 
     public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition) {
@@ -33,13 +34,6 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
         List<CriterionType> productCriterions = collectCriterions(productCriteriaRootNode);
 
-        List<String> products = new ArrayList<>();
-        for (CriterionType productCriterion : productCriterions) {
-            String comment = productCriterion.getComment();
-            String product = comment.replace(" is installed", "");
-            products.add(product);
-        }
-
         List<CriterionType> filteredPackageCriterions = collectCriterions(packageCriteriaRootNode, 1)
                 .stream()
                 .filter(c ->
@@ -54,6 +48,10 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             String testId = packageCriterion.getTestRef();
 
             OVALPackageTest ovalPackageTest = OVALCachingFactory.lookupPackageTestById(testId);
+
+            if (ovalPackageTest == null) {
+                throw new IllegalStateException("OVAL test not found in the database: " + testId);
+            }
 
             Optional<OVALPackageState> ovalPackageStateOpt = ovalPackageTest.getPackageState();
             OVALPackageObject ovalPackageObject = ovalPackageTest.getPackageObject();
@@ -86,12 +84,16 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         }
 
         List<ProductVulnerablePackages> result = new ArrayList<>();
-        for (String product : products) {
-            ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
-            // TODO: needs to be refactored to better imply that the title of SUSE definitions is the CVE
-            vulnerableProduct.setCve(definition.getCve());
+        for (CriterionType productCriterion : productCriterions) {
+            String comment = productCriterion.getComment();
+            String productUserFriendlyName = comment.replace(" is installed", "");
+            OVALPackageTest productTest = OVALCachingFactory
+                    .lookupPackageTestById(productCriterion.getTestRef());
 
-            vulnerableProduct.setProduct(deriveCpe(product).asString());
+            ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
+            vulnerableProduct.setCve(definition.getCve());
+            vulnerableProduct.setProductCpe(deriveCpe(productTest).asString());
+            vulnerableProduct.setProductUserFriendlyName(productUserFriendlyName);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
             result.add(vulnerableProduct);
@@ -129,22 +131,56 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .anyMatch(comment -> comment.startsWith(osProduct));
     }
 
-    public Cpe deriveCpe(String product) {
+    public Cpe deriveCpe(OVALPackageTest productTest) {
         OsFamily osProduct = definition.getOsFamily();
+        if (osProduct == OsFamily.openSUSE_LEAP) {
+            return deriveOpenSUSELeapCpe();
+        } else {
+            return deriveSUSEProductCpe(productTest);
+        }
+    }
+
+    public Cpe deriveOpenSUSELeapCpe() {
         return new CpeBuilder()
-                .withVendor(osProduct.vendor())
-                .withProduct(osProduct.shortname())
+                .withVendor("opensuse")
+                .withProduct("leap")
                 .withVersion(definition.getOsVersion())
-                .withUpdate(deriveSP(product).orElse(""))
                 .build();
     }
 
-    public Optional<String> deriveSP(String product) {
-        Matcher matcher = FIND_SP_REGEX.matcher(product);
-        if (matcher.matches()) {
-            return Optional.ofNullable(FIND_SP_REGEX.matcher(product).reset()
-                    .group("sp"));
+    public Cpe deriveSUSEProductCpe(OVALPackageTest productTest) {
+        String testComment = productTest.getComment();
+        String productPart = null;
+        String versionPart = null;
+        String updatePart = null;
+
+        Matcher matcher = RELEASE_PACKAGE_REGEX.matcher(testComment);
+        if (!matcher.matches()) {
+            throw new IllegalStateException("Failed to derive CPE from OVAL test");
         }
-        return Optional.empty();
+
+        String releasePackage = matcher.group("releasePackage");
+        String releasePackageVersion = matcher.group("releasePackageVersion");
+        productPart = releasePackage.replace("-release", "").toLowerCase();
+
+        if (releasePackageVersion.contains(".")) {
+            if ("ses".equals(productPart) || productPart.contains("suse-manager")) {
+                versionPart = releasePackageVersion;
+            } else {
+                int periodIndex = releasePackageVersion.indexOf('.');
+                versionPart = releasePackageVersion.substring(0, periodIndex);
+                String update = releasePackageVersion.substring(periodIndex + 1);
+                updatePart = "sp" + update;
+            }
+        } else {
+            versionPart = releasePackageVersion;
+        }
+
+        return new CpeBuilder()
+                .withVendor("suse")
+                .withProduct(productPart)
+                .withVersion(versionPart)
+                .withUpdate(updatePart)
+                .build();
     }
 }
