@@ -4,7 +4,7 @@
 
 <html>
     <body>
-        <h1><rhn:icon type="header-info" /><bean:message key="help.jsp.copyright.title"/></h1>
+        <h1><rhn:icon type="header-info" /><bean:message key="help.jsp.copyright.title"/>TEST</h1>
         <p><bean:message key="copyright.jsp.title"/></p>
         <c:choose>
             <c:when test="${isUyuni}">
