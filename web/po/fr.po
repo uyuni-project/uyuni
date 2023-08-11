@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-04 14:19+0200\n"
+"POT-Creation-Date: 2023-08-11 15:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -282,7 +282,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1162
+#: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -319,7 +319,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:438
+#: ../html/src/manager/admin/setup/products/products.tsx:457
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -328,7 +328,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:444
+#: ../html/src/manager/admin/setup/products/products.tsx:463
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -653,7 +653,7 @@ msgid "({selectedCount} selected)"
 msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:365
+#: ../html/src/manager/admin/setup/products/products.tsx:384
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
 msgid "Clear"
 msgstr ""
@@ -981,7 +981,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:315
 msgid "Setup Wizard"
 msgstr ""
 
@@ -1019,7 +1019,7 @@ msgid "never"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:449
+#: ../html/src/manager/admin/setup/products/products.tsx:468
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr ""
@@ -1087,8 +1087,8 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:92
-#: ../html/src/manager/login/uyuni/login.tsx:86
+#: ../html/src/manager/login/susemanager/login.tsx:93
+#: ../html/src/manager/login/uyuni/login.tsx:91
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -1162,89 +1162,89 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:147
+#: ../html/src/manager/admin/setup/products/products.tsx:162
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:190
+#: ../html/src/manager/admin/setup/products/products.tsx:209
 msgid "The product catalog refresh is running..."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:216
+#: ../html/src/manager/admin/setup/products/products.tsx:235
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:261
+#: ../html/src/manager/admin/setup/products/products.tsx:280
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:270
+#: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:321
+#: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:326
+#: ../html/src/manager/admin/setup/products/products.tsx:345
 msgid "The product catalog is still refreshing, please wait."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:328
+#: ../html/src/manager/admin/setup/products/products.tsx:347
 msgid "Select some product first."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:337
-#: ../html/src/manager/admin/setup/products/products.tsx:345
+#: ../html/src/manager/admin/setup/products/products.tsx:356
+#: ../html/src/manager/admin/setup/products/products.tsx:364
 msgid "Add products"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:383
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:405
+#: ../html/src/manager/admin/setup/products/products.tsx:424
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:408
+#: ../html/src/manager/admin/setup/products/products.tsx:427
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:413
+#: ../html/src/manager/admin/setup/products/products.tsx:432
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:423
+#: ../html/src/manager/admin/setup/products/products.tsx:442
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:500
+#: ../html/src/manager/admin/setup/products/products.tsx:519
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:595
+#: ../html/src/manager/admin/setup/products/products.tsx:614
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:671
+#: ../html/src/manager/admin/setup/products/products.tsx:690
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:677
-#: ../html/src/manager/admin/setup/products/products.tsx:1055
+#: ../html/src/manager/admin/setup/products/products.tsx:696
+#: ../html/src/manager/admin/setup/products/products.tsx:1074
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1252,40 +1252,40 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:679
+#: ../html/src/manager/admin/setup/products/products.tsx:698
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:686
+#: ../html/src/manager/admin/setup/products/products.tsx:705
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:857
+#: ../html/src/manager/admin/setup/products/products.tsx:876
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:865
+#: ../html/src/manager/admin/setup/products/products.tsx:884
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:873
+#: ../html/src/manager/admin/setup/products/products.tsx:892
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:898
+#: ../html/src/manager/admin/setup/products/products.tsx:917
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:899
+#: ../html/src/manager/admin/setup/products/products.tsx:918
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:911
+#: ../html/src/manager/admin/setup/products/products.tsx:930
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:940
+#: ../html/src/manager/admin/setup/products/products.tsx:959
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1293,7 +1293,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:977
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1301,55 +1301,55 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1000
+#: ../html/src/manager/admin/setup/products/products.tsx:1019
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1003
+#: ../html/src/manager/admin/setup/products/products.tsx:1022
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1006
+#: ../html/src/manager/admin/setup/products/products.tsx:1025
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1009
+#: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1088
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1135
+#: ../html/src/manager/admin/setup/products/products.tsx:1154
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1140
+#: ../html/src/manager/admin/setup/products/products.tsx:1159
 msgid "Select the optional channels you wish to add and confirm."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1144
+#: ../html/src/manager/admin/setup/products/products.tsx:1163
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1146
+#: ../html/src/manager/admin/setup/products/products.tsx:1165
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1182
+#: ../html/src/manager/admin/setup/products/products.tsx:1201
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1185
+#: ../html/src/manager/admin/setup/products/products.tsx:1204
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1188
+#: ../html/src/manager/admin/setup/products/products.tsx:1207
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1191
+#: ../html/src/manager/admin/setup/products/products.tsx:1210
 msgid "sync failed"
 msgstr ""
 
@@ -2986,7 +2986,7 @@ msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:81
+#: ../html/src/manager/login/susemanager/login.tsx:82
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3441,25 +3441,33 @@ msgid ""
 "your system administrator to add more disk space."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:56
+#: ../html/src/manager/login/messages.tsx:53
+msgid ""
+"SUSE Manager pay-as-you-go instances must forward registration data to SCC "
+"when credentials are provided. Data will be sent independently of the "
+"configuration setting. To hide this warning please set 'forward_registration "
+"= 1' in rhn.conf."
+msgstr ""
+
+#: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:40
-#: ../html/src/manager/login/uyuni/login.tsx:36
+#: ../html/src/manager/login/susemanager/login.tsx:41
+#: ../html/src/manager/login/uyuni/login.tsx:41
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:43
+#: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {product}."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:80
-#: ../html/src/manager/login/susemanager/login.tsx:106
-#: ../html/src/manager/login/uyuni/login.tsx:48
-#: ../html/src/manager/login/uyuni/login.tsx:94
+#: ../html/src/manager/login/susemanager/login.tsx:81
+#: ../html/src/manager/login/susemanager/login.tsx:107
+#: ../html/src/manager/login/uyuni/login.tsx:53
+#: ../html/src/manager/login/uyuni/login.tsx:99
 msgid "Sign In"
 msgstr ""
 
@@ -3479,11 +3487,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:39
+#: ../html/src/manager/login/uyuni/login.tsx:44
 msgid "Learn more about"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:74
+#: ../html/src/manager/login/uyuni/login.tsx:79
 msgid "Login"
 msgstr ""
 
@@ -4867,9 +4875,10 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
 msgid ""
-"Successfully bootstrapped host! Your system should appear in <link>systems</"
-"link> shortly. If it is a transactional system, please reboot it to finish "
-"registration."
+"Bootstrap process initiated. Your system should be visible at the following "
+"location shortly: <link>systems</link>. If any issues arise, you'll receive "
+"an error notification. In case you're working with a transactional system, "
+"please perform a system reboot to complete the registration process."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355

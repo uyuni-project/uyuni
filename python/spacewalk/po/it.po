@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 15:17+0200\n"
-"PO-Revision-Date: 2021-09-21 12:12+0000\n"
-"Last-Translator: Francesco Esposito <email@francescoesposito.org>\n"
+"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"PO-Revision-Date: 2023-08-04 15:15+0000\n"
+"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend/it/"
 ">\n"
 "Language: it\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -57,11 +57,13 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Durante l'esecuzione '%s': catturato\n"
+"%s : %s\n"
 
 #: ../server/apacheRequest.py:606
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "URI Invalido %s"
 
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217

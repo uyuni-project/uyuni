@@ -10320,8 +10320,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt;システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="needs-adaptation">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt;システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11298,6 +11298,17 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="final">Salt状態をターゲットシステムに同期します</target>
       </trans-unit>
-    </body>
+    <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+        <source>Cloning of channels under different product channels on Pay As You Go instances is forbidden</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <source>PAY-AS-YOU-GO ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current pay-as-you-go plan. Operation has been aborted.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
