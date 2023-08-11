@@ -17,33 +17,29 @@ package com.redhat.rhn.taskomatic.task.payg;
 
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
+import com.redhat.rhn.domain.cloudpayg.PaygProductFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
-import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
-import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PaygAuthDataProcessor {
 
@@ -66,36 +62,23 @@ public class PaygAuthDataProcessor {
 
         LOG.debug("Number installed Products: {}", paygData.getProducts().size());
         Credentials credentials = processAndGetCredentials(instance, paygData);
-        List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(credentials);
 
-        Set<SCCRepository> repositories = getReposToInsert(paygData.getProducts());
+        // Update the PAYG products associated with the credentials
+        LOG.debug("Associating the installed products with the credentials # {}", credentials.getId());
+        PaygProductFactory.updateProducts(credentials, paygData.getProducts());
 
-        List<SCCRepositoryAuth> processedRepoAuth = new ArrayList<>();
-        repositories.forEach(sccRepo-> {
-            SCCRepositoryAuth authRepo = existingRepos.stream().filter(r -> r.getRepo().getId().equals(sccRepo.getId()))
-                    .findFirst().orElseGet(() -> {
-                        SCCRepositoryCloudRmtAuth newAuth = new SCCRepositoryCloudRmtAuth();
-                        newAuth.setRepo(sccRepo);
-                        return newAuth;
-                    });
+        // Add the Tools and Proxy products that are accessible when in SUMA Payg environment
+        List<PaygProductInfo> products = new LinkedList<>(paygData.getProducts());
+        if (instance.isSUSEManagerPayg()) {
+            products.addAll(PaygProductFactory.listAdditionalProductsForSUMAPayg());
+        }
 
-            authRepo.setCredentials(credentials);
-            // Update content source URL, since it should be pointing to a Credentials record, and it may have changed
-            if (authRepo.getContentSource() != null) {
-                authRepo.getContentSource().setSourceUrl(authRepo.getUrl());
-            }
+        // Update the authorizations for accessing the product repositories
+        List<SCCRepositoryAuth> repoAuths = PaygProductFactory.refreshRepositoriesAuths(credentials, products);
+        LOG.debug("Total repository authentication processed: {}", repoAuths.size());
 
-            SCCCachingFactory.saveRepositoryAuth(authRepo);
-            processedRepoAuth.add(authRepo);
-        });
-
-        LOG.debug("Total repository authentication inserted: {}", processedRepoAuth.size());
-        existingRepos.stream()
-                .filter(er -> processedRepoAuth.stream().noneMatch(pr -> er.getId().equals(pr.getId())))
-                .forEach(SCCCachingFactory::deleteRepositoryAuth);
-
+        // Store the information about the Cloud RMT server
         processCloudRmtHost(instance, paygData);
-
     }
 
     private void processCloudRmtHost(PaygSshData instance, PaygInstanceInfo paygData) {
@@ -126,10 +109,15 @@ public class PaygAuthDataProcessor {
         URI credentialsURI = new URI("https", paygData.getRmtHost().get("hostname"), "/repo", null);
         credentials.setUrl(credentialsURI.toString());
 
-        if (paygData.getHeaderAuth() != null && paygData.getHeaderAuth().contains(":")) {
-            String[] headSplit = paygData.getHeaderAuth().split(":", 2);
+        List<String> paygDataHeaders = paygData.getHeaders();
+        if (CollectionUtils.isNotEmpty(paygDataHeaders)) {
             Map<String, String> headers = new HashMap<>();
-            headers.put(headSplit[0], headSplit[1]);
+
+            paygDataHeaders.stream()
+                           .filter(header -> header.contains(":"))
+                           .map(header -> header.split(":", 2))
+                           .forEach(split -> headers.put(split[0], split[1]));
+
             credentials.setExtraAuthData(GSON.toJson(headers).getBytes());
         }
         credentials.setPaygSshData(instance);
@@ -146,7 +134,6 @@ public class PaygAuthDataProcessor {
 
         return credentials;
     }
-
     /**
      * Invalidate PAYG Instance credentials
      * @param instance the instance
@@ -161,26 +148,4 @@ public class PaygAuthDataProcessor {
                 });
     }
 
-    private Set<SCCRepository> getReposToInsert(List<PaygProductInfo> products) {
-        return products.stream()
-            .map(product -> {
-                if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
-                    return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
-                        product.getName(), product.getVersion(), product.getArch());
-                }
-
-                return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
-                        product.getName(), product.getArch())
-                    .stream()
-                    // We add Tools Channels directly to SLE12 products, but they are not accessible
-                    // via the SLES credentials. We need to remove them from all except the sle-manager-tools
-                    // product
-                    .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
-                        r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")))
-                    .collect(Collectors.toSet());
-
-            })
-            .flatMap(Set::stream)
-            .collect(Collectors.toSet());
-    }
 }

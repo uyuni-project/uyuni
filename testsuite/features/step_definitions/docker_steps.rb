@@ -12,9 +12,9 @@ def retrieve_build_host_id
   systems = $api_test.system.list_systems
   refute_nil(systems)
   build_host_id = systems
-                  .select { |s| s['name'] == $build_host.full_hostname }
+                  .select { |s| s['name'] == get_target('build_host').full_hostname }
                   .map { |s| s['id'] }.first
-  refute_nil(build_host_id, "Build host #{$build_host.full_hostname} is not yet registered?")
+  refute_nil(build_host_id, "Build host #{get_target('build_host').full_hostname} is not yet registered?")
   build_host_id
 end
 

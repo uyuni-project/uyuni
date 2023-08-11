@@ -23,7 +23,8 @@ Feature: Verify the minion registration
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Check that Update Properties button works
     When I follow "Details" in the content area

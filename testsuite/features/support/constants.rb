@@ -1,6 +1,71 @@
 # Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
+                    'proxy' => 'PROXY',
+                    'server' => 'SERVER',
+                    'kvm_server' => 'VIRTHOST_KVM_URL',
+                    'sle_minion' => 'MINION',
+                    'ssh_minion' => 'SSH_MINION',
+                    'rhlike_minion' => 'RHLIKE_MINION',
+                    'deblike_minion' => 'DEBLIKE_MINION',
+                    'build_host' => 'BUILD_HOST',
+                    'salt_migration_minion' => 'MIN_NESTED',
+                    # Build Validation environment
+                    'sle12sp4_minion' => 'SLE12SP4_MINION',
+                    'sle12sp4_ssh_minion' => 'SLE12SP4_SSHMINION',
+                    'sle12sp5_minion' => 'SLE12SP5_MINION',
+                    'sle12sp5_ssh_minion' => 'SLE12SP5_SSHMINION',
+                    'sle15sp1_minion' => 'SLE15SP1_MINION',
+                    'sle15sp1_ssh_minion' => 'SLE15SP1_SSHMINION',
+                    'sle15sp2_minion' => 'SLE15SP2_MINION',
+                    'sle15sp2_ssh_minion' => 'SLE15SP2_SSHMINION',
+                    'sle15sp3_minion' => 'SLE15SP3_MINION',
+                    'sle15sp3_ssh_minion' => 'SLE15SP3_SSHMINION',
+                    'sle15sp4_minion' => 'SLE15SP4_MINION',
+                    'sle15sp4_ssh_minion' => 'SLE15SP4_SSHMINION',
+                    'sle15sp5_minion' => 'SLE15SP5_MINION',
+                    'sle15sp5_ssh_minion' => 'SLE15SP5_SSHMINION',
+                    'slemicro51_minion' => 'SLEMICRO51_MINION',
+                    'slemicro51_ssh_minion' => 'SLEMICRO51_SSHMINION',
+                    'slemicro52_minion' => 'SLEMICRO52_MINION',
+                    'slemicro52_ssh_minion' => 'SLEMICRO52_SSHMINION',
+                    'slemicro53_minion' => 'SLEMICRO53_MINION',
+                    'slemicro53_ssh_minion' => 'SLEMICRO53_SSHMINION',
+                    'slemicro54_minion' => 'SLEMICRO54_MINION',
+                    'slemicro54_ssh_minion' => 'SLEMICRO54_SSHMINION',
+                    'alma9_minion' => 'ALMA9_MINION',
+                    'alma9_ssh_minion' => 'ALMA9_SSHMINION',
+                    'centos7_minion' => 'CENTOS7_MINION',
+                    'centos7_ssh_minion' => 'CENTOS7_SSHMINION',
+                    'liberty9_minion' => 'LIBERTY9_MINION',
+                    'liberty9_ssh_minion' => 'LIBERTY9_SSHMINION',
+                    'oracle9_minion' => 'ORACLE9_MINION',
+                    'oracle9_ssh_minion' => 'ORACLE9_SSHMINION',
+                    'rhel9_minion' => 'RHEL9_MINION',
+                    'rhel9_ssh_minion' => 'RHEL9_SSHMINION',
+                    'rocky8_minion' => 'ROCKY8_MINION',
+                    'rocky8_ssh_minion' => 'ROCKY8_SSHMINION',
+                    'rocky9_minion' => 'ROCKY9_MINION',
+                    'rocky9_ssh_minion' => 'ROCKY9_SSHMINION',
+                    'ubuntu1804_minion' => 'UBUNTU1804_MINION',
+                    'ubuntu1804_ssh_minion' => 'UBUNTU1804_SSHMINION',
+                    'ubuntu2004_minion' => 'UBUNTU2004_MINION',
+                    'ubuntu2004_ssh_minion' => 'UBUNTU2004_SSHMINION',
+                    'ubuntu2204_minion' => 'UBUNTU2204_MINION',
+                    'ubuntu2204_ssh_minion' => 'UBUNTU2204_SSHMINION',
+                    'debian10_minion' => 'DEBIAN10_MINION',
+                    'debian10_ssh_minion' => 'DEBIAN10_SSHMINION',
+                    'debian11_minion' => 'DEBIAN11_MINION',
+                    'debian11_ssh_minion' => 'DEBIAN11_SSHMINION',
+                    'opensuse154arm_minion' => 'OPENSUSE154ARM_MINION',
+                    'opensuse154arm_ssh_minion' => 'OPENSUSE154ARM_SSHMINION',
+                    'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
+                    'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
+                    'sle12sp5_buildhost' => 'SLE12SP5_BUILDHOST',
+                    'sle15sp4_buildhost' => 'SLE15SP4_BUILDHOST',
+                    'monitoring_server' => 'MONITORING_SERVER' }.freeze
+
 ADDRESSES = { 'network'           => '0',
               'sle_minion'        => '3',
               'pxeboot_minion'    => '4',
@@ -133,16 +198,16 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 # For containers we do not have SCC, so we set the Fake Base Channel
 # for sle_minion
 sle_base_channel =
-  if $is_container_provider
+  if ENV["PROVIDER"].include? 'podman'
     'Fake Base Channel'
-  elsif $product == 'Uyuni'
+  elsif ENV['SERVER'].include? 'uyuni'
     'openSUSE Leap 15.4 (x86_64)'
   else
     'SLES15-SP4-Pool'
   end
 
 proxy_base_channel =
-  if $product == 'Uyuni'
+  if ENV['SERVER'].include? 'uyuni'
     'openSUSE Leap 15.4 (x86_64)'
   else
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool'
@@ -454,6 +519,17 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     res8-manager-tools-pool-x86_64
     res8-manager-tools-updates-x86_64
     sll8-uyuni-client-x86_64
+  ],
+  '15.4' =>
+  %w[
+    opensuse_leap15_4-x86_64
+    opensuse_leap15_4-x86_64-non-oss
+    opensuse_leap15_4-x86_64-non-oss-updates
+    opensuse_leap15_4-x86_64-updates
+    opensuse_leap15_4-x86_64-backports-updates
+    opensuse_leap15_4-x86_64-sle-updates
+    uyuni-proxy-devel-leap-x86_64
+    opensuse_leap15_4-uyuni-client-x86_64
   ]
 }.freeze
 

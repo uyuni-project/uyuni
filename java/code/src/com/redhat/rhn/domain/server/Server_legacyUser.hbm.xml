@@ -515,7 +515,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             CASE
               WHEN (SELECT COUNT(*) FROM rhnErrataPackage k WHERE e.id = k.errata_id AND k.package_id IN
                 (SELECT id FROM rhnPackage p WHERE p.name_id IN
-                  (SELECT id FROM rhnPackageName pn WHERE pn.name = 'salt'))) > 0
+                  (SELECT id FROM rhnPackageName pn WHERE pn.name = 'salt' OR pn.name = 'venv-salt-minion'))) > 0
             THEN 1
             ELSE 0
             END AS includeSalt

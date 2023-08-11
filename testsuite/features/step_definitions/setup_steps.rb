@@ -153,7 +153,7 @@ When(/^I click the Add Product button$/) do
 end
 
 Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
-  output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
+  output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   STDOUT.puts "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise "Not included:\n #{match}" unless output.include? match
@@ -212,8 +212,8 @@ Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   command = "spacecmd -u admin -p admin system_list"
   system_name = get_system_name(host)
   repeat_until_timeout(message: "system #{system_name} is not in the list yet") do
-    $server.run("spacecmd -u admin -p admin clear_caches")
-    result, _code = $server.run(command, check_errors: false, verbose: true)
+    get_target('server').run("spacecmd -u admin -p admin clear_caches")
+    result, _code = get_target('server').run(command, check_errors: false, verbose: true)
     break if result.include? system_name
     sleep 1
   end
@@ -258,7 +258,7 @@ def token(secret, claims = {})
 end
 
 def server_secret
-  rhnconf, _code = $server.run('cat /etc/rhn/rhn.conf', check_errors: false)
+  rhnconf, _code = get_target('server').run('cat /etc/rhn/rhn.conf', check_errors: false)
   data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
   data[1].strip
 end

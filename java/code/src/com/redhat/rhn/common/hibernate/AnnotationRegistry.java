@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
+import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -160,6 +161,7 @@ public class AnnotationRegistry {
         Pillar.class,
         CloudRmtHost.class,
         PaygSshData.class,
+        PaygCredentialsProduct.class,
         Task.class,
         RecurringHighstate.class,
         RecurringState.class,

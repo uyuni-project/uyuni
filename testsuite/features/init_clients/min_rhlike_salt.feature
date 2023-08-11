@@ -20,7 +20,7 @@ Feature: Bootstrap a Red Hat-like minion and do some basic operations on it
     And I select "1-RH-LIKE-KEY" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"

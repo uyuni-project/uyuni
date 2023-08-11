@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.user.User;
 
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
@@ -51,6 +53,8 @@ public class Credentials extends BaseDomainHelper {
     private String encodedPassword;
 
     private PaygSshData paygSshData;
+
+    private Set<PaygCredentialsProduct> paygProducts;
 
     /**
      * Get the ID of this object.
@@ -186,6 +190,14 @@ public class Credentials extends BaseDomainHelper {
 
     public void setPaygSshData(PaygSshData paygSshDataIn) {
         this.paygSshData = paygSshDataIn;
+    }
+
+    public Set<PaygCredentialsProduct> getPaygProducts() {
+        return paygProducts;
+    }
+
+    public void setPaygProducts(Set<PaygCredentialsProduct> paygProductsIn) {
+        this.paygProducts = paygProductsIn;
     }
 
     /**

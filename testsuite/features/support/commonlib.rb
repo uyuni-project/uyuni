@@ -30,8 +30,13 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
-  do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
-  [$minion, $build_host, $ssh_minion, $rhlike_minion].each do |node|
+  do_not_kill =
+    if product == 'Uyuni'
+      CHANNEL_TO_SYNCH_BY_OS_VERSION['15.4']
+    else
+      CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
+    end
+  [get_target('sle_minion'), get_target('build_host'), get_target('ssh_minion'), get_target('rhlike_minion')].each do |node|
     next unless node
     os_version = node.os_version
     os_family = node.os_family
@@ -51,18 +56,18 @@ def count_table_items
 end
 
 def product
-  _product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
+  _product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   return 'Uyuni' if code.zero?
-  _product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
+  _product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   return 'SUSE Manager' if code.zero?
   raise 'Could not determine product'
 end
 
 def product_version
-  product_raw, code = $server.run('rpm -q patterns-uyuni_server', check_errors: false)
+  product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   m = product_raw.match(/patterns-uyuni_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
-  product_raw, code = $server.run('rpm -q patterns-suma_server', check_errors: false)
+  product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   m = product_raw.match(/patterns-suma_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
   raise 'Could not determine product version'
@@ -70,16 +75,16 @@ end
 
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
-  $product == 'Uyuni' || %w[head 4.3 4.2].include?($product_version)
+  product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
 end
 
 # create salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
-  return_code = file_inject($server, source, dest)
+  return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
   # make file readable by salt
-  $server.run("chgrp salt #{dest}")
+  get_target('server').run("chgrp salt #{dest}")
   return_code
 end
 
@@ -300,7 +305,7 @@ def get_os_version(node)
   [os_version, os_family]
 end
 
-def get_gpg_keys(node, target = $server)
+def get_gpg_keys(node, target = get_target('server'))
   os_version, os_family = get_os_version(node)
   if os_family =~ /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
@@ -327,4 +332,101 @@ end
 def add_context(key, value)
   $context[$feature_scope] = {} unless $context.key?($feature_scope)
   $context[$feature_scope].merge!({ key => value })
+end
+
+# This function gets the system name, as displayed in systems list
+# * for the usual clients, it is the full hostname, e.g. suma-41-min-sle15.tf.local
+# * for the PXE booted clients, it is derived from the branch name, the hardware type,
+#   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
+def get_system_name(host)
+  case host
+  # The PXE boot minion and the terminals are not directly accessible on the network,
+  # therefore they are not represented by a twopence node
+  when 'pxeboot_minion'
+    output, _code = get_target('server').run('salt-key')
+    system_name =
+      output.split.find do |word|
+        word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
+      end
+    system_name = 'pxeboot.example.org' if system_name.nil?
+  when 'sle12sp5_terminal'
+    output, _code = get_target('server').run('salt-key')
+    system_name =
+      output.split.find do |word|
+        word =~ /example.sle12sp5terminal-/
+      end
+    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
+  when 'sle15sp4_terminal'
+    output, _code = get_target('server').run('salt-key')
+    system_name =
+      output.split.find do |word|
+        word =~ /example.sle15sp4terminal-/
+      end
+    system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+  when 'containerized_proxy'
+    system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
+  else
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError
+      # If the node for that host is not defined, just return the host parameter as system_name
+      system_name = host
+    end
+  end
+  system_name
+end
+
+# Get MAC address of system
+def get_mac_address(host)
+  if host == 'pxeboot_minion'
+    mac = ENV['PXEBOOT_MAC']
+  else
+    node = get_target(host)
+    output, _code = node.run('ip link show dev eth1')
+    mac = output.split("\n")[1].split[1]
+  end
+  mac
+end
+
+# This function returns the net prefix, caching it
+def net_prefix
+  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil? && !$private_net.nil?
+  $net_prefix
+end
+
+# This function tests whether a file exists on a node
+def file_exists?(node, file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
+  code.zero? && local.zero?
+end
+
+# This function tests whether a folder exists on a node
+def folder_exists?(node, file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
+  code.zero? && local.zero?
+end
+
+# This function deletes a file from a node
+def file_delete(node, file)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
+  code
+end
+
+# This function deletes a file from a node
+def folder_delete(node, folder)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
+  code
+end
+
+# This function extracts a file from a node
+def file_extract(node, remote_file, local_file)
+  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
+  code
+end
+
+# This function injects a file into a node
+def file_inject(node, local_file, remote_file)
+  code, _remote = node.inject_file(local_file, remote_file, 'root', false)
+  code
 end

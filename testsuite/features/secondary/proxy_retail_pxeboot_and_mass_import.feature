@@ -191,8 +191,10 @@ Feature: PXE boot a Retail terminal
     When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "pxeboot_minion", refreshing the page
+
+  Scenario: Assure the PXE boot minion is onboarded
+    Given I am on the Systems page
+    When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (none)" is completed
@@ -203,13 +205,13 @@ Feature: PXE boot a Retail terminal
     Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
@@ -222,7 +224,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
@@ -234,7 +236,7 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Cleanup: delete the new Retail terminal
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"

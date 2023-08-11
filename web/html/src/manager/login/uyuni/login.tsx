@@ -28,7 +28,12 @@ const UyuniThemeLogin = (props: ThemeProps) => {
         <section id="spacewalk-content">
           <div className="wrap">
             <Messages
-              items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired, props.diskspaceSeverity)}
+              items={getGlobalMessages(
+                props.validationErrors,
+                props.schemaUpgradeRequired,
+                props.diskspaceSeverity,
+                props.sccForwardWarning
+              )}
             />
             <div className="col-sm-6">
               <h1>{product.bodyTitle}</h1>

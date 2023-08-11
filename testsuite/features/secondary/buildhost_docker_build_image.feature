@@ -83,36 +83,42 @@ Feature: Build container images
     And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     Then the list of packages of image "suse_real_key" with version "latest" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Build suse_key images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
-  
+    When I wait until no Salt job is running on "build_host"
+
   Scenario: Build suse_simple image with different versions
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Delete image via API calls
     When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
     And I delete the image "suse_simple" with version "Latest_simple" via API calls
     Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via API calls
     And the image "suse_simple" with version "Latest_simple" doesn't exist via API calls
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Rebuild suse_simple image
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Rebuild suse_key image
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
@@ -120,6 +126,7 @@ Feature: Build container images
     And I enter "GUI_BUILT_IMAGE" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_BUILT_IMAGE" text
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is inspected successfully via API
@@ -131,6 +138,7 @@ Feature: Build container images
     And I enter "GUI_DOCKERADMIN" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_DOCKERADMIN" text
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API

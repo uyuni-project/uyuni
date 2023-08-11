@@ -444,13 +444,28 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             if (cloudPaygManager.isPaygInstance() && CredentialsFactory.listSCCCredentials().size() == 0 &&
                     !RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains)) {
-                // BYOS or DC Instance is not allowed to register on a pure SUMA PAYG
-                // exception: free products or SUSE Manager Proxy
-                throw new RegisterMinionException(minionId, org, String.format(
-                        "Registration of '%s' on SUSE Manager Server rejected. \n" +
-                        "To manage BYOS (Bring-your-own-Subscription) or Datacenter clients you have to configure " +
-                        "SCC Credentials at Admin => Setup Wizard => Organization Credentials.", minionId));
+
+                // If the minion is not in the cloud
+                if (grains.getValueAsString("instance_id").length() == 0) {
+                    // DC instances are not allowed to be onboarded without SCC credentials
+                    throw new RegisterMinionException(minionId, org, String.format(
+                            "Registration of '%s' on SUSE Manager Server rejected. \n" +
+                            "To manage Datacenter clients you have to configure " +
+                            "SCC Credentials at Admin => Setup Wizard => Organization Credentials.", minionId));
+                }
+                else {
+                    // BYOS in cloud instances is not allowed to register on a pure SUMA PAYG
+                    // exception: free products or SUSE Manager Proxy
+                    // Attention: minion could be PAYG, so it might lack of package `instance-flavor-check`
+                    throw new RegisterMinionException(minionId, org, String.format(
+                            "Registration of '%s' on SUSE Manager Server rejected. \n" +
+                            "To manage BYOS (Bring-your-own-Subscription) clients you have to configure " +
+                            "SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\n" +
+                            "If the instance that is being trying to be onboarded is actually a Pay-As-You-Go " +
+                            "one, please make sure package `instance-flavor-check` is installed and retry.", minionId));
+                }
             }
+
             MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
 
             minion.setMachineId(machineId);

@@ -41,6 +41,7 @@ Feature: Build image with authenticated registry
     # Verify the status of images in the authenticated image store
     When I wait at most 600 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "auth_registry_profile" with version "latest" is inspected successfully via API
+    And I wait until no Salt job is running on "build_host"
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
     And the list of packages of image "auth_registry_profile" with version "latest" is not empty

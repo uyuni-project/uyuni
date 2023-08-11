@@ -26,12 +26,12 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
     iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
   else
     iso_path = "/tmp/#{name}.iso"
-    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
+    get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
   end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("mkdir -p #{mount_point}")
-  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
-  $server.run("umount #{iso_path}; mount #{iso_path}")
+  get_target('server').run("mkdir -p #{mount_point}")
+  get_target('server').run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
+  get_target('server').run("umount #{iso_path}; mount #{iso_path}")
 end
 
 Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
@@ -74,7 +74,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
   log "IPv6 address: #{ipv6_address}"
-  raise unless ipv6_addresses_list.include? ipv6_address
+  raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -142,12 +142,16 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
+    And I wait until I see "Pending Events" text
     And I follow "Pending"
+    And I wait until I see "Pending Events" text
     And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
+    And I wait until I see "This action will be executed after" text
+    And I wait until I see "#{event}" text
     And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
   )
 end
@@ -455,7 +459,7 @@ When(/^I install the needed packages for highstate in build host$/) do
   xml-commons-resolver
   xorriso
   xtables-plugins"
-  $build_host.run("zypper --non-interactive in #{packages}", timeout: 600)
+  get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
 # rubocop:enable Metrics/BlockLength
 
@@ -500,14 +504,14 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
+  get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
-  $server.run(command, timeout: 500)
-  $server.run('ls -lR /var/spacewalk/packages', timeout: 500)
+  get_target('server').run(command, timeout: 500)
+  get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|

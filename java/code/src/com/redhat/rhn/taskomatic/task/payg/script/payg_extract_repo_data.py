@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+import csv
 import subprocess
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, parse_qs
@@ -21,6 +22,7 @@ import sys
 from pathlib import Path
 import glob
 import os
+import platform
 from collections import namedtuple
 
 INPUT_TEMPLATE = """RESOLVEURL
@@ -32,6 +34,7 @@ path: %s
 
 CREDENTIALS_NAME = "SCCcredentials"
 
+
 def system_exit(code, messages=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
 
@@ -39,10 +42,23 @@ def system_exit(code, messages=None):
         print(message, file=sys.stderr)
     sys.exit(code)
 
+
 def is_payg_instance():
-    return os.path.isfile('/usr/sbin/registercloudguest')
+    flavor_check = "/usr/bin/instance-flavor-check"
+    if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
+        return False
+
+    try:
+        result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
+    except subprocess.CalledProcessError:
+        return False
+
+    return result == "PAYG"
+
+
 
 SuseCloudInfo = namedtuple('SuseCloudInfo', ['header_auth', 'hostname'])
+
 
 def _get_suse_cloud_info():
     input = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
@@ -55,7 +71,27 @@ def _get_suse_cloud_info():
     _, header_auth, _, repository_url = full_output
     repository_url_parsed = urlparse(repository_url)
 
-    return SuseCloudInfo(header_auth, repository_url_parsed.netloc)
+    instance_identification = _get_instance_identification()
+
+    return SuseCloudInfo(instance_identification + [header_auth], repository_url_parsed.netloc)
+
+
+def _get_instance_identification():
+    path = next((p for p in map(lambda f: Path(f), ["/etc/os-release", "/usr/lib/os-release"]) if p.exists()), None)
+    if path is None:
+        return []
+
+    with open(path) as stream:
+        reader = csv.reader(stream, delimiter="=")
+        os_release = dict(reader)
+
+    return [
+        "X-Instance-Identifier:" + os_release["NAME"],
+        "X-Instance-Version:" + os_release["VERSION_ID"],
+        "X-Instance-Arch:" + platform.machine()
+    ]
+
+
 
 def _extract_http_auth(credentials):
     credentials_file = '/etc/zypp/credentials.d/' + credentials
@@ -71,6 +107,7 @@ def _extract_http_auth(credentials):
             elif "password" == name.strip():
                 password = var.strip()
     return {"username": username, "password": password}
+
 
 def _extract_rmt_server_info(netloc):
     try:
@@ -107,6 +144,7 @@ def _get_installed_suse_products():
             products.append(product)
     return products
 
+
 def load_instance_info():
     header_auth, hostname = _get_suse_cloud_info()
 
@@ -118,6 +156,7 @@ def load_instance_info():
              "basic_auth": credentials_data,
              "header_auth": header_auth,
              "rmt_host": rmt_host_data}
+
 
 def main():
     if not is_payg_instance():
