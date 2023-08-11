@@ -183,4 +183,16 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .withUpdate(updatePart)
                 .build();
     }
+
+    @Override
+    public void assertDefinitionIsValid(DefinitionType definition) {
+        super.assertDefinitionIsValid(definition);
+
+        OsFamily osFamily = definition.getOsFamily();
+        assert osFamily == OsFamily.openSUSE_LEAP ||
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP;
+
+        assert definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
+    }
 }

@@ -20,8 +20,7 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
     protected final CriteriaType criteriaRoot;
 
     protected CriteriaTreeBasedExtractor(DefinitionType definition) {
-        Objects.requireNonNull(definition);
-        Objects.requireNonNull(definition.getCriteria());
+        assertDefinitionIsValid(definition);
 
         this.definition = definition;
         this.criteriaRoot = definition.getCriteria();
@@ -89,5 +88,11 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
                 walkCriteriaTreeHelper(childCriteria, matches);
             }
         }
+    }
+
+    @Override
+    public void assertDefinitionIsValid(DefinitionType definition) {
+        assert definition != null;
+        assert definition.getCriteria() != null;
     }
 }

@@ -22,7 +22,7 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
 
     public RedHatVulnerablePackageExtractorFromPatchDefinition(DefinitionType patchDefinition) {
         super(patchDefinition);
-        assertDefinitionIsValid();
+        assertDefinitionIsValid(patchDefinition);
     }
 
     @Override
@@ -74,8 +74,9 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
                 .build();
     }
 
-    private void assertDefinitionIsValid() {
-        assert definition.getDefinitionClass() == DefinitionClassEnum.PATCH &&
-                definition.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
+    @Override
+    public void assertDefinitionIsValid(DefinitionType definition) {
+        assert definition.getDefinitionClass() == DefinitionClassEnum.PATCH;
+        assert definition.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
     }
 }

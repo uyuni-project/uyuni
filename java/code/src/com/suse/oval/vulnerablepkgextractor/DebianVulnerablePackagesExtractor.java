@@ -1,9 +1,11 @@
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 
 import org.apache.logging.log4j.LogManager;
@@ -70,5 +72,13 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
 
         CriterionType criterionType = (CriterionType) criteria;
         return DEBIAN_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment());
+    }
+
+    @Override
+    public void assertDefinitionIsValid(DefinitionType definition) {
+        super.assertDefinitionIsValid(definition);
+
+        assert definition.getOsFamily() == OsFamily.DEBIAN;
+        assert definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
     }
 }

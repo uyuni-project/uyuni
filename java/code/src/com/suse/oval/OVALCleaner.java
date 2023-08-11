@@ -55,8 +55,10 @@ public class OVALCleaner {
                                 .orElse(Collections.emptyList())
                                 .stream().map(AdvisoryCveType::getCve).collect(Collectors.toList());
                 definition.setCves(cves);
+                break;
             case DEBIAN:
                 definition.setSingleCve(definition.getMetadata().getTitle().split("\\s+")[0]);
+                break;
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
         }
