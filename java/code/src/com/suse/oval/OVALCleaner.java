@@ -1,0 +1,127 @@
+package com.suse.oval;
+
+
+import com.suse.oval.ovaltypes.Advisory;
+import com.suse.oval.ovaltypes.AdvisoryCveType;
+import com.suse.oval.ovaltypes.BaseCriteria;
+import com.suse.oval.ovaltypes.CriteriaType;
+import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.OvalRootType;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
+
+import org.apache.commons.lang3.NotImplementedException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * This class is responsible for cleaning OVAL resources and filling up missing data as soon as they're parsed. It acts
+ * as an adapter that takes
+ * OVAL data from multiple sources and make changes to it to have a more predictable format.
+ */
+public class OVALCleaner {
+
+    public void cleanup(OvalRootType root, OsFamily osFamily, String osVersion) {
+        root.getDefinitions().forEach(definition -> doCleanupDefinition(definition, osFamily, osVersion));
+        root.getTests().getTests().forEach(test -> doCleanupTest(test, osFamily, osVersion));
+        root.getStates().getStates().forEach(state -> doCleanupState(state, osFamily, osVersion));
+        root.getObjects().getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
+    }
+
+    private DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+        fillCves(definition, osFamily, osVersion);
+        fillOsFamily(definition, osFamily);
+        fillOsVersion(definition, osVersion);
+
+        if (osFamily == OsFamily.DEBIAN) {
+            convertDebianTestRefs(definition.getCriteria(), osVersion);
+        }
+
+        return definition;
+    }
+
+    private void fillCves(DefinitionType definition, OsFamily osFamily, String osVersion) {
+        switch (osFamily) {
+            case REDHAT_ENTERPRISE_LINUX:
+            case openSUSE_LEAP:
+            case SUSE_LINUX_ENTERPRISE_SERVER:
+            case SUSE_LINUX_ENTERPRISE_DESKTOP:
+                List<String> cves =
+                        definition.getMetadata().getAdvisory().map(Advisory::getCveList)
+                                .orElse(Collections.emptyList())
+                                .stream().map(AdvisoryCveType::getCve).collect(Collectors.toList());
+                definition.setCves(cves);
+            case DEBIAN:
+                definition.setSingleCve(definition.getMetadata().getTitle().split("\\s+")[0]);
+            case UBUNTU:
+                throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
+        }
+    }
+
+    private void fillOsFamily(DefinitionType definition, OsFamily osFamily) {
+        definition.setOsFamily(osFamily);
+    }
+
+    private void fillOsVersion(DefinitionType definition, String osVersion) {
+        definition.setOsVersion(osVersion);
+    }
+
+    private void doCleanupTest(TestType test, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            test.setId(convertDebianId(test.getId(), osVersion));
+        }
+    }
+
+    private void doCleanupState(StateType state, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            state.setId(convertDebianId(state.getId(), osVersion));
+        }
+    }
+
+    private void doCleanupObject(ObjectType object, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.DEBIAN) {
+            object.setId(convertDebianId(object.getId(), osVersion));
+        }
+    }
+
+    /**
+     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
+     * same id but different content for different versions of Debian.
+     * <p>
+     * To be workaround this, we insert the codename of the version into the id string
+     */
+    private void convertDebianTestRefs(BaseCriteria root, String osVersion) {
+        if (root instanceof CriteriaType) {
+            for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
+                convertDebianTestRefs(criteria, osVersion);
+            }
+        } else {
+            CriterionType criterionType = (CriterionType) root;
+            criterionType.setTestRef(convertDebianId(criterionType.getTestRef(), osVersion));
+        }
+    }
+
+    /**
+     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
+     * same id but different content for different versions of Debian.
+     * <p>
+     * To be workaround this, we insert the codename of the version into the id string
+     */
+    private String convertDebianId(String id, String osVersion) {
+        String codename;
+        if ("10.0".equals(osVersion) || "10".equals(osVersion)) {
+            codename = "buster";
+        } else if ("11.0".equals(osVersion) || "11".equals(osVersion)) {
+            codename = "bullseye";
+        } else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
+            codename = "bookworm";
+        } else {
+            throw new IllegalArgumentException("Invalid debian version: " + osVersion);
+        }
+        return id.replaceAll("debian", "debian-" + codename);
+    }
+}
