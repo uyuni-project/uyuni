@@ -11373,6 +11373,17 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Sync Salt states to the target system</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+        <source>Cloning of channels under different product channels on Pay As You Go instances is forbidden</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <source>PAY-AS-YOU-GO ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current pay-as-you-go plan. Operation has been aborted.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
