@@ -84,8 +84,15 @@ plugin_command "echo \"select username scc_org from susecredentials sc join suse
 
 plugin_command "echo \"Number of elements in table susesaltevent. If the next number is too high, please verify the large scale tuning guide property 'java.salt_event_thread_pool_size'.\""
 plugin_command "echo \"select count(*) from susesaltevent;\" | spacewalk-sql --select-mode-direct -"
+plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
+
+section_header "Cloud / PAYG"
+plugin_command "/usr/bin/instance-flavor-check"
+if [ -e /usr/bin/instance-flavor-check -a $(/usr/bin/instance-flavor-check) == "PAYG" ]; then
+        validate_rpm "python-instance-billing-flavor-check"
+        validate_rpm "billing-data-service"
+fi
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 plugin_command "cp /var/log/zypper.log $LOG"
-plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
 
