@@ -39,6 +39,7 @@ import com.redhat.rhn.taskomatic.task.MinionActionExecutor;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.jmock.Expectations;
@@ -110,7 +111,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(dataMap));
         }});
 
-        MinionActionExecutor executor = new MinionActionExecutor(saltServerActionService);
+        MinionActionExecutor executor = new MinionActionExecutor(saltServerActionService, new CloudPaygManager());
         executor.execute(ctx);
 
         HibernateFactory.getSession().flush();

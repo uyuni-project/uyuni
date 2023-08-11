@@ -226,6 +226,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     private CloudPaygManager getFakeCloudPaygManager() {
         CloudPaygManager cloudPaygManager = new CloudPaygManager();
         cloudPaygManager.setPaygInstance(true);
+        cloudPaygManager.setCompliant(true);
         return cloudPaygManager;
     }
 
