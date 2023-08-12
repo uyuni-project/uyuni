@@ -7,21 +7,14 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.errata.Cve;
-import com.redhat.rhn.domain.errata.CveFactory;
 
 import com.suse.oval.db.OVALDefinition;
 import com.suse.oval.db.OVALPackageObject;
 import com.suse.oval.db.OVALPackageState;
 import com.suse.oval.db.OVALPackageTest;
 import com.suse.oval.db.OVALPlatform;
-import com.suse.oval.db.OVALPlatformVulnerablePackage;
-import com.suse.oval.db.OVALReference;
 import com.suse.oval.db.OVALVulnerablePackage;
 import com.suse.oval.ovaltypes.ArchType;
-import com.suse.oval.ovaltypes.BaseCriteria;
-import com.suse.oval.ovaltypes.CriteriaType;
-import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.EVRType;
 import com.suse.oval.ovaltypes.ObjectType;
@@ -30,20 +23,15 @@ import com.suse.oval.ovaltypes.ReferenceType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
-
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
+
 import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -316,32 +304,30 @@ public class OVALCachingFactory extends HibernateFactory {
     public static void savePlatformsVulnerablePackages(List<DefinitionType> definitions, OsFamily osFamily, String osVersion) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
-        List<Map<String, Object>> collect = definitions.stream().flatMap(definition -> {
-            if (definition.getCriteria() == null) {
-                return Stream.empty();
-            }
+        List<Map<String, Object>> paramsList = new ArrayList<>();
 
+        for (DefinitionType definition : definitions) {
             VulnerablePackagesExtractor vulnerablePackagesExtractor =
                     VulnerablePackagesExtractors.create(definition, osFamily);
 
-            return vulnerablePackagesExtractor.extract().stream().flatMap(productVulnerablePackages ->
-                    productVulnerablePackages.getVulnerablePackages().stream().map(vulnerablePackage -> {
-                        if(osFamily == OsFamily.REDHAT_ENTERPRISE_LINUX) {
-                            LOG.warn(vulnerablePackage);
-                        }
-
+            List<ProductVulnerablePackages> extractionResult = vulnerablePackagesExtractor.extract();
+            for (ProductVulnerablePackages productVulnerablePackages : extractionResult) {
+                for (String cve : productVulnerablePackages.getCves()) {
+                    for (VulnerablePackage vulnerablePackage : productVulnerablePackages.getVulnerablePackages()) {
                         Map<String, Object> params = new HashMap<>();
                         params.put("product_name", productVulnerablePackages.getProductCpe());
-                        params.put("cve_name", productVulnerablePackages.getCves());
+                        params.put("cve_name", cve);
                         params.put("package_name", vulnerablePackage.getName());
                         params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
 
-                        return params;
-                    }));
-        }).collect(Collectors.toList());
+                        paramsList.add(params);
+                    }
+                }
+            }
+        }
 
         LOG.warn("Starting...");
-        toBatches(collect).peek(params -> LOG.warn("Saved 1 batch of vulnerable packages"))
+        toBatches(paramsList).peek(params -> LOG.warn("Saved 1 batch of vulnerable packages"))
                 .forEach(l -> mode.getQuery().executeBatchUpdates(new DataResult<>(l)));
         LOG.warn("Ending...");
     }

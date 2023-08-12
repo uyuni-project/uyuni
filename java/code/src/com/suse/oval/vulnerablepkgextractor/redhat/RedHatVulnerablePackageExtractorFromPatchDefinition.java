@@ -49,7 +49,7 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
         productVulnerablePackages.setProductCpe(deriveCpe().asString());
         productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
-        productVulnerablePackages.setSingleCve(definition.getSingleCve().orElseThrow());
+        productVulnerablePackages.setCves(definition.getCves());
 
         return List.of(productVulnerablePackages);
     }
@@ -78,5 +78,7 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
     public void assertDefinitionIsValid(DefinitionType definition) {
         assert definition.getDefinitionClass() == DefinitionClassEnum.PATCH;
         assert definition.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
+
+        assert !definition.getCves().isEmpty();
     }
 }
