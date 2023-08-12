@@ -26,6 +26,12 @@ import java.util.stream.Collectors;
 public class OVALCleaner {
 
     public void cleanup(OvalRootType root, OsFamily osFamily, String osVersion) {
+        if (osFamily == OsFamily.REDHAT_ENTERPRISE_LINUX) {
+            root.getDefinitions().removeIf(def -> def.getId().contains("unaffected"));
+        }
+
+        root.getDefinitions().removeIf(def -> def.getCriteria() == null);
+
         root.getDefinitions().forEach(definition -> doCleanupDefinition(definition, osFamily, osVersion));
         root.getTests().getTests().forEach(test -> doCleanupTest(test, osFamily, osVersion));
         root.getStates().getStates().forEach(state -> doCleanupState(state, osFamily, osVersion));
