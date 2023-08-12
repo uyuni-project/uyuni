@@ -3,14 +3,20 @@ package com.suse.oval.vulnerablepkgextractor.redhat;
 import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
+import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.vulnerablepkgextractor.CriteriaTreeBasedExtractor;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
+import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,6 +25,7 @@ import java.util.regex.Pattern;
 public class RedHatVulnerablePackageExtractorFromPatchDefinition extends CriteriaTreeBasedExtractor {
     private static final Pattern REDHAT_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) is earlier than (?<evr>.*)");
+    private static Logger LOG = LogManager.getLogger(RedHatVulnerablePackageExtractorFromPatchDefinition.class);
 
     public RedHatVulnerablePackageExtractorFromPatchDefinition(DefinitionType patchDefinition) {
         super(patchDefinition);
@@ -46,12 +53,27 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
         vulnerablePackage.setName(packageName);
         vulnerablePackage.setFixVersion(evr);
 
-        ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
-        productVulnerablePackages.setProductCpe(deriveCpe().asString());
-        productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
-        productVulnerablePackages.setCves(definition.getCves());
+        List<String> affectedCpeList = definition.getMetadata().getAdvisory().map(Advisory::getAffectedCpeList)
+                .orElse(Collections.emptyList());
+        if (affectedCpeList.isEmpty()) {
+            LOG.warn("RedHat affected CPE list is not meant to be empty");
+        }
 
-        return List.of(productVulnerablePackages);
+        List<ProductVulnerablePackages> result = new ArrayList<>();
+        for (String affectedCpe : affectedCpeList) {
+            // o implies 'operating system', the OVAL could also describe applications
+            if (!affectedCpe.startsWith("cpe:/o:")) {
+                continue;
+            }
+            ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
+            productVulnerablePackages.setProductCpe(affectedCpe);
+            productVulnerablePackages.setVulnerablePackages(List.of(vulnerablePackage));
+            productVulnerablePackages.setCves(definition.getCves());
+
+            result.add(productVulnerablePackages);
+        }
+
+        return result;
     }
 
     @Override
@@ -62,16 +84,6 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
 
         CriterionType criterionType = (CriterionType) criteria;
         return REDHAT_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment());
-    }
-
-    public Cpe deriveCpe() {
-        String osVersion = definition.getOsVersion();
-
-        return new CpeBuilder()
-                .withVendor("redhat")
-                .withProduct("enterprise_linux")
-                .withVersion(osVersion)
-                .build();
     }
 
     @Override
