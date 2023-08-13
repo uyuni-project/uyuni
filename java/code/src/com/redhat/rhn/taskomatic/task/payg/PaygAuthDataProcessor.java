@@ -46,6 +46,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,9 @@ public class PaygAuthDataProcessor {
                 KickstartFactory.saveCryptoKey(cryptoKey);
                 cryptoKeyMap.put(cert.getKey(), cryptoKey);
             }
+            // crypto keys might change, but a cleanup will only happen when removing the instance
 
+            Set<String> newIdents = new HashSet<>();
             for (Map.Entry<String, Map<String, String>> repo : paygData.getRepositories().entrySet()) {
                 boolean needCredentials = paygData.getHeaderAuth().containsKey("X-RHUI-ID");
                 String repoIdent = repo.getKey() + "-i" + instanceId;
@@ -176,8 +179,14 @@ public class PaygAuthDataProcessor {
                     LOG.error("Repository has incomplete client certificate values: {}", repoIdent);
                     continue;
                 }
+                newIdents.add(repoIdent);
                 ChannelFactory.save(contentSource);
             }
+            // Cleanup unused repositories
+            PaygSshDataFactory.listRhuiRepositoriesCreatedByInstance(instance)
+                    .stream()
+                    .filter(c -> !newIdents.contains(c.getLabel()))
+                    .forEach(ChannelFactory::remove);
         }
     }
 
