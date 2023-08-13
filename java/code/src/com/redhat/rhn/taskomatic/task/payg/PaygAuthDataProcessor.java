@@ -73,8 +73,8 @@ public class PaygAuthDataProcessor {
     public void processPaygInstanceData(PaygSshData instance, PaygInstanceInfo paygData) throws URISyntaxException {
 
         LOG.debug("Process data for {}", paygData.getType());
-        Credentials credentials = processAndGetCredentials(instance, paygData);
         if (paygData.getType().equals("CLOUDRMT")) {
+            Credentials credentials = processAndGetCredentials(instance, paygData);
             LOG.debug("Number installed Products: {}", paygData.getProducts().size());
 
             // Update the PAYG products associated with the credentials
@@ -96,28 +96,28 @@ public class PaygAuthDataProcessor {
         }
         else if (paygData.getType().equals("RHUI")) {
             LOG.debug("Number repositories: {}", paygData.getRepositories().size());
-            long credentialsId = credentials.getId();
+            long instanceId = instance.getId();
             Org org = OrgFactory.lookupById(ConfigDefaults.get().getRhuiDefaultOrgId());
             Map<String, SslCryptoKey> cryptoKeyMap = new HashMap<>();
 
             for (Map.Entry<String, String> cert : paygData.getCertificates().entrySet()) {
                 String filename = cert.getKey().substring(cert.getKey().lastIndexOf("/") + 1);
-                String desc = String.format("RHUI %s %s (C%d)", "Client Certificate", filename, credentialsId);
+                String desc = String.format("RHUI %s %s (I%d)", "Client Certificate", filename, instanceId);
                 if (cert.getValue().contains("PRIVATE KEY")) {
                     // private key
-                    desc = String.format("RHUI %s %s (C%d)", "Private Key", filename, credentialsId);
+                    desc = String.format("RHUI %s %s (I%d)", "Private Key", filename, instanceId);
                 }
                 else if (filename.equals("Bundle")) {
-                    desc = String.format("RHUI %s %s (C%d)", "CA Certificate", filename, credentialsId);
+                    desc = String.format("RHUI %s %s (I%d)", "CA Certificate", filename, instanceId);
                 }
                 else {
                     if (cert.getKey().contains("/product/")) {
                         // client certificate
-                        desc = String.format("RHUI %s %s (C%d)", "Certificate", filename, credentialsId);
+                        desc = String.format("RHUI %s %s (I%d)", "Certificate", filename, instanceId);
                     }
                     else if (filename.endsWith(".crt")) {
                         // ca cert
-                        desc = String.format("RHUI %s %s (C%d)", "CA Certificate", filename, credentialsId);
+                        desc = String.format("RHUI %s %s (I%d)", "CA Certificate", filename, instanceId);
                     }
                 }
                 String cryptoKeyDesc = desc;
@@ -136,11 +136,16 @@ public class PaygAuthDataProcessor {
             }
 
             for (Map.Entry<String, Map<String, String>> repo : paygData.getRepositories().entrySet()) {
-                String repoIdent = repo.getKey() + "-c" + credentialsId;
+                boolean needCredentials = paygData.getHeaderAuth().containsKey("X-RHUI-ID");
+                String repoIdent = repo.getKey() + "-i" + instanceId;
                 Map<String, String> repodata = repo.getValue();
-
                 URI uri = new URI(repodata.get("url"));
-                String q = buildQueryString(uri.getQuery(), "credentials", "mirrcred_" + credentialsId);
+                String queryString = uri.getQuery();
+
+                if (needCredentials) {
+                    Credentials credentials = processAndGetCredentials(instance, paygData);
+                    queryString = buildQueryString(uri.getQuery(), "credentials", "mirrcred_" + credentials.getId());
+                }
                 ContentSource contentSource =
                         Optional.ofNullable(ChannelFactory.lookupContentSourceByOrgAndLabel(org, repoIdent))
                                 .orElseGet(() -> {
@@ -152,7 +157,7 @@ public class PaygAuthDataProcessor {
                                     return cs;
                                 });
                 contentSource.setSourceUrl(new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
-                        uri.getPath(), q, uri.getFragment()).toString());
+                        uri.getPath(), queryString, uri.getFragment()).toString());
 
                 if (repodata.containsKey("sslclientcert") &&
                         cryptoKeyMap.containsKey(repodata.get("sslclientcert")) &&
@@ -167,11 +172,10 @@ public class PaygAuthDataProcessor {
                     contentSource.setSslSets(Set.of(sslCs));
                 }
                 else if (repodata.containsKey("sslclientcert") ||
-                        repodata.containsKey("sslclientkey") ||
-                        repodata.containsKey("sslcacert")) {
+                        repodata.containsKey("sslclientkey")) {
                     LOG.error("Repository has incomplete client certificate values: {}", repoIdent);
+                    continue;
                 }
-
                 ChannelFactory.save(contentSource);
             }
         }
