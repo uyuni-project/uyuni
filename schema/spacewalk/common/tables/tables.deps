@@ -246,18 +246,8 @@ suseMgrServerInfo                  :: rhnServer rhnPackageEVR suseCredentials
 suseMinionInfo                     :: rhnServer
 suseInstalledProduct               :: rhnPackageArch
 suseMdData                         :: rhnChannel rhnPackage suseMdKeyword
-suseOVALDefinition                 ::
-suseOVALDefinitionAffectedPlatform :: suseOVALDefinition suseOVALPlatform
-suseOVALPackageArchState           ::
-suseOVALPackageEvrState            ::
-suseOVALPackageObject              ::
-suseOVALPackageState               :: suseOVALPackageArchState suseOVALPackageVersionState \
-                                      suseOVALPackageEvrState
-suseOVALPackageTest                :: suseOVALPackageObject suseOVALPackageState
-suseOVALPackageVersionState        ::
 suseOVALPlatform                   ::
 suseOVALPlatformVulnerablePackage  :: suseOVALPlatform rhnCVE suseOVALVulnerablePackage
-suseOVALReference                  :: suseOVALDefinition
 suseOVALVulnerablePackage          ::
 susePackageEula                    :: rhnPackage suseEula
 susePackageProductFile             :: suseProductFile rhnPackage
