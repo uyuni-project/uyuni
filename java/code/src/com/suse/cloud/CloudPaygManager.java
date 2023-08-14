@@ -18,6 +18,7 @@ import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -244,6 +245,19 @@ public class CloudPaygManager {
             LOG.error("Unable to check payg-dimension-computation job is active");
             LOG.info(e.getMessage(), e);
             return false;
+        }
+
+        // files of this package should not be modified
+        String[] cmd = {"/usr/bin/rpm", "-V", "billing-data-service"};
+        SystemCommandExecutor scexec = new SystemCommandExecutor();
+        int retcode = scexec.execute(cmd);
+        if (retcode != 0) {
+            // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
+            if (scexec.getLastCommandOutput().lines().anyMatch(l -> l.charAt(2) == '5')) {
+                LOG.error("Billing Data Service has modifications");
+                LOG.info(scexec.getLastCommandOutput());
+                return false;
+            }
         }
 
         // we only need to check compliance for SUMA PAYG
