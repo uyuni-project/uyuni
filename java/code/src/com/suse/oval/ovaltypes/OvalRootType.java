@@ -1,5 +1,16 @@
 package com.suse.oval.ovaltypes;
 
+import com.suse.oval.OsFamily;
+import com.suse.oval.manager.OVALLookupHelper;
+import com.suse.oval.vulnerablepkgextractor.DebianVulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
+import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
+import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromPatchDefinition;
+import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromVulnerabilityDefinition;
+
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,7 +35,10 @@ public class OvalRootType {
     protected ObjectsType objects;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     protected StatesType states;
-
+    @Transient
+    protected OsFamily osFamily;
+    @Transient
+    protected String osVersion;
 
     /**
      * Gets the value of the generator property.
@@ -98,5 +112,21 @@ public class OvalRootType {
      */
     public void setStates(StatesType value) {
         this.states = value;
+    }
+
+    public OsFamily getOsFamily() {
+        return osFamily;
+    }
+
+    public void setOsFamily(OsFamily osFamily) {
+        this.osFamily = osFamily;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
     }
 }

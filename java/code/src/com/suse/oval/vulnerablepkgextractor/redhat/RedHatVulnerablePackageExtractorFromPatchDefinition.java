@@ -1,8 +1,7 @@
 package com.suse.oval.vulnerablepkgextractor.redhat;
 
 import com.suse.oval.OsFamily;
-import com.suse.oval.cpe.Cpe;
-import com.suse.oval.cpe.CpeBuilder;
+
 import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
@@ -10,7 +9,6 @@ import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.vulnerablepkgextractor.CriteriaTreeBasedExtractor;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
-import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;

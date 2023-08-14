@@ -1,17 +1,26 @@
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
-import com.suse.oval.db.*;
-import com.suse.oval.ovaltypes.*;
+import com.suse.oval.manager.OVALLookupHelper;
+import com.suse.oval.ovaltypes.BaseCriteria;
+import com.suse.oval.ovaltypes.CriteriaType;
+import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionClassEnum;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.EVRType;
+import com.suse.oval.ovaltypes.LogicOperatorType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,9 +29,13 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
             "^\\s*(?<releasePackage>[-a-zA-Z_]+)\\s*.*==(?<releasePackageVersion>[0-9.]+)\\s*$");
     private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
+    private final OVALLookupHelper ovalLookupHelper;
 
-    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition) {
+    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition, OVALLookupHelper ovalLookupHelper) {
         super(vulnerabilityDefinition);
+        Objects.requireNonNull(ovalLookupHelper);
+
+        this.ovalLookupHelper = ovalLookupHelper;
     }
 
     @Override
@@ -47,28 +60,26 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             String comment = packageCriterion.getComment();
             String testId = packageCriterion.getTestRef();
 
-            OVALPackageTest ovalPackageTest = OVALCachingFactory.lookupPackageTestById(testId);
+            TestType packageTest = ovalLookupHelper.lookupTestById(testId)
+                    .orElseThrow(() -> new IllegalStateException("Referenced package test is not found: " + testId));
 
-            if (ovalPackageTest == null) {
-                throw new IllegalStateException("OVAL test not found in the database: " + testId);
-            }
+            String objectId = packageTest.getObjectRef();
+            String stateId = packageTest.getStateRef()
+                    .orElseThrow(() -> new IllegalStateException("Unexpected empty package state in SUSE OVAL"));
 
-            Optional<OVALPackageState> ovalPackageStateOpt = ovalPackageTest.getPackageState();
-            OVALPackageObject ovalPackageObject = ovalPackageTest.getPackageObject();
+            ObjectType packageObject = ovalLookupHelper.lookupObjectById(objectId)
+                    .orElseThrow(() -> new IllegalStateException("Referenced package object not found: " + objectId));
 
-            String packageName = ovalPackageObject.getPackageName();
+            StateType packageState = ovalLookupHelper.lookupStateById(stateId)
+                    .orElseThrow(() -> new IllegalStateException("Referenced package state not found: " + stateId));
+
+            String packageName = packageObject.getPackageName();
 
             VulnerablePackage vulnerablePackage = new VulnerablePackage();
             vulnerablePackage.setName(packageName);
 
-            if (ovalPackageStateOpt.isEmpty()) {
-                throw new IllegalStateException("Found an empty state");
-            }
-
             if (comment.endsWith("is installed")) {
-                String evr = ovalPackageStateOpt
-                        .flatMap(OVALPackageState::getPackageEvrState)
-                        .map(OVALPackageEvrStateEntity::getEvr).orElse("");
+                String evr = packageState.getPackageEVR().map(EVRType::getValue).orElse("");
                 vulnerablePackage.setFixVersion(evr);
             } else if (comment.endsWith("is affected")) {
                 // Affected packages don't have a fix version yet.
@@ -87,8 +98,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         for (CriterionType productCriterion : productCriterions) {
             String comment = productCriterion.getComment();
             String productUserFriendlyName = comment.replace(" is installed", "");
-            OVALPackageTest productTest = OVALCachingFactory
-                    .lookupPackageTestById(productCriterion.getTestRef());
+            TestType productTest = ovalLookupHelper.lookupTestById(productCriterion.getTestRef()).orElseThrow();
 
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             vulnerableProduct.setSingleCve(definition.getSingleCve().orElseThrow());
@@ -131,7 +141,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .anyMatch(comment -> comment.startsWith(osProduct));
     }
 
-    public Cpe deriveCpe(OVALPackageTest productTest) {
+    public Cpe deriveCpe(TestType productTest) {
         OsFamily osProduct = definition.getOsFamily();
         if (osProduct == OsFamily.openSUSE_LEAP) {
             return deriveOpenSUSELeapCpe();
@@ -148,7 +158,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .build();
     }
 
-    public Cpe deriveSUSEProductCpe(OVALPackageTest productTest) {
+    public Cpe deriveSUSEProductCpe(TestType productTest) {
         String testComment = productTest.getComment();
         String productPart = null;
         String versionPart = null;
