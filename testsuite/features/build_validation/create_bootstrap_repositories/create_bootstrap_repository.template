@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @<client>
-Feature: Create bootstrap repositories
+Feature: Create bootstrap repository for <client>
 In order to be able to enroll clients with MU repositories
 As the system administrator
 I create all bootstrap repos with --with-custom-channels option
