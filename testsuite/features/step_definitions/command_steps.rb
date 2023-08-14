@@ -789,8 +789,8 @@ end
 
 When(/^I register this client for SSH push via tunnel$/) do
   # create backups of /etc/hosts and up2date config
-  $server.run('cp /etc/hosts /etc/hosts.BACKUP')
-  $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
+  get_target('server').run('cp /etc/hosts /etc/hosts.BACKUP')
+  get_target('server').run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
   script = "spawn spacewalk-ssh-push-init --client #{get_target('client').full_hostname} --register #{bootstrap} --tunnel\n" \
@@ -807,10 +807,10 @@ When(/^I register this client for SSH push via tunnel$/) do
   # perform the registration
   filename = File.basename(path)
   bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
+  get_target('server').run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
   # restore files from backups
-  $server.run('mv /etc/hosts.BACKUP /etc/hosts')
-  $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
+  get_target('server').run('mv /etc/hosts.BACKUP /etc/hosts')
+  get_target('server').run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
 
 # Repositories and packages management
