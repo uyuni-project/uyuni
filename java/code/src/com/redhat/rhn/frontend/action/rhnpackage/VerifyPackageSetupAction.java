@@ -29,7 +29,7 @@ public class VerifyPackageSetupAction extends BaseSystemPackagesAction {
      */
     @Override
     protected DataResult getDataResult(Server server) {
-        return PackageManager.systemPackageList(server.getId(), null);
+        return PackageManager.shallowSystemPackageList(server.getId(), null);
     }
 
 }

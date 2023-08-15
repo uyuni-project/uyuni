@@ -115,7 +115,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
 
         // verify the package is retracted
-        DataResult<PackageListItem> pkgs = PackageManager.systemPackageList(server.getId(), null);
+        DataResult<PackageListItem> pkgs = PackageManager.shallowSystemPackageList(server.getId(), null);
         pkgs.elaborate();
         PackageListItem pkg = assertSingleAndGet(pkgs);
         assertTrue(pkg.isRetracted());
@@ -123,7 +123,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // now let's subscribe the system to the cloned channel, where the patch is not retracted
         SystemManager.unsubscribeServerFromChannel(server, channel);
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
-        pkgs = PackageManager.systemPackageList(server.getId(), null);
+        pkgs = PackageManager.shallowSystemPackageList(server.getId(), null);
         pkgs.elaborate();
         pkg = assertSingleAndGet(pkgs);
         assertFalse(pkg.isRetracted()); // the package is now NOT retracted for this server!

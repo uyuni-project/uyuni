@@ -6,7 +6,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.SystemPackage;
+import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
@@ -89,8 +89,8 @@ public class CVEAuditManagerOVAL {
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
 
-        List<SystemPackage> allInstalledPackages =
-                PackageManager.systemPackageList(clientServer.getId());
+        List<ShallowSystemPackage> allInstalledPackages =
+                PackageManager.shallowSystemPackageList(clientServer.getId());
 
         log.error("Vul packages before filtering: {}",
                 OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
@@ -126,7 +126,7 @@ public class CVEAuditManagerOVAL {
         if (patched.isEmpty() && !unpatched.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         } else {
-            log.error(allInstalledPackages.stream().map(SystemPackage::getPackageEVR).collect(Collectors.toList()));
+            log.error(allInstalledPackages.stream().map(ShallowSystemPackage::getPackageEVR).collect(Collectors.toList()));
             log.error("Hooo " + patched);
             boolean allPatchesInstalled = patched.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
@@ -176,7 +176,7 @@ public class CVEAuditManagerOVAL {
         return cveAuditServerBuilder;
     }
 
-    private static boolean isPackageInstalled(VulnerablePackage pkg, List<SystemPackage> allInstalledPackages) {
+    private static boolean isPackageInstalled(VulnerablePackage pkg, List<ShallowSystemPackage> allInstalledPackages) {
         return allInstalledPackages.stream()
                 .anyMatch(installed -> Objects.equals(installed.getName(), pkg.getName()));
     }

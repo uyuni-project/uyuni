@@ -1058,7 +1058,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     // Check to make sure up2date is 2.9.0
     protected ValidatorError validateUp2dateVersion() {
         Server hostServer = getHostServer();
-        List<PackageListItem> packages = PackageManager.systemPackageList(hostServer.getId(), null);
+        List<PackageListItem> packages = PackageManager.shallowSystemPackageList(hostServer.getId(), null);
         if (packages != null) {
             log.debug("    packages.size() : {}", packages.size());
         }

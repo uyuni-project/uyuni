@@ -4,7 +4,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.frontend.dto.IdComboDto;
 
-public class SystemPackage extends IdComboDto {
+public class ShallowSystemPackage extends IdComboDto {
     private Long packageId;
     private Long id;
     private String name;
@@ -15,10 +15,10 @@ public class SystemPackage extends IdComboDto {
     private String release;
     private String type;
 
-    public SystemPackage() {
+    public ShallowSystemPackage() {
     }
 
-    public SystemPackage(String name, PackageType type, String evr, String arch) {
+    public ShallowSystemPackage(String name, PackageType type, String evr, String arch) {
         this.name = name;
         this.type = type.getDbString();
         this.arch = arch;
@@ -29,17 +29,16 @@ public class SystemPackage extends IdComboDto {
         this.release = packageEvr.getRelease();
     }
 
-    public SystemPackage(String name, PackageType type, String evr) {
+    public ShallowSystemPackage(String name, PackageType type, String evr) {
         this(name, type, evr, "noarch");
     }
 
-    public SystemPackage(String name, String evr) {
+    public ShallowSystemPackage(String name, String evr) {
         this(name, PackageType.RPM, evr);
     }
-    public SystemPackage(String name, String evr, String arch) {
+    public ShallowSystemPackage(String name, String evr, String arch) {
         this(name, PackageType.RPM, evr, arch);
     }
-
 
 
     /**

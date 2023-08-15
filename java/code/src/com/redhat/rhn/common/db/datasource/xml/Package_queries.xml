@@ -573,7 +573,7 @@ SELECT PN.name as NAME,
   <elaborator name="package_retracted_and_ptf_details" />
 </mode>
 
-<mode name="system_package_list_2" class="com.suse.oval.SystemPackage">
+<mode name="shallow_system_package_list" class="com.suse.oval.ShallowSystemPackage">
     <query params="sid">
         WITH highest_id_packages AS (
             SELECT p.name_id, p.evr_id, p.package_arch_id, max(p.id) AS id

@@ -61,7 +61,7 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
-import com.suse.oval.SystemPackage;
+import com.suse.oval.ShallowSystemPackage;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -319,12 +319,12 @@ public class PackageManager extends BaseManager {
      * @param pc PageControl can also be null.
      * @return list of packages for given server
      */
-    public static DataResult<PackageListItem> systemPackageList(Long sid, PageControl pc) {
+    public static DataResult<PackageListItem> shallowSystemPackageList(Long sid, PageControl pc) {
         return PackageManager.getPackagesPerSystem(sid, "system_package_list", pc);
     }
 
-    public static DataResult<SystemPackage> systemPackageList(Long sid) {
-        SelectMode m = ModeFactory.getMode("Package_queries", "system_package_list_2");
+    public static DataResult<ShallowSystemPackage> shallowSystemPackageList(Long sid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "shallow_system_package_list");
 
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
