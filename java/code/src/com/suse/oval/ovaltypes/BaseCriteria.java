@@ -2,7 +2,6 @@ package com.suse.oval.ovaltypes;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.suse.oval.TestEvaluator;
 
 import java.io.Serializable;
 
@@ -14,5 +13,4 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = CriterionType.class, name = "criterionType")}
 )
 public interface BaseCriteria extends Serializable {
-    boolean evaluate(TestEvaluator testEvaluator);
 }

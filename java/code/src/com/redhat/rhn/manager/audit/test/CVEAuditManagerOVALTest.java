@@ -44,7 +44,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Cve cve = createTestCve("CVE-2022-2991");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -83,7 +82,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Cve cve = createTestCve("CVE-2022-2991");
-        saveAllOVALTests(ovalRoot);
 
         Set<Cve> cves = Set.of(cve);
         User user = createTestUser();
@@ -96,8 +94,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         server.setCpe("cpe:/o:opensuse:leap:15.4"); // openSUSE Leap 15.4, same as the affected OS in OVAL
 
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
-
-        createOVALDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         CVEAuditManager.populateCVEChannels();
 
@@ -119,7 +115,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Cve cve = createTestCve("CVE-2022-2991");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -164,7 +159,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Cve cve = createTestCve("CVE-2022-2991");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -214,7 +208,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
         Cve cve = createTestCve("CVE-2008-2934");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -254,7 +247,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
         Cve cve = createTestCve("CVE-2008-2934");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -297,7 +289,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         DefinitionType definitionType = ovalRoot.getDefinitions().get(0);
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
         Cve cve = createTestCve("CVE-2008-2934");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -347,7 +338,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         setupDefinition(definitionType, OsFamily.openSUSE_LEAP, "15.4");
 
         Cve cve = createTestCve("CVE-2022-2991");
-        saveAllOVALTests(ovalRoot);
         extractAndSaveVulnerablePackages(definitionType);
 
         Set<Cve> cves = Set.of(cve);
@@ -398,19 +388,5 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static Package createLeap15_4_Package(User user, Errata errata, Channel channel) throws Exception {
         return createTestPackage(user, channel, "noarch", "openSUSE-release",
                 "0", "15.4", "0");
-    }
-
-    /**
-     * Using this method requires that each triple of OVAL (test, object, state) be located at the same position in
-     * the OVAL file under their own category.
-     * */
-    private static void saveAllOVALTests(OvalRootType ovalRoot) {
-        for (int i = 0; i < ovalRoot.getTests().getTests().size(); i++) {
-            TestType testType = ovalRoot.getTests().getTests().get(i);
-            ObjectType objectType = ovalRoot.getObjects().getObjects().get(i);
-            StateType stateType = ovalRoot.getStates().getStates().get(i);
-
-            createOVALTest(testType, objectType, stateType);
-        }
     }
 }

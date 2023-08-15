@@ -44,14 +44,8 @@ import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OsFamily;
-import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.db.OVALPackageTest;
-import com.suse.oval.manager.OvalObjectManager;
-import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.ovaltypes.DefinitionType;
-import com.suse.oval.ovaltypes.ObjectType;
-import com.suse.oval.ovaltypes.StateType;
-import com.suse.oval.ovaltypes.TestType;
+import com.suse.oval.ovaltypes.OvalRootType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -523,15 +517,6 @@ public class ErrataTestUtils {
         return result;
     }
 
-    public static OVALDefinition createOVALDefinition(DefinitionType definitionType, OsFamily osFamily, String osVersion) {
-        OVALCachingFactory.saveDefinitions(List.of(definitionType), osFamily, osVersion);
-
-        HibernateFactory.getSession().clear();
-        HibernateFactory.getSession().flush();
-
-        return OVALCachingFactory.lookupDefinitionById(definitionType.getId());
-    }
-
     /**
      * Copy errata details as in {@link ErrataFactory}.
      * @param copy
@@ -558,20 +543,12 @@ public class ErrataTestUtils {
         copy.setPackages(new HashSet<>(original.getPackages()));
     }
 
-    public static OVALPackageTest createOVALTest(TestType testType, ObjectType objectType, StateType stateType) {
-        OVALCachingFactory.savePackageObjects(List.of(objectType));
-        OVALCachingFactory.savePackageStates(List.of(stateType));
-        OVALCachingFactory.savePackageTests(List.of(testType));
-
-        HibernateFactory.getSession().flush();
-
-        return OVALCachingFactory.lookupPackageTestById(testType.getId());
-    }
-
     public static void extractAndSaveVulnerablePackages(DefinitionType definition) {
+        OvalRootType rootType = new OvalRootType();
+        rootType.setDefinitions(List.of(definition));
         definition.setOsFamily(OsFamily.openSUSE_LEAP);
         definition.setOsVersion("15.4");
-        OVALCachingFactory.savePlatformsVulnerablePackages(List.of(definition), OsFamily.openSUSE_LEAP, "15.4");
+        OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
 
         HibernateFactory.getSession().flush();
     }

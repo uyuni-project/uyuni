@@ -8,14 +8,13 @@
 
 package com.suse.oval.ovaltypes;
 
-import com.suse.oval.TestEvaluator;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,38 +107,5 @@ public class CriteriaType implements BaseCriteria {
      */
     public void setComment(String value) {
         this.comment = value;
-    }
-
-    @Override
-    public boolean evaluate(TestEvaluator testEvaluator) {
-        switch (operator) {
-            case OR:
-                return isNegate() ^ evaluateOR(testEvaluator);
-            case AND:
-                return isNegate() ^ evaluateAND(testEvaluator);
-            case ONE:
-            case XOR:
-                //TODO: Implement
-                return false;
-        }
-        return false;
-    }
-
-    private boolean evaluateOR(TestEvaluator testEvaluator) {
-        for (BaseCriteria childCriteria : children) {
-            if (childCriteria.evaluate(testEvaluator)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean evaluateAND(TestEvaluator testEvaluator) {
-        for (BaseCriteria childCriteria : children) {
-            if (!childCriteria.evaluate(testEvaluator)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

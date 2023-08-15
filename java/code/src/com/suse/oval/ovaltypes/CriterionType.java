@@ -1,8 +1,5 @@
 package com.suse.oval.ovaltypes;
 
-import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.TestEvaluator;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -72,10 +69,5 @@ public class CriterionType implements BaseCriteria {
      */
     public void setComment(String value) {
         this.comment = value;
-    }
-
-    @Override
-    public boolean evaluate(TestEvaluator testEvaluator) {
-        return isNegate() ^ testEvaluator.evaluate(OVALCachingFactory.lookupPackageTestById(testRef));
     }
 }

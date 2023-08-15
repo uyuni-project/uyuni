@@ -5,35 +5,19 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import com.suse.oval.db.OVALDefinition;
-import com.suse.oval.db.OVALPackageObject;
-import com.suse.oval.db.OVALPackageState;
-import com.suse.oval.db.OVALPackageTest;
-import com.suse.oval.db.OVALPlatform;
-import com.suse.oval.db.OVALVulnerablePackage;
-import com.suse.oval.ovaltypes.ArchType;
+import com.suse.oval.manager.OVALLookupHelper;
 import com.suse.oval.ovaltypes.DefinitionType;
-import com.suse.oval.ovaltypes.EVRType;
-import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OvalRootType;
-import com.suse.oval.ovaltypes.ReferenceType;
-import com.suse.oval.ovaltypes.StateType;
-import com.suse.oval.ovaltypes.TestType;
-import com.suse.oval.ovaltypes.VersionType;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
 
-import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -356,62 +340,6 @@ public class OVALCachingFactory extends HibernateFactory {
         int fullChunks = (size - 1) / BATCH_SIZE;
         return IntStream.range(0, fullChunks + 1).mapToObj(
                 n -> source.subList(n * 60, n == fullChunks ? size : (n + 1) * 60));
-    }
-
-    public static OVALDefinition lookupDefinitionById(String id) {
-        return getSession().byId(OVALDefinition.class).load(id);
-    }
-
-    private OVALPackageObject lookupOrInsetPackageObject(OVALPackageObject ovalPackageObject) {
-        OVALPackageObject lookup = lookupPackageObjectById(ovalPackageObject.getId());
-        if (lookup == null) {
-            instance.saveObject(ovalPackageObject);
-
-            return ovalPackageObject;
-        }
-
-        return lookup;
-    }
-
-    public static OVALPackageTest lookupPackageTestById(String id) {
-        return getSession().byId(OVALPackageTest.class).load(id);
-    }
-
-    public static OVALPackageState lookupPackageStateById(String id) {
-        return getSession().byId(OVALPackageState.class).load(id);
-    }
-
-    public static OVALPackageObject lookupPackageObjectById(String id) {
-        return getSession().byId(OVALPackageObject.class).load(id);
-    }
-
-    public static List<OVALPlatform> getPlatformsAffectedByCve(String cve) {
-        return getSession()
-                .createNamedQuery("OVALPlatform.getPlatformsAffectedByCve", OVALPlatform.class)
-                .setParameter("cve", cve)
-                .getResultList();
-    }
-
-    public static List<OVALPlatform> lookupPlatformsAffectedByDefinition(String defId) {
-        return getSession()
-                .createNamedQuery("OVALPlatform.getPlatformsAffectedByDefinition", OVALPlatform.class)
-                .setParameter("defId", defId)
-                .getResultList();
-    }
-
-    public static List<OVALDefinition> lookupVulnerabilityDefinitionsByCve(String cve) {
-        return getSession()
-                .createNamedQuery("OVALDefinition.getVulnerabilityDefinitionByCve", OVALDefinition.class)
-                .setParameter("cve", cve)
-                .getResultList();
-    }
-
-    public static List<OVALVulnerablePackage> lookupVulnerablePackagesByPlatformAndCve(long platformId, String cve) {
-        return getSession()
-                .createNamedQuery("OVALVulnerablePackage.lookupVulnerablePackagesByPlatformAndCve", OVALVulnerablePackage.class)
-                .setParameter("platformId", platformId)
-                .setParameter("cve", cve)
-                .getResultList();
     }
 
     @Override

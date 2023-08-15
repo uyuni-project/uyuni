@@ -68,8 +68,9 @@ public class OvalRootType {
     /**
      * Sets the value of the definitions' property.
      */
-    public void setDefinitions(DefinitionsType value) {
-        this.definitions = value;
+    public void setDefinitions(List<DefinitionType> value) {
+        this.definitions = new DefinitionsType();
+        this.definitions.definitions.addAll(value);
     }
 
     /**
