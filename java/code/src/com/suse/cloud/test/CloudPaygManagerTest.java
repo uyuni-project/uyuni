@@ -79,6 +79,59 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    public static class CloudPaygManagerTestHelper extends CloudPaygManager {
+
+        private String iType = "BYOS";
+        private String reqResult = "";
+        private boolean serviceRunning = true;
+        private boolean packageModified = false;
+
+        public CloudPaygManagerTestHelper() {
+            super();
+        }
+        public CloudPaygManagerTestHelper(TaskomaticApi tapiIn, ContentSyncManager syncManagerIn) {
+            super(tapiIn, syncManagerIn);
+        }
+
+        @Override
+        protected boolean isFileExecutable(String filename) {
+            return filename.equals("/usr/bin/instance-flavor-check") ||
+                    filename.equals("/usr/bin/ec2metadata");
+        }
+
+        public void setInstanceType(String iTypeIn) {
+            iType = iTypeIn;
+        }
+
+        public void setRequestResult(String reqResultIn) {
+            reqResult = reqResultIn;
+        }
+
+        public void setServiceRunning(boolean isRunning) {
+            serviceRunning = isRunning;
+        }
+
+        public void setPackageModified(boolean pkgModifiedIn) {
+            packageModified = pkgModifiedIn;
+        }
+
+        protected String getInstanceType() {
+            return iType;
+        }
+        @Override
+        protected String requestUrl(String url) {
+            return reqResult;
+        }
+        @Override
+        protected boolean isServiceRunning(String serviceIn) {
+            return serviceRunning;
+        }
+        @Override
+        protected boolean hasPackageModifications(String pkg) {
+            return packageModified;
+        }
+    }
+
     @Test
     public void testCloudProvider() {
         CloudPaygManager cpm = new CloudPaygManager();
@@ -112,18 +165,8 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsPayg() {
-        CloudPaygManager cpm = new CloudPaygManager() {
-            @Override
-            protected boolean isFileExecutable(String filename) {
-                return filename.equals("/usr/bin/instance-flavor-check") ||
-                        filename.equals("/usr/bin/ec2metadata");
-            }
-
-            @Override
-            protected String getInstanceType() {
-                return "PAYG";
-            }
-        };
+        CloudPaygManagerTestHelper cpm = new CloudPaygManagerTestHelper();
+        cpm.setInstanceType("PAYG");
         assertTrue(cpm.isPaygInstance(), "Expecting a PAYG instance");
     }
 
@@ -131,22 +174,9 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     public void testRefresh() {
         TaskomaticApiTestHelper tapi = new TaskomaticApiTestHelper();
         tapi.setResult(new HashMap<>());
-        CloudPaygManager cpm = new CloudPaygManager(tapi, new ContentSyncManager()) {
-            @Override
-            protected boolean isFileExecutable(String filename) {
-                return filename.equals("/usr/bin/instance-flavor-check") ||
-                        filename.equals("/usr/bin/ec2metadata");
-            }
-
-            @Override
-            protected String getInstanceType() {
-                return "PAYG";
-            }
-            @Override
-            protected String requestUrl(String url) {
-                return "online";
-            }
-        };
+        CloudPaygManagerTestHelper cpm = new CloudPaygManagerTestHelper(tapi, new ContentSyncManager());
+        cpm.setInstanceType("PAYG");
+        cpm.setRequestResult("online");
 
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
 
@@ -161,22 +191,11 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         TaskomaticApiTestHelper tapi = new TaskomaticApiTestHelper();
         tapi.setNull();
 
-        CloudPaygManager cpm = new CloudPaygManager(tapi, new ContentSyncManager()) {
-            @Override
-            protected boolean isFileExecutable(String filename) {
-                return filename.equals("/usr/bin/instance-flavor-check") ||
-                        filename.equals("/usr/bin/ec2metadata");
-            }
-
-            @Override
-            protected String getInstanceType() {
-                return "PAYG";
-            }
-            @Override
-            protected String requestUrl(String url) {
-                return "online";
-            }
-        };
+        CloudPaygManagerTestHelper cpm = new CloudPaygManagerTestHelper(tapi, new ContentSyncManager());
+        cpm.setInstanceType("PAYG");
+        cpm.setRequestResult("online");
+        cpm.setServiceRunning(true);
+        cpm.setPackageModified(false);
 
         // test 1 - no schedule available
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
@@ -194,26 +213,26 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         // test cache is used
         assertFalse(cpm.checkRefreshCache(false), "Unexpected: refresh happened");
 
-        cpm = new CloudPaygManager(tapi, new ContentSyncManager()) {
-            @Override
-            protected boolean isFileExecutable(String filename) {
-                return filename.equals("/usr/bin/instance-flavor-check") ||
-                        filename.equals("/usr/bin/ec2metadata");
-            }
-
-            @Override
-            protected String getInstanceType() {
-                return "PAYG";
-            }
-            @Override
-            protected String requestUrl(String url) {
-                return "error";
-            }
-        };
-
         // test 4 - billing-data-service is down
+        cpm.setRequestResult("error");
+        assertTrue(cpm.checkRefreshCache(true), "Not refreshed");
+        assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
+        // test 5 - packages are modified
+        cpm.setRequestResult("online");
+        cpm.setPackageModified(true);
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
         assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
+        // test 6 - billing adapter is down
+        cpm.setPackageModified(false);
+        cpm.setServiceRunning(false);
+        assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
+        assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
+        cpm.setServiceRunning(true);
+        assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
+        assertTrue(cpm.isCompliant(), "Unexpected: Is not compliant");
 
     }
 
