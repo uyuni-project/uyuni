@@ -703,10 +703,10 @@ When implementing a step, to run a command on a target, use:
 
 ```ruby
 get_target('server').run("uptime")
-get_target('minion').run("uptime", check_errors: false)
-get_target('minion').run("uptime", check_errors: true)
-get_target('minion').run("uptime", check_errors: true, timeout: 300)
-get_target('minion').run("uptime", check_errors: false, timeout: 500, user: 'root')
+get_target('sle_minion').run("uptime", check_errors: false)
+get_target('sle_minion').run("uptime", check_errors: true)
+get_target('sle_minion').run("uptime", check_errors: true, timeout: 300)
+get_target('sle_minion').run("uptime", check_errors: false, timeout: 500, user: 'root')
 ```
 
 Arguments taken by method ```run``` are:
@@ -724,7 +724,7 @@ retry several times until ```DEFAULT_TIMEOUT```.
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT.puts get_target('minion').full_hostname
+  STDOUT.puts get_target('sle_minion').full_hostname
 ```
 
 ### Converting between host name and target
