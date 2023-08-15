@@ -40,19 +40,17 @@ public class OVALCleaner {
         root.getObjects().getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
     }
 
-    public static DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
-        fillCves(definition, osFamily, osVersion);
+    public static void doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+        fillCves(definition, osFamily);
         fillOsFamily(definition, osFamily);
         fillOsVersion(definition, osVersion);
 
         if (osFamily == OsFamily.DEBIAN) {
             convertDebianTestRefs(definition.getCriteria(), osVersion);
         }
-
-        return definition;
     }
 
-    private static void fillCves(DefinitionType definition, OsFamily osFamily, String osVersion) {
+    private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
             case openSUSE_LEAP:
