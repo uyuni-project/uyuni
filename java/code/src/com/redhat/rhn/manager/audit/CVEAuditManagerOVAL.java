@@ -26,10 +26,9 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.ShallowSystemPackage;
 
+import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
-import com.suse.oval.manager.OvalObjectManager;
-import com.suse.oval.manager.OvalStateManager;
 import com.suse.oval.ovaldownloader.OVALDownloader;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -320,7 +319,8 @@ public class CVEAuditManagerOVAL {
 
             log.warn("Saving OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
 
-            OVALCachingFactory.saveOVAL(ovalRoot, product.getOsFamily(), product.getOsVersion());
+            OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
 
             log.warn("Saving OVAL finished");
         }
