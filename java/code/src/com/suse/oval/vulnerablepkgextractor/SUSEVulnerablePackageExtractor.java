@@ -89,6 +89,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 // have the fixed package version or that a fix was backported to vulnerable products. Hence, the fix version
                 // is 0.
                 vulnerablePackage.setFixVersion("0:0-0");
+                continue;
             }
 
             vulnerablePackages.add(vulnerablePackage);
@@ -105,6 +106,10 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             vulnerableProduct.setProductCpe(deriveCpe(productTest).asString());
             vulnerableProduct.setProductUserFriendlyName(productUserFriendlyName);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
+
+            if(vulnerableProduct.getProductCpe().contains("suse-manager")) {
+                continue;
+            }
 
             result.add(vulnerableProduct);
         }
