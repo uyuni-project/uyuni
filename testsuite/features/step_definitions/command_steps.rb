@@ -1411,8 +1411,7 @@ end
 
 # rebooting via SSH
 When(/^I reboot the server through SSH$/) do
-  init_string = "ssh:#{get_target('server').public_ip}"
-  temp_server = twopence_init(init_string)
+  temp_server = twopence_init('server')
   temp_server.run('reboot > /dev/null 2> /dev/null &')
   default_timeout = 300
 
@@ -1468,7 +1467,7 @@ end
 
 # changing hostname
 When(/^I run spacewalk-hostname-rename command on the server$/) do
-  temp_server = twopence_init("ssh:#{get_target('server').public_ip}")
+  temp_server = twopence_init('server')
   command = "spacecmd --nossl -q api api.getVersion -u admin -p admin; " \
             "spacewalk-hostname-rename #{get_target('server').public_ip} " \
             "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
@@ -1491,8 +1490,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 end
 
 When(/^I change back the server's hostname$/) do
-  init_string = "ssh:#{get_target('server').public_ip}"
-  temp_server = twopence_init(init_string)
+  temp_server = twopence_init('server')
   temp_server.run("echo '#{get_target('server').full_hostname}' > /etc/hostname ")
 end
 
