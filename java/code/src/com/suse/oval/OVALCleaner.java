@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for cleaning OVAL resources and filling up missing data as soon as they're parsed. It acts
- * as an adapter that takes
- * OVAL data from multiple sources and make changes to it to have a more predictable format.
+ * as an adapter that takes OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
 
-    public void cleanup(OvalRootType root, OsFamily osFamily, String osVersion) {
+    public static void cleanup(OvalRootType root, OsFamily osFamily, String osVersion) {
+        root.setOsFamily(osFamily);
+        root.setOsVersion(osVersion);
+
         if (osFamily == OsFamily.REDHAT_ENTERPRISE_LINUX) {
             root.getDefinitions().removeIf(def -> def.getId().contains("unaffected"));
         }
@@ -38,7 +40,7 @@ public class OVALCleaner {
         root.getObjects().getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
     }
 
-    public DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
+    public static DefinitionType doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {
         fillCves(definition, osFamily, osVersion);
         fillOsFamily(definition, osFamily);
         fillOsVersion(definition, osVersion);
@@ -50,7 +52,7 @@ public class OVALCleaner {
         return definition;
     }
 
-    private void fillCves(DefinitionType definition, OsFamily osFamily, String osVersion) {
+    private static void fillCves(DefinitionType definition, OsFamily osFamily, String osVersion) {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
             case openSUSE_LEAP:
@@ -70,15 +72,15 @@ public class OVALCleaner {
         }
     }
 
-    private void fillOsFamily(DefinitionType definition, OsFamily osFamily) {
+    private static void fillOsFamily(DefinitionType definition, OsFamily osFamily) {
         definition.setOsFamily(osFamily);
     }
 
-    private void fillOsVersion(DefinitionType definition, String osVersion) {
+    private static void fillOsVersion(DefinitionType definition, String osVersion) {
         definition.setOsVersion(osVersion);
     }
 
-    private void doCleanupTest(TestType test, OsFamily osFamily, String osVersion) {
+    private static void doCleanupTest(TestType test, OsFamily osFamily, String osVersion) {
         if (osFamily == OsFamily.DEBIAN) {
             test.setId(convertDebianId(test.getId(), osVersion));
             test.setObjectRef(convertDebianId(test.getObjectRef(), osVersion));
@@ -88,13 +90,13 @@ public class OVALCleaner {
         }
     }
 
-    private void doCleanupState(StateType state, OsFamily osFamily, String osVersion) {
+    private static void doCleanupState(StateType state, OsFamily osFamily, String osVersion) {
         if (osFamily == OsFamily.DEBIAN) {
             state.setId(convertDebianId(state.getId(), osVersion));
         }
     }
 
-    private void doCleanupObject(ObjectType object, OsFamily osFamily, String osVersion) {
+    private static void doCleanupObject(ObjectType object, OsFamily osFamily, String osVersion) {
         if (osFamily == OsFamily.DEBIAN) {
             object.setId(convertDebianId(object.getId(), osVersion));
         }
@@ -106,7 +108,7 @@ public class OVALCleaner {
      * <p>
      * To be workaround this, we insert the codename of the version into the id string
      */
-    private void convertDebianTestRefs(BaseCriteria root, String osVersion) {
+    private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {
             for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
                 convertDebianTestRefs(criteria, osVersion);
@@ -123,7 +125,7 @@ public class OVALCleaner {
      * <p>
      * To be workaround this, we insert the codename of the version into the id string
      */
-    private String convertDebianId(String id, String osVersion) {
+    private static String convertDebianId(String id, String osVersion) {
         String codename;
         if ("10.0".equals(osVersion) || "10".equals(osVersion)) {
             codename = "buster";
