@@ -26,6 +26,6 @@ jobs:
         if: ${{ steps.is_member.outputs.result == 404 }}
         uses: christianvuerings/add-labels@v1
         with:
-          labels: "external-contrib"
+          labels: "community"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
