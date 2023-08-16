@@ -688,9 +688,12 @@ type=rpm-md
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
+            _repo_url = 'baseurl'
+            if mirrorlist and not plugin_used:
+                _repo_url = "mirrorlist"
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                repo_url='baseurl' if not mirrorlist or plugin_used else 'mirrorlist',
+                repo_url=_repo_url,
                 url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))
