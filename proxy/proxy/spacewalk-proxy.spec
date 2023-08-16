@@ -84,7 +84,7 @@ Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-proxy-package-manager
 %if 0%{?suse_version}
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 Requires:       apache2-prefork
 %else
 Requires:       mod_ssl
@@ -127,7 +127,7 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  apache2
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 %else
 BuildRequires:  httpd
 Requires:       mod_ssl
