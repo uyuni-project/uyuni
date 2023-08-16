@@ -205,6 +205,7 @@ Feature: Smoke tests for <client>
   Scenario: Test <client> on Grafana
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
+    And I wait until I see "General" text
     And I check radio button "View as list"
     When I follow "Client Systems"
     Then I should see "<client>" hostname
