@@ -373,22 +373,23 @@ def clear_ssl_cache():
 
 
 def verify_certificates_dates(certs):
+    """
+    One certificate must be valid. Bundles may contain expired certs.
+    It does not make sense to check them all.
+    """
     cert = ""
     is_cert = False
-    has_valid_certs = False
     for line in certs.split('\n'):
         if not is_cert and line.startswith("-----BEGIN CERTIFICATE"):
             is_cert = True
         if is_cert:
             cert += line + '\n'
         if is_cert and line.startswith("-----END CERTIFICATE"):
+            if verify_certificate_dates(cert):
+                return True
             is_cert = False
-            if not verify_certificate_dates(cert):
-                cert = ""
-                continue
             cert = ""
-            has_valid_certs = True
-    return has_valid_certs
+    return False
 
 
 def get_single_ssl_set(keys, check_dates=False):
