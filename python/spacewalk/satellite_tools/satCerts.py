@@ -41,7 +41,7 @@ def get_certificate_info(cert_str):
     subject = cert.get_subject()
     try:
         cn = subject.CN
-    except:
+    except AttributeError:
         cn = ""
     serial_number = cert.get_serial_number()
     return cn, serial_number, not_before, not_after
