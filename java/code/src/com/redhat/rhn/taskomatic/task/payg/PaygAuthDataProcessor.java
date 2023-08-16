@@ -99,95 +99,107 @@ public class PaygAuthDataProcessor {
             LOG.debug("Number repositories: {}", paygData.getRepositories().size());
             long instanceId = instance.getId();
             Org org = OrgFactory.lookupById(ConfigDefaults.get().getRhuiDefaultOrgId());
-            Map<String, SslCryptoKey> cryptoKeyMap = new HashMap<>();
+            Map<String, SslCryptoKey> cryptoKeyMap = extractCryptoKeys(paygData, instanceId, org);
 
-            for (Map.Entry<String, String> cert : paygData.getCertificates().entrySet()) {
-                String filename = cert.getKey().substring(cert.getKey().lastIndexOf("/") + 1);
-                String desc = String.format("RHUI %s %s (I%d)", "Client Certificate", filename, instanceId);
-                if (cert.getValue().contains("PRIVATE KEY")) {
-                    // private key
-                    desc = String.format("RHUI %s %s (I%d)", "Private Key", filename, instanceId);
+            // extract repositories from paygData and create or update them
+            processRepositories(paygData, cryptoKeyMap, instance, org);
+        }
+    }
+
+    private void processRepositories(PaygInstanceInfo paygData, Map<String, SslCryptoKey> cryptoKeyMap,
+                                     PaygSshData instance, Org org) throws URISyntaxException {
+        Set<String> newIdents = new HashSet<>();
+        for (Map.Entry<String, Map<String, String>> repo : paygData.getRepositories().entrySet()) {
+            boolean needCredentials = paygData.getHeaderAuth().containsKey("X-RHUI-ID");
+            String repoIdent = repo.getKey() + "-i" + instance.getId();
+            Map<String, String> repodata = repo.getValue();
+            URI uri = new URI(repodata.get("url"));
+            String queryString = uri.getQuery();
+
+            if (needCredentials) {
+                Credentials credentials = processAndGetCredentials(instance, paygData);
+                queryString = buildQueryString(uri.getQuery(), "credentials", "mirrcred_" + credentials.getId());
+            }
+            ContentSource contentSource =
+                    Optional.ofNullable(ChannelFactory.lookupContentSourceByOrgAndLabel(org, repoIdent))
+                            .orElseGet(() -> {
+                                ContentSource cs = new ContentSource();
+                                cs.setOrg(org);
+                                cs.setLabel(repoIdent);
+                                cs.setType(ChannelFactory.lookupContentSourceType("yum"));
+                                cs.setMetadataSigned(false);
+                                return cs;
+                            });
+            contentSource.setSourceUrl(new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
+                    uri.getPath(), queryString, uri.getFragment()).toString());
+
+            if (repodata.containsKey("sslclientcert") &&
+                    cryptoKeyMap.containsKey(repodata.get("sslclientcert")) &&
+                    repodata.containsKey("sslclientkey") &&
+                    cryptoKeyMap.containsKey(repodata.get("sslclientkey")) &&
+                    repodata.containsKey("sslcacert") &&
+                    cryptoKeyMap.containsKey(repodata.get("sslcacert"))) {
+                SslContentSource sslCs = new SslContentSource();
+                sslCs.setClientCert(cryptoKeyMap.get(repodata.get("sslclientcert")));
+                sslCs.setClientKey(cryptoKeyMap.get(repodata.get("sslclientkey")));
+                sslCs.setCaCert(cryptoKeyMap.get(repodata.get("sslcacert")));
+                contentSource.setSslSets(Set.of(sslCs));
+            }
+            else if (repodata.containsKey("sslclientcert") ||
+                    repodata.containsKey("sslclientkey")) {
+                LOG.error("Repository has incomplete client certificate values: {}", repoIdent);
+                continue;
+            }
+            newIdents.add(repoIdent);
+            ChannelFactory.save(contentSource);
+        }
+        // Cleanup unused repositories
+        PaygSshDataFactory.listRhuiRepositoriesCreatedByInstance(instance)
+                .stream()
+                .filter(c -> !newIdents.contains(c.getLabel()))
+                .forEach(ChannelFactory::remove);
+
+    }
+
+    private Map<String, SslCryptoKey> extractCryptoKeys(PaygInstanceInfo paygData, long instanceId, Org org) {
+        Map<String, SslCryptoKey> cryptoKeyMap = new HashMap<>();
+
+        for (Map.Entry<String, String> cert : paygData.getCertificates().entrySet()) {
+            String filename = cert.getKey().substring(cert.getKey().lastIndexOf("/") + 1);
+            String desc = String.format("RHUI %s %s (I%d)", "Client Certificate", filename, instanceId);
+            if (cert.getValue().contains("PRIVATE KEY")) {
+                // private key
+                desc = String.format("RHUI %s %s (I%d)", "Private Key", filename, instanceId);
+            }
+            else if (filename.equals("Bundle")) {
+                desc = String.format("RHUI %s %s (I%d)", "CA Certificate", filename, instanceId);
+            }
+            else {
+                if (cert.getKey().contains("/product/")) {
+                    // client certificate
+                    desc = String.format("RHUI %s %s (I%d)", "Certificate", filename, instanceId);
                 }
-                else if (filename.equals("Bundle")) {
+                else if (filename.endsWith(".crt")) {
+                    // ca cert
                     desc = String.format("RHUI %s %s (I%d)", "CA Certificate", filename, instanceId);
                 }
-                else {
-                    if (cert.getKey().contains("/product/")) {
-                        // client certificate
-                        desc = String.format("RHUI %s %s (I%d)", "Certificate", filename, instanceId);
-                    }
-                    else if (filename.endsWith(".crt")) {
-                        // ca cert
-                        desc = String.format("RHUI %s %s (I%d)", "CA Certificate", filename, instanceId);
-                    }
-                }
-                String cryptoKeyDesc = desc;
-                SslCryptoKey cryptoKey =
-                        (SslCryptoKey) Optional.ofNullable(KickstartFactory.lookupCryptoKey(cryptoKeyDesc, org))
-                                .orElseGet(() -> {
-                                    SslCryptoKey sslkey = new SslCryptoKey();
-                                    sslkey.setCryptoKeyType(KickstartFactory.KEY_TYPE_SSL);
-                                    sslkey.setOrg(org);
-                                    sslkey.setDescription(cryptoKeyDesc);
-                                    return sslkey;
-                                });
-                cryptoKey.setKey(cert.getValue().getBytes(StandardCharsets.UTF_8));
-                KickstartFactory.saveCryptoKey(cryptoKey);
-                cryptoKeyMap.put(cert.getKey(), cryptoKey);
             }
-            // crypto keys might change, but a cleanup will only happen when removing the instance
-
-            Set<String> newIdents = new HashSet<>();
-            for (Map.Entry<String, Map<String, String>> repo : paygData.getRepositories().entrySet()) {
-                boolean needCredentials = paygData.getHeaderAuth().containsKey("X-RHUI-ID");
-                String repoIdent = repo.getKey() + "-i" + instanceId;
-                Map<String, String> repodata = repo.getValue();
-                URI uri = new URI(repodata.get("url"));
-                String queryString = uri.getQuery();
-
-                if (needCredentials) {
-                    Credentials credentials = processAndGetCredentials(instance, paygData);
-                    queryString = buildQueryString(uri.getQuery(), "credentials", "mirrcred_" + credentials.getId());
-                }
-                ContentSource contentSource =
-                        Optional.ofNullable(ChannelFactory.lookupContentSourceByOrgAndLabel(org, repoIdent))
-                                .orElseGet(() -> {
-                                    ContentSource cs = new ContentSource();
-                                    cs.setOrg(org);
-                                    cs.setLabel(repoIdent);
-                                    cs.setType(ChannelFactory.lookupContentSourceType("yum"));
-                                    cs.setMetadataSigned(false);
-                                    return cs;
-                                });
-                contentSource.setSourceUrl(new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
-                        uri.getPath(), queryString, uri.getFragment()).toString());
-
-                if (repodata.containsKey("sslclientcert") &&
-                        cryptoKeyMap.containsKey(repodata.get("sslclientcert")) &&
-                        repodata.containsKey("sslclientkey") &&
-                        cryptoKeyMap.containsKey(repodata.get("sslclientkey")) &&
-                        repodata.containsKey("sslcacert") &&
-                        cryptoKeyMap.containsKey(repodata.get("sslcacert"))) {
-                    SslContentSource sslCs = new SslContentSource();
-                    sslCs.setClientCert(cryptoKeyMap.get(repodata.get("sslclientcert")));
-                    sslCs.setClientKey(cryptoKeyMap.get(repodata.get("sslclientkey")));
-                    sslCs.setCaCert(cryptoKeyMap.get(repodata.get("sslcacert")));
-                    contentSource.setSslSets(Set.of(sslCs));
-                }
-                else if (repodata.containsKey("sslclientcert") ||
-                        repodata.containsKey("sslclientkey")) {
-                    LOG.error("Repository has incomplete client certificate values: {}", repoIdent);
-                    continue;
-                }
-                newIdents.add(repoIdent);
-                ChannelFactory.save(contentSource);
-            }
-            // Cleanup unused repositories
-            PaygSshDataFactory.listRhuiRepositoriesCreatedByInstance(instance)
-                    .stream()
-                    .filter(c -> !newIdents.contains(c.getLabel()))
-                    .forEach(ChannelFactory::remove);
+            String cryptoKeyDesc = desc;
+            SslCryptoKey cryptoKey =
+                    (SslCryptoKey) Optional.ofNullable(KickstartFactory.lookupCryptoKey(cryptoKeyDesc, org))
+                            .orElseGet(() -> {
+                                SslCryptoKey sslkey = new SslCryptoKey();
+                                sslkey.setCryptoKeyType(KickstartFactory.KEY_TYPE_SSL);
+                                sslkey.setOrg(org);
+                                sslkey.setDescription(cryptoKeyDesc);
+                                return sslkey;
+                            });
+            cryptoKey.setKey(cert.getValue().getBytes(StandardCharsets.UTF_8));
+            KickstartFactory.saveCryptoKey(cryptoKey);
+            cryptoKeyMap.put(cert.getKey(), cryptoKey);
         }
+        // crypto keys might change, but a cleanup will only happen when removing the instance
+        return cryptoKeyMap;
     }
 
     private String buildQueryString(String query, String newKey, String newValue) {
