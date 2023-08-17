@@ -25284,8 +25284,8 @@ given channel.</source>
       <trans-unit id="Products" xml:space="preserve">
         <source>Products</source>
       </trans-unit>
-      <trans-unit id="PAYG Connection" xml:space="preserve">
-        <source>PAYG Connection</source>
+      <trans-unit id="PAYG Connections" xml:space="preserve">
+        <source>PAYG Connections</source>
       </trans-unit>
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
