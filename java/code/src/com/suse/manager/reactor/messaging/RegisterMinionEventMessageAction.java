@@ -20,6 +20,7 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -95,6 +96,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -276,12 +278,13 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                     // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
                                     // Can only happen when salt key was deleted and same minion id
                                     // was accepted again
-                                    String msg = String.format(
-                                        "Systems with conflicting minion_id and machine-id were found (%s, %s). " +
-                                        "Onboarding aborted. Please remove conflicting systems first (%s, %s)",
-                                        minionId, machineId, minionServer.getId(), server.getId());
-                                    LOG.error(msg);
-                                    throw new RegisterMinionException(minionId, null, msg);
+                                    Object[] args = {minionId, machineId, minionServer.getId().toString(),
+                                            server.getId().toString()};
+                                    LOG.error(LocalizationService.getInstance().getMessage(
+                                            "bootstrap.minion.error.conflicting.minionid", Locale.US, args));
+                                    //throw new RegisterMinionException(minionId, null, msg);
+                                    throw new RegisterMinionException(minionId, null,
+                                            "bootstrap.minion.error.conflicting.minionid", args);
                                 }))),
             //Case B : Reactivation
             rk -> {
@@ -444,24 +447,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials() &&
                     !RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains)) {
 
+                Object[] args = {minionId};
                 // If the minion is not in the cloud
                 if (grains.getValueAsString("instance_id").length() == 0) {
                     // DC instances are not allowed to be onboarded without SCC credentials
-                    throw new RegisterMinionException(minionId, org, String.format(
-                            "Registration of '%s' on SUSE Manager Server rejected. \n" +
-                            "To manage Datacenter clients you have to configure " +
-                            "SCC Credentials at Admin => Setup Wizard => Organization Credentials.", minionId));
+                    throw new RegisterMinionException(minionId, org, "bootstrap.minion.error.payg.dcregistered", args);
                 }
                 else {
                     // BYOS in cloud instances is not allowed to register on a pure SUMA PAYG
                     // exception: free products or SUSE Manager Proxy
                     // Attention: minion could be PAYG, so it might lack of package `instance-flavor-check`
-                    throw new RegisterMinionException(minionId, org, String.format(
-                            "Registration of '%s' on SUSE Manager Server rejected. \n" +
-                            "To manage BYOS (Bring-your-own-Subscription) clients you have to configure " +
-                            "SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\n" +
-                            "If the instance being onboarded is PAYG , ensure the `instance-flavor-check` " +
-                            "package is installed and try again.", minionId));
+                    throw new RegisterMinionException(minionId, org,
+                            "bootstrap.minion.error.payg.byosregistered", args);
                 }
             }
 
@@ -1054,7 +1051,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             if (e instanceof RegisterMinionException) {
                 RegisterMinionException rme = (RegisterMinionException) e;
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        new OnboardingFailed(rme.minionId, e.getMessage())
+                        new OnboardingFailed(rme.minionId, e.getLocalizedMessage())
                 );
                 if (rme.org == null) {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
@@ -1074,15 +1071,40 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public class RegisterMinionException extends RuntimeException {
         private final String minionId;
         private final Org org;
+        private final String messageId;
+        private final transient Object [] arguments;
+
         RegisterMinionException(String minionIdIn, Org orgIn) {
             super();
+            messageId = "";
             minionId = minionIdIn;
             org = orgIn;
+            arguments = null;
         }
         RegisterMinionException(String minionIdIn, Org orgIn, String msgIn) {
             super(msgIn);
+            messageId = "";
             minionId = minionIdIn;
             org = orgIn;
+            arguments = null;
+        }
+
+        RegisterMinionException(String minionIdIn, Org orgIn, String msgId, Object [] args) {
+            super(LocalizationService.getInstance().getMessage(msgId, Locale.US, args));
+            messageId = msgId;
+            minionId = minionIdIn;
+            org = orgIn;
+            arguments = args;
+        }
+
+        /**
+         * @return return the message localized - if it was translated
+         */
+        public String getLocalizedMessage() {
+            if (messageId.isEmpty()) {
+                return getMessage();
+            }
+            return LocalizationService.getInstance().getMessage(messageId, arguments);
         }
     }
 }
