@@ -34,7 +34,7 @@ Feature: Management of minion keys
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
-    And I refresh page until I see "sle_minion" hostname as text
+    And I refresh keys page until I see "sle_minion" hostname as text
     Then I should see a "Fingerprint" text
     And I see "sle_minion" fingerprint
     And I should see a "pending" text

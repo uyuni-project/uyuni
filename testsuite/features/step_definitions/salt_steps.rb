@@ -412,8 +412,14 @@ When(/^I accept "([^"]*)" key$/) do |host|
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
-When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
+When(/^I refresh systems page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
+    step %(I wait until I see the name of "#{minion}", refreshing the page)
+  end
+end
+
+When(/^I refresh keys page until I see "(.*?)" hostname as text$/) do |minion|
+  within('#spacewalk-list') do
     step %(I wait until I see the name of "#{minion}", refreshing the page)
   end
 end

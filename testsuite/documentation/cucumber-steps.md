@@ -228,7 +228,9 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I see the name of "sle_minion", refreshing the page
   When I wait until I do not see the name of "sle_minion", refreshing the page
   When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-  When I refresh page until I see "sle_minion" hostname as text
+  When I refresh systems page until I see "sle_minion" hostname as text
+  When I refresh keys page until I see "sle_minion" hostname as text
+
 ```
 
 (last one should probably be renamed - it looks in the contents area of the page)

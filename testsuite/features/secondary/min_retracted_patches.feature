@@ -61,7 +61,7 @@ Feature: Retracted patches
     And I follow "Packages" in the content area
     And I follow "rute-dummy-2.0-1.2.x86_64"
     And I follow "Target Systems"
-    And I refresh page until I see "sle_minion" hostname as text
+    And I refresh systems page until I see "sle_minion" hostname as text
    
   Scenario: Target systems for retracted packages should be empty
     When I follow the left menu "Software > Channel List > All"
