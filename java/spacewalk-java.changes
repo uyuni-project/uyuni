@@ -1,5 +1,9 @@
-- set swap memory value if available
-- set primary FQDN to hostname if none is set (bsc#1209156, bsc#1214333)
+-------------------------------------------------------------------
+Thu Aug 17 16:32:36 CEST 2023 - marina.latini@suse.com
+
+- version 4.2.55-1
+  * Set swap memory value if available
+  * Set primary FQDN to hostname if none is set (bsc#1209156, bsc#1214333)
 
 -------------------------------------------------------------------
 Tue Aug 08 15:39:02 CEST 2023 - marina.latini@suse.com
