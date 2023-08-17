@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Public Cloud Pay-as-you-go management class
+ * Public Cloud PAYG management class
  */
 public class CloudPaygManager {
     private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
@@ -90,7 +90,7 @@ public class CloudPaygManager {
     }
 
     /**
-     * @return if this is a Pay-as-you-go cloud instance
+     * @return if this is a PAYG cloud instance
      */
     public boolean isPaygInstance() {
         checkRefreshCache(false);

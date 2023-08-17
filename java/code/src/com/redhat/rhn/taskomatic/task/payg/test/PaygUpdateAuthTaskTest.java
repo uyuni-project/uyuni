@@ -157,7 +157,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
             switch (outPaygData.getHost()) {
                 case "localhost":
-                    assertEquals("SUSE Manager Pay-as-you-go", outPaygData.getDescription());
+                    assertEquals("SUSE Manager PAYG", outPaygData.getDescription());
                     assertEquals("root", outPaygData.getUsername());
                     assertEquals("https://smt-ec2.susecloud.net/repo", outPaygData.getCredentials().getUrl());
                     //Fake URL for next test

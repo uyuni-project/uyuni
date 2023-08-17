@@ -251,7 +251,7 @@ public class PaygAdminManager {
     public PaygSshData setDetails(String host,  Map<String, Object> details) {
         if (StringUtils.isEmpty(host)) {
             LOG.debug("payg empty host");
-            throw new BadParameterException("Pay-as-you-go host cannot be empty");
+            throw new BadParameterException("PAYG host cannot be empty");
         }
         PaygSshData paygSshData = PaygSshDataFactory.lookupByHostname(host)
                 .orElseThrow(() -> new LookupException("Host not found: " + host));

@@ -253,7 +253,7 @@ public class SystemHandler extends BaseHandler {
      * @param systemEntitlementManagerIn the system entitlement manager
      * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
-     * @param cloudPaygManagerIn         the pay-as-you-go manager. If null, the one from GlobalInstanceHolder is used.
+     * @param cloudPaygManagerIn         the PAYG manager. If null, the one from GlobalInstanceHolder is used.
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
                          SystemEntitlementManager systemEntitlementManagerIn,

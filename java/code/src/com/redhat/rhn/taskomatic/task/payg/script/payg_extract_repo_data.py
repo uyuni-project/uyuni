@@ -47,7 +47,7 @@ def is_payg_instance():
     flavor_check = "/usr/bin/instance-flavor-check"
     if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
         system_exit(1, ["instance-flavor-check tool is not available.",
-                        "For a correct Pay-as-you-go detection please install 'python-instance-billing-flavor-check' package"])
+                        "For a correct PAYG detection please install the 'python-instance-billing-flavor-check' package"])
 
     try:
         result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
@@ -161,7 +161,7 @@ def load_instance_info():
 
 def main():
     if not is_payg_instance():
-        system_exit(1, ["instance is not pay-as-you-go"])
+        system_exit(1, ["instance is not PAYG"])
 
     payg_data = load_instance_info()
     print(json.dumps(payg_data))
