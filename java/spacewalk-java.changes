@@ -1,3 +1,6 @@
+- set swap memory value if available
+- set primary FQDN to hostname if none is set (bsc#1209156, bsc#1214333)
+
 -------------------------------------------------------------------
 Tue Aug 08 15:39:02 CEST 2023 - marina.latini@suse.com
 
