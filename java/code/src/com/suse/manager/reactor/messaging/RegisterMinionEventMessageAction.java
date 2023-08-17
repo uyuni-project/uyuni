@@ -457,8 +457,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             "Registration of '%s' on SUSE Manager Server rejected. \n" +
                             "To manage BYOS (Bring-your-own-Subscription) clients you have to configure " +
                             "SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\n" +
-                            "If the instance that is being trying to be onboarded is actually a Pay-As-You-Go " +
-                            "one, please make sure package `instance-flavor-check` is installed and retry.", minionId));
+                            "If the instance being onboarded is PAYG , ensure the `instance-flavor-check` " +
+                            "package is installed and try again.", minionId));
                 }
             }
 
