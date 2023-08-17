@@ -30,7 +30,7 @@ const PaygSshDataEdit = (props: Props) => {
     onAction(item, "update", props.paygId)
       .then((data) => {
         closeDialog();
-        showSuccessToastr(t("Pay-as-you-go properties updated successfully"));
+        showSuccessToastr(t("PAYG properties updated successfully"));
         props.onChange(data);
       })
       .catch((error) => {
