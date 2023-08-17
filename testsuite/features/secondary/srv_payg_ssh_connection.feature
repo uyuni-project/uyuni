@@ -10,7 +10,7 @@ Feature: Pay as you go
     Given I am authorized for the "Admin" section
 
   Scenario: Enter minimal information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I click on "Add PAYG Connection"
     And I enter "My Instance" as "description"
     And I enter "my-host.local" as "host"
@@ -23,7 +23,7 @@ Feature: Pay as you go
     And I should see a "Delete" button
 
   Scenario: Enter full information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I click on "Add PAYG Connection"
     And I enter "My Full Instance" as "description"
     And I enter "my-host-full.local" as "host"
@@ -56,14 +56,14 @@ Feature: Pay as you go
     And I should see a "Delete" button
 
   Scenario: Check pay-as-you-go list
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     Then I should see a "my-host.local" link
     And I should see a "My Instance" text
     And I should see a "my-host-full.local" link
     And I should see a "My Full Instance" text
 
   Scenario: Edit connection description
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Information"
     And I enter "My new Full Instance" as "description"
@@ -72,7 +72,7 @@ Feature: Pay as you go
     And I should see a "My new Full Instance" text in element "Info-panel-wrapper"
 
   Scenario: Edit instance ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Instance"
     And I enter "221" as "port"
@@ -89,7 +89,7 @@ Feature: Pay as you go
     And I should not see a "newKeyPasswordFull" text in element "Instance-panel-wrapper"
 
   Scenario: Edit bastion ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Bastion"
     And I enter "my-new-bastion.local" as "bastion_host"
@@ -108,7 +108,7 @@ Feature: Pay as you go
     And I should not see a "b_new_keyPasswordFull" text in element "Bastion-panel-wrapper"
 
   Scenario: Cleanup: delete minimal information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host.local"
     And I click on "Delete"
     And I click on "Delete" in "Delete PAYG Connection" modal
@@ -116,7 +116,7 @@ Feature: Pay as you go
     And I should not see a "my-host.local" text
 
   Scenario: Cleanup: delete full information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > PAYG Connection"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Delete"
     And I click on "Delete" in "Delete PAYG Connection" modal
