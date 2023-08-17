@@ -41,7 +41,7 @@ const _SETUP_WIZARD_STEPS = [
   },
   {
     id: "wizard-step-suse-payg",
-    label: "Pay-as-you-go",
+    label: "PAYG Connection",
     url: "/rhn/manager/admin/setup/payg",
     active: true,
   },
@@ -180,10 +180,10 @@ const ListPayg = (props: Props) => {
             <div className="action-button-wrapper">
               <div className="btn-group">
                 <Button
-                  id="addProducts"
+                  id="addPAYG"
                   icon="fa-plus"
                   className={"btn-success"}
-                  text={t("Add Pay-as-you-go")}
+                  text={t("Add PAYG Connection")}
                   handler={addPayg}
                 />
               </div>
