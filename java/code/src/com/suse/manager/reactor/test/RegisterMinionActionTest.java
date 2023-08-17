@@ -489,7 +489,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     null, DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
-            assertContains(e.getMessage(), "Systems with conflicting minion_id and machine-id were found");
+            assertContains(e.getMessage(), "Systems with conflicting minion ID and machine ID were found");
             assertContains(e.getMessage(), "Please remove conflicting systems first (" +
                     server1.getId() + ", " + server2.getId() + ")");
             return;
