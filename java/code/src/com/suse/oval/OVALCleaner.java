@@ -35,9 +35,9 @@ public class OVALCleaner {
         root.getDefinitions().removeIf(def -> def.getCriteria() == null);
 
         root.getDefinitions().forEach(definition -> doCleanupDefinition(definition, osFamily, osVersion));
-        root.getTests().getTests().forEach(test -> doCleanupTest(test, osFamily, osVersion));
-        root.getStates().getStates().forEach(state -> doCleanupState(state, osFamily, osVersion));
-        root.getObjects().getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
+        root.getTests().forEach(test -> doCleanupTest(test, osFamily, osVersion));
+        root.getStates().forEach(state -> doCleanupState(state, osFamily, osVersion));
+        root.getObjects().forEach(object -> doCleanupObject(object, osFamily, osVersion));
     }
 
     public static void doCleanupDefinition(DefinitionType definition, OsFamily osFamily, String osVersion) {

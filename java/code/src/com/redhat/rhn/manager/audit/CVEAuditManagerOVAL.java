@@ -127,7 +127,7 @@ public class CVEAuditManagerOVAL {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         } else {
             log.error(allInstalledPackages.stream().map(ShallowSystemPackage::getPackageEVR).collect(Collectors.toList()));
-            log.error("Hooo " + patched);
+
             boolean allPatchesInstalled = patched.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
                             .anyMatch(systemPackage ->

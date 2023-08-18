@@ -13,9 +13,9 @@ public class OVALLookupHelper {
     private final OvalObjectManager objectManager;
 
     public OVALLookupHelper(OvalRootType rootType) {
-        this.stateManager = new OvalStateManager(rootType.getStates().getStates());
-        this.testManager = new OvalTestManager(rootType.getTests().getTests());
-        this.objectManager = new OvalObjectManager(rootType.getObjects().getObjects());
+        this.stateManager = new OvalStateManager(rootType.getStates());
+        this.testManager = new OvalTestManager(rootType.getTests());
+        this.objectManager = new OvalObjectManager(rootType.getObjects());
     }
 
     public Optional<TestType> lookupTestById(String testId) {

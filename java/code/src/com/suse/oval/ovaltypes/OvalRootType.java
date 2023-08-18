@@ -1,14 +1,6 @@
 package com.suse.oval.ovaltypes;
 
 import com.suse.oval.OsFamily;
-import com.suse.oval.manager.OVALLookupHelper;
-import com.suse.oval.vulnerablepkgextractor.DebianVulnerablePackagesExtractor;
-import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
-import com.suse.oval.vulnerablepkgextractor.SUSEVulnerablePackageExtractor;
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractor;
-import com.suse.oval.vulnerablepkgextractor.VulnerablePackagesExtractors;
-import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromPatchDefinition;
-import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromVulnerabilityDefinition;
 
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,8 +8,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -55,7 +49,7 @@ public class OvalRootType {
     }
 
     /**
-     * Gets the value of the definitions property.
+     * Gets the list of OVAL definitions.
      */
     public List<DefinitionType> getDefinitions() {
         if (definitions == null) {
@@ -66,53 +60,56 @@ public class OvalRootType {
     }
 
     /**
-     * Sets the value of the definitions' property.
+     * Sets the list of OVAL definitions.
      */
     public void setDefinitions(List<DefinitionType> value) {
         this.definitions = new DefinitionsType();
-        this.definitions.definitions.addAll(value);
+        this.definitions.definitions = new ArrayList<>(value);
     }
 
     /**
-     * Gets the value of the tests property.
+     * Gets the list of OVAL tests.
      */
-    public TestsType getTests() {
-        return tests;
+    public List<TestType> getTests() {
+        return Optional.ofNullable(tests).map(TestsType::getTests).orElse(new ArrayList<>());
     }
 
     /**
-     * Sets the value of the tests property.
+     * Sets the list of OVAL tests.
      */
-    public void setTests(TestsType value) {
-        this.tests = value;
+    public void setTests(List<TestType> value) {
+        this.tests = new TestsType();
+        this.tests.tests = new ArrayList<>(value);
     }
 
     /**
-     * Gets the value of the objects property.
+     * Gets the list of OVAL objects.
      */
-    public ObjectsType getObjects() {
-        return objects;
+    public List<ObjectType> getObjects() {
+        return Optional.ofNullable(objects).map(ObjectsType::getObjects).orElse(new ArrayList<>());
     }
 
     /**
-     * Sets the value of the objects property.
+     * Sets the list of OVAL objects.
      */
-    public void setObjects(ObjectsType value) {
-        this.objects = value;
+    public void setObjects(List<ObjectType> value) {
+        this.objects = new ObjectsType();
+        this.objects.objects = new ArrayList<>(value);
     }
 
     /**
-     * Gets the value of the states property.
+     * Gets the list of OVAL states.
      */
-    public StatesType getStates() {
-        return states;
+    public List<StateType> getStates() {
+        return Optional.ofNullable(states).map(StatesType::getStates).orElse(new ArrayList<>());
     }
 
     /**
-     * Sets the value of the states property.
+     * Sets the list of OVAL states.
      */
-    public void setStates(StatesType value) {
-        this.states = value;
+    public void setStates(List<StateType> value) {
+        this.states = new StatesType();
+        this.states.states = new ArrayList<>(value);
     }
 
     public OsFamily getOsFamily() {
