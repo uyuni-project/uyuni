@@ -624,7 +624,7 @@ class RepoSyncTest(unittest.TestCase):
                 "http://example.com/?credentials=testcreds_42"
             ]
         }
-        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' , 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
+        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0', 'type': 'cloudrmt', 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
         self.assertEqual(
             rs.set_repo_credentials(url), [{"url":"http://foo:secret@example.com/", "http_headers": {"my_header": "my_value"}}])
 
@@ -766,7 +766,8 @@ class SyncTest(unittest.TestCase):
         config = {
             'return_value.fetchone_dict.return_value': {
                 "username": "user#1",
-                "password": base64.encodestring(password.encode()).decode()
+                "password": base64.encodestring(password.encode()).decode(),
+                "type": "SCC"
             }
         }
         patcher = patch(
@@ -778,7 +779,7 @@ class SyncTest(unittest.TestCase):
                 {"url": 'http://{0}:{1}@some.url'.format(username, password), "http_headers": {}}
             )
             mock_prepare.assert_called_once_with(
-                'SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id'
+                '\n                SELECT c.username, c.password, c.extra_auth, ct.label type\n                  FROM suseCredentials c\n                  JOIN suseCredentialsType ct on c.type_id = ct.id\n                  WHERE c.id = :id\n            ' 
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
