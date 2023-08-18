@@ -124,15 +124,12 @@ rescue Timeout::Error
   raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
 end
 
-
-def has_text_with_retry(expected_text1, expected_text2: nil, timeout: Capybara.default_max_wait_time)
+def has_text_with_retry?(expected_text1, expected_text2: nil, timeout: Capybara.default_max_wait_time)
   start_time = Time.now
   loop do
-    if has_text?(expected_text1, wait: 0)
-      return true
-    elsif !expected_text2.nil? && has_text?(expected_text2, wait: 0)
-      return true
-    elsif has_text?('Request has timed out', wait: 0)
+    return true if has_text?(expected_text1, wait: 0)
+    return true if !expected_text2.nil? && has_text?(expected_text2, wait: 0)
+    if has_text?('Request has timed out', wait: 0)
       log 'Request timeout found, performing reload'
       click_reload_page
       start_time = Time.now
