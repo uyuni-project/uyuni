@@ -10,21 +10,21 @@ Feature: Pay as you go
     Given I am authorized for the "Admin" section
 
   Scenario: Enter minimal information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
-    And I click on "Add Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
+    And I click on "Add PAYG Connection"
     And I enter "My Instance" as "description"
     And I enter "my-host.local" as "host"
     And I enter "root" as "username"
     And I click on "Create"
-    Then I should see a "Pay-as-you-go my-host.local created successfully" text
+    Then I should see a "PAYG my-host.local created successfully" text
     And I should see a "My Instance" text in element "Info-panel-wrapper"
     And I should see a "my-host.local" text in element "Instance-panel-wrapper"
     And I should see a "root" text in element "Instance-panel-wrapper"
     And I should see a "Delete" button
 
   Scenario: Enter full information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
-    And I click on "Add Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
+    And I click on "Add PAYG Connection"
     And I enter "My Full Instance" as "description"
     And I enter "my-host-full.local" as "host"
     And I enter "21" as "port"
@@ -39,7 +39,7 @@ Feature: Pay as you go
     And I enter "b_keyFull" as "bastion_key"
     And I enter "b_keyPasswordFull" as "bastion_key_password"
     And I click on "Create"
-    Then I should see a "Pay-as-you-go my-host-full.local created successfully" text
+    Then I should see a "PAYG my-host-full.local created successfully" text
     And I should see a "My Full Instance" text in element "Info-panel-wrapper"
     And I should see a "my-host-full.local" text in element "Instance-panel-wrapper"
     And I should see a "21" text in element "Instance-panel-wrapper"
@@ -56,23 +56,23 @@ Feature: Pay as you go
     And I should see a "Delete" button
 
   Scenario: Check pay-as-you-go list
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     Then I should see a "my-host.local" link
     And I should see a "My Instance" text
     And I should see a "my-host-full.local" link
     And I should see a "My Full Instance" text
 
   Scenario: Edit connection description
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Information"
     And I enter "My new Full Instance" as "description"
     And I click on "Save" in "Information" modal
-    Then I should see a "Pay-as-you-go properties updated successfully" text
+    Then I should see a "PAYG properties updated successfully" text
     And I should see a "My new Full Instance" text in element "Info-panel-wrapper"
 
   Scenario: Edit instance ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Instance"
     And I enter "221" as "port"
@@ -81,7 +81,7 @@ Feature: Pay as you go
     And I enter "newKeyFull" as "key"
     And I enter "newKeyPasswordFull" as "key_password"
     And I click on "Save" in "Instance SSH connection" modal
-    Then I should see a "Pay-as-you-go properties updated successfully" text
+    Then I should see a "PAYG properties updated successfully" text
     And I should see a "221" text in element "Instance-panel-wrapper"
     And I should see a "NewRootFull" text in element "Instance-panel-wrapper"
     And I should not see a "NewPasswordFull" text in element "Instance-panel-wrapper"
@@ -89,7 +89,7 @@ Feature: Pay as you go
     And I should not see a "newKeyPasswordFull" text in element "Instance-panel-wrapper"
 
   Scenario: Edit bastion ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Edit Bastion"
     And I enter "my-new-bastion.local" as "bastion_host"
@@ -99,7 +99,7 @@ Feature: Pay as you go
     And I enter "b_new_keyFull" as "bastion_key"
     And I enter "b_new_keyPasswordFull" as "bastion_key_password"
     And I click on "Save" in "Bastion SSH connection" modal
-    Then I should see a "Pay-as-you-go properties updated successfully" text
+    Then I should see a "PAYG properties updated successfully" text
     And I should see a "my-new-bastion.local" text in element "Bastion-panel-wrapper"
     And I should see a "222" text in element "Bastion-panel-wrapper"
     And I should see a "b_new_rootFull" text in element "Bastion-panel-wrapper"
@@ -108,17 +108,17 @@ Feature: Pay as you go
     And I should not see a "b_new_keyPasswordFull" text in element "Bastion-panel-wrapper"
 
   Scenario: Cleanup: delete minimal information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host.local"
     And I click on "Delete"
-    And I click on "Delete" in "Delete Pay-as-you-go" modal
+    And I click on "Delete" in "Delete PAYG Connection" modal
     Then I should not see a "my-host.local" link
     And I should not see a "my-host.local" text
 
   Scenario: Cleanup: delete full information for payg ssh connection data
-    When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
+    When I follow the left menu "Admin > Setup Wizard > PAYG Connections"
     And I follow "my-host-full.local"
     And I click on "Delete"
-    And I click on "Delete" in "Delete Pay-as-you-go" modal
+    And I click on "Delete" in "Delete PAYG Connection" modal
     Then I should not see a "my-bastion.local" link
     And I should not see a "my-host.local" text

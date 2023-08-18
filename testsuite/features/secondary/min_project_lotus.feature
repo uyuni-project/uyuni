@@ -126,6 +126,6 @@ Feature: Project Lotus
   Scenario: Cleanup: Remove custom repository for PTFs
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "sles15sp4_ptf_repo"
-    And I follow this "Delete Repository" link
+    And I follow "Delete Repository"
     And I click on "Delete Repository"
     Then I should see a "Repository deleted successfully" text

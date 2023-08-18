@@ -28,4 +28,7 @@ insert into suseCredentialsType (id, label, name) values
 insert into suseCredentialsType (id, label, name) values
     (sequence_nextval('suse_credtype_id_seq'), 'reportcreds', 'Reporting DB Credentials');
 
+insert into suseCredentialsType (id, label, name) values
+    (sequence_nextval('suse_credtype_id_seq'), 'rhui', 'Red Hat Update Infrastructure');
+
 commit;

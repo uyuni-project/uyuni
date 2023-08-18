@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.cloudpayg;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,5 +107,17 @@ public class PaygSshDataFactory extends HibernateFactory {
      */
     public static void deletePaygSshData(PaygSshData data) {
         getSession().delete(data);
+    }
+
+    /**
+     * @param instance the instance
+     * @return return a list of {@link ContentSource} created by the given instance
+     */
+    public static List<ContentSource> listRhuiRepositoriesCreatedByInstance(PaygSshData instance) {
+        String qString = String.format("%%-i%d", instance.getId());
+        return getSession()
+                .createQuery("FROM ContentSource WHERE label like :label", ContentSource.class)
+                .setParameter("label", qString)
+                .list();
     }
 }

@@ -44,7 +44,7 @@ public class SystemEventDtoSerializerTest {
         dto.setHistoryType(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getLabel());
         dto.setHistoryTypeName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
         dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
-        dto.setSummary("Hardware List Refresh scheduled by (none)");
+        dto.setSummary("Hardware List Refresh scheduled by (system)");
         dto.setCompleted(Date.from(LocalDateTime.of(2021, 10, 5, 17, 0)
                 .atZone(ZoneOffset.systemDefault())
                 .toInstant()));
@@ -65,7 +65,7 @@ public class SystemEventDtoSerializerTest {
         assertTrue(xml.contains("<string>Completed</string>"));
 
         assertTrue(xml.contains("<name>summary</name>"));
-        assertTrue(xml.contains("<string>Hardware List Refresh scheduled by (none)</string>"));
+        assertTrue(xml.contains("<string>Hardware List Refresh scheduled by (system)</string>"));
 
         assertTrue(xml.contains("<name>completed</name>"));
         assertTrue(xml.contains("<dateTime.iso8601>20211005T17:00:00</dateTime.iso8601>"));

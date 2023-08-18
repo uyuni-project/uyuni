@@ -38,14 +38,14 @@ const CreateProject = () => {
 
   return (
     <TopPanel
-      title={t("Add new pay-as-you-go ssh connection data")}
+      title={t("Add new PAYG ssh connection data")}
       icon="fa-plus"
       button={
         <div className="pull-right btn-group">
           <AsyncButton
             id="savebutton"
             className="btn-primary"
-            title={t("Add pay-as-you-go ssh data")}
+            title={t("Add PAYG ssh data")}
             text={t("Create")}
             icon="fa-plus"
             action={() =>
@@ -67,7 +67,7 @@ const CreateProject = () => {
         errors={payg.errors}
         onChange={(newProperties) => setPayg({ ...payg, properties: newProperties })}
       >
-        <Panel headingLevel="h2" title={t("Pay-as-you-go connection Description")}>
+        <Panel headingLevel="h2" title={t("PAYG connection Description")}>
           <div className="col-md-10">
             <div className="row">
               <Text required name="description" label={t("Description")} labelClass="col-md-2" divClass="col-md-10" />

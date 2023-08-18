@@ -1188,37 +1188,37 @@ public class ActionManager extends BaseManager {
     /**
      * Schedule a package list refresh without a user.
      *
-     * @param schedulerOrg the organization the server belongs to
+     * @param user the user that scheduled the action
      * @param server the server
      * @return the scheduled PackageRefreshListAction
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server)
+    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server)
             throws TaskomaticApiException {
         Date earliest = new Date();
-        return schedulePackageRefresh(schedulerOrg, server, earliest);
+        return schedulePackageRefresh(user, server, earliest);
     }
 
     /**
      * Schedule a package list refresh without a user.
      *
-     * @param schedulerOrg the organization the server belongs to
+     * @param user the organization the server belongs to
      * @param server the server
      * @param earliest The earliest time this action should be run.
      * @return the scheduled PackageRefreshListAction
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server,
+    public static PackageAction schedulePackageRefresh(Optional<User> user, Server server,
             Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
         Action action = ActionFactory.createAction(
                 ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
-        action.setOrg(schedulerOrg);
-        action.setSchedulerUser(null);
+        action.setOrg(server.getOrg());
+        action.setSchedulerUser(user.orElse(null));
         action.setEarliestAction(earliest);
 
         ServerAction sa = new ServerAction();

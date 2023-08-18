@@ -1225,6 +1225,23 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Find {@link ContentSource} with source url containing urlPart.
+     * Uses SQL wildcard paramter '%'. When urlPart does contain a wildcard parameter, it is passed directly to
+     * the query. If not, a wildcard is added and the begining and the end.
+     * @param urlPart part of the url
+     * @return list of found {@link ContentSource}
+     */
+    public static List<ContentSource> findContentSourceLikeUrl(String urlPart) {
+        String urllike = urlPart;
+        if (!urlPart.contains("%")) {
+            urllike = String.format("%%%s%%", urlPart);
+        }
+        return getSession().createNamedQuery("ContentSource.findLikeUrl", ContentSource.class)
+                .setParameter("urllike", urllike)
+                .list();
+    }
+
+    /**
      * Find a {@link ChannelProduct} for given name and version.
      * @param product the product
      * @param version the version

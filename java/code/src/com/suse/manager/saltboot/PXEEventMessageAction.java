@@ -29,7 +29,9 @@ public class PXEEventMessageAction implements MessageAction {
     @Override
     public void execute(EventMessage msg) {
         PXEEvent pxeEvent = ((PXEEventMessage) msg).getPXEEventMessage();
+        LOG.debug("Processing PXEEvent for minion {}", pxeEvent.getMinionId());
 
+        // Part 1 - update PXE entries
         if (pxeEvent.getRoot().isEmpty()) {
             LOG.error("Root device not specified in PXE event for minion {}. Ignoring event", pxeEvent.getMinionId());
             return;
@@ -48,6 +50,9 @@ public class PXEEventMessageAction implements MessageAction {
 
         SaltbootUtils.createSaltbootSystem(pxeEvent.getMinionId(), pxeEvent.getBootImage(), pxeEvent.getSaltbootGroup(),
                 pxeEvent.getHwAddresses(), kernelParameters);
+
+        // Part 2 - reset pillar data "saltboot:force_*" or "custom_info:saltboot_force_*" if present
+        SaltbootUtils.resetSaltbootRedeployFlags(pxeEvent.getMinionId());
     }
 
     @Override

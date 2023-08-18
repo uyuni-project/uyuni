@@ -373,21 +373,23 @@ def clear_ssl_cache():
 
 
 def verify_certificates_dates(certs):
+    """
+    One certificate must be valid. Bundles may contain expired certs.
+    It does not make sense to check them all.
+    """
     cert = ""
     is_cert = False
-    has_valid_certs = False
     for line in certs.split('\n'):
         if not is_cert and line.startswith("-----BEGIN CERTIFICATE"):
             is_cert = True
         if is_cert:
             cert += line + '\n'
         if is_cert and line.startswith("-----END CERTIFICATE"):
-            if not verify_certificate_dates(cert):
-                return False
-            cert = ""
+            if verify_certificate_dates(cert):
+                return True
             is_cert = False
-            has_valid_certs = True
-    return has_valid_certs
+            cert = ""
+    return False
 
 
 def get_single_ssl_set(keys, check_dates=False):
@@ -1880,15 +1882,21 @@ class RepoSync(object):
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id")
+            h = rhnSQL.prepare("""
+                SELECT c.username, c.password, c.extra_auth, ct.label type
+                  FROM suseCredentials c
+                  JOIN suseCredentialsType ct on c.type_id = ct.id
+                  WHERE c.id = :id
+            """)
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
                 log2(0, 0, "Could not figure out which credentials to use "
                            "for this URL: "+url.getURL(stripPw=True), stream=sys.stderr)
                 sys.exit(1)
-            url.username = credentials['username']
-            url.password = base64.decodestring(credentials['password'].encode()).decode()
+            if credentials['type'] != "rhui":
+                url.username = credentials['username']
+                url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
             if 'extra_auth' in credentials and credentials['extra_auth']:

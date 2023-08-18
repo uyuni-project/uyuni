@@ -476,12 +476,50 @@ public class SaltUtils {
                         .getType()
             ).getRet();
         }
+        else if (json.getAsJsonObject().has("installed") && json.getAsJsonObject().has("removed")) {
+            var installedRemoved =
+            Json.GSON.<InstalledRemoved<Map<String, Change<Xor<String, List<Info>>>>>>fromJson(
+                json,
+                new TypeToken<InstalledRemoved<Map<String, Change<Xor<String, List<Info>>>>>>() { }
+                        .getType()
+            );
+
+            var delta = new HashMap<>(installedRemoved.getInstalled());
+            delta.putAll(installedRemoved.getRemoved());
+            return delta;
+        }
         else {
             return Json.GSON.fromJson(
                 json,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
                     .getType()
             );
+        }
+    }
+
+    /**
+     * Wrapper object representing a "changes" element containing "installed" and "removed" elements inside:
+     * "changes: { "installed": "pkg_name": { "new": "", "old": "1.7.9" } }
+     *
+     * @deprecated Temporarily here until available in a new version of salt-net-api.
+     *
+     * @param <T> the type that is wrapped
+     */
+    @Deprecated
+    static class InstalledRemoved<T> {
+        private T installed;
+        private T removed;
+
+        InstalledRemoved() {
+            // default constructor
+        }
+
+        public T getInstalled() {
+            return this.installed;
+        }
+
+        public T getRemoved() {
+            return this.removed;
         }
     }
 

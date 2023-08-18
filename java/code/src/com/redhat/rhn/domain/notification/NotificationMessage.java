@@ -150,7 +150,7 @@ public class NotificationMessage implements Serializable {
             case ChannelSyncFinished: return "Channel sync finished";
             case CreateBootstrapRepoFailed: return "Creating Bootstrap Repository failed";
             case StateApplyFailed: return "State apply failed";
-            case PaygAuthenticationUpdateFailed: return "Pay-as-you-go refresh authentication data failed";
+            case PaygAuthenticationUpdateFailed: return "PAYG refresh failed";
             case EndOfLifePeriod: return "End of Life Period";
             case SubscriptionWarning: return "Subscription Warning";
             default: return getType().name();

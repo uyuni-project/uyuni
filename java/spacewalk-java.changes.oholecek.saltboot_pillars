@@ -1,0 +1,3 @@
+- Add saltboot redeploy and repartition based on pillars
+  (jsc#SUMA-158)
+- Add system pillar API access {get|set}Pillar
