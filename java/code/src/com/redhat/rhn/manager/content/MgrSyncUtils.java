@@ -52,8 +52,9 @@ public class MgrSyncUtils {
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
+    public static final String OFFICIAL_SUSE_UPDATE_HOST = "updates.suse.com";
     private static final List<String> OFFICIAL_UPDATE_HOSTS =
-            Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
+            Arrays.asList(OFFICIAL_SUSE_UPDATE_HOST, OFFICIAL_NOVELL_UPDATE_HOST);
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
             "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
 

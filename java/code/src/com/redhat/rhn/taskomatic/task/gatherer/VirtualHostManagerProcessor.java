@@ -278,10 +278,14 @@ public class VirtualHostManagerProcessor {
 
         cpu.setArch(ServerFactory.lookupCPUArchByName(host.getCpuArch()));
         cpu.setMHz(Long.valueOf(Math.round(host.getCpuMhz())).toString());
-        cpu.setNrCPU(host.getTotalCpuThreads().longValue());
-        cpu.setNrsocket(host.getTotalCpuSockets().longValue());
-        cpu.setNrCore(host.getTotalCpuCores().longValue() / host.getTotalCpuSockets().longValue());
-        cpu.setNrThread(host.getTotalCpuThreads().longValue() / host.getTotalCpuCores().longValue());
+        if (host.getTotalCpuSockets().longValue() > 0L) {
+            cpu.setNrsocket(host.getTotalCpuSockets().longValue());
+            cpu.setNrCore(host.getTotalCpuCores().longValue() / host.getTotalCpuSockets().longValue());
+            cpu.setNrThread(host.getTotalCpuThreads().longValue() / host.getTotalCpuCores().longValue());
+            cpu.setNrCPU(host.getTotalCpuThreads().longValue());
+        }
+        // else insufficient data for subscription matching. We keep totalSockets == null as matcher react on it
+        // set no CPU value in that case to prevent division by zero
         cpu.setVendor(host.getCpuVendor());
         cpu.setModel(host.getCpuDescription());
 

@@ -88,10 +88,10 @@ public class HostJson {
 
     /**
      * Gets the total CPU socket count.
-     * @return the number of sockets
+     * @return the number of sockets - can be 0 if insufficient data were send
      */
     public Integer getTotalCpuSockets() {
-        return totalCpuSockets;
+        return totalCpuSockets == null ? 0 : totalCpuSockets;
     }
 
     /**
@@ -99,7 +99,7 @@ public class HostJson {
      * @return the cpu cores
      */
     public Integer getTotalCpuCores() {
-        return totalCpuCores;
+        return totalCpuCores == null ? 1 : totalCpuCores;
     }
 
     /**
@@ -107,7 +107,7 @@ public class HostJson {
      * @return the CPU thread count
      */
     public Integer getTotalCpuThreads() {
-        return totalCpuThreads;
+        return totalCpuThreads == null ? 1 : totalCpuThreads;
     }
 
     /**

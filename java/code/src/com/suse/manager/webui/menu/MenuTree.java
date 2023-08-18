@@ -413,7 +413,7 @@ public class MenuTree {
                             .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
                     .addChild(new MenuItem("Products")
                             .withPrimaryUrl("/rhn/manager/admin/setup/products"))
-                    .addChild(new MenuItem("Pay-as-you-go")
+                    .addChild(new MenuItem("PAYG Connections")
                         .withPrimaryUrl("/rhn/manager/admin/setup/payg")
                         .withDir("/rhn/manager/admin/setup/payg")
                         .withDir("/rhn/manager/admin/setup/payg/create")))

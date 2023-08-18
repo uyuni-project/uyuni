@@ -529,8 +529,8 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
     # As Debian-like has no support for traditional clients, it must be Red Hat-like
     node.run('yum install wget', timeout: 600)
   end
-  registration_url = $proxy.nil? ? "https://#{$server.full_hostname}/XMLRPC" : "https://#{$proxy.full_hostname}/XMLRPC"
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  registration_url = get_target('proxy').nil? ? "https://#{get_target('server').full_hostname}/XMLRPC" : "https://#{get_target('proxy').full_hostname}/XMLRPC"
+  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{get_target('server').full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
   log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"

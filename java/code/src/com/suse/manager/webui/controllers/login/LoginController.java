@@ -25,7 +25,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -53,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -138,7 +138,7 @@ public class LoginController {
 
         // Pay as you go code
         boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
-                CredentialsFactory.listSCCCredentials().size() > 0 &&
+                GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials() &&
                 !ConfigDefaults.get().isForwardRegistrationEnabled();
 
         model.put("sccForwardWarning", sccForwardWarning);
@@ -160,13 +160,18 @@ public class LoginController {
 
         // External-auth didn't return a user - try local-auth
         if (user == null) {
-            try {
-                user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
-                log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+            if (creds == null) {
+                Spark.halt(HttpServletResponse.SC_BAD_REQUEST);
             }
-            catch (LoginException e) {
-                log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
-                errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+            else {
+                try {
+                    user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                    log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                }
+                catch (LoginException e) {
+                    log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                    errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+                }
             }
         }
         // External-auth returned a user and no errors

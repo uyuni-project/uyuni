@@ -71,7 +71,7 @@ const _SETUP_WIZARD_STEPS = [
   },
   {
     id: "wizard-step-suse-payg",
-    label: "Pay-as-you-go",
+    label: "PAYG Connections",
     url: "/rhn/manager/admin/setup/payg",
     active: false,
   },

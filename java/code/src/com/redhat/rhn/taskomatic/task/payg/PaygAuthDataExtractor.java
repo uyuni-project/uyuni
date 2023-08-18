@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 public class PaygAuthDataExtractor {
 
@@ -52,6 +54,61 @@ public class PaygAuthDataExtractor {
         .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
         .serializeNulls()
         .create();
+
+    public enum OsSpecificExtractor {
+        SLES_EXTRACTOR("SLES", "sudo python3", "script/payg_extract_repo_data.py"),
+        RHEL_EXTRACTOR("RHEL", "sudo /usr/libexec/platform-python", "script/rhui_extract_repo_data.py"),
+        RHEL7_EXTRACTOR("RHEL7", "sudo python", "script/rhui7_extract_repo_data.py");
+
+        private final String osLabel;
+        private final String scriptExecutor;
+        private final String extractorScript;
+
+        /**
+         * Constructor
+         * @param osLabelIn the lable
+         * @param scriptExecutorIn the script executor
+         * @param extractorScriptIn the script path
+         */
+        OsSpecificExtractor(String osLabelIn, String scriptExecutorIn, String extractorScriptIn) {
+            this.osLabel = osLabelIn;
+            this.scriptExecutor = scriptExecutorIn;
+            this.extractorScript = extractorScriptIn;
+        }
+
+        /**
+         * @param osLabel the os label
+         * @return the extractor
+         */
+        public static OsSpecificExtractor forOS(String osLabel) {
+            return Arrays.stream(PaygAuthDataExtractor.OsSpecificExtractor.values())
+                .filter(extractor -> osLabel.equalsIgnoreCase(extractor.getOsLabel()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Unable to create an extractor for OS " + osLabel));
+        }
+
+        // Getters
+        /**
+         * @return return the os label
+         */
+        public String getOsLabel() {
+            return osLabel;
+        }
+
+        /**
+         * @return return the extractor script
+         */
+        public String getExtractorScript() {
+            return extractorScript;
+        }
+
+        /**
+         * @return return the script executor
+         */
+        public String getScriptExecutor() {
+            return scriptExecutor;
+        }
+    }
 
     private PaygInstanceInfo processOutput(int exitStatus, String error, String output) {
         if (exitStatus != 0 || error.length() > 0) {
@@ -115,13 +172,12 @@ public class PaygAuthDataExtractor {
             sessionsTarget.setTimeout(CONNECTION_TIMEOUT);
             sessionsTarget.connect();
 
+            OsSpecificExtractor extractor = getOsSpecificExtractor(sessionsTarget);
             ChannelExec channel = (ChannelExec) sessionsTarget.openChannel("exec");
+
             try {
-                // next step will be execute a python3 file using this method.
-                // Should we pass a []byte? String + file content
-                channel.setCommand("sudo python3 ");
-                channel.setInputStream(PaygAuthDataExtractor.class
-                        .getResourceAsStream("script/payg_extract_repo_data.py"));
+                channel.setCommand(extractor.getScriptExecutor());
+                channel.setInputStream(PaygAuthDataExtractor.class.getResourceAsStream(extractor.getExtractorScript()));
 
                 InputStream stdout = channel.getInputStream();
                 InputStream stderr = channel.getErrStream();
@@ -222,6 +278,46 @@ public class PaygAuthDataExtractor {
         return extractAuthDataSSH(instance);
     }
 
+    private OsSpecificExtractor getOsSpecificExtractor(Session sessionsTarget) throws JSchException, IOException {
+        ChannelExec channel = (ChannelExec) sessionsTarget.openChannel("exec");
+        try {
+            channel.setCommand("/bin/sh ");
+            channel.setInputStream(PaygAuthDataExtractor.class.getResourceAsStream("script/detect_os.sh"));
+
+            //channel.setInputStream(null);
+            InputStream stdout = channel.getInputStream();
+            InputStream stderr = channel.getErrStream();
+            channel.connect();
+
+            // read all command output, otherwise channel will never be closed
+            StringBuilder output = getCommandOutput(stdout);
+            StringBuilder error = getCommandOutput(stderr);
+
+            waitForChannelClosed(channel);
+            int exitStatus = channel.getExitStatus();
+
+            if (exitStatus != 0 || error.length() > 0) {
+                LOG.error("Exit status: {}", exitStatus);
+                LOG.error("stderr:\n{}", error);
+                throw new PaygDataExtractException(error.toString());
+            }
+            if (output.length() == 0) {
+                LOG.error("Exit status was success but no data retrieved");
+                throw new PaygDataExtractException("No data retrieved from the instance.");
+            }
+            return OsSpecificExtractor.forOS(output.toString().trim());
+        }
+        finally {
+            if (channel != null) {
+                try {
+                    channel.disconnect();
+                }
+                catch (Exception e) {
+                    LOG.error("Error disconnection jsch session", e);
+                }
+            }
+        }
+    }
     private StringBuilder getCommandOutput(InputStream channelStdout) throws IOException {
         StringBuilder output = new StringBuilder();
         InputStreamReader stream = new InputStreamReader(channelStdout);

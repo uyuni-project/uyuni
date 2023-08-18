@@ -138,6 +138,7 @@ class ZyppoSync:
                line_l = line.decode().split(":")
                if line_l[0] == "sig" and "selfsig" in line_l[10]:
                    spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
+            log(3, "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]))
 
             # Collect GPG keys from reposync Zypper RPM database
             process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
@@ -145,6 +146,7 @@ class ZyppoSync:
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
                     zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
+            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))
 
             # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
             for key in zypper_gpg_keys:
@@ -154,12 +156,25 @@ class ZyppoSync:
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
                     os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
+                    log(3, "new version available for gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]))
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
             # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            log(3, "rpmkeys -vv --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            process = subprocess.Popen(["rpmkeys", "-vv", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH, "--import", f.name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            try:
+                outs, errs = process.communicate(timeout=15)
+                if process.returncode is None or process.returncode > 0:
+                    log(0, "Failed to import keys into rpm database ({}): {}".format(process.returncode, outs.decode('utf-8')))
+                else:
+                    log(3, "CMD out: {}".format(outs.decode('utf-8')))
+            except TimeoutExpired:
+                process.kill()
+                log(0, "Timeout exceeded while importing keys to rpm database")
+            keycont = f.read()
+            rhnLog.log_clean(5, keycont.decode('utf-8'))
 
 
 class ZypperRepo:
@@ -653,6 +668,7 @@ class ContentSource:
         """
         Setup repository and fetch metadata
         """
+        plugin_used = False;
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
@@ -672,18 +688,27 @@ type=rpm-md
 '''
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
+           plugin_used = True
         elif self.http_headers:
            headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
            with open(headers_location, "w") as repo_headers_file:
                repo_headers_file.write(json.dumps(self.http_headers))
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(zypp_repo_url), quote(headers_location))
+           # RHUI mirror url works only as mirror and cannot be used to download content
+           # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
+           # So let's take the first url from the mirrorlist if it exists and use it as baseurl
+           baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(baseurl), quote(headers_location))
+           plugin_used = True
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
+            _repo_url = 'baseurl'
+            if mirrorlist and not plugin_used:
+                _repo_url = "mirrorlist"
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                repo_url='baseurl' if not mirrorlist else 'mirrorlist',
+                repo_url=_repo_url,
                 url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))

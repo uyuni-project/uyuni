@@ -42,7 +42,7 @@ public class PaygAuthenticationUpdateFailed implements NotificationData {
 
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return null;
+        return NotificationMessage.NotificationMessageSeverity.error;
     }
 
     @Override

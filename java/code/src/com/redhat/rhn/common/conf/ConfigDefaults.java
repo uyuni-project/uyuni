@@ -370,6 +370,11 @@ public class ConfigDefaults {
      */
     public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
 
+    /**
+     * Specify if custom repositories for RHUI should be created with a different org than 1
+     */
+    public static final String RHUI_DEFAULT_ORG_ID = "java.rhui_default_org_id";
+
     private ConfigDefaults() {
     }
 
@@ -1131,4 +1136,12 @@ public class ConfigDefaults {
         return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT);
     }
 
+    /**
+     * Returns the organization id which should be used to create custom repositories for
+     * when creating RHUI repos. Configure via rhn.conf with java.rhui_default_org_id
+     * @return the org id
+     */
+    public long getRhuiDefaultOrgId() {
+        return Config.get().getInt(RHUI_DEFAULT_ORG_ID, 1);
+    }
 }

@@ -20,19 +20,19 @@ Put the complexity in the step. Keep the feature free of how the test is execute
 
 ```ruby
 When(/^I start database with the command "(.*?)"$/) do |start_command|
-  $output, _code = $server.run(start_command)
+  $output, _code = get_target('server').run(start_command)
 end
 
 When(/^when I stop the database with the command "(.*?)"$/) do |stop_command|
-  $output, _code = $server.run(stop_command)
+  $output, _code = get_target('server').run(stop_command)
 end
 
 When(/^when I check the database status with the command "(.*?)"$/) do |check_command|
-  $output, _code = $server.run(check_command)
+  $output, _code = get_target('server').run(check_command)
 end
 
 When(/^I stop the database with the command "(.*?)"$/) do |stop_command|
-  $output, _code = $server.run(stop_command)
+  $output, _code = get_target('server').run(stop_command)
 end
 ```
 
@@ -43,7 +43,7 @@ stop databases itself and want to be explicit just use `When I run the command X
 
 ```ruby
 When(/^I start database with the command "(.*?)"$/) do |start_command|
-  $output, _code = $server.run(start_command)
+  $output, _code = get_target('server').run(start_command)
 end
 
 # do something with $output then

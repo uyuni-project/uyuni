@@ -26,6 +26,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -55,8 +56,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
         pillars.add(new Pillar("category2", pillar2, minionServer));
 
         minionServer.setPillars(pillars);
-        TestUtils.saveAndFlush(minionServer);
-        minionServer = reload(minionServer);
+        minionServer = TestUtils.saveAndReload(minionServer);
 
         Pillar actual = minionServer.getPillarByCategory("category1").get();
         assertNotNull(actual);
@@ -65,5 +65,27 @@ public class MinionServerTest extends BaseTestCaseWithUser {
         assertFalse(actual.isGlobalPillar());
         assertFalse(actual.isGroupPillar());
         assertFalse(actual.isOrgPillar());
+    }
+
+    @Test
+    public void testMinionPillarAdding() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Set<Pillar> pillars = new HashSet<>();
+        for (int i = 0; i < 2; i++) {
+            Map<String, Object> data = Collections.singletonMap("key", String.format("value%d", i));
+            Pillar pillar = new Pillar(String.format("original_pillar%d", i), data, minion);
+            pillars.add(pillar);
+        }
+        minion.setPillars(pillars);
+        minion = TestUtils.saveAndReload(minion);
+        assertEquals(3, minion.getPillars().size());
+
+        Pillar newPillar = new Pillar("new_pillar", Collections.singletonMap("key", "value"), minion);
+        minion.addPillar(newPillar);
+
+        minion = TestUtils.saveAndReload(minion);
+
+        assertEquals(4, minion.getPillars().size());
     }
 }

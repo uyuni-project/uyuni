@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -44,20 +45,24 @@ public class MinionActionChainExecutor extends RhnJavaJob {
     public static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     private final SaltServerActionService saltServerActionService;
+    private final CloudPaygManager cloudPaygManager;
 
     /**
      * Default constructor.
      */
     public MinionActionChainExecutor() {
-        this(GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE);
+        this(GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE, GlobalInstanceHolder.PAYG_MANAGER);
     }
 
     /**
      * Constructs an instance specifying the {@link SaltServerActionService}. Meant to be used only for unit test.
      * @param saltServerActionServiceIn the salt service
+     * @param cloudPaygManagerIn the cloud payg manager
      */
-    public MinionActionChainExecutor(SaltServerActionService saltServerActionServiceIn) {
+    public MinionActionChainExecutor(SaltServerActionService saltServerActionServiceIn,
+                                     CloudPaygManager cloudPaygManagerIn) {
         saltServerActionService = saltServerActionServiceIn;
+        cloudPaygManager = cloudPaygManagerIn;
     }
 
     @Override
@@ -123,6 +128,18 @@ public class MinionActionChainExecutor extends RhnJavaJob {
             ActionFactory.rejectScheduledActions(actionsId,
                 LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
 
+            return;
+        }
+        if (!cloudPaygManager.isCompliant()) {
+            log.error("This action was not executed because SUSE Manager Server PAYG is unable to send " +
+                    "accounting data to the cloud provider.");
+            List<Long> actionsId = actionChain.getEntries()
+                    .stream()
+                    .map(ActionChainEntry::getActionId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            ActionFactory.rejectScheduledActions(actionsId,
+                    LOCALIZATION.getMessage("task.action.rejection.notcompliant"));
             return;
         }
 

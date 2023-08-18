@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.scc;
 
+import com.redhat.rhn.manager.content.MgrSyncUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -56,6 +58,17 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());
+            if (!url.getHost().startsWith(MgrSyncUtils.OFFICIAL_SUSE_UPDATE_HOST)) {
+                /*
+                SCC data contain repositories which point to external server and are free to access.
+                Examples are openSUSE and nVidia repositories. These repos are not available on the RMT servers
+                and the URLs shoudl not be re-written. Creating them at type {@link SCCRepositoryNoAuth}
+                requires to get the json definition of the repo somehow as input into
+                {@link ContentSyncManager#refreshRepositoriesAuthentication}. Otherwise the repo will be removed again.
+                Just returning the original URL here is better to understand.
+                */
+                return getRepo().getUrl();
+            }
             URI credUrl = new URI(getCredentials().getUrl());
 
             List<String> sourceParams = new ArrayList<>(Arrays.asList(

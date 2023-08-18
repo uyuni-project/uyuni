@@ -80,10 +80,10 @@ const Payg = (props: Props) => {
     >
       <DeleteDialog
         id="delete-payg-modal"
-        title={t("Delete Pay-as-you-go")}
+        title={t("Delete PAYG Connection")}
         content={
           <span>
-            {t("Are you sure you want to delete project")} <strong>{payg.properties.host}</strong>?
+            {t("Are you sure you want to delete connection")} <strong>{payg.properties.host}</strong>?
           </span>
         }
         onConfirm={() =>

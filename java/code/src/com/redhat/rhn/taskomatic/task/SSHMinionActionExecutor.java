@@ -17,21 +17,42 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
+import com.suse.cloud.CloudPaygManager;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Execute actions via salt-ssh.
  */
 public class SSHMinionActionExecutor extends RhnJavaJob {
+
+    private final CloudPaygManager cloudPaygManager;
+
+    /**
+     * Default Constructor
+     */
+    public SSHMinionActionExecutor() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Constructor
+     * @param cloudPaygManagerIn the payg manager
+     */
+    public SSHMinionActionExecutor(CloudPaygManager cloudPaygManagerIn) {
+        cloudPaygManager = cloudPaygManagerIn;
+    }
 
     @Override
     public int getDefaultParallelThreads() {
@@ -61,6 +82,13 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
         Action action = ActionFactory.lookupById(actionId);
         if (action == null) {
             log.error("Action not found: {}", actionId);
+            return;
+        }
+        if (!cloudPaygManager.isCompliant()) {
+            log.error("This action was not executed because SUSE Manager Server PAYG is unable to send " +
+                    "accounting data to the cloud provider.");
+            ActionFactory.rejectScheduledActions(List.of(actionId),
+                    LocalizationService.getInstance().getMessage("task.action.rejection.notcompliant"));
             return;
         }
 

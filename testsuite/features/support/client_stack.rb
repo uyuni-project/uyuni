@@ -65,7 +65,7 @@ def get_os_version(node)
   [os_version, os_family]
 end
 
-def get_gpg_keys(node, target = $server)
+def get_gpg_keys(node, target = get_target('server'))
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/

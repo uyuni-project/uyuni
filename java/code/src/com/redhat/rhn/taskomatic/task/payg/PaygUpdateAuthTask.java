@@ -63,7 +63,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
             PaygSshDataFactory.lookupByHostname("localhost").orElseGet(() -> {
                 PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
                 paygSshData.setHost("localhost");
-                paygSshData.setDescription("SUSE Manager Pay-as-you-go");
+                paygSshData.setDescription("SUSE Manager PAYG");
                 paygSshData.setUsername("root");
                 PaygSshDataFactory.savePaygSshData(paygSshData);
                 HibernateFactory.getSession().flush();

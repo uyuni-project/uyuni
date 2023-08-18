@@ -46,7 +46,7 @@ const _MESSAGE_TYPE = {
   },
   PaygAuthenticationUpdateFailed: {
     id: "PaygAuthenticationUpdateFailed",
-    text: t("Pay-as-you-go refresh authentication data failed"),
+    text: t("PAYG refresh authentication data failed"),
   },
   EndOfLifePeriod: {
     id: "EndOfLifePeriod",
