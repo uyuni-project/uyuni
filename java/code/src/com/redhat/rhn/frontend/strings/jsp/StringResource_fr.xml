@@ -29161,15 +29161,11 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
       <target state="new"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <source>Collect authentication data from configured PAYG cloud instances</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
-      <target state="new"/>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29407,6 +29403,25 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
   </trans-unit>
       <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
         <source>Security updates unknown, disabled on settings.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
+        <source>PAYG Computation</source>
+      <target state="new"/>
+  </trans-unit>
+       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+        <source>Execute Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="PAYG Connections" xml:space="preserve">
+        <source>PAYG Connections</source>
       <target state="new"/>
   </trans-unit>
       </body>

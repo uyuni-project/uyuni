@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-08-18 14:04+0200\n"
 "PO-Revision-Date: 2023-06-27 07:37+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -988,11 +988,13 @@ msgid ""
 msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요합니다."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-msgid "Add new pay-as-you-go ssh connection data"
+#, fuzzy
+msgid "Add new PAYG ssh connection data"
 msgstr "새 용량제 SSH 연결 데이터 추가"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-msgid "Add pay-as-you-go ssh data"
+#, fuzzy
+msgid "Add PAYG ssh data"
 msgstr "용량제 SSH 데이터 추가"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
@@ -1015,7 +1017,8 @@ msgid "Create"
 msgstr "만들기"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-msgid "Pay-as-you-go connection Description"
+#, fuzzy
+msgid "PAYG connection Description"
 msgstr "용량제 연결 설명"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
@@ -1071,8 +1074,8 @@ msgid "of"
 msgstr "/"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
-msgid "Add Pay-as-you-go"
-msgstr "용량제 추가"
+msgid "Add PAYG Connection"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1091,8 +1094,9 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-msgid "Pay-as-you-go properties updated successfully"
-msgstr "용량제 속성 업데이트됨"
+#, fuzzy
+msgid "PAYG properties updated successfully"
+msgstr "프로젝트 속성 업데이트됨"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1166,12 +1170,13 @@ msgid "Instance Hostname: {host}"
 msgstr "인스턴스 호스트 이름: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-msgid "Delete Pay-as-you-go"
-msgstr "용량제 삭제"
+#, fuzzy
+msgid "Delete PAYG Connection"
+msgstr "프로젝트 삭제"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#: ../html/src/manager/content-management/project/project.tsx:119
-msgid "Are you sure you want to delete project"
+#, fuzzy
+msgid "Are you sure you want to delete connection"
 msgstr "프로젝트를 삭제하시겠습니까"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
@@ -2256,6 +2261,10 @@ msgstr "컨텐트 라이프싸이클 프로젝트 - {0}"
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
 msgstr "프로젝트 삭제"
+
+#: ../html/src/manager/content-management/project/project.tsx:119
+msgid "Are you sure you want to delete project"
+msgstr "프로젝트를 삭제하시겠습니까"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 #: ../html/src/manager/packages/list.tsx:152
@@ -3562,8 +3571,8 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:53
 msgid ""
-"SUSE Manager pay-as-you-go instances must forward registration data to SCC "
-"when credentials are provided. Data will be sent independently of the "
+"SUSE Manager PAYG instances must forward registration data to SCC when "
+"credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
@@ -4216,7 +4225,8 @@ msgid "State apply failed"
 msgstr "상태 적용 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-msgid "Pay-as-you-go refresh authentication data failed"
+#, fuzzy
+msgid "PAYG refresh authentication data failed"
 msgstr "용량제 새로 고침 인증 데이터 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
@@ -6635,6 +6645,15 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "용량제 추가"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "용량제 속성 업데이트됨"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "용량제 삭제"
 
 #, fuzzy
 #~ msgid ""
