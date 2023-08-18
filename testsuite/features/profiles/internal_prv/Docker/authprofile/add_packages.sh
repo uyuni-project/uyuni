@@ -2,7 +2,7 @@
 set -e
 
 # temporarily disable non-working repo
-zypper mr --disable TFake-RPM-SUSE-Channel || :
+zypper mr --disable Fake-RPM-SUSE-Channel || :
 zypper --non-interactive --gpg-auto-import-keys ref
 
 # install, configure, and start avahi
