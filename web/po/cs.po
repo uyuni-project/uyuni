@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:36+0200\n"
+"POT-Creation-Date: 2023-08-18 14:09+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -946,11 +946,13 @@ msgid ""
 msgstr " Aby se změny konfigurace projevily, je potřeba Tomcat a Taskomatic."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-msgid "Add new pay-as-you-go ssh connection data"
+#, fuzzy
+msgid "Add new PAYG ssh connection data"
 msgstr "Přidání nových dat pro připojení ssh za poplatek"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-msgid "Add pay-as-you-go ssh data"
+#, fuzzy
+msgid "Add PAYG ssh data"
 msgstr "Přidání placených dat ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
@@ -973,7 +975,8 @@ msgid "Create"
 msgstr "Vytvořit"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-msgid "Pay-as-you-go connection Description"
+#, fuzzy
+msgid "PAYG connection Description"
 msgstr "Popis připojení s platbou podle potřeby"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
@@ -1029,8 +1032,8 @@ msgid "of"
 msgstr "z"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
-msgid "Add Pay-as-you-go"
-msgstr "Přidat platbu podle potřeby"
+msgid "Add PAYG Connection"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1048,8 +1051,9 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-msgid "Pay-as-you-go properties updated successfully"
-msgstr "Vlastnosti Platby dle potřeby aktualizovány úspěšně"
+#, fuzzy
+msgid "PAYG properties updated successfully"
+msgstr "Vlastnosti projektu aktualizovány úspěšně"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1124,12 +1128,13 @@ msgid "Instance Hostname: {host}"
 msgstr "Název hostitele instance: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-msgid "Delete Pay-as-you-go"
-msgstr "Zrušit průběžnou platbu (Pay-as-you-go)"
+#, fuzzy
+msgid "Delete PAYG Connection"
+msgstr "Odstranit projekt"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#: ../html/src/manager/content-management/project/project.tsx:119
-msgid "Are you sure you want to delete project"
+#, fuzzy
+msgid "Are you sure you want to delete connection"
 msgstr "Opravdu chcete odstranit projekt"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
@@ -2228,6 +2233,10 @@ msgstr "Projekt životního cyklu obsahu - {0}"
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
 msgstr "Odstranit projekt"
+
+#: ../html/src/manager/content-management/project/project.tsx:119
+msgid "Are you sure you want to delete project"
+msgstr "Opravdu chcete odstranit projekt"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 #: ../html/src/manager/packages/list.tsx:150
@@ -3542,8 +3551,8 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:53
 msgid ""
-"SUSE Manager pay-as-you-go instances must forward registration data to SCC "
-"when credentials are provided. Data will be sent independently of the "
+"SUSE Manager PAYG instances must forward registration data to SCC when "
+"credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
@@ -4201,7 +4210,8 @@ msgid "State apply failed"
 msgstr "Aplikace stavu selhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-msgid "Pay-as-you-go refresh authentication data failed"
+#, fuzzy
+msgid "PAYG refresh authentication data failed"
 msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
@@ -6536,6 +6546,15 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "Přidat platbu podle potřeby"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "Vlastnosti Platby dle potřeby aktualizovány úspěšně"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "Zrušit průběžnou platbu (Pay-as-you-go)"
 
 #, fuzzy
 #~ msgid "The action has been {0}."
