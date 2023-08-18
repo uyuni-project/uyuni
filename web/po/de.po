@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:36+0200\n"
+"POT-Creation-Date: 2023-08-18 14:09+0200\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -906,11 +906,11 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-msgid "Add new pay-as-you-go ssh connection data"
+msgid "Add new PAYG ssh connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-msgid "Add pay-as-you-go ssh data"
+msgid "Add PAYG ssh data"
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
@@ -933,7 +933,7 @@ msgid "Create"
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-msgid "Pay-as-you-go connection Description"
+msgid "PAYG connection Description"
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
@@ -989,7 +989,7 @@ msgid "of"
 msgstr "von"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
-msgid "Add Pay-as-you-go"
+msgid "Add PAYG Connection"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
@@ -1007,7 +1007,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-msgid "Pay-as-you-go properties updated successfully"
+msgid "PAYG properties updated successfully"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
@@ -1083,13 +1083,13 @@ msgid "Instance Hostname: {host}"
 msgstr ""
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-msgid "Delete Pay-as-you-go"
+msgid "Delete PAYG Connection"
 msgstr ""
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#: ../html/src/manager/content-management/project/project.tsx:119
-msgid "Are you sure you want to delete project"
-msgstr ""
+#, fuzzy
+msgid "Are you sure you want to delete connection"
+msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
 msgid "Refresh the product catalog from SUSE Customer Center"
@@ -2142,6 +2142,10 @@ msgstr ""
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
+msgstr ""
+
+#: ../html/src/manager/content-management/project/project.tsx:119
+msgid "Are you sure you want to delete project"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
@@ -3413,8 +3417,8 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:53
 msgid ""
-"SUSE Manager pay-as-you-go instances must forward registration data to SCC "
-"when credentials are provided. Data will be sent independently of the "
+"SUSE Manager PAYG instances must forward registration data to SCC when "
+"credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
@@ -4056,7 +4060,7 @@ msgid "State apply failed"
 msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-msgid "Pay-as-you-go refresh authentication data failed"
+msgid "PAYG refresh authentication data failed"
 msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
