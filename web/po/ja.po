@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-08-18 14:04+0200\n"
 "PO-Revision-Date: 2023-06-27 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -993,11 +993,13 @@ msgid ""
 msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が必要です。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-msgid "Add new pay-as-you-go ssh connection data"
+#, fuzzy
+msgid "Add new PAYG ssh connection data"
 msgstr "新しい従量課金制のssh接続データを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-msgid "Add pay-as-you-go ssh data"
+#, fuzzy
+msgid "Add PAYG ssh data"
 msgstr "従量課金制のsshデータを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
@@ -1020,7 +1022,8 @@ msgid "Create"
 msgstr "作成"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-msgid "Pay-as-you-go connection Description"
+#, fuzzy
+msgid "PAYG connection Description"
 msgstr "従量課金制の接続の説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
@@ -1076,8 +1079,8 @@ msgid "of"
 msgstr "／"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
-msgid "Add Pay-as-you-go"
-msgstr "従量課金制を追加"
+msgid "Add PAYG Connection"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1096,8 +1099,9 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-msgid "Pay-as-you-go properties updated successfully"
-msgstr "従量課金制のプロパティが正常に更新されました"
+#, fuzzy
+msgid "PAYG properties updated successfully"
+msgstr "プロジェクトのプロパティを更新しました"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1172,12 +1176,13 @@ msgid "Instance Hostname: {host}"
 msgstr "インスタンスホスト名: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-msgid "Delete Pay-as-you-go"
-msgstr "従量課金制を削除"
+#, fuzzy
+msgid "Delete PAYG Connection"
+msgstr "プロジェクトの削除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#: ../html/src/manager/content-management/project/project.tsx:119
-msgid "Are you sure you want to delete project"
+#, fuzzy
+msgid "Are you sure you want to delete connection"
 msgstr "プロジェクトを削除してよろしいですか"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
@@ -2279,6 +2284,10 @@ msgstr "コンテンツライフサイクルプロジェクト - {0}"
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
 msgstr "プロジェクトの削除"
+
+#: ../html/src/manager/content-management/project/project.tsx:119
+msgid "Are you sure you want to delete project"
+msgstr "プロジェクトを削除してよろしいですか"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 #: ../html/src/manager/packages/list.tsx:152
@@ -3607,8 +3616,8 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:53
 msgid ""
-"SUSE Manager pay-as-you-go instances must forward registration data to SCC "
-"when credentials are provided. Data will be sent independently of the "
+"SUSE Manager PAYG instances must forward registration data to SCC when "
+"credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
@@ -4274,7 +4283,8 @@ msgid "State apply failed"
 msgstr "状態の適用に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-msgid "Pay-as-you-go refresh authentication data failed"
+#, fuzzy
+msgid "PAYG refresh authentication data failed"
 msgstr "従量課金制の認証データの更新が失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
@@ -6726,6 +6736,15 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Add Pay-as-you-go"
+#~ msgstr "従量課金制を追加"
+
+#~ msgid "Pay-as-you-go properties updated successfully"
+#~ msgstr "従量課金制のプロパティが正常に更新されました"
+
+#~ msgid "Delete Pay-as-you-go"
+#~ msgstr "従量課金制を削除"
 
 #, fuzzy
 #~ msgid ""
