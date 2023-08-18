@@ -124,10 +124,34 @@ rescue Timeout::Error
   raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
 end
 
+
+def has_text_with_retry(expected_text1, expected_text2: nil, timeout: Capybara.default_max_wait_time)
+  start_time = Time.now
+  loop do
+    if has_text?(expected_text1, wait: 0)
+      return true
+    elsif !expected_text2.nil? && has_text?(expected_text2, wait: 0)
+      return true
+    elsif has_text?('Request has timed out', wait: 0)
+      log 'Request timeout found, performing reload'
+      click_reload_page
+      start_time = Time.now
+      has_no_text?('Request has timed out', wait: Capybara.default_max_wait_time)
+    end
+    break if Time.now - start_time >= timeout
+    sleep 0.5
+  end
+  false
+end
+
 def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
   "#{formatted_message}#{formatted_result}"
+end
+
+def click_reload_page
+  click_button('reload the page')
 end
 
 def click_button_and_wait(locator = nil, **options)

@@ -235,10 +235,10 @@ end
 Then(/^I should see the power is "([^"]*)"$/) do |status|
   within(:xpath, "//*[@for='powerStatus']/..") do
     repeat_until_timeout(message: "power is not #{status}") do
-      break if has_content?(status)
+      break if has_text_with_retry(status)
       find(:xpath, '//button[@value="Get status"]').click
     end
-    raise "Power status #{status} not found" unless has_content?(status)
+    raise "Power status #{status} not found" unless has_text_with_retry(status)
   end
 end
 
