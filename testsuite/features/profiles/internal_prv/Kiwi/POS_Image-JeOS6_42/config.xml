@@ -44,7 +44,7 @@
         <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- 4.3 client tools - SP independent -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/Devel:/Galaxy:/Manager:/4.3:/SLE12-SUSE-Manager-Tools/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/ibs/Devel:/Galaxy:/Manager:/4.3:/SLE12-SUSE-Manager-Tools/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/"/>
     </repository>
 
     <packages type="image">

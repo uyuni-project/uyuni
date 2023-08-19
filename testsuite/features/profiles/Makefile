@@ -31,7 +31,6 @@ internal_nue: clean-internal_nue
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_NUE_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_NUE_NOAUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/SUSE/|$(REPO_NUE)/SUSE/|g' ; \
-	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/Devel:/|$(REPO_NUE)/Devel:/|g' ; \
 	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_NUE)|g' ; \
 	fi
 
@@ -43,7 +42,6 @@ internal_prv: clean-internal_prv
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_PRV_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_PRV_NOAUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/SUSE/|$(REPO_PRV)/SUSE/|g' ; \
-	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/Devel:/|$(REPO_PRV)/Devel:/|g' ; \
 	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_PRV)/ibs|g' ; \
 	fi
 
