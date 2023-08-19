@@ -1,0 +1,112 @@
+{
+  "sources": {
+    "openSUSE_LEAP": {
+      "content": {
+        "15.3": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.3-affected.xml.gz",
+          "patch": ""
+        },
+        "15.4": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.4-affected.xml.gz",
+          "patch": ""
+        },
+        "15.5": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.5-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
+    "SUSE_LINUX_ENTERPRISE_SERVER": {
+      "content": {
+        "10": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.10-affected.xml.gz",
+          "patch": ""
+        },
+        "11": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.11-affected.xml.gz",
+          "patch": ""
+        },
+        "12": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.12-affected.xml.gz",
+          "patch": ""
+        },
+        "15": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.15-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
+    "SUSE_LINUX_ENTERPRISE_DESKTOP": {
+      "content": {
+        "10": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.10.xml.gz",
+          "patch": ""
+        },
+        "11": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.11.xml.gz",
+          "patch": ""
+        },
+        "12": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.12-affected.xml.gz",
+          "patch": ""
+        },
+        "15": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.15-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
+    "UBUNTU": {
+      "content": {
+        "18.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.bionic.cve.oval.xml.bz2",
+          "patch": ""
+        },
+        "20.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.focal.cve.oval.xml.bz2",
+          "patch": ""
+        },
+        "22.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.jammy.cve.oval.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
+    "REDHAT_ENTERPRISE_LINUX": {
+      "content": {
+        "7": {
+          "vulnerability": "https://www.redhat.com/security/data/oval/v2/RHEL7/rhel-7-including-unpatched.oval.xml.bz2",
+          "patch": ""
+        },
+        "8": {
+          "vulnerability": "https://www.redhat.com/security/data/oval/v2/RHEL8/rhel-8-including-unpatched.oval.xml.bz2",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://www.redhat.com/security/data/oval/v2/RHEL9/rhel-9-including-unpatched.oval.xml.bz2",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://www.redhat.com/security/data/oval/v2/RHEL10/rhel-10-including-unpatched.oval.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
+    "DEBIAN": {
+      "content": {
+        "10": {
+          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-buster.xml.bz2",
+          "patch": ""
+        },
+        "11": {
+          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-bullseye.xml.bz2",
+          "patch": ""
+        },
+        "12": {
+          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2",
+          "patch": ""
+        }
+      }
+    }
+  }
+}

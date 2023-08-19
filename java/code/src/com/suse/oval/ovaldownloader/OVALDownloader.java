@@ -1,68 +1,104 @@
 package com.suse.oval.ovaldownloader;
 
 import com.suse.oval.OsFamily;
+import com.suse.oval.config.OVALConfig;
+import com.suse.oval.config.OVALSourceInfo;
 
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 
 public class OVALDownloader {
     private static final String DOWNLOAD_PATH = "/var/log/rhn/ovals/";
+    private final OVALConfig config;
 
-    public File download(OsFamily osFamily, String osVersion) throws IOException {
-        OVALStreamInfo streamInfo;
-        switch (osFamily) {
-            case openSUSE_LEAP:
-                streamInfo = new OpenSUSELeapOVALStreamInfo(osVersion);
-                break;
-            case REDHAT_ENTERPRISE_LINUX:
-                streamInfo = new RedHatOVALStreamInfo(osVersion);
-                break;
-            case DEBIAN:
-                streamInfo = new DebianOVALStreamInfo(osVersion);
-                break;
-            case UBUNTU:
-                streamInfo = new UbuntuOVALStreamInfo(osVersion);
-                break;
-            default:
-                throw new NotImplementedException(String.format("Cannot download '%s' OVALs", osFamily));
-        }
-
-        if (!streamInfo.isValidVersion(osVersion)) {
-            throw new IllegalArgumentException(
-                    String.format("Cannot download OVAL for '%s' version '%s'", osFamily, osVersion));
-        }
-
-        return doDownload(streamInfo);
+    public OVALDownloader(OVALConfig config) {
+        this.config = config;
     }
 
-    public File doDownload(OVALStreamInfo streamInfo) throws IOException {
-        URL remoteOVALFileURL = new URL(streamInfo.remoteFileUrl());
-        File localOVALFile = new File(DOWNLOAD_PATH + streamInfo.localFileName() +
-                streamInfo.getCompressionMethod().extension());
-
-        // Start downloading
-        FileUtils.copyURLToFile(remoteOVALFileURL, localOVALFile, 10_000, 10_000);
-
-        OVALCompressionMethod compressionMethod = streamInfo.getCompressionMethod();
-        if (compressionMethod == OVALCompressionMethod.GZIP) {
-            File uncompressedOVALFile = new File(DOWNLOAD_PATH + streamInfo.localFileName() + ".xml");
-            decompressGzip(localOVALFile, uncompressedOVALFile);
-            localOVALFile = uncompressedOVALFile;
-        } else if (compressionMethod == OVALCompressionMethod.BZIP2) {
-            File uncompressedOVALFile = new File(DOWNLOAD_PATH + streamInfo.localFileName() + ".xml");
-            decompressBzip2(localOVALFile, uncompressedOVALFile);
-            localOVALFile = uncompressedOVALFile;
+    public OVALDownloadResult download(OsFamily osFamily, String osVersion) throws IOException {
+        Optional<OVALSourceInfo> sourceInfoOpt = config.lookupSourceInfo(osFamily, osVersion);
+        if (sourceInfoOpt.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "OVAL sources for '%s' '%s' is not configured. Please ensure OVAL is configured correctly oval.config.json",
+                            osFamily, osVersion));
         }
 
-        return localOVALFile;
+        return doDownload(sourceInfoOpt.get());
+    }
+
+    public OVALDownloadResult doDownload(OVALSourceInfo sourceInfo)
+            throws IOException {
+        OVALDownloadResult result = new OVALDownloadResult();
+
+        String vulnerabilityInfoSource = sourceInfo.getVulnerabilitiesInfoSource();
+        String patchInfoSource = sourceInfo.getPatchInfoSource();
+
+        if (StringUtils.isNotBlank(vulnerabilityInfoSource)) {
+            File vulnerabilityFile = downloadOVALFile(vulnerabilityInfoSource);
+            result.setVulnerabilityFile(vulnerabilityFile);
+        }
+
+        if (StringUtils.isNotBlank(patchInfoSource)) {
+            File patchFile = downloadOVALFile(patchInfoSource);
+            result.setPatchFile(patchFile);
+        }
+
+        return result;
+    }
+
+    private File downloadOVALFile(String vulnerabilityInfoSource) throws IOException {
+        URL vulnerabilityInfoURL = new URL(vulnerabilityInfoSource);
+        String vulnerabilityInfoOVALFilename = FilenameUtils.getName(vulnerabilityInfoURL.getPath());
+        File vulnerabilityFile =
+                new File(DOWNLOAD_PATH + vulnerabilityInfoOVALFilename);
+        // Start downloading
+        FileUtils.copyURLToFile(vulnerabilityInfoURL, vulnerabilityFile, 10_000, 10_000);
+
+        return decompressIfNeeded(vulnerabilityFile);
+    }
+
+    private File decompressIfNeeded(File file) {
+        OVALCompressionMethod compressionMethod = getCompressionMethod(file.getName());
+        File uncompressedOVALFile;
+        if (compressionMethod == OVALCompressionMethod.BZIP2) {
+            uncompressedOVALFile = new File(file.getPath().replace(compressionMethod.extension(), ""));
+            decompressBzip2(file, uncompressedOVALFile);
+        } else if (compressionMethod == OVALCompressionMethod.GZIP) {
+            uncompressedOVALFile = new File(file.getPath().replace(compressionMethod.extension(), ""));
+            decompressGzip(file, uncompressedOVALFile);
+        } else if (compressionMethod == OVALCompressionMethod.NOT_COMPRESSED) {
+            uncompressedOVALFile = file;
+        } else {
+            throw new IllegalStateException("Unable to decompress file: " + file.getPath());
+        }
+
+        return uncompressedOVALFile;
+    }
+
+    public OVALCompressionMethod getCompressionMethod(String filename) {
+        Objects.requireNonNull(filename);
+
+        if (filename.endsWith(".bz2")) {
+            return OVALCompressionMethod.BZIP2;
+        } else if (filename.endsWith("gz")) {
+            return OVALCompressionMethod.GZIP;
+        } else if (filename.endsWith(".xml")) {
+            return OVALCompressionMethod.NOT_COMPRESSED;
+        } else {
+            throw new IllegalStateException("OVAL file compressed with an unknown compression method");
+        }
     }
 
     /**

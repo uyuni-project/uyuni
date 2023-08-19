@@ -29,6 +29,8 @@ import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
+import com.suse.oval.config.OVALConfigLoader;
+import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -298,29 +300,45 @@ public class CVEAuditManagerOVAL {
 
     static List<OVALProduct> productsToSync = new ArrayList<>();
     static {
-        productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));
+        /*productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));*/
         productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.3"));
-        productsToSync.add(new OVALProduct(OsFamily.DEBIAN, "10"));
+        productsToSync.add(new OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX, "9"));
     }
     public static void syncOVAL() {
-        OVALDownloader ovalDownloader = new OVALDownloader();
+        OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
         for (OVALProduct product : productsToSync) {
             log.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-            File ovalFile;
+            OVALDownloadResult downloadResult;
             try {
-                ovalFile = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+                downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
             } catch (IOException e) {
                 throw new RuntimeException("Failed to download OVAL data", e);
             }
             log.warn("Downloading finished");
 
-            OvalParser ovalParser = new OvalParser();
-            OvalRootType ovalRoot = ovalParser.parse(ovalFile);
+            log.warn("OVAL vulnerability file: " +
+                    downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
+            log.warn("OVAL patch file: " + downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
-            log.warn("Saving OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
+                OvalParser ovalParser = new OvalParser();
+                OvalRootType ovalRoot = ovalParser.parse(ovalVulnerabilityFile);
 
-            OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
-            OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+                log.warn("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+
+                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+            });
+
+            downloadResult.getPatchFile().ifPresent(patchFile -> {
+                OvalParser ovalParser = new OvalParser();
+                OvalRootType ovalRoot = ovalParser.parse(patchFile);
+
+                log.warn("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+
+                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+            });
 
             log.warn("Saving OVAL finished");
         }
