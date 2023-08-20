@@ -11024,15 +11024,15 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-        <target state="needs-adaptation">Úspešne vytvorená priebežná platba {0}</target>
+        <target state="translated">Úspešne vytvorené PAYG {0}</target>
       </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-        <target state="needs-adaptation">Priebežne platený hostiteľ už existuje</target>
+        <target state="translated">Hostiteľ PAYG už existuje</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-        <target state="needs-adaptation">Úspešne vymazaná priebežná platba {0}</target>
+        <target state="translated">Úspešne vymazané PAYG {0}</target>
       </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
@@ -11314,34 +11314,34 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
         <target state="needs-adaptation">VÝSTRAHA PRE PRIEBEŽNÚ PLATBU: Zistený pokus o migráciu medzi produktmi. Vezmite, prosím, na vedomie, že migrácia z openSUSE na SLES alebo podobný systém nie je v rámci vášho súčasného plánu priebežnej platby povolená. Operácia bola prerušená.</target>
       </trans-unit>
-    <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
