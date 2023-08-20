@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-18 14:09+0200\n"
-"PO-Revision-Date: 2023-08-15 21:15+0000\n"
+"PO-Revision-Date: 2023-08-20 19:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -929,14 +929,12 @@ msgstr ""
 " Tomcat a Taskomatic sú potrebné na to, aby sa prejavili konfiguračné zmeny."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-#, fuzzy
 msgid "Add new PAYG ssh connection data"
-msgstr "Pridať nové priebežne platené dáta pripojení ssh"
+msgstr "Pridať nové dáta pripojení ssh PAYG"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-#, fuzzy
 msgid "Add PAYG ssh data"
-msgstr "Pridať nové priebežne platené dáta ssh"
+msgstr "Pridať dáta ssh PAYG"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -958,9 +956,8 @@ msgid "Create"
 msgstr "Vytvoriť"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "PAYG connection Description"
-msgstr "Popis priebežne plateného pripojenia"
+msgstr "Popis pripojenia PAYG"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
@@ -1016,7 +1013,7 @@ msgstr "z"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add PAYG Connection"
-msgstr ""
+msgstr "Pridať pripojenie PAYG"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1035,9 +1032,8 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "PAYG properties updated successfully"
-msgstr "Vlastnosti projektu sa úspešne aktualizovali"
+msgstr "Vlastnosti PAYG sa úspešne aktualizovali"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1112,14 +1108,12 @@ msgid "Instance Hostname: {host}"
 msgstr "Názov hostiteľa inštancie: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-#, fuzzy
 msgid "Delete PAYG Connection"
-msgstr "Vymazať projekt"
+msgstr "Vymazať pripojenie PAYG"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#, fuzzy
 msgid "Are you sure you want to delete connection"
-msgstr "Naozaj chcete vymazať projekt"
+msgstr "Naozaj chcete vymazať pripojenie"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
 msgid "Refresh the product catalog from SUSE Customer Center"
@@ -3527,17 +3521,16 @@ msgstr ""
 "svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
 msgid ""
 "SUSE Manager PAYG instances must forward registration data to SCC when "
 "credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"Priebežne platené inštancie SUSE Manager musia po poskytnutí prihlasovacích "
-"údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od "
-"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn."
-"conf 'forward_registration = 1'."
+"PAYG inštancie SUSE Manager musia po poskytnutí prihlasovacích údajov "
+"postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od nastavenia "
+"konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn.conf "
+"'forward_registration = 1'."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -4196,9 +4189,8 @@ msgid "State apply failed"
 msgstr "Aplikácia stavu zlyhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-#, fuzzy
 msgid "PAYG refresh authentication data failed"
-msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
+msgstr "Zlyhalo obnovenie dát overenia PAYG"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
