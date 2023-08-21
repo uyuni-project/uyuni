@@ -72,7 +72,6 @@ def twopence_init(host)
     node = process_private_and_public_ip(host, node)
   end
 
-  $nodes << node
   $node_by_host[host] = node
   $host_by_node[node] = host
   node
