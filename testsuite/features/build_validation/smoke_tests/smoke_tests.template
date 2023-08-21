@@ -111,7 +111,6 @@ Feature: Smoke tests for <client>
     Then I should see a "Remote Command has been scheduled successfully" text
     When I force picking pending events on "<client>" if necessary
     And I wait until file "/tmp/remote-command-on-<client>" exists on "<client>"
-    Then I remove "/tmp/remote-command-on-<client>" from "<client>"
 
   Scenario: Check that Software package refresh works on a <client>
     Given I am on the Systems overview page of this "<client>"
@@ -164,7 +163,6 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a SLE Micro
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
-    Then I remove "/etc/s-mgr/config" from "<client>"
 
 @skip_for_sle_micro
   # The client tools of SLE Micro (intentionally) do not contain spacecmd
