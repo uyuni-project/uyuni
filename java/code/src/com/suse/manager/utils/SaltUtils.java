@@ -1451,6 +1451,7 @@ public class SaltUtils {
             server.setOsFamily(grains.getValueAsString("os_family"));
             server.setRunningKernel(grains.getValueAsString("kernelrelease"));
             server.setOs(grains.getValueAsString("osfullname"));
+            server.setCpe(grains.getValueAsString("cpe"));
 
             /** Release is set directly from grain information for SUSE systems only.
                 RH systems require some parsing on the grains to get the correct release
