@@ -37,7 +37,6 @@ Feature: Smoke tests for <client>
 @skip_for_alma9
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Patches" in the content area
@@ -53,7 +52,6 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Install a package on the <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Install"
@@ -69,7 +67,6 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Remove package from <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
@@ -121,7 +118,6 @@ Feature: Smoke tests for <client>
     And I wait until event "Package List Refresh scheduled by admin" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Details" in the content area
     And I wait until I see "System Status" text
     And I follow "Hardware"
@@ -132,7 +128,6 @@ Feature: Smoke tests for <client>
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Configuration" in the content area
     And I wait until I see "Configuration Overview" text
     And I follow "Manage Configuration Channels" in the content area
@@ -167,7 +162,6 @@ Feature: Smoke tests for <client>
 @skip_for_sle_micro
   # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Install"
