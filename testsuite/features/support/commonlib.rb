@@ -137,7 +137,7 @@ def check_text_and_catch_timeout?(text1, text2: nil, timeout: Capybara.default_m
     end
     break if Time.now - start_time >= timeout
   end
-  false
+  return false
 end
 
 def format_detail(message, last_result, report_result)
