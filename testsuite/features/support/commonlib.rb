@@ -134,8 +134,6 @@ def check_text_and_catch_timeout?(expected_text1, expected_text2: nil, timeout: 
       click_reload_page
       start_time = Time.now
       has_no_text?('Request has timed out', wait: Capybara.default_max_wait_time)
-    else
-      # No timeout catch
     end
     break if Time.now - start_time >= timeout
     sleep 0.5
