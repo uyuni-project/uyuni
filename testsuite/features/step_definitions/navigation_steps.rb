@@ -49,7 +49,7 @@ When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, t
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_timeout?(text1, expected_text2: text2, timeout: DEFAULT_TIMEOUT)
+  raise "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_timeout?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
@@ -588,7 +588,7 @@ Then(/^I should see a "([^"]*)" text$/) do |text|
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_timeout?(text1, expected_text2: text2)
+  raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_timeout?(text1, text2: text2)
 end
 
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
@@ -617,7 +617,7 @@ end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
   within('textarea') do
-    raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_timeout?(text1, expected_text2: text2)
+    raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_timeout?(text1, text2: text2)
   end
 end
 
@@ -673,7 +673,7 @@ end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_timeout?(text1, expected_text2: text2)
+    raise "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_timeout?(text1, text2: text2)
   end
 end
 
