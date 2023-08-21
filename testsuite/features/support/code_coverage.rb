@@ -34,7 +34,7 @@ class CodeCoverage
         package_name = package.attr('name')
         package.xpath('.//sourcefile').each do |sourcefile|
           sourcefile_name = sourcefile.attr('name')
-          counter_class = sourcefile.xpath(".//counter[@type='CLASS']")
+          counter_class = sourcefile.xpath('.//counter[@type=\'CLASS\']')
           next if counter_class.nil? || counter_class.attr('covered').to_s == ''
 
           next unless Integer(counter_class.attr('covered').to_s).positive?

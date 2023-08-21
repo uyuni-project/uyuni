@@ -38,8 +38,8 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
 end
 
 Then(/^I turn off disable_local_repos for all clients/) do
-  get_target('server').run("echo \"mgr_disable_local_repos: False\" > /srv/pillar/disable_local_repos_off.sls")
-  step %(I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server)
+  get_target('server').run('echo "mgr_disable_local_repos: False" > /srv/pillar/disable_local_repos_off.sls')
+  step 'I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server'
 end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
@@ -47,7 +47,7 @@ Then(/^"([^"]*)" should communicate with the server using public interface/) do 
   _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
   unless return_code.zero?
     sleep 2
-    puts "re-try ping"
+    puts 're-try ping'
     node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
   end
   get_target('server').run("ping -c 1 #{node.public_ip}")
@@ -62,7 +62,7 @@ end
 
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
   node = get_target(host)
-  clock_node, _rc = node.run("date +'%s'")
+  clock_node, _rc = node.run('date +\'%s\'')
   clock_controller = `date +'%s'`
   difference = clock_node.to_i - clock_controller.to_i
   raise "clocks differ by #{difference} seconds" unless difference.abs < 2
@@ -96,9 +96,9 @@ end
 
 Then(/^it should be possible to reach the Docker profiles$/) do
   git_profiles = ENV['GITPROFILES']
-  url = git_profiles.sub(/github\.com/, "raw.githubusercontent.com")
-                    .sub(/\.git#:/, "/master/")
-                    .sub(/$/, "/Docker/Dockerfile")
+  url = git_profiles.sub(/github\.com/, 'raw.githubusercontent.com')
+                    .sub(/\.git#:/, '/master/')
+                    .sub(/$/, '/Docker/Dockerfile')
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
@@ -119,14 +119,14 @@ end
 # Channels
 
 When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
-  channels_cmd = "spacewalk-remove-channel "
-  table.raw.each { |x| channels_cmd = channels_cmd + " -c " + x[0] }
+  channels_cmd = 'spacewalk-remove-channel '
+  table.raw.each { |x| channels_cmd = channels_cmd + ' -c ' + x[0] }
   $command_output, return_code = get_target('server').run(channels_cmd, check_errors: false)
 end
 
 When(/^I list channels with spacewalk\-remove\-channel$/) do
-  $command_output, return_code = get_target('server').run("spacewalk-remove-channel -l")
-  raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
+  $command_output, return_code = get_target('server').run('spacewalk-remove-channel -l')
+  raise 'Unable to run spacewalk-remove-channel -l command on server' unless return_code.zero?
 end
 
 When(/^I add "([^"]*)" channel$/) do |channel|
@@ -169,8 +169,8 @@ Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
 end
 
 When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |package, status, host|
-  if package.include?("suma") && product == "Uyuni"
-    package.gsub! "suma", "uyuni"
+  if package.include?('suma') && product == 'Uyuni'
+    package.gsub! 'suma', 'uyuni'
   end
   node = get_target(host)
   if deb_host?(host)
@@ -201,7 +201,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
   result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
-    line.force_encoding("UTF-8")
+    line.force_encoding('UTF-8')
     log line
   end
 end
@@ -210,14 +210,14 @@ When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
     if use_salt_bundle
-      "venv-salt-minion"
+      'venv-salt-minion'
     else
-      "salt"
+      'salt'
     end
   changelog_file = use_salt_bundle ? 'changelog.gz' : 'changelog.Debian.gz'
   result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
-    line.force_encoding("UTF-8")
+    line.force_encoding('UTF-8')
     log line
   end
 end
@@ -263,13 +263,13 @@ end
 When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   # necessary since Debian-like OSes use different names for the services
-  separator = deb_host?(host) ? "-" : "_"
+  separator = deb_host?(host) ? '-' : '_'
   cmd = "systemctl is-active prometheus-#{service}#{separator}exporter"
   node.run_until_ok(cmd)
 end
 
 When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = get_target('server').run("mgr-sync list products", check_errors: false, buffer_size: 1_000_000)
+  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -284,7 +284,7 @@ When(/^I enable product "([^"]*)"$/) do |prd|
 end
 
 When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = get_target('server').run("mgr-sync list products", check_errors: false, buffer_size: 1_000_000)
+  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
   executed = false
   linenum = 0
   list_output.each_line do |line|
@@ -388,7 +388,7 @@ Then(/^the reposync logs should not report errors$/) do
 end
 
 Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
-  logfiles = list.split(",")
+  logfiles = list.split(',')
   logfiles.each do |logs|
     _result, code = get_target('server').run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
     if code.zero?
@@ -503,8 +503,8 @@ end
 
 When(/^I execute spacewalk-debug on the server$/) do
   get_target('server').run('spacewalk-debug')
-  code = file_extract(get_target('server'), "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
-  raise "Download debug file failed" unless code.zero?
+  code = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
+  raise 'Download debug file failed' unless code.zero?
 end
 
 When(/^I extract the log files from all our active nodes$/) do
@@ -549,11 +549,11 @@ When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_
 end
 
 Then(/^the PXE default profile should be enabled$/) do
-  step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server)
+  step 'I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server'
 end
 
 Then(/^the PXE default profile should be disabled$/) do
-  step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
+  step 'I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server'
 end
 
 When(/^the server starts mocking an IPMI host$/) do
@@ -599,7 +599,7 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   # copy state file to server
   file = 'user_defined_state.sls'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/srv/salt/" + file
+  dest = '/srv/salt/' + file
   return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
   # generate top file and copy it to server
@@ -646,9 +646,9 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
   target = '/srv/tftpboot/pxelinux.cfg/default'
   case entry
   when 'local boot'
-    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
+    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT local/\''
   when 'target profile'
-    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/'"
+    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/\''
   else
     log "Entry #{entry} not supported"
   end
@@ -659,11 +659,11 @@ When(/^I clean the search index on the server$/) do
   output, _code = get_target('server').run('/usr/sbin/rhn-search cleanindex', check_errors: false)
   log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
   raise 'The output includes an error log' if output.include?('ERROR')
-  step %(I wait until rhn-search is responding)
+  step 'I wait until rhn-search is responding'
 end
 
 When(/^I wait until rhn-search is responding$/) do
-  step %(I wait until "rhn-search" service is active on "server")
+  step 'I wait until "rhn-search" service is active on "server"'
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     begin
       log "Search by hostname: #{get_target('sle_minion').hostname}"
@@ -679,10 +679,10 @@ end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
-  repeat_until_timeout(timeout: 1800, message: "'mgr-sync refresh' did not finish") do
+  cmd = 'spacecmd -u admin -p admin api sync.content.listProducts'
+  repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
     result, code = get_target('server').run(cmd, check_errors: false)
-    break if result.include? "SLES"
+    break if result.include? 'SLES'
     sleep 5
   end
 end
@@ -793,7 +793,7 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # use sumaform states to migrate to latest SP the system repositories:
   node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
-  node.run("for repo in $(zypper lr | awk 'NR>7 && !/susemanager:/ {print $3}'); do zypper mr -d $repo; done")
+  node.run('for repo in $(zypper lr | awk \'NR>7 && !/susemanager:/ {print $3}\'); do zypper mr -d $repo; done')
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
@@ -838,18 +838,18 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
 end
 
 When(/^I enable source package syncing$/) do
-  cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
+  cmd = 'echo \'server.sync_source_packages = 1\' >> /etc/rhn/rhn.conf'
   get_target('server').run(cmd)
 end
 
 When(/^I disable source package syncing$/) do
-  cmd = "sed -i 's/^server.sync_source_packages = 1.*//g' /etc/rhn/rhn.conf"
+  cmd = 'sed -i \'s/^server.sync_source_packages = 1.*//g\' /etc/rhn/rhn.conf'
   get_target('server').run(cmd)
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?("suma") && product == "Uyuni"
-    pattern.gsub! "suma", "uyuni"
+  if pattern.include?('suma') && product == 'Uyuni'
+    pattern.gsub! 'suma', 'uyuni'
   end
   node = get_target(host)
   node.run('zypper ref')
@@ -858,8 +858,8 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?("suma") && product == "Uyuni"
-    pattern.gsub! "suma", "uyuni"
+  if pattern.include?('suma') && product == 'Uyuni'
+    pattern.gsub! 'suma', 'uyuni'
   end
   node = get_target(host)
   node.run('zypper ref')
@@ -1050,12 +1050,12 @@ When(/^I allow all SSL protocols on the proxy's apache$/) do
   key = 'SSLProtocol'
   val = 'all -SSLv2 -SSLv3'
   get_target('proxy').run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  get_target('proxy').run("systemctl reload apache2.service")
+  get_target('proxy').run('systemctl reload apache2.service')
 end
 
 When(/^I restart squid service on the proxy$/) do
   # We need to restart squid when we add a CNAME to the certificate
-  get_target('proxy').run("systemctl restart squid.service")
+  get_target('proxy').run('systemctl restart squid.service')
 end
 
 When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|
@@ -1090,12 +1090,12 @@ end
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
 When(/^I let Kiwi build from external repositories$/) do
-  get_target('server').run("sed -i 's/--ignore-repos-used-for-build//' /usr/share/susemanager/salt/images/kiwi-image-build.sls")
+  get_target('server').run('sed -i \'s/--ignore-repos-used-for-build//\' /usr/share/susemanager/salt/images/kiwi-image-build.sls')
 end
 
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
-  get_target('server').run("spacecmd -u admin -p admin clear_caches")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
   get_target('server').run(command)
 end
@@ -1114,10 +1114,10 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   current_time = Time.now.strftime('%Y%m%d%H%M')
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
-  get_target('server').run("spacecmd -u admin -p admin clear_caches")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
   # Gather all the ids of package refreshes existing at SUMA
-  refreshes, = get_target('server').run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh' | cut -f1 -d' '", check_errors: false)
-  node_refreshes = ""
+  refreshes, = get_target('server').run('spacecmd -u admin -p admin schedule_list | grep \'Package List Refresh\' | cut -f1 -d\' \'', check_errors: false)
+  node_refreshes = ''
   refreshes.split(' ').each do |refresh_id|
     next unless refresh_id.match('/[0-9]{1,4}/')
     refresh_result, = get_target('server').run("spacecmd -u admin -p admin schedule_details #{refresh_id}") # Filter refreshes for specific system
@@ -1125,7 +1125,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
     node_refreshes += "^#{refresh_id}|"
   end
   cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
-  repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
+  repeat_until_timeout(timeout: long_wait_delay, message: '\'refresh package list\' did not finish') do
     result, code = get_target('server').run(cmd, check_errors: false)
     sleep 1
     next if result.include? '0    0    1'
@@ -1136,7 +1136,7 @@ end
 
 When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |packages, client|
   node = get_system_name(client)
-  get_target('server').run("spacecmd -u admin -p admin clear_caches")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   result, _code = get_target('server').run(command, check_errors: false)
   packages.split(' ').each do |package|
@@ -1147,7 +1147,7 @@ end
 
 When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) do |pkg, client|
   node = get_system_name(client)
-  get_target('server').run("spacecmd -u admin -p admin clear_caches")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
     result, _code = get_target('server').run(command, check_errors: false)
@@ -1158,7 +1158,7 @@ end
 
 When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) do |pkg, client|
   node = get_system_name(client)
-  get_target('server').run("spacecmd -u admin -p admin clear_caches")
+  get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is still present") do
     result, code = get_target('server').run(command, check_errors: false)
@@ -1199,13 +1199,13 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy unset package file on server$/) do
-  base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
+  base_dir = File.dirname(__FILE__) + '/../upload_files/unset_package/'
   return_code = file_inject(get_target('server'), base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
   raise 'File injection failed' unless return_code.zero?
 end
 
 When(/^I copy vCenter configuration file on server$/) do
-  base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
+  base_dir = File.dirname(__FILE__) + '/../upload_files/virtualization/'
   return_code = file_inject(get_target('server'), base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
 end
@@ -1223,12 +1223,12 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?(get_target('server'), folder + "/sql_statements.sql.gz")
+  raise "Folder #{folder} not found" unless file_exists?(get_target('server'), folder + '/sql_statements.sql.gz')
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
   node = get_target(host)
-  raise "Folder exists" if folder_exists?(node, folder)
+  raise 'Folder exists' if folder_exists?(node, folder)
 end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
@@ -1360,7 +1360,7 @@ end
 
 Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node = get_target(target)
-  node.run("iptables -F INPUT")
+  node.run('iptables -F INPUT')
 end
 
 When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
@@ -1374,7 +1374,7 @@ end
 
 When(/^I add avahi hosts in Containerized Proxy configuration$/) do
   if get_target('server').full_hostname.include? 'tf.local'
-    hosts_list = ""
+    hosts_list = ''
     $host_by_node.each do |node, _host|
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
@@ -1418,10 +1418,10 @@ When(/^I reboot the server through SSH$/) do
   check_shutdown(get_target('server').public_ip, default_timeout)
   check_restart(get_target('server').public_ip, temp_server, default_timeout)
 
-  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+  repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? "dead" and out.to_s.include? "running"
-      log "Server spacewalk service is up"
+    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+      log 'Server spacewalk service is up'
       break
     end
     sleep 1
@@ -1535,11 +1535,11 @@ end
 When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.test_and_store_results_together('hostname', 'root', 500)
-  node.run("cloud-init status --wait", check_errors: true, verbose: false)
+  node.run('cloud-init status --wait', check_errors: true, verbose: false)
 
   repeat_until_timeout(report_result: true) do
-    command_output, code = node.run("cloud-init status --wait", check_errors: true, verbose: false)
-    break if command_output.include?("done")
+    command_output, code = node.run('cloud-init status --wait', check_errors: true, verbose: false)
+    break if command_output.include?('done')
     sleep 2
     raise StandardError 'Error during cloud-init.' if code == 1
   end

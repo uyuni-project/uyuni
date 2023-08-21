@@ -109,7 +109,7 @@ When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
 end
 
 When(/^I list all Salt keys shown on the Salt master$/) do
-  get_target('server').run("salt-key --list-all", check_errors: false, verbose: true)
+  get_target('server').run('salt-key --list-all', check_errors: false, verbose: true)
 end
 
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
@@ -144,7 +144,7 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
 end
 
 Then(/^the system should have a base channel set$/) do
-  step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
+  step 'I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text'
 end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
@@ -199,7 +199,7 @@ end
 
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  get_target('server').run("zypper --non-interactive refresh")
+  get_target('server').run('zypper --non-interactive refresh')
   get_target('server').run("zypper --non-interactive install --force #{package}-formula")
 end
 
@@ -287,15 +287,15 @@ end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
-  output, _code = node.run("grep 'KEYMAP=' /etc/vconsole.conf")
+  output, _code = node.run('grep \'KEYMAP=\' /etc/vconsole.conf')
   raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   node = get_target(minion)
-  output, _code = node.run("grep 'RC_LANG=' /etc/sysconfig/language")
+  output, _code = node.run('grep \'RC_LANG=\' /etc/sysconfig/language')
   unless output.strip == "RC_LANG=\"#{language}\""
-    output, _code = node.run("grep 'LANG=' /etc/locale.conf")
+    output, _code = node.run('grep \'LANG=\' /etc/locale.conf')
     raise "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
   end
 end
@@ -426,7 +426,7 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
-  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+  repeat_until_timeout(timeout: 60, retries: 30, message: 'Search button not enabled', report_result: true) do
     break unless find('button#search').disabled?
     sleep 1
   end
@@ -478,7 +478,7 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
   elsif deb_host?(host)
-    pkgs = "salt-common salt-minion" if product != 'Uyuni'
+    pkgs = 'salt-common salt-minion' if product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
 end
@@ -506,20 +506,20 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if use_salt_bundle
     if rh_host?(host)
-      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion", check_errors: false)
+      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
     elsif deb_host?(host)
-      node.run("apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+      node.run('apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove', check_errors: false)
     else
-      node.run("zypper --non-interactive remove --clean-deps -y venv-salt-minion", check_errors: false)
+      node.run('zypper --non-interactive remove --clean-deps -y venv-salt-minion', check_errors: false)
     end
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
     if rh_host?(host)
-      node.run("yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion", check_errors: false)
+      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
     elsif deb_host?(host)
-      node.run("apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove", check_errors: false)
+      node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
     else
-      node.run("zypper --non-interactive remove --clean-deps -y salt salt-minion", check_errors: false)
+      node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', check_errors: false)
     end
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   end
@@ -527,7 +527,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
-  system_name = host == "*" ? "*" : get_system_name(host)
+  system_name = host == '*' ? '*' : get_system_name(host)
   script = "base:\n" \
             "  '#{system_name}':\n"
   files.split(/, */).each do |file|
@@ -555,12 +555,12 @@ end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
   source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/srv/formula_metadata/" + formula + '/' + file
+  dest = '/srv/formula_metadata/' + formula + '/' + file
 
-  get_target('server').run("mkdir -p /srv/formula_metadata/" + formula)
+  get_target('server').run('mkdir -p /srv/formula_metadata/' + formula)
   return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
-  get_target('server').run("chmod 644 " + dest)
+  get_target('server').run('chmod 644 ' + dest)
 end
 
 When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
