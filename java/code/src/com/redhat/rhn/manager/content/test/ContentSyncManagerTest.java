@@ -36,6 +36,8 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -67,6 +69,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -2050,6 +2053,30 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testIsRefreshNeededNothingConfigured() throws Exception {
         ContentSyncManager csm = new ContentSyncManager();
         assertFalse(csm.isRefreshNeeded(null));
+    }
+
+    @Test
+    public void testIsRefreshNeededPAYG() {
+        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
+            CredentialsFactory.removeCredentials(c);
+        }
+        ManagerInfoFactory.setLastMgrSyncRefresh(0);
+        CloudPaygManager mgr = new CloudPaygManager();
+        mgr.setPaygInstance(true);
+        mgr.setCompliant(true);
+        ContentSyncManager csm = new ContentSyncManager(null, mgr);
+        Credentials rmtCreds = CredentialsFactory.createCloudRmtCredentials();
+        rmtCreds.setUsername("RMTUSER");
+        rmtCreds.setPassword("secret");
+        CredentialsFactory.storeCredentials(rmtCreds);
+        PaygSshData sshData = PaygSshDataFactory.createPaygSshData();
+        sshData.setHost("localhost");
+        sshData.setUsername("admin");
+        sshData.setPassword("secret");
+        sshData.setCredentials(rmtCreds);
+        PaygSshDataFactory.savePaygSshData(sshData);
+
+        assertTrue(csm.isRefreshNeeded(null));
     }
 
     /**
