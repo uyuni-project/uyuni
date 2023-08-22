@@ -135,10 +135,10 @@ public class ChannelFamily extends BaseDomainHelper {
         }
         ChannelFamily castOther = (ChannelFamily) other;
 
-        return new EqualsBuilder().append(id, castOther.id)
-                                  .append(label, castOther.label)
-                                  .append(name, castOther.name)
-                                  .append(org, castOther.org)
+        return new EqualsBuilder().append(id, castOther.getId())
+                                  .append(label, castOther.getLabel())
+                                  .append(name, castOther.getName())
+                                  .append(org, castOther.getOrg())
                                   .isEquals();
     }
 
