@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -25,10 +24,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-public class UpdateAvailableNotification implements NotificationData {
+/**
+ * Notification data for an update being available for the server.
+ */
+public class UpdateAvailable implements NotificationData {
 
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
-    private static final Logger LOG = LogManager.getLogger(UpdateAvailableNotification.class);
+    private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);
     private static final String UYUNI_PATCH_REPO = "systemsmanagement_Uyuni_Stable_Patches";
     private static final String UYUNI_UPDATE_REPO = "systemsmanagement_Uyuni_Stable";
 
@@ -41,7 +43,7 @@ public class UpdateAvailableNotification implements NotificationData {
      *
      * @param runtimeIn runtime object for command execution
      */
-    public UpdateAvailableNotification(Runtime runtimeIn) {
+    public UpdateAvailable(Runtime runtimeIn) {
         this.runtime = runtimeIn;
     }
 
@@ -85,7 +87,7 @@ public class UpdateAvailableNotification implements NotificationData {
 
     @Override
     public NotificationType getType() {
-        return NotificationType.UpdateAvailableNotification;
+        return NotificationType.UpdateAvailable;
     }
 
     @Override

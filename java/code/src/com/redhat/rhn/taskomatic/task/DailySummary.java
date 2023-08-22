@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
-import com.redhat.rhn.domain.notification.types.UpdateAvailableNotification;
+import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
@@ -142,7 +142,7 @@ public class DailySummary extends RhnJavaJob {
     }
 
     private void  processUpdateAvailableNotification() {
-        UpdateAvailableNotification uan = new UpdateAvailableNotification(Runtime.getRuntime());
+        UpdateAvailable uan = new UpdateAvailable(Runtime.getRuntime());
         if (uan.updateAvailable()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(uan);
