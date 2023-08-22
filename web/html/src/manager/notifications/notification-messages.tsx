@@ -56,8 +56,8 @@ const _MESSAGE_TYPE = {
     id: "SubscriptionWarning",
     text: t("Subscription Warning"),
   },
-  UpdateAvailableNotification: {
-    id: "UpdateAvailableNotification",
+  UpdateAvailable: {
+    id: "UpdateAvailable",
     text: t("Update Notification"),
   },
 };

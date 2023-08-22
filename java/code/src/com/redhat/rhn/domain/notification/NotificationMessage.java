@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
-import com.redhat.rhn.domain.notification.types.UpdateAvailableNotification;
+import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 
 import com.google.gson.Gson;
 
@@ -135,8 +135,8 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), EndOfLifePeriod.class);
             case SubscriptionWarning:
                 return new Gson().fromJson(getData(), SubscriptionWarning.class);
-            case UpdateAvailableNotification:
-                return new Gson().fromJson(getData(), UpdateAvailableNotification.class);
+            case UpdateAvailable:
+                return new Gson().fromJson(getData(), UpdateAvailable.class);
             default: throw new RuntimeException("Notification type not found");
         }
     }
@@ -156,7 +156,7 @@ public class NotificationMessage implements Serializable {
             case PaygAuthenticationUpdateFailed: return "PAYG refresh failed";
             case EndOfLifePeriod: return "End of Life Period";
             case SubscriptionWarning: return "Subscription Warning";
-            case UpdateAvailableNotification: return "Updates are Available";
+            case UpdateAvailable: return "Updates are Available";
             default: return getType().name();
         }
     }

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.types.NotificationType;
-import com.redhat.rhn.domain.notification.types.UpdateAvailableNotification;
+import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
@@ -45,8 +45,8 @@ class UpdateAvailableTest extends MockObjectTestCase {
 
     @Test
     public void testPropertiesAndStrings() {
-        UpdateAvailableNotification notification = new UpdateAvailableNotification(runtimeMock);
-        assertEquals(NotificationType.UpdateAvailableNotification, notification.getType());
+        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
+        assertEquals(NotificationType.UpdateAvailable, notification.getType());
         assertEquals(NotificationMessage.NotificationMessageSeverity.warning, notification.getSeverity());
         assertEquals("Updates are available.", notification.getSummary());
         if (ConfigDefaults.get().isUyuni()) {
@@ -77,7 +77,7 @@ class UpdateAvailableTest extends MockObjectTestCase {
             e.printStackTrace();
         }
 
-        UpdateAvailableNotification notification = new UpdateAvailableNotification(runtimeMock);
+        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
         assertTrue(notification.updateAvailable());
     }
 
@@ -97,7 +97,7 @@ class UpdateAvailableTest extends MockObjectTestCase {
             e.printStackTrace();
         }
 
-        UpdateAvailableNotification notification = new UpdateAvailableNotification(runtimeMock);
+        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
         assertFalse(notification.updateAvailable());
     }
 }
