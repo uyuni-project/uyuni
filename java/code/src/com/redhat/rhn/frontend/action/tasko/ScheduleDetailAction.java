@@ -185,6 +185,10 @@ public class ScheduleDetailAction extends RhnAction {
                 TaskomaticApi tapi = new TaskomaticApi();
                 Map schedule = tapi.lookupScheduleById(loggedInUser, schid);
                 String scheduleName = (String) schedule.get("job_label");
+                if (scheduleName.equals("payg-dimension-computation-default")) {
+                    // not modifiable
+                    return;
+                }
                 String bunchName = (String) schedule.get("bunch");
                 request.setAttribute("schedulename", scheduleName);
                 form.set("schedulename", scheduleName);

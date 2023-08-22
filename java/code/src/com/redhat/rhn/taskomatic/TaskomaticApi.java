@@ -411,8 +411,8 @@ public class TaskomaticApi {
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List findActiveSchedules(User user) throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
+    public List<Map<String, Object>> findActiveSchedules(User user) throws TaskomaticApiException {
+        List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
         return schedules;
     }
 
