@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
 import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
@@ -543,11 +544,8 @@ public class ErrataTestUtils {
         copy.setPackages(new HashSet<>(original.getPackages()));
     }
 
-    public static void extractAndSaveVulnerablePackages(DefinitionType definition) {
-        OvalRootType rootType = new OvalRootType();
-        rootType.setDefinitions(List.of(definition));
-        definition.setOsFamily(OsFamily.openSUSE_LEAP);
-        definition.setOsVersion("15.4");
+    public static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
+        OVALCleaner.cleanup(rootType, OsFamily.openSUSE_LEAP, "15.4");
         OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
 
         HibernateFactory.getSession().flush();
