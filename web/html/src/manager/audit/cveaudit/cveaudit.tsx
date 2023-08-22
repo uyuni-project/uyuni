@@ -351,7 +351,7 @@ class CVEAudit extends React.Component<Props, State> {
             />
             <Column
               columnKey="name"
-              width="45%"
+              width="37.5%"
               comparator={Utils.sortByText}
               header={t("Name")}
               cell={(row, criteria) => {
@@ -368,7 +368,7 @@ class CVEAudit extends React.Component<Props, State> {
             />
             <Column
               columnKey="action"
-              width="45%"
+              width="37.5%"
               comparator={Utils.sortByText}
               header={t("Actions")}
               cell={(row, criteria) => {
@@ -476,6 +476,24 @@ class CVEAudit extends React.Component<Props, State> {
                 } else {
                   return t("If you see this report a bug.");
                 }
+              }}
+            />
+            <Column
+              columnKey="scan-data"
+              width="15%"
+              comparator={Utils.sortByText}
+              header={t("Scan Data")}
+              cell={(row, criteria) => {
+                return (
+                  <div
+                    className="scan-data-indicator"
+                    style={{
+                      backgroundColor: row.scannedWithOVAL ? "#009688" : "orange",
+                    }}
+                  >
+                    {t(row.scannedWithOVAL ? "OVAL" : "Channels")}
+                  </div>
+                );
               }}
             />
           </Table>
