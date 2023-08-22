@@ -39,6 +39,7 @@ spec:
                           /etc/salt \
                           /etc/tomcat \
                           /etc/cobbler \
+                          /etc/postfix \
                           /etc/sysconfig;
             do
               rsync -avz uyuni.world-co.com:$folder/ $folder;
@@ -91,6 +92,8 @@ spec:
             name: etc-cobbler
           - mountPath: /etc/sysconfig
             name: etc-sysconfig
+          - mountPath: /etc/postfix
+            name: etc-postfix
           - mountPath: /root/keys
             name: ssh-key
       volumes:
@@ -157,6 +160,9 @@ spec:
         - name: etc-sysconfig
           persistentVolumeClaim:
             claimName: etc-sysconfig
+        - name: etc-postfix
+          persistentVolumeClaim:
+            claimName: etc-postfix
         - name: ssh-key
           secret:
             secretName: migration-ssh-key
