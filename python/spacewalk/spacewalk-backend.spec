@@ -372,9 +372,6 @@ fi
 %else
 %service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 %endif
-if test -f /var/log/rhn/rhn_server_satellite.log; then
-    chown -f %{apache_user}:%{apache_group} /var/log/rhn/rhn_server_satellite.log
-fi
 
 %preun tools
 %if 0%{?rhel}
@@ -657,7 +654,7 @@ fi
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %doc README.ULN
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
+%attr(644,%{apache_user},%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
