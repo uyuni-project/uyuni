@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -211,7 +210,9 @@ public class ScheduleDetailAction extends RhnAction {
         List dropDown = new ArrayList();
         try {
             List<Map> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
-            bunches.removeIf(bunch -> TaskoFactory.HIDDEN_BUNCHES.contains(bunch.get("name")));
+            // Since recurring states have their own place in the webUI we don't
+            // want them to show up in the Task Schedules UI
+            bunches.removeIf(bunch -> bunch.get("name").equals("recurring-action-executor-bunch"));
 
             for (Map b : bunches) {
                 addOption(dropDown, (String)b.get("name"), (String)b.get("name"));
