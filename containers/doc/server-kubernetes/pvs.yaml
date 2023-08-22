@@ -529,3 +529,28 @@ spec:
             operator: In
             values:
               - uyuni-dev
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etc-postfix
+  labels:
+    data: etc-postfix
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  local:
+    path: /var/uyuni/etc-postfix
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - uyuni-dev
+
