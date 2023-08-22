@@ -118,6 +118,22 @@ public class OVALCachingFactory extends HibernateFactory {
         return !result.isEmpty();
     }
 
+    /**
+     * Checks if OVAL is synced for servers with the given {@code cpe}
+     *
+     * @param cpe the cpe of servers to check for
+     * @return {@code True} if OVAL is available for servers with {@code cpe} and {@code False} otherwise.
+     */
+    public static boolean checkOVALAvailability(String cpe) {
+        SelectMode m = ModeFactory.getMode("oval_queries", "check_oval_availability");
+        Map<String, Object> params = new HashMap<>();
+        params.put("cpe", cpe);
+
+        DataResult result = m.execute(params);
+
+        return !result.isEmpty();
+    }
+
     @Override
     protected Logger getLogger() {
         return LOG;

@@ -29,4 +29,10 @@
               AND cve.name = :cve_name;
         </query>
     </mode>
+
+    <mode name="check_oval_availability">
+        <query params="cpe">
+            SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe);
+        </query>
+    </mode>
 </datasource_modes>

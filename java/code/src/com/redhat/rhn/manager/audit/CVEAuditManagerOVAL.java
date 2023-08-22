@@ -101,14 +101,15 @@ public class CVEAuditManagerOVAL {
             CVEAuditSystemBuilder auditWithChannelsResult =
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
-            if (doesSupportOVALAuditing(clientServer)) {
-                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()),
-                        clientServer);
+            if (checkOVALAvailability(clientServer)) {
+                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
+                systemAuditResult.setScannedWithOVAL(true);
             }
             else {
                 systemAuditResult = auditWithChannelsResult;
+                systemAuditResult.setScannedWithOVAL(false);
             }
 
             if (patchStatuses.contains(systemAuditResult.getPatchStatus())) {
@@ -117,20 +118,20 @@ public class CVEAuditManagerOVAL {
                         systemAuditResult.getSystemName(),
                         systemAuditResult.getPatchStatus(),
                         systemAuditResult.getChannels(),
-                        systemAuditResult.getErratas()));
+                        systemAuditResult.getErratas(),
+                        systemAuditResult.isScannedWithOVAL()));
             }
         }
 
         return result;
     }
 
-    private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
-        return !OVALCachingFactory.canAuditCVE(cveIdentifier);
+    public static boolean checkOVALAvailability(Server clientServer) {
+        return OVALCachingFactory.checkOVALAvailability(clientServer.getCpe());
     }
 
-    public static boolean doesSupportOVALAuditing(Server clientServer) {
-        // TODO: check if OVAL is synced and client product is support .e.g. Red Hat, Debian, Ubuntu or SUSE
-        return true;
+    private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
+        return !OVALCachingFactory.canAuditCVE(cveIdentifier);
     }
 
     public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier,
@@ -298,6 +299,7 @@ public class CVEAuditManagerOVAL {
         CVEAuditManager.populateCVEChannels();
     }
 
+    // TODO: Sync OVAL of registered clients only
     static List<OVALProduct> productsToSync = new ArrayList<>();
     static {
         /*productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));*/
@@ -307,24 +309,24 @@ public class CVEAuditManagerOVAL {
     public static void syncOVAL() {
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
         for (OVALProduct product : productsToSync) {
-            log.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            LOG.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
             OVALDownloadResult downloadResult;
             try {
                 downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
             } catch (IOException e) {
                 throw new RuntimeException("Failed to download OVAL data", e);
             }
-            log.warn("Downloading finished");
+            LOG.warn("Downloading finished");
 
-            log.warn("OVAL vulnerability file: " +
+            LOG.warn("OVAL vulnerability file: " +
                     downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
-            log.warn("OVAL patch file: " + downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
+            LOG.warn("OVAL patch file: " + downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
             downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
                 OvalParser ovalParser = new OvalParser();
                 OvalRootType ovalRoot = ovalParser.parse(ovalVulnerabilityFile);
 
-                log.warn("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+                LOG.warn("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
 
                 OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
                 OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
@@ -334,13 +336,13 @@ public class CVEAuditManagerOVAL {
                 OvalParser ovalParser = new OvalParser();
                 OvalRootType ovalRoot = ovalParser.parse(patchFile);
 
-                log.warn("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+                LOG.warn("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
 
                 OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
                 OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
             });
 
-            log.warn("Saving OVAL finished");
+            LOG.warn("Saving OVAL finished");
         }
     }
 
