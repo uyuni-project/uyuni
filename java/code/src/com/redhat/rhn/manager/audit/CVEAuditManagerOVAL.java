@@ -49,7 +49,13 @@ public class CVEAuditManagerOVAL {
             // implementation.
             // TODO: We could make a custom query that would get us only the data we're interested in instead of relying
             //  on CVEAuditManager#doAuditManager implementation.
-            CVEAuditSystemBuilder auditWithChannelsResult = CVEAuditManager.doAuditSystem(clientServer.getId(), results);
+
+            List<CVEAuditManager.CVEPatchStatus> clientResults =
+                    results.stream().filter(res -> res.getSystemId() == clientServer.getId())
+                            .collect(Collectors.toList());
+
+            CVEAuditSystemBuilder auditWithChannelsResult =
+                    CVEAuditManager.doAuditSystem(clientServer.getId(), clientResults);
 
             if (doesSupportOVALAuditing(clientServer)) {
                 systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
