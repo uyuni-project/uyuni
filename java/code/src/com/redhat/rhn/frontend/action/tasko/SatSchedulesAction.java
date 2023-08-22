@@ -56,7 +56,9 @@ public class SatSchedulesAction extends RhnAction implements Listable<Map<String
     public List<Map<String, Object>> getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         try {
-            return new TaskomaticApi().findActiveSchedules(user);
+            List<Map<String, Object>> activeSchedules = new TaskomaticApi().findActiveSchedules(user);
+            activeSchedules.removeIf(s -> s.get("job_label").equals("payg-dimension-computation-default"));
+            return activeSchedules;
         }
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),
