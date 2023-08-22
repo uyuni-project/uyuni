@@ -43,12 +43,6 @@ public class TaskoFactory extends HibernateFactory {
     private static TaskoFactory singleton = new TaskoFactory();
     private static Logger log = LogManager.getLogger(TaskoFactory.class);
 
-    // Since recurring states have their own place in the webUI we don't
-    // want them to show up in the Task Schedules UI and dimension computation
-    // should also run always without changes from the admin
-    public static final List<String> HIDDEN_BUNCHES =
-            List.of("recurring-action-executor-bunch", "payg-dimension-computation-bunch");
-
     /**
      * default constructor
      */
@@ -216,6 +210,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoSchedule> listActiveSchedulesByOrg(Integer orgId) {
         List<TaskoSchedule> schedules;
+        List<String> filter = List.of("recurring-action-executor-bunch");    // List of bunch names to be excluded
         Map<String, Object> params = new HashMap<>();
 
         params.put("timestamp", new Date());    // use server time, not DB time
@@ -227,8 +222,8 @@ public class TaskoFactory extends HibernateFactory {
             schedules = singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrg", params);
         }
 
-        // Remove hidden schedules with blacklisted bunch names
-        schedules.removeIf(schedule -> HIDDEN_BUNCHES.contains(schedule.getBunch().getName()));
+        // Remove schedules with bunch names in 'filter'
+        schedules.removeIf(schedule -> filter.contains(schedule.getBunch().getName()));
         return  schedules;
     }
 
@@ -245,7 +240,6 @@ public class TaskoFactory extends HibernateFactory {
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
             return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveInSatByLabel", params);
-
         }
         params.put("org_id", orgId);
         return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrgAndLabel", params);
