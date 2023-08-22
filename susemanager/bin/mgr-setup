@@ -175,6 +175,7 @@ setup_mail () {
 
 # fix hostname for postfix
 REALHOSTNAME=`hostname -f`
+
 if [ -z "$REALHOSTNAME" ]; then
         for i in `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'`; do
                 for j in `dig +noall +answer +time=2 +tries=1 -x $i | awk '{print $5}' | sed 's/\.$//'`; do
