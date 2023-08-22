@@ -144,6 +144,10 @@ def _get_installed_suse_products():
                 "version": product_xml.find("./version").text,
                 "arch": product_xml.find("./arch").text
             }
+            if product["name"] == "sle-manager-tools":
+                # no payg product has manager tools. When it appears, it comes from
+                # a registration against SUSE Manager
+                continue
             products.append(product)
     return products
 
