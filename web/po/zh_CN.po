@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-18 14:09+0200\n"
-"PO-Revision-Date: 2023-06-26 04:15+0000\n"
+"PO-Revision-Date: 2023-08-23 07:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-4-3/zh_CN/>\n"
@@ -44,14 +44,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "请输入必填字段：{0}"
+msgstr "请为必填字段输入数据：{fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "无效的字段格式：{0}"
+msgstr "字段格式无效：{fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -130,16 +128,14 @@ msgstr "下一年"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "您确定要 {0} {1} 吗 "
+msgstr "您确定要{action} {name} 吗"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
+msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {name}）"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -275,15 +271,13 @@ msgstr "无风格"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:82
 #: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
 msgid ""
 "Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "操作已成功添加到操作链 \"{0}\"。"
+msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
-msgstr "已安排映像导入。"
+msgstr "操作已<link>安排</link>。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -354,12 +348,11 @@ msgstr "最后一页"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "第 <dropdown></dropdown> 页，共 {total} 页"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "第 {0} 页，共 {1} 页"
+msgstr "第 {current} 页，共 {total} 页"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -458,9 +451,8 @@ msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
 #: ../html/src/components/salt-state-popup.tsx:50
-#, fuzzy
 msgid "Configuration Channel: {name}"
-msgstr "配置通道：{0}"
+msgstr "配置通道：{name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -537,9 +529,8 @@ msgid "Reorder"
 msgstr "重新排序"
 
 #: ../html/src/components/states-picker.tsx:385
-#, fuzzy
 msgid "Search in states"
-msgstr "搜索系统"
+msgstr "在状态中搜索"
 
 #: ../html/src/components/states-picker.tsx:385
 msgid "Search in configuration channels"
@@ -554,24 +545,20 @@ msgid "Search"
 msgstr "搜索"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit State Ranks"
-msgstr "编辑{0}排名"
+msgstr "编辑状态排名"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit Channel Ranks"
-msgstr "编辑{0}排名"
+msgstr "编辑通道排名"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit the ranking of the states by dragging them."
-msgstr "通过拖放来编辑{0}排名。"
+msgstr "通过拖放来编辑状态的排名。"
 
 #: ../html/src/components/states-picker.tsx:405
-#, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "通过拖放来编辑{0}排名。"
+msgstr "通过拖放来编辑配置通道的排名。"
 
 #: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
@@ -625,14 +612,12 @@ msgid "System Locked"
 msgstr "系统已锁定"
 
 #: ../html/src/components/table/SearchPanel.tsx:46
-#, fuzzy
 msgid "Items {from} - {to} of {total}"
-msgstr "第 {0} - {1} 项，共 {2} 项"
+msgstr "第 {from} - {to} 项，共 {total} 项"
 
 #: ../html/src/components/table/SearchPanel.tsx:51
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "删除选定项"
+msgstr "（已选择 {selectedCount} 项）"
 
 #: ../html/src/components/table/SearchPanel.tsx:53
 #: ../html/src/manager/admin/setup/products/products.tsx:384
@@ -714,7 +699,7 @@ msgstr "未定义"
 #: ../html/src/core/intl/index.test.tsx:16
 #: ../html/src/core/intl/index.test.tsx:17
 msgid "foo {insert} bar"
-msgstr ""
+msgstr "foo {insert} bar"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -916,14 +901,12 @@ msgid ""
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-#, fuzzy
 msgid "Add new PAYG ssh connection data"
-msgstr "添加新的 Pay-as-you-go SSH 连接数据"
+msgstr "添加新的 PAYG SSH 连接数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-#, fuzzy
 msgid "Add PAYG ssh data"
-msgstr "添加 Pay-as-you-go SSH 数据"
+msgstr "添加 PAYG SSH 数据"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -945,9 +928,8 @@ msgid "Create"
 msgstr "创建"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "PAYG connection Description"
-msgstr "Pay-as-you-go 连接说明"
+msgstr "PAYG 连接说明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
@@ -1003,7 +985,7 @@ msgstr "/"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add PAYG Connection"
-msgstr ""
+msgstr "添加 PAYG 连接"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1020,9 +1002,8 @@ msgstr "请求已中断，或者从服务器收到了无效响应。请重试。
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "PAYG properties updated successfully"
-msgstr "已成功更新项目属性"
+msgstr "已成功更新 PAYG 属性"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1091,19 +1072,16 @@ msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "您要查找的实例不存在或已删除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:68
-#, fuzzy
 msgid "Instance Hostname: {host}"
-msgstr "实例主机名：{0}"
+msgstr "实例主机名：{host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-#, fuzzy
 msgid "Delete PAYG Connection"
-msgstr "删除项目"
+msgstr "删除 PAYG 连接"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#, fuzzy
 msgid "Are you sure you want to delete connection"
-msgstr "您确定要删除项目吗"
+msgstr "您确定要删除连接吗"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
 msgid "Refresh the product catalog from SUSE Customer Center"
@@ -1162,11 +1140,10 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:289
-#, fuzzy
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
-msgstr "\"{0}\" 的下列通道安装失败。请检查日志文件。"
+msgstr "\"{product}\" 的下列通道安装失败。请检查日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -1590,17 +1567,15 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "您也可以单击以下按钮立即触发首次运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-#, fuzzy
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "当前正在重新计算匹配数据，开始时间为 {0}。"
+msgstr "当前正在重新计算匹配数据，开始时间为 {timeFromNow}。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-#, fuzzy
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
-msgstr "在 {0} 已计算出最新成功的匹配数据，您可以单击以下按钮触发新的运行。"
+msgstr "在 {timeFromNow} 已计算出最新成功的匹配数据，您可以单击下面的按钮触发新的运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2162,9 +2137,8 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "您要查找的项目不存在或已删除"
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-#, fuzzy
 msgid "Content Lifecycle Project - {name}"
-msgstr "内容生命周期项目 - {0}"
+msgstr "内容生命周期项目 - {name}"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
@@ -2361,9 +2335,8 @@ msgid "disable all modules"
 msgstr "禁用所有模块"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
-#, fuzzy
 msgid "Build ({count})"
-msgstr "构建 ({0})"
+msgstr "构建（{count} 个）"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
@@ -2380,9 +2353,8 @@ msgid "Build Project"
 msgstr "构建项目"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
-#, fuzzy
 msgid "Building project"
-msgstr "正在构建项目..."
+msgstr "正在构建项目"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
 msgid ""
@@ -2395,14 +2367,12 @@ msgid "Version Message"
 msgstr "版本消息"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-#, fuzzy
 msgid "Version {version} history"
-msgstr "版本 {0} 历史记录"
+msgstr "版本 {version} 历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-#, fuzzy
 msgid "Version {version} successfully built into {environmentName}"
-msgstr "已成功在 {1} 中构建版本 {0}"
+msgstr "已成功在 {environmentName} 中构建版本 {version}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -2443,16 +2413,14 @@ msgid "Environment updated successfully"
 msgstr "已成功更新环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
-#, fuzzy
 msgid "Environment {name} deleted successfully"
-msgstr "已成功删除环境 {0}"
+msgstr "已成功删除环境 {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
-#, fuzzy
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
-msgstr "此环境正被某个{0}自动安装发行套件{1}使用，无法删除。"
+msgstr "此环境正被某个<link>自动安装发行套件</link>使用，无法删除。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -2499,9 +2467,8 @@ msgid "Create New Filter"
 msgstr "创建新过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
 msgid "Edit Filter {name}"
-msgstr "编辑过滤器 {0}"
+msgstr "编辑过滤器 {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
@@ -2550,18 +2517,16 @@ msgid "Target environment"
 msgstr "目标环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
-#, fuzzy
 msgid "Promote version {version} into {environmentName}"
-msgstr "将版本 {0} 升级到 {1}"
+msgstr "将版本 {version} 升级到 {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:117
 msgid "Promote environment"
 msgstr "升级环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
-#, fuzzy
 msgid "Version {version} successfully promoted into {environmentName}"
-msgstr "已成功将版本 {0} 升级到 {1}"
+msgstr "已成功将版本 {version} 升级到 {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:16
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:55
@@ -2678,9 +2643,8 @@ msgid "Page Not Found"
 msgstr "找不到页面"
 
 #: ../html/src/manager/errors/not-found.tsx:8
-#, fuzzy
 msgid "The page you requested, {currentUrl}, was not found."
-msgstr "未找到您请求的页面 {0}。"
+msgstr "未找到您请求的页面 {currentUrl}。"
 
 #: ../html/src/manager/errors/not-found.tsx:12
 msgid ""
@@ -2714,11 +2678,10 @@ msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
-msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 "
+msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 <link>Highstate</link>，以使更改生效。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2729,11 +2692,10 @@ msgstr "无效目标类型。"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-#, fuzzy
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
-msgstr "公式已保存。无需对此公式应用 highstate。"
+msgstr "已保存公式。请应用 <link>Highstate</link>，以使更改生效。"
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -2807,7 +2769,7 @@ msgstr "映像类型"
 #: ../html/src/manager/images/image-build.tsx:266
 #: ../html/src/manager/images/image-import.tsx:256
 msgid "Image Store"
-msgstr "映像储存"
+msgstr "映像存储区"
 
 #: ../html/src/manager/images/image-build.tsx:270
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
@@ -2836,7 +2798,7 @@ msgstr "构建主机"
 
 #: ../html/src/manager/images/image-import.tsx:17
 msgid "Image store not found"
-msgstr "找不到映像储存"
+msgstr "找不到映像存储区"
 
 #: ../html/src/manager/images/image-import.tsx:18
 msgid "The image import has been scheduled."
@@ -2887,7 +2849,7 @@ msgstr "清除字段"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:278
 msgid "Target Image Store"
-msgstr "目标映像储存"
+msgstr "目标映像存储区"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:302
 msgid "Dockerfile URL"
@@ -2987,11 +2949,10 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "您确定要删除选定的配置文件吗？"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
-msgstr "您确定要删除选定的配置文件吗？（已选择 {0} 个配置文件）"
+msgstr "您确定要删除选定的配置文件吗？（已选择 {count} 个配置文件）"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3006,15 +2967,15 @@ msgstr "用户名"
 
 #: ../html/src/manager/images/image-store-edit.tsx:237
 msgid "Edit Image Store: '"
-msgstr "编辑映像储存：'"
+msgstr "编辑映像存储区：'"
 
 #: ../html/src/manager/images/image-store-edit.tsx:237
 msgid "Create Image Store"
-msgstr "创建映像储存"
+msgstr "创建映像存储区"
 
 #: ../html/src/manager/images/image-store-edit.tsx:251
 msgid "Store Type"
-msgstr "储存类型"
+msgstr "存储区类型"
 
 #: ../html/src/manager/images/image-store-edit.tsx:262
 msgid "Label is required and must be unique."
@@ -3022,15 +2983,15 @@ msgstr "标签是必填的，且必须唯一。"
 
 #: ../html/src/manager/images/image-store-edit.tsx:268
 msgid "Store URI"
-msgstr "储存 URI"
+msgstr "存储区 URI"
 
 #: ../html/src/manager/images/image-stores.tsx:26
 msgid "Image store cannot be found."
-msgstr "找不到映像储存。"
+msgstr "找不到映像存储区。"
 
 #: ../html/src/manager/images/image-stores.tsx:27
 msgid "Image store has been deleted."
-msgstr "已删除映像储存。"
+msgstr "已删除映像存储区。"
 
 #: ../html/src/manager/images/image-stores.tsx:28
 msgid "Image stores have been deleted."
@@ -3042,25 +3003,24 @@ msgstr "映像存储区"
 
 #: ../html/src/manager/images/image-stores.tsx:219
 msgid "Delete Store"
-msgstr "删除储存"
+msgstr "删除存储区"
 
 #: ../html/src/manager/images/image-stores.tsx:222
 msgid "Are you sure you want to delete store"
-msgstr "您确定要删除储存吗"
+msgstr "您确定要删除存储区吗"
 
 #: ../html/src/manager/images/image-stores.tsx:232
 msgid "Delete Selected Store(s)"
-msgstr "删除选定的储存"
+msgstr "删除选定的存储区"
 
 #: ../html/src/manager/images/image-stores.tsx:236
 msgid "Are you sure you want to delete the selected store?"
-msgstr "您确定要删除选定的储存吗？"
+msgstr "您确定要删除选定的存储区吗？"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr "您确定要删除选定的存储区吗？（已选择 {0} 个存储区）"
+msgstr "您确定要删除选定的存储区吗？（已选择 {count} 个存储区）"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3177,13 +3137,12 @@ msgstr "编辑配置文件"
 
 #: ../html/src/manager/images/image-view-overview.tsx:350
 msgid "Edit store"
-msgstr "编辑储存"
+msgstr "编辑存储区"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:750
-#, fuzzy
 msgid "Instance Details for '{name}'"
-msgstr "'{0}' 的实例细节"
+msgstr "\"{name}\" 的实例细节"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -3413,10 +3372,9 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "您确定要删除选定的映像吗？"
 
 #: ../html/src/manager/images/image-view.tsx:741
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr "您确定要删除选定的映像吗？（已选择 {0} 个映像）"
+msgstr "您确定要删除选定的映像吗？（已选择 {count} 个映像）"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3461,6 +3419,8 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
+"提供身份凭证后，SUSE Manager PAYG 实例必定会将注册数据转发到 SCC。数据的发送将不受配置设置的影响。要隐藏此警告，请在 "
+"rhn.conf 中设置 \"forward_registration = 1\"。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3475,7 +3435,7 @@ msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {product}."
-msgstr ""
+msgstr "了解 {product} 的<link>详细信息</link>。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
@@ -3619,9 +3579,8 @@ msgid "Schedule Details"
 msgstr "日程安排细节"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:154
-#, fuzzy
 msgid "Maintenance schedule has been assigned to {count} system(s)"
-msgstr "已将维护日程安排指派到 {0} 个系统"
+msgstr "已为 {count} 个系统指派维护日程安排"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
@@ -3640,9 +3599,8 @@ msgid "Current Schedule"
 msgstr "当前日程安排"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
 msgid "Url '{url}' is invalid"
-msgstr "URL '{0}' 无效"
+msgstr "URL \"{url}\" 无效"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
@@ -3801,9 +3759,8 @@ msgid "Maintenance Schedules"
 msgstr "维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
-#, fuzzy
 msgid "Assign a maintenance schedule to {count} system(s)"
-msgstr "将维护日程安排指派到 {0} 个系统"
+msgstr "为 {count} 个系统指派维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
 msgid ""
@@ -3905,9 +3862,8 @@ msgid "Schedule playbook execution"
 msgstr "安排剧本执行"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-#, fuzzy
 msgid "Playbook '{name}'"
-msgstr "剧本 \"{0}\""
+msgstr "剧本 \"{name}\""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
@@ -4102,9 +4058,8 @@ msgid "State apply failed"
 msgstr "状态应用失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-#, fuzzy
 msgid "PAYG refresh authentication data failed"
-msgstr "Pay-as-you-go 刷新身份验证数据失败"
+msgstr "PAYG 刷新身份验证数据失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
@@ -4500,9 +4455,8 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "您确定要删除此日程安排吗？"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
-#, fuzzy
 msgid "State configuration for {name}"
-msgstr "{0} 的状态配置"
+msgstr "{name} 的状态配置"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
 msgid "Order"
@@ -4582,11 +4536,10 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-#, fuzzy
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
-msgstr "服务器时区 {0} 中会显示以下时间。安排的时间将会是服务器时间。"
+msgstr "系统会按照服务器时区 {timeZone} 显示以下时间。安排的时间将会是服务器时间。"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
 msgid "Select an Action Type"
@@ -4697,9 +4650,8 @@ msgid "No minions matched the target expression."
 msgstr "没有任何受控端与目标表达式匹配。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:490
-#, fuzzy
 msgid "Server returned an error: {message}"
-msgstr "服务器返回了错误：{0}"
+msgstr "服务器返回了错误：{message}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:558
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:567
@@ -4782,9 +4734,8 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {name}"
-msgstr "{0} 的状态摘要"
+msgstr "{name} 的状态摘要"
 
 #: ../html/src/manager/state/display-highstate.tsx:79
 msgid "There are no applicable systems."
@@ -4827,9 +4778,8 @@ msgid "System Group"
 msgstr "系统组"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been <link>scheduled</link>."
-msgstr "应用 highstate 的操作已{0}。"
+msgstr "应用 Highstate 的操作<link>已安排</link>。"
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
@@ -4892,6 +4842,8 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
+"已启动引导过程。您的系统应该会在以下位置短暂显示：<link>systems</link>。如果出现任何问题，您将收到错误通知。如果您使用的是事务系统，请"
+"执行系统重引导，以完成注册过程。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -4921,7 +4873,7 @@ msgstr "例如 ••••••••••••"
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
-msgstr "该文件将储存在服务器上的临时文件中，在完成引导过程后将被删除"
+msgstr "该文件将存储在服务器上的临时文件中，在完成引导过程后将被删除"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "Leave empty for no passphrase"
@@ -4932,29 +4884,25 @@ msgid "Bootstrap Minions"
 msgstr "引导受控端"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
-#, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
 "registration."
-msgstr ""
-"只能通过提供 SSH 身份凭证来添加要管理的系统。{0} 将远程准备系统并执行注册。"
+msgstr "只有提供 SSH 身份凭证才能添加要管理的系统。{productName} 将远程准备系统并执行注册。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
-#, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建"
-"立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} "
-"的 SSH 密钥后设置。"
+"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\""
+"。此用户在引导期间 {productName} 的 SSH 密钥部署后设置。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
@@ -5413,9 +5361,8 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-#, fuzzy
 msgid "Add a {type} Virtual Host Manager"
-msgstr "编辑虚拟主机管理器"
+msgstr "添加 {type} 虚拟主机管理器"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5436,9 +5383,8 @@ msgid ""
 msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-#, fuzzy
 msgid "{name} selected"
-msgstr "已选择 {0}"
+msgstr "已选择 {name}"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
