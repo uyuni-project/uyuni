@@ -78,15 +78,6 @@ install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tf
 %endif
 %endif
 
-%post
-if [ -f "/etc/cobbler/settings" ]; then
-  if ! grep "tftpsync_timeout:" /etc/cobbler/settings >/dev/null; then
-    echo "" >> /etc/cobbler/settings
-    echo "tftpsync_timeout: 15" >> /etc/cobbler/settings
-    echo "" >> /etc/cobbler/settings
-  fi
-fi
-
 %files
 %defattr(-,root,root,-)
 %doc COPYING.LIB README

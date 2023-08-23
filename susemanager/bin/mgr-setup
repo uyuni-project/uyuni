@@ -411,6 +411,17 @@ fi
 setup_apache() {
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 }
+
+setup_cobbler() {
+    if [ -f "/etc/cobbler/settings" ]; then
+        if ! grep "tftpsync_timeout:" /etc/cobbler/settings >/dev/null; then
+            echo "" >> /etc/cobbler/settings
+            echo "tftpsync_timeout: 15" >> /etc/cobbler/settings
+            echo "" >> /etc/cobbler/settings
+        fi
+    fi
+}
+
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
 
@@ -912,6 +923,8 @@ do_setup() {
     setup_spacewalk
 
     setup_apache
+    
+    setup_cobbler
 
     # In the container case, we have the MIRROR_PATH environment variable at setup
     if [ -n "$MIRROR_PATH" ]; then
