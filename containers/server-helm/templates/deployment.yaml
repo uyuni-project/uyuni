@@ -367,6 +367,22 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: etc-sysconfig
+      - name: init-etc-postfix
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/etc/postfix /mnt;
+            chmod --reference=/etc/postfix /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /etc/postfix/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: etc-postfix
       containers:
       - name: uyuni
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
@@ -447,6 +463,8 @@ spec:
             name: etc-sysconfig
           - mountPath: /etc/pki/tls
             name: etc-tls
+          - mountPath: /etc/postfix
+            name: etc-postfix
           - name: ca-cert
             mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
             readOnly: true
@@ -532,6 +550,9 @@ spec:
       - name: etc-sysconfig
         persistentVolumeClaim:
           claimName: etc-sysconfig
+      - name: etc-postfix
+        persistentVolumeClaim:
+          claimName: etc-postfix
       - name: ca-cert
         configMap:
           name: uyuni-ca
