@@ -11124,15 +11124,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-        <target state="final">従量課金制の {0} が正常に作成されました</target>
+        <target state="final">PAYG {0} が正常に作成されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-        <target state="final">従量課金制のホストはすでに存在します</target>
+        <target state="final">PAYGホストはすでに存在します</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-        <target state="final">従量課金制の {0} が正常に削除されました</target>
+        <target state="final">PAYG {0} が正常に削除されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
@@ -11140,11 +11140,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-        <target state="final">従量課金制の認証の更新</target>
+        <target state="final">PAYG認証の更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-        <target state="final">従量課金制のRMTホストの更新</target>
+        <target state="final">PAYGのRMTホストの更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11400,8 +11400,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-        <target state="final">@@PRODUCT_NAME@@従量課金制は会計データをクラウド プロバイダに送信できないため、リポジトリの同期は禁止されています。
-詳細な分析については、ログ ファイルを参照してください。</target>
+        <target state="final">@@PRODUCT_NAME@@従量課金制は会計データをクラウドプロバイダに送信できないため、リポジトリの同期は禁止されています。
+詳細な分析については、ログファイルを参照してください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
@@ -11409,7 +11409,7 @@ The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG
 For a detailed analysis, please refer to the log files.
 	</source>
         <target state="final">
-@@PRODUCT_NAME@@従量課金制システムが会計データをクラウド プロバイダに送信できないため、試行したアクションを実行できませんでした。
+@@PRODUCT_NAME@@従量課金制システムが会計データをクラウドプロバイダに送信できないため、試行したアクションを実行できませんでした。
 詳細な分析については、ログ ファイルを参照してください。
 	</target>
       </trans-unit>
@@ -11419,7 +11419,7 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="final">SUSE Manager Server での「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、管理=&gt;セットアップウィザード=&gt;組織の資格情報で SCC 認証情報を設定する必要があります。</target>
+        <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］で SCC資格情報を設定する必要があります。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
