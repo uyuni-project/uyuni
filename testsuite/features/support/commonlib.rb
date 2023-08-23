@@ -369,8 +369,9 @@ def get_system_name(host)
     begin
       node = get_target(host)
       system_name = node.full_hostname
-    rescue RuntimeError
+    rescue NotImplementedError => e
       # If the node for that host is not defined, just return the host parameter as system_name
+      warn e.message
       system_name = host
     end
   end
