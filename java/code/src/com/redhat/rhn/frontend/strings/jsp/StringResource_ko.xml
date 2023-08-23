@@ -29661,12 +29661,12 @@ given channel.</source>
         </context-group>
         <target state="final">벤더 자문</target>
       </trans-unit>
-      <trans-unit approved="no" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
+      <trans-unit approved="yes" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configured PAYG cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-translation">PAYG 클라우드 인스턴스 구성에서 인증 데이터 수집</target>
+        <target state="final">구성된 PAYG 클라우드 인스턴스에서 인증 데이터 수집</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29835,28 +29835,28 @@ given channel.</source>
         </context-group>
         <target state="final">가상화 호스트:</target>
       </trans-unit>
-      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve" approved="yes">
         <source>Security updates unknown, disabled on settings.</source>
-        <target state="needs-translation">보안 업데이트 알 수 없음, 설정에서 사용 중지됨.</target>
+        <target state="final">보안 업데이트 알 수 없음, 설정에서 사용 중지됨.</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve" approved="yes">
         <source>Collect data of managed clients for SUSE Manager PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-translation">SUSE Manager PAYG용 관리형 클라이언트의 데이터 수집</target>
+        <target state="final">SUSE Manager PAYG용 관리형 클라이언트의 데이터 수집</target>
       </trans-unit>
-      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
+      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve" approved="yes">
         <source>PAYG Computation</source>
-        <target state="needs-translation">PAYG 계산</target>
+        <target state="final">PAYG 계산</target>
       </trans-unit>
-      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve" approved="yes">
         <source>Execute Recurring Actions</source>
-        <target state="needs-translation">반복 작업 실행</target>
+        <target state="final">반복 작업 실행</target>
       </trans-unit>
-      <trans-unit id="PAYG Connections" xml:space="preserve">
+      <trans-unit id="PAYG Connections" xml:space="preserve" approved="yes">
         <source>PAYG Connections</source>
-        <target state="needs-translation">PAYG 연결</target>
+        <target state="final">PAYG 연결</target>
       </trans-unit>
     </body>
   </file>
