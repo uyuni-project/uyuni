@@ -412,6 +412,28 @@ setup_apache() {
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 }
 
+setup_tomcat {
+    if [ -f /etc/rhn/rhn.conf -a $(filesize /etc/rhn/rhn.conf) -gt 1 ]; then
+        # rhn.conf is configured, this is an upgrade
+        # during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
+        CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+        cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+        xsltproc /usr/share/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
+    else
+        # rhn.conf does not exists or is empty, this is new installation or update of new installation
+        CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+        cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+        xsltproc /usr/share/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
+    fi
+}
+
+change_SSCcredentials_permission {
+    if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
+        chgrp www /etc/zypp/credentials.d/SCCcredentials
+        chmod g+r /etc/zypp/credentials.d/SCCcredentials
+    fi
+}
+
 setup_cobbler() {
     if [ -f "/etc/cobbler/settings" ]; then
         if ! grep "tftpsync_timeout:" /etc/cobbler/settings >/dev/null; then
@@ -419,6 +441,9 @@ setup_cobbler() {
             echo "tftpsync_timeout: 15" >> /etc/cobbler/settings
             echo "" >> /etc/cobbler/settings
         fi
+    fi
+    if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
+        sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
     fi
 }
 
@@ -921,10 +946,10 @@ do_setup() {
     fi
 
     setup_spacewalk
-
     setup_apache
-    
+    setup_tomcat
     setup_cobbler
+    change_SSCcredentials_permission
 
     # In the container case, we have the MIRROR_PATH environment variable at setup
     if [ -n "$MIRROR_PATH" ]; then

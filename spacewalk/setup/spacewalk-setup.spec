@@ -200,21 +200,6 @@ if [ -f /etc/rhn/rhn.conf -a $(filesize /etc/rhn/rhn.conf) -gt 1 ]; then
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
-else
-    # rhn.conf does not exists or is empty, this is new installation or update of new installation
-    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
-    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
-    xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
-fi
-
-if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
-    chgrp www /etc/zypp/credentials.d/SCCcredentials
-    chmod g+r /etc/zypp/credentials.d/SCCcredentials
-fi
-
-if [ -d /var/cache/salt/master/thin ]; then
-  # clean the thin cache
-  rm -rf /var/cache/salt/master/thin
 fi
 
 # sudoers file is now in /etc/sudoers.d/spacewalk
