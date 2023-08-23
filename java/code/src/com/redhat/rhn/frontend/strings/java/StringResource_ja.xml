@@ -11019,15 +11019,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-        <target state="needs-adaptation">従量課金制の {0} が正常に作成されました</target>
+        <target state="final">従量課金制の {0} が正常に作成されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-        <target state="needs-adaptation">従量課金制のホストはすでに存在します</target>
+        <target state="final">従量課金制のホストはすでに存在します</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-        <target state="needs-adaptation">従量課金制の {0} が正常に削除されました</target>
+        <target state="final">従量課金制の {0} が正常に削除されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
@@ -11035,11 +11035,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-        <target state="needs-adaptation">従量課金制の認証の更新</target>
+        <target state="final">従量課金制の認証の更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-        <target state="needs-adaptation">従量課金制のRMTホストの更新</target>
+        <target state="final">従量課金制のRMTホストの更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11298,45 +11298,49 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="final">Salt状態をターゲットシステムに同期します</target>
       </trans-unit>
-    <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+      <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve" approved="yes">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <target state="final">従量課金制インスタンス上の異なる製品チャンネルでのチャンネルの複製は禁止されています</target>
+      </trans-unit>
+      <trans-unit id="spmigration.message.payg.error" xml:space="preserve" approved="yes">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+        <target state="final">従量課金制アラート: 製品間の移行試行が検出されました。現在の従量課金制プランでは、openSUSEからSLESなどへの移行は許可されていないことに注意してください。操作は中止されました。</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve" approved="yes">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <target state="final">チャンネルの同期は禁止されています</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve" approved="yes">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@従量課金制は会計データをクラウド プロバイダに送信できないため、リポジトリの同期は禁止されています。
+詳細な分析については、ログ ファイルを参照してください。</target>
+      </trans-unit>
+      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve" approved="yes">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <target state="final">
+@@PRODUCT_NAME@@従量課金制システムが会計データをクラウド プロバイダに送信できないため、試行したアクションを実行できませんでした。
+詳細な分析については、ログ ファイルを参照してください。
+	</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve" approved="yes">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <target state="final">競合するminion IDとマシンIDを持つシステムが見つかりました({0}、{1})。オンボーディングが中止されました。まず競合するシステムを削除してください({2}、{3})</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve" approved="yes">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <target state="final">SUSE Manager Server での「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、管理=&gt;セットアップウィザード=&gt;組織の資格情報で SCC 認証情報を設定する必要があります。</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve" approved="yes">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、管理=&gt;背セットアップウィザード=&gt;組織の資格情報でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスが従量課金制の場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
