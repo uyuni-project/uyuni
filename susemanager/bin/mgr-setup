@@ -408,6 +408,9 @@ if [ -f $MANAGER_COMPLETE ]; then
 fi
 }
 
+setup_apache() {
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+}
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
 
@@ -907,6 +910,8 @@ do_setup() {
     fi
 
     setup_spacewalk
+
+    setup_apache
 
     # In the container case, we have the MIRROR_PATH environment variable at setup
     if [ -n "$MIRROR_PATH" ]; then

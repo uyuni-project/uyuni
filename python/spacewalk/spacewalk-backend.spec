@@ -351,15 +351,6 @@ install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 %{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
 %{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
-
-%post server
-%if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
-%endif
-if [ ! -e %{rhnconf}/rhn.conf ]; then
-    exit 0
-fi
-
 %pre tools
 %if !0%{?rhel}
 %service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
