@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,12 +54,14 @@ public class SatSchedulesAction extends RhnAction implements Listable {
     public List getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         try {
-            return new TaskomaticApi().findActiveSchedules(user);
+            List<Map<String, Object>> activeSchedules = new TaskomaticApi().findActiveSchedules(user);
+            activeSchedules.removeIf(s -> s.get("job_label").equals("payg-dimension-computation-default"));
+            return activeSchedules;
         }
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),
                     "repos.jsp.message.taskomaticdown", null);
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 }

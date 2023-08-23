@@ -79,6 +79,7 @@ public class PaygComputeDimensionsTask extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         if (!cloudManager.isPaygInstance()) {
+            LOGGER.debug("Not a PAYG instance. Exit");
             return;
         }
 

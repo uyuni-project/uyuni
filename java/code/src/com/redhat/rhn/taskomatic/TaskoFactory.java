@@ -29,6 +29,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.quartz.SchedulerException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -42,12 +43,6 @@ import java.util.Map;
 public class TaskoFactory extends HibernateFactory {
     private static TaskoFactory singleton = new TaskoFactory();
     private static Logger log = LogManager.getLogger(TaskoFactory.class);
-
-    // Since recurring states have their own place in the webUI we don't
-    // want them to show up in the Task Schedules UI and dimension computation
-    // should also run always without changes from the admin
-    public static final List<String> HIDDEN_BUNCHES =
-            List.of("recurring-action-executor-bunch", "payg-dimension-computation-bunch");
 
     /**
      * default constructor
@@ -230,6 +225,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoSchedule> listActiveSchedulesByOrg(Integer orgId) {
         List<TaskoSchedule> schedules;
+        List<String> filter = List.of("recurring-action-executor-bunch");    // List of bunch names to be excluded
         Map<String, Object> params = new HashMap<>();
 
         params.put("timestamp", new Date());    // use server time, not DB time
@@ -241,8 +237,8 @@ public class TaskoFactory extends HibernateFactory {
             schedules = singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrg", params);
         }
 
-        // Remove hidden schedules with blacklisted bunch names
-        schedules.removeIf(schedule -> HIDDEN_BUNCHES.contains(schedule.getBunch().getName()));
+        // Remove schedules with bunch names in 'filter'
+        schedules.removeIf(schedule -> filter.contains(schedule.getBunch().getName()));
         return  schedules;
     }
 
@@ -258,11 +254,12 @@ public class TaskoFactory extends HibernateFactory {
         params.put("job_label", jobLabel);
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveInSatByLabel", params);
-
+            return singleton.listObjectsByNamedQuery(
+                    "TaskoSchedule.listActiveInSatByLabel", params);
         }
         params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrgAndLabel", params);
+        return singleton.listObjectsByNamedQuery(
+                   "TaskoSchedule.listActiveByOrgAndLabel", params);
     }
 
     /**
@@ -513,23 +510,19 @@ public class TaskoFactory extends HibernateFactory {
      * @param schedule schedule to reinit
      * @param now time to set
      * @return schedule
+     * @throws SchedulerException when scheduling the task fails
+     * @throws InvalidParamException when scheduling the task fails due to wrong parameters
      */
-    public static TaskoSchedule reinitializeScheduleFromNow(TaskoSchedule schedule,
-            Date now) {
+    public static TaskoSchedule reinitializeScheduleFromNow(TaskoSchedule schedule, Date now)
+        throws InvalidParamException, SchedulerException {
         TaskoQuartzHelper.destroyJob(schedule.getOrgId(), schedule.getJobLabel());
         schedule.setActiveFrom(now);
         if (!schedule.isCronSchedule()) {
             schedule.setActiveTill(now);
         }
         TaskoFactory.save(schedule);
-        try {
-            TaskoQuartzHelper.createJob(schedule);
-            return schedule;
-        }
-        catch (InvalidParamException e) {
-            // Pech gehabt()
-        }
-        return null;
+        TaskoQuartzHelper.createJob(schedule);
+        return schedule;
     }
 
     private static boolean runBelongToOrg(Integer orgId, TaskoRun run) {

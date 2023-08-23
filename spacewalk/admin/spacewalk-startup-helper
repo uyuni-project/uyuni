@@ -35,25 +35,31 @@ isPayg() {
     [ "$TYPE" == "PAYG" ]
 }
 
-check_billing_service() {
-  PACKAGE_NAME=billing-data-service
+enforce_service_installed_running() {
+  PACKAGE_NAME=$1
+  SERVICE_NAME=$2
   isPayg
   if [ $? -eq 0 ]; then
 
     rpm -q $PACKAGE_NAME
     if [ $? -ne 0 ]; then
-      echo "Billing Service not installed. Installing now..."
+      echo "$PACKAGE_NAME not installed. Installing now..."
       zypper --non-interactive install $PACKAGE_NAME
-      systemctl start $PACKAGE_NAME
+      systemctl start $SERVICE_NAME
     fi
 
-    systemctl is-active --quiet $PACKAGE_NAME
+    systemctl is-active --quiet $SERVICE_NAME
     if [ $? -ne 0 ]; then
-      echo "Billing Service needs to be running."
+      echo "$SERVICE_NAME needs to be running."
       exit 1
     fi
 
   fi
+}
+
+check_billing_service() {
+  enforce_service_installed_running billing-data-service billing-data-service
+  enforce_service_installed_running csp-billing-adapter-service csp-billing-adapter
 }
 
 check_schema_version() {

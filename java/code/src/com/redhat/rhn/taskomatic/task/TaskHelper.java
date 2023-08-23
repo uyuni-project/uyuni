@@ -30,6 +30,7 @@ import com.suse.manager.utils.MailHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.SchedulerException;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class TaskHelper {
             new TaskoXmlRpcHandler().scheduleSingleSatBunchRun(TaskomaticApi.MINION_ACTION_BUNCH_LABEL,
                     TaskomaticApi.MINION_ACTION_JOB_PREFIX + action.getId(), params, action.getEarliestAction());
         }
-        catch (NoSuchBunchTaskException | InvalidParamException e) {
+        catch (NoSuchBunchTaskException | InvalidParamException | SchedulerException e) {
             LOG.error("Could not schedule action: {}", action.getActionType(), e);
         }
     }
