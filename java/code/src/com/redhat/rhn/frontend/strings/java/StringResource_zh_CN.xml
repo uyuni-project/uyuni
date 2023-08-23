@@ -1024,7 +1024,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">储存的配置文件</target>
+        <target state="translated">存储的配置文件</target>
       </trans-unit>
       <trans-unit id="Subscription" xml:space="preserve">
         <source>Subscription</source>
@@ -2403,7 +2403,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;默认的 @@PRODUCT_NAME@@ kickstart URL 使用该文件路径储存，这样 @@PRODUCT_NAME@@ 便知道何时动态调整 kickstart 文件所呈现的 URL 中的主机名（代理服务器等）。您可以自定义此值，将其改为完全限定的 URL，这样它在 kickstart 文件中将会以给定的值显示。</target>
+        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;默认的 @@PRODUCT_NAME@@ kickstart URL 使用该文件路径存储，这样 @@PRODUCT_NAME@@ 便知道何时动态调整 kickstart 文件所呈现的 URL 中的主机名（代理服务器等）。您可以自定义此值，将其改为完全限定的 URL，这样它在 kickstart 文件中将会以给定的值显示。</target>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
@@ -6093,7 +6093,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">发生错误，无法储存您的 @@PRODUCT_NAME@@ 的配置更改。请联系支持人员获得详细信息</target>
+        <target state="translated">发生错误，无法存储您的 @@PRODUCT_NAME@@ 的配置更改。请联系支持人员获得详细信息</target>
       </trans-unit>
       <trans-unit id="restart.config.success" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
@@ -11129,15 +11129,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-        <target state="needs-adaptation">已成功创建 Pay-as-you-go {0}</target>
+        <target state="final">已成功创建 PAYG {0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-        <target state="needs-adaptation">Pay-as-you-go 主机已存在</target>
+        <target state="final">PAYG 主机已存在</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-        <target state="needs-adaptation">已成功删除 Pay-as-you-go {0}</target>
+        <target state="final">已成功删除 PAYG {0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
@@ -11145,11 +11145,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-        <target state="needs-adaptation">Pay-as-you-go 身份验证更新</target>
+        <target state="final">PAYG 身份验证更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-        <target state="needs-adaptation">Pay-as-you-go 更新 RMT 主机</target>
+        <target state="final">PAYG 更新 RMT 主机</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11387,45 +11387,49 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="final">将 Salt 状态同步到目标系统</target>
       </trans-unit>
-    <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <target state="final">禁止在 PAYG 实例上克隆不同产品通道下的通道</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+        <target state="final">PAYG 警报：检测到跨产品迁移操作。请注意，根据您的当前 PAYG 计划，不允许从 openSUSE 迁移到 SLES 或类似系统。已中止该操作。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <target state="final">禁止同步通道</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
+        <target state="final">禁止同步储存库，因为 @@PRODUCT_NAME@@ PAYG 无法向云提供商发送记账数据。
+有关详细分析，请参见日志文件。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <target state="final">
+无法执行您尝试进行的操作，因为 @@PRODUCT_NAME@@ PAYG 系统无法向云提供商发送记账数据。
+有关详细分析，请参见日志文件。
+	</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <target state="final">发现具有冲突受控端 ID 和计算机 ID的系统（{0}、{1}）。已中止初始配置。请先去除冲突的系统（{2}、{3}）</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

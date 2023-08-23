@@ -8456,14 +8456,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">创建储存的配置文件</target>
+        <target state="translated">创建存储的配置文件</target>
       </trans-unit>
       <trans-unit id="create.jsp.pagesummary" xml:space="preserve">
         <source>This will create a stored profile, based upon the package set of this system, that you may use for profile comparisons.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">这将基于此系统的软件包集创建储存的配置文件，您可以使用它来进行配置文件比较。</target>
+        <target state="translated">这将基于此系统的软件包集创建存储的配置文件，您可以使用它来进行配置文件比较。</target>
       </trans-unit>
       <trans-unit id="create.jsp.profiledescription" xml:space="preserve">
         <source>Profile Description</source>
@@ -8757,7 +8757,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">与储存的配置文件比较</target>
+        <target state="translated">与存储的配置文件比较</target>
       </trans-unit>
       <trans-unit id="profile.jsp.comparetosystem" xml:space="preserve">
         <source>Compare to System</source>
@@ -8792,7 +8792,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">将软件包与储存的配置文件进行比较</target>
+        <target state="translated">将软件包与存储的配置文件进行比较</target>
       </trans-unit>
       <trans-unit id="schedulesync.jsp.action" xml:space="preserve">
         <source>Action</source>
@@ -11955,7 +11955,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="translated">创建储存的密钥/证书</target>
+        <target state="translated">创建存储的密钥/证书</target>
       </trans-unit>
       <trans-unit id="keyedit.jsp.toolbar" xml:space="preserve">
         <source>Edit GPG/SSL Key</source>
@@ -12580,7 +12580,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="snippets.jsp.summary" xml:space="preserve">
           <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source>
-        <target state="translated">自动安装代码段用于储存可在 @@PRODUCT_NAME@@ 中跨多个自动安装配置文件共享的通用代码块。当您创建自动安装代码段时，包含该代码段的所有自动安装配置文件都会相应更新。</target>
+        <target state="translated">自动安装代码段用于存储可在 @@PRODUCT_NAME@@ 中跨多个自动安装配置文件共享的通用代码块。当您创建自动安装代码段时，包含该代码段的所有自动安装配置文件都会相应更新。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -14206,7 +14206,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/list.jsp -->
       <trans-unit id="profile.list.header" xml:space="preserve">
           <source>Stored Profiles</source>
-        <target state="translated">储存的配置文件</target>
+        <target state="translated">存储的配置文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
@@ -14220,14 +14220,14 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="profile.list.summary" xml:space="preserve">
           <source>The following stored profiles exist within your organization. To create a stored profile from a system, go to the Packages view for that system.</source>
-        <target state="translated">您的组织中有以下储存的配置文件。要从某个系统创建储存的配置文件，请转到该系统的软件包视图。</target>
+        <target state="translated">您的组织中有以下存储的配置文件。要从某个系统创建存储的配置文件，请转到该系统的软件包视图。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profile.list.noprofiles" xml:space="preserve">
           <source>No stored profiles.</source>
-        <target state="translated">没有储存的配置文件。</target>
+        <target state="translated">没有存储的配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
@@ -14235,7 +14235,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/details.jsp -->
       <trans-unit id="profile.details.toolbar" xml:space="preserve">
           <source>Stored Profile: </source>
-        <target state="translated">储存的配置文件： </target>
+        <target state="translated">存储的配置文件： </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
@@ -14250,7 +14250,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/packagelist.jsp -->
       <trans-unit id="profile.packagelist.summary" xml:space="preserve">
           <source>The following packages are associated with this stored profile.</source>
-        <target state="translated">以下软件包与此储存的配置文件相关联。</target>
+        <target state="translated">以下软件包与此存储的配置文件相关联。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
@@ -17806,7 +17806,7 @@ From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">配置沙箱是用于储存开发中配置文件的位置。
+        <target state="translated">配置沙箱是用于存储处于开发阶段的配置文件的位置。
 如果您确定此配置文件可部署到系统，则可通过上面的 "&lt;a href="{3}"&gt;{4}&lt;/a&gt;" 选项卡&lt;a href="{0}"&gt;将其复制到本地管理的配置通道&lt;/a&gt;
 或者&lt;a href="{1}"&gt;将其复制到全局管理的配置通道&lt;/a&gt;
 您可在该通道中将该文件部署到系统。</target>
@@ -20464,7 +20464,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.sandbox_description" xml:space="preserve">
           <source>This sandbox is a place you can store configuration files that are under development. This sandbox is associated with this system, {0}, but you may promote files from this sandbox to a centrally-managed configuration channel using the "{1}" below. After files in this sandbox have been promoted to a centrally-managed configuration channel, you will be able to deploy them to other systems.</source>
-        <target state="translated">此沙箱是您可以在开发阶段储存配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置通道。在此沙箱的文件被提升至集中管理的配置通道后，您便可以将它们部署到其他系统。</target>
+        <target state="translated">此沙箱是您可以存储处于开发阶段的配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置通道。在此沙箱的文件被提升至集中管理的配置通道后，您便可以将它们部署到其他系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -25941,7 +25941,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
+      <trans-unit approved="no" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -25953,13 +25953,13 @@ given channel.</source>
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
         <target>
         所有 @@PRODUCT_NAME@@ 功能（系统配置文件、报告数据、应用程序服务器等）
-        都储存在客户网络本地。这样，客户便可根据需要使其
-        @@PRODUCT_NAME@@ 解决方案脱离公共因特网，同时对其
+        都存储在客户网络本地。这样，客户便可根据需要使其
+        @@PRODUCT_NAME@@ 解决方案脱离公共互联网，同时对其
         系统进行更好的优化和控制。
         将 @@PRODUCT_NAME@@ Proxy 服务器与 @@PRODUCT_NAME@@ 服务器结合使用，
         可将客户的单个系统连接到本地托管的 Proxy。
         Proxy 与 @@PRODUCT_NAME@@ 中央服务器通讯，在本地聚合数据并执行一些任务。
-        @@PRODUCT_NAME@@ 数据库中储存的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
+        @@PRODUCT_NAME@@ 数据库中存储的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
@@ -26314,7 +26314,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message" xml:space="preserve">
         <source>Custom system info keys allow your adminstrators to store relevant custom key/value pairs with your system profiles. Custom system info values are fully {0}searchable{1}.</source>
-        <target state="translated">使用自定义系统信息键，您的管理员可以储存与您的系统配置文件有关的自定义键/值对。自定义系统信息值全部都{0}可搜索{1}。</target>
+        <target state="translated">使用自定义系统信息键，您的管理员可以存储与您的系统配置文件有关的自定义键/值对。自定义系统信息值全部都{0}可搜索{1}。</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message2" xml:space="preserve">
         <source>The following custom system info keys have been defined for your organization.</source>
@@ -29681,7 +29681,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-adaptation">从配置的 Pay-as-you-go 云实例收集身份验证数据</target>
+        <target state="final">从配置的 PAYG 云实例收集身份验证数据</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29850,29 +29850,29 @@ given channel.</source>
         </context-group>
         <target state="final">虚拟化主机：</target>
       </trans-unit>
-    <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+      <trans-unit approved="yes" id="grouplist.jsp.unknown" xml:space="preserve">
         <source>Security updates unknown, disabled on settings.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <target state="final">安全更新未知，已根据设置禁用。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
         <source>Collect data of managed clients for SUSE Manager PAYG</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
+        <target state="final">收集 SUSE Manager PAYG 受管客户端的数据</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
-      <target state="new"/>
-  </trans-unit>
-       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+        <target state="final">PAYG 计算</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="PAYG Connections" xml:space="preserve">
+        <target state="final">执行重复性操作</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="PAYG Connections" xml:space="preserve">
         <source>PAYG Connections</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">PAYG 连接</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
