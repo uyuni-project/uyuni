@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-23 09:54+0200\n"
-"PO-Revision-Date: 2023-08-23 19:15+0000\n"
+"PO-Revision-Date: 2023-08-23 22:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -135,13 +135,13 @@ msgstr "来年"
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {action} {name}"
-msgstr "{name} を {action} してよろしいですか"
+msgstr "{name}を{action}してよろしいですか"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "選択した {name} に対して {action} してよろしいですか？ ({count} 個の {name} が選択されています)"
+msgstr "選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択されています)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -356,11 +356,11 @@ msgstr "最後"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr "<dropdown></dropdown> / {total} ページ"
+msgstr "<dropdown></dropdown> / {total}ページ"
 
 #: ../html/src/components/pagination.tsx:115
 msgid "Page {current} of {total}"
-msgstr "{current} / {total} ページ"
+msgstr "{current} / {total}ページ"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -927,11 +927,11 @@ msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new PAYG ssh connection data"
-msgstr "新しい従量課金制のssh接続データを追加"
+msgstr "新しいPAYGのssh接続データを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add PAYG ssh data"
-msgstr "従量課金制のsshデータを追加"
+msgstr "PAYGのsshデータを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -954,7 +954,7 @@ msgstr "作成"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "PAYG connection Description"
-msgstr "従量課金制の接続の説明"
+msgstr "PAYGの接続の説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
@@ -1010,7 +1010,7 @@ msgstr "／"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add PAYG Connection"
-msgstr "従量課金制の接続を追加"
+msgstr "PAYGの接続を追加"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1030,7 +1030,7 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
 msgid "PAYG properties updated successfully"
-msgstr "従量課金制のプロパティを更新しました"
+msgstr "PAYGのプロパティを更新しました"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1105,7 +1105,7 @@ msgstr "インスタンスホスト名: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Delete PAYG Connection"
-msgstr "従量課金制接続の削除"
+msgstr "PAYGの接続の削除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
 msgid "Are you sure you want to delete connection"
@@ -1608,13 +1608,13 @@ msgstr "下記のボタンを押すことで、初回の起動を行なうこと
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "マッチングデータは現在計算中です。 {timeFromNow} に開始しています。"
+msgstr "マッチングデータは現在計算中です。 {timeFromNow}に開始しています。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
-msgstr "直近のマッチングデータは {timeFromNow} に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
+msgstr "直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2433,11 +2433,11 @@ msgstr "バージョンメッセージ"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
 msgid "Version {version} history"
-msgstr "バージョン {version} の履歴"
+msgstr "バージョン{version}の履歴"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
 msgid "Version {version} successfully built into {environmentName}"
-msgstr "バージョン {version} を {environmentName} にビルドしました"
+msgstr "バージョン{version}を{environmentName}にビルドしました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -2479,7 +2479,7 @@ msgstr "環境を更新しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
 msgid "Environment {name} deleted successfully"
-msgstr "環境 {name} を削除しました"
+msgstr "環境{name}を削除しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
 msgid ""
@@ -2533,7 +2533,7 @@ msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
 msgid "Edit Filter {name}"
-msgstr "フィルタ {name} の編集"
+msgstr "フィルタ{name}の編集"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
@@ -2583,7 +2583,7 @@ msgstr "ターゲット環境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
 msgid "Promote version {version} into {environmentName}"
-msgstr "{environmentName} 内にバージョン {version} を公開"
+msgstr "{environmentName}内にバージョン{version}を公開"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:117
 msgid "Promote environment"
@@ -2591,7 +2591,7 @@ msgstr "環境の公開"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
 msgid "Version {version} successfully promoted into {environmentName}"
-msgstr "{environmentName} 内にバージョン {version} を公開しました"
+msgstr "{environmentName}内にバージョン{version}を公開しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:16
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:55
@@ -2709,7 +2709,7 @@ msgstr "ページが見つかりません"
 
 #: ../html/src/manager/errors/not-found.tsx:8
 msgid "The page you requested, {currentUrl}, was not found."
-msgstr "リクエストされたページ {currentUrl} が見つかりませんでした。"
+msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:12
 msgid ""
@@ -3035,7 +3035,7 @@ msgstr "選択したプロファイルを削除してよろしいですか？"
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
-msgstr "選択したプロファイルを削除してよろしいですか？ ({count} 個のプロファイルが選択されています)"
+msgstr "選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択されています)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3105,7 +3105,7 @@ msgstr "選択したストアを削除してよろしいですか？"
 #: ../html/src/manager/images/image-stores.tsx:237
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr "選択したストアを削除してよろしいですか？ ({count} 個のストアが選択されています)"
+msgstr "選択したストアを削除してよろしいですか？ ({count}個のストアが選択されています)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3227,7 +3227,7 @@ msgstr "ストアの編集"
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:750
 msgid "Instance Details for '{name}'"
-msgstr "'{name}' に対するインスタンスの詳細"
+msgstr "「{name}」に対するインスタンスの詳細"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -3459,7 +3459,7 @@ msgstr "選択したイメージを削除してよろしいですか？"
 #: ../html/src/manager/images/image-view.tsx:741
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr "選択したイメージを削除してよろしいですか? ({count} 個のイメージが選択されています)"
+msgstr "選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されています)"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3514,8 +3514,8 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"SUSE Manager従量課金制インスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは構成設定とは関係なく送信さ"
-"れます。この警告を非表示にするには、rhn.conf で「forward_registration = 1」を設定してください。"
+"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されま"
+"す。この警告を非表示にするには、rhn.conf で「forward_registration = 1」を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3532,7 +3532,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {product}."
-msgstr "{product} については、<link>こちら</link>をご覧ください。"
+msgstr "{product}については、<link>こちら</link>をご覧ください。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
@@ -3681,7 +3681,7 @@ msgstr "スケジュールの詳細"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:154
 msgid "Maintenance schedule has been assigned to {count} system(s)"
-msgstr "メンテナンススケジュールを {count} 個のシステムに割り当てました"
+msgstr "メンテナンススケジュールを {count}個のシステムに割り当てました"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
@@ -3868,7 +3868,7 @@ msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
 msgid "Assign a maintenance schedule to {count} system(s)"
-msgstr "メンテナンススケジュールを {count} 個のシステムに割り当てます"
+msgstr "メンテナンススケジュールを{count}個のシステムに割り当てます"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
 msgid ""
@@ -4175,7 +4175,7 @@ msgstr "状態の適用に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
 msgid "PAYG refresh authentication data failed"
-msgstr "従量課金制の認証データの更新が失敗しました"
+msgstr "PAYGの認証データの更新が失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
@@ -4578,7 +4578,7 @@ msgstr "このスケジュールを削除してよろしいですか？"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
 msgid "State configuration for {name}"
-msgstr "{name} の状態設定"
+msgstr "{name}の状態設定"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
 msgid "Order"
@@ -4665,7 +4665,7 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
-msgstr "サーバのタイムゾーン {timeZone} には、以下の時間が表示されます。スケジュールされた時間はサーバ時間になります。"
+msgstr "サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールされた時間はサーバ時間になります。"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
 msgid "Select an Action Type"
@@ -4861,7 +4861,7 @@ msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
-msgstr "{name} の状態概要"
+msgstr "{name}の状態概要"
 
 #: ../html/src/manager/state/display-highstate.tsx:79
 msgid "There are no applicable systems."
@@ -4905,7 +4905,7 @@ msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate.tsx:71
 msgid "Applying the highstate has been <link>scheduled</link>."
-msgstr "highstateの適用が <link>スケジュール</link>されました。"
+msgstr "highstateの適用が <link>スケジュールされました</link>。"
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
@@ -4971,8 +4971,8 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
-"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示されます: <link>systems</link>。問題が発生した場合、エラー通"
-"知が届きます。トランザクションシステムで作業している場合は、システムの再起動を実行して、登録プロセスを完了してください。"
+"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示されます: <link>システム</link>。問題が発生した場合、エラー通知が届"
+"きます。トランザクションシステムで作業している場合は、システムの再起動を実行して、登録プロセスを完了してください。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -5020,8 +5020,8 @@ msgid ""
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
-"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができます。 {productName} "
-"はシステムを遠隔から準備し、登録処理を実施します。"
+"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができます。 "
+"{productName}はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
@@ -5034,9 +5034,9 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 "
-"'ssh_push_sudo_user' の鍵に対する既定のユーザは'root'です。このユーザは "
-"{productName}のSSHキーを配置したあと、ブートストラップ処理の際に設定されます。"
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_pu"
+"sh_sudo_user'の鍵に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置したあと、ブートストラップ処"
+"理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
