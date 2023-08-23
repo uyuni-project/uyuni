@@ -11382,28 +11382,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="final">Salt状態をターゲットシステムに同期します</target>
       </trans-unit>
-      <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
         <target state="final">従量課金制インスタンス上の異なる製品チャンネルでのチャンネルの複製は禁止されています</target>
       </trans-unit>
-      <trans-unit id="spmigration.message.payg.error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
         <target state="final">従量課金制アラート: 製品間の移行試行が検出されました。現在の従量課金制プランでは、openSUSEからSLESなどへの移行は許可されていないことに注意してください。操作は中止されました。</target>
       </trans-unit>
-      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
         <target state="final">チャンネルの同期は禁止されています</target>
       </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
         <target state="final">@@PRODUCT_NAME@@従量課金制は会計データをクラウド プロバイダに送信できないため、リポジトリの同期は禁止されています。
 詳細な分析については、ログ ファイルを参照してください。</target>
       </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
@@ -11413,15 +11413,15 @@ For a detailed analysis, please refer to the log files.
 詳細な分析については、ログ ファイルを参照してください。
 	</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
         <target state="final">競合するminion IDとマシンIDを持つシステムが見つかりました({0}、{1})。オンボーディングが中止されました。まず競合するシステムを削除してください({2}、{3})</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
         <target state="final">SUSE Manager Server での「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、管理=&gt;セットアップウィザード=&gt;組織の資格情報で SCC 認証情報を設定する必要があります。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、管理=&gt;背セットアップウィザード=&gt;組織の資格情報でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスが従量課金制の場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
       </trans-unit>
