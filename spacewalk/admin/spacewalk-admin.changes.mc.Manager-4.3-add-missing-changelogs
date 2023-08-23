@@ -1,0 +1,2 @@
+- integrate instance-flavor-check to detect if the instance is PAYG
+- add checks for csp-billing-adapter in case of a PAYG instance
