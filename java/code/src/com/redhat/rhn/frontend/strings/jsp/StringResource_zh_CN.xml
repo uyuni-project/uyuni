@@ -29850,26 +29850,26 @@ given channel.</source>
         </context-group>
         <target state="final">虚拟化主机：</target>
       </trans-unit>
-      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="grouplist.jsp.unknown" xml:space="preserve">
         <source>Security updates unknown, disabled on settings.</source>
         <target state="final">安全更新未知，已根据设置禁用。</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
         <source>Collect data of managed clients for SUSE Manager PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">收集 SUSE Manager PAYG 受管客户端的数据</target>
       </trans-unit>
-      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
         <target state="final">PAYG 计算</target>
       </trans-unit>
-      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
         <target state="final">执行重复性操作</target>
       </trans-unit>
-      <trans-unit id="PAYG Connections" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="PAYG Connections" xml:space="preserve">
         <source>PAYG Connections</source>
         <target state="final">PAYG 连接</target>
       </trans-unit>
