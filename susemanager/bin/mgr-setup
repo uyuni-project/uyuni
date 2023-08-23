@@ -408,8 +408,31 @@ if [ -f $MANAGER_COMPLETE ]; then
 fi
 }
 
+backup_certificates() {
+  # we want to remove the cert from the package.
+  # copy the cert to a backup place to restore them later
+  if [ -L /etc/pki/tls/certs/spacewalk.crt ]; then
+    cp /etc/pki/tls/certs/spacewalk.crt /etc/pki/tls/certs/uyuni.crt
+  fi
+  if [ -L /etc/pki/tls/private/spacewalk.key ]; then
+    cp /etc/pki/tls/private/spacewalk.key /etc/pki/tls/private/uyuni.key
+  fi
+}
+
 setup_apache() {
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_wstunnel
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES filter
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES deflate
+    sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+    sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
+    sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 }
 
 setup_tomcat {
@@ -846,6 +869,7 @@ do_migration() {
 
     cleanup_hostname
     remove_ssh_key
+    
     if [ -d /root/.ssh.new ]; then
         mv /root/.ssh /root/.ssh.orig
         mv /root/.ssh.new /root/.ssh
@@ -950,7 +974,9 @@ do_setup() {
     setup_tomcat
     setup_cobbler
     change_SSCcredentials_permission
-
+    
+    backup_certificates
+    
     # In the container case, we have the MIRROR_PATH environment variable at setup
     if [ -n "$MIRROR_PATH" ]; then
         echo "server.susemanager.fromdir = $MIRROR_PATH" >> /etc/rhn/rhn.conf
