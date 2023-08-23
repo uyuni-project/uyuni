@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-18 14:09+0200\n"
-"PO-Revision-Date: 2023-08-23 04:15+0000\n"
+"PO-Revision-Date: 2023-08-23 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
 "\n"
@@ -46,12 +46,10 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
 msgstr "필수 필드 입력: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
 msgstr "잘못된 필드 유형: {fields}"
 
@@ -135,16 +133,14 @@ msgstr "내년"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
 msgstr "{action} {name}을(를) 수행하시겠습니까?"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "선택한 {name}을(를) {action}하시겠습니까?({count} {name} 선택됨)"
+msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 선택됨)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -281,13 +277,11 @@ msgstr "특징 없음"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:82
 #: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
 msgid ""
 "Action has been successfully added to the action chain <link>'{name}'</link>."
 msgstr "작업이 작업 체인 <link>'{name}'</link>에 추가되었습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
 msgstr "작업이 <link>예약</link>되었습니다."
 
@@ -359,12 +353,10 @@ msgid "Last"
 msgstr "성"
 
 #: ../html/src/components/pagination.tsx:93
-#, fuzzy
 msgid "Page <dropdown></dropdown> of {total}"
 msgstr "<dropdown></dropdown> / {total}페이지"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
 msgstr "{current} / {total}페이지"
 
@@ -465,7 +457,6 @@ msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
 #: ../html/src/components/salt-state-popup.tsx:50
-#, fuzzy
 msgid "Configuration Channel: {name}"
 msgstr "구성 채널: {name}"
 
@@ -544,7 +535,6 @@ msgid "Reorder"
 msgstr "다시 정렬"
 
 #: ../html/src/components/states-picker.tsx:385
-#, fuzzy
 msgid "Search in states"
 msgstr "상태에서 검색"
 
@@ -561,22 +551,18 @@ msgid "Search"
 msgstr "검색"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit State Ranks"
 msgstr "상태 순위 편집"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit Channel Ranks"
 msgstr "채널 순위 편집"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit the ranking of the states by dragging them."
 msgstr "드래그하여 상태의 순위를 편집하십시오."
 
 #: ../html/src/components/states-picker.tsx:405
-#, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "드래그하여 구성 채널의 순위를 편집하십시오."
 
@@ -632,12 +618,10 @@ msgid "System Locked"
 msgstr "시스템 잠김"
 
 #: ../html/src/components/table/SearchPanel.tsx:46
-#, fuzzy
 msgid "Items {from} - {to} of {total}"
 msgstr "항목 {from} - {to} / {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:51
-#, fuzzy
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount} 선택됨)"
 
@@ -720,7 +704,6 @@ msgstr "정의되지 않음"
 
 #: ../html/src/core/intl/index.test.tsx:16
 #: ../html/src/core/intl/index.test.tsx:17
-#, fuzzy
 msgid "foo {insert} bar"
 msgstr "foo {insert} 바"
 
@@ -940,12 +923,10 @@ msgid ""
 msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요합니다."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-#, fuzzy
 msgid "Add new PAYG ssh connection data"
 msgstr "새 PAYG SSH 연결 데이터 추가"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-#, fuzzy
 msgid "Add PAYG ssh data"
 msgstr "PAYG SSH 데이터 추가"
 
@@ -969,7 +950,6 @@ msgid "Create"
 msgstr "만들기"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "PAYG connection Description"
 msgstr "PAYG 연결 설명"
 
@@ -1026,7 +1006,6 @@ msgid "of"
 msgstr "/"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
-#, fuzzy
 msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
 
@@ -1047,7 +1026,6 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "PAYG properties updated successfully"
 msgstr "PAYG 속성 업데이트됨"
 
@@ -1118,17 +1096,14 @@ msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 인스턴스가 없거나 삭제되었습니다."
 
 #: ../html/src/manager/admin/payg/payg.tsx:68
-#, fuzzy
 msgid "Instance Hostname: {host}"
 msgstr "인스턴스 호스트 이름: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-#, fuzzy
 msgid "Delete PAYG Connection"
 msgstr "PAYG 연결 삭제"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#, fuzzy
 msgid "Are you sure you want to delete connection"
 msgstr "연결을 삭제하시겠습니까"
 
@@ -1190,7 +1165,6 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:289
-#, fuzzy
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
@@ -1623,13 +1597,11 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "아래 버튼을 클릭하여 첫 번째 실행을 트리거할 수도 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-#, fuzzy
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
 msgstr "현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {timeFromNow}에 시작되었습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-#, fuzzy
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
@@ -2204,7 +2176,6 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 프로젝트가 없거나 삭제되었습니다."
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-#, fuzzy
 msgid "Content Lifecycle Project - {name}"
 msgstr "컨텐트 라이프싸이클 프로젝트 - {name}"
 
@@ -2403,9 +2374,8 @@ msgid "disable all modules"
 msgstr "모든 모듈 비활성화"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
-#, fuzzy
 msgid "Build ({count})"
-msgstr "빌드({count})"
+msgstr "빌드({count}개)"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
@@ -2422,7 +2392,6 @@ msgid "Build Project"
 msgstr "프로젝트 빌드"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
-#, fuzzy
 msgid "Building project"
 msgstr "프로젝트 빌드 중"
 
@@ -2439,12 +2408,10 @@ msgid "Version Message"
 msgstr "버전 메시지"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-#, fuzzy
 msgid "Version {version} history"
 msgstr "버전 {version} 기록"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-#, fuzzy
 msgid "Version {version} successfully built into {environmentName}"
 msgstr "{version} 버전이 {environmentName}(으)로 빌드됨"
 
@@ -2487,12 +2454,10 @@ msgid "Environment updated successfully"
 msgstr "환경 업데이트됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
-#, fuzzy
 msgid "Environment {name} deleted successfully"
 msgstr "{name} 환경 삭제됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
-#, fuzzy
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
@@ -2543,7 +2508,6 @@ msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
 msgid "Edit Filter {name}"
 msgstr "{name} 필터 편집"
 
@@ -2594,7 +2558,6 @@ msgid "Target environment"
 msgstr "대상 환경"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
-#, fuzzy
 msgid "Promote version {version} into {environmentName}"
 msgstr "버전을 {version}에서 {environmentName}(으)로 승격"
 
@@ -2603,7 +2566,6 @@ msgid "Promote environment"
 msgstr "환경 승격"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
-#, fuzzy
 msgid "Version {version} successfully promoted into {environmentName}"
 msgstr "{version} 버전이 {environmentName}(으)로 승격됨"
 
@@ -2722,7 +2684,6 @@ msgid "Page Not Found"
 msgstr "페이지를 찾을 수 없음"
 
 #: ../html/src/manager/errors/not-found.tsx:8
-#, fuzzy
 msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
@@ -2766,7 +2727,6 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
@@ -2783,7 +2743,6 @@ msgstr "잘못된 대상 유형입니다."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-#, fuzzy
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
@@ -3043,7 +3002,6 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "선택한 프로파일을 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
@@ -3113,7 +3071,6 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "선택한 저장소를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr "선택한 저장소를 삭제하시겠습니까?({count}개 저장소 선택됨)"
@@ -3468,7 +3425,6 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "선택한 이미지를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-view.tsx:741
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "선택한 이미지를 삭제하시겠습니까?({count}개 이미지 선택됨)"
@@ -3519,7 +3475,6 @@ msgstr ""
 "시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
 msgid ""
 "SUSE Manager PAYG instances must forward registration data to SCC when "
 "credentials are provided. Data will be sent independently of the "
@@ -3543,9 +3498,8 @@ msgstr ""
 "보십시오."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
 msgid "<link>Learn more</link> about {product}."
-msgstr "{product}에 대해 <link>자세히 알아보십시오</link>."
+msgstr "{product}에 대해 <link>자세히 알아보기</link>."
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
@@ -3691,7 +3645,6 @@ msgid "Schedule Details"
 msgstr "일정 세부 사항"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:154
-#, fuzzy
 msgid "Maintenance schedule has been assigned to {count} system(s)"
 msgstr "유지보수 일정이 {count}개 시스템에 할당되었습니다."
 
@@ -3712,7 +3665,6 @@ msgid "Current Schedule"
 msgstr "현재 일정"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
 msgid "Url '{url}' is invalid"
 msgstr "'{url}' URL이 잘못됨"
 
@@ -3875,7 +3827,6 @@ msgid "Maintenance Schedules"
 msgstr "유지보수 일정"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
-#, fuzzy
 msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr "유지보수 일정을 {count}개 시스템에 할당"
 
@@ -3981,7 +3932,6 @@ msgid "Schedule playbook execution"
 msgstr "플레이북 실행 예약"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-#, fuzzy
 msgid "Playbook '{name}'"
 msgstr "'{name}' 플레이북"
 
@@ -4178,7 +4128,6 @@ msgid "State apply failed"
 msgstr "상태 적용 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-#, fuzzy
 msgid "PAYG refresh authentication data failed"
 msgstr "PAYG 새로 고침 인증 데이터 실패"
 
@@ -4580,7 +4529,6 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "이 일정을 삭제하시겠습니까?"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
-#, fuzzy
 msgid "State configuration for {name}"
 msgstr "{name}에 대한 상태 구성"
 
@@ -4666,7 +4614,6 @@ msgstr ""
 "오."
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-#, fuzzy
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
@@ -4781,7 +4728,6 @@ msgid "No minions matched the target expression."
 msgstr "대상 식과 일치하는 minion이 없습니다."
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:490
-#, fuzzy
 msgid "Server returned an error: {message}"
 msgstr "서버에서 오류가 반환됨: {message}"
 
@@ -4866,7 +4812,6 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {name}"
 msgstr "{name}에 대한 상태 요약"
 
@@ -4911,7 +4856,6 @@ msgid "System Group"
 msgstr "시스템 그룹"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been <link>scheduled</link>."
 msgstr "highstate 적용이 <link>예약</link>되었습니다."
 
@@ -4972,7 +4916,6 @@ msgstr ""
 "르게 부트스트랩되었는지 확인하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
-#, fuzzy
 msgid ""
 "Bootstrap process initiated. Your system should be visible at the following "
 "location shortly: <link>systems</link>. If any issues arise, you'll receive "
@@ -5021,7 +4964,6 @@ msgid "Bootstrap Minions"
 msgstr "부트스트랩 Minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
-#, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
@@ -5035,7 +4977,6 @@ msgid "e.g., host.domain.com"
 msgstr "예: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
-#, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5513,9 +5454,8 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-#, fuzzy
 msgid "Add a {type} Virtual Host Manager"
-msgstr "{type} 가상 호스트 관리자 편집"
+msgstr "{type} 가상 호스트 관리자 추가"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5538,7 +5478,6 @@ msgstr ""
 "인하십시오."
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-#, fuzzy
 msgid "{name} selected"
 msgstr "{name} 선택됨"
 
