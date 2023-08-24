@@ -1,5 +1,18 @@
 package com.redhat.rhn.manager.audit.test;
 
+import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
+import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestCve;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestErrata;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
+import static com.redhat.rhn.testing.ErrataTestUtils.extractAndSaveVulnerablePackages;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -10,24 +23,21 @@ import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.RankedChannel;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.OVALCleaner;
-import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
-import com.suse.oval.ovaltypes.*;
+import com.suse.oval.ovaltypes.OvalRootType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
-import static com.redhat.rhn.testing.ErrataTestUtils.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
@@ -344,6 +354,13 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
+        // We don't have to care about the internals of populateCVEChannels and weather it will assign otherChannel as
+        // a relevant channel to server; we add it ourselves.
+        RankedChannel otherChannelRanked = new RankedChannel(otherChannel.getId(), 0);
+        Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
+        relevantChannels.put(server, List.of(otherChannelRanked));
+        CVEAuditManager.insertRelevantServerChannels(relevantChannels);
+        HibernateFactory.getSession().flush();
 
         server.getPackages().forEach(p -> log.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
