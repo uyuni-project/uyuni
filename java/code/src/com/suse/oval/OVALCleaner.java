@@ -13,6 +13,7 @@ import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,6 +69,15 @@ public class OVALCleaner {
             case UBUNTU:
                 throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
         }
+
+        List<String> cleanCves = definition.getCves().stream().map(OVALCleaner::removeWhitespaceChars)
+                .collect(Collectors.toList());
+
+        definition.setCves(cleanCves);
+    }
+    
+    private static String removeWhitespaceChars(String s) {
+        return StringUtils.deleteWhitespace(s);
     }
 
     private static void fillOsFamily(DefinitionType definition, OsFamily osFamily) {
