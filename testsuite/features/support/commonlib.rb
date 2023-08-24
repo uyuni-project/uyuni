@@ -124,7 +124,7 @@ rescue Timeout::Error
   raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
 end
 
-def check_text_and_catch_message_request_timeout?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
   start_time = Time.now
   repeat_until_timeout(message: "'#{text}' still not visible", timeout: DEFAULT_TIMEOUT) do
     while Time.new - start_time <= timeout
