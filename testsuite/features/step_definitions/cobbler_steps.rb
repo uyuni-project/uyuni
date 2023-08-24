@@ -92,9 +92,8 @@ end
 # cobbler reports
 When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
   space = 'spacecmd -u admin -p admin'
-  system_name = get_system_name(host)
   get_target('server').run("#{space} clear_caches")
-  out, _code = get_target('server').run("#{space} system_details #{system_name}")
+  out, _code = get_target('server').run("#{space} system_details #{get_target(host).full_hostname}")
   unless out.include? 'ssh-push-tunnel'
     steps %(
       Given I am authorized as "testing" with password "testing"

@@ -43,6 +43,13 @@ end
 # Initialize a Twopence node through its host (additionally it will setup some handy maps)
 def twopence_init(host)
   puts "Initializing a twopence node for '#{host}'."
+  raise(NotImplementedError, "Host #{host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? host
+
+  unless ENV.key? ENV_VAR_BY_HOST[host]
+    warn "Host #{host} is not defined as environment variable."
+    return
+  end
+
   target = "ssh:#{ENV[ENV_VAR_BY_HOST[host]]}"
   node = Twopence.init(target)
   raise "Twopence node #{host} initialization has failed." if node.nil?
