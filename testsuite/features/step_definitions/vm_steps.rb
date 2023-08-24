@@ -93,7 +93,7 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   when 'test-net0', 'test-net1'
     netdef = '<network>' \
               "  <name>#{net_name}</name>" \
-              "  <forward mode='nat'/>" \
+              '  <forward mode=\'nat\'/>' \
               "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>" \
               "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>" \
               '    <dhcp>' \
@@ -104,9 +104,11 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   when 'salt-sles', 'salt-leap', 'salt-rhlike', 'salt-deblike'
     netdef = '<network>' \
               "  <name>#{net_name}</name>" \
-              "  <forward mode='bridge'/>" \
+              '  <forward mode=\'bridge\'/>' \
               "  <bridge name='#{net['bridge']}'/>" \
               '</network>'
+  else
+    raise "#{net_name} case is not implemented."
   end
 
   # Some networks like the default one may already be defined.
