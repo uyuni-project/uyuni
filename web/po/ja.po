@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-23 09:54+0200\n"
-"PO-Revision-Date: 2023-08-23 22:15+0000\n"
+"PO-Revision-Date: 2023-08-24 01:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -623,7 +623,7 @@ msgstr "システムはロック済み"
 
 #: ../html/src/components/table/SearchPanel.tsx:46
 msgid "Items {from} - {to} of {total}"
-msgstr "項目 {from} - {to} / {total}"
+msgstr "項目{from} - {to} / {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:51
 msgid "({selectedCount} selected)"
@@ -1173,7 +1173,7 @@ msgstr "選択されたチャンネルは同期のスケジュールに成功し
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
-msgstr "「{product}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してください。"
+msgstr "'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認してください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -3227,7 +3227,7 @@ msgstr "ストアの編集"
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:750
 msgid "Instance Details for '{name}'"
-msgstr "「{name}」に対するインスタンスの詳細"
+msgstr "'{name}'に対するインスタンスの詳細"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -3515,7 +3515,7 @@ msgid ""
 "= 1' in rhn.conf."
 msgstr ""
 "SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されま"
-"す。この警告を非表示にするには、rhn.conf で「forward_registration = 1」を設定してください。"
+"す。この警告を非表示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3701,7 +3701,7 @@ msgstr "現在のスケジュール"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
 msgid "Url '{url}' is invalid"
-msgstr "URL「{url}」が正しくありません"
+msgstr "Url '{url}'が正しくありません"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
@@ -3976,7 +3976,7 @@ msgstr "playbook の実行のスケジュール"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 msgid "Playbook '{name}'"
-msgstr "playbook「{0}」"
+msgstr "playbook '{name}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
