@@ -408,6 +408,14 @@ if [ -f $MANAGER_COMPLETE ]; then
 fi
 }
 
+setup_tftp_permission() {
+  if [ ! -d /srv/tftpboot ]; then
+    mkdir -p /srv/tftpboot
+    chmod 750 /srv/tftpboot
+    chown wwwrun:tftp /srv/tftpboot
+  fi
+  }
+
 backup_certificates() {
   # we want to remove the cert from the package.
   # copy the cert to a backup place to restore them later
@@ -976,6 +984,8 @@ do_setup() {
     change_SSCcredentials_permission
     
     backup_certificates
+    
+    setup_tftp_permission
     
     # In the container case, we have the MIRROR_PATH environment variable at setup
     if [ -n "$MIRROR_PATH" ]; then

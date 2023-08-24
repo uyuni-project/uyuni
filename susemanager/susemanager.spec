@@ -248,18 +248,6 @@ popd
 
 %post
 POST_ARG=$1
-if [ -f /etc/sysconfig/atftpd ]; then
-  . /etc/sysconfig/atftpd
-  if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
-    sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "%{serverdir}/tftpboot"
-  fi
-fi
-if [ ! -d %{serverdir}/tftpboot ]; then
-  mkdir -p %{serverdir}/tftpboot
-  chmod 750 %{serverdir}/tftpboot
-  chown %{apache_user}:%{tftp_group} %{serverdir}/tftpboot
-fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
 if [ $POST_ARG -eq 2 ] ; then
