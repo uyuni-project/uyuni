@@ -1860,7 +1860,3 @@ When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
     output.include? '9100/tcp 9117/tcp 9187/tcp'
 end
-
-When(/^I sleep$/) do
-  sleep(600)
-end
