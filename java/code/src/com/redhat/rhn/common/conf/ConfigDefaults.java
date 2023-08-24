@@ -851,7 +851,7 @@ public class ConfigDefaults {
         }
         connectionUrl.append(name);
 
-        if (useSsl) {
+        if (!"localhost".equals(host) && useSsl) {
             connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert + "&sslmode=" + sslmode);
         }
 
