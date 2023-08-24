@@ -44,7 +44,12 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
 
         VulnerablePackage vulnerablePackage = new VulnerablePackage();
         vulnerablePackage.setName(packageName);
-        vulnerablePackage.setFixVersion(evr);
+        if ("0".equals(evr)) {
+            // Affected/unpatched package
+            vulnerablePackage.setFixVersion(null);
+        } else {
+            vulnerablePackage.setFixVersion(evr);
+        }
 
         ProductVulnerablePackages productVulnerablePackages = new ProductVulnerablePackages();
         productVulnerablePackages.setProductCpe(deriveCpe().asString());
