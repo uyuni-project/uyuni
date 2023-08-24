@@ -25,11 +25,19 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.CspBillingAdapterStatus;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -86,11 +94,14 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         private boolean serviceRunning = true;
         private boolean packageModified = false;
 
-        public CloudPaygManagerTestHelper() {
+        public CloudPaygManagerTestHelper() throws IOException, ClassNotFoundException {
             super();
+            setCspBillingAdapterStatusFile("csp-config.ok.json");
         }
-        public CloudPaygManagerTestHelper(TaskomaticApi tapiIn, ContentSyncManager syncManagerIn) {
+        public CloudPaygManagerTestHelper(TaskomaticApi tapiIn, ContentSyncManager syncManagerIn)
+                throws IOException, ClassNotFoundException {
             super(tapiIn, syncManagerIn);
+            setCspBillingAdapterStatusFile("csp-config.ok.json");
         }
 
         @Override
@@ -130,6 +141,10 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         protected boolean hasPackageModifications(String pkg) {
             return packageModified;
         }
+        private void setCspBillingAdapterStatusFile(String testFileName) throws IOException, ClassNotFoundException {
+            String jarPath = "/com/suse/cloud/test/data/";
+            cspBillingAdapterConfig = new File(TestUtils.findTestData(jarPath + testFileName).getPath()).toPath();
+        }
     }
 
     @Test
@@ -164,14 +179,14 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testIsPayg() {
+    public void testIsPayg() throws IOException, ClassNotFoundException {
         CloudPaygManagerTestHelper cpm = new CloudPaygManagerTestHelper();
         cpm.setInstanceType("PAYG");
         assertTrue(cpm.isPaygInstance(), "Expecting a PAYG instance");
     }
 
     @Test
-    public void testRefresh() {
+    public void testRefresh() throws IOException, ClassNotFoundException {
         TaskomaticApiTestHelper tapi = new TaskomaticApiTestHelper();
         tapi.setResult(new HashMap<>());
         CloudPaygManagerTestHelper cpm = new CloudPaygManagerTestHelper(tapi, new ContentSyncManager());
@@ -187,7 +202,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRefreshIsCompliant() {
+    public void testRefreshIsCompliant() throws IOException, ClassNotFoundException {
         TaskomaticApiTestHelper tapi = new TaskomaticApiTestHelper();
         tapi.setNull();
 
@@ -234,6 +249,11 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
         assertTrue(cpm.isCompliant(), "Unexpected: Is not compliant");
 
+        // test 7 - billing adapter report errors
+        cpm.setCspBillingAdapterStatusFile("csp-config.nonet.json");
+        assertTrue(cpm.checkRefreshCache(true), "Not refreshed");
+        assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
     }
 
     @Test
@@ -271,5 +291,28 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(cpm.checkRefreshCache(true), "Not refreshed");
         assertFalse(cpm.hasSCCCredentials(), "Has SCC credentials");
+    }
+
+    @Test
+    public void testCspBillingAdapterStatusParsing() throws IOException, ClassNotFoundException {
+        Gson gson = new GsonBuilder().setDateFormat(CspBillingAdapterStatus.DATE_FORMAT).create();
+        String jarPath = "/com/suse/cloud/test/data/";
+        CspBillingAdapterStatus cspStatus = gson.fromJson(Files.readString(
+                new File(TestUtils.findTestData(jarPath + "csp-config.ok.json").getPath()).toPath()),
+                    CspBillingAdapterStatus.class);
+        assertTrue(cspStatus.isBillingApiAccessOk(), "Unexpected error: status should be ok");
+        assertTrue(cspStatus.getErrors().isEmpty(), "Unexpected errors found");
+        assertEquals(1692881466L, cspStatus.getTimestamp().toInstant().getEpochSecond());
+
+        cspStatus = gson.fromJson(Files.readString(
+                        new File(TestUtils.findTestData(jarPath + "csp-config.nocreds.json").getPath()).toPath()),
+                CspBillingAdapterStatus.class);
+        assertFalse(cspStatus.isBillingApiAccessOk(), "Unexpected error: status should be false");
+        assertContains(cspStatus.getErrors(),
+                "Failed to meter bill dimension managed_systems: Unable to locate credentials");
+        assertContains(cspStatus.getErrors(),
+                "Failed to meter bill dimension monitoring: Unable to locate credentials");
+        assertEquals(1692708633L, cspStatus.getTimestamp().toInstant().getEpochSecond());
+
     }
 }
