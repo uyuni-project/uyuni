@@ -443,7 +443,7 @@ setup_apache() {
     sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 }
 
-setup_tomcat {
+setup_tomcat() {
     if [ -f /etc/rhn/rhn.conf -a $(filesize /etc/rhn/rhn.conf) -gt 1 ]; then
         # rhn.conf is configured, this is an upgrade
         # during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
@@ -458,7 +458,7 @@ setup_tomcat {
     fi
 }
 
-change_SSCcredentials_permission {
+change_SSCcredentials_permission() {
     if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
         chgrp www /etc/zypp/credentials.d/SCCcredentials
         chmod g+r /etc/zypp/credentials.d/SCCcredentials
