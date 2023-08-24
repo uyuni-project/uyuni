@@ -894,7 +894,9 @@ sub postgresql_reportdb_setup {
     }
 
     $ENV{PGSSLROOTCERT} = $answers->{'report-db-ca-cert'};
-    $ENV{PGSSLMODE} = "verify-full";
+    if ($answers->{'report-db-host'} ne 'localhost') {
+        $ENV{PGSSLMODE} = "verify-full";
+    }
 
     write_rhn_conf($answers, 'externaldb-admin-user','externaldb-admin-password', 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');
 
