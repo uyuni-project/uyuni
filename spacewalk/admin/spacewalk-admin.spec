@@ -79,10 +79,6 @@ if [ -x /usr/bin/systemctl ]; then
     /usr/bin/systemctl daemon-reload || :
 fi
 
-# Fix Uyuni issue 5718: this should happen upgrading from version between 2022.02 and 2022.05
-if grep -E "^report_db_sslrootcert[[:space:]]*=[[:space:]]*/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT" /etc/rhn/rhn.conf; then
-    sed -i "s|^report_db_sslrootcert[[:space:]]*=.*|report_db_sslrootcert = /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT|" /etc/rhn/rhn.conf
-fi
 
 %files
 %license LICENSE
