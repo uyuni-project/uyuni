@@ -73,6 +73,7 @@ public class DebPackageWriter implements Closeable {
         String pkgSnippet = pkgDto.getPrimaryXml();
         if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isBlank(pkgSnippet)) {
             out.write(pkgSnippet);
+            out.newLine();
             return;
         }
         StringWriter wrt = new StringWriter();
