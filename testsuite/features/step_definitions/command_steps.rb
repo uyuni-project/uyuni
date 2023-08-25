@@ -1065,7 +1065,7 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  get_target('proxy').run(cmd, timeout: proxy_timeout)
+  get_target('proxy').run(cmd, timeout: proxy_timeout, verbose: true)
 end
 
 When(/^I allow all SSL protocols on the proxy's apache$/) do
@@ -1073,7 +1073,7 @@ When(/^I allow all SSL protocols on the proxy's apache$/) do
   key = 'SSLProtocol'
   val = 'all -SSLv2 -SSLv3'
   get_target('proxy').run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  get_target('proxy').run("systemctl reload apache2.service")
+  get_target('proxy').run('systemctl reload apache2.service', verbose: true)
 end
 
 When(/^I restart squid service on the proxy$/) do
@@ -1863,7 +1863,7 @@ end
 
 When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
   node = get_target(minion)
-  node.run("systemctl restart #{service}", check_errors: true)
+  node.run("systemctl restart #{service}", check_errors: true, verbose: true)
 end
 
 When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
