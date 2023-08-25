@@ -339,7 +339,9 @@ public class CloudPaygManager {
         if (retcode != 0) {
             // missing packages result in message "package ... is not installed" and will not match "5"
             // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
-            if (scexec.getLastCommandOutput().lines().anyMatch(l -> l.charAt(2) == '5')) {
+            if (scexec.getLastCommandOutput().lines()
+                    .filter(l -> !l.endsWith(".pyc"))
+                    .anyMatch(l -> l.charAt(2) == '5')) {
                 LOG.error("Package '{}' was modifified", pkg);
                 LOG.info(scexec.getLastCommandOutput());
                 return true;
