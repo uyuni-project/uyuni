@@ -59,10 +59,8 @@ public class CVEAuditManagerOVAL {
 
             if (doesSupportOVALAuditing(clientServer)) {
                 systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
-/*
-                // Temporary workaround for error in frontend when having status AFFECTED_PATCH_INAPPLICABLE
-                systemAuditResult.setChannels(Set.of(new AuditChannelInfo(12, "Houssem's Channel", "Channel Label", 6)));
-                systemAuditResult.setErratas(Set.of(new ErrataIdAdvisoryPair(25, "Houssem Security")));*/
+                systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
+                systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
 
                 log.error(auditWithChannelsResult.getChannels());
                 log.error(auditWithChannelsResult.getErratas());

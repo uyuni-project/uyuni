@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
+// TODO: Test that if we get AFFECTED_PATCH_INAPPLICABLE auditServer.Channels and auditServer.Erratas are not null
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger log = LogManager.getLogger(CVEAuditManagerOVALTest.class);
     OvalParser ovalParser = new OvalParser();
