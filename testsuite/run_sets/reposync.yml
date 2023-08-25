@@ -9,11 +9,14 @@
 # IMMUTABLE ORDER
 
 # these features sync real channels (last core features)
+- features/reposync/srv_disable_scheduled_reposync.feature
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_enable_sync_products.feature
-- features/reposync/srv_wait_for_reposync.feature
-- features/reposync/srv_create_repository.feature
+- features/reposync/srv_create_fake_channels.feature
+- features/reposync/srv_create_fake_repositories.feature
 - features/reposync/srv_sync_fake_channels.feature
-
+# Activation keys can only be created after products and channels are synced
+- features/reposync/srv_create_activationkey.feature
+- features/reposync/allcli_update_activationkeys.feature
 ## Channels and Product synchronization features END ###

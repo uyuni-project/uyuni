@@ -21,7 +21,7 @@ Feature: Bootstrap a Salt minion via the GUI
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake Base Channel"
+    And I check radio button "Fake-Base-Channel"
     And I wait until I do not see "Loading..." text
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
@@ -29,4 +29,3 @@ Feature: Bootstrap a Salt minion via the GUI
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
-

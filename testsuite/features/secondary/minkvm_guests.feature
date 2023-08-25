@@ -325,6 +325,13 @@ Feature: Manage KVM virtual machines via the GUI
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
+# TODO: Not available in any Leap repository, yet
+# See https://suse.slack.com/archives/C02CKHR76Q2/p1694189245268889
+#@uyuni
+#  Scenario: Install TFTP boot package on the server
+#    And I install package tftpboot-installation on the server
+#    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
+
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"

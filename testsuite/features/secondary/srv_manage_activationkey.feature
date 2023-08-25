@@ -33,7 +33,7 @@ Feature: Manipulate activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I wait until I do not see "Loading..." text
-    And I select "Fake-i586-Channel" from "selectedBaseChannel"
+    And I select "Fake-Base-Channel-i586" from "selectedBaseChannel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
@@ -52,7 +52,7 @@ Feature: Manipulate activation keys
     And I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-TEST-2-i586" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Fake-i586-Channel" from "selectedBaseChannel"
+    And I select "Fake-Base-Channel-i586" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"

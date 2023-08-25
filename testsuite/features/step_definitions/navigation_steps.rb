@@ -90,10 +90,10 @@ end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
-  next if has_content?("This action's status is: Completed.", wait: 3)
+  next if has_content?('This action\'s status is: Completed.', wait: 3)
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
-    break if has_content?("This action's status is: Completed.", wait: 3)
-    raise 'Event failed' if has_content?("This action's status is: Failed.", wait: 3)
+    break if has_content?('This action\'s status is: Completed.', wait: 3)
+    raise 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
     current = Time.now
     if current - last > 150
       log "#{current} Still waiting for action to complete..."
@@ -202,7 +202,8 @@ When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
+  product_key = $is_container_provider ? 'Fake' : product
+  select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
@@ -225,13 +226,13 @@ end
 
 When(/^I (include|exclude) the recommended child channels$/) do |action|
   toggle = "//span[@class='pointer']"
-  step %(I wait at most 10 seconds until I see "include recommended" text)
+  step 'I wait at most 10 seconds until I see "include recommended" text'
   raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
   if action == 'include'
-    toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+    toggle_off = '//i[contains(@class, \'fa-toggle-off\')]'
     find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
   else
-    toggle_on = "//i[contains(@class, 'fa-toggle-on')]"
+    toggle_on = '//i[contains(@class, \'fa-toggle-on\')]'
     find(:xpath, toggle).click if page.has_xpath?(toggle_on, wait: 5)
   end
 end
@@ -300,7 +301,7 @@ When(/^I click on "([^"]*)" and confirm$/) do |text|
       step %(I click on "#{text}")
     end
   rescue Capybara::ModalNotFound
-    # ignored
+    warn 'Modal not found'
   end
 end
 
@@ -365,8 +366,8 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
   menu_levels = menu_path.split('>').map(&:strip)
 
   # define reusable patterns
-  prefix_path = "//aside/div[@id='nav']/nav"
-  link_path = "/ul/li/div/a[contains(.,'%s')]"
+  prefix_path = '//aside/div[@id=\'nav\']/nav'
+  link_path = '/ul/li/div/a[contains(.,\'%s\')]'
   parent_wrapper_path = '/parent::div'
   parent_level_path = '/parent::li'
 
@@ -379,8 +380,14 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
     # if this is the last element of the path
     break if index == (menu_levels.count - 1)
     # open the submenu if needed
-    unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
-      find(:xpath, target_link_path + parent_wrapper_path).click
+    begin
+      unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+        find(:xpath, target_link_path + parent_wrapper_path).click
+      end
+    rescue NoMethodError
+      warn 'The browser session seems broken. See debug details below:'
+      warn "target_link_path=#{target_link_path}, parent_wrapper_path=#{parent_wrapper_path}, parent_level_path=#{parent_level_path}"
+      step 'I am authorized for the "Admin" section'
     end
     # point the target to the current menu level
     target_link_path += parent_wrapper_path + parent_level_path
@@ -398,6 +405,7 @@ Given(/^I am not authorized$/) do
     page.reset!
   rescue NoMethodError
     log 'The browser session could not be cleaned.'
+    capybara_register_driver
   ensure
     visit Capybara.app_host
   end
@@ -531,14 +539,20 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     page.reset!
   rescue NoMethodError => e
     log "The browser session could not be cleaned because there is no browser available: #{e.message}"
+    capybara_register_driver
   rescue StandardError => e
     log "The browser session could not be cleaned for unknown issue: #{e.message}"
+    capybara_register_driver
   ensure
     visit Capybara.app_host
   end
   next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
-  find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click if all(:xpath, '//header//i[@class=\'fa fa-sign-out\']', wait: 0).any?
+  begin
+    find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click
+  rescue Capybara::ElementNotFound, NoMethodError
+    # No need to logout
+  end
 
   raise 'Login page is not correctly loaded' unless has_field?('username')
   fill_in('username', with: user)
@@ -580,7 +594,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step 'I check "Fake Base Channel" in the list'
+  step 'I check "Fake-Base-Channel" in the list'
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -951,11 +965,11 @@ end
 #
 # Test if a checkbox is disabled
 #
-Then(/^the "([^\"]*)" checkbox should be disabled$/) do |arg1|
+Then(/^the "([^"]*)" checkbox should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
+Then(/^the "([^"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 

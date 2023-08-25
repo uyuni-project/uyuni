@@ -514,7 +514,7 @@ Note that the text area variant handles the new lines characters while the other
 * Download a package from a channel
 
 ```gherkin
-  When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+  When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-base-channel-x86_64"
   Then the download should get a 403 response
   Then the download should get no error
 ```

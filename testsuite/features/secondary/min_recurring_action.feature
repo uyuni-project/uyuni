@@ -145,9 +145,9 @@ Feature: Recurring Actions
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake Base Channel"
+    And I check radio button "Fake-Base-Channel"
     And I wait until I do not see "Loading..." text
-    And I check "Fake Child Channel"
+    And I check "Fake-Child-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -431,7 +431,7 @@ Feature: Recurring Actions
     And I follow "Delete Group"
     And I click on "Confirm Deletion"
     Then I should see a "Your organization has no system groups." text
-    
+
   Scenario: Cleanup: Remove "My State Channel for Recurring Actions" config channel
     When I follow the left menu "Configuration > Channels"
     And I follow "My State Channel for Recurring Actions"

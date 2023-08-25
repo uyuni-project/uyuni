@@ -13,14 +13,14 @@ Feature: Managing channels
   Scenario: Fail when trying to add a duplicate channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Fake Base Channel" as "Channel Name"
-    And I enter "fake_base_channel" as "Channel Label"
+    And I enter "Fake-Base-Channel" as "Channel Name"
+    And I enter "fake-base-channel" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
     And I enter "Base channel for testing" as "Channel Summary"
     And I enter "No more desdcription for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "The channel name 'Fake Base Channel' is already in use, please enter a different name" text
+    Then I should see a "The channel name 'Fake-Base-Channel' is already in use, please enter a different name" text
 
   Scenario: Fail when trying to use invalid characters in the channel label
     When I follow the left menu "Software > Manage > Channels"
@@ -39,7 +39,7 @@ Feature: Managing channels
     And I enter "test123" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Invalid channel name, please see the format described below" text
-  
+
 @scc_credentials
   Scenario: Fail when trying to use reserved names for channels
     When I follow the left menu "Software > Manage > Channels"
