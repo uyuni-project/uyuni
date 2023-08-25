@@ -42,7 +42,7 @@ def compute_channels_to_leave_running
     os_family = node.os_family
     next unless ['sles', 'rocky'].include?(os_family)
     os_version = os_version.split('.')[0] if os_family == 'rocky'
-    log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP4 15.4 8].include? os_version
+    log 'Can\'t build list of reposyncs to leave running' unless %w[15-SP3 15-SP4 15.4 8].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill.uniq
@@ -50,7 +50,7 @@ end
 
 def count_table_items
   # count table items using the table counter component
-  items_label_xpath = "//span[contains(text(), 'Items ')]"
+  items_label_xpath = '//span[contains(text(), \'Items \')]'
   raise unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1].strip
 end
@@ -249,7 +249,7 @@ end
 
 def check_shutdown(host, time_out)
   cmd = "ping -c1 #{host}"
-  repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t reboot') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.nonzero?
       STDOUT.puts "machine: #{host} went down"
@@ -262,7 +262,7 @@ end
 
 def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
-  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.zero?
       STDOUT.puts "machine: #{host} network is up"
@@ -271,7 +271,7 @@ def check_restart(host, node, time_out)
       sleep 1
     end
   end
-  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
       STDOUT.puts "machine: #{host} ssh is up"
@@ -369,8 +369,9 @@ def get_system_name(host)
     begin
       node = get_target(host)
       system_name = node.full_hostname
-    rescue RuntimeError
+    rescue NotImplementedError => e
       # If the node for that host is not defined, just return the host parameter as system_name
+      warn e.message
       system_name = host
     end
   end

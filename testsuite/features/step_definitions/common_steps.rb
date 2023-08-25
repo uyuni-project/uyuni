@@ -72,7 +72,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2[:0-9a-f]*|fe80:[:0-9a-f]*/) }
 
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
-  ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
+  ipv6_address = find(:xpath, '//td[text()=\'IPv6 Address:\']/following-sibling::td[1]').text
   log "IPv6 address: #{ipv6_address}"
   raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
@@ -98,27 +98,26 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime[:days] >= 1 && rounded_uptime_days < 2) || (uptime[:days] < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
-    step %(I should see a "a day ago" text)
+    step 'I should see a "a day ago" text'
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
     step %(I should see a "#{rounded_uptime_hours} hours ago" text)
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
-    step %(I should see a "an hour ago" text)
+    step 'I should see a "an hour ago" text'
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours <= 1
     step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
-    step %(I should see a "a minute ago" text)
+    step 'I should see a "a minute ago" text'
   elsif uptime[:seconds] < 45
-    step %(I should see a "a few seconds ago" text)
+    step 'I should see a "a few seconds ago" text'
   elsif rounded_uptime_days < 25
     step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
   else
-    step %(I should see a "a month ago" text)
+    step 'I should see a "a month ago" text'
   end
 end
 
-Then(/^I should see several text fields for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  steps %(Then I should see a "UUID" text
+Then(/^I should see several text fields$/) do
+  steps 'Then I should see a "UUID" text
     And I should see a "Virtualization" text
     And I should see a "Installed Products" text
     And I should see a "Checked In" text
@@ -128,7 +127,7 @@ Then(/^I should see several text fields for "([^"]*)"$/) do |host|
     And I should see a "Maintenance Schedule" text
     And I should see a "Description" text
     And I should see a "Location" text
-  )
+  '
 end
 
 # events
@@ -209,7 +208,7 @@ end
 # bare metal
 When(/^I check the ram value of the "([^"]*)"$/) do |host|
   node = get_target(host)
-  get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
+  get_ram_value = 'grep MemTotal /proc/meminfo |awk \'{print $2}\''
   ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
@@ -227,7 +226,7 @@ end
 
 Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
   node = get_target(host)
-  get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
+  get_cpu_freq = 'cat /proc/cpuinfo  | grep -i \'CPU MHz\'' # | awk '{print $4}'"
   cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
@@ -236,7 +235,7 @@ Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
 end
 
 Then(/^I should see the power is "([^"]*)"$/) do |status|
-  within(:xpath, "//*[@for='powerStatus']/..") do
+  within(:xpath, '//*[@for=\'powerStatus\']/..') do
     repeat_until_timeout(message: "power is not #{status}") do
       break if has_content?(status)
       find(:xpath, '//button[@value="Get status"]').click
@@ -251,10 +250,10 @@ end
 
 # systemspage
 Given(/^I am on the Systems page$/) do
-  steps %(
+  steps '
     And I follow the left menu "Systems > System List > All"
     And I wait until I do not see "Loading..." text
-  )
+  '
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -279,7 +278,7 @@ end
 # rubocop:disable Metrics/BlockLength
 # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
 When(/^I install the needed packages for highstate in build host$/) do
-  packages = "bea-stax
+  packages = 'bea-stax
   bea-stax-api
   btrfsmaintenance
   btrfsprogs
@@ -458,7 +457,7 @@ When(/^I install the needed packages for highstate in build host$/) do
   xml-commons-apis
   xml-commons-resolver
   xorriso
-  xtables-plugins"
+  xtables-plugins'
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
 # rubocop:enable Metrics/BlockLength
@@ -476,8 +475,8 @@ end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
-  node.run("zypper lr -E | tail -n +5", verbose: true)
-  out, _code = node.run("zypper lr -E | tail -n +5 | wc -l")
+  node.run('zypper lr -E | tail -n +5', verbose: true)
+  out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
   raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
@@ -524,12 +523,12 @@ Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
 end
 
 When(/^I schedule a task to update ReportDB$/) do
-  steps %(
+  steps '
     When I follow the left menu "Admin > Task Schedules"
     And I follow "update-reporting-default"
     And I follow "mgr-update-reporting-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-  )
+  '
 end

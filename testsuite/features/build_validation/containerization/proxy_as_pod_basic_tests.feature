@@ -107,7 +107,7 @@ Feature: Register and test a Containerized Proxy
     And the system ID for "sle15sp4_minion" should be correct
     And the system name for "sle15sp4_minion" should be correct
     And the uptime for "sle15sp4_minion" should be correct
-    And I should see several text fields for "sle15sp4_minion"
+    And I should see several text fields
 
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area

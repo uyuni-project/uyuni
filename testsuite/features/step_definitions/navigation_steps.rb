@@ -393,7 +393,7 @@ Given(/^I am not authorized$/) do
   ensure
     visit Capybara.app_host
   end
-  raise "Button 'Sign In' not visible" unless find_button('Sign In').visible?
+  raise 'Button \'Sign In\' not visible' unless find_button('Sign In').visible?
 end
 
 When(/^I go to the home page$/) do
@@ -409,9 +409,9 @@ end
 Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   case section
   when 'Admin'
-    step %(I am authorized as "admin" with password "admin")
+    step 'I am authorized as "admin" with password "admin"'
   when 'Images'
-    step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
+    step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
   else
     log "Section #{section} not supported"
   end
@@ -484,7 +484,7 @@ end
 Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon|
   case icon
   when 'retracted'
-    content_selector = "i[class*='errata-retracted']"
+    content_selector = 'i[class*=\'errata-retracted\']'
   else
     raise "Unsupported icon '#{icon}' in the step definition"
   end
@@ -531,36 +531,36 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   end
   next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
-  find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']", wait: 0).any?
+  find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click if all(:xpath, '//header//i[@class=\'fa fa-sign-out\']', wait: 0).any?
 
   raise 'Login page is not correctly loaded' unless has_field?('username')
   fill_in('username', with: user)
   fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
-  step %(I should be logged in)
+  step 'I should be logged in'
 end
 
 Given(/^I am authorized$/) do
-  step %(I am authorized as "testing" with password "testing")
+  step 'I am authorized as "testing" with password "testing"'
 end
 
 When(/^I sign out$/) do
-  find(:xpath, "//a[@href='/rhn/Logout.do']").click
+  find(:xpath, '//a[@href=\'/rhn/Logout.do\']').click
 end
 
 Then(/^I should not be authorized$/) do
-  raise 'User is authorized' if has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise 'User is authorized' if has_xpath?('//a[@href=\'/rhn/Logout.do\']')
 end
 
 Then(/^I should be logged in$/) do
-  xpath_query = "//a[@href='/rhn/Logout.do']"
+  xpath_query = '//a[@href=\'/rhn/Logout.do\']'
   # Check if the user is logged in, using the specified wait_time
   raise 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 2)
 end
 
 Then(/^I am logged in$/) do
-  raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
+  raise 'User is not logged in' unless find(:xpath, '//a[@href=\'/rhn/Logout.do\']').visible?
   # text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   # Workaround: Ignore the fact that the message is not shown
   # TODO: restore this as soon as the related issue is fixed: https://github.com/SUSE/spacewalk/issues/19369
@@ -573,7 +573,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step %(I check "Fake Base Channel" in the list)
+  step 'I check "Fake Base Channel" in the list'
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -703,11 +703,11 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
   repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
     visit current_url
     # get all texts in the table column under the "Status" header
-    status_tds = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
+    status_tds = '//tr/td[count(//th[contains(*/text(), \'Status\')]/preceding-sibling::*) + 1]'
     statuses = all(:xpath, status_tds).map(&:text)
 
     # get all texts in the table column under the "Start time" header
-    start_time_tds = "//tr/td[count(//th[contains(*/text(), 'Start Time')]/preceding-sibling::*) + 1]"
+    start_time_tds = '//tr/td[count(//th[contains(*/text(), \'Start Time\')]/preceding-sibling::*) + 1]'
     start_times = all(:xpath, start_time_tds).map(&:text)
 
     # disregard any number of initial unimportant rows, that is:
@@ -766,7 +766,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should not see a warning sign$/) do
-  raise 'Warning detected' unless page.has_no_xpath?("//*[contains(@class, 'fa fa-li fa-exclamation-triangle text-warning')]")
+  raise 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa fa-li fa-exclamation-triangle text-warning\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
@@ -782,7 +782,7 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
 end
 
 When(/^I check the first patch in the list$/) do
-  step %(I check the first row in the list)
+  step 'I check the first row in the list'
 end
 
 When(/^I click on the red confirmation button$/) do
@@ -790,7 +790,7 @@ When(/^I click on the red confirmation button$/) do
 end
 
 When(/^I click on the clear SSM button$/) do
-  find_and_wait_click(:xpath, "//*[@id='clear-ssm']").click
+  find_and_wait_click(:xpath, '//*[@id=\'clear-ssm\']').click
 end
 
 When(/^I click on the filter button$/) do
@@ -816,35 +816,35 @@ end
 
 When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host|
   system_name = get_system_name(host)
-  find("input[placeholder='Filter by System Name: ']").set(system_name)
+  find('input[placeholder=\'Filter by System Name: \']').set(system_name)
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  find("input[placeholder='Filter by Package Name: ']").set(input)
+  find('input[placeholder=\'Filter by Package Name: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
-  find("input[placeholder='Filter by Synopsis: ']").set(input)
+  find('input[placeholder=\'Filter by Synopsis: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered channel name$/) do |input|
-  find("input[placeholder='Filter by Channel Name: ']").set(input)
+  find('input[placeholder=\'Filter by Channel Name: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
-  find("input[name='product-description-filter']").set(input)
+  find('input[name=\'product-description-filter\']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
-  find("input[placeholder='Filter by Result: ']").set(input)
+  find('input[placeholder=\'Filter by Result: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered snippet name$/) do |input|
-  find("input[placeholder='Filter by Snippet Name: ']").set(input)
+  find('input[placeholder=\'Filter by Snippet Name: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
-  find("input[placeholder='Filter by formula name']").set(input)
+  find('input[placeholder=\'Filter by formula name\']').set(input)
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
@@ -883,8 +883,8 @@ end
 
 When(/^I check the first row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
-    row.find(:xpath, ".//input[@type='checkbox']", match: :first).set(true)
+    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[.//td]', match: :first)
+    row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end
 
@@ -971,7 +971,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
 end
 
 Then(/^I should see a Sign Out link$/) do
-  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless has_xpath?('//a[@href=\'/rhn/Logout.do\']')
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
@@ -1023,7 +1023,7 @@ end
 
 # Check the Blackbox Exporter in the Prometheus formula
 When(/^I check the blackbox exporter$/) do
-  step %(I check "prometheus#blackbox_exporter#enabled")
+  step 'I check "prometheus#blackbox_exporter#enabled"'
 end
 
 # Navigate to a service endpoint
@@ -1054,7 +1054,7 @@ When(/^I enter the "([^"]*)" hostname as the Prometheus URL$/) do |host|
 end
 
 When(/^I select the next maintenance window$/) do
-  find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
+  find(:xpath, '//select[@id=\'maintenance-window-select\']/option', match: :first).select_option
 end
 
 When(/^I enter the server hostname as the redfish server address$/) do
@@ -1066,7 +1066,7 @@ When(/^I clear browser cookies$/) do
 end
 
 When(/^I close the modal dialog$/) do
-  find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
+  find(:xpath, '//*[contains(@class, \'modal-header\')]/button[contains(@class, \'close\')]').click
 end
 
 When(/^I refresh the page$/) do
@@ -1080,7 +1080,7 @@ When(/^I refresh the page$/) do
 end
 
 When(/^I make a list of the existing systems$/) do
-  system_elements_list = find_all(:xpath, "//td[contains(@class, 'sortedCol')]")
+  system_elements_list = find_all(:xpath, '//td[contains(@class, \'sortedCol\')]')
   $systems_list = []
   system_elements_list.each { |el| $systems_list << el.text }
 end
@@ -1109,13 +1109,13 @@ end
 
 # Confirm user has landed on a system's overview page
 Then(/^I should land on system's overview page$/) do
-  steps %(
+  steps '
     Then I should see a "System Status" text
     And I should see a "System Info" text
     And I should see a "System Events" text
     And I should see a "System Properties" text
     And I should see a "Subscribed Channels" text
-        )
+        '
 end
 
 # In case of a search reindex not having finished yet, keep retrying until successful search or timeout
@@ -1137,7 +1137,7 @@ When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
 end
 
 When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
-  step %(I click on "var-hostname")
+  step 'I click on "var-hostname"'
   system_name = get_system_name(host)
   step %(I enter "#{system_name}" as "Enter variable value")
   send_keys(:return)
@@ -1146,7 +1146,7 @@ end
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
   system_name = get_system_name(host)
   within(:xpath, '//section') do
-    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
+    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[.//td]', match: :first)
     within(row) do
       raise "Text '#{system_name}' not found" unless has_text?(system_name)
     end
@@ -1158,7 +1158,7 @@ When(/^I enter "([^"]*)" as the left menu search field$/) do |search_text|
 end
 
 Then(/^I should see left menu empty$/) do
-  raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
+  raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?('//*[contains(@class, \'level1\')]/*/*[contains(@class, \'nodeLink\')]')
 end
 
 Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
@@ -1169,10 +1169,10 @@ Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
   now = Time.now
   execute_script 'window.stop()'
   # find row with corresponding task name
-  page.find_all(:xpath, "//table[@class='table table-responsive']//tr").each do |tr|
+  page.find_all(:xpath, '//table[@class=\'table table-responsive\']//tr').each do |tr|
     next unless tr.has_text?(task_name)
     # if task name is found, iterate through the columns to find the timestamp
-    page.find_all(:xpath, "//table[@class='table table-responsive']//td").each do |td|
+    page.find_all(:xpath, '//table[@class=\'table table-responsive\']//td').each do |td|
       # if a text matching the format xx:xx is found, get and save the text
       next unless td.text.match(/\d{2}:\d{2}/)
       # Text from cell, parsed to a Time object must match now +- 5 seconds

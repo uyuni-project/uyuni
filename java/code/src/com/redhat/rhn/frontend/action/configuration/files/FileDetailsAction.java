@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.configuration.files;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -98,7 +97,6 @@ public class FileDetailsAction extends RhnAction {
         cff.updateFromRevision(request, cr);
         setupRequestParams(context, cr);
         request.setAttribute("form", cff);
-        request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute(ManageRevisionSetup.MAX_SIZE, StringUtil
                 .displayFileSize(ConfigFile.getMaxFileSize()));
 

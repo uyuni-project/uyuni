@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -187,6 +186,10 @@ public class ScheduleDetailAction extends RhnAction {
                 TaskomaticApi tapi = new TaskomaticApi();
                 Map<String, Object> schedule = tapi.lookupScheduleById(loggedInUser, schid);
                 String scheduleName = (String) schedule.get("job_label");
+                if (scheduleName.equals("payg-dimension-computation-default")) {
+                    // not modifiable
+                    return;
+                }
                 String bunchName = (String) schedule.get("bunch");
                 request.setAttribute("schedulename", scheduleName);
                 form.set("schedulename", scheduleName);
@@ -212,7 +215,9 @@ public class ScheduleDetailAction extends RhnAction {
         List<Map<String, String>> dropDown = new ArrayList<>();
         try {
             List<Map<String, Object>> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
-            bunches.removeIf(bunch -> TaskoFactory.HIDDEN_BUNCHES.contains(bunch.get("name")));
+            // Since recurring states have their own place in the webUI we don't
+            // want them to show up in the Task Schedules UI
+            bunches.removeIf(bunch -> bunch.get("name").equals("recurring-action-executor-bunch"));
 
             for (Map<String, Object> b : bunches) {
                 addOption(dropDown, (String)b.get("name"), (String)b.get("name"));

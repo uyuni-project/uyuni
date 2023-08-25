@@ -248,16 +248,8 @@ public class CloudPaygManager {
         }
 
         // files of this package should not be modified
-        String[] cmd = {"/usr/bin/rpm", "-V", "billing-data-service"};
-        SystemCommandExecutor scexec = new SystemCommandExecutor();
-        int retcode = scexec.execute(cmd);
-        if (retcode != 0) {
-            // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
-            if (scexec.getLastCommandOutput().lines().anyMatch(l -> l.charAt(2) == '5')) {
-                LOG.error("Billing Data Service has modifications");
-                LOG.info(scexec.getLastCommandOutput());
-                return false;
-            }
+        if (hasPackageModifications("billing-data-service")) {
+            return false;
         }
 
         // we only need to check compliance for SUMA PAYG
@@ -272,8 +264,62 @@ public class CloudPaygManager {
             LOG.info(e.getMessage(), e);
             return false;
         }
-        //TODO: Check billing adapter report
+
+        // files of this package should not be modified
+        if (hasPackageModifications("csp-billing-adapter-service") ||
+                hasPackageModifications("python3-csp-billing-adapter") ||
+                hasPackageModifications("python3-csp-billing-adapter-local")) {
+            return false;
+        }
+        if (cloudProvider.equals(CloudProvider.AWS) &&
+                hasPackageModifications("python3-csp-billing-adapter-amazon")) {
+            return false;
+        }
+        if (cloudProvider.equals(CloudProvider.AZURE) &&
+                hasPackageModifications("python3-csp-billing-adapter-azure")) {
+            return false;
+        }
+        return isServiceRunning("csp-billing-adapter.service");
+    }
+
+    /**
+     * Test if the provided service is running
+     * @param serviceIn service name
+     * @return true when it is running, otherwise false
+     */
+    protected boolean isServiceRunning(String serviceIn) {
+        String[] cmd = {"/usr/bin/systemctl", "-q", "is-active", serviceIn};
+        SystemCommandExecutor scexec = new SystemCommandExecutor();
+        int retcode = scexec.execute(cmd);
+        if (retcode != 0) {
+            LOG.error("Service '{}' is not running.", serviceIn);
+            return false;
+        }
         return true;
+    }
+
+    /**
+     * Test if the files of the given package name have modifications.
+     * It checks only the checksum of the files. Modifications of the permissions
+     * or ownership are not detected.
+     * Also if the package is not installed does not result in an error.
+     * @param pkg the package name to check
+     * @return true if the package is installed and files were modified, otherwise false
+     */
+    protected boolean hasPackageModifications(String pkg) {
+        String[] cmd = {"/usr/bin/rpm", "-V", pkg};
+        SystemCommandExecutor scexec = new SystemCommandExecutor();
+        int retcode = scexec.execute(cmd);
+        if (retcode != 0) {
+            // missing packages result in message "package ... is not installed" and will not match "5"
+            // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
+            if (scexec.getLastCommandOutput().lines().anyMatch(l -> l.charAt(2) == '5')) {
+                LOG.error("Package '{}' was modifified", pkg);
+                LOG.info(scexec.getLastCommandOutput());
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

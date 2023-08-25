@@ -851,19 +851,11 @@ public class ConfigDefaults {
         }
         connectionUrl.append(name);
 
-        if (useSsl) {
+        if (!"localhost".equals(host) && useSsl) {
             connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert + "&sslmode=" + sslmode);
         }
 
         return connectionUrl.toString();
-    }
-
-    /**
-     * is documentation available
-     * @return true if so
-     */
-    public boolean isDocAvailable() {
-        return !isSpacewalk();
     }
 
     /**
