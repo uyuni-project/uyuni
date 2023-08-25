@@ -10287,21 +10287,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;컨테이너 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;OS 이미지 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>&lt;strong&gt;OS 이미지 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
         <context-group name="ctx">
@@ -10315,23 +10301,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target>시스템에 가상화 시스템 유형을 추가한 후에 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지를 확인하기 위해 몇 가지 추가적인 단계를 실행했습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>시스템에 가상화 시스템 유형을 추가한 후에, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
-      </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
         <target state="needs-adaptation">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10858,13 +10830,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참조:&lt;/strong&gt; 이 작업을 수행하면 상태가 적용되지 &lt;em&gt;않습니다&lt;em&gt;. 상태를 적용하려면, &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt;&lt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참조:&lt;/strong&gt; 이 작업을 수행하면 &lt;em&gt; 상태가 적용되&lt;em&gt;않습니다. 상태를 적용하려면, &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; 를 실행하십시오.</target>
-      </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11022,15 +10987,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-        <target state="needs-adaptation">용량제 {0} 생성됨</target>
+        <target state="final">PAYG {0} 생성됨</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-        <target state="needs-adaptation">용량제 호스트 이미 있음</target>
+        <target state="final">PAYG 호스트 이미 있음</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-        <target state="needs-adaptation">용량제 {0} 삭제됨</target>
+        <target state="final">PAYG {0} 삭제됨</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
@@ -11038,11 +11003,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-        <target state="needs-adaptation">용량제 인증 업데이트</target>
+        <target state="final">PAYG 인증 업데이트</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-        <target state="needs-adaptation">용량제 업데이트 RMT 호스트</target>
+        <target state="final">PAYG 업데이트 RMT 호스트</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11301,45 +11266,49 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="final">Salt 상태를 대상 시스템에 동기화</target>
       </trans-unit>
-    <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <target state="final">PAYG 인스턴스의 다른 제품 채널 아래에 있는 채널을 복제하는 것은 금지되어 있습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+        <target state="final">PAYG 경고: 제품 간 마이그레이션 시도가 감지되었습니다. 현재 PAYG 플랜에서는 openSUSE에서 SLES로 또는 이와 유사한 제품으로의 마이그레이션이 허용되지 않습니다. 작업이 중단되었습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <target state="final">채널 동기화 금지됨</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ PAYG가 클라우드 공급자에게 회계 데이터를 보낼 수 없으므로 리포지토리 동기화는 금지됩니다.
+자세한 분석은 로그 파일을 참조하십시오.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <target state="final">
+@@PRODUCT_NAME@@ PAYG 시스템이 클라우드 공급자에게 회계 데이터를 보낼 수 없으므로 시도한 작업을 실행할 수 없습니다.
+자세한 분석은 로그 파일을 참조하십시오.
+	</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <target state="final">미니언 ID와 시스템 ID가 충돌하는 시스템이 발견되었습니다({0}, {1}). 온보딩이 중단되었습니다. 충돌하는 시스템을 먼저 제거하십시오({2}, {3}).</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \n데이터 센터 클라이언트를 관리하려면 관리자 =&gt; 설정 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
