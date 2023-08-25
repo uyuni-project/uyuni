@@ -1860,3 +1860,58 @@ When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
     output.include? '9100/tcp 9117/tcp 9187/tcp'
 end
+
+When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl restart #{service}", check_errors: true)
+end
+
+When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
+end
+
+When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|
+  node = get_system_name(minion)
+  command = "spacecmd -u admin -p admin -y system_delete #{node}"
+  get_target('server').run(command, check_errors: true, verbose: true)
+end
+
+When(/^I execute "([^"]*)" on the "([^"]*)"$/) do |command, host|
+  node = get_target(host)
+  node.run(command, check_errors: true, verbose: true)
+end
+
+When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.test_and_store_results_together('hostname', 'root', 500)
+  node.run('cloud-init status --wait', check_errors: true, verbose: false)
+
+  repeat_until_timeout(report_result: true) do
+    command_output, code = node.run('cloud-init status --wait', check_errors: true, verbose: false)
+    break if command_output.include?('done')
+    sleep 2
+    raise StandardError 'Error during cloud-init.' if code == 1
+  end
+end
+
+When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
+  # special handling for e.g. nested VMs that will only be crated later in the test suite
+  # this step is normally done in twopence_init.rb
+  node = get_target(host)
+
+  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+  node.init_hostname(hostname)
+
+  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  node.init_full_hostname(fqdn)
+
+  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  os_version, os_family = get_os_version(node)
+  node.init_os_family(os_family)
+  node.init_os_version(os_version)
+end
