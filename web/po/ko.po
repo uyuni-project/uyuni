@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-18 14:04+0200\n"
+"POT-Creation-Date: 2023-08-25 15:08+0200\n"
 "PO-Revision-Date: 2023-08-23 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -1218,7 +1218,8 @@ msgstr "선택한 채널의 동기화가 예정되었습니다."
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
-msgstr "'{product}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
+msgstr ""
+"'{product}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -1649,13 +1650,17 @@ msgstr "아래 버튼을 클릭하여 첫 번째 실행을 트리거할 수도 �
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {timeFromNow}에 시작되었습니다."
+msgstr ""
+"현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {timeFromNow}에 시작되었"
+"습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
-msgstr "마지막 일치 데이터는 {timeFromNow}에 계산되었으며, 이제 아래 버튼을 클릭하여 새 실행을 트리거할 수 있습니다."
+msgstr ""
+"마지막 일치 데이터는 {timeFromNow}에 계산되었으며, 이제 아래 버튼을 클릭하여 "
+"새 실행을 트리거할 수 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2505,7 +2510,8 @@ msgstr "{name} 환경 삭제됨"
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
-msgstr "이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
+msgstr ""
+"이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -2775,8 +2781,8 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
 msgstr ""
-"수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 <link>Highstate</link>를 적용하여 변경 사항을 "
-"적용하십시오."
+"수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 "
+"<link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2790,7 +2796,9 @@ msgstr "잘못된 대상 유형입니다."
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
-msgstr "수식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
+msgstr ""
+"수식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십"
+"시오."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3532,8 +3540,9 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해야 합니다. 데이터는 구성 설정과 관계없이 "
-"전송됩니다. 이 경고를 숨기려면 rhn.conf에서 'forward_registration = 1'을 설정하십시오."
+"SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해"
+"야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn."
+"conf에서 'forward_registration = 1'을 설정하십시오."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -4669,7 +4678,9 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
-msgstr "아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
+msgstr ""
+"아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩"
+"니다."
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
@@ -4993,8 +5004,9 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
-"부트스트랩 프로세스가 시작되었습니다. 시스템이 곧 다음 위치에 표시됨: <link>시스템</link>. 문제가 발생하면 오류 알림이 "
-"제공됩니다. 트랜잭션 시스템으로 작업 중인 경우 시스템 재부팅을 수행하여 등록 프로세스를 완료하십시오."
+"부트스트랩 프로세스가 시작되었습니다. 시스템이 곧 다음 위치에 표시됨: <link>"
+"시스템</link>. 문제가 발생하면 오류 알림이 제공됩니다. 트랜잭션 시스템으로 작"
+"업 중인 경우 시스템 재부팅을 수행하여 등록 프로세스를 완료하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -5041,8 +5053,8 @@ msgid ""
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
-"SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {productName}은(는) 시스템을 원격으로 준비하며 등록을 "
-"수행합니다."
+"SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {productName}은"
+"(는) 시스템을 원격으로 준비하며 등록을 수행합니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
@@ -5055,9 +5067,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"사용자는 부트스트랩 프로세스 중에만 영향을 미칩니다. 추가 연결은 rhn.conf에 지정된 사용자에 의해 수행됩니다. "
-"'ssh_push_sudo_user' 키의 기본 사용자는 'root'입니다. 이 사용자는 부트스트랩 절차 중에 {productName}의 "
-"SSH 키가 배포된 후에 설정됩니다."
+"사용자는 부트스트랩 프로세스 중에만 영향을 미칩니다. 추가 연결은 rhn.conf에 "
+"지정된 사용자에 의해 수행됩니다. 'ssh_push_sudo_user' 키의 기본 사용자는 "
+"'root'입니다. 이 사용자는 부트스트랩 절차 중에 {productName}의 SSH 키가 배포"
+"된 후에 설정됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"

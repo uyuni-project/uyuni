@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-18 14:04+0200\n"
+"POT-Creation-Date: 2023-08-25 15:08+0200\n"
 "PO-Revision-Date: 2023-08-24 01:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -140,7 +140,9 @@ msgstr "{name}を{action}してよろしいですか"
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択されています)"
+msgstr ""
+"選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択さ"
+"れています)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -567,7 +569,8 @@ msgstr "状態のランキングを編集するには、それらをドラッグ
 
 #: ../html/src/components/states-picker.tsx:405
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
+msgstr ""
+"設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
 
 #: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
@@ -1223,7 +1226,9 @@ msgstr "選択されたチャンネルは同期のスケジュールに成功し
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
-msgstr "'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認してください。"
+msgstr ""
+"'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認し"
+"てください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -1664,7 +1669,9 @@ msgstr "マッチングデータは現在計算中です。 {timeFromNow}に開�
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
-msgstr "直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
+msgstr ""
+"直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押す"
+"ことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2529,7 +2536,9 @@ msgstr "環境{name}を削除しました"
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
-msgstr "この環境は <link>自動インストールディストリビューション</link>で使用されているため、削除できません。"
+msgstr ""
+"この環境は <link>自動インストールディストリビューション</link>で使用されてい"
+"るため、削除できません。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -2801,8 +2810,8 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
 msgstr ""
-"formulaを保存しました。有効化されたformula内で設定オプションを編集し、<link>highstate</link>を適用して変更を有効にして"
-"ください。"
+"formulaを保存しました。有効化されたformula内で設定オプションを編集し、"
+"<link>highstate</link>を適用して変更を有効にしてください。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2816,7 +2825,9 @@ msgstr "ターゲットタイプが正しくありません。"
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
-msgstr "formulaを保存しました。<link>highstate</link>を適用して変更を有効にしてください。"
+msgstr ""
+"formulaを保存しました。<link>highstate</link>を適用して変更を有効にしてくださ"
+"い。"
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3083,7 +3094,9 @@ msgstr "選択したプロファイルを削除してよろしいですか？"
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
-msgstr "選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択されています)"
+msgstr ""
+"選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択"
+"されています)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3153,7 +3166,9 @@ msgstr "選択したストアを削除してよろしいですか？"
 #: ../html/src/manager/images/image-stores.tsx:237
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr "選択したストアを削除してよろしいですか？ ({count}個のストアが選択されています)"
+msgstr ""
+"選択したストアを削除してよろしいですか？ ({count}個のストアが選択されていま"
+"す)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3510,7 +3525,9 @@ msgstr "選択したイメージを削除してよろしいですか？"
 #: ../html/src/manager/images/image-view.tsx:741
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr "選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されています)"
+msgstr ""
+"選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されてい"
+"ます)"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3565,8 +3582,9 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されま"
-"す。この警告を非表示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
+"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに"
+"転送する必要があります。データは設定とは関係なく送信されます。この警告を非表"
+"示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -4717,7 +4735,9 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
-msgstr "サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールされた時間はサーバ時間になります。"
+msgstr ""
+"サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールさ"
+"れた時間はサーバ時間になります。"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
@@ -5042,8 +5062,10 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
-"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示されます: <link>システム</link>。問題が発生した場合、エラー通知が届"
-"きます。トランザクションシステムで作業している場合は、システムの再起動を実行して、登録プロセスを完了してください。"
+"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示され"
+"ます: <link>システム</link>。問題が発生した場合、エラー通知が届きます。トラン"
+"ザクションシステムで作業している場合は、システムの再起動を実行して、登録プロ"
+"セスを完了してください。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -5092,8 +5114,8 @@ msgid ""
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
-"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができます。 "
-"{productName}はシステムを遠隔から準備し、登録処理を実施します。"
+"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができま"
+"す。 {productName}はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
@@ -5106,9 +5128,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_pu"
-"sh_sudo_user'の鍵に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置したあと、ブートストラップ処"
-"理の際に設定されます。"
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対して"
+"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user'の鍵"
+"に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置し"
+"たあと、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
