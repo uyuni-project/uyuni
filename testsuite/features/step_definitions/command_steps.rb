@@ -1521,6 +1521,11 @@ When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
   node.run("systemctl restart #{service}", check_errors: true)
 end
 
+When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
+end
+
 When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|
   node = get_system_name(minion)
   command = "spacecmd -u admin -p admin -y system_delete #{node}"
