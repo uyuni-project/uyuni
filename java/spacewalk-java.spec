@@ -631,6 +631,9 @@ rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
+# create log dir
+mkdir -p $RPM_BUILD_ROOT%{_var}/log/rhn
+
 # Prettifying symlinks
 mv $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
 
@@ -677,11 +680,6 @@ systemctl start rngd ||:
 %endif
 
 %post config
-if [ ! -d /var/log/rhn ]; then
-    mkdir /var/log/rhn
-    chown root:%{apache_group} /var/log/rhn
-    chmod 770 /var/log/rhn
-fi
 if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
     touch /var/log/rhn/rhn_web_api.log
 fi
@@ -776,6 +774,12 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 %config %{_sysconfdir}/logrotate.d/gatherer
 %dir %{_datadir}/spacewalk
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
+
 
 %files lib
 %defattr(644,root,root,755)
