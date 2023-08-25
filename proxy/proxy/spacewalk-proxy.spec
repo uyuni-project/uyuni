@@ -284,26 +284,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
-sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
-
-# In case of an update, remove superfluous stuff
-# from cobbler-proxy.conf (bnc#796581)
-
-PROXY_CONF=/etc/apache2/conf.d/cobbler-proxy.conf
-TMPFILE=`mktemp`
-
-if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
-    grep -v "^ProxyPass /ks " $PROXY_CONF | \
-    grep -v "^ProxyPassReverse /ks " | \
-    grep -v "^ProxyPass /download " | \
-    grep -v "^ProxyPassReverse /download " > $TMPFILE
-    mv $TMPFILE $PROXY_CONF
-fi
-
-SSHUSER=mgrsshtunnel
-if getent passwd $SSHUSER | grep ":/home/$SSHUSER:" > /dev/null ; then
-  usermod -m -d %{_var}/lib/spacewalk/$SSHUSER $SSHUSER
-fi
 %endif
 
 %post redirect
