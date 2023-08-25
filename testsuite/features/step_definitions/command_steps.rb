@@ -966,9 +966,9 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
-  base_channel = BASE_CHANNEL_BY_CLIENT[host]
-  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
-  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
+  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
   cmd = if parent_channel.nil?
           "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
