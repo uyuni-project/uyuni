@@ -1,8 +1,10 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# requires core_srv_create_repository:
-#   I enable source package syncing
+# requires
+# - reposync/srv_create_fake_channels.feature
+# - reposync/srv_create_fake_repositories.feature
+# - reposync/srv_sync_fake_channels.feature
 
 @scope_configuration_channels
 Feature: Check if source packages were successfully synced

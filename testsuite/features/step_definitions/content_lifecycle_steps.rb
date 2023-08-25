@@ -70,7 +70,7 @@ When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
 end
 
-When(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
+When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
   key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
   ret_code = file_inject(

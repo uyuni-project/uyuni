@@ -14,6 +14,6 @@
 - features/reposync/reference_srv_check_reposync.feature
 
 
-#- features/reposync/srv_wait_for_reposync.feature
+#- features/reposync/srv_disable_scheduled_reposync.feature
 
 ## Channels and Product synchronization features END ###

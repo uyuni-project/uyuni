@@ -151,6 +151,7 @@ BULLET_STYLE = { 'failing' => 'fa-times text-danger',
 
 # Used for testing software installation/removal in BV
 # The value is the package to be installed/removed
+# noinspection RubyScope
 PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle_minion' => 'bison',
                       'ssh_minion' => 'bison',
@@ -219,17 +220,6 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
 
-# For containers we do not have SCC, so we set the Fake Base Channel
-# for sle_minion
-sle_base_channel =
-  if ENV['PROVIDER'].include? 'podman'
-    'Fake Base Channel'
-  elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
-    'openSUSE Leap 15.4 (x86_64)'
-  else
-    'SLES15-SP4-Pool'
-  end
-
 # Names of our base/parent channels
 # The keys are the Twopence targets
 # The values can be found in the webUI under Software -> Manage -> Channels -> Create Channel
@@ -237,10 +227,13 @@ sle_base_channel =
 BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                             {
                               'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
-                              'sle_minion' => sle_base_channel,
+                              'sle_minion' => 'SLES15-SP4-Pool',
+                              'sle_client' => 'SLES15-SP4-Pool',
                               'ssh_minion' => 'SLES15-SP4-Pool',
                               'rhlike_minion' => 'RHEL8-Pool for x86_64',
                               'deblike_minion' => 'ubuntu-2004-amd64-main',
+                              'pxeboot_minion' => 'SLES15-SP4-Pool',
+                              'buildhost' => 'SLES15-SP4-Pool',
                               'sle12sp4_client' => 'SLES12-SP4-Pool',
                               'sle12sp4_minion' => 'SLES12-SP4-Pool',
                               'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool',
@@ -307,11 +300,13 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                             },
                             'Uyuni' =>
                             {
-                              'proxy' => 'openSUSE Leap 15.4 (x86_64)',
-                              'sle_minion' => sle_base_channel,
+                              'proxy' => 'openSUSE Leap 15.5 (x86_64)',
+                              'sle_minion' => 'openSUSE Leap 15.5 (x86_64)',
                               'ssh_minion' => 'SLES15-SP4-Pool',
                               'rhlike_minion' => 'RHEL8-Pool for x86_64',
                               'deblike_minion' => 'ubuntu-2004-amd64-main',
+                              'pxeboot_minion' => 'SLES15-SP4-Pool',
+                              'buildhost' => 'SLES15-SP4-Pool',
                               'sle12sp4_minion' => 'SLES12-SP4-Pool',
                               'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool',
                               'sle12sp5_minion' => 'SLES12-SP5-Pool',
@@ -367,7 +362,15 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'opensuse154arm_ssh_minion' => 'openSUSE Leap 15.4 (aarch64)',
                               'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
                               'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)'
-                            } }.freeze
+                            },
+                           'Fake' =>
+                             {
+                               'sle_minion' => 'Fake-Base-Channel',
+                               'sle_client' => 'Fake-Base-Channel',
+                               'pxeboot_minion' => 'Fake-Base-Channel',
+                               'proxy' => 'Fake-Base-Channel',
+                               'buildhost' => 'Fake-Base-Channel'
+                             } }.freeze
 
 # Used for creating activation keys
 # The keys are the values of BASE_CHANNEL_BY_CLIENT
@@ -390,7 +393,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                             'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                             'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
-                            'Fake Base Channel' => 'fake_base_channel',
+                            'Fake-Base-Channel' => 'fake-base-channel',
                             'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                             'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                             'oraclelinux9 for x86_64' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
@@ -419,7 +422,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                             'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                             'AlmaLinux 9 (x86_64)' => 'no-appstream-alma-9-result-almalinux9-x86_64',
-                            'Fake Base Channel' => 'fake_base_channel',
+                            'Fake-Base-Channel' => 'fake-base-channel',
                             'CentOS 7 (x86_64)' => 'centos7-x86_64',
                             'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                             'Oracle Linux 9 (x86_64)' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
@@ -453,7 +456,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                             'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                             'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
                                             'almalinux9 for x86_64' => 'almalinux-9-x86_64',
-                                            'Fake Base Channel' => 'fake_base_channel-x86_64',
+                                            'Fake-Base-Channel' => 'fake-base-channel-x86_64',
                                             'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                             'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                             'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
@@ -482,7 +485,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                             'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                             'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
                                             'AlmaLinux 9 (x86_64)' => 'almalinux-9-x86_64-uyuni',
-                                            'Fake Base Channel' => 'fake_base_channel-x86_64',
+                                            'Fake-Base-Channel' => 'fake-base-channel-x86_64',
                                             'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
                                             'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                             'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
@@ -518,7 +521,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                                     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                                                     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                                                     'almalinux9 for x86_64' => nil,
-                                                    'Fake Base Channel' => nil,
+                                                    'Fake-Base-Channel' => nil,
                                                     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                                                     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
                                                     'oraclelinux9 for x86_64' => nil,
@@ -547,7 +550,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                                     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                                                     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                                                     'almalinux9 for x86_64' => nil,
-                                                    'Fake Base Channel' => nil,
+                                                    'Fake-Base-Channel' => nil,
                                                     'RHEL x86_64 Server 7' => 'centos-7-x86_64-uyuni',
                                                     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
                                                     'oraclelinux9 for x86_64' => nil,
@@ -627,101 +630,332 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'opensuse155arm_minion' => 'aarch64',
                       'opensuse155arm_ssh_minion' => 'aarch64' }.freeze
 
-CHANNEL_TO_SYNCH_BY_OS_VERSION = {
-  # 'default' is required for auto-installation tests.
+CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
+  # WARNING:
+  # - beta channels were removed because they are not selected and not currently synced, add them again when we will use them
+  # - sled channels for SUMA tools were removed as we are not currently synchronizing them
+  # - 'default' is required for auto-installation tests.
   'default' =>
-  %w[
-    sle-product-sles15-sp4-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp4
-    sle-manager-tools15-pool-x86_64-sled-sp4
-    sle-manager-tools15-beta-pool-x86_64-sp4
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-basesystem15-sp4-pool-x86_64
-    sle-module-server-applications15-sp4-pool-x86_64
-    sle-product-sles15-sp4-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp4
-    sle-manager-tools15-updates-x86_64-sled-sp4
-    sle-manager-tools15-beta-updates-x86_64-sp4
-    sle-module-containers15-sp4-updates-x86_64
-    sle-module-basesystem15-sp4-updates-x86_64
-    sle-module-server-applications15-sp4-updates-x86_64
-    sle15-sp4-installer-updates-x86_64
-    sle-module-desktop-applications15-sp4-pool-x86_64
-    sle-module-desktop-applications15-sp4-updates-x86_64
-    sle-module-devtools15-sp4-pool-x86_64
-    sle-module-devtools15-sp4-updates-x86_64
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-containers15-sp4-updates-x86_64
-  ],
-  '15-SP3' =>
-  %w[
-    sle-product-sles15-sp3-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp3
-    sle-manager-tools15-pool-x86_64-sled-sp3
-    sle-manager-tools15-beta-pool-x86_64-sp3
-    sle-module-containers15-sp3-pool-x86_64
-    sle-module-basesystem15-sp3-pool-x86_64
-    sle-module-server-applications15-sp3-pool-x86_64
-    sle-product-sles15-sp3-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp3
-    sle-manager-tools15-updates-x86_64-sled-sp3
-    sle-manager-tools15-beta-updates-x86_64-sp3
-    sle-module-containers15-sp3-updates-x86_64
-    sle-module-basesystem15-sp3-updates-x86_64
-    sle-module-server-applications15-sp3-updates-x86_64
-    sle15-sp3-installer-updates-x86_64
-    sle-module-desktop-applications15-sp3-pool-x86_64
-    sle-module-desktop-applications15-sp3-updates-x86_64
-    sle-module-devtools15-sp3-pool-x86_64
-    sle-module-devtools15-sp3-updates-x86_64
-    sle-module-containers15-sp3-pool-x86_64
-    sle-module-containers15-sp3-updates-x86_64
-  ],
-  '15-SP4' =>
-  %w[
-    sle-product-sles15-sp4-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp4
-    sle-manager-tools15-pool-x86_64-sled-sp4
-    sle-manager-tools15-beta-pool-x86_64-sp4
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-basesystem15-sp4-pool-x86_64
-    sle-module-server-applications15-sp4-pool-x86_64
-    sle-product-sles15-sp4-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp4
-    sle-manager-tools15-updates-x86_64-sled-sp4
-    sle-manager-tools15-beta-updates-x86_64-sp4
-    sle-module-containers15-sp4-updates-x86_64
-    sle-module-basesystem15-sp4-updates-x86_64
-    sle-module-server-applications15-sp4-updates-x86_64
-    sle15-sp4-installer-updates-x86_64
-    sle-module-desktop-applications15-sp4-pool-x86_64
-    sle-module-desktop-applications15-sp4-updates-x86_64
-    sle-module-devtools15-sp4-pool-x86_64
-    sle-module-devtools15-sp4-updates-x86_64
-    sle-module-containers15-sp4-pool-x86_64
-    sle-module-containers15-sp4-updates-x86_64
-    sle-module-suse-manager-proxy-4.3-pool-x86_64
-    sle-module-suse-manager-proxy-4.3-updates-x86_64
-    sle-module-server-applications15-sp4-pool-x86_64-proxy-4.3
-    sle-module-server-applications15-sp4-updates-x86_64-proxy-4.3
-    sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
-    sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
-    sle-product-suse-manager-proxy-4.3-pool-x86_64
-    sle-product-suse-manager-proxy-4.3-updates-x86_64
-    sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
-    sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
-    sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
-    sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
-    sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3
-    sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3
-    sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
-    sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
-    sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3
-  ],
-  '8.6' =>
-  %w[
-    res8-manager-tools-pool-x86_64
-    res8-manager-tools-updates-x86_64
-    el8-uyuni-client-x86_64
-  ]
+    %w[
+      sle-product-sles15-sp4-pool-x86_64
+      sle-manager-tools15-pool-x86_64-sp4
+      sle-module-containers15-sp4-pool-x86_64
+      sle-module-basesystem15-sp4-pool-x86_64
+      sle-module-server-applications15-sp4-pool-x86_64
+      sle-product-sles15-sp4-updates-x86_64
+      sle-manager-tools15-updates-x86_64-sp4
+      sle-module-containers15-sp4-updates-x86_64
+      sle-module-basesystem15-sp4-updates-x86_64
+      sle-module-server-applications15-sp4-updates-x86_64
+      sle15-sp4-installer-updates-x86_64
+      sle-module-desktop-applications15-sp4-pool-x86_64
+      sle-module-desktop-applications15-sp4-updates-x86_64
+      sle-module-devtools15-sp4-pool-x86_64
+      sle-module-devtools15-sp4-updates-x86_64
+      sle-module-containers15-sp4-pool-x86_64
+      sle-module-containers15-sp4-updates-x86_64
+    ],
+  'almalinux9' =>
+    %w[
+      almalinux9-appstream-x86_64
+      almalinux9-x86_64
+      almalinux9-uyuni-client-x86_64
+    ],
+  'debian-10' =>
+    %w[
+      debian-10-main-security-amd64
+      debian-10-main-updates-amd64
+      debian-10-pool-amd64
+      debian-10-suse-manager-tools-amd64
+      devel-debian-10-client-tools
+      debian-10-amd64-uyuni-client
+    ],
+  'debian-11' =>
+    %w[
+      debian-11-main-security-amd64
+      debian-11-main-updates-amd64
+      debian-11-pool-amd64
+      debian-11-suse-manager-tools-amd64
+      devel-debian-11-client-tools
+      debian-11-amd64-uyuni-client
+    ],
+  'sll-9' =>
+    %w[
+      sll-9-updates-x86_64
+      sll-as-9-updates-x86_64
+      sll-cb-9-updates-x86_64
+    ],
+  'el9' =>
+    %w[
+      el9-manager-tools-pool-x86_64-alma
+      el9-manager-tools-pool-x86_64
+      el9-manager-tools-pool-x86_64-ol9
+      el9-manager-tools-pool-x86_64-rocky
+      el9-manager-tools-updates-x86_64-alma
+      el9-manager-tools-updates-x86_64
+      el9-manager-tools-updates-x86_64-ol9
+      el9-manager-tools-updates-x86_64-rocky
+      el9-pool-x86_64
+    ],
+  'rockylinux-8' =>
+    %w[
+      rockylinux-8-appstream-x86_64
+      rockylinux-8-x86_64
+      rockylinux8-uyuni-client-x86_64
+    ],
+  'rockylinux-9' =>
+    %w[
+      rockylinux-9-appstream-x86_64
+      rockylinux-9-x86_64
+      rockylinux9-uyuni-client-x86_64
+    ],
+  'oraclelinux9' =>
+    %w[
+      oraclelinux9-appstream-x86_64
+      oraclelinux9-x86_64
+      oraclelinux9-uyuni-client-x86_64
+    ],
+  'sles12-sp4' =>
+    %w[
+      sles12-sp4-installer-updates-x86_64
+      sles12-sp4-ltss-updates-x86_64
+      sles12-sp4-pool-x86_64
+      sles12-sp4-updates-x86_64
+      sle-manager-tools12-updates-x86_64-sp4
+      sle-manager-tools12-pool-x86_64-sp4
+      sles12-sp4-uyuni-client-x86_64
+    ],
+  'sles12-sp5' =>
+    %w[
+      sles12-sp5-installer-updates-x86_64
+      sles12-sp5-pool-x86_64
+      sles12-sp5-updates-x86_64
+      sle-manager-tools12-updates-x86_64-sp5
+      sle-manager-tools12-pool-x86_64-sp5
+      sles12-sp5-uyuni-client-x86_64
+    ],
+  'sles15-sp1' =>
+    %w[
+      sle-product-sles15-sp1-ltss-updates-x86_64
+      sle-product-sles15-sp1-pool-x86_64
+      sle-product-sles15-sp1-updates-x86_64
+      sle-module-server-applications15-sp1-pool-x86_64
+      sle-module-server-applications15-sp1-updates-x86_64
+      sle-module-basesystem15-sp1-pool-x86_64
+      sle-module-basesystem15-sp1-updates-x86_64
+      sle-manager-tools15-updates-x86_64-sp1
+      sle-manager-tools15-pool-x86_64-sp1
+      sle15-sp1-installer-updates-x86_64
+      sles15-sp1-uyuni-client-x86_64
+    ],
+  'sles15-sp2' =>
+    %w[
+      sle-product-sles15-sp2-ltss-updates-x86_64
+      sle-product-sles15-sp2-pool-x86_64
+      sle-product-sles15-sp2-updates-x86_64
+      sle-module-server-applications15-sp2-pool-x86_64
+      sle-module-server-applications15-sp2-updates-x86_64
+      sle-module-devtools15-sp2-pool-x86_64
+      sle-module-devtools15-sp2-updates-x86_64
+      sle-module-desktop-applications15-sp2-pool-x86_64
+      sle-module-desktop-applications15-sp2-updates-x86_64
+      sle-module-basesystem15-sp2-pool-x86_64
+      sle-module-basesystem15-sp2-updates-x86_64
+      sle-manager-tools15-updates-x86_64-sp2
+      sle-manager-tools15-pool-x86_64-sp2
+      sle15-sp2-installer-updates-x86_64
+      sles15-sp2-uyuni-client-x86_64
+    ],
+  'sles15-sp3' =>
+    %w[
+      sle-product-sles15-sp3-ltss-updates-x86_64
+      sle-product-sles15-sp3-pool-x86_64
+      sle-manager-tools15-pool-x86_64-sp3
+      sle-module-containers15-sp3-pool-x86_64
+      sle-module-basesystem15-sp3-pool-x86_64
+      sle-module-server-applications15-sp3-pool-x86_64
+      sle-product-sles15-sp3-updates-x86_64
+      sle-manager-tools15-updates-x86_64-sp3
+      sle-module-containers15-sp3-updates-x86_64
+      sle-module-basesystem15-sp3-updates-x86_64
+      sle-module-server-applications15-sp3-updates-x86_64
+      sle15-sp3-installer-updates-x86_64
+      sle-module-desktop-applications15-sp3-pool-x86_64
+      sle-module-desktop-applications15-sp3-updates-x86_64
+      sle-module-devtools15-sp3-pool-x86_64
+      sle-module-devtools15-sp3-updates-x86_64
+      sle-module-containers15-sp3-pool-x86_64
+      sle-module-containers15-sp3-updates-x86_64
+      sles15-sp3-uyuni-client-x86_64
+    ],
+  'sles15-sp4' =>
+    %w[
+      sle15-sp4-installer-updates-x86_64
+      sle-manager-tools15-pool-x86_64-sp4
+      sle-manager-tools15-updates-x86_64-sp4
+      sle-module-basesystem15-sp4-pool-x86_64
+      sle-module-basesystem15-sp4-updates-x86_64
+      sle-module-containers15-sp4-pool-x86_64
+      sle-module-containers15-sp4-updates-x86_64
+      sle-module-desktop-applications15-sp4-pool-x86_64
+      sle-module-desktop-applications15-sp4-updates-x86_64
+      sle-module-devtools15-sp4-pool-x86_64
+      sle-module-devtools15-sp4-updates-x86_64
+      sle-module-server-applications15-sp4-pool-x86_64
+      sle-module-server-applications15-sp4-updates-x86_64
+      sle-product-sles15-sp4-pool-x86_64
+      sle-product-sles15-sp4-updates-x86_64
+      sles15-sp4-uyuni-client-x86_64
+    ],
+  'sles15-sp5' =>
+    %w[
+      sle15-sp5-installer-updates-x86_64
+      sle-manager-tools15-pool-x86_64-sp5
+      sle-manager-tools15-updates-x86_64-sp5
+      sle-module-basesystem15-sp5-pool-x86_64
+      sle-module-basesystem15-sp5-updates-x86_64
+      sle-module-containers15-sp5-pool-x86_64
+      sle-module-containers15-sp5-updates-x86_64
+      sle-module-desktop-applications15-sp5-pool-x86_64
+      sle-module-desktop-applications15-sp5-updates-x86_64
+      sle-module-devtools15-sp5-pool-x86_64
+      sle-module-devtools15-sp5-updates-x86_64
+      sle-module-server-applications15-sp5-pool-x86_64
+      sle-module-server-applications15-sp5-updates-x86_64
+      sle-product-sles15-sp5-pool-x86_64
+      sle-product-sles15-sp5-updates-x86_64
+      sles15-sp5-uyuni-client-x86_64
+    ],
+  'res7' =>
+    %w[
+      rhel-x86_64-server-7
+      res7-suse-manager-tools-x86_64
+      res7-x86_64
+    ],
+  'res8' =>
+    %w[
+      rhel8-pool-x86_64
+      res-8-updates-x86_64
+      res-as-8-updates-x86_64
+      res-cb-8-updates-x86_64
+      res8-manager-tools-pool-x86_64
+      res8-manager-tools-updates-x86_64
+      sll8-uyuni-client-x86_64
+    ],
+  'leap15.5-x86_64' =>
+    %w[
+      opensuse_leap15_5-x86_64
+      opensuse_leap15_5-x86_64-non-oss
+      opensuse_leap15_5-x86_64-non-oss-updates
+      opensuse_leap15_5-x86_64-updates
+      opensuse_leap15_5-x86_64-backports-updates
+      opensuse_leap15_5-x86_64-sle-updates
+      opensuse_leap15_5-uyuni-client-x86_64
+    ],
+  'leap15.4-aarch64' =>
+    %w[
+      opensuse-backports-15.4-updates-aarch64
+      opensuse-leap-15.4-pool-aarch64
+      opensuse-leap-15.4-updates-aarch64
+      sle-manager-tools15-updates-aarch64-opensuse-15.4
+      sle-manager-tools15-pool-aarch64-opensuse-15.4
+    ],
+  'leap15.5-aarch64' =>
+    %w[
+      opensuse-backports-15.5-updates-aarch64
+      opensuse-leap-15.5-pool-aarch64
+      opensuse-leap-15.5-updates-aarch64
+      opensuse-sle-15.5-updates-aarch64
+      sle-manager-tools15-updates-aarch64-opensuse-15.5
+      sle-manager-tools15-pool-aarch64-opensuse-15.5
+    ],
+  'suse-microos-5.1' =>
+    %w[
+      suse-microos-5.1-pool-x86_64
+      suse-microos-5.1-updates-x86_64
+      sle-manager-tools-for-micro5-updates-x86_64-5.1
+      sle-manager-tools-for-micro5-pool-x86_64-5.1
+      sle-micro-5.1-uyuni-client-x86_64
+    ],
+  'suse-microos-5.2' =>
+    %w[
+      suse-microos-5.2-pool-x86_64
+      suse-microos-5.2-updates-x86_64
+      sle-manager-tools-for-micro5-updates-x86_64-5.2
+      sle-manager-tools-for-micro5-pool-x86_64-5.2
+      suse-microos-5.2-uyuni-client-x86_64
+    ],
+  'sle-micro-5.3' =>
+    %w[
+      sle-micro-5.3-pool-x86_64
+      sle-micro-5.3-updates-x86_64
+      sle-manager-tools-for-micro5-updates-x86_64-5.3
+      sle-manager-tools-for-micro5-pool-x86_64-5.3
+      suse-microos-5.3-uyuni-client-x86_64
+    ],
+  'sle-micro-5.4' =>
+    %w[
+      sle-micro-5.4-pool-x86_64
+      sle-micro-5.4-updates-x86_64
+      sle-manager-tools-for-micro5-updates-x86_64-5.4
+      sle-manager-tools-for-micro5-pool-x86_64-5.4
+      sle-micro-5.4-uyuni-client-x86_64
+    ],
+  'ubuntu-2004' =>
+    %w[
+      ubuntu-2004-amd64-main-amd64
+      ubuntu-2004-amd64-main-security-amd64
+      ubuntu-2004-amd64-main-updates-amd64
+      ubuntu-20.04-suse-manager-tools-amd64
+    ],
+  'ubuntu-2204' =>
+    %w[
+      ubuntu-2204-amd64-main-amd64
+      ubuntu-2204-amd64-main-security-amd64
+      ubuntu-2204-amd64-main-updates-amd64
+      ubuntu-22.04-suse-manager-tools-amd64
+    ],
+  'fake' =>
+    %w[
+      fake-base-channel
+      fake_child_channel
+      fake-base-channel-i586
+      fake-child-channel-i586
+      test-base-channel-x86_64
+      test-child-channel-x86_64
+      fake-base-channel-debian-like
+      fake-base-channel-rh-like
+    ],
+  'suma-proxy-43' =>
+    %w[
+      sle-product-suse-manager-proxy-4.3-pool-x86_64
+      sle-product-suse-manager-proxy-4.3-updates-x86_64
+      sle-module-suse-manager-proxy-4.3-pool-x86_64
+      sle-module-suse-manager-proxy-4.3-updates-x86_64
+    ],
+  'suma-retail-branch-server-43' =>
+    %w[
+      sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
+      sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
+      sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
+      sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+    ],
+  'uyuni-proxy' =>
+    %w[
+      opensuse_leap15_4
+      opensuse_leap15_4-non-oss
+      opensuse_leap15_4-non-oss-updates
+      opensuse_leap15_4-updates
+      opensuse_leap15_4-backports-updates
+      opensuse_leap15_4-sle-updates
+      uyuni-proxy-devel-leap-x86_64
+      opensuse_leap15_4-uyuni-client-devel
+    ],
+  'uyuni-retail-branch-server' =>
+    %w[
+      sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
+      sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
+      sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
+      sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+    ]
 }.freeze

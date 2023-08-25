@@ -36,4 +36,4 @@ Feature: API "channel" namespace and sub-namespaces
     Then "foobar" should not get listed with a call of listSoftwareChannels
 
   Scenario: Check last synchronization of a synced channel
-    Then channel "fake-i586-channel" should have attribute "yumrepo_last_sync" that is a date
+    Then channel "fake-base-channel-i586" should have attribute "yumrepo_last_sync" that is a date
