@@ -121,26 +121,7 @@ if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 fi
-if [ -e /etc/squid/squid.conf ]; then
-    sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
-    if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
-        sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
-    fi
-    if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
-        sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
-    fi
-    if ! grep venv-enabled /etc/squid/squid.conf >/dev/null; then
-        sed -i 's;\(refresh_pattern /pub/repositories.*\);\1\nrefresh_pattern /pub/repositories/.*/venv-enabled-.*.txt$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
-    fi
-fi
 %endif
-if [ $1 -eq 2 ]
-then
-  if [ -e %{apacheconfdir}/vhosts.d/ssl.conf ]
-  then
-    sed 's/^SSLProtocol all.*$//g' %{apacheconfdir}/vhosts.d/ssl.conf
-  fi
-fi
 
 %files
 %defattr(-,root,root,-)
