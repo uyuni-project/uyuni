@@ -495,6 +495,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                                     'ubuntu-2204-amd64-main' => nil,
                                                     'debian-10-pool' => 'debian-10-pool-amd64',
                                                     'debian-11-pool' => 'debian-11-pool-amd64',
+                                                    'debian-12-pool' => 'debian-12-pool-amd64',
                                                     'openSUSE-Leap-15.4-Pool for aarch64' => nil,
                                                     'openSUSE-Leap-15.5-Pool for aarch64' => nil
                                                   },
