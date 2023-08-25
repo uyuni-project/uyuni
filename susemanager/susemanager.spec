@@ -244,39 +244,6 @@ popd
 %endif
 
 %post
-POST_ARG=$1
-if [ -f /etc/sysconfig/atftpd ]; then
-  . /etc/sysconfig/atftpd
-  if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
-    sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "%{serverdir}/tftpboot"
-  fi
-fi
-if [ ! -d %{serverdir}/tftpboot ]; then
-  mkdir -p %{serverdir}/tftpboot
-  chmod 750 %{serverdir}/tftpboot
-  chown %{apache_user}:%{tftp_group} %{serverdir}/tftpboot
-fi
-# XE appliance overlay file created this with different user
-chown root.root /etc/sysconfig
-if [ $POST_ARG -eq 2 ] ; then
-    # when upgrading make sure /var/spacewalk/systems has the correct perms and owner
-    MOUNT_POINT=$(grep -oP "^mount_point =\s*\K([^ ]+)" /etc/rhn/rhn.conf || echo "/var/spacewalk")
-    SYSTEMS_DIR="$MOUNT_POINT/systems"
-    if [[ -d "$MOUNT_POINT" && ! -d "$SYSTEMS_DIR" ]]; then
-        mkdir $SYSTEMS_DIR
-    fi
-    if [ -d "$SYSTEMS_DIR" ]; then
-        chmod 775 "$SYSTEMS_DIR"
-        chown %{apache_user}:%{apache_group} "$SYSTEMS_DIR"
-    fi
-fi
-# else new install and the systems dir should be created by spacewalk-setup
-# Fix permissions for existing swapfiles (bsc#1131954, CVE-2019-3684)
-if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
-    chmod 600 /SWAPFILE
-fi
-
 %if !0%{?suse_version}
 sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %endif
