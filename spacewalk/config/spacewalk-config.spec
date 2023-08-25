@@ -129,43 +129,14 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %endif
 
 %pre
-# This section is needed here because previous versions of spacewalk-config
-# (and rhn-satellite-config) "owned" the satellite-httpd service. We need
-# to keep this section here indefinitely, because Satellite 5.2 could
-# be upgraded directly to our version of Spacewalk.
-if [ -f /etc/init.d/satellite-httpd ] ; then
-    /sbin/service satellite-httpd stop >/dev/null 2>&1
-    /sbin/chkconfig --del satellite-httpd
-    %{__perl} -i -ne 'print unless /satellite-httpd\.pid/' /etc/logrotate.d/httpd
-fi
-
 # Set the group to allow Apache to access the conf files ...
 chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
 # the past.
 chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
 
-# we want to remove the cert from the package.
-# copy the cert to a backup place to restore them later
-if [ -L /etc/pki/tls/certs/spacewalk.crt ]; then
-  cp /etc/pki/tls/certs/spacewalk.crt /etc/pki/tls/certs/uyuni.crt
-fi
-if [ -L /etc/pki/tls/private/spacewalk.key ]; then
-  cp /etc/pki/tls/private/spacewalk.key /etc/pki/tls/private/uyuni.key
-fi
 
 %post
-if [ $1 -eq 2 ] ; then
-  # update case
-  if [ -f /etc/rhn/rhn.conf ] && ! grep "java.hostname" /etc/rhn/rhn.conf  >/dev/null; then
-    HN=$(grep server.jabber_server /etc/rhn/rhn.conf | sed 's/.*=[[:space:]]*\([^ ]\+\)[[:space:]]*$/\1/')
-    if [ -z "$HN" ]; then
-      HN=$(cat /etc/hostname || echo)
-    fi
-    [ -n "$HN" ] && echo "java.hostname = $HN" >> /etc/rhn/rhn.conf
-  fi
-fi
-
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
@@ -178,14 +149,8 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES filter
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES deflate
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
-sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
 %endif
 
-# sudo is reading every file here! So ensure we do not have duplicate definitions!
-if [ -e /etc/sudoers.d/spacewalk.rpmsave ]; then
-  mv /etc/sudoers.d/spacewalk.rpmsave /root/sudoers-spacewalk.save
-fi
-rm -f /etc/sudoers.d/spacewalk.{rpmnew,rpmorig,rpmsave}
 
 ### TO-REMOVE AFTER: 2023-12-01
 if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
@@ -199,31 +164,5 @@ if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/de
 fi
 ### END
 
-%posttrans
-# restore the cert if we lost it
-if [ -e /etc/pki/tls/certs/uyuni.crt ]; then
-  if [ -f /etc/pki/tls/certs/spacewalk.crt ]; then
-    rm -f /etc/pki/tls/certs/uyuni.crt
-  else
-    mv /etc/pki/tls/certs/uyuni.crt /etc/pki/tls/certs/spacewalk.crt
-  fi
-fi
-if [ -e /etc/pki/tls/private/uyuni.key ]; then
-  if [ -f /etc/pki/tls/private/spacewalk.key ]; then
-    rm -f /etc/pki/tls/private/uyuni.key
-  else
-    mv /etc/pki/tls/private/uyuni.key /etc/pki/tls/private/spacewalk.key
-  fi
-fi
-
-if [ -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ] ; then
-  if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
-    if diff -qs /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ; then
-      mv /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
-    else
-      cp /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
-    fi
-  fi
-fi
 
 %changelog
