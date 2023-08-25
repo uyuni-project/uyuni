@@ -419,9 +419,9 @@ Note that the text area variant handles the new lines characters while the other
   When I restart the spacewalk service
   When I wait until "salt-minion" service is up and running on "rhlike_minion"
   Then service "bind" is enabled on "proxy"
-  Then service "dhcpd" is running on "proxy"
+  And service "dhcpd" is running on "proxy"
   When I restart the "bind" service on "sle_minion"
-  When I reload the "apache2" service on "proxy"
+  And I reload the "apache2" service on "proxy"
 ```
 
 * File removal

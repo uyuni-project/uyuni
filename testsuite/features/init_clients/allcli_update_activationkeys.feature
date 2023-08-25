@@ -109,20 +109,20 @@ Feature: Update activation keys
     When I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
-# This will be enabled once the Uyuni CI is syncing openSUSE Leap 15.4
-# @uyuni
-#   Scenario: Update the Proxy key with synced base product
-#     When I follow the left menu "Systems > Activation Keys"
-#     And I follow "Proxy Key x86_64" in the content area
-#     And I wait until I do not see "Loading..." text
-#     And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
-#     And I wait until I do not see "Loading..." text
-#     And I check "openSUSE 15.4 non oss (x86_64)"
-#     And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-#     And I check "openSUSE Leap 15.4 Updates (x86_64)"
-#     And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-#     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-#     And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
-#     And I check "Uyuni Proxy Stable for openSUSE Leap 15.4 (x86_64)"
-#     When I click on "Update Activation Key"
-#     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+@skip_if_github_validation
+@uyuni
+  Scenario: Update the Proxy key with synced base product
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Proxy Key x86_64" in the content area
+    And I wait until I do not see "Loading..." text
+    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I wait until I do not see "Loading..." text
+    And I check "openSUSE 15.4 non oss (x86_64)"
+    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.4 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64)"
+    When I click on "Update Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
