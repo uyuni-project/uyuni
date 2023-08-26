@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(OVALCachingFactory.class);
-    public static final int BATCH_SIZE = 60;
     private static OVALCachingFactory instance = new OVALCachingFactory();
 
     private OVALCachingFactory() {
