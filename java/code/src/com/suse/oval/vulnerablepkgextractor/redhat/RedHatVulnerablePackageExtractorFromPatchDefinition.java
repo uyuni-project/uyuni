@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Vulnerable packages extractor for patch definitions
+ * from: <a href="https://www.redhat.com/security/data/oval/v2/">RedHat OVAL</a>
+ * */
 public class RedHatVulnerablePackageExtractorFromPatchDefinition extends CriteriaTreeBasedExtractor {
     private static final Pattern REDHAT_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) is earlier than (?<evr>.*)");

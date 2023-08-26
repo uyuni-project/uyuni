@@ -7,6 +7,9 @@ import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromPatchDefinition;
 import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromVulnerabilityDefinition;
 
+/**
+ * A factory for {@link VulnerablePackagesExtractor}
+ * */
 public class VulnerablePackagesExtractors {
 
     public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,

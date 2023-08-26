@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class is responsible for cleaning OVAL resources and filling up missing data as soon as they're parsed. It acts
- * as an adapter that takes OVAL data from multiple sources and make changes to it to have a more predictable format.
+ * This class is responsible for cleaning OVAL resources and filling up missing data. It acts as an adapter that takes
+ * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
 
@@ -114,7 +114,7 @@ public class OVALCleaner {
      * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
      * same id but different content for different versions of Debian.
      * <p>
-     * To be workaround this, we insert the codename of the version into the id string
+     * To work around this, we insert the codename of the version into the id string
      */
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {
@@ -131,7 +131,7 @@ public class OVALCleaner {
      * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
      * same id but different content for different versions of Debian.
      * <p>
-     * To be workaround this, we insert the codename of the version into the id string
+     * To work around this, we insert the codename of the version into the id string
      */
     private static String convertDebianId(String id, String osVersion) {
         String codename;

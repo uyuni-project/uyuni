@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Vulnerable package extractor for OVALs from: <a href="https://www.debian.org/security/oval/">Debian OVAL</a>
+ * */
 public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtractor {
     private static Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
