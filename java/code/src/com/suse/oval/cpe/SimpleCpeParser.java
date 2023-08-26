@@ -1,22 +1,29 @@
 package com.suse.oval.cpe;
 
 /**
- * A simple and minimal implementation of a CPE parser to parse CPE URI bindings included in OVAL files.
+ * A simple and minimal CPE parser to parse CPE URI bindings included in OVAL files.
  */
 public class SimpleCpeParser {
 
 
     /**
-     * <p>
-     * Example 1:
+     * CPE Examples:
+     * <br><br>
+     * CPE: <b>cpe:/o:opensuse:leap:15.4</b>
      * <br>
-     * URI: cpe:/a:microsoft:internet_explorer:8.%02:sp%01
-     * <br>Unbinds to this WFN:
-     * <p>
-     * wfn:[part="a",vendor="microsoft",product="internet_explorer",
-     * version="8\.*",update="sp?",edition=ANY,language=ANY]
+     * PART: <b>o</b> <i>(it's an operating system's CPE)</i><br>
+     * VENDOR: <b>opensuse</b> <i>(CPE describes a product manufactured by openSUSE)<i/><br>
+     * PRODUCT: <b>leap</b> <i>(The product name is leap)</i><br>
+     * VERSION: <b>15.4</b> <i>(The product version is 15.4)</i><br>
+     * <br><br>
+     * CPE: <b>cpe:/o:suse:sle_hpc:15:sp4</b>
+     * <br>
+     * PART: <b>o</b> <i>(it's an operating system's CPE)</i><br>
+     * VENDOR: <b>suse</b> <i>(CPE describes a product manufactured by SUSE)<i/><br>
+     * PRODUCT: <b>sle_hpc</b> <i>(The product name is sle_hpc)</i><br>
+     * VERSION: <b>15</b> <i>(The product version is 15)</i><br>
+     * UPDATE: <b>sp4</b> <i>(The product update is sp4)</i><br>
      *
-     * </p>
      */
     public Cpe parse(String cpeURI) {
         if (!cpeURI.startsWith("cpe:/o:")) {

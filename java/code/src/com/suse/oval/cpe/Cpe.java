@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public class Cpe {
     private static final SimpleCpeParser cpeParser = new SimpleCpeParser();
-
     private String vendor;
     private String product;
     private String version;
@@ -68,6 +67,7 @@ public class Cpe {
 
     public String asString() {
         String cpe = "cpe:/o:" + vendor + ":" + product + ":" + version + ":" + update;
+
         // Removing trailing colons ':'
         return cpe.replaceAll(":*$", "");
     }
