@@ -347,7 +347,8 @@ class CVEAudit extends React.Component<Props, State> {
               header={t("Actions")}
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
+                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
@@ -394,7 +395,8 @@ class CVEAudit extends React.Component<Props, State> {
                     return t("If you see this report a bug.");
                   }
                 } else if (this.state.resultType === TARGET_IMAGE) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
+                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
