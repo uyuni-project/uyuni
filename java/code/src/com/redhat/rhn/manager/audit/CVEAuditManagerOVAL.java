@@ -22,7 +22,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * The OVAL version of the {@link CVEAuditManager}. This what should be used, the other implementation is legacy.
+ * This class, same as {@link CVEAuditManager}, provides the functionality of CVE auditing.It bases its evaluation on
+ * OVAL data, in addition to channels data. Therefore, it provides more accurate results.
+ * <p>
+ * We can't get rid of {@link CVEAuditManager} yet because not all supported LInux distribitions provide OVAL vulnerability
+ * definitions, thus, we fall back to {@link CVEAuditManager} in that case.
+ *
  */
 public class CVEAuditManagerOVAL {
     private static Logger log = LogManager.getLogger(CVEAuditManagerOVAL.class);
@@ -49,7 +54,7 @@ public class CVEAuditManagerOVAL {
             // implementation.
             // TODO: We could make a custom query that would get us only the data we're interested in instead of relying
             //  on CVEAuditManager#doAuditManager implementation.
-            
+
             CVEAuditSystemBuilder auditWithChannelsResult =
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
@@ -107,11 +112,11 @@ public class CVEAuditManagerOVAL {
             return cveAuditServerBuilder;
         }
 
-        Set<VulnerablePackage> patched = clientProductVulnerablePackages.stream()
+        Set<VulnerablePackage> patchedVulnerablePackages = clientProductVulnerablePackages.stream()
                 .filter(vulnerablePackage -> vulnerablePackage.getFixVersion().isPresent()).collect(
                         Collectors.toSet());
 
-        Set<VulnerablePackage> unpatched = clientProductVulnerablePackages.stream()
+        Set<VulnerablePackage> unpatchedVulnerablePackages = clientProductVulnerablePackages.stream()
                 .filter(vulnerablePackage -> vulnerablePackage.getFixVersion().isEmpty()).collect(
                         Collectors.toSet());
 
@@ -123,29 +128,32 @@ public class CVEAuditManagerOVAL {
                 .filter(cvePatchStatus -> !cvePatchStatus.isChannelAssigned())
                 .collect(Collectors.toList());
 
-        if (patched.isEmpty() && !unpatched.isEmpty()) {
+        if (patchedVulnerablePackages.isEmpty() && !unpatchedVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         } else {
             log.error(allInstalledPackages.stream().map(ShallowSystemPackage::getPackageEVR).collect(Collectors.toList()));
 
-            boolean allPatchesInstalled = patched.stream().allMatch(patchedPackage ->
+            boolean allPatchesInstalled = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
-                            .anyMatch(systemPackage ->
-                            Objects.equals(systemPackage.getName(), patchedPackage.getName()) && systemPackage.getPackageEVR()
-                                    .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
+                            .filter(installedPackage -> Objects.equals(installedPackage.getName(), patchedPackage.getName()))
+                            .anyMatch(installedPackage ->
+                                    installedPackage.getPackageEVR()
+                                            .compareTo(PackageEvr.parseRpm(
+                                                    patchedPackage.getFixVersion().get())) >= 0));
 
             if (allPatchesInstalled) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
             } else {
                 long numberOfPackagesWithPatchInAssignedChannels =
-                        patched.stream().filter(patchedPackage -> patchesInAssignedChannels
-                                        .stream()
-                                        .anyMatch(patch ->
-                                                patch.getPackageName().equals(Optional.of(patchedPackage.getName()))))
-                                .count();
+                        patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInAssignedChannels
+                                .stream()
+                                .anyMatch(patch ->
+                                        patch.getPackageName().equals(Optional.of(patchedPackage.getName()))
+                                )
+                        ).count();
 
                 boolean allPackagesHavePatchInAssignedChannels =
-                        numberOfPackagesWithPatchInAssignedChannels == patched.size();
+                        numberOfPackagesWithPatchInAssignedChannels == patchedVulnerablePackages.size();
                 boolean somePackagesHavePatchInAssignedChannels = numberOfPackagesWithPatchInAssignedChannels > 0;
 
                 if (allPackagesHavePatchInAssignedChannels) {
@@ -154,14 +162,15 @@ public class CVEAuditManagerOVAL {
                     cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
                 } else {
                     long numberOfPackagesWithPatchInUnassignedChannels =
-                            patched.stream().filter(patchedPackage -> patchesInUnassignedChannels
-                                            .stream()
-                                            .anyMatch(patch ->
-                                                    patch.getPackageName().equals(Optional.of(patchedPackage.getName()))))
-                                    .count();
+                            patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInUnassignedChannels
+                                    .stream()
+                                    .anyMatch(patch ->
+                                            patch.getPackageName().equals(Optional.of(patchedPackage.getName()))
+                                    )
+                            ).count();
 
                     boolean allPackagesHavePatchInUnassignedChannels =
-                            numberOfPackagesWithPatchInUnassignedChannels == patched.size();
+                            numberOfPackagesWithPatchInUnassignedChannels == patchedVulnerablePackages.size();
                     if (allPackagesHavePatchInUnassignedChannels) {
                         cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
                     } else {
@@ -193,6 +202,7 @@ public class CVEAuditManagerOVAL {
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
                                                               String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
+        // TODO: Audit images with OVAL
         return CVEAuditManager.listImagesByPatchStatus(user, cveIdentifier, patchStatuses);
     }
 
