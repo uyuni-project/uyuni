@@ -391,6 +391,23 @@ class CVEAudit extends React.Component<Props, State> {
                         <div>{"Patch: " + row.erratas[0].advisory}</div>
                       </div>
                     );
+                  } else if (row.patchStatus === AFFECTED_PARTIAL_PATCH_APPLICABLE) {
+                    return (
+                        <div>
+                          <div>
+                            <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
+                              {t("Install a new partial patch on this system.")}
+                            </a>
+                          </div>
+                          {row.erratas.map((errata) => {
+                            return (
+                                <div>
+                                  <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
+                                </div>
+                            );
+                          })}
+                        </div>
+                    );
                   } else {
                     return t("If you see this report a bug.");
                   }
