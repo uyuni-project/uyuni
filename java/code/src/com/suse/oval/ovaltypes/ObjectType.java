@@ -28,12 +28,14 @@ import java.math.BigInteger;
 
 
 /**
- * The required id attribute uniquely identifies each object, and must conform to the format specified by the ObjectIdPattern simple type.
- * The required version attribute holds the current version of the object element. Versions are integers, starting at 1
- * and incrementing every time an object is modified. The optional comment attribute provides a short description of the object.
+ * The required id attribute uniquely identifies each object, and must conform to the format specified by the
+ * ObjectIdPattern simple type. The required version attribute holds the current version of the object element.
  * <p>
- * The optional deprecated attribute signifies that an id is no longer to be used or referenced but the information has been kept
- * around for historic purposes.
+ * Versions are integers, starting at 1 and incrementing every time an object is modified. The optional comment
+ * attribute provides a short description of the object.
+ * <p>
+ * The optional deprecated attribute signifies that an id is no longer to be used or referenced but the information
+ * has been kept around for historic purposes.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ObjectType", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -50,12 +52,10 @@ public class ObjectType {
     protected Boolean deprecated;
 
 
-    // These attributes are not specified for the base object type as per the schema; nevertheless, they has been included
-    // since both dpkg and rpm objects have them.
-
+    // These attributes are not specified for the base object type as per the schema; nevertheless,
+    // they have been included since both dpkg and rpm objects have them.
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux")
     protected String name;
-
 
     /**
      * Gets the value of the id property.
@@ -66,9 +66,10 @@ public class ObjectType {
 
     /**
      * Sets the value of the id property.
+     * @param valueIn the object id to set
      */
-    public void setId(String value) {
-        this.id = value;
+    public void setId(String valueIn) {
+        this.id = valueIn;
     }
 
     /**
@@ -81,8 +82,8 @@ public class ObjectType {
     /**
      * Sets the value of the version property.
      */
-    public void setVersion(BigInteger value) {
-        this.version = value;
+    public void setVersion(BigInteger valueIn) {
+        this.version = valueIn;
     }
 
     /**
@@ -95,8 +96,8 @@ public class ObjectType {
     /**
      * Sets the value of the comment property.
      */
-    public void setComment(String value) {
-        this.comment = value;
+    public void setComment(String valueIn) {
+        this.comment = valueIn;
     }
 
     /**
@@ -105,7 +106,8 @@ public class ObjectType {
     public boolean isDeprecated() {
         if (deprecated == null) {
             return false;
-        } else {
+        }
+        else {
             return deprecated;
         }
     }
@@ -113,8 +115,8 @@ public class ObjectType {
     /**
      * Sets the value of the deprecated property.
      */
-    public void setDeprecated(Boolean value) {
-        this.deprecated = value;
+    public void setDeprecated(Boolean valueIn) {
+        this.deprecated = valueIn;
     }
 
     /**
@@ -124,8 +126,8 @@ public class ObjectType {
         return name;
     }
 
-    public void setPackageName(String name) {
-        this.name = name;
+    public void setPackageName(String nameIn) {
+        this.name = nameIn;
     }
 
     public boolean isDpkg() {

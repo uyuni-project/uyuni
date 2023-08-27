@@ -36,15 +36,15 @@ public class ArchType {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setValue(String valueIn) {
+        this.value = valueIn;
     }
 
     public OperationEnumeration getOperation() {
         return operation;
     }
 
-    public void setOperation(OperationEnumeration operation) {
-        this.operation = operation;
+    public void setOperation(OperationEnumeration operationIn) {
+        this.operation = operationIn;
     }
 }

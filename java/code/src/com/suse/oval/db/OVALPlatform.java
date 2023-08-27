@@ -40,8 +40,8 @@ public class OVALPlatform {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     @Column(name = "cpe")
@@ -49,8 +49,8 @@ public class OVALPlatform {
         return cpe;
     }
 
-    public void setCpe(String name) {
-        this.cpe = name;
+    public void setCpe(String cpeIn) {
+        this.cpe = cpeIn;
     }
 
     @Override

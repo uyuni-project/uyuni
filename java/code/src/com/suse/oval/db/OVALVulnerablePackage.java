@@ -32,8 +32,8 @@ public class OVALVulnerablePackage {
     private String name;
     private String fixVersion;
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     @Column(name = "id")
@@ -48,8 +48,8 @@ public class OVALVulnerablePackage {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     @Column(name = "fix_version")
@@ -57,8 +57,8 @@ public class OVALVulnerablePackage {
         return fixVersion;
     }
 
-    public void setFixVersion(String fixVersion) {
-        this.fixVersion = fixVersion;
+    public void setFixVersion(String fixVersionIn) {
+        this.fixVersion = fixVersionIn;
     }
 
 

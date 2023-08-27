@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,12 @@ import java.util.List;
 public class TestsType {
 
     @XmlElements({
-            @XmlElement(name = "rpminfo_test", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = RpminfoTest.class),
-            @XmlElement(name = "dpkginfo_test", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = DpkginfoTest.class),
-            @XmlElement(name = "test", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", type = TestType.class)
+        @XmlElement(name = "rpminfo_test",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = RpminfoTest.class),
+        @XmlElement(name = "dpkginfo_test",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = DpkginfoTest.class),
+        @XmlElement(name = "test",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", type = TestType.class)
     })
     protected List<TestType> tests;
 

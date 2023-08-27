@@ -25,20 +25,22 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
- * The optional state_operator attribute provides the logical operator that combines the evaluation results from each referenced state
- * on a per item basis.  Each matching item is compared to each referenced state.
+ * The optional state_operator attribute provides the logical operator that combines the evaluation results from
+ * each referenced state on a per item basis.  Each matching item is compared to each referenced state.
  * <p>
- * The result of comparing each state to a single item is combined based on the specified state_operator value to determine one result
- * for each item. Finally, the results for each item are combined based on the specified check value.  Note that if the test does not contain
- * any references to OVAL States, then the state_operator attribute has no meaning and can be ignored during evaluation.
+ * The result of comparing each state to a single item is combined based on the specified state_operator value to
+ * determine one result for each item. Finally, the results for each item are combined based on the specified
+ * check value.
  * <p>
- * Referencing multiple states in one test allows ranges of possible values to be expressed. For example, one state can check
- * that a value greater than 8 is found and another state can check that a value of less than 16 is found.  In this example
- * the referenced states are combined with a state_operator = 'AND' indicating that the conditions of all referenced states
- * must be satisfied and that the value must be between 8 AND 16.  The valid state_operation values are explained in
- * the description of the OperatorEnumeration simple type.
+ * Note that if the test does not contain any references to OVAL States, then the state_operator attribute has no
+ * meaning and can be ignored during evaluation.
+ * <p>
+ * Referencing multiple states in one test allows ranges of possible values to be expressed. For example, one state
+ * can check that a value greater than 8 is found and another state can check that a value of less than 16 is found.
+ * In this example the referenced states are combined with a state_operator = 'AND' indicating that the conditions
+ * of all referenced states must be satisfied and that the value must be between 8 AND 16.  The valid state_operation
+ * values are explained in the description of the OperatorEnumeration simple type.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TestType", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -79,8 +81,8 @@ public class TestType {
     /**
      * Sets the value of the id property.
      */
-    public void setId(String value) {
-        this.id = value;
+    public void setId(String valueIn) {
+        this.id = valueIn;
     }
 
     /**
@@ -93,8 +95,8 @@ public class TestType {
     /**
      * Sets the value of the version property.
      */
-    public void setVersion(BigInteger value) {
-        this.version = value;
+    public void setVersion(BigInteger valueIn) {
+        this.version = valueIn;
     }
 
     /**
@@ -103,7 +105,8 @@ public class TestType {
     public ExistenceEnum getCheckExistence() {
         if (checkExistence == null) {
             return ExistenceEnum.AT_LEAST_ONE_EXISTS;
-        } else {
+        }
+        else {
             return checkExistence;
         }
     }
@@ -111,8 +114,8 @@ public class TestType {
     /**
      * Sets the value of the checkExistence property.
      */
-    public void setCheckExistence(ExistenceEnum value) {
-        this.checkExistence = value;
+    public void setCheckExistence(ExistenceEnum valueIn) {
+        this.checkExistence = valueIn;
     }
 
     /**
@@ -125,8 +128,8 @@ public class TestType {
     /**
      * Sets the value of the check property.
      */
-    public void setCheck(CheckEnum value) {
-        this.check = value;
+    public void setCheck(CheckEnum valueIn) {
+        this.check = valueIn;
     }
 
     /**
@@ -139,8 +142,8 @@ public class TestType {
     /**
      * Sets the value of the comment property.
      */
-    public void setComment(String value) {
-        this.comment = value;
+    public void setComment(String valueIn) {
+        this.comment = valueIn;
     }
 
     /**
@@ -149,7 +152,8 @@ public class TestType {
     public boolean isDeprecated() {
         if (deprecated == null) {
             return false;
-        } else {
+        }
+        else {
             return deprecated;
         }
     }
@@ -157,8 +161,8 @@ public class TestType {
     /**
      * Sets the value of the deprecated property.
      */
-    public void setDeprecated(Boolean value) {
-        this.deprecated = value;
+    public void setDeprecated(Boolean valueIn) {
+        this.deprecated = valueIn;
     }
 
     /**
@@ -174,9 +178,9 @@ public class TestType {
     /**
      * Sets the value of the object property.
      */
-    public void setObjectRef(String value) {
+    public void setObjectRef(String valueIn) {
         ObjectRefType refType = new ObjectRefType();
-        refType.setObjectRef(value);
+        refType.setObjectRef(valueIn);
         this.object = refType;
     }
 
@@ -189,9 +193,11 @@ public class TestType {
     public Optional<String> getStateRef() {
         if (this.states == null) {
             return Optional.empty();
-        } else if (this.states.size() == 1) {
+        }
+        else if (this.states.size() == 1) {
             return Optional.ofNullable(states.get(0).getStateRef());
-        } else {
+        }
+        else {
             throw new IllegalStateException("Each test is expected to have 0 or 1 state. See the comment above the method");
         }
     }
@@ -199,7 +205,8 @@ public class TestType {
     public LogicOperatorType getStateOperator() {
         if (stateOperator == null) {
             return LogicOperatorType.AND;
-        } else {
+        }
+        else {
             return stateOperator;
         }
     }
@@ -208,14 +215,14 @@ public class TestType {
         this.stateOperator = stateOperator;
     }
 
-    public void setStates(List<StateRefType> states) {
-        this.states = states;
+    public void setStates(List<StateRefType> statesIn) {
+        this.states = statesIn;
     }
 
-    public void setStateRef(String value) {
+    public void setStateRef(String valueIn) {
         states.clear();
         StateRefType stateRef = new StateRefType();
-        stateRef.setStateRef(value);
+        stateRef.setStateRef(valueIn);
         states.add(stateRef);
     }
 }

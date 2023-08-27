@@ -15,20 +15,21 @@
 
 package com.suse.oval.cpe;
 
-import static com.suse.oval.OsFamily.*;
-
 import com.suse.oval.OsFamily;
 
 import java.util.Objects;
 import java.util.Optional;
 
 public class Cpe {
-    private static final SimpleCpeParser cpeParser = new SimpleCpeParser();
+    private static final SimpleCpeParser CPE_PARSER = new SimpleCpeParser();
     private String vendor;
     private String product;
     private String version;
     private String update;
 
+    /**
+     * Create a CPE with all components set to the empty string ""
+     * */
     public Cpe() {
         vendor = "";
         product = "";
@@ -40,9 +41,9 @@ public class Cpe {
         return vendor;
     }
 
-    void setVendor(String vendor) {
-        if (vendor != null) {
-            this.vendor = vendor;
+    void setVendor(String vendorIn) {
+        if (vendorIn != null) {
+            this.vendor = vendorIn;
         }
     }
 
@@ -50,9 +51,9 @@ public class Cpe {
         return product;
     }
 
-    void setProduct(String product) {
-        if (product != null) {
-            this.product = product;
+    void setProduct(String productIn) {
+        if (productIn != null) {
+            this.product = productIn;
         }
     }
 
@@ -60,9 +61,9 @@ public class Cpe {
         return version;
     }
 
-    void setVersion(String version) {
-        if (version != null) {
-            this.version = version;
+    void setVersion(String versionIn) {
+        if (versionIn != null) {
+            this.version = versionIn;
         }
     }
 
@@ -70,14 +71,14 @@ public class Cpe {
         return update;
     }
 
-    void setUpdate(String update) {
-        if (update != null) {
-            this.update = update;
+    void setUpdate(String updateIn) {
+        if (updateIn != null) {
+            this.update = updateIn;
         }
     }
 
     public static Cpe parse(String cpe) {
-        return cpeParser.parse(cpe);
+        return CPE_PARSER.parse(cpe);
     }
 
     public String asString() {
@@ -89,16 +90,16 @@ public class Cpe {
 
     public Optional<OsFamily> toOsFamily() {
         if ("redhat".equals(vendor) && "enterprise_linux".equals(product)) {
-            return Optional.of(REDHAT_ENTERPRISE_LINUX);
+            return Optional.of(OsFamily.REDHAT_ENTERPRISE_LINUX);
         }
-        else if("suse".equals(vendor) && "sles".equals(product)) {
-            return Optional.of(SUSE_LINUX_ENTERPRISE_SERVER);
+        else if ("suse".equals(vendor) && "sles".equals(product)) {
+            return Optional.of(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER);
         }
         else if ("suse".equals(vendor) && "sled".equals(product)) {
-            return Optional.of(SUSE_LINUX_ENTERPRISE_DESKTOP);
+            return Optional.of(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP);
         }
         else if ("opensuse".equals(vendor) && "leap".equals(product)) {
-            return Optional.of(openSUSE_LEAP);
+            return Optional.of(OsFamily.openSUSE_LEAP);
         }
         return Optional.empty();
     }

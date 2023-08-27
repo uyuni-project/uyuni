@@ -15,11 +15,9 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.DefinitionType;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A vulnerable package extractor is used to extract the list of vulnerable packages from an OVAL definition.

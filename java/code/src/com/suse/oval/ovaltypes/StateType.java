@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -45,15 +46,12 @@ public class StateType {
     protected LogicOperatorType operator;
     @XmlAttribute(name = "comment")
     protected String comment;
-    @XmlAttribute(name = "deprecated")
-    protected Boolean deprecated;
     @XmlElement(name = "evr", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux")
     protected EVRType packageEVR;
     @XmlElement(name = "arch", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux")
     protected ArchType packageArch;
     @XmlElement(name = "version", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux")
     protected VersionType packageVersion;
-
 
     /**
      * Gets the value of the id property.
@@ -96,6 +94,7 @@ public class StateType {
 
     /**
      * Sets the value of the operator property.
+     * @param value the operator
      */
     public void setOperator(LogicOperatorType value) {
         this.operator = value;
@@ -103,6 +102,7 @@ public class StateType {
 
     /**
      * Gets the value of the comment property.
+     * @return the comment associated with this state
      */
     public String getComment() {
         return comment;
@@ -115,45 +115,27 @@ public class StateType {
         this.comment = value;
     }
 
-    /**
-     * Gets the value of the deprecated property.
-     */
-    public boolean isDeprecated() {
-        if (deprecated == null) {
-            return false;
-        } else {
-            return deprecated;
-        }
-    }
-
-    /**
-     * Sets the value of the deprecated property.
-     */
-    public void setDeprecated(Boolean value) {
-        this.deprecated = value;
-    }
-
     public Optional<EVRType> getPackageEVR() {
         return Optional.ofNullable(packageEVR);
     }
 
-    public void setPackageEVR(EVRType packageEVR) {
-        this.packageEVR = packageEVR;
+    public void setPackageEVR(EVRType packageEVRIn) {
+        this.packageEVR = packageEVRIn;
     }
 
     public Optional<ArchType> getPackageArch() {
         return Optional.ofNullable(packageArch);
     }
 
-    public void setPackageArch(ArchType packageArch) {
-        this.packageArch = packageArch;
+    public void setPackageArch(ArchType packageArchIn) {
+        this.packageArch = packageArchIn;
     }
 
     public Optional<VersionType> getPackageVersion() {
         return Optional.ofNullable(packageVersion);
     }
 
-    public void setPackageVersion(VersionType packageVersion) {
-        this.packageVersion = packageVersion;
+    public void setPackageVersion(VersionType packageVersionIn) {
+        this.packageVersion = packageVersionIn;
     }
 }

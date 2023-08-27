@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * This represents the epoch, version, and release fields as a single version string. It has the form "EPOCH:VERSION-RELEASE".
+ * This represents the epoch, version, and release fields as a single version string.
+ * It has the form "EPOCH:VERSION-RELEASE".
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -38,23 +39,23 @@ public class EVRType {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setValue(String valueIn) {
+        this.value = valueIn;
     }
 
     public EVRDataTypeEnum getDatatype() {
         return datatype;
     }
 
-    public void setDatatype(EVRDataTypeEnum datatype) {
-        this.datatype = datatype;
+    public void setDatatype(EVRDataTypeEnum datatypeIn) {
+        this.datatype = datatypeIn;
     }
 
     public OperationEnumeration getOperation() {
         return operation;
     }
 
-    public void setOperation(OperationEnumeration operation) {
-        this.operation = operation;
+    public void setOperation(OperationEnumeration operationIn) {
+        this.operation = operationIn;
     }
 }

@@ -41,6 +41,7 @@ public class StateRefType {
 
     /**
      * Sets the value of the stateRef property.
+     * @param value the state id
      */
     public void setStateRef(String value) {
         this.stateRef = value;

@@ -33,26 +33,26 @@ public class ShallowSystemPackage extends IdComboDto {
     public ShallowSystemPackage() {
     }
 
-    public ShallowSystemPackage(String name, PackageType type, String evr, String arch) {
-        this.name = name;
-        this.type = type.getDbString();
-        this.arch = arch;
+    public ShallowSystemPackage(String nameIn, PackageType typeIn, String evrIn, String archIn) {
+        this.name = nameIn;
+        this.type = typeIn.getDbString();
+        this.arch = archIn;
 
-        PackageEvr packageEvr = PackageEvr.parsePackageEvr(type, evr);
+        PackageEvr packageEvr = PackageEvr.parsePackageEvr(typeIn, evrIn);
         this.epoch = packageEvr.getEpoch();
         this.version = packageEvr.getVersion();
         this.release = packageEvr.getRelease();
     }
 
-    public ShallowSystemPackage(String name, PackageType type, String evr) {
-        this(name, type, evr, "noarch");
+    public ShallowSystemPackage(String nameIn, PackageType typeIn, String evrIn) {
+        this(nameIn, typeIn, evrIn, "noarch");
     }
 
-    public ShallowSystemPackage(String name, String evr) {
-        this(name, PackageType.RPM, evr);
+    public ShallowSystemPackage(String nameIn, String evrIn) {
+        this(nameIn, PackageType.RPM, evrIn);
     }
-    public ShallowSystemPackage(String name, String evr, String arch) {
-        this(name, PackageType.RPM, evr, arch);
+    public ShallowSystemPackage(String nameIn, String evrIn, String archIn) {
+        this(nameIn, PackageType.RPM, evrIn, archIn);
     }
 
 
@@ -105,40 +105,40 @@ public class ShallowSystemPackage extends IdComboDto {
         return arch;
     }
 
-    public void setArch(String arch) {
-        this.arch = arch;
+    public void setArch(String archIn) {
+        this.arch = archIn;
     }
 
     public String getEpoch() {
         return epoch;
     }
 
-    public void setEpoch(String epoch) {
-        this.epoch = epoch;
+    public void setEpoch(String epochIn) {
+        this.epoch = epochIn;
     }
 
     public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setVersion(String versionIn) {
+        this.version = versionIn;
     }
 
     public String getRelease() {
         return release;
     }
 
-    public void setRelease(String release) {
-        this.release = release;
+    public void setRelease(String releaseIn) {
+        this.release = releaseIn;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     public PackageEvr getPackageEVR() {

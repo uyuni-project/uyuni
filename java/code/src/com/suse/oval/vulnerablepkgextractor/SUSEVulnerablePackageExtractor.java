@@ -43,18 +43,19 @@ import java.util.stream.Collectors;
 /**
  * Vulnerable package extractor for OVALs
  * from: <a href="https://ftp.suse.com/pub/projects/security/oval/">SUSE OVAL</a>
- * */
+ */
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
             "^\\s*(?<releasePackage>[-a-zA-Z_]+)\\s*.*==(?<releasePackageVersion>[0-9.]+)\\s*$");
-    private static Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
+    private static final Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
     private final OVALLookupHelper ovalLookupHelper;
 
-    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinition, OVALLookupHelper ovalLookupHelper) {
-        super(vulnerabilityDefinition);
-        Objects.requireNonNull(ovalLookupHelper);
+    public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinitionIn,
+                                          OVALLookupHelper ovalLookupHelperIn) {
+        super(vulnerabilityDefinitionIn);
+        Objects.requireNonNull(ovalLookupHelperIn);
 
-        this.ovalLookupHelper = ovalLookupHelper;
+        this.ovalLookupHelper = ovalLookupHelperIn;
     }
 
     @Override
@@ -100,13 +101,15 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             if (comment.endsWith("is installed")) {
                 String evr = packageState.getPackageEVR().map(EVRType::getValue).orElse("");
                 vulnerablePackage.setFixVersion(evr);
-            } else if (comment.endsWith("is affected")) {
+            }
+            else if (comment.endsWith("is affected")) {
                 // Affected packages don't have a fix version yet.
                 vulnerablePackage.setFixVersion(null);
-            } else if (comment.endsWith("is not affected")) {
+            }
+            else if (comment.endsWith("is not affected")) {
                 // Package 'is not affected' implies that the vulnerability is too old that all supported products
-                // have the fixed package version or that a fix was backported to vulnerable products. Hence, the fix version
-                // is 0.
+                // have the fixed package version or that a fix was backported to vulnerable products. Hence,
+                // the fix versionis 0.
                 vulnerablePackage.setFixVersion("0:0-0");
                 continue;
             }
@@ -126,7 +129,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             vulnerableProduct.setProductUserFriendlyName(productUserFriendlyName);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
-            if(vulnerableProduct.getProductCpe().contains("suse-manager")) {
+            if (vulnerableProduct.getProductCpe().contains("suse-manager")) {
                 continue;
             }
 
@@ -169,7 +172,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         OsFamily osProduct = definition.getOsFamily();
         if (osProduct == OsFamily.openSUSE_LEAP) {
             return deriveOpenSUSELeapCpe();
-        } else {
+        }
+        else {
             return deriveSUSEProductCpe(productTest);
         }
     }
@@ -200,13 +204,15 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         if (releasePackageVersion.contains(".")) {
             if ("ses".equals(productPart) || productPart.contains("suse-manager")) {
                 versionPart = releasePackageVersion;
-            } else {
+            }
+            else {
                 int periodIndex = releasePackageVersion.indexOf('.');
                 versionPart = releasePackageVersion.substring(0, periodIndex);
                 String update = releasePackageVersion.substring(periodIndex + 1);
                 updatePart = "sp" + update;
             }
-        } else {
+        }
+        else {
             versionPart = releasePackageVersion;
         }
 
@@ -219,14 +225,14 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definition) {
-        super.assertDefinitionIsValid(definition);
+    public void assertDefinitionIsValid(DefinitionType definitionIn) {
+        super.assertDefinitionIsValid(definitionIn);
 
-        OsFamily osFamily = definition.getOsFamily();
+        OsFamily osFamily = definitionIn.getOsFamily();
         assert osFamily == OsFamily.openSUSE_LEAP ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP;
 
-        assert definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
+        assert definitionIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
     }
 }

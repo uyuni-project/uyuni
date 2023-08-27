@@ -15,12 +15,11 @@
 
 package com.suse.oval.ovaltypes;
 
-import com.suse.utils.Opt;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +35,8 @@ public class Advisory {
     @XmlElement(name = "affected", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     private AdvisoryAffectedType affected;
 
-    public void setAffectedCpeList(AffectedCpeList affectedCpeList) {
-        this.affectedCpeList = affectedCpeList;
+    public void setAffectedCpeList(AffectedCpeList affectedCpeListIn) {
+        this.affectedCpeList = affectedCpeListIn;
     }
 
     public List<String> getAffectedCpeList() {
@@ -55,11 +54,11 @@ public class Advisory {
         return Optional.ofNullable(cveList).orElse(Collections.emptyList());
     }
 
-    public void setCveList(List<AdvisoryCveType> cveList) {
-        this.cveList = cveList;
+    public void setCveList(List<AdvisoryCveType> cveListIn) {
+        this.cveList = cveListIn;
     }
 
-    public void setAffected(AdvisoryAffectedType affected) {
-        this.affected = affected;
+    public void setAffected(AdvisoryAffectedType affectedIn) {
+        this.affected = affectedIn;
     }
 }

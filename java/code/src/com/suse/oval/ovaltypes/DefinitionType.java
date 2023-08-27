@@ -24,23 +24,26 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
 /**
  * The required id attribute is the OVAL-ID of the Definition. The form of an OVAL-ID must follow the specific format
- * described by the oval:DefinitionIDPattern. The required version attribute holds the current version of the definition.
+ * described by the oval:DefinitionIDPattern.
  * <p>
- * Versions are integers, starting at 1 and incrementing every time a definition is modified. The required class attribute
- * indicates the specific class to which the definition belongs. The class gives a hint to a user, so they can know what the definition
- * writer is trying to say. See the definition of oval-def:ClassEnumeration for more information about the different valid classes.
+ * The required version attribute holds the current version of the definition.
  * <p>
- * The optional deprecated attribute signifies that an id is no longer to be used or referenced but the information has been kept around
- * for historic purposes.
+ * Versions are integers, starting at 1 and incrementing every time a definition is modified. The required class
+ * attribute indicates the specific class to which the definition belongs. The class gives a hint to a user,
+ * so they can know what the definition writer is trying to say. See the definition of oval-def:ClassEnumeration
+ * for more information about the different valid classes.
+ * <p>
+ * The optional deprecated attribute signifies that an id is no longer to be used or referenced but the information
+ * has been kept around for historic purposes.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "definition", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -50,8 +53,6 @@ public class DefinitionType {
     protected MetadataType metadata;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     protected CriteriaType criteria;
-    @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-    protected NotesType notes;
     @XmlAttribute(name = "id", required = true)
     protected String id;
     @XmlAttribute(name = "version", required = true)
@@ -59,8 +60,6 @@ public class DefinitionType {
     protected BigInteger version;
     @XmlAttribute(name = "class", required = true)
     protected DefinitionClassEnum definitionClass;
-    @XmlAttribute(name = "deprecated")
-    protected Boolean deprecated;
 
     @Transient
     protected List<String> cves = new ArrayList<>();
@@ -95,21 +94,8 @@ public class DefinitionType {
     }
 
     /**
-     * Gets the value of the notes property.
-     */
-    public NotesType getNotes() {
-        return notes;
-    }
-
-    /**
-     * Sets the value of the notes property.
-     */
-    public void setNotes(NotesType value) {
-        this.notes = value;
-    }
-
-    /**
      * Gets the value of the id property.
+     * @return the id
      */
     public String getId() {
         return id;
@@ -117,13 +103,15 @@ public class DefinitionType {
 
     /**
      * Sets the value of the id property.
+     * @param valueIn the id to set
      */
-    public void setId(String value) {
-        this.id = value;
+    public void setId(String valueIn) {
+        this.id = valueIn;
     }
 
     /**
      * Gets the value of the version property.
+     * @return the version
      */
     public BigInteger getVersion() {
         return version;
@@ -131,13 +119,15 @@ public class DefinitionType {
 
     /**
      * Sets the value of the version property.
+     * @param valueIn the version to set
      */
-    public void setVersion(BigInteger value) {
-        this.version = value;
+    public void setVersion(BigInteger valueIn) {
+        this.version = valueIn;
     }
 
     /**
      * Gets the value of the clazz property.
+     * @return the definition class
      */
     public DefinitionClassEnum getDefinitionClass() {
         return definitionClass;
@@ -145,23 +135,10 @@ public class DefinitionType {
 
     /**
      * Sets the value of the clazz property.
+     * @param value the definition class to set
      */
     public void setDefinitionClass(DefinitionClassEnum value) {
         this.definitionClass = value;
-    }
-
-    /**
-     * Gets the value of the deprecated property.
-     */
-    public boolean isDeprecated() {
-        return Objects.requireNonNullElse(deprecated, false);
-    }
-
-    /**
-     * Sets the value of the deprecated property.
-     */
-    public void setDeprecated(Boolean value) {
-        this.deprecated = value;
     }
 
     public Optional<String> getSingleCve() {
@@ -180,23 +157,23 @@ public class DefinitionType {
         return cves;
     }
 
-    public void setCves(List<String> cves) {
-        this.cves = cves;
+    public void setCves(List<String> cvesIn) {
+        this.cves = cvesIn;
     }
 
     public OsFamily getOsFamily() {
         return osFamily;
     }
 
-    public void setOsFamily(OsFamily osFamily) {
-        this.osFamily = osFamily;
+    public void setOsFamily(OsFamily osFamilyIn) {
+        this.osFamily = osFamilyIn;
     }
 
     public String getOsVersion() {
         return osVersion;
     }
 
-    public void setOsVersion(String osVersion) {
-        this.osVersion = osVersion;
+    public void setOsVersion(String osVersionIn) {
+        this.osVersion = osVersionIn;
     }
 }

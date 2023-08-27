@@ -15,11 +15,11 @@
 
 package com.suse.oval.ovaltypes;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class AffectedCpeList {
         return cpeList;
     }
 
-    public void setCpeList(List<String> cpeList) {
-        this.cpeList = cpeList;
+    public void setCpeList(List<String> cpeListIn) {
+        this.cpeList = cpeListIn;
     }
 }

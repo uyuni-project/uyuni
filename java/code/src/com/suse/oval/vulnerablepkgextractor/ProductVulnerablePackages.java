@@ -39,8 +39,8 @@ public class ProductVulnerablePackages {
         return productCpe;
     }
 
-    public void setProductCpe(String productCpe) {
-        this.productCpe = productCpe;
+    public void setProductCpe(String productCpeIn) {
+        this.productCpe = productCpeIn;
     }
 
     public List<VulnerablePackage> getVulnerablePackages() {
@@ -76,7 +76,7 @@ public class ProductVulnerablePackages {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for(String cve : cves) {
+        for (String cve : cves) {
             stringBuilder.append(cve).append("\n");
             stringBuilder.append(productCpe).append("   +   ").append(productUserFriendlyName).append("\n");
             stringBuilder.append("****************************************").append("\n");

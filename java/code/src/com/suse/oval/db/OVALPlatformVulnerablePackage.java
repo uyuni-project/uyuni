@@ -22,8 +22,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
@@ -41,8 +39,8 @@ public class OVALPlatformVulnerablePackage {
         return platform;
     }
 
-    public void setPlatform(OVALPlatform platform) {
-        this.platform = platform;
+    public void setPlatform(OVALPlatform platformIn) {
+        this.platform = platformIn;
     }
 
     @SuppressWarnings("JpaAttributeTypeInspection")
@@ -53,8 +51,8 @@ public class OVALPlatformVulnerablePackage {
         return cve;
     }
 
-    public void setCve(Cve cve) {
-        this.cve = cve;
+    public void setCve(Cve cveIn) {
+        this.cve = cveIn;
     }
 
     @Id
@@ -64,7 +62,7 @@ public class OVALPlatformVulnerablePackage {
         return vulnerablePackage;
     }
 
-    public void setVulnerablePackage(OVALVulnerablePackage vulnerablePackage) {
-        this.vulnerablePackage = vulnerablePackage;
+    public void setVulnerablePackage(OVALVulnerablePackage vulnerablePackageIn) {
+        this.vulnerablePackage = vulnerablePackageIn;
     }
 }

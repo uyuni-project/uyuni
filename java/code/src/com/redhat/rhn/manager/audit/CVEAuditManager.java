@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -42,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,8 +63,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 
 /**
  * CVESearchManager.
@@ -853,7 +854,8 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
-                                                                String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+                                                                String cveIdentifier,
+                                                                EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -1130,9 +1132,11 @@ public class CVEAuditManager {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
-            } else if (allChannelsForOneErrataAssigned) {
+            }
+            else if (allChannelsForOneErrataAssigned) {
                 return PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE;
-            } else if (patchInSuccessorProduct) {
+            }
+            else if (patchInSuccessorProduct) {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {

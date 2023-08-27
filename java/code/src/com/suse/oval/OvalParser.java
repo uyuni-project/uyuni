@@ -21,6 +21,7 @@ import com.suse.oval.ovaltypes.OvalRootType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,7 +36,8 @@ public class OvalParser {
             JAXBContext jaxbContext = JAXBContext.newInstance(OvalRootType.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             return (OvalRootType) unmarshaller.unmarshal(ovalFile);
-        } catch (JAXBException e) {
+        }
+        catch (JAXBException e) {
             throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
         }
     }
@@ -43,7 +45,8 @@ public class OvalParser {
     public OvalRootType parse(URL url) {
         try {
             return parse(new File(url.toURI()));
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }

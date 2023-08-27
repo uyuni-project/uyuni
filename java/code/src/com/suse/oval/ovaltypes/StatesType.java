@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +39,18 @@ import java.util.List;
 public class StatesType {
 
     @XmlElements({
-            @XmlElement(name = "rpminfo_state", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = RpminfoState.class),
-            @XmlElement(name = "dpkginfo_state", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = DpkginfoState.class),
-            @XmlElement(name = "state", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", type = StateType.class)
+        @XmlElement(name = "rpminfo_state",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = RpminfoState.class),
+        @XmlElement(name = "dpkginfo_state",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5#linux", type = DpkginfoState.class),
+        @XmlElement(name = "state",
+                namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", type = StateType.class)
     })
     protected List<StateType> states;
 
     /**
      * Gets the contained states.
+     * @return the states
      */
     public List<StateType> getStates() {
         if (states == null) {

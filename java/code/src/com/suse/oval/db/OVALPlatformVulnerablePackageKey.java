@@ -30,24 +30,24 @@ public class OVALPlatformVulnerablePackageKey implements Serializable {
         return platform;
     }
 
-    public void setPlatform(OVALPlatform platform) {
-        this.platform = platform;
+    public void setPlatform(OVALPlatform platformIn) {
+        this.platform = platformIn;
     }
 
     public Cve getCve() {
         return cve;
     }
 
-    public void setCve(Cve cve) {
-        this.cve = cve;
+    public void setCve(Cve cveIn) {
+        this.cve = cveIn;
     }
 
     public OVALVulnerablePackage getVulnerablePackage() {
         return vulnerablePackage;
     }
 
-    public void setVulnerablePackage(OVALVulnerablePackage vulnerablePackage) {
-        this.vulnerablePackage = vulnerablePackage;
+    public void setVulnerablePackage(OVALVulnerablePackage vulnerablePackageIn) {
+        this.vulnerablePackage = vulnerablePackageIn;
     }
 
     /**
@@ -75,7 +75,8 @@ public class OVALPlatformVulnerablePackageKey implements Serializable {
                     .append(this.getCve(), otherKey.getCve())
                     .append(this.getVulnerablePackage(), otherKey.getVulnerablePackage())
                     .isEquals();
-        } else {
+        }
+        else {
             return false;
         }
     }

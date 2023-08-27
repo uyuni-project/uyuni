@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -40,8 +41,8 @@ import java.util.stream.Collectors;
  * This class, same as {@link CVEAuditManager}, provides the functionality of CVE auditing.It bases its evaluation on
  * OVAL data, in addition to channels data. Therefore, it provides more accurate results.
  * <p>
- * We can't get rid of {@link CVEAuditManager} yet because not all supported LInux distribitions provide OVAL vulnerability
- * definitions, thus, we fall back to {@link CVEAuditManager} in that case.
+ * We can't get rid of {@link CVEAuditManager} yet because not all supported Linux distributions provide
+ * OVAL vulnerability definitions, thus, we fall back to {@link CVEAuditManager} in that case.
  *
  */
 public class CVEAuditManagerOVAL {
@@ -80,7 +81,8 @@ public class CVEAuditManagerOVAL {
 
                 log.error(auditWithChannelsResult.getChannels());
                 log.error(auditWithChannelsResult.getErratas());
-            } else {
+            }
+            else {
                 systemAuditResult = auditWithChannelsResult;
             }
 
@@ -145,12 +147,12 @@ public class CVEAuditManagerOVAL {
 
         if (patchedVulnerablePackages.isEmpty() && !unpatchedVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
-        } else {
-            log.error(allInstalledPackages.stream().map(ShallowSystemPackage::getPackageEVR).collect(Collectors.toList()));
-
+        }
+        else {
             boolean allPatchesInstalled = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
-                            .filter(installedPackage -> Objects.equals(installedPackage.getName(), patchedPackage.getName()))
+                            .filter(installedPackage ->
+                                    Objects.equals(installedPackage.getName(), patchedPackage.getName()))
                             .anyMatch(installedPackage ->
                                     installedPackage.getPackageEVR()
                                             .compareTo(PackageEvr.parseRpm(
@@ -158,7 +160,8 @@ public class CVEAuditManagerOVAL {
 
             if (allPatchesInstalled) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
-            } else {
+            }
+            else {
                 long numberOfPackagesWithPatchInAssignedChannels =
                         patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInAssignedChannels
                                 .stream()
@@ -173,9 +176,11 @@ public class CVEAuditManagerOVAL {
 
                 if (allPackagesHavePatchInAssignedChannels) {
                     cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
-                } else if (somePackagesHavePatchInAssignedChannels) {
+                }
+                else if (somePackagesHavePatchInAssignedChannels) {
                     cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PARTIAL_PATCH_APPLICABLE);
-                } else {
+                }
+                else {
                     long numberOfPackagesWithPatchInUnassignedChannels =
                             patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInUnassignedChannels
                                     .stream()
@@ -188,7 +193,8 @@ public class CVEAuditManagerOVAL {
                             numberOfPackagesWithPatchInUnassignedChannels == patchedVulnerablePackages.size();
                     if (allPackagesHavePatchInUnassignedChannels) {
                         cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
-                    } else {
+                    }
+                    else {
                         cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
                     }
                 }

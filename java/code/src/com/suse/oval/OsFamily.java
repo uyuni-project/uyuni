@@ -28,16 +28,14 @@ public enum OsFamily {
     // Should consist of all lower case characters
     private final String shortname;
 
-
-    OsFamily(String fullname, String shortname, String vendor) {
-        this.fullname = fullname;
-        this.shortname = shortname;
-        this.vendor = vendor;
+    OsFamily(String fullnameIn, String shortnameIn, String vendorIn) {
+        this.fullname = fullnameIn;
+        this.shortname = shortnameIn;
+        this.vendor = vendorIn;
     }
-    OsFamily(String fullname, String vendor) {
-        this(fullname, fullname.toLowerCase(), vendor);
+    OsFamily(String fullnameIn, String vendorIn) {
+        this(fullnameIn, fullnameIn.toLowerCase(), vendorIn);
     }
-
 
     public String fullname() {
         return fullname;

@@ -28,7 +28,11 @@ public enum DefinitionClassEnum {
      * A patch definition details the machine state of whether a patch executable should be installed.
      * <p>
      * A definition of this class will evaluate to true when the specified patch is missing from the system.
-     * Another way of thinking about this is that a patch definition is stating "the patch should be installed if ...". Note that word SHOULD is intended to mean more than just CAN the patch executable be installed. In other words, if a more recent patch is already installed then the specified patch might not need to be installed.
+     * Another way of thinking about this is that a patch definition is stating "the patch should be installed if ...".
+     * <p>
+     * Note that word SHOULD is intended to mean more than just CAN the patch executable be installed.
+     * In other words, if a more recent patch is already installed then the specified patch might not need
+     * to be installed.
      */
     @XmlEnumValue("patch")
     PATCH("patch"),
@@ -37,7 +41,8 @@ public enum DefinitionClassEnum {
      * A vulnerability definition describes the conditions under which a machine is vulnerable.
      * <p>
      * A definition of this class will evaluate to true when the system is found to be vulnerable with the stated issue.
-     * Another way of thinking about this is that a vulnerability definition is stating "the system is vulnerable if ...".
+     * Another way of thinking about this is that a vulnerability definition is stating
+     * "the system is vulnerable if ...".
      */
     @XmlEnumValue("vulnerability")
     VULNERABILITY("vulnerability");
