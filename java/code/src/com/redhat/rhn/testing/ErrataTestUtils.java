@@ -12,7 +12,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.testing;
+
+import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -45,7 +48,6 @@ import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
-import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
 
 import java.util.ArrayList;
@@ -55,8 +57,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
 
 
 /**
@@ -393,11 +393,11 @@ public class ErrataTestUtils {
 
     public static Package createTestPackage(User user, Channel channel, String arch, String name,
                                             String epoch, String version, String release) {
-        return createTestPackage(user,null, channel, arch, name, epoch, version, release);
+        return createTestPackage(user, null, channel, arch, name, epoch, version, release);
     }
 
     public static Package createTestPackage(User user, Channel channel, String arch, String name) {
-        return createTestPackage(user,null, channel, arch, name, "1", "0", "1");
+        return createTestPackage(user, null, channel, arch, name, "1", "0", "1");
     }
 
     /**

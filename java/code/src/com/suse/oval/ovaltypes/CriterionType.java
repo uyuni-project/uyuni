@@ -42,6 +42,7 @@ public class CriterionType implements BaseCriteria {
 
     /**
      * Gets the value of the testRef property.
+     * @return testRef
      */
     public String getTestRef() {
         return testRef;
@@ -49,6 +50,7 @@ public class CriterionType implements BaseCriteria {
 
     /**
      * Sets the value of the testRef property.
+     * @param value the test id associated with this criterion
      */
     public void setTestRef(String value) {
         this.testRef = value;
@@ -56,17 +58,20 @@ public class CriterionType implements BaseCriteria {
 
     /**
      * Gets the value of the negate property.
+     * @return isNegate
      */
     public boolean isNegate() {
         if (negate == null) {
             return false;
-        } else {
+        }
+        else {
             return negate;
         }
     }
 
     /**
      * Sets the value of the negate property.
+     * @param value weather to negate the criterion evaluation or not
      */
     public void setNegate(Boolean value) {
         this.negate = value;
@@ -74,6 +79,7 @@ public class CriterionType implements BaseCriteria {
 
     /**
      * Gets the value of the comment property.
+     * @return the comment associated with this criterion
      */
     public String getComment() {
         return comment;
@@ -81,6 +87,7 @@ public class CriterionType implements BaseCriteria {
 
     /**
      * Sets the value of the comment property.
+     * @param value the comment to set
      */
     public void setComment(String value) {
         this.comment = value;

@@ -16,7 +16,7 @@
 package com.suse.oval.cpe;
 
 public final class CpeBuilder {
-    Cpe cpe = new Cpe();
+    private final Cpe cpe = new Cpe();
 
     public CpeBuilder withVendor(String vendor) {
         cpe.setVendor(vendor);

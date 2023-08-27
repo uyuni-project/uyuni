@@ -39,8 +39,8 @@ public class ProductVulnerablePackages {
         return productCpe;
     }
 
-    public void setProductCpe(String productCpe) {
-        this.productCpe = productCpe;
+    public void setProductCpe(String productCpeIn) {
+        this.productCpe = productCpeIn;
     }
 
     public List<VulnerablePackage> getVulnerablePackages() {
