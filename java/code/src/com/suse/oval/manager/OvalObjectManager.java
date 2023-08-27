@@ -38,6 +38,9 @@ public class OvalObjectManager {
         }
     }
 
+    /**
+     * Looks up an OVAL object with an id of {@code objectId}
+     * */
     public ObjectType get(String objectId) {
         ObjectType object = objectsMap.get(objectId);
         if (object == null) {
@@ -45,7 +48,9 @@ public class OvalObjectManager {
         }
         return object;
     }
-
+    /**
+     * Check if an OVAL object with an id of {@code objectId} exists
+     * */
     public boolean exists(String objectId) {
         return objectsMap.containsKey(objectId);
     }

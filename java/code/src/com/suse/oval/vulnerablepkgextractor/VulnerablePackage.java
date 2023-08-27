@@ -15,8 +15,6 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
-import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;

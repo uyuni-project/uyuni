@@ -34,11 +34,13 @@ public class SimpleCpeParser {
      * CPE: <b>cpe:/o:suse:sle_hpc:15:sp4</b>
      * <br>
      * PART: <b>o</b> <i>(it's an operating system's CPE)</i><br>
-     * VENDOR: <b>suse</b> <i>(CPE describes a product manufactured by SUSE)<i/><br>
+     * VENDOR: <b>suse</b> <i>(CPE describes a product manufactured by SUSE)</i><br>
      * PRODUCT: <b>sle_hpc</b> <i>(The product name is sle_hpc)</i><br>
      * VERSION: <b>15</b> <i>(The product version is 15)</i><br>
      * UPDATE: <b>sp4</b> <i>(The product update is sp4)</i><br>
      *
+     * @param cpeURI The raw CPE URI to parse
+     * @return the corresponding {@link Cpe} object of the given {@code cpeURI}
      */
     public Cpe parse(String cpeURI) {
         if (!cpeURI.startsWith("cpe:/o:")) {

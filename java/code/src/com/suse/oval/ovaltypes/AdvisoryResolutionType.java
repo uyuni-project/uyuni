@@ -35,15 +35,15 @@ public class AdvisoryResolutionType {
         return affectedComponents;
     }
 
-    public void setAffectedComponents(List<String> affectedComponents) {
-        this.affectedComponents = affectedComponents;
+    public void setAffectedComponents(List<String> affectedComponentsIn) {
+        this.affectedComponents = affectedComponentsIn;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(String stateIn) {
+        this.state = stateIn;
     }
 }
