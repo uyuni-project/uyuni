@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
  * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
-
     private OVALCleaner() {
     }
 
@@ -82,6 +81,7 @@ public class OVALCleaner {
 
         if (osFamily == OsFamily.DEBIAN) {
             convertDebianTestRefs(definition.getCriteria(), osVersion);
+            // SUSE-MicroOS-release is ==5.3
         }
     }
 

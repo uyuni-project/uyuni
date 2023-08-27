@@ -16,15 +16,30 @@
 package com.suse.oval;
 
 import com.suse.oval.exceptions.OvalParserException;
+import com.suse.oval.ovaltypes.ArchType;
+import com.suse.oval.ovaltypes.EVRType;
+import com.suse.oval.ovaltypes.ObjectType;
+import com.suse.oval.ovaltypes.OperationEnumeration;
 import com.suse.oval.ovaltypes.OvalRootType;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.VersionType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents
@@ -61,6 +76,205 @@ public class OvalParser {
         catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public OvalRootType parseStax(File ovalFile) {
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        try {
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+
+            OvalRootType ovalRoot = new OvalRootType();
+
+            while (reader.hasNext()) {
+                XMLEvent nextEvent = reader.nextEvent();
+
+                if (nextEvent.isStartElement()) {
+                    String elementName = nextEvent.asStartElement().getName().getLocalPart();
+                    if (elementName.equals("objects")) {
+                        ovalRoot.setObjects(parseObjects(reader));
+                    }
+                    else if (elementName.equals("states")) {
+                        ovalRoot.setStates(parseStates(reader));
+                    }
+                }
+            }
+
+            return ovalRoot;
+
+        } catch (XMLStreamException | FileNotFoundException e) {
+            throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
+        }
+    }
+
+    private List<StateType> parseStates(XMLEventReader reader) throws XMLStreamException {
+        List<StateType> states = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_state")) {
+                    StateType stateType = parseStateType(nextEvent.asStartElement(), reader);
+                    states.add(stateType);
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("states")) {
+                    return states;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </states>");
+    }
+
+    private StateType parseStateType(StartElement rpmStateElement, XMLEventReader reader) throws XMLStreamException {
+        StateType stateType = new StateType();
+
+        rpmStateElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            switch (attributeName) {
+                case "id":
+                    stateType.setId(attribute.getValue());
+                    break;
+                case "comment":
+                    stateType.setComment(attribute.getValue());
+                    break;
+            }
+        });
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+            if (nextEvent.isStartElement()) {
+                String elementName = nextEvent.asStartElement().getName().getLocalPart();
+                if (elementName.equals("arch")) {
+                    stateType.setPackageArch(parseArchStateEntity(nextEvent.asStartElement(), reader));
+                }
+                else if (elementName.equals("evr")) {
+                    stateType.setPackageEVR(parseEVRStateEntity(nextEvent.asStartElement(), reader));
+                }
+                else if (elementName.equals("version")) {
+                    stateType.setPackageVersion(parseVersionStateEntity(nextEvent.asStartElement(), reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_state")) {
+                    return stateType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </rpminfo_state>");
+    }
+
+    private ArchType parseArchStateEntity(StartElement archElement, XMLEventReader reader) throws XMLStreamException {
+        ArchType archType = new ArchType();
+
+        archElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            if (attributeName.equals("operation")) {
+                archType.setOperation(OperationEnumeration.fromValue(attribute.getValue()));
+            }
+        });
+
+        archType.setValue(reader.getElementText());
+
+        return archType;
+    }
+
+    private EVRType parseEVRStateEntity(StartElement evrElement, XMLEventReader reader) throws XMLStreamException {
+        EVRType evrType = new EVRType();
+
+        evrElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            if (attributeName.equals("operation")) {
+                evrType.setOperation(OperationEnumeration.fromValue(attribute.getValue()));
+            }
+        });
+
+        evrType.setValue(reader.getElementText());
+
+        return evrType;
+    }
+
+    private VersionType parseVersionStateEntity(StartElement versionElement, XMLEventReader reader)
+            throws XMLStreamException {
+        VersionType versionType = new VersionType();
+
+        versionElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            if (attributeName.equals("operation")) {
+                versionType.setOperation(OperationEnumeration.fromValue(attribute.getValue()));
+            }
+        });
+
+        versionType.setValue(reader.getElementText());
+
+        return versionType;
+    }
+
+    private List<ObjectType> parseObjects(XMLEventReader reader) throws XMLStreamException {
+        List<ObjectType> objects = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_object")) {
+                    ObjectType objectType = parseObjectType(nextEvent.asStartElement(), reader);
+                    objects.add(objectType);
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("objects")) {
+                    return objects;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </objects>");
+    }
+
+    private ObjectType parseObjectType(StartElement rpmObjectElement, XMLEventReader reader) throws XMLStreamException {
+        ObjectType objectType = new ObjectType();
+
+        rpmObjectElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            switch (attributeName) {
+                case "id":
+                    objectType.setId(attribute.getValue());
+                    break;
+                case "comment":
+                    objectType.setComment(attribute.getValue());
+                    break;
+            }
+        });
+
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("name")) {
+                    objectType.setPackageName(reader.getElementText());
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_object")) {
+                    return objectType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </rpminfo_object>");
     }
 
 }
