@@ -34,11 +34,11 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
     protected final DefinitionType definition;
     protected final CriteriaType criteriaRoot;
 
-    protected CriteriaTreeBasedExtractor(DefinitionType definition) {
-        assertDefinitionIsValid(definition);
+    protected CriteriaTreeBasedExtractor(DefinitionType definitionIn) {
+        assertDefinitionIsValid(definitionIn);
 
-        this.definition = definition;
-        this.criteriaRoot = definition.getCriteria();
+        this.definition = definitionIn;
+        this.criteriaRoot = definitionIn.getCriteria();
     }
 
     protected abstract List<ProductVulnerablePackages> extractItem(BaseCriteria criteriaType);
@@ -106,8 +106,8 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definition) {
-        assert definition != null;
-        assert definition.getCriteria() != null;
+    public void assertDefinitionIsValid(DefinitionType definitionIn) {
+        assert definitionIn != null;
+        assert definitionIn.getCriteria() != null;
     }
 }

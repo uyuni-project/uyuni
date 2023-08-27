@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * Vulnerable package extractor for OVALs from: <a href="https://www.debian.org/security/oval/">Debian OVAL</a>
  * */
 public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtractor {
-    private static Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
+    private static final Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) DPKG is earlier than (?<evr>.*)");
 
@@ -49,8 +49,8 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
 
         Matcher matcher = DEBIAN_PACKAGE_REGEX.matcher(criterionType.getComment());
 
-        // Although we know the comment matches the regex (see test()), we need to call matches() otherwise Matcher#group
-        // throws an exception
+        // Although we know the comment matches the regex (see test()), we need to call matches() otherwise
+        // Matcher#group throws an exception
         matcher.matches();
 
         if (matcher.groupCount() != 2) {
@@ -65,7 +65,8 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
         if ("0".equals(evr)) {
             // Affected/unpatched package
             vulnerablePackage.setFixVersion(null);
-        } else {
+        }
+        else {
             vulnerablePackage.setFixVersion(evr);
         }
 
@@ -98,10 +99,10 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definition) {
-        super.assertDefinitionIsValid(definition);
+    public void assertDefinitionIsValid(DefinitionType definitionIn) {
+        super.assertDefinitionIsValid(definitionIn);
 
-        assert definition.getOsFamily() == OsFamily.DEBIAN;
-        assert definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
+        assert definitionIn.getOsFamily() == OsFamily.DEBIAN;
+        assert definitionIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
     }
 }

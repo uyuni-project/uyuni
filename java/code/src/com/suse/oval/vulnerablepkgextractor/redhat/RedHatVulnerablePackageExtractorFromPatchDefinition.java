@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 public class RedHatVulnerablePackageExtractorFromPatchDefinition extends CriteriaTreeBasedExtractor {
     private static final Pattern REDHAT_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) is earlier than (?<evr>.*)");
-    private static Logger LOG = LogManager.getLogger(RedHatVulnerablePackageExtractorFromPatchDefinition.class);
+    private static final Logger LOG = LogManager.getLogger(RedHatVulnerablePackageExtractorFromPatchDefinition.class);
 
     public RedHatVulnerablePackageExtractorFromPatchDefinition(DefinitionType patchDefinition) {
         super(patchDefinition);
@@ -55,8 +55,8 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
 
         Matcher matcher = REDHAT_PACKAGE_REGEX.matcher(criterionType.getComment());
 
-        // Although we know the comment matches the regex (see test()), we need to call matches() otherwise Matcher#group
-        // throws an exception
+        // Although we know the comment matches the regex (see test()), we need to call matches() otherwise
+        // Matcher#group throws an exception
         matcher.matches();
 
         if (matcher.groupCount() != 2) {
@@ -104,10 +104,10 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definition) {
-        assert definition.getDefinitionClass() == DefinitionClassEnum.PATCH;
-        assert definition.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
+    public void assertDefinitionIsValid(DefinitionType definitionIn) {
+        assert definitionIn.getDefinitionClass() == DefinitionClassEnum.PATCH;
+        assert definitionIn.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
 
-        assert !definition.getCves().isEmpty();
+        assert !definitionIn.getCves().isEmpty();
     }
 }

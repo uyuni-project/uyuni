@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
  * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
+    private OVALCleaner() {
+    }
 
     /**
      * Cleanup the given {@code root} based on {@code osFamily} and {@code osVersion}
@@ -88,7 +90,7 @@ public class OVALCleaner {
             case DEBIAN:
                 definition.setSingleCve(definition.getMetadata().getTitle().split("\\s+")[0]);
                 break;
-            case UBUNTU:
+            default:
                 throw new NotImplementedException("Cannot extract cve from '" + osFamily + "' OVAL definitions");
         }
 
@@ -143,7 +145,8 @@ public class OVALCleaner {
             for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
                 convertDebianTestRefs(criteria, osVersion);
             }
-        } else {
+        }
+        else {
             CriterionType criterionType = (CriterionType) root;
             criterionType.setTestRef(convertDebianId(criterionType.getTestRef(), osVersion));
         }
@@ -159,11 +162,14 @@ public class OVALCleaner {
         String codename;
         if ("10.0".equals(osVersion) || "10".equals(osVersion)) {
             codename = "buster";
-        } else if ("11.0".equals(osVersion) || "11".equals(osVersion)) {
+        }
+        else if ("11.0".equals(osVersion) || "11".equals(osVersion)) {
             codename = "bullseye";
-        } else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
+        }
+        else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
             codename = "bookworm";
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Invalid debian version: " + osVersion);
         }
         return id.replaceAll("debian", "debian-" + codename);

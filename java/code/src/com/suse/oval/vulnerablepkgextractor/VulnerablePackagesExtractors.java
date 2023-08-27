@@ -27,6 +27,8 @@ import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtrac
  * */
 public class VulnerablePackagesExtractors {
 
+    private VulnerablePackagesExtractors() {
+    }
     public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,
                                                      OVALLookupHelper ovalLookupHelper) {
         switch (osFamily) {
@@ -39,7 +41,8 @@ public class VulnerablePackagesExtractors {
             case REDHAT_ENTERPRISE_LINUX:
                 if (definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY) {
                     return new RedHatVulnerablePackageExtractorFromVulnerabilityDefinition(definition);
-                } else if (definition.getDefinitionClass() == DefinitionClassEnum.PATCH) {
+                }
+                else if (definition.getDefinitionClass() == DefinitionClassEnum.PATCH) {
                     return new RedHatVulnerablePackageExtractorFromPatchDefinition(definition);
                 }
             default:

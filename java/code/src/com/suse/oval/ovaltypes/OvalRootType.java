@@ -33,8 +33,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "oval_definitions", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
 public class OvalRootType {
 
-    @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", required = true)
-    protected GeneratorType generator;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     protected DefinitionsType definitions;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -49,32 +47,20 @@ public class OvalRootType {
     protected String osVersion;
 
     /**
-     * Gets the value of the generator property.
-     */
-    public GeneratorType getGenerator() {
-        return generator;
-    }
-
-    /**
-     * Sets the value of the generator property.
-     */
-    public void setGenerator(GeneratorType value) {
-        this.generator = value;
-    }
-
-    /**
      * Gets the list of OVAL definitions.
      */
     public List<DefinitionType> getDefinitions() {
         if (definitions == null) {
             return new ArrayList<>();
-        } else {
+        }
+        else {
             return definitions.getDefinitions();
         }
     }
 
     /**
      * Sets the list of OVAL definitions.
+     * @param value the definitions to set
      */
     public void setDefinitions(List<DefinitionType> value) {
         this.definitions = new DefinitionsType();
@@ -90,6 +76,7 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL tests.
+     * @param value the tests to set
      */
     public void setTests(List<TestType> value) {
         this.tests = new TestsType();
@@ -105,6 +92,7 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL objects.
+     * @param value the objects to set
      */
     public void setObjects(List<ObjectType> value) {
         this.objects = new ObjectsType();
@@ -130,15 +118,15 @@ public class OvalRootType {
         return osFamily;
     }
 
-    public void setOsFamily(OsFamily osFamily) {
-        this.osFamily = osFamily;
+    public void setOsFamily(OsFamily osFamilyIn) {
+        this.osFamily = osFamilyIn;
     }
 
     public String getOsVersion() {
         return osVersion;
     }
 
-    public void setOsVersion(String osVersion) {
-        this.osVersion = osVersion;
+    public void setOsVersion(String osVersionIn) {
+        this.osVersion = osVersionIn;
     }
 }
