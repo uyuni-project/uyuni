@@ -162,6 +162,7 @@ Feature: Smoke tests for <client>
 @skip_for_sle_micro
   # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Install"
