@@ -130,8 +130,7 @@ public class ContentSyncManager {
      * repos that are served directly from NCC instead of SCC.
      */
     public static final String OES_CHANNEL_FAMILY = "OES2";
-    private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
-            "OES11-SP2-Pool/sle-11-x86_64/";
+    private static final String OES_URL = "https://nu.novell.com/repo/$RCE/OES2023-Pool/sle-15-x86_64/";
 
     // Static JSON files we parse
     private static File upgradePathsJson = new File(
