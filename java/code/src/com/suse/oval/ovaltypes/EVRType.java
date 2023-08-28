@@ -30,8 +30,6 @@ import javax.xml.bind.annotation.XmlValue;
 public class EVRType {
     @XmlValue
     private String value;
-    @XmlAttribute(name = "datatype")
-    private EVRDataTypeEnum datatype;
     @XmlAttribute(name = "operation", required = true)
     private OperationEnumeration operation;
 
@@ -41,14 +39,6 @@ public class EVRType {
 
     public void setValue(String valueIn) {
         this.value = valueIn;
-    }
-
-    public EVRDataTypeEnum getDatatype() {
-        return datatype;
-    }
-
-    public void setDatatype(EVRDataTypeEnum datatypeIn) {
-        this.datatype = datatypeIn;
     }
 
     public OperationEnumeration getOperation() {
