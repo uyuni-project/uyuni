@@ -1558,7 +1558,7 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-        DataResult<PackageListItem> packageListItems = PackageManager.shallowSystemPackageList(server.getId(), null);
+        DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
         List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
             Map<String, Object> item = new LinkedHashMap<>();

@@ -32,7 +32,7 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
      */
     @Override
     protected DataResult<PackageListItem> getDataResult(Server server) {
-        DataResult<PackageListItem> result = PackageManager.shallowSystemPackageList(server.getId(), null);
+        DataResult<PackageListItem> result = PackageManager.systemPackageList(server.getId(), null);
         result.elaborate();
 
         // Force the selection to be restricted to only non ptf packages.

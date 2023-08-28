@@ -101,7 +101,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 "test-package-name" + TestUtils.randomString(), server,
                 ChannelFactoryTest.createTestChannel(user));
 
-        DataResult dr = PackageManager.shallowSystemPackageList(server.getId(), pc);
+        DataResult dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
         assertEquals(1, dr.size());
 
@@ -142,7 +142,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageManagerTest.associateSystemToPackage(server, p1);
         server = SystemManager.subscribeServerToChannel(user, server, c1);
 
-        DataResult dr = PackageManager.shallowSystemPackageList(server.getId(), pc);
+        DataResult dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
         assertEquals(1, dr.size());
 

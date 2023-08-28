@@ -319,7 +319,7 @@ public class PackageManager extends BaseManager {
      * @param pc PageControl can also be null.
      * @return list of packages for given server
      */
-    public static DataResult<PackageListItem> shallowSystemPackageList(Long sid, PageControl pc) {
+    public static DataResult<PackageListItem> systemPackageList(Long sid, PageControl pc) {
         return PackageManager.getPackagesPerSystem(sid, "system_package_list", pc);
     }
 

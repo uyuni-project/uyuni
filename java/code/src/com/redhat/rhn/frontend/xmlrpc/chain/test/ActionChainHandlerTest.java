@@ -559,7 +559,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testAcPackageVerify() {
         DataResult<PackageListItem> packageListItems =
-                PackageManager.shallowSystemPackageList(this.server.getId(), null);
+                PackageManager.systemPackageList(this.server.getId(), null);
         List<Integer> packages = new ArrayList<>();
         for (PackageListItem packageListItem : packageListItems) {
             packages.add(packageListItem.getPackageId().intValue());
