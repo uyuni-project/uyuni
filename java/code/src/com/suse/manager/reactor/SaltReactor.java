@@ -310,7 +310,7 @@ public class SaltReactor {
                             () -> MinionServerFactory.findByMinionId(beaconEvent.getMinionId())
                                     .ifPresent(minionServer -> {
                         try {
-                            ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                            ActionManager.schedulePackageRefresh(Optional.empty(), minionServer);
                         }
                         catch (TaskomaticApiException e) {
                             LOG.error("Could not schedule package refresh for minion: {}",

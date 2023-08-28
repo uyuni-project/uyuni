@@ -737,6 +737,7 @@ public class SaltServerActionService {
                                         .contains(SYSTEM_REBOOT)).orElse(false));
 
                 boolean refreshPkg = false;
+                Optional<User> scheduler = Optional.empty();
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
                     String stateIdKey = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
@@ -748,13 +749,13 @@ public class SaltServerActionService {
                         // only reboot needs special handling,
                         // for salt pkg update there's no need to split the sls in case of salt-ssh minions
 
+                        Action action = ActionFactory.lookupById(stateId.getActionId());
                         if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                                 .contains(SYSTEM_REBOOT)).orElse(false) && stateResult.isResult()) {
-                            Action rebootAction = ActionFactory.lookupById(stateId.getActionId());
 
-                            if (rebootAction.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
                                 Optional<ServerAction> rebootServerAction =
-                                        rebootAction.getServerActions().stream()
+                                        action.getServerActions().stream()
                                                 .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
                                                         sa.getServer().asMinionServer().get()
                                                                 .getMinionId().equals(minionId))
@@ -773,16 +774,18 @@ public class SaltServerActionService {
                         if (stateResult.isResult() &&
                                 saltUtils.shouldRefreshPackageList(stateResult.getName(),
                                         Optional.of(stateResult.getChanges().getRet()))) {
+                            scheduler = Optional.ofNullable(action.getSchedulerUser());
                             refreshPkg = true;
                         }
                     }
                 }
                 Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
+                    Optional<User> finalScheduler = scheduler;
                     minionServer.ifPresent(minion -> {
                         LOG.info("Scheduling a package profile update for minion {}", minionId);
                         try {
-                            ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                            ActionManager.schedulePackageRefresh(finalScheduler, minion);
                         }
                         catch (TaskomaticApiException e) {
                             LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
@@ -2572,7 +2575,8 @@ public class SaltServerActionService {
                             LOG.info("Scheduling a package profile update");
 
                             try {
-                                ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
+                                ActionManager.schedulePackageRefresh(
+                                        Optional.ofNullable(action.getSchedulerUser()), minion);
                             }
                             catch (TaskomaticApiException e) {
                                 LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
