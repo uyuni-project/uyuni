@@ -171,7 +171,6 @@ public class AnnotationRegistry {
         InternalState.class,
         PaygDimensionComputation.class,
         PaygDimensionResult.class,
-        InternalState.class,
         OVALPlatform.class,
         OVALVulnerablePackage.class,
         OVALPlatformVulnerablePackage.class
