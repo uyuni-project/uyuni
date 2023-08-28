@@ -25,25 +25,25 @@ const AFFECTED_PATCH_UNAVAILABLE = "AFFECTED_PATCH_UNAVAILABLE";
 const AFFECTED_PARTIAL_PATCH_APPLICABLE = "AFFECTED_PARTIAL_PATCH_APPLICABLE";
 
 const ALL = [
+  AFFECTED_PATCH_UNAVAILABLE,
+  AFFECTED_PARTIAL_PATCH_APPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE,
-  AFFECTED_FULL_PATCH_APPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+  AFFECTED_FULL_PATCH_APPLICABLE,
   NOT_AFFECTED,
   PATCHED,
-  AFFECTED_PATCH_UNAVAILABLE,
-  AFFECTED_PARTIAL_PATCH_APPLICABLE
 ];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
-    className: "fa-exclamation-circle text-danger",
+    className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in channels which are not assigned"),
   },
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
-    className: "fa-exclamation-circle text-danger",
+    className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in a Product Migration target"),
   },
   AFFECTED_FULL_PATCH_APPLICABLE: {
-    className: "fa-exclamation-triangle text-warning",
+    className: "fa-shield text-success",
     label: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
@@ -59,7 +59,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patch is unavailable")
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
-    className: "fa-exclamation-circle text-danger",
+    className: "fa-shield text-warning",
     label: t("Affected, partial patch available in assigned channel")
   }
 };
