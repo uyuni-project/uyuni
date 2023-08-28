@@ -42,7 +42,6 @@ install -m 0644 channel_families.json %{buildroot}/usr/share/susemanager/scc/cha
 install -m 0644 upgrade_paths.json    %{buildroot}/usr/share/susemanager/scc/upgrade_paths.json
 install -m 0644 additional_products.json    %{buildroot}/usr/share/susemanager/scc/additional_products.json
 install -m 0644 additional_repositories.json    %{buildroot}/usr/share/susemanager/scc/additional_repositories.json
-install -m 0644 product_tree.json    %{buildroot}/usr/share/susemanager/scc/product_tree.json
 
 %files
 %defattr(-,root,root,-)
@@ -52,6 +51,5 @@ install -m 0644 product_tree.json    %{buildroot}/usr/share/susemanager/scc/prod
 /usr/share/susemanager/scc/upgrade_paths.json
 /usr/share/susemanager/scc/additional_products.json
 /usr/share/susemanager/scc/additional_repositories.json
-/usr/share/susemanager/scc/product_tree.json
 
 %changelog
