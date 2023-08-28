@@ -46,7 +46,6 @@ defaultdict = {
     "centos7_client": "/SUSE_Updates_RES_7-CLIENT-TOOLS_x86_64/",
     "centos7_minion": "/SUSE_Updates_RES_7-CLIENT-TOOLS_x86_64",
     "rocky8_minion": "/SUSE_Updates_RES_8-CLIENT-TOOLS_x86_64/",
-    "ubuntu1804_minion": "/SUSE_Updates_Ubuntu_18.04-CLIENT-TOOLS_x86_64/",
     "ubuntu2004_minion": "/SUSE_Updates_Ubuntu_20.04-CLIENT-TOOLS_x86_64/",
     "ubuntu2204_minion": "/SUSE_Updates_Ubuntu_22.04-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
