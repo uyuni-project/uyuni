@@ -1392,64 +1392,64 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpdateUpgradePaths() throws Exception {
-            // Prepare products since they will be looked up
-            ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
-            SUSEProduct p;
+        // Prepare products since they will be looked up
+        ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
+        SUSEProduct p;
 
-            List<SCCProductJson> products = new ArrayList<>();
-            int productId = 10012345;
-            assertNull(SUSEProductFactory.lookupByProductId(productId));
-            String name = TestUtils.randomString();
-            String identifier = TestUtils.randomString();
-            String version = TestUtils.randomString();
-            String releaseType = TestUtils.randomString();
-            String friendlyName = TestUtils.randomString();
-            String productClass = TestUtils.randomString();
+        List<SCCProductJson> products = new ArrayList<>();
+        int productId = 10012345;
+        assertNull(SUSEProductFactory.lookupByProductId(productId));
+        String name = TestUtils.randomString();
+        String identifier = TestUtils.randomString();
+        String version = TestUtils.randomString();
+        String releaseType = TestUtils.randomString();
+        String friendlyName = TestUtils.randomString();
+        String productClass = TestUtils.randomString();
 
-            // Setup a product as it comes from SCC
-            SCCProductJson prd = new SCCProductJson(productId, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                    null, false);
-            products.add(prd);
+        // Setup a product as it comes from SCC
+        SCCProductJson prd = new SCCProductJson(productId, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                null, false);
+        products.add(prd);
 
-            productId = 10012346;
-            assertNull(SUSEProductFactory.lookupByProductId(productId));
-            name = TestUtils.randomString();
-            identifier = TestUtils.randomString();
-            version = TestUtils.randomString();
-            releaseType = TestUtils.randomString();
-            friendlyName = TestUtils.randomString();
-            productClass = TestUtils.randomString();
+        productId = 10012346;
+        assertNull(SUSEProductFactory.lookupByProductId(productId));
+        name = TestUtils.randomString();
+        identifier = TestUtils.randomString();
+        version = TestUtils.randomString();
+        releaseType = TestUtils.randomString();
+        friendlyName = TestUtils.randomString();
+        productClass = TestUtils.randomString();
 
-            // Setup a 2nd product as it comes from SCC
-            SCCProductJson prd2 = new SCCProductJson(productId, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(),
-                    Collections.singletonList(10012345L), Collections.emptyList(),
-                    null, false);
-            products.add(prd2);
+        // Setup a 2nd product as it comes from SCC
+        SCCProductJson prd2 = new SCCProductJson(productId, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList(10012345L), Collections.emptyList(),
+                null, false);
+        products.add(prd2);
 
-            if (SUSEProductFactory.lookupByProductId(10012345) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(10012345);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(10012346) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(10012346);
-                TestUtils.saveAndFlush(p);
-            }
+        if (SUSEProductFactory.lookupByProductId(10012345) == null) {
+            p = SUSEProductTestUtils.createTestSUSEProduct(family);
+            p.setProductId(10012345);
+            TestUtils.saveAndFlush(p);
+        }
+        if (SUSEProductFactory.lookupByProductId(10012346) == null) {
+            p = SUSEProductTestUtils.createTestSUSEProduct(family);
+            p.setProductId(10012346);
+            TestUtils.saveAndFlush(p);
+        }
 
-            // Update the upgrade paths
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateUpgradePaths(products);
+        // Update the upgrade paths
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateUpgradePaths(products);
 
-            // Check the results
-            SUSEProduct p10012345 = SUSEProductFactory.lookupByProductId(10012345);
-            SUSEProduct p10012346 = SUSEProductFactory.lookupByProductId(10012346);
+        // Check the results
+        SUSEProduct p10012345 = SUSEProductFactory.lookupByProductId(10012345);
+        SUSEProduct p10012346 = SUSEProductFactory.lookupByProductId(10012346);
 
-            assertContains(p10012345.getUpgrades(), p10012346);
+        assertContains(p10012345.getUpgrades(), p10012346);
     }
 
     /**
@@ -1458,58 +1458,58 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpgradePathPredecessorDeleted() throws Exception {
-            List<SCCProductJson> products = new ArrayList<>();
+        List<SCCProductJson> products = new ArrayList<>();
 
-            // Setup a product as it comes from SCC
-            long product1Id = 10012345;
-            assertNull(SUSEProductFactory.lookupByProductId(product1Id));
-            String name = TestUtils.randomString();
-            String identifier = TestUtils.randomString();
-            String version = TestUtils.randomString();
-            String releaseType = TestUtils.randomString();
-            String friendlyName = TestUtils.randomString();
-            String productClass = TestUtils.randomString();
+        // Setup a product as it comes from SCC
+        long product1Id = 10012345;
+        assertNull(SUSEProductFactory.lookupByProductId(product1Id));
+        String name = TestUtils.randomString();
+        String identifier = TestUtils.randomString();
+        String version = TestUtils.randomString();
+        String releaseType = TestUtils.randomString();
+        String friendlyName = TestUtils.randomString();
+        String productClass = TestUtils.randomString();
 
-            SCCProductJson product1 = new SCCProductJson(product1Id, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                    null, false);
-            products.add(product1);
+        SCCProductJson product1 = new SCCProductJson(product1Id, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                null, false);
+        products.add(product1);
 
-            // Setup a 2nd product as it comes from SCC
-            int product2Id = 10012346;
-            assertNull(SUSEProductFactory.lookupByProductId(product2Id));
-            name = TestUtils.randomString();
-            identifier = TestUtils.randomString();
-            version = TestUtils.randomString();
-            releaseType = TestUtils.randomString();
-            friendlyName = TestUtils.randomString();
-            productClass = TestUtils.randomString();
+        // Setup a 2nd product as it comes from SCC
+        int product2Id = 10012346;
+        assertNull(SUSEProductFactory.lookupByProductId(product2Id));
+        name = TestUtils.randomString();
+        identifier = TestUtils.randomString();
+        version = TestUtils.randomString();
+        releaseType = TestUtils.randomString();
+        friendlyName = TestUtils.randomString();
+        productClass = TestUtils.randomString();
 
-            SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(),
-                    Collections.singletonList(product1Id), Collections.emptyList(),
-                    null, false);
-            products.add(product2);
+        SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList(product1Id), Collections.emptyList(),
+                null, false);
+        products.add(product2);
 
-            // Update SUSE products and upgrade paths
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-            csm.updateSUSEProducts(products);
-            HibernateFactory.getSession().flush();
+        // Update SUSE products and upgrade paths
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
+        csm.updateSUSEProducts(products);
+        HibernateFactory.getSession().flush();
 
-            // There should be an upgrade path from product1 to product2
-            assertEquals(1, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().size());
+        // There should be an upgrade path from product1 to product2
+        assertEquals(1, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().size());
 
-            // Remove the first product
-            products.remove(product1);
-            csm.updateSUSEProducts(Collections.singletonList(
-                    product2.copy().setOnlinePredecessorIds(Collections.emptyList()).build()));
-            HibernateFactory.getSession().flush();
+        // Remove the first product
+        products.remove(product1);
+        csm.updateSUSEProducts(Collections.singletonList(
+                product2.copy().setOnlinePredecessorIds(Collections.emptyList()).build()));
+        HibernateFactory.getSession().flush();
 
-            // There should be no upgrade paths
-            assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
+        // There should be no upgrade paths
+        assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
     }
 
     /**
@@ -1518,55 +1518,55 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpgradePathRemoved() throws Exception {
-            List<SCCProductJson> products = new ArrayList<>();
+        List<SCCProductJson> products = new ArrayList<>();
 
-            // Setup a product as it comes from SCC
-            long product1Id = 10012345;
-            assertNull(SUSEProductFactory.lookupByProductId(product1Id));
-            String name = TestUtils.randomString();
-            String identifier = TestUtils.randomString();
-            String version = TestUtils.randomString();
-            String releaseType = TestUtils.randomString();
-            String friendlyName = TestUtils.randomString();
-            String productClass = TestUtils.randomString();
+        // Setup a product as it comes from SCC
+        long product1Id = 10012345;
+        assertNull(SUSEProductFactory.lookupByProductId(product1Id));
+        String name = TestUtils.randomString();
+        String identifier = TestUtils.randomString();
+        String version = TestUtils.randomString();
+        String releaseType = TestUtils.randomString();
+        String friendlyName = TestUtils.randomString();
+        String productClass = TestUtils.randomString();
 
-            SCCProductJson product1 = new SCCProductJson(product1Id, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                    null, false);
-            products.add(product1);
+        SCCProductJson product1 = new SCCProductJson(product1Id, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                null, false);
+        products.add(product1);
 
-            // Setup a 2nd product as it comes from SCC
-            int product2Id = 10012346;
-            assertNull(SUSEProductFactory.lookupByProductId(product2Id));
-            name = TestUtils.randomString();
-            identifier = TestUtils.randomString();
-            version = TestUtils.randomString();
-            releaseType = TestUtils.randomString();
-            friendlyName = TestUtils.randomString();
-            productClass = TestUtils.randomString();
+        // Setup a 2nd product as it comes from SCC
+        int product2Id = 10012346;
+        assertNull(SUSEProductFactory.lookupByProductId(product2Id));
+        name = TestUtils.randomString();
+        identifier = TestUtils.randomString();
+        version = TestUtils.randomString();
+        releaseType = TestUtils.randomString();
+        friendlyName = TestUtils.randomString();
+        productClass = TestUtils.randomString();
 
-            SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
-                    friendlyName, productClass, ReleaseStage.released, "", false, "", "",
-                    Collections.emptyList(), Collections.emptyList(),
-                    Collections.singletonList(product1Id), Collections.emptyList(),
-                    null, false);
-            products.add(product2);
+        SCCProductJson product2 = new SCCProductJson(product2Id, name, identifier, version, releaseType, "i686",
+                friendlyName, productClass, ReleaseStage.released, "", false, "", "",
+                Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList(product1Id), Collections.emptyList(),
+                null, false);
+        products.add(product2);
 
-            // Update SUSE products and upgrade paths
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-            csm.updateSUSEProducts(products);
+        // Update SUSE products and upgrade paths
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
+        csm.updateSUSEProducts(products);
 
-            // There should be an upgrade path from product1 to product2
-            assertEquals(1, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().size());
+        // There should be an upgrade path from product1 to product2
+        assertEquals(1, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().size());
 
-            // Remove the upgrade path via the predecessor Id
-            csm.updateSUSEProducts(Stream.of(product1, product2.copy().setOnlinePredecessorIds(Collections.emptyList())
-                    .build()).collect(Collectors.toList()));
+        // Remove the upgrade path via the predecessor Id
+        csm.updateSUSEProducts(Stream.of(product1, product2.copy().setOnlinePredecessorIds(Collections.emptyList())
+                .build()).collect(Collectors.toList()));
 
-            // There should be no upgrade paths
-            assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
+        // There should be no upgrade paths
+        assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
     }
 
     /**
