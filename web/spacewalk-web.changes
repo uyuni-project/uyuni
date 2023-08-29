@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Aug 29 15:58:54 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.33-1
+  * Update the messages after syncing the products
+  * Fix issue that prevented to delete credentials
+  * Add warning message in login UI for Pay-as-you-go with SCC
+    credentials and no forward registration.
+  * Hide SSH info for `localhost` in Pay-as-you-go section
+  * Integrate @formatjs/intl as a replacement for t()
+  * Fix link interpolation in message maps
+
+-------------------------------------------------------------------
 Tue Jun 27 21:19:05 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.32-1
