@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Aug 29 16:32:18 CEST 2023 - marina.latini@suse.com
+
+- version 0.3-1
+  * Add required dependencies to package and service
+  * Change billing api datastructure
+  * Require csp-billing-adapter service
+
+-------------------------------------------------------------------
 Tue Jun 27 16:09:32 CEST 2023 - marina.latini@suse.com
 
 - version 0.2-1
