@@ -21,10 +21,13 @@ import com.suse.oval.ovaltypes.AdvisoryAffectedType;
 import com.suse.oval.ovaltypes.AdvisoryCveType;
 import com.suse.oval.ovaltypes.AdvisoryResolutionType;
 import com.suse.oval.ovaltypes.ArchType;
+import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
+import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.EVRType;
+import com.suse.oval.ovaltypes.LogicOperatorType;
 import com.suse.oval.ovaltypes.MetadataType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OperationEnumeration;
@@ -86,7 +89,7 @@ public class OvalParser {
      * */
     public OvalRootType parse(URL url) {
         try {
-            return parse(new File(url.toURI()));
+            return parseStax(new File(url.toURI()));
         }
         catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -192,10 +195,68 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </definition>");
     }
 
-    private CriteriaType parseDefinitionCriteria(StartElement criteriaElement, XMLEventReader reader) {
+    private CriteriaType parseDefinitionCriteria(StartElement criteriaElement, XMLEventReader reader)
+            throws XMLStreamException {
         CriteriaType criteriaType = new CriteriaType();
 
-        return criteriaType;
+        criteriaElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+            switch (attributeName) {
+                case "comment":
+                    criteriaType.setComment(attribute.getValue());
+                    break;
+                case "operator":
+                    criteriaType.setOperator(LogicOperatorType.fromValue(attribute.getValue()));
+                    break;
+                case "negate":
+                    criteriaType.setNegate(Boolean.valueOf(attribute.getValue()));
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        List<BaseCriteria> children = new ArrayList<>();
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("criterion")) {
+                    children.add(parseDefinitionCriterion(nextEvent.asStartElement()));
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("criteria")) {
+                    children.add(parseDefinitionCriteria(nextEvent.asStartElement(), reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("criteria")) {
+                    criteriaType.setChildren(children);
+                    return criteriaType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </criteria>");
+    }
+
+    private CriterionType parseDefinitionCriterion(StartElement criterionElement) {
+        CriterionType criterionType = new CriterionType();
+
+        criterionElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+            switch (attributeName) {
+                case "comment":
+                    criterionType.setComment(attribute.getValue());
+                    break;
+                case "test_ref":
+                    criterionType.setTestRef(attribute.getValue());
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        return criterionType;
     }
 
     private MetadataType parseDefinitionMetadata(XMLEventReader reader) throws XMLStreamException {
