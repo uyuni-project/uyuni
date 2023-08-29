@@ -87,10 +87,7 @@ mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
 sed -i 's|var/www/html|srv/www/htdocs|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %endif
 
-tar -C $RPM_BUILD_ROOT%{prepdir} -cf - etc \
-     | tar -C $RPM_BUILD_ROOT -xvf -
-
-echo "" > $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
+touch $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
 
 mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/certs/
 mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
