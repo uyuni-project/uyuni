@@ -22,14 +22,20 @@ import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OperationEnumeration;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.ovaltypes.StateType;
+import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -45,6 +51,7 @@ import java.util.ArrayList;
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents
  */
 public class OvalParser {
+    private static final Logger LOG = LogManager.getLogger(OvalParser.class);
 
     /**
      * Parse the given OVAL file
@@ -96,14 +103,91 @@ public class OvalParser {
                     else if (elementName.equals("states")) {
                         ovalRoot.setStates(parseStates(reader));
                     }
+                    else if (elementName.equals("tests")) {
+                        ovalRoot.setTests(parseTests(reader));
+                    }
                 }
             }
 
             return ovalRoot;
 
-        } catch (XMLStreamException | FileNotFoundException e) {
+        }
+        catch (XMLStreamException | FileNotFoundException e) {
             throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
         }
+    }
+
+    private List<TestType> parseTests(XMLEventReader reader) throws XMLStreamException {
+        List<TestType> tests = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_test")) {
+                    TestType testType = parseTestType(nextEvent.asStartElement(), reader);
+                    tests.add(testType);
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("tests")) {
+                    return tests;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </tests>");
+    }
+
+    private TestType parseTestType(StartElement testElement, XMLEventReader reader) throws XMLStreamException {
+        TestType testType = new TestType();
+
+        testElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+
+            switch (attributeName) {
+                case "id":
+                    testType.setId(attribute.getValue());
+                    break;
+                case "comment":
+                    testType.setComment(attribute.getValue());
+                    break;
+            }
+        });
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("object")) {
+                    Attribute objectRefAttribute = nextEvent.asStartElement().getAttributeByName(
+                            new QName("object_ref"));
+                    if (objectRefAttribute != null) {
+                        testType.setObjectRef(objectRefAttribute.getValue());
+                    } else {
+                        LOG.warn("objectRef property was not found");
+                    }
+                } else if (nextEvent.asStartElement().getName().getLocalPart().equals("state")) {
+                    Attribute stateRefAttribute = nextEvent.asStartElement().getAttributeByName(
+                            new QName("state_ref"));
+                    if (stateRefAttribute != null) {
+                        testType.setStateRef(stateRefAttribute.getValue());
+                    }
+                    else {
+                        LOG.warn("stateRef property was not found");
+                    }
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_test")) {
+                    return testType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </rpminfo_test>");
     }
 
     private List<StateType> parseStates(XMLEventReader reader) throws XMLStreamException {
@@ -141,6 +225,8 @@ public class OvalParser {
                     break;
                 case "comment":
                     stateType.setComment(attribute.getValue());
+                    break;
+                default:
                     break;
             }
         });
@@ -254,6 +340,8 @@ public class OvalParser {
                     break;
                 case "comment":
                     objectType.setComment(attribute.getValue());
+                    break;
+                default:
                     break;
             }
         });

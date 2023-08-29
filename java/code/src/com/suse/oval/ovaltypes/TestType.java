@@ -15,6 +15,7 @@
 
 package com.suse.oval.ovaltypes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,6 +148,9 @@ public class TestType {
      * @param valueIn the state id to set
      * */
     public void setStateRef(String valueIn) {
+        if (states == null) {
+            states = new ArrayList<>();
+        }
         states.clear();
         StateRefType stateRef = new StateRefType();
         stateRef.setStateRef(valueIn);
