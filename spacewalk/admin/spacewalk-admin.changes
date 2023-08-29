@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Aug 29 16:35:03 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.13-1
+  * Integrate instance-flavor-check to detect if the instance is
+    Pay-as-you-go
+  * Add checks for csp-billing-adapter in case of a Pay-as-you-go
+    instance
+
+-------------------------------------------------------------------
 Tue Jun 27 16:19:30 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.12-1
