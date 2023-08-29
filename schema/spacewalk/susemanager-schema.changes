@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 29 15:40:55 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.20-1
+  * Add new credentials type RHUI
+  * Store the Pay-as-you-go products
+
+-------------------------------------------------------------------
 Tue Jun 27 16:22:24 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.19-1
