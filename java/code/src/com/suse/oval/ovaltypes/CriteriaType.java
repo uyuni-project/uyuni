@@ -66,6 +66,15 @@ public class CriteriaType implements BaseCriteria {
     }
 
     /**
+     * Sets the contained criteria or criterion objects
+     *
+     * @param childrenIn the list of children {@link BaseCriteria}.
+     * */
+    public void setChildren(List<BaseCriteria> childrenIn) {
+        this.children = childrenIn;
+    }
+
+    /**
      * Gets the value of the operator property.
      *
      * @return the operator property or {@link LogicOperatorType#AND} if none is specified
