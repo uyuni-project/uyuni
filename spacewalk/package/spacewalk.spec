@@ -35,7 +35,6 @@ inventory, provision, update and control your Linux machines.
 %package common
 Summary:        Spacewalk Systems Management Application with postgresql database backend
 Group:          Applications/Internet
-Obsoletes:      spacewalk < 0.7.0
 
 BuildRequires:  python3
 BuildRequires:  spacewalk-backend
@@ -82,8 +81,6 @@ Recommends:     virtual-host-gatherer-VMware
 Requires:       subscription-matcher
 Requires:       susemanager-sls
 
-Obsoletes:      spacewalk-monitoring < 2.3
-
 Requires:       cobbler
 Requires:       susemanager-jsp_en
 
@@ -105,7 +102,6 @@ inventory, provision, update and control your Linux machines.
 %package postgresql
 Summary:        Spacewalk Systems Management Application with PostgreSQL database backend
 Group:          Applications/Internet
-Obsoletes:      spacewalk < 0.7.0
 Requires:       spacewalk-common = %{version}-%{release}
 Conflicts:      spacewalk-oracle
 Provides:       spacewalk-db-virtual = %{version}-%{release}
