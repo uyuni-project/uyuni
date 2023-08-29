@@ -77,7 +77,6 @@ import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.UpgradePathJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -123,14 +122,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String PRODUCTS_JSON = "productsUnscoped.json";
     private static final String TREE_JSON = "product_tree.json";
     private static final String REPOS_JSON = "repositories.json";
-    private static final String UPGRADE_PATHS_JSON = "upgrade_paths.json";
-    private static final String UPGRADE_PATHS_EMPTY_JSON = JARPATH + "upgrade_paths_empty.json";
 
     @Test
     public void testSubscriptionDeleteCaching() throws Exception {
 
-        File upgradePathsJson = new File(
-                TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
         String name = TestUtils.randomString();
@@ -152,7 +147,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-        csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
         List<SCCSubscriptionJson> subscriptions = new LinkedList<>();
@@ -466,10 +460,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
         List<SCCProductJson> productsChanged = gson.fromJson(
                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
@@ -481,7 +471,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
+        csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -569,10 +559,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
         List<SCCProductJson> productsChanged = gson.fromJson(
                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
@@ -584,7 +570,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
+        csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -660,10 +646,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
         List<SCCProductJson> productsChanged = gson.fromJson(
                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
@@ -682,7 +664,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Credentials sccCreds = CredentialsFactory.listSCCCredentials().get(0);
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, additionalRepos);
+        csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         csm.refreshRepositoriesAuthentication(repositoriesChanged, sccCreds, null);
         csm.linkAndRefreshContentSource(null);
 
@@ -956,10 +938,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
         List<SCCProductJson> productsChanged = gson.fromJson(
                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inReaderUpgrade = new InputStreamReader(ContentSyncManager.class
-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inReaderUpgrade, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
@@ -1122,8 +1100,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpdateSUSEProductsNew() throws Exception {
-        File upgradePathsJson = new File(
-                TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
         // Create test product attributes
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
@@ -1145,7 +1121,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-        csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
         // Verify that a new product has been created correctly
@@ -1164,8 +1139,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpdateSUSEProductsUpdate() throws Exception {
-        File upgradePathsJson = new File(
-                TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
         // Create test product attributes
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
@@ -1202,7 +1175,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-        csm.setUpgradePathsJson(upgradePathsJson);
         csm.updateSUSEProducts(products);
 
         // Verify that the product has been updated correctly
@@ -1420,42 +1392,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpdateUpgradePaths() throws Exception {
-        File upgradePathsJson = new File(
-                TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
-        try {
             // Prepare products since they will be looked up
             ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
             SUSEProduct p;
-            if (SUSEProductFactory.lookupByProductId(690) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(690);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(814) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(814);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(1002) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1002);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(1141) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1141);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(1193) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1193);
-                TestUtils.saveAndFlush(p);
-            }
-            if (SUSEProductFactory.lookupByProductId(1198) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1198);
-                TestUtils.saveAndFlush(p);
-            }
 
             List<SCCProductJson> products = new ArrayList<>();
             int productId = 10012345;
@@ -1504,28 +1443,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Update the upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
-            csm.setUpgradePathsJson(upgradePathsJson);
-            csm.updateUpgradePaths(products, csm.readUpgradePaths());
+            csm.updateUpgradePaths(products);
 
             // Check the results
-            SUSEProduct p690 = SUSEProductFactory.lookupByProductId(690);
-            SUSEProduct p814 = SUSEProductFactory.lookupByProductId(814);
-            SUSEProduct p1002 = SUSEProductFactory.lookupByProductId(1002);
-            SUSEProduct p1141 = SUSEProductFactory.lookupByProductId(1141);
-            SUSEProduct p1193 = SUSEProductFactory.lookupByProductId(1193);
-            SUSEProduct p1198 = SUSEProductFactory.lookupByProductId(1198);
             SUSEProduct p10012345 = SUSEProductFactory.lookupByProductId(10012345);
             SUSEProduct p10012346 = SUSEProductFactory.lookupByProductId(10012346);
 
-            assertContains(p690.getUpgrades(), p814);
-            assertContains(p1002.getUpgrades(), p1141);
-            assertContains(p1193.getUpgrades(), p1198);
             assertContains(p10012345.getUpgrades(), p10012346);
-            assertContains(p690.getUpgrades(), p814);
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(upgradePathsJson);
-        }
     }
 
     /**
@@ -1534,9 +1458,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpgradePathPredecessorDeleted() throws Exception {
-        File upgradePathsEmptyJson = new File(
-                TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
-        try {
             List<SCCProductJson> products = new ArrayList<>();
 
             // Setup a product as it comes from SCC
@@ -1575,7 +1496,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update SUSE products and upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
             csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-            csm.setUpgradePathsJson(upgradePathsEmptyJson);
             csm.updateSUSEProducts(products);
             HibernateFactory.getSession().flush();
 
@@ -1590,10 +1510,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // There should be no upgrade paths
             assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyJson);
-        }
     }
 
     /**
@@ -1602,9 +1518,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpgradePathRemoved() throws Exception {
-        File upgradePathsEmptyJson = new File(
-                TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
-        try {
             List<SCCProductJson> products = new ArrayList<>();
 
             // Setup a product as it comes from SCC
@@ -1643,7 +1556,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update SUSE products and upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
             csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-            csm.setUpgradePathsJson(upgradePathsEmptyJson);
             csm.updateSUSEProducts(products);
 
             // There should be an upgrade path from product1 to product2
@@ -1655,10 +1567,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // There should be no upgrade paths
             assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyJson);
-        }
     }
 
     /**
@@ -1995,19 +1903,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
         File prdJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + PRODUCTS_JSON).getAbsolutePath()).getPath());
-        File upJson = new File(TestUtils.findTestData(
-                new File(JARPATH,  "smallBase/" + UPGRADE_PATHS_JSON).getAbsolutePath()).getPath());
         File treeJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + TREE_JSON).getAbsolutePath()).getPath());
 
         Path fromdir = Files.createTempDirectory("sumatest");
         File prdTmp = new File(fromdir.toString(), "organizations_products_unscoped.json");
         File repoTemp = new File(fromdir.toString(), "organizations_repositories.json");
-        File upTemp = new File(fromdir.toString(), UPGRADE_PATHS_JSON);
         File treeTemp = new File(fromdir.toString(), TREE_JSON);
         Files.copy(prdJson.toPath(), prdTmp.toPath());
         Files.copy(reposJson.toPath(), repoTemp.toPath());
-        Files.copy(upJson.toPath(), upTemp.toPath());
         Files.copy(treeJson.toPath(), treeTemp.toPath());
         Files.createDirectories(new File(fromdir + "/SUSE/Products/SLE-SERVER/12/x86_64/product/repodata/").toPath());
         Files.createDirectories(new File(fromdir + "/SUSE/Updates/SLE-SERVER/12/x86_64/update/repodata/").toPath());
@@ -2029,7 +1933,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
             ContentSyncManager csm = new ContentSyncManager();
-            csm.setUpgradePathsJson(upTemp);
             csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
@@ -2078,7 +1981,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SUSEProductTestUtils.deleteIfTempFile(prdJson);
             repoTemp.delete();
             prdTmp.delete();
-            upTemp.delete();
             treeTemp.delete();
             FileUtils.deleteDirectory(fromdir.toFile());
         }
@@ -2094,19 +1996,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
         File prdJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + PRODUCTS_JSON).getAbsolutePath()).getPath());
-        File upJson = new File(TestUtils.findTestData(
-                new File(JARPATH,  "smallBase/" + UPGRADE_PATHS_JSON).getAbsolutePath()).getPath());
         File treeJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + TREE_JSON).getAbsolutePath()).getPath());
 
         Path fromdir = Files.createTempDirectory("sumatest");
         File prdTmp = new File(fromdir.toString(), "organizations_products_unscoped.json");
         File repoTemp = new File(fromdir.toString(), "organizations_repositories.json");
-        File upTemp = new File(fromdir.toString(), UPGRADE_PATHS_JSON);
         File treeTemp = new File(fromdir.toString(), TREE_JSON);
         Files.copy(prdJson.toPath(), prdTmp.toPath());
         Files.copy(reposJson.toPath(), repoTemp.toPath());
-        Files.copy(upJson.toPath(), upTemp.toPath());
         Files.copy(treeJson.toPath(), treeTemp.toPath());
         Files.createDirectories(new File(fromdir + "/SUSE/Products/SLE-SERVER/12/x86_64/product/repodata/").toPath());
         Files.createDirectories(new File(fromdir + "/SUSE/Updates/SLE-SERVER/12/x86_64/update/repodata/").toPath());
@@ -2128,7 +2026,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
             ContentSyncManager csm = new ContentSyncManager();
-            csm.setUpgradePathsJson(upTemp);
             csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
@@ -2188,7 +2085,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SUSEProductTestUtils.deleteIfTempFile(prdJson);
             repoTemp.delete();
             prdTmp.delete();
-            upTemp.delete();
             treeTemp.delete();
             FileUtils.deleteDirectory(fromdir.toFile());
         }
@@ -2292,8 +2188,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testUpdateProductsMultipleTimes() throws Exception {
-        File upgradePathsJson = new File(
-                TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
         // clear existing products
         SUSEProductTestUtils.clearAllProducts();
 
@@ -2305,7 +2199,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
-        csm.setUpgradePathsJson(upgradePathsJson);
 
         csm.updateSUSEProducts(sccProducts);
         csm.updateSUSEProducts(sccProducts);

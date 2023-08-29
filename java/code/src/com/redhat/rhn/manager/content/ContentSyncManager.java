@@ -73,7 +73,6 @@ import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.UpgradePathJson;
 import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
@@ -133,8 +132,6 @@ public class ContentSyncManager {
     private static final String OES_URL = "https://nu.novell.com/repo/$RCE/OES2023-Pool/sle-15-x86_64/";
 
     // Static JSON files we parse
-    private static File upgradePathsJson = new File(
-            "/usr/share/susemanager/scc/upgrade_paths.json");
     private static File channelFamiliesJson = new File(
             "/usr/share/susemanager/scc/channel_families.json");
     private static File additionalProductsJson = new File(
@@ -176,14 +173,6 @@ public class ContentSyncManager {
         if (paygMgrIn != null) {
             cloudPaygManager = paygMgrIn;
         }
-    }
-
-    /**
-     * Set the upgrade_paths.json {@link File} to read from.
-     * @param file the upgrade_paths.json file
-     */
-    public void setUpgradePathsJson(File file) {
-        upgradePathsJson = file;
     }
 
     /**
@@ -231,29 +220,6 @@ public class ContentSyncManager {
                     channelFamiliesJson.getAbsolutePath());
         }
         return channelFamilies;
-    }
-
-    /**
-     * Read the upgrade_paths.xml file.
-     *
-     * @return List of upgrade paths
-     * @throws ContentSyncException in case of an error
-     */
-    public List<UpgradePathJson> readUpgradePaths() throws ContentSyncException {
-        Gson gson = new GsonBuilder().create();
-        List<UpgradePathJson> upPaths = new ArrayList<>();
-        try {
-            upPaths = gson.fromJson(new BufferedReader(new InputStreamReader(
-                    new FileInputStream(upgradePathsJson))),
-                    SCCClientUtils.toListType(UpgradePathJson.class));
-        }
-        catch (Exception e) {
-            throw new ContentSyncException(e);
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Read {} upgrade paths from {}", upPaths.size(), upgradePathsJson.getAbsolutePath());
-        }
-        return upPaths;
     }
 
     /**
@@ -1912,21 +1878,19 @@ public class ContentSyncManager {
                         products.stream(),
                         getAdditionalProducts().stream()
                 ).collect(Collectors.toList()),
-                readUpgradePaths(), loadStaticTree(),
-                getAdditionalRepositories());
+                loadStaticTree(), getAdditionalRepositories());
     }
 
     /**
      * Creates or updates entries in the SUSEProducts database table with a given list of
      * {@link SCCProductJson} objects.
      *
-     * @param products list of products
-     * @param upgradePathJsons list of available upgrade path
-     * @param staticTree suse product tree with fixes and additional data
+     * @param products        list of products
+     * @param staticTree      suse product tree with fixes and additional data
      * @param additionalRepos list of additional static repos
      */
-    public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
-                                   List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
+    public void updateSUSEProducts(List<SCCProductJson> products, List<ProductTreeEntry> staticTree,
+                                   List<SCCRepositoryJson> additionalRepos) {
         LOG.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
@@ -1954,7 +1918,7 @@ public class ContentSyncManager {
 
         SUSEProductFactory.removeAllExcept(processed.values());
 
-        updateUpgradePaths(products, upgradePathJsons);
+        updateUpgradePaths(products);
         HibernateFactory.getSession().flush();
         LOG.info("ContentSyncManager.updateSUSEProducts finished");
     }
@@ -2077,22 +2041,18 @@ public class ContentSyncManager {
     }
 
     /**
-     * Recreate contents of the suseUpgradePaths table with values from upgrade_paths.json
-     * and predecessor_ids from SCC
+     * Recreate contents of the suseUpgradePaths table predecessor_ids from SCC
      *
      * @param products Collection of SCC Products
-     * @param upgradePathJsons list of static upgrade paths
      */
-    public void updateUpgradePaths(Collection<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons) {
+    public void updateUpgradePaths(Collection<SCCProductJson> products) {
         List<SUSEProduct> allSUSEProducts = SUSEProductFactory.findAllSUSEProducts();
         Map<Long, SUSEProduct> productsById = allSUSEProducts
                 .stream().collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
-        Map<Long, Set<Long>> newPaths = Stream.concat(
-                upgradePathJsons.stream().map(u -> new Tuple2<>(u.getFromProductId(), u.getToProductId())),
-                products.stream()
-                        .flatMap(p -> p.getOnlinePredecessorIds().stream().map(pre -> new Tuple2<>(pre, p.getId())))
-        ).collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
+        Map<Long, Set<Long>> newPaths = products.stream()
+                    .flatMap(p -> p.getOnlinePredecessorIds().stream().map(pre -> new Tuple2<>(pre, p.getId())))
+                    .collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
 
         allSUSEProducts.forEach(p -> {
             Set<SUSEProduct> successors = newPaths.getOrDefault(p.getProductId(), Collections.emptySet()).stream()
