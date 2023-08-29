@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Tue Aug 29 16:15:10 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.62-1
+  * Add environment build/promote date to CLM API output
+    (jsc#SUMA-280)
+  * Call mgr-libmod with its absolute path
+  * Introduce new API to update the products page metadata
+  * Extract additional authentication information needed for
+    Pay-as-you-go
+  * Fix handling of null credentials in RMT credentials check
+  * Integrate instance-flavor-check to detect if the instance is
+    Pay-as-you-go
+  * Add rule to count only servers with SUSE Manager Tools as
+    managed clients
+  * Create flag to disable update status (bsc#1212730)
+  * Fix syntax error in sql query for source package search
+  * Catch exceptions and log a message when mailer setup failed
+    (bsc#1213009)
+  * Fix logging of libraries using apache-commons-logging
+  * Invalidate Pay-as-you-go client credentials after repeated
+    connection failure (bsc#1213445)
+  * Restrict product migrations for Pay-as-you-go
+  * Add warning message in login UI for Pay-as-you-go with SCC
+    credentials and no forward registration.
+  * Restrict cloning channels under different product channels for
+    Pay-as-you-go
+  * Avoid sending data to SCC about Pay-as-you-go instances
+  * Add saltboot redeploy and repartition based on pillars
+    (jsc#SUMA-158)
+  * Add system pillar API access {get|set}Pillar
+  * Consider the venv-salt-minion package update as Salt update to
+    prevent backtraces on upgrading Salt with itself (bsc#1211884)
+  * Fix processing of pkg.purged results (bsc#1213288)
+  * Fix Null Pointer Exception in auth endpoint when an empty body
+    is provided
+  * Do not ignore scheduling error in Taskomatic
+  * Add compliance checks when running as PAYG
+  * Add RHUI support to Pay-as-you-go connection feature
+  * Fix debian Packages file generation (bsc#1213716)
+  * Fix action executor to prevent blocking Taskomatic for actions
+    that are already finished (bsc#1214121)
+  * Fix detection in case RHEL-based products (bsc#1214280)
+  * Improve error message when instance-flavor-check tool is not
+    installed
+  * Fix auto product refresh in case of SUSE Manager Pay-as-you-go
+    Server
+  * Optimize org channel accessibility query (bsc#1211874)
+  * Check csp billing adapter status
+
+-------------------------------------------------------------------
 Tue Jun 27 23:23:45 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.61-1
