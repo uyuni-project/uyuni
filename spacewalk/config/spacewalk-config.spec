@@ -90,7 +90,6 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
-%config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
@@ -98,8 +97,6 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0640,root,%{apache_group}) %config(noreplace) %{_sysconfdir}/rhn/rhn.conf
-%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/candlepin-certs
-%config %attr(644, root, root) %{_sysconfdir}/rhn/candlepin-certs/candlepin-redhat-ca.crt
 %config(noreplace) %{_sysconfdir}/satname
 %dir %{_var}/lib/rhn
 %dir %{_var}/lib/rhn/rhn-satellite-prep
