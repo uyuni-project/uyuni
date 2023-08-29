@@ -73,7 +73,6 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String PRODUCTS_UNSCOPED = JARPATH + "rmtclouddata/organizations_products_unscoped.json";
     private static final String PRODUCT_TREE = JARPATH + "rmtclouddata/product_tree.json";
-    private static final String UPGRADE_PATHS = JARPATH + "upgrade_paths.json";
     private static final String CHANNEL_FAMILY = JARPATH + "channel_families.json";
     private static final String ADDITIONAL_PRODUCTS = JARPATH + "additional_products.json";
 
@@ -151,7 +150,6 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
 
             // download the product data from Cloud RMT
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
-            csm.setUpgradePathsJson(new File(TestUtils.findTestData(UPGRADE_PATHS).getPath()));
             csm.setChannelFamiliesJson(new File(TestUtils.findTestData(CHANNEL_FAMILY).getPath()));
             csm.setAdditionalProductsJson(new File(TestUtils.findTestData(ADDITIONAL_PRODUCTS).getPath()));
             csm.updateChannelFamilies(csm.readChannelFamilies());

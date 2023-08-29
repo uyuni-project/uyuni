@@ -41,7 +41,6 @@ import com.redhat.rhn.taskomatic.task.payg.PaygDataExtractException;
 import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
-import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
 
@@ -64,7 +63,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
@@ -91,7 +89,6 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     private static final String PRODUCTS_UNSCOPED =
             "/com/redhat/rhn/manager/content/test/smallBase/productsUnscoped.json";
     private static final String PRODUCT_TREE = "/com/redhat/rhn/manager/content/test/smallBase/product_tree.json";
-    private static final String UPGRADE_PATHS = "/com/redhat/rhn/manager/content/test/smallBase/upgrade_paths.json";
 
     @RegisterExtension
     protected static final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
@@ -206,7 +203,6 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         Path tmpLogDir = Files.createTempDirectory("scc-data");
         try {
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
-            csm.setUpgradePathsJson(new File(TestUtils.findTestData(UPGRADE_PATHS).getPath()));
             csm.updateSUSEProducts(csm.getProducts());
 
             WireMock.verify(WireMock.getRequestedFor(

@@ -49,7 +49,6 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
-import com.suse.scc.model.UpgradePathJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -476,10 +475,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
                 ContentSyncManager.class.getResourceAsStream(testDataPath + "productsUnscoped.json"));
         List<SCCProductJson> products = gson.fromJson(
                 inputStreamReader, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inputStreamReader2 = new InputStreamReader(
-                ContentSyncManager.class.getResourceAsStream(testDataPath + "upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inputStreamReader2, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inputStreamReader3 = new InputStreamReader(
                 ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
         List<ChannelFamilyJson> channelFamilies = gson.fromJson(
@@ -536,7 +531,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
 
         csm.updateChannelFamilies(channelFamilies);
-        csm.updateSUSEProducts(products, upgradePaths, staticTree, addRepos);
+        csm.updateSUSEProducts(products, staticTree, addRepos);
         if (withRepos) {
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
