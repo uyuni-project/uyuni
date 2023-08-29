@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Aug 29 15:50:56 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.23-1
+  * Use a constant to get the product name in python code rather
+    than reading rhn.conf (bsc#1212943)
+  * Add key import debug logging to reposync (bsc#1213675)
+  * Add hint about missing auth header for Pay-as-you-go
+    instances (bsc#1213445)
+  * rhn-ssl-dbstore read CA from STDIN (bsc#1212856)
+  * Implement new RHUI support in reposync
+
+-------------------------------------------------------------------
 Tue Jun 27 16:20:26 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.22-1
