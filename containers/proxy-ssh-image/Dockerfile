@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:4.3.7 uyuni/proxy-ssh:4.3.7.%RELEASE%
+#!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:4.3.8 uyuni/proxy-ssh:4.3.8.%RELEASE%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS base
@@ -46,9 +46,9 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-ssh-image
-LABEL org.opencontainers.image.version=4.3.7
+LABEL org.opencontainers.image.version=4.3.8
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:4.3.7.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:4.3.8.%RELEASE%"
 # endlabelprefix
 
 # SSH port
