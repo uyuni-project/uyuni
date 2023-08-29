@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Aug 29 16:37:49 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.19-1
+  * Support EC Cryptography with mgr-ssl-cert-setup
+  * mgr-ssl-cert-setup: store CA certificate in database
+    (bsc#1212856)
+
+-------------------------------------------------------------------
 Tue Jun 27 16:21:32 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.18-1
