@@ -22,7 +22,7 @@ Feature: Distribution Channel Mapping
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4" as "os"
-    And I enter "15.4" as "release"
+    And I enter "15.5" as "release"
     And I select "x86_64" from "architecture" dropdown
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label" dropdown
     And I click on "Create Mapping"
@@ -45,7 +45,7 @@ Feature: Distribution Channel Mapping
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries" as "os"
-    And I enter "15.4" as "release"
+    And I enter "15.5" as "release"
     And I select "iSeries" from "architecture" dropdown
     And I select "Fake-i586-Channel" from "channel_label" dropdown
     And I click on "Create Mapping"

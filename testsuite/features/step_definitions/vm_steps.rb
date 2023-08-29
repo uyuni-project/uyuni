@@ -18,7 +18,7 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
   when 'leap'
     name = 'leap-disk-image-template.qcow2'
     net = 'salt-leap'
-    os = 'opensuse15.4'
+    os = 'opensuse15.5'
     memory = '1024'
   when 'sles'
     name = 'sles-disk-image-template.qcow2'

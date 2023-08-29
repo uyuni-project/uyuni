@@ -197,14 +197,14 @@ sle_base_channel =
   if ENV['PROVIDER'].include? 'podman'
     'Fake Base Channel'
   elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
-    'openSUSE Leap 15.4 (x86_64)'
+    'openSUSE Leap 15.5 (x86_64)'
   else
     'SLES15-SP4-Pool'
   end
 
 proxy_base_channel =
   if ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
-    'openSUSE Leap 15.4 (x86_64)'
+    'openSUSE Leap 15.5 (x86_64)'
   else
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool'
   end
@@ -519,6 +519,17 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     opensuse_leap15_4-x86_64-sle-updates
     uyuni-proxy-devel-leap-x86_64
     opensuse_leap15_4-uyuni-client-x86_64
+  ],
+  '15.5' =>
+  %w[
+    opensuse_leap15_5-x86_64
+    opensuse_leap15_5-x86_64-non-oss
+    opensuse_leap15_5-x86_64-non-oss-updates
+    opensuse_leap15_5-x86_64-updates
+    opensuse_leap15_5-x86_64-backports-updates
+    opensuse_leap15_5-x86_64-sle-updates
+    uyuni-proxy-devel-leap-x86_64
+    opensuse_leap15_5-uyuni-client-x86_64
   ]
 }.freeze
 
