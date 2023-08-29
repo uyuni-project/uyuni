@@ -39,10 +39,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 Requires:       firewalld
-Requires:       mgr-cfg
-Requires:       mgr-cfg-actions
-Requires:       mgr-cfg-client
-Requires:       mgr-cfg-management
 Requires(pre):  spacewalk-proxy-common
 Requires:       spacewalk-proxy-salt
 %if 0%{?suse_version}
@@ -63,8 +59,13 @@ Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
 BuildRequires:  /usr/bin/docbook2man
 
-Obsoletes:      proxy-installer < 5.3.0
-Provides:       proxy-installer = 5.3.0
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:       weakremover(mgr-cfg)
+Provides:       weakremover(mgr-cfg-actions)
+Provides:       weakremover(mgr-cfg-client)
+Provides:       weakremover(mgr-cfg-management)
+
 
 %define defaultdir %{_usr}/share/rhn/proxy-template
 
