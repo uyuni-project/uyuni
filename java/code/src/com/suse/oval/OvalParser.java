@@ -16,8 +16,16 @@
 package com.suse.oval;
 
 import com.suse.oval.exceptions.OvalParserException;
+import com.suse.oval.ovaltypes.Advisory;
+import com.suse.oval.ovaltypes.AdvisoryAffectedType;
+import com.suse.oval.ovaltypes.AdvisoryCveType;
+import com.suse.oval.ovaltypes.AdvisoryResolutionType;
 import com.suse.oval.ovaltypes.ArchType;
+import com.suse.oval.ovaltypes.CriteriaType;
+import com.suse.oval.ovaltypes.DefinitionClassEnum;
+import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.EVRType;
+import com.suse.oval.ovaltypes.MetadataType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OperationEnumeration;
 import com.suse.oval.ovaltypes.OvalRootType;
@@ -106,6 +114,9 @@ public class OvalParser {
                     else if (elementName.equals("tests")) {
                         ovalRoot.setTests(parseTests(reader));
                     }
+                    else if (elementName.equals("definitions")) {
+                        ovalRoot.setDefinitions(parseDefinitions(reader));
+                    }
                 }
             }
 
@@ -115,6 +126,217 @@ public class OvalParser {
         catch (XMLStreamException | FileNotFoundException e) {
             throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
         }
+    }
+
+    private List<DefinitionType> parseDefinitions(XMLEventReader reader) throws XMLStreamException {
+        List<DefinitionType> definitions = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("definition")) {
+                    DefinitionType definitionType = parseDefinitionType(nextEvent.asStartElement(), reader);
+                    definitions.add(definitionType);
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("definitions")) {
+                    return definitions;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </definitions>");
+
+    }
+
+    private DefinitionType parseDefinitionType(StartElement definitionElement, XMLEventReader reader)
+            throws XMLStreamException {
+        DefinitionType definitionType = new DefinitionType();
+
+        definitionElement.getAttributes().forEachRemaining(attribute -> {
+            String attributeName = attribute.getName().getLocalPart();
+            switch (attributeName) {
+                case "id":
+                    definitionType.setId(attribute.getValue());
+                    break;
+                case "class":
+                    definitionType.setDefinitionClass(DefinitionClassEnum.fromValue(attribute.getValue()));
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("metadata")) {
+                    definitionType.setMetadata(parseDefinitionMetadata(reader));
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("criteria")) {
+                    definitionType.setCriteria(parseDefinitionCriteria(nextEvent.asStartElement(), reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("definition")) {
+                    return definitionType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </definition>");
+    }
+
+    private CriteriaType parseDefinitionCriteria(StartElement criteriaElement, XMLEventReader reader) {
+        CriteriaType criteriaType = new CriteriaType();
+
+        return criteriaType;
+    }
+
+    private MetadataType parseDefinitionMetadata(XMLEventReader reader) throws XMLStreamException {
+        MetadataType metadataType = new MetadataType();
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("title")) {
+                    metadataType.setTitle(reader.getElementText());
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("description")) {
+                    metadataType.setDescription(reader.getElementText());
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("advisory")) {
+                    metadataType.setAdvisory(parseAdvisory(reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("metadata")) {
+                    return metadataType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </metadata>");
+    }
+
+    private Advisory parseAdvisory(XMLEventReader reader) throws XMLStreamException {
+        Advisory advisory = new Advisory();
+
+        List<AdvisoryCveType> cveList = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("affected_cpe_list")) {
+                    advisory.setAffectedCpeList(parseAffectedCpeList(reader));
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("cve")) {
+                    cveList.add(parseAdvisoryCve(reader));
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("affected")) {
+                    advisory.setAffected(parseAdvisoryAffectedType(reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("advisory")) {
+                    advisory.setCveList(cveList);
+                    return advisory;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </advisory>");
+    }
+
+    private AdvisoryAffectedType parseAdvisoryAffectedType(XMLEventReader reader) throws XMLStreamException {
+        AdvisoryAffectedType advisoryAffectedType = new AdvisoryAffectedType();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("resolution")) {
+                    advisoryAffectedType.setResolution(parseAdvisoryResolutionType(nextEvent.asStartElement(), reader));
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("affected")) {
+                    return advisoryAffectedType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </affected>");
+    }
+
+    private AdvisoryResolutionType parseAdvisoryResolutionType(StartElement resolutionElement, XMLEventReader reader)
+            throws XMLStreamException {
+        AdvisoryResolutionType advisoryResolutionType = new AdvisoryResolutionType();
+
+        Attribute stateAttribute = resolutionElement.getAttributeByName(new QName("state"));
+        if (stateAttribute != null) {
+            advisoryResolutionType.setState(stateAttribute.getValue());
+        }
+
+        List<String> affectedComponents = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("component")) {
+                    affectedComponents.add(reader.getElementText());
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("resolution")) {
+                    advisoryResolutionType.setAffectedComponents(affectedComponents);
+                    return advisoryResolutionType;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </resolution>");
+    }
+
+    private AdvisoryCveType parseAdvisoryCve(XMLEventReader reader) throws XMLStreamException {
+        AdvisoryCveType cveType = new AdvisoryCveType();
+
+        cveType.setCve(reader.getElementText());
+
+        return cveType;
+    }
+
+    private List<String> parseAffectedCpeList(XMLEventReader reader) throws XMLStreamException {
+        List<String> cpes = new ArrayList<>();
+
+        while (reader.hasNext()) {
+            XMLEvent nextEvent = reader.nextEvent();
+
+            if (nextEvent.isStartElement()) {
+                if (nextEvent.asStartElement().getName().getLocalPart().equals("cpe")) {
+                    cpes.add(reader.getElementText());
+                }
+            }
+
+            if (nextEvent.isEndElement()) {
+                if (nextEvent.asEndElement().getName().getLocalPart().equals("affected_cpe_list")) {
+                    return cpes;
+                }
+            }
+        }
+
+        throw new OvalParserException("Unable to find the closing tag for </affected_cpe_list>");
     }
 
     private List<TestType> parseTests(XMLEventReader reader) throws XMLStreamException {
