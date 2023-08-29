@@ -270,18 +270,19 @@ end
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]
-  key = $api_test.activationkey.create(id, description, base_channel, 100)
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
+  base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
+  key = $api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
   STDOUT.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
-  child_channels = $api_test.channel.software.list_child_channels(base_channel)
+  child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
 
   # Filter out the custom channels
   # This is needed because we might have both a traditional custom channel and a Salt custom channel

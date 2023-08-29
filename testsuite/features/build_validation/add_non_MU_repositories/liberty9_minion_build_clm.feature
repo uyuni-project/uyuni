@@ -1,6 +1,7 @@
 # Copyright (c) 2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@susemanager
 @liberty9_minion
 Feature: Add the Liberty Linux 9 distribution custom repositories
   In order to use Liberty Linux 9 channels with Appstream modules
