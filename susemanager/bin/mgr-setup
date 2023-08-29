@@ -465,19 +465,6 @@ change_SSCcredentials_permission() {
     fi
 }
 
-setup_cobbler() {
-    if [ -f "/etc/cobbler/settings" ]; then
-        if ! grep "tftpsync_timeout:" /etc/cobbler/settings >/dev/null; then
-            echo "" >> /etc/cobbler/settings
-            echo "tftpsync_timeout: 15" >> /etc/cobbler/settings
-            echo "" >> /etc/cobbler/settings
-        fi
-    fi
-    if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
-        sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
-    fi
-}
-
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
 
@@ -980,7 +967,6 @@ do_setup() {
     setup_spacewalk
     setup_apache
     setup_tomcat
-    setup_cobbler
     change_SSCcredentials_permission
     
     backup_certificates
