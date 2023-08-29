@@ -35,10 +35,6 @@ Requires:       perl(MIME::Base64)
 BuildRequires:  make
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  systemd
-Obsoletes:      satellite-utils < 5.3.0
-Provides:       satellite-utils = 5.3.0
-Obsoletes:      rhn-satellite-admin < 5.3.0
-Provides:       rhn-satellite-admin = 5.3.0
 BuildArch:      noarch
 BuildRequires:  spacewalk-config
 BuildRequires:  uyuni-base-common
