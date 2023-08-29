@@ -37,12 +37,6 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:       perl(Satcon)
-Obsoletes:      rhn-satellite-config < 5.3.0
-Provides:       rhn-satellite-config = 5.3.0
-%if 0%{?fedora} > 24
-BuildRequires:  perl-generators
-%endif
 %if 0%{?rhel} || 0%{?fedora}
 Requires(post): chkconfig
 Requires(preun):chkconfig
@@ -58,7 +52,6 @@ Requires(pre):  uyuni-base-common
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
 %if 0%{?suse_version}
-BuildRequires:  openssl
 BuildRequires:  sudo
 %endif
 Requires:       diffutils
@@ -113,8 +106,6 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %attr(0750,root,root) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc
 %attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
-%dir %{_prefix}/share/rhn
-%attr(0755,root,root) %{_prefix}/share/rhn/startup.pl
 %license LICENSE
 %doc %{_mandir}/man5/rhn.conf.5*
 %if 0%{?suse_version}
