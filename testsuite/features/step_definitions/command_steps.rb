@@ -514,7 +514,7 @@ When(/^I execute spacewalk-debug on the server$/) do
 end
 
 When(/^I extract the log files from all our active nodes$/) do
-  $nodes.each do |node|
+  $node_by_host.each do |_host, node|
     next if node.nil?
 
     extract_logs_from_node(node)
@@ -1805,52 +1805,56 @@ When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
 end
 
 When(/^I change the server's short hostname from hosts and hostname files$/) do
-  old_hostname = get_target('server').hostname
+  server_node = get_target('server')
+  old_hostname = server_node.hostname
   new_hostname = old_hostname + '2'
   log "New short hostname: #{new_hostname}"
-
-  get_target('server').run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
-  echo '#{get_target('server').public_ip} #{get_target('server').full_hostname} #{old_hostname}' >> /etc/hosts &&
-  echo '#{get_target('server').public_ip} #{new_hostname}#{get_target('server').full_hostname.delete_prefix(get_target('server').hostname)} #{new_hostname}' >> /etc/hosts")
+  server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+  echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
+  get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
 # changing hostname
 When(/^I run spacewalk-hostname-rename command on the server$/) do
-  temp_server = twopence_init('server')
-  command = "spacecmd --nossl -q api api.getVersion -u admin -p admin; " \
-            "spacewalk-hostname-rename #{get_target('server').public_ip} " \
-            "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
-            "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
-            "--ssl-ca-password=spacewalk"
-  out_spacewalk, result_code = temp_server.run(command, check_errors: false)
+  server_node = get_target('server')
+  command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
+    "spacewalk-hostname-rename #{server_node.public_ip} " \
+    '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
+    '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
+    '--ssl-ca-password=spacewalk'
+  out_spacewalk, result_code = server_node.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
+  server_node = get_target('server', refresh: true) # This will refresh the attributes of this node
+
   default_timeout = 300
-  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? "dead" and out.to_s.include? "running"
-      log "Server: spacewalk service is up"
+  repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
+    out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+      log 'Server: spacewalk service is up'
       break
     end
     sleep 1
   end
-  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
-  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+  raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
+  raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
 end
 
 When(/^I change back the server's hostname$/) do
-  temp_server = twopence_init('server')
-  temp_server.run("echo '#{get_target('server').full_hostname}' > /etc/hostname ")
+  server_node = get_target('server')
+  server_node.run("echo '#{server_node.full_hostname}' > /etc/hostname ")
+  get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
 When(/^I clean up the server's hosts file$/) do
-  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
+  command = 'sed -i \'$d\' /etc/hosts && sed -i \'$d\' /etc/hosts'
   get_target('server').run(command)
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   add_ports = ''
-  for port in [9100, 9117, 9187] do
+  [9100, 9117, 9187].each do |port|
     add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
   end
   cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
