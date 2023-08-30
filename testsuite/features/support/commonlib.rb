@@ -124,6 +124,22 @@ rescue Timeout::Error
   raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
 end
 
+def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+  start_time = Time.now
+  repeat_until_timeout(message: "'#{text}' still not visible", timeout: DEFAULT_TIMEOUT) do
+    while Time.new - start_time <= timeout
+      return true if has_text?(text1, wait: 0.5)
+      return true if !text2.nil? && has_text?(text2, wait: 0.5)
+      next unless has_text?('Request has timed out', wait: 0)
+      log 'Request timeout found, performing reload'
+      click_button('reload the page')
+      start_time = Time.now
+      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+    end
+    return false
+  end
+end
+
 def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
