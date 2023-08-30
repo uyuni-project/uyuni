@@ -2,7 +2,8 @@
 use strict;
 use XML::Simple;
 use IPC::Open3 ();
-#use Data::Dumper;
+use List::Util qw(min);
+
 my $apachemax = 0;
 
 sub run_query {
@@ -70,6 +71,7 @@ else
 
 my $javamax = 0;
 my $dbbackend = "";
+my $saltsshthreads = 0;
 open(FILE, "< /etc/rhn/rhn.conf") and do
 {
     while (<FILE>)
@@ -78,6 +80,7 @@ open(FILE, "< /etc/rhn/rhn.conf") and do
         next if($line =~ /^\s*#/);
         $javamax = $1 if ($line =~ /hibernate.c3p0.max_size\s*=\s*(\d+)/);
         $dbbackend = $1 if($line =~ /db_backend\s*=\s*(\w+)/);
+        $saltsshthreads = $1 if ($line =~ /taskomatic\.sshminion_action_executor\.parallel_threads\s*=\s*(\d+)/);
     }
     close FILE;
 };
@@ -94,12 +97,63 @@ if ($javamax == 0)
         close FILE;
     };
 }
+if ($saltsshthreads == 0)
+{
+    open(FILE, "< /usr/share/rhn/config-defaults/rhn_java.conf") and do
+    {
+        while (<FILE>)
+        {
+            my $line = $_;
+            next if($line =~ /^\s*#/);
+            $saltsshthreads = $1 if ($line =~ /taskomatic\.sshminion_action_executor\.parallel_threads\s*=\s*(\d+)/);
+        }
+        close FILE;
+    };
+}
+# reposync computes subprocess count with min(os.cpu_count() * 2, 32)
+my $cpucount = 0;
+open(FILE, "< /proc/cpuinfo") and do
+{
+    $cpucount = scalar (map /^processor/, <FILE>);
+    close FILE;
+};
+my $reposyncmax = min($cpucount * 2, 32);
+print "Reposync connections: $reposyncmax\n";
+
+sub parse_salt_worker_threads {
+    my @config_files = sort {$b cmp $a} glob("/etc/salt/master.d/*.conf");
+    push(@config_files, "/etc/salt/master");
+
+    my $worker_threads = 0;
+    CONFIG: foreach my $config (@config_files) {
+        open(FILE, $config) and do
+        {
+            while (<FILE>)
+            {
+                my $line = $_;
+                next if($line =~ /^\s*#/);
+                $worker_threads = $1 if ($line =~ /worker_threads\s*:\s*(\d+)/);
+            }
+            close FILE;
+            last CONFIG if $worker_threads > 0;
+        };
+    };
+    return $worker_threads;
+};
+my $worker_threads = parse_salt_worker_threads();
+print "Salt worker threads: $worker_threads\n";
+# add one for mgr_events.py and for uyuni roster module
+# custom engines are not counted here as we don't know if they use (and
+# potentially leak) DB connections
+my $saltmax = $worker_threads + $saltsshthreads + 2;
 
 # java web ui, taskomatic uses c3p0 pooling
 # search used a fixed number of connections (10)
 # + every apache process can eat a connection
-# + buffer for local connections
-my $mindb = (2*$javamax) + $apachemax + 10 + 60;
+# + every salt mworker (pillar rendering) + mgr_events.py engine + uyuni roster module
+# + every reposync subproccess connects for insertions
+# + buffer for local connections (including custom Salt code)
+my $mindb = (2*$javamax) + $apachemax + 10 + $saltmax + $reposyncmax + 30;
 my $dblimit = 0;
 
 $dblimit = run_query(<<EOF);
