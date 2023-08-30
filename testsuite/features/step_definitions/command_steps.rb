@@ -1810,8 +1810,9 @@ When(/^I change the server's short hostname from hosts and hostname files$/) do
   new_hostname = old_hostname + '2'
   log "New short hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
-  echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
-  echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
+                   hostname #{new_hostname} &&
+                   echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
+                   echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
@@ -1843,13 +1844,13 @@ end
 
 When(/^I change back the server's hostname$/) do
   server_node = get_target('server')
-  server_node.run("echo '#{server_node.full_hostname}' > /etc/hostname ")
+  old_hostname = server_node.hostname
+  new_hostname = old_hostname.delete_suffix('2')
+  server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+                   hostname #{new_hostname} &&
+                   sed -i \'$d\' /etc/hosts &&
+                   sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
-end
-
-When(/^I clean up the server's hosts file$/) do
-  command = 'sed -i \'$d\' /etc/hosts && sed -i \'$d\' /etc/hosts'
-  get_target('server').run(command)
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
