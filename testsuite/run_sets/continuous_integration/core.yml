@@ -1,0 +1,21 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+
+# initialize Uyuni server
+- features/continuous_integration/core/srv_first_settings.feature
+- features/continuous_integration/core/srv_disable_local_repos_off.feature
+- features/continuous_integration/core/srv_organization_credentials.feature
+- features/continuous_integration/core/srv_user_preferences.feature
+- features/continuous_integration/core/srv_channels_add.feature
+- features/continuous_integration/core/srv_create_activationkey.feature
+- features/continuous_integration/core/srv_osimage.feature
+- features/continuous_integration/core/srv_docker.feature
+
+## Core features END ###

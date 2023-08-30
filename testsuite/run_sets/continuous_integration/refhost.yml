@@ -1,0 +1,53 @@
+# This file describes the order of features on the reference hosts.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+
+# initialize Uyuni server
+- features/continuous_integration/core/allcli_sanity.feature
+- features/continuous_integration/core/srv_first_settings.feature
+- features/continuous_integration/core/srv_channels_add.feature
+- features/continuous_integration/reposync/srv_create_repository.feature
+- features/continuous_integration/core/srv_create_activationkey.feature
+- features/continuous_integration/core/srv_docker.feature
+
+# initialize clients
+- features/continuous_integration/init_clients/sle_minion.feature
+- features/continuous_integration/init_clients/sle_ssh_minion.feature
+- features/continuous_integration/init_clients/min_rhlike_salt.feature
+- features/continuous_integration/init_clients/min_deblike_salt.feature
+- features/continuous_integration/init_clients/buildhost_bootstrap.feature
+# these features sync real channels (last core features)
+- features/continuous_integration/reposync/srv_sync_channels.feature
+- features/continuous_integration/reposync/srv_sync_products.feature
+- features/continuous_integration/reposync/srv_enable_sync_products.feature
+  # we let the synchronization run
+  # - features/continuous_integration/reposync/srv_wait_for_reposync.feature
+- features/continuous_integration/reposync/srv_check_reposync.feature
+
+## Core features END ###
+
+
+## Secondary features BEGIN ##
+
+# IDEMPOTENT
+
+# (no secondary features on reference hosts)
+
+## Secondary features END ##
+
+
+## Post run features BEGIN ##
+
+# IMMUTABLE ORDER
+
+# these features are needed for gathering log/debug info
+- features/continuous_integration/finishing/srv_debug.feature
+- features/continuous_integration/finishing/allcli_debug.feature
+
+## Post run features END ##

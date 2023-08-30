@@ -45,7 +45,7 @@ namespace :cucumber do
 end
 
 namespace :parallel do
-  Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  Dir.glob(File.join(Dir.pwd, 'run_sets/continuous_integration', '*.yml')).each do |entry|
     run_set = File.basename(entry, '.yml').to_sym
     desc "Run Cucumber #{run_set} features in parallel"
     task run_set.to_s do
@@ -71,7 +71,7 @@ namespace :utils do
     if sets_n < 2
       puts "sets should be 2 or greater"
     else
-      all_secondary_p = YAML.load_file('run_sets/secondary_parallelizable.yml')
+      all_secondary_p = YAML.load_file('run_sets/continuous_integration/secondary_parallelizable.yml')
       if all_secondary_p.length%sets_n != 0
         size = (all_secondary_p.length/sets_n) + 1
       else
@@ -81,7 +81,7 @@ namespace :utils do
       puts "split_sets.length: #{split_sets.length}"
       for i in 1..split_sets.length
         puts "writing #{i}"
-        File.open("run_sets/secondary_parallelizable_#{i}.yml", "w") { |file|
+        File.open("run_sets/continuous_integration/secondary_parallelizable_#{i}.yml", "w") { |file|
           file.write(split_sets[i-1].to_yaml)
         }
       end

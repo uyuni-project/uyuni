@@ -71,14 +71,14 @@ test-framework:
 - testsuite/features/support/*
 - testsuite/features/step_definitions/*
 core-features:
-- testsuite/features/core/*
-- testsuite/features/core/**/*
+- testsuite/features/continuous_integration/core/*
+- testsuite/features/continuous_integration/core/**/*
 build-validation-features:
 - testsuite/features/build_validation/*
 - testsuite/features/build_validation/**/*
 secondary-features:
-- testsuite/features/secondary/*
-- testsuite/features/secondary/**/*
+- testsuite/features/continuous_integration/secondary/*
+- testsuite/features/continuous_integration/secondary/**/*
 ci-pipelines:
 - testsuite/**/*.yml
 

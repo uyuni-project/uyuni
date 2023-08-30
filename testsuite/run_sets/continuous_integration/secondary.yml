@@ -1,0 +1,66 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Secondary features BEGIN ##
+
+# IDEMPOTENT
+
+- features/continuous_integration/secondary/srv_users.feature
+- features/continuous_integration/secondary/srv_menu.feature
+- features/continuous_integration/secondary/srv_monitoring.feature
+- features/continuous_integration/secondary/srv_virtual_host_manager.feature
+- features/continuous_integration/secondary/srv_power_management.feature
+- features/continuous_integration/secondary/srv_power_management_api.feature
+- features/continuous_integration/secondary/srv_power_management_redfish.feature
+- features/continuous_integration/secondary/srv_delete_channel_from_ui.feature
+- features/continuous_integration/secondary/srv_delete_channel_with_tool.feature
+- features/continuous_integration/secondary/srv_maintenance_windows.feature
+- features/continuous_integration/secondary/srv_user_configuration_salt_states.feature
+- features/continuous_integration/secondary/srv_handle_software_channels_with_ISS_v2.feature
+- features/continuous_integration/secondary/srv_handle_config_channels_with_ISS_v2.feature
+- features/continuous_integration/secondary/buildhost_osimage_build_image.feature
+- features/continuous_integration/secondary/allcli_reboot.feature
+- features/continuous_integration/secondary/min_rhlike_openscap_audit.feature
+- features/continuous_integration/secondary/min_rhlike_remote_command.feature
+- features/continuous_integration/secondary/min_rhlike_ssh.feature
+- features/continuous_integration/secondary/min_deblike_openscap_audit.feature
+- features/continuous_integration/secondary/min_deblike_remote_command.feature
+- features/continuous_integration/secondary/min_deblike_ssh.feature
+- features/continuous_integration/secondary/minssh_bootstrap_api.feature
+- features/continuous_integration/secondary/min_bootstrap_ssh_key.feature
+- features/continuous_integration/secondary/min_bootstrap_script.feature
+- features/continuous_integration/secondary/min_ssh_tunnel.feature
+- features/continuous_integration/secondary/min_activationkey.feature
+# Bare Metal discovery is not yet supported using Salt Minions https://github.com/SUSE/spacewalk/issues/18932
+# - features/continuous_integration/secondary/min_baremetal_discovery.feature
+- features/continuous_integration/secondary/min_salt_minions_page.feature
+- features/continuous_integration/secondary/min_salt_mgrcompat_state.feature
+- features/continuous_integration/secondary/min_salt_lock_packages.feature
+- features/continuous_integration/secondary/min_empty_system_profiles.feature
+- features/continuous_integration/secondary/min_action_chain.feature
+- features/continuous_integration/secondary/minssh_action_chain.feature
+- features/continuous_integration/secondary/allcli_action_chain.feature
+- features/continuous_integration/secondary/buildhost_docker_build_image.feature
+- features/continuous_integration/secondary/buildhost_docker_auth_registry.feature
+- features/continuous_integration/secondary/min_docker_api.feature
+- features/continuous_integration/secondary/min_recurring_action.feature
+- features/continuous_integration/secondary/min_change_software_channel.feature
+- features/continuous_integration/secondary/min_retracted_patches.feature
+- features/continuous_integration/secondary/proxy_cobbler_pxeboot.feature
+- features/continuous_integration/secondary/srv_restart.feature
+- features/continuous_integration/secondary/min_timezone.feature
+- features/continuous_integration/secondary/min_move_from_and_to_proxy.feature
+- features/continuous_integration/secondary/minssh_move_from_and_to_proxy.feature
+- features/continuous_integration/secondary/srv_rename_hostname.feature
+- features/continuous_integration/secondary/proxy_as_pod_basic_tests.feature
+- features/continuous_integration/secondary/srv_logfile.feature
+- features/continuous_integration/secondary/srv_cobbler_sync.feature
+- features/continuous_integration/secondary/srv_cobbler_distro.feature
+- features/continuous_integration/secondary/srv_cobbler_buildiso.feature
+- features/continuous_integration/secondary/srv_cobbler_profile.feature
+- features/continuous_integration/secondary/min_salt_migration.feature
+
+## Secondary features END ##
