@@ -17,12 +17,14 @@ if [ ${#} -ne 1 ];then
     usage_and_exit ${SCRIPT}
 fi
 
-schema_rpm=${1}
+schema_rpms=${1}
 
-if [ ! -f /root/${schema_rpm} ];then
-    echo "RPM /root/${schema_rpm} does not exists"
-    usage_and_exit ${SCRIPT}
-fi
+for i in ${schema_rpms};do
+    if [ ! -f /root/${i} ];then
+        echo "RPM /root/${i} does not exists"
+        usage_and_exit ${SCRIPT}
+    fi
+done
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 
@@ -35,7 +37,7 @@ fi
 # Database schema creation
 
 pushd /root/
-rpm -ivh ${schema_rpm}
+rpm -ivh ${schema_rpms}
 popd
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
