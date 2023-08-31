@@ -154,7 +154,6 @@ module LavandaBasic
     cmd_prefixed = cmd
     if @in_has_uyunictl
       cmd_prefixed = "uyunictl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'"
-      print "#{cmd_prefixed}\n"
     end
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
@@ -263,8 +262,8 @@ module LavandaBasic
 
   def file_exists(file)
     if @in_has_uyunictl
-     _out, code = run_local("uyunictl exec -- 'test -f #{file}'", check_errors: false)
-     exists = code.zero?
+      _out, code = run_local("uyunictl exec -- 'test -f #{file}'", check_errors: false)
+      exists = code.zero?
     else
       _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
       exists = code.zero? && local.zero?
@@ -274,8 +273,8 @@ module LavandaBasic
 
   def folder_exists(file)
     if @in_has_uyunictl
-     _out, code = run_local("uyunictl exec -- 'test -d #{file}'", check_errors: false)
-     exists = code.zero?
+      _out, code = run_local("uyunictl exec -- 'test -d #{file}'", check_errors: false)
+      exists = code.zero?
     else
       _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
       exists = code.zero? && local.zero?

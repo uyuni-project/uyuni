@@ -1034,7 +1034,7 @@ When(/^I copy server\'s keys to the proxy$/) do
     # cert-manager takes some time to generate the secret, wait for it before continuing
     repeat_until_timeout(timeout: 600, message: "Kubernetes uyuni-proxy-cert secret has not been defined") do
       _result, code = $server.run_local("kubectl get secret uyuni-proxy-cert", check_errors: false)
-      break if code.zero? 
+      break if code.zero?
       sleep 1
     end
     _out, return_code = $server.run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.tls\\.crt}' | base64 -d >/tmp/proxy.crt")

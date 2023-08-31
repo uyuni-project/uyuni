@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
+require_relative 'lavanda'
 
 # Retrieve and set OS Family and Version of a node
 def process_os_family_and_version(host, fqdn, hostname, node)
@@ -59,24 +60,29 @@ def twopence_init(host)
   # Lavanda library module extension
   # Look at support/lavanda.rb for more details
   node.extend(LavandaBasic)
-  if host == $server
+
+  if host == 'server'
     _out, code = node.run('which uyunictl', check_errors: false)
     if code.zero?
       node.init_has_uyunictl
     end
-  end
-  if node == $server
+
     fqdn, code = node.run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
     raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
     raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
     node.init_full_hostname(fqdn)
-    node.init_hostname(fqdn.split(".")[0])
+    node.init_hostname(fqdn.split('.')[0])
+
+    node = process_os_family_and_version(host, fqdn, node.hostname, node)
+    node = process_private_and_public_ip(host, node)
   else
+    # Initialize hostname
     hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+
     # special handling for nested VMs since they will only be crated later in the test suite
     # we to a late hostname initialization in a special step for those
 
-    unless hostname.empty? || node == $salt_migration_minion
+    unless hostname.empty? || host == 'salt_migration_minion'
       raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
       raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
       node.init_hostname(hostname)
@@ -85,12 +91,13 @@ def twopence_init(host)
       raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
       raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
       node.init_full_hostname(fqdn)
+
+      node = process_os_family_and_version(host, fqdn, hostname, node)
+      node = process_private_and_public_ip(host, node)
     end
   end
 
-  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{node.hostname} and FQDN #{node.full_hostname}" unless $build_validation
-  os_version, os_family = get_os_version(node)
-  node.init_os_family(os_family)
-  node.init_os_version(os_version)
+  $node_by_host[host] = node
+  $host_by_node[node] = host
+  node
 end
-
