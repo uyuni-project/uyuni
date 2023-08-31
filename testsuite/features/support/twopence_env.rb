@@ -3,7 +3,7 @@
 
 require 'require_all'
 require 'twopence'
-require_all 'features/support'
+require_relative 'twopence_init'
 
 # Raise a warning if any of these environment variables is missing
 raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
