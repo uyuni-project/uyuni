@@ -156,7 +156,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         try {
             // validate that system must have config deployment capability
-            // in order to deploy config files... (e.g. rhncfg* pkgs installed)
+            // in order to deploy config files...
             handler.deployAll(regular, systems, date);
 
             fail("Shouldn't be permitted to deploy without config deploy capability.");
