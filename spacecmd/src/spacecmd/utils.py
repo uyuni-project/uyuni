@@ -58,7 +58,10 @@ try:
 except ImportError:
     import simplejson as json  # python < 2.6
 
-import rpm
+try:
+    import rpm
+except ImportError:
+    from version_utils import rpm
 
 from spacecmd.argumentparser import SpacecmdArgumentParser
 from spacecmd.i18n import _N
