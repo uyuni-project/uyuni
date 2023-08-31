@@ -297,22 +297,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 # Make sure the scriptlet returns with success
 exit 0
 
-%post management
-# The spacewalk-proxy-management package is also our "upgrades" package.
-# We deploy new conf from configuration channel if needed
-# we deploy new conf only if we install from webui and conf channel exist
-if rhncfg-client verify %{_sysconfdir}/rhn/rhn.conf 2>&1|grep 'Not found'; then
-     %{_bindir}/rhncfg-client get %{_sysconfdir}/rhn/rhn.conf
-fi > /dev/null 2>&1
-if rhncfg-client verify %{_sysconfdir}/squid/squid.conf | grep -E '(modified|missing)'; then
-    rhncfg-client get %{_sysconfdir}/squid/squid.conf
-    rm -rf %{_var}/spool/squid/*
-    %{_usr}/sbin/squid -z
-    /sbin/service squid condrestart
-fi > /dev/null 2>&1
-
-exit 0
-
 %pre salt
 %if !0%{?rhel}
 %service_add_pre salt-broker.service
