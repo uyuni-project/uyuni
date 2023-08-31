@@ -28,6 +28,7 @@ def get_version_changelog():
 setup(
     name='spacecmd',
     version=get_version_changelog(),
+    scripts=['src/bin/spacecmd'],
     packages=find_packages(where="src"),
     package_dir={
         "": "src",
