@@ -197,7 +197,6 @@ sle_base_channel =
   if ENV['PROVIDER'].include? 'podman'
     'Fake Base Channel'
   elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
-  elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
     'openSUSE Leap 15.4 (x86_64)'
   else
     'SLES15-SP4-Pool'
