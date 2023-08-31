@@ -366,14 +366,8 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
-      node = get_target(host)
-      system_name = node.full_hostname
-    rescue NotImplementedError => e
-      # If the node for that host is not defined, just return the host parameter as system_name
-      warn e.message
-      system_name = host
-    end
+    node = get_target(host)
+    system_name = node.full_hostname
   end
   system_name
 end
@@ -398,36 +392,30 @@ end
 
 # This function tests whether a file exists on a node
 def file_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.file_exists(file)
 end
 
 # This function tests whether a folder exists on a node
 def folder_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.folder_exists(file)
 end
 
 # This function deletes a file from a node
 def file_delete(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
-  code
+  node.file_delete(file)
 end
 
 # This function deletes a file from a node
 def folder_delete(node, folder)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
-  code
+  node.folder_delete(folder)
 end
 
 # This function extracts a file from a node
 def file_extract(node, remote_file, local_file)
-  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
-  code
+  node.extract(remote_file, local_file, 'root', false)
 end
 
 # This function injects a file into a node
 def file_inject(node, local_file, remote_file)
-  code, _remote = node.inject_file(local_file, remote_file, 'root', false)
-  code
+    node.inject(local_file, remote_file, 'root', false)
 end
