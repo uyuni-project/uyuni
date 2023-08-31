@@ -120,7 +120,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -214,11 +213,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setBaseChannel(baseChannel);
         key.setOrg(user.getOrg());
-        Arrays.asList(
-                "rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad"
-        ).forEach(blacklisted ->
-                key.addPackage(PackageFactory.lookupOrCreatePackageByName(blacklisted), null)
-        );
         key.setContactMethod(ServerFactory.findContactMethodByLabel(contactMethod));
         key.addPackage(PackageFactory.lookupOrCreatePackageByName("vim"), null);
         ManagedServerGroup testGroup = ServerGroupFactory.create(

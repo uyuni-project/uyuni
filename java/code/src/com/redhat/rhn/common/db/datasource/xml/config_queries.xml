@@ -395,57 +395,10 @@ SELECT  S.id,
 <!-- The following three items will return with a character
      Y = package installed, P = package install pending, N = no package nor install -->
         case when (SELECT  DISTINCT 1
-                 FROM  rhnServerPackage SP, rhnPackageName PN
-                WHERE  S.id = SP.server_id
-                  AND  SP.name_id = PN.id
-                  AND  (PN.name = 'rhncfg' OR PN.name = 'mgr-cfg')) is not null then 'Y'
-                 when (SELECT  DISTINCT 1
-                          FROM  rhnServerAction SA, rhnActionPackage AP,
-                                rhnPackageName PN, rhnActionStatus PAS
-                         WHERE  S.id = SA.server_id
-                           AND  SA.status = PAS.id
-                           AND  PAS.name IN ('Queued', 'Picked Up')
-                           AND  SA.action_id = AP.action_id
-                           AND  AP.name_id = PN.id
-                           AND  (PN.name = 'rhncfg' OR PN.name = 'mgr-cfg')) is not null then 'P' else 'N' end AS rhncfg,
-        case when (SELECT  DISTINCT 1
-                 FROM  rhnServerPackage SP, rhnPackageName PN
-                WHERE  S.id = SP.server_id
-                  AND  SP.name_id = PN.id
-                  AND  (PN.name = 'rhncfg-actions' OR PN.name = 'mgr-cfg-actions')) is not null then 'Y'
-                 when (SELECT  DISTINCT 1
-                          FROM  rhnServerAction SA, rhnActionPackage AP,
-                                rhnPackageName PN, rhnActionStatus PAS
-                         WHERE  S.id = SA.server_id
-                           AND  SA.status = PAS.id
-                           AND  PAS.name IN ('Queued', 'Picked Up')
-                           AND  SA.action_id = AP.action_id
-                           AND  AP.name_id = PN.id
-                           AND  (PN.name = 'rhncfg-actions' Or PN.name = 'mgr-cfg-actions')) is not null then 'P' else 'N' end AS rhncfg_actions,
-        case when (SELECT  DISTINCT 1
-                 FROM  rhnServerPackage SP, rhnPackageName PN
-                WHERE  S.id = SP.server_id
-                  AND  SP.name_id = PN.id
-                  AND  (PN.name = 'rhncfg-client' OR PN.name = 'mgr-cfg-client')) is not null then 'Y'
-                 when (SELECT  DISTINCT 1
-                          FROM  rhnServerAction SA, rhnActionPackage AP,
-                                rhnPackageName PN, rhnActionStatus PAS
-                         WHERE  S.id = SA.server_id
-                           AND  SA.status = PAS.id
-                           AND  PAS.name IN ('Queued', 'Picked Up')
-                           AND  SA.action_id = AP.action_id
-                           AND  AP.name_id = PN.id
-                           AND  (PN.name = 'rhncfg-client' OR PN.name = 'rhncfg-client')) is not null then 'P' else 'N' end AS rhncfg_client,
-        case when (SELECT  DISTINCT 1
                  FROM  rhnServerChannel SC, rhnChannel C
                 WHERE  S.id = SC.server_id
                   AND  SC.channel_id = C.id
-                  AND  C.label like 'rhn-tools%') is not null then 'Y' else 'N' end AS rhn_tools,
-        case when (SELECT  DISTINCT 1
-                 FROM  rhnServerChannel SC, rhnChannel C
-                WHERE  S.id = SC.server_id
-                  AND  SC.channel_id = C.id
-                  AND  C.label like '%appstream%') is not null then 'Y' else 'N' end AS app_stream
+                  AND  (C.label like '%manager-tools%' or C.label like '%client-tools%')) is not null then 'Y' else 'N' end AS rhn_tools
   FROM  rhnServer S
  WHERE  S.id IN (%s)
 </query>

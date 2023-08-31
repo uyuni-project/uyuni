@@ -15,23 +15,17 @@
 package com.redhat.rhn.manager.configuration;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Due to the complicated nature of enabling configuration, this class is
@@ -87,71 +81,13 @@ public class EnableConfigHelper {
         RhnSetManager.store(set);
     }
 
-    private int enableSystem(ConfigSystemDto dto, Server current, Date earliest)
-        throws TaskomaticApiException {
-        //subscribe the system to RhnTools child channel if they need it.
-        boolean canAppstream =  current.getOs().startsWith("redhat-release") && current.getRelease().startsWith("8");
-        if (!dto.isRhnTools() || (canAppstream && !dto.isAppStream())) {
-            if (ChannelManager.subscribeToChildChannelWithPackageName(user, current,
-                    ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME) == null) {
-                if (canAppstream) {
-                    return ConfigurationManager.ENABLE_ERROR_APPSTREAM;
-                }
-                return ConfigurationManager.ENABLE_ERROR_RHNTOOLS;
-            }
-        }
-
-        //schedule package installs for the rhncfg-* packages.
-        if (!installPackages(dto, current, earliest)) {
-            return ConfigurationManager.ENABLE_ERROR_PACKAGES;
+    private int enableSystem(ConfigSystemDto dto, Server current, Date earliest) {
+        //subscribe the system to Client Tools child channel
+        if (!dto.isRhnTools() && ChannelManager.subscribeToChildChannelWithPackageName(user, current,
+                ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME) == null) {
+            return ConfigurationManager.ENABLE_ERROR_RHNTOOLS;
         }
 
         return ConfigurationManager.ENABLE_SUCCESS;
     }
-
-    private boolean installPackages(ConfigSystemDto dto, Server current, Date earliest)
-        throws TaskomaticApiException {
-        boolean error = false;
-        List packages = new ArrayList<>();
-
-        /*
-         * If there is ever an error, we will stop what we are doing.  Utilizing
-         * the short circuit of boolean expression evaluation to easily do this.
-         */
-        error = installPackagesHelper(current, packages,
-                                                PackageManager.RHNCFG, dto.getRhncfg());
-        error = error || installPackagesHelper(current, packages,
-                                                PackageManager.RHNCFG_ACTIONS,
-                dto.getRhncfgActions());
-        error = error || installPackagesHelper(current, packages,
-                                                PackageManager.RHNCFG_CLIENT,
-                dto.getRhncfgClient());
-
-        if (error) {
-            return false;  //there was an error, bail out
-        }
-        else if (packages.isEmpty()) {
-            return true;  //This particular system didn't need any packages
-        }
-
-        ActionManager.schedulePackageAction(user, packages,
-            ActionFactory.TYPE_PACKAGES_UPDATE, earliest, current);
-
-        return true;
-
-    }
-
-    private boolean installPackagesHelper(Server current,
-            List packages, String packageName, int status) {
-        if (status == ConfigSystemDto.NEEDED) {
-            Map<String, Long> map = PackageManager.lookupEvrIdByPackageName(current.getId(), packageName);
-            if (map == null) {
-                return true;
-            }
-
-            packages.add(map);
-        }
-        return false;
-    }
-
 }

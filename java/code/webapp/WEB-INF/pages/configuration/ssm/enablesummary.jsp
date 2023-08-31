@@ -18,7 +18,6 @@
   <bean:message key="summary.jsp.summary" />
   <ol>
     <li><bean:message key="summary.jsp.stepone" />
-    <li><bean:message key="summary.jsp.steptwo" />
   </ol>
   </p>
 </div>

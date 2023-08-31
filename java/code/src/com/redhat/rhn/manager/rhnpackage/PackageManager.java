@@ -84,9 +84,6 @@ import java.util.Set;
  */
 public class PackageManager extends BaseManager {
     private static final Logger LOG = LogManager.getLogger(PackageManager.class);
-    public static final String RHNCFG = "mgr-cfg";
-    public static final String RHNCFG_CLIENT = "mgr-cfg-client";
-    public static final String RHNCFG_ACTIONS = "mgr-cfg-actions";
 
     // Valid dependency types
     public static final String[]
