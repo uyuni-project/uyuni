@@ -36,16 +36,4 @@ public enum OsFamily {
     OsFamily(String fullnameIn, String vendorIn) {
         this(fullnameIn, fullnameIn.toLowerCase(), vendorIn);
     }
-
-    public String fullname() {
-        return fullname;
-    }
-
-    public String shortname() {
-        return shortname;
-    }
-
-    public String vendor() {
-        return vendor;
-    }
 }

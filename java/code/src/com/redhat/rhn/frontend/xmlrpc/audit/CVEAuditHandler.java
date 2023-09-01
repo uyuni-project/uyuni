@@ -110,12 +110,17 @@ public class CVEAuditHandler extends BaseHandler {
             }
         }
 
-        List<CVEAuditServer> result = CVEAuditManagerOVAL.listSystemsByPatchStatus(
-                loggedInUser, cveIdentifier, patchStatuses);
+        try {
+            List<CVEAuditServer> result = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+                    loggedInUser, cveIdentifier, patchStatuses);
 
-        result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
+            result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
 
-        return result;
+            return result;
+        }
+        catch (UnknownCVEIdentifierException e) {
+            throw new UnknownCVEIdentifierFaultException();
+        }
     }
 
     /**
