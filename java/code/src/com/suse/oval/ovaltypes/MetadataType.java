@@ -38,8 +38,6 @@ public class MetadataType {
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", required = true)
     protected String title;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
-    protected List<AffectedType> affected;
-    @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
     protected List<ReferenceType> reference;
     @XmlElement(namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", required = true)
     protected String description;
@@ -58,16 +56,6 @@ public class MetadataType {
      */
     public void setTitle(String valueIn) {
         this.title = valueIn;
-    }
-
-    /**
-     * Gets the value of the affected property.
-     */
-    public List<AffectedType> getAffected() {
-        if (affected == null) {
-            affected = new ArrayList<>();
-        }
-        return this.affected;
     }
 
     /**

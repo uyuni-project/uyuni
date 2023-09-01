@@ -22,9 +22,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigInteger;
 
 
 /**
@@ -43,14 +41,8 @@ public class ObjectType {
 
     @XmlAttribute(name = "id", required = true)
     protected String id;
-    @XmlAttribute(name = "version", required = true)
-    @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger version;
     @XmlAttribute(name = "comment")
     protected String comment;
-    @XmlAttribute(name = "deprecated")
-    protected Boolean deprecated;
-
 
     // These attributes are not specified for the base object type as per the schema; nevertheless,
     // they have been included since both dpkg and rpm objects have them.
@@ -73,20 +65,6 @@ public class ObjectType {
     }
 
     /**
-     * Gets the value of the version property.
-     */
-    public BigInteger getVersion() {
-        return version;
-    }
-
-    /**
-     * Sets the value of the version property.
-     */
-    public void setVersion(BigInteger valueIn) {
-        this.version = valueIn;
-    }
-
-    /**
      * Gets the value of the comment property.
      */
     public String getComment() {
@@ -98,25 +76,6 @@ public class ObjectType {
      */
     public void setComment(String valueIn) {
         this.comment = valueIn;
-    }
-
-    /**
-     * Gets the value of the deprecated property.
-     */
-    public boolean isDeprecated() {
-        if (deprecated == null) {
-            return false;
-        }
-        else {
-            return deprecated;
-        }
-    }
-
-    /**
-     * Sets the value of the deprecated property.
-     */
-    public void setDeprecated(Boolean valueIn) {
-        this.deprecated = valueIn;
     }
 
     /**

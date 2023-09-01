@@ -19,9 +19,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigInteger;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -48,9 +47,6 @@ public class TestType {
 
     @XmlAttribute(name = "id", required = true)
     protected String id;
-    @XmlAttribute(name = "version", required = true)
-    @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger version;
     @XmlAttribute(name = "check_existence")
     protected ExistenceEnum checkExistence;
     @XmlAttribute(name = "state_operator")
@@ -83,20 +79,6 @@ public class TestType {
      */
     public void setId(String valueIn) {
         this.id = valueIn;
-    }
-
-    /**
-     * Gets the value of the version property.
-     */
-    public BigInteger getVersion() {
-        return version;
-    }
-
-    /**
-     * Sets the value of the version property.
-     */
-    public void setVersion(BigInteger valueIn) {
-        this.version = valueIn;
     }
 
     /**
