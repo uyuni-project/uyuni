@@ -966,9 +966,9 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
-  base_channel = BASE_CHANNEL_BY_CLIENT[host]
-  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
-  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
+  parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
   cmd = if parent_channel.nil?
           "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
@@ -1042,7 +1042,7 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  get_target('proxy').run(cmd, timeout: proxy_timeout)
+  get_target('proxy').run(cmd, timeout: proxy_timeout, verbose: true)
 end
 
 When(/^I allow all SSL protocols on the proxy's apache$/) do
@@ -1050,7 +1050,7 @@ When(/^I allow all SSL protocols on the proxy's apache$/) do
   key = 'SSLProtocol'
   val = 'all -SSLv2 -SSLv3'
   get_target('proxy').run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  get_target('proxy').run('systemctl reload apache2.service')
+  get_target('proxy').run('systemctl reload apache2.service', verbose: true)
 end
 
 When(/^I restart squid service on the proxy$/) do
@@ -1455,18 +1455,19 @@ When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
   end
 end
 
+# changing hostname
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
   new_hostname = old_hostname + '2'
-  log "New short hostname: #{new_hostname}"
+  log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
-  echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
-  echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
+                   hostname #{new_hostname} &&
+                   echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
+                   echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
-# changing hostname
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   server_node = get_target('server')
   command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
@@ -1494,13 +1495,14 @@ end
 
 When(/^I change back the server's hostname$/) do
   server_node = get_target('server')
-  server_node.run("echo '#{server_node.full_hostname}' > /etc/hostname ")
+  old_hostname = server_node.hostname
+  new_hostname = old_hostname.delete_suffix('2')
+  log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
+  server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+                   hostname #{new_hostname} &&
+                   sed -i \'$d\' /etc/hosts &&
+                   sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
-end
-
-When(/^I clean up the server's hosts file$/) do
-  command = 'sed -i \'$d\' /etc/hosts && sed -i \'$d\' /etc/hosts'
-  get_target('server').run(command)
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
@@ -1518,7 +1520,12 @@ end
 
 When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
   node = get_target(minion)
-  node.run("systemctl restart #{service}", check_errors: true)
+  node.run("systemctl restart #{service}", check_errors: true, verbose: true)
+end
+
+When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
 end
 
 When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|

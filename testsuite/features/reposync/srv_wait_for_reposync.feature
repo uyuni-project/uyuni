@@ -16,9 +16,5 @@ Feature: Wait for reposync activity to finish in CI context
   Scenario: Kill running reposyncs or wait for them to finish
     When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
 
-@uyuni
-  Scenario: Sync openSUSE Leap 15.4 product, including Uyuni Client Tools
-    When I call spacewalk-repo-sync to sync the parent channel "opensuse_leap15_4-x86_64"
-
   Scenario: Wait until all synchronized channels have finished
     When I wait until all synchronized channels have finished

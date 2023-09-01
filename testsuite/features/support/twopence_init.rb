@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'twopence'
+require_relative 'lavanda'
 
 # Retrieve and set OS Family and Version of a node
 def process_os_family_and_version(host, fqdn, hostname, node)

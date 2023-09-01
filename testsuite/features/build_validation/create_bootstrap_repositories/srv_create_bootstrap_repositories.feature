@@ -86,10 +86,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Rocky 9 Salt minion
     When I create the bootstrap repository for "rocky9_minion" on the server
 
-@ubuntu1804_minion
-  Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt minion
-    When I create the bootstrap repository for "ubuntu1804_minion" on the server
-
 @ubuntu2004_minion
   Scenario: Create the bootstrap repository for a Ubuntu 20.04 minion
     When I create the bootstrap repository for "ubuntu2004_minion" on the server
