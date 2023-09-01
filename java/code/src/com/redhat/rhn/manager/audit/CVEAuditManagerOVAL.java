@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  *
  */
 public class CVEAuditManagerOVAL {
-    private static Logger log = LogManager.getLogger(CVEAuditManagerOVAL.class);
+    private static Logger LOG = LogManager.getLogger(CVEAuditManagerOVAL.class);
 
     /**
      *
@@ -79,8 +79,8 @@ public class CVEAuditManagerOVAL {
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
 
-                log.error(auditWithChannelsResult.getChannels());
-                log.error(auditWithChannelsResult.getErratas());
+                LOG.error(auditWithChannelsResult.getChannels());
+                LOG.error(auditWithChannelsResult.getErratas());
             }
             else {
                 systemAuditResult = auditWithChannelsResult;
@@ -114,7 +114,7 @@ public class CVEAuditManagerOVAL {
         List<ShallowSystemPackage> allInstalledPackages =
                 PackageManager.shallowSystemPackageList(clientServer.getId());
 
-        log.error("Vul packages before filtering: {}",
+        LOG.error("Vul packages before filtering: {}",
                 OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
 
         Set<VulnerablePackage> clientProductVulnerablePackages =
@@ -122,7 +122,7 @@ public class CVEAuditManagerOVAL {
                         .filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
                         .collect(Collectors.toSet());
 
-        log.error("Vul packages: {}", clientProductVulnerablePackages);
+        LOG.error("Vul packages: {}", clientProductVulnerablePackages);
 
         if (clientProductVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
@@ -201,7 +201,7 @@ public class CVEAuditManagerOVAL {
             }
         }
 
-        log.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
+        LOG.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
 
         return cveAuditServerBuilder;
     }
