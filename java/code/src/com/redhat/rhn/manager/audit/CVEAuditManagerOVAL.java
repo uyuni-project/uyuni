@@ -65,9 +65,9 @@ public class CVEAuditManagerOVAL {
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
                                                                 EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
-        if (CVEAuditManager.isCVEIdentifierUnknown(cveIdentifier)) {
+  /*      if (CVEAuditManager.isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
-        }
+        }*/
 
         List<CVEAuditServer> result = new ArrayList<>();
 
