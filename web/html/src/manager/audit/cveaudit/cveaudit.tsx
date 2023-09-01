@@ -43,7 +43,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patches available in a Product Migration target"),
   },
   AFFECTED_FULL_PATCH_APPLICABLE: {
-    className: "fa-shield text-success",
+    className: "fa-shield text-warning",
     label: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
@@ -59,7 +59,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patch is unavailable")
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
-    className: "fa-shield text-warning",
+    className: "fa-shield text-danger",
     label: t("Affected, partial patch available in assigned channel")
   }
 };
