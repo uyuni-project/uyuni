@@ -15,19 +15,44 @@
 
 package com.suse.oval.exceptions;
 
+/**
+ * A runtime exception throne by {@link com.suse.oval.OvalParser} when it encounters errors while parsing an OVAL file
+ * */
 public class OvalParserException extends RuntimeException {
+
+    /**
+     * Constructs a new parser exception with null as its detail message. The cause is not initialized, and may
+     * subsequently be initialized by a call to initCause.
+     * */
     public OvalParserException() {
         super();
     }
+
+    /**
+     * Constructs a new parser exception with the specified detail message.
+     *
+     * @param message the detail message. The detail message is saved for later retrieval by the getMessage() method.
+     * */
 
     public OvalParserException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a new parser exception with the specified cause.
+     *
+     * @param cause the cause (which is saved for later retrieval by the getCause() method).
+     * */
     public OvalParserException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Constructs a new parser exception with the specified detail message and cause.
+     *
+     * @param cause the cause (which is saved for later retrieval by the getCause() method).
+     * @param message the detail message. The detail message is saved for later retrieval by the getMessage() method.
+     * */
     public OvalParserException(String message, Throwable cause) {
         super(message, cause);
     }

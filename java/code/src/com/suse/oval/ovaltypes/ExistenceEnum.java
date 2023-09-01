@@ -26,7 +26,6 @@ public enum ExistenceEnum {
 
     /**
      * A value of 'all_exist' means that every object defined by the description exists on the system.
-     * 
      */
     @XmlEnumValue("all_exist")
     ALL_EXIST("all_exist"),

@@ -22,9 +22,10 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * The required test_ref attribute is the actual id of the test being referenced. The optional negate attribute signifies
- * that the result of an individual test should be negated during analysis. For example, consider a test that evaluates to TRUE
- * if a specific patch is installed. By negating this test, it now evaluates to TRUE if the patch is NOT installed.
+ * The required test_ref attribute is the actual id of the test being referenced. The optional negate attribute
+ * signifies that the result of an individual test should be negated during analysis. For example, consider a test
+ * that evaluates to TRUE if a specific patch is installed. By negating this test, it now evaluates to TRUE
+ * if the patch is NOT installed.
  * <p>
  * The optional comment attribute provides a short description of the specified test and should mirror the comment
  * attribute of the actual test.

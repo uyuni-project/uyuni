@@ -16,6 +16,7 @@
 package com.suse.oval.db;
 
 import com.redhat.rhn.domain.errata.Cve;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

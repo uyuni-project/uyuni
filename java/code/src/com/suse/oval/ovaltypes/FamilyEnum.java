@@ -78,10 +78,20 @@ public enum FamilyEnum {
         value = v;
     }
 
+    /**
+     * Returns the string value of this OS familty's enum
+     *
+     * @return the string value of OS family
+     * */
     public String value() {
         return value;
     }
 
+    /**
+     * Returns an {@link FamilyEnum} object that correspond to the given OS family string
+     *
+     * @return an {@link FamilyEnum}
+     * */
     public static FamilyEnum fromValue(String v) {
         for (FamilyEnum c: FamilyEnum.values()) {
             if (c.value.equals(v)) {

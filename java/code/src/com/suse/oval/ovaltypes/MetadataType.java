@@ -46,6 +46,8 @@ public class MetadataType {
 
     /**
      * Gets the value of the title property.
+     *
+     * @return the title
      */
     public String getTitle() {
         return title;
@@ -53,6 +55,8 @@ public class MetadataType {
 
     /**
      * Sets the value of the title property.
+     *
+     * @param valueIn the title to set
      */
     public void setTitle(String valueIn) {
         this.title = valueIn;
@@ -60,8 +64,10 @@ public class MetadataType {
 
     /**
      * Gets the value of the reference property.
+     *
+     * @return the list of associated references
      */
-    public List<ReferenceType> getReference() {
+    public List<ReferenceType> getReferences() {
         if (reference == null) {
             reference = new ArrayList<>();
         }
@@ -70,6 +76,8 @@ public class MetadataType {
 
     /**
      * Gets the value of the description property.
+     *
+     * @return the description
      */
     public String getDescription() {
         return description;
@@ -77,9 +85,11 @@ public class MetadataType {
 
     /**
      * Sets the value of the description property.
+     *
+     * @param valueIn the description to set
      */
-    public void setDescription(String valuein) {
-        this.description = valuein;
+    public void setDescription(String valueIn) {
+        this.description = valueIn;
     }
 
     public Optional<Advisory> getAdvisory() {

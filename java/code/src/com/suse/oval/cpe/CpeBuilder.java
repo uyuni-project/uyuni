@@ -18,26 +18,55 @@ package com.suse.oval.cpe;
 public final class CpeBuilder {
     private final Cpe cpe = new Cpe();
 
+    /**
+     * Sets the vendor and returns {@code CpeBuilder} to continue building the {@link Cpe} object
+     *
+     * @param vendor the vendor to set
+     * @return the CpeBuilder to continue building the Cpe object
+     * */
     public CpeBuilder withVendor(String vendor) {
         cpe.setVendor(vendor);
         return this;
     }
 
+    /**
+     * Sets the product and returns {@code CpeBuilder} to continue building the {@link Cpe} object
+     *
+     * @param product the product to set
+     * @return the CpeBuilder to continue building the Cpe object
+     * */
     public CpeBuilder withProduct(String product) {
         cpe.setProduct(product);
         return this;
     }
 
+    /**
+     * Sets the version and returns {@code CpeBuilder} to continue building the {@link Cpe} object
+     *
+     * @param version the version to set
+     * @return the CpeBuilder to continue building the Cpe object
+     * */
     public CpeBuilder withVersion(String version) {
         cpe.setVersion(version);
         return this;
     }
 
+    /**
+     * Sets the update and returns {@code CpeBuilder} to continue building the {@link Cpe} object
+     *
+     * @param update the update value to set
+     * @return the CpeBuilder to continue building the Cpe object
+     * */
     public CpeBuilder withUpdate(String update) {
         cpe.setUpdate(update);
         return this;
     }
 
+    /**
+     * Builds the {@link Cpe} object
+     *
+     * @return the built cpe
+     * */
     public Cpe build() {
         return cpe;
     }

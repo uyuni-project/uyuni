@@ -35,6 +35,9 @@ public class OvalObjectManager {
 
     /**
      * Looks up an OVAL object with an id of {@code objectId}
+     *
+     * @param objectId the object id to look up
+     * @return the cached {@link ObjectType} object that correspond to the object id
      * */
     public ObjectType get(String objectId) {
         ObjectType object = objectsMap.get(objectId);
@@ -46,11 +49,7 @@ public class OvalObjectManager {
     /**
      * Check if an OVAL object with an id of {@code objectId} exists
      * */
-    public boolean exists(String objectId) {
+    protected boolean exists(String objectId) {
         return objectsMap.containsKey(objectId);
-    }
-
-    public void add(ObjectType objectType) {
-        objectsMap.put(objectType.getId(), objectType);
     }
 }

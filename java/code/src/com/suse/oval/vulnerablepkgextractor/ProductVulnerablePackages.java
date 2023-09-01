@@ -60,6 +60,11 @@ public class ProductVulnerablePackages {
         this.cves = cvesIn;
     }
 
+    /**
+     * Clears the list of relevant CVEs and adds a single CVE
+     *
+     * @param cve the cve to add
+     */
     public void setSingleCve(String cve) {
         this.cves.clear();
         cves.add(cve);

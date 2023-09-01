@@ -37,6 +37,11 @@ public class Cpe {
         update = "";
     }
 
+    /**
+     * Gets the vendor value or empty if not set
+     *
+     * @return the vendor value or an empty string if not set
+     * */
     public String getVendor() {
         return vendor;
     }
@@ -47,6 +52,11 @@ public class Cpe {
         }
     }
 
+    /**
+     * Gets the product value or empty if not set
+     *
+     * @return the product value or an empty string if not set
+     * */
     public String getProduct() {
         return product;
     }
@@ -57,6 +67,11 @@ public class Cpe {
         }
     }
 
+    /**
+     * Gets the version value or empty if not set
+     *
+     * @return the version value or an empty string if not set
+     * */
     public String getVersion() {
         return version;
     }
@@ -67,6 +82,11 @@ public class Cpe {
         }
     }
 
+    /**
+     * Gets the update value or empty if not set
+     *
+     * @return the update value or an empty string if not set
+     * */
     public String getUpdate() {
         return update;
     }
@@ -77,10 +97,20 @@ public class Cpe {
         }
     }
 
+    /**
+     * Parse the given Cpe URI string and returns a {@link Cpe} object
+     *
+     * @return a cpe object with all the Cpe information
+     * */
     public static Cpe parse(String cpe) {
         return CPE_PARSER.parse(cpe);
     }
 
+    /**
+     * Converts and returns the Cpe as plain text URI
+     *
+     * @return the cpe as URI
+     * */
     public String asString() {
         String cpe = "cpe:/o:" + vendor + ":" + product + ":" + version + ":" + update;
 

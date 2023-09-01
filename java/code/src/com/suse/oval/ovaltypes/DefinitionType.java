@@ -80,6 +80,8 @@ public class DefinitionType {
 
     /**
      * Sets the value of the metadata property.
+     *
+     * @param value the metadata to set
      */
     public void setMetadata(MetadataType value) {
         this.metadata = value;
@@ -89,8 +91,8 @@ public class DefinitionType {
         return criteria;
     }
 
-    public void setCriteria(CriteriaType criteria) {
-        this.criteria = criteria;
+    public void setCriteria(CriteriaType criteriaIn) {
+        this.criteria = criteriaIn;
     }
 
     /**

@@ -46,13 +46,28 @@ import java.util.stream.Collectors;
  *
  */
 public class CVEAuditManagerOVAL {
-    private static Logger LOG = LogManager.getLogger(CVEAuditManagerOVAL.class);
+
+    private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVAL.class);
+
+    private CVEAuditManagerOVAL() {
+
+    }
 
     /**
+     * List visible systems with their patch status regarding a given CVE identifier.
      *
-     * */
+     * @param user the calling user
+     * @param cveIdentifier the CVE identifier to lookup
+     * @param patchStatuses the patch statuses
+     * @return list of system records with patch status
+     * @throws UnknownCVEIdentifierException if the CVE number is not known
+     */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
-                                                                EnumSet<PatchStatus> patchStatuses) {
+                                                                EnumSet<PatchStatus> patchStatuses)
+            throws UnknownCVEIdentifierException {
+        if (CVEAuditManager.isCVEIdentifierUnknown(cveIdentifier)) {
+            throw new UnknownCVEIdentifierException();
+        }
 
         List<CVEAuditServer> result = new ArrayList<>();
 
@@ -75,7 +90,8 @@ public class CVEAuditManagerOVAL {
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
             if (doesSupportOVALAuditing(clientServer)) {
-                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
+                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()),
+                        clientServer);
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
             }

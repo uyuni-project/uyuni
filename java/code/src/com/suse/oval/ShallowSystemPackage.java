@@ -75,16 +75,16 @@ public class ShallowSystemPackage extends IdComboDto {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     public String getEvr() {
         return evr;
     }
 
-    public void setEvr(String evr) {
-        this.evr = evr;
+    public void setEvr(String evrIn) {
+        this.evr = evrIn;
     }
 
     /**

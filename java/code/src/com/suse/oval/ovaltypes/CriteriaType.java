@@ -56,6 +56,8 @@ public class CriteriaType implements BaseCriteria {
 
     /**
      * Gets the value of the contained criteria or criterion objects.
+     *
+     * @return the list of criteria or criterion children under this criteria
      */
     public List<BaseCriteria> getChildren() {
         if (children == null) {
@@ -67,8 +69,7 @@ public class CriteriaType implements BaseCriteria {
     /**
      * Gets the value of the operator property.
      *
-     * @return possible object is
-     * {@link LogicOperatorType }
+     * @return the operator property or {@link LogicOperatorType.AND} if none is specified
      */
     public LogicOperatorType getOperator() {
         if (operator == null) {
@@ -82,8 +83,7 @@ public class CriteriaType implements BaseCriteria {
     /**
      * Sets the value of the operator property.
      *
-     * @param value allowed object is
-     *              {@link LogicOperatorType }
+     * @param value the operator property to set
      */
     public void setOperator(LogicOperatorType value) {
         this.operator = value;
@@ -91,6 +91,8 @@ public class CriteriaType implements BaseCriteria {
 
     /**
      * Gets the value of the negate property.
+     *
+     * @return a boolean that indicates whether to negate result after evaluation or {@code false} if none is specified
      */
     public boolean isNegate() {
         if (negate == null) {
@@ -103,6 +105,8 @@ public class CriteriaType implements BaseCriteria {
 
     /**
      * Sets the value of the negate property.
+     *
+     * @param value a boolean that indicates whether to negate result after evaluation or not
      */
     public void setNegate(Boolean value) {
         this.negate = value;
@@ -110,6 +114,8 @@ public class CriteriaType implements BaseCriteria {
 
     /**
      * Gets the value of the comment property.
+     *
+     * @return the comment
      */
     public String getComment() {
         return comment;
@@ -117,6 +123,8 @@ public class CriteriaType implements BaseCriteria {
 
     /**
      * Sets the value of the comment property.
+     *
+     * @param value the comment to set
      */
     public void setComment(String value) {
         this.comment = value;

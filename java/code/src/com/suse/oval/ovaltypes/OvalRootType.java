@@ -49,6 +49,8 @@ public class OvalRootType {
 
     /**
      * Gets the list of OVAL definitions.
+     *
+     * @return the list of associated OVAL definitions
      */
     public List<DefinitionType> getDefinitions() {
         if (definitions == null) {
@@ -61,6 +63,7 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL definitions.
+     *
      * @param value the definitions to set
      */
     public void setDefinitions(List<DefinitionType> value) {
@@ -70,6 +73,8 @@ public class OvalRootType {
 
     /**
      * Gets the list of OVAL tests.
+     *
+     * @return the list of associated OVAL tests
      */
     public List<TestType> getTests() {
         return Optional.ofNullable(tests).map(TestsType::getTests).orElse(new ArrayList<>());
@@ -77,6 +82,7 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL tests.
+     *
      * @param value the tests to set
      */
     public void setTests(List<TestType> value) {
@@ -86,6 +92,8 @@ public class OvalRootType {
 
     /**
      * Gets the list of OVAL objects.
+     *
+     * @return the list of associated OVAL objects
      */
     public List<ObjectType> getObjects() {
         return Optional.ofNullable(objects).map(ObjectsType::getObjects).orElse(new ArrayList<>());
@@ -93,6 +101,7 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL objects.
+     *
      * @param value the objects to set
      */
     public void setObjects(List<ObjectType> value) {
@@ -102,6 +111,8 @@ public class OvalRootType {
 
     /**
      * Gets the list of OVAL states.
+     *
+     * @return the list of associated OVAL states
      */
     public List<StateType> getStates() {
         return Optional.ofNullable(states).map(StatesType::getStates).orElse(new ArrayList<>());
@@ -109,6 +120,8 @@ public class OvalRootType {
 
     /**
      * Sets the list of OVAL states.
+     *
+     * @param value the OVAL states to set
      */
     public void setStates(List<StateType> value) {
         this.states = new StatesType();

@@ -39,6 +39,8 @@ public class DefinitionsType {
 
     /**
      * Gets the list of definitions
+     *
+     * @return the list of contained OVAL definitions.
      */
     public List<DefinitionType> getDefinitions() {
         if (definitions == null) {

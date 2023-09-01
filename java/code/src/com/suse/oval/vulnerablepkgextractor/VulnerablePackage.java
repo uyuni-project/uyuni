@@ -27,8 +27,8 @@ public class VulnerablePackage {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     public Optional<String> getFixVersion() {
@@ -38,8 +38,8 @@ public class VulnerablePackage {
         return Optional.ofNullable(fixVersion);
     }
 
-    public void setFixVersion(String fixedVersion) {
-        this.fixVersion = fixedVersion;
+    public void setFixVersion(String fixedVersionIn) {
+        this.fixVersion = fixedVersionIn;
     }
 
     @Override

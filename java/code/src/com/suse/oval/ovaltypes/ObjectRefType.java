@@ -34,6 +34,8 @@ public class ObjectRefType {
 
     /**
      * Gets the value of the objectRef property.
+     *
+     * @return the object id
      */
     public String getObjectRef() {
         return objectRef;
@@ -41,6 +43,7 @@ public class ObjectRefType {
 
     /**
      * Sets the value of the objectRef property.
+     * @param value the object id to set
      */
     public void setObjectRef(String value) {
         this.objectRef = value;

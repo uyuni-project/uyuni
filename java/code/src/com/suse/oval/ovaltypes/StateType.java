@@ -68,7 +68,8 @@ public class StateType {
     public LogicOperatorType getOperator() {
         if (operator == null) {
             return LogicOperatorType.AND;
-        } else {
+        }
+        else {
             return operator;
         }
     }

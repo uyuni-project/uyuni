@@ -47,16 +47,8 @@ public class TestType {
 
     @XmlAttribute(name = "id", required = true)
     protected String id;
-    @XmlAttribute(name = "check_existence")
-    protected ExistenceEnum checkExistence;
-    @XmlAttribute(name = "state_operator")
-    protected LogicOperatorType stateOperator;
-    @XmlAttribute(name = "check", required = true)
-    protected CheckEnum check;
     @XmlAttribute(name = "comment", required = true)
     protected String comment;
-    @XmlAttribute(name = "deprecated")
-    protected Boolean deprecated;
 
     /**
      * These attributes are not specified for the base test type as per the schema; nevertheless, it has been included
@@ -69,6 +61,8 @@ public class TestType {
 
     /**
      * Gets the value of the id property.
+     *
+     * @return the test's id
      */
     public String getId() {
         return id;
@@ -76,42 +70,11 @@ public class TestType {
 
     /**
      * Sets the value of the id property.
+     *
+     * @param valueIn the test id to set
      */
     public void setId(String valueIn) {
         this.id = valueIn;
-    }
-
-    /**
-     * Gets the value of the checkExistence property.
-     */
-    public ExistenceEnum getCheckExistence() {
-        if (checkExistence == null) {
-            return ExistenceEnum.AT_LEAST_ONE_EXISTS;
-        }
-        else {
-            return checkExistence;
-        }
-    }
-
-    /**
-     * Sets the value of the checkExistence property.
-     */
-    public void setCheckExistence(ExistenceEnum valueIn) {
-        this.checkExistence = valueIn;
-    }
-
-    /**
-     * Gets the value of the check property.
-     */
-    public CheckEnum getCheck() {
-        return check;
-    }
-
-    /**
-     * Sets the value of the check property.
-     */
-    public void setCheck(CheckEnum valueIn) {
-        this.check = valueIn;
     }
 
     /**
@@ -129,25 +92,6 @@ public class TestType {
     }
 
     /**
-     * Gets the value of the deprecated property.
-     */
-    public boolean isDeprecated() {
-        if (deprecated == null) {
-            return false;
-        }
-        else {
-            return deprecated;
-        }
-    }
-
-    /**
-     * Sets the value of the deprecated property.
-     */
-    public void setDeprecated(Boolean valueIn) {
-        this.deprecated = valueIn;
-    }
-
-    /**
      * Gets the value of the object property.
      */
     public String getObjectRef() {
@@ -159,6 +103,7 @@ public class TestType {
 
     /**
      * Sets the value of the object property.
+     * @param valueIn the object id to set
      */
     public void setObjectRef(String valueIn) {
         ObjectRefType refType = new ObjectRefType();
@@ -168,9 +113,11 @@ public class TestType {
 
     /**
      * Gets the value of the state property.
-     * <p>
-     * Although the OVAL specs says that an OVAL test could have 0 or more states but for the OVAL files that we're
-     * consuming, it's always 0 or 1 state hence an {@code Optional<T>} is used.
+     * <p><br>
+     * NOTE: Although the OVAL specs says that an OVAL test could have 0 or more states but for the OVAL files that
+     * we are consuming, is always 0 or 1 state hence an {@code Optional<T>} is used.
+     *
+     * @return an {@link Optional<String>} that may or may not contain a state reference
      */
     public Optional<String> getStateRef() {
         if (this.states == null) {
@@ -180,21 +127,8 @@ public class TestType {
             return Optional.ofNullable(states.get(0).getStateRef());
         }
         else {
-            throw new IllegalStateException("Each test is expected to have 0 or 1 state. See the comment above the method");
+            throw new IllegalStateException("Each test is expected to have 0 or 1 state");
         }
-    }
-
-    public LogicOperatorType getStateOperator() {
-        if (stateOperator == null) {
-            return LogicOperatorType.AND;
-        }
-        else {
-            return stateOperator;
-        }
-    }
-
-    public void setStateOperator(LogicOperatorType stateOperator) {
-        this.stateOperator = stateOperator;
     }
 
     public void setStates(List<StateRefType> statesIn) {

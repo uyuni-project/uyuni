@@ -106,7 +106,6 @@ public enum OperationEnumeration {
      * Since the result is the same as the state mask, then the test returns true. If the actual value on your machine
      * is 1 (0001), then the 'bitwise or' with the stated integer 14 (1110) returns 15 (1111). Since the result is not
      * the same as the stated mask, then the test fails.
-     * 
      */
     @XmlEnumValue("bitwise or")
     BITWISE_OR("bitwise or"),
@@ -145,6 +144,11 @@ public enum OperationEnumeration {
         return value;
     }
 
+    /**
+     * Returns an {@link OperationEnumeration} object that correspond to the given operation string
+     *
+     * @return an {@link OperationEnumeration}
+     * */
     public static OperationEnumeration fromValue(String v) {
         for (OperationEnumeration c: OperationEnumeration.values()) {
             if (c.value.equals(v)) {
