@@ -166,7 +166,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         // Making sure that the product criterions contain indeed product names
         return productCriterions.stream()
                 .map(CriterionType::getComment)
-                .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise"));
+                .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise") || comment.startsWith("openSUSE Leap"));
     }
 
     private Cpe deriveCpe(TestType productTest) {
