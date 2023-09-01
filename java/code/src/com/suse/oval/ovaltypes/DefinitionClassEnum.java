@@ -52,6 +52,12 @@ public enum DefinitionClassEnum {
         value = v;
     }
 
+    /**
+     * Returns a {@link DefinitionClassEnum} object that correspond to the given definition class string
+     *
+     * @param v the value
+     * @return a {@link DefinitionClassEnum}
+     * */
     public static DefinitionClassEnum fromValue(String v) {
         for (DefinitionClassEnum c : DefinitionClassEnum.values()) {
             if (c.value.equals(v)) {

@@ -30,7 +30,7 @@ public class AdvisoryCveType {
         return cve;
     }
 
-    public void setCve(String cve) {
-        this.cve = cve;
+    public void setCve(String cveIn) {
+        this.cve = cveIn;
     }
 }

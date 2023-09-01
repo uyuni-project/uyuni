@@ -27,7 +27,7 @@ public class SimpleCpeParser {
      * CPE: <b>cpe:/o:opensuse:leap:15.4</b>
      * <br>
      * PART: <b>o</b> <i>(it's an operating system's CPE)</i><br>
-     * VENDOR: <b>opensuse</b> <i>(CPE describes a product manufactured by openSUSE)<i/><br>
+     * VENDOR: <b>opensuse</b> <i>(CPE describes a product manufactured by openSUSE)</i><br>
      * PRODUCT: <b>leap</b> <i>(The product name is leap)</i><br>
      * VERSION: <b>15.4</b> <i>(The product version is 15.4)</i><br>
      * <br><br>
