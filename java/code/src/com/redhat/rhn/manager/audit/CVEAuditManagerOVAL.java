@@ -78,9 +78,6 @@ public class CVEAuditManagerOVAL {
                 systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
-
-                LOG.error(auditWithChannelsResult.getChannels());
-                LOG.error(auditWithChannelsResult.getErratas());
             }
             else {
                 systemAuditResult = auditWithChannelsResult;

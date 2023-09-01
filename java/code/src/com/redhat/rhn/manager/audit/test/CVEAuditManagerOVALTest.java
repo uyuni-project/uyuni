@@ -240,7 +240,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     void testDoAuditSystemAffectedPartialPatchAvailable() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
-        LOG.warn("Partial Aavailable patch");
 
         Cve cve = createTestCve("CVE-2008-2934");
 
@@ -326,7 +325,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
     @Test
     void testDoAuditSystemAffectedPatchInapplicable() throws Exception {
-        LOG.warn("testDoAuditSystemAffectedPatchInapplicable");
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
@@ -353,12 +351,8 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, otherChannel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        LOG.error(unpatched.getPackageEvr().toUniversalEvrString());
-
         createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
-
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         CVEAuditManager.populateCVEChannels();
         // We don't have to care about the internals of populateCVEChannels and weather it will assign otherChannel as
@@ -368,8 +362,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         relevantChannels.put(server, List.of(otherChannelRanked));
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
         HibernateFactory.getSession().flush();
-
-        server.getPackages().forEach(p -> LOG.error(p.getName().getName() + "--" + p.getEvr().toUniversalEvrString()));
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
