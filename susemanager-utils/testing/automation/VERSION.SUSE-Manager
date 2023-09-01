@@ -9,6 +9,6 @@ REPORTDB_DOC_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-rep
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.3.8'
 IDEMPOTENCY_REPORTDB_SCHEMA_BASE_VERSION='4.3.1'
-SCHEMA_PACKAGES='susemanager-schema-4.3.8-150400.1.5.noarch.rpm'
+SCHEMA_PACKAGES='susemanager-schema-4.3.8-150400.1.5.noarch.rpm susemanager-schema-utility-4.3.8-150400.1.5.noarch.rpm'
 REPORTDB_SCHEMA_PACKAGES='susemanager-schema-4.3.8-150400.1.5.noarch.rpm susemanager-schema-utility-4.3.8-150400.1.5.noarch.rpm uyuni-reportdb-schema-4.3.1-150400.1.5.noarch.rpm'
 BRAND_NAME='SUSE Manager'
