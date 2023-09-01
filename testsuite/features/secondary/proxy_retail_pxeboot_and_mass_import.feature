@@ -24,8 +24,8 @@ Feature: PXE boot a Retail terminal
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -102,7 +102,7 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     And I disable repositories after installing branch server
     Then socket "tftp" is enabled on "proxy"
     And socket "tftp" is active on "proxy"
@@ -221,7 +221,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Cleanup: remove a package on the new Retail terminal
     Given I navigate to the Systems overview page of this "pxeboot_minion"
@@ -233,7 +233,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: delete the new Retail terminal
     Given I navigate to the Systems overview page of this "pxeboot_minion"
@@ -289,7 +289,7 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Enable the formulas needed for mass import on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -316,7 +316,7 @@ Feature: PXE boot a Retail terminal
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
@@ -346,7 +346,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Cleanup: remove a package on the bootstrapped terminal
     Given I am on the Systems page
@@ -359,7 +359,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: delete all imported Retail terminals
     Given I am on the Systems page
@@ -430,7 +430,7 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Reset TFTP defaults
     When I stop tftp on the proxy

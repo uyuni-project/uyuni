@@ -39,7 +39,7 @@ Feature: Bootstrap a SLE Micro 5.2 Salt minion
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    When I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "Reboot completed." text
 
 @proxy

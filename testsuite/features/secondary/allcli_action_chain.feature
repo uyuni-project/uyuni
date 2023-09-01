@@ -9,7 +9,7 @@
 @scope_action_chains
 Feature: Action chains on several systems at once
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade packages before action chain test on several systems

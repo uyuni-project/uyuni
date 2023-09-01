@@ -224,7 +224,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```gherkin
   When I wait until I see "Software Updates Available" text, refreshing the page
-  When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
+  When I wait until I do not see "Apply highstate scheduled" text, refreshing the page
   When I wait until I see the name of "sle_minion", refreshing the page
   When I wait until I do not see the name of "sle_minion", refreshing the page
   When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
@@ -527,7 +527,7 @@ Note that the text area variant handles the new lines characters while the other
 
 ```gherkin
   When I wait until onboarding is completed for "rhlike_minion"
-  When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+  When I wait until event "Package Install/Upgrade scheduled" is completed
 ```
 
 ### Salt

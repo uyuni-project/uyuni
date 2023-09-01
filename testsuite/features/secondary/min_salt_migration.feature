@@ -135,7 +135,7 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     And I check "adobe-sourcecodepro-fonts" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
     Then "adobe-sourcecodepro-fonts" should be installed on "salt_migration_minion"
     And I follow "Software" in the content area
     And I follow "Install"
@@ -146,7 +146,7 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     And I check "adobe-sourcecodepro-fonts" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
     Then "adobe-sourcecodepro-fonts" should not be installed on "salt_migration_minion"
 
   Scenario: Cleanup: remove the nested VM in the Salt migration context

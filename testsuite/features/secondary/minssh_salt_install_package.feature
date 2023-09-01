@@ -28,7 +28,7 @@ Feature: Install a package on the SSH minion via Salt through the UI
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
     Then "hoag-dummy-1.1-1.1" should be installed on "ssh_minion"
 
   Scenario: Cleanup: remove the package from the SSH minion

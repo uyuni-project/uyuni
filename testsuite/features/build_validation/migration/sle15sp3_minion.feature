@@ -47,7 +47,7 @@ Feature: Migrate a SLES 15 SP3 Salt minion to 15 SP4
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
   Scenario: Check the new channel is working

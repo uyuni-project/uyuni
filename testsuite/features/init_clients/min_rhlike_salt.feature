@@ -50,7 +50,7 @@ Feature: Bootstrap a Red Hat-like minion and do some basic operations on it
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Detect latest Salt changes on the Red Hat-like minion
     When I query latest Salt changes on "rhlike_minion"

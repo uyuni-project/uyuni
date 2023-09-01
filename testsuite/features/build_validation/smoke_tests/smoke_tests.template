@@ -57,7 +57,7 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Remove package from <client>
@@ -69,7 +69,7 @@ Feature: Smoke tests for <client>
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Run a remote command on <client> minion
@@ -89,14 +89,14 @@ Feature: Smoke tests for <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I wait until event "Package List Refresh scheduled" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
     When I follow "Details" in the content area
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until event "Hardware List Refresh scheduled" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
     When I follow "Configuration" in the content area
@@ -131,7 +131,7 @@ Feature: Smoke tests for <client>
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "This action's status is: Completed" text
 
 @skip_for_sle_micro
@@ -145,7 +145,7 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Test Prometheus exporter formula on the <client>
@@ -167,7 +167,7 @@ Feature: Smoke tests for <client>
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     # Visit monitoring endpoints on the minion
     When I wait until "node" exporter service is active on "<client>"
     And I visit "Prometheus node exporter" endpoint of this "<client>"

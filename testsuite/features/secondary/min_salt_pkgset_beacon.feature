@@ -15,7 +15,7 @@ Feature: System package list is updated if packages are manually installed or re
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "milkyway-dummy-1.0" installed on "sle_minion"
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: ensure the errata cache is computed before package list tests

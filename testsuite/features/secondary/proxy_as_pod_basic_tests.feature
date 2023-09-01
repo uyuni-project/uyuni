@@ -27,8 +27,8 @@ Feature: Register and test a Containerized Proxy
   As the system administrator
   I want to register the proxy to the server
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: Unregister Salt minion in the traditional proxy
     Given I am on the Systems overview page of this "sle_minion"
@@ -139,7 +139,7 @@ Feature: Register and test a Containerized Proxy
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Run a remote command on Salt minion
     When I follow the left menu "Salt > Remote Commands"
@@ -158,14 +158,14 @@ Feature: Register and test a Containerized Proxy
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I wait until event "Package List Refresh scheduled" is completed
 
   Scenario: Check that Hardware Refresh button works on a Salt minion
     When I follow "Details" in the content area
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until event "Hardware List Refresh scheduled" is completed
 
   Scenario: Create a configuration channel named "Pod Proxy Channel"
     When I follow the left menu "Configuration > Channels"
@@ -217,7 +217,7 @@ Feature: Register and test a Containerized Proxy
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "This action's status is: Completed" text
 
   Scenario: Cleanup: Unregister a Salt minion in the Containerized Proxy

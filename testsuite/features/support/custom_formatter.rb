@@ -1,8 +1,9 @@
 # Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# Extend the Cucumber Pretty Formatter and prepends the feature name on each step
 module CustomFormatter
-  # Extend the Cucumber Pretty Formatter and prepends the feature name on each step
+  # Module that prepends the feature name into the step name
   module PrependsFeatureName
     # A class method that takes a formatter class as an argument.
     def self.formatter(formatter_class)

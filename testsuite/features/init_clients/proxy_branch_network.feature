@@ -189,7 +189,7 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Apply the branch network formulas via the highstate
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
@@ -224,7 +224,7 @@ Feature: Setup Uyuni for Retail branch network
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "proxy"
     And I follow "Details" in the content area
     And I follow "Hardware" in the content area

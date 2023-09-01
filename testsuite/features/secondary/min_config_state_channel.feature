@@ -11,8 +11,8 @@ Feature: Configuration state channels
   In order to configure systems through Salt
   I want to be able to use the state channels
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a state channel
     When I follow the left menu "Configuration > Channels"
@@ -54,7 +54,7 @@ Feature: Configuration state channels
     Then I should see a "Execute States" button
     When I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
-    When I wait until event "Apply states [custom] scheduled by admin" is completed
+    When I wait until event "Apply states [custom] scheduled" is completed
     And I wait until file "/root/foobar" exists on "sle_minion"
 
   Scenario: Try to remove init.sls file

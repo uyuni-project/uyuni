@@ -17,10 +17,6 @@ require 'set'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
 
-## code coverage analysis
-# SimpleCov.start
-
-server = ENV['SERVER']
 if ENV['DEBUG']
   $debug_mode = true
   STDOUT.puts('DEBUG MODE ENABLED.')
@@ -72,45 +68,50 @@ end
 MultiTest.disable_autorun
 
 # register chromedriver headless mode
-Capybara.register_driver(:headless_chrome) do |app|
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-  client.read_timeout = 180
-  # Chrome driver options
-  chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
-  chrome_options << 'headless' unless $debug_mode
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      args: chrome_options,
-      w3c: false,
-      prefs: {
-        download: {
-          prompt_for_download: false,
-          default_directory: '/tmp/downloads'
+def register_driver
+  Capybara.register_driver(:headless_chrome) do |app|
+    client = Selenium::WebDriver::Remote::Http::Default.new
+    # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
+    client.read_timeout = 180
+    # Chrome driver options
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+    chrome_options << 'headless' unless $debug_mode
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: {
+        args: chrome_options,
+        w3c: false,
+        prefs: {
+          download: {
+            prompt_for_download: false,
+            default_directory: '/tmp/downloads'
+          }
         }
-      }
-    },
-    unexpectedAlertBehaviour: 'accept',
-    unhandledPromptBehavior: 'accept'
-  )
+      },
+      unexpectedAlertBehaviour: 'accept',
+      unhandledPromptBehavior: 'accept'
+    )
 
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :chrome,
-    desired_capabilities: capabilities,
-    http_client: client
-  )
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities,
+      http_client: client
+    )
+  end
+
+  Selenium::WebDriver.logger.level = :error unless $debug_mode
+  Capybara.default_driver = :headless_chrome
+  Capybara.javascript_driver = :headless_chrome
+  Capybara.default_normalize_ws = true
+  Capybara.enable_aria_label = true
+  Capybara.automatic_label_click = true
+  Capybara.app_host = "https://#{ENV['SERVER']}"
+  Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
+  STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 end
 
-Selenium::WebDriver.logger.level = :error unless $debug_mode
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
-Capybara.default_normalize_ws = true
-Capybara.enable_aria_label = true
-Capybara.automatic_label_click = true
-Capybara.app_host = "https://#{server}"
-Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
-STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+# register chromedriver headless mode
+register_driver
 
 # enable minitest assertions in steps
 World(MiniTest::Assertions)
@@ -138,9 +139,12 @@ After do |scenario|
       attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
     rescue StandardError => e
       warn e.message
+      register_driver
+      visit Capybara.app_host
     ensure
       print_server_logs
       previous_url = current_url
+      visit Capybara.app_host
       step 'I am authorized for the "Admin" section'
       visit previous_url
     end
@@ -186,9 +190,14 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+  next unless Capybara::Session.instance_created?
+
+  begin
+    if has_css?('.senna-loading', wait: 0)
+      log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    end
+  rescue StandardError
+    next
   end
 end
 
@@ -196,6 +205,22 @@ Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
+end
+
+# Create a user for each feature
+Before do |scenario|
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|\/)})[-2]
+  next if get_context($feature_filename, 'user_created') == true
+
+  # Core features are always handled using admin user, the rest will use its own user based on feature filename
+  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing')
+    $current_user = 'admin'
+    $current_password = 'admin'
+  else
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context($feature_filename, 'user_created', true)
+  end
 end
 
 # do some tests only if the corresponding node exists

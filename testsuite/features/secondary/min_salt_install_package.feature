@@ -14,7 +14,7 @@ Feature: Install a patch on the client via Salt through the UI
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle_minion"
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: ensure the errata cache is computed before patching Salt minion

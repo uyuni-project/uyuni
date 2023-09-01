@@ -7,8 +7,8 @@ Feature: The channels page
   As an authorized user
   I want to see all the texts and links
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Completeness of the channels page
     When I follow the left menu "Software > Channel List > All"

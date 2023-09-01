@@ -76,7 +76,7 @@ Feature: Project Lotus
     And I click on "Install PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove PTF through PTFs tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -87,7 +87,7 @@ Feature: Project Lotus
     And I click on "Remove PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
 
   Scenario: Install PTF through Packages tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -100,7 +100,7 @@ Feature: Project Lotus
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove PTF through Packages tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -113,7 +113,7 @@ Feature: Project Lotus
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: Delete custom channel for PTFs
     When I follow the left menu "Software > Manage > Channels"

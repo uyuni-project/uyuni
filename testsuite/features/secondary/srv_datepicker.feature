@@ -8,7 +8,7 @@ Feature: Pick dates
   I want to be able to easily pick dates
 
   Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+    Given I am authorized
     And I am on the Systems overview page of this "sle_minion"
 
   Scenario: Date picker is by default set to today

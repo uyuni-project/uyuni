@@ -13,8 +13,8 @@ Feature: Management of minion keys
   As an authorized user
   I want to verify all the minion key management features in the UI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle_minion"
@@ -88,3 +88,19 @@ Feature: Management of minion keys
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle_minion"
+
+  Scenario: Cleanup: restore channels on the minion
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I wait until I do not see "Loading..." text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled" is completed

@@ -3,8 +3,8 @@
 
 Feature: Distribution Channel Mapping
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Check if Distribution Channel Mapping page exists
     When I follow the left menu "Software > Distribution Channel Mapping"

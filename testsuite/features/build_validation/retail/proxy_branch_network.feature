@@ -189,14 +189,14 @@ Feature: Prepare the branch server for PXE booting
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Let the server know about the new IP and FQDN of the proxy
     When I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "proxy"
     And I follow "Details" in the content area
     And I follow "Hardware" in the content area

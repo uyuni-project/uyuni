@@ -164,6 +164,23 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+  $current_user = user
+  $current_password = password
+  next if $api_test.user.list_users.to_s.include? user
+
+  $api_test.user.create(user, password, user, user, "#{user}@mail.com")
+  $api_test.user.add_role(user, 'org_admin')
+  $api_test.user.add_role(user, 'channel_admin')
+  $api_test.user.add_role(user, 'config_admin')
+  $api_test.user.add_role(user, 'system_group_admin')
+  $api_test.user.add_role(user, 'activation_key_admin')
+  $api_test.user.add_role(user, 'image_admin')
+  add_context($feature_filename, 'user', user)
+  add_context($feature_filename, 'password', 'linux')
+  STDOUT.puts "New user #{user} created"
+end
+
 When(/^I click on preview$/) do
   find('button#preview').click
 end

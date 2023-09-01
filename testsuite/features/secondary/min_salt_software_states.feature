@@ -17,8 +17,8 @@ Feature: Salt package states
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "milkyway-dummy-1.0 virgo-dummy-1.0 andromeda-dummy-1.0" installed on "sle_minion"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: ensure the errata cache is computed before software states tests
     Given I am on the Systems overview page of this "sle_minion"

@@ -4,8 +4,8 @@
 @scope_configuration_channels
 Feature: Clone a channel
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Clone a channel without patches
     When I follow the left menu "Software > Manage > Channels"

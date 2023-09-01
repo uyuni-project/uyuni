@@ -6,6 +6,9 @@
 @scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states
 
+  Scenario: Log in as org admin user
+    Given I am authorized
+
   Scenario: Apply configuration salt state to server
     When I manually install the "uyuni-config" formula on the server
     And I apply "setup_users_configuration" local salt state on "server"

@@ -6,8 +6,8 @@ Feature: Verify the minion registration
   In order to validate the completeness of minion registration
   I want to see minion details and installed packages
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Check the Salt entitlement
     Given I am on the Systems overview page of this "sle_minion"
@@ -23,7 +23,7 @@ Feature: Verify the minion registration
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Check that Update Properties button works

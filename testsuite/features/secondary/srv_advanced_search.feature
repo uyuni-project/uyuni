@@ -8,8 +8,8 @@ Feature: Advanced Search
   As an authorized user
   I want to be able to search for specific systems according to location or other characteristics
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: No search results - inverse results
     Given I clean the search index on the server

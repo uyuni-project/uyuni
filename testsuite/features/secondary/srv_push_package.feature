@@ -6,8 +6,8 @@ Feature: Push a package with unset vendor
   As an authorized user
   I want to push a package with unset vendor
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Push a package with unset vendor
     When I copy unset package file on server

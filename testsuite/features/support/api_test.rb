@@ -36,7 +36,6 @@ class ApiTest
     @user = NamespaceUser.new(self)
     @connection = nil
     @token = nil
-    @semaphore = Mutex.new
   end
 
   attr_reader :actionchain
@@ -60,17 +59,21 @@ class ApiTest
   #   name: The name of the method you want to call.
   #   *params: The parameters to pass to the API call.
   def call(name, *params)
-    thread =
-      Thread.new do
-        @semaphore.synchronize do
-          @token = @connection.call('auth.login', login: 'admin', password: 'admin')
-          params[0][:sessionKey] = @token
-          response = @connection.call(name, *params)
-          @connection.call('auth.logout', sessionKey: @token)
-          response
-        end
+    if name.include? 'user.'
+      repeat_until_timeout(timeout: 10, message: 'We couldn\'t get access to the API') do
+        break unless api_lock?
+
+        sleep 1
       end
-    thread.value
+      @token = @connection.call('auth.login', login: 'admin', password: 'admin')
+    else
+      @token = @connection.call('auth.login', login: $current_user, password: $current_password)
+    end
+    params[0][:sessionKey] = @token
+    response = @connection.call(name, *params)
+    @connection.call('auth.logout', sessionKey: @token)
+    api_unlock if name.include? 'user.'
+    response
   end
 end
 

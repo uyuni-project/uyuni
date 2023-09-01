@@ -14,9 +14,6 @@ Feature: Reconfigure the server's hostname
   In order to change the server's hostname
   I want to use the tool spacewalk-hostname-rename.
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
   Scenario: Change hostname and reboot server
     When I change the server's short hostname from hosts and hostname files
     And I reboot the server through SSH

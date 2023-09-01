@@ -41,7 +41,7 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     When I follow "Events"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [manager_org_1.statechannel-recurring] scheduled by admin" completed during last minute, refreshing the page
+    Then I wait until I see the event "Apply recurring states [manager_org_1.statechannel-recurring] scheduled" completed during last minute, refreshing the page
     And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "1" on "sle_minion"
 
   Scenario: Edit the IP forwarding custom state recurring action
@@ -63,8 +63,8 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     When I follow "Events"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [util.syncstates] scheduled by admin" completed during last minute, refreshing the page
-    And I follow the event "Apply recurring states [util.syncstates] scheduled by admin" completed during last minute
+    Then I wait until I see the event "Apply recurring states [util.syncstates] scheduled" completed during last minute, refreshing the page
+    And I follow the event "Apply recurring states [util.syncstates] scheduled" completed during last minute
     And I should see a "SLS: util.syncstates" text
 
   Scenario: Cleanup: Disable IP forwarding
@@ -102,7 +102,7 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     When I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply highstate in test-mode scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply highstate in test-mode scheduled" completed during last minute, refreshing the page
 
   Scenario: Edit the minion Highstate Recurring Action
     When I am on the "Recurring Actions" page of this "sle_minion"
@@ -162,7 +162,7 @@ Feature: Recurring Actions
     And I should see a "Group" text
     When I am on the "Events" page of this "sle_minion"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [uptodate] scheduled by admin" completed during last minute, refreshing the page
+    Then I wait until I see the event "Apply recurring states [uptodate] scheduled" completed during last minute, refreshing the page
 
   Scenario: Edit the group Recurring Action
     When I follow the left menu "Systems > System Groups"
@@ -213,7 +213,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
     When I am on the "Events" page of this "sle_minion"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [packages.profileupdate] scheduled by admin" completed during last minute, refreshing the page
+    Then I wait until I see the event "Apply recurring states [packages.profileupdate] scheduled" completed during last minute, refreshing the page
 
   Scenario: Edit the yourorg Recurring Action
     When I follow the left menu "Home > My Organization > Recurring Actions"
@@ -271,7 +271,7 @@ Feature: Recurring Actions
     And I should see a "Organization" text
     When I am on the "Events" page of this "sle_minion"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [hardware.profileupdate] scheduled by admin" completed during last minute, refreshing the page
+    Then I wait until I see the event "Apply recurring states [hardware.profileupdate] scheduled" completed during last minute, refreshing the page
 
   Scenario: Edit the admin org Recurring Action
     When I follow the left menu "Admin > Organizations"
@@ -353,7 +353,7 @@ Feature: Recurring Actions
     And I follow "Delete Group"
     And I click on "Confirm Deletion"
     Then I should see a "Your organization has no system groups." text
-    
+
   Scenario: Cleanup: Remove "My State Channel for Recurring Actions" config channel
     When I follow the left menu "Configuration > Channels"
     And I follow "My State Channel for Recurring Actions"

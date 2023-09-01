@@ -9,8 +9,8 @@ Feature: Bootstrapping with reactivation key
   As an authorized user
   I want to avoid re-registration with invalid input parameters
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Generate a re-activation key
     Given I am on the Systems overview page of this "sle_minion"
@@ -63,7 +63,7 @@ Feature: Bootstrapping with reactivation key
     When I follow "Events" in the content area
     And I follow "History" in the content area
     And I wait until I see "Server reactivated as Salt minion" text, refreshing the page
-    And I wait until event "Apply states [certs, channels, packages, services.salt-minion] scheduled by admin" is completed
+    And I wait until event "Apply states [certs, channels, packages, services.salt-minion] scheduled" is completed
 
   Scenario: Cleanup: delete SLES minion after reactivation tests
     Given I am on the Systems overview page of this "sle_minion"

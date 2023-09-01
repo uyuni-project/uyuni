@@ -9,8 +9,8 @@ Feature: Negative tests for bootstrapping normal minions
   As an authorized user
   I want to avoid registration with invalid input parameters
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Bootstrap should fail when minion already exists
     When I follow the left menu "Systems > Bootstrapping"
@@ -71,3 +71,29 @@ Feature: Negative tests for bootstrapping normal minions
     Then I should see a "Standard Error" text
     And I should see "port 11: Connection refused" or "port 11: Invalid argument" in the textarea
     When I close the modal dialog
+
+  Scenario: Cleanup: bootstrap a SLES minion after negative tests
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select the hostname of "proxy" from "proxies" if present
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see the name of "sle_minion", refreshing the page
+
+  Scenario: Cleanup: subscribe again to base channel after negative tests
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test-Channel-x86_64"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled" is completed

@@ -62,7 +62,7 @@ Feature: Bootstrap the monitoring server
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     # Visit monitoring endpoints on the minion
     When I wait until "prometheus" service is active on "monitoring_server"
     And I visit "Prometheus" endpoint of this "monitoring_server"
@@ -80,7 +80,7 @@ Feature: Bootstrap the monitoring server
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     # Visit monitoring endpoints on the minion
     When I wait until "grafana-server" service is active on "monitoring_server"
     And I visit "Grafana" endpoint of this "monitoring_server"

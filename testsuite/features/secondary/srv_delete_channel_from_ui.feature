@@ -15,8 +15,8 @@ Feature: Delete channels with child or clone is not allowed
   Using the UI, we cannot delete a channel if it has a child
   or a clone created from it
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Clone the first channel before deletion from UI test
     When I follow the left menu "Software > Manage > Channels"

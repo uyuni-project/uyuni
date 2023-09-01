@@ -11,8 +11,8 @@
 @rhlike_minion
 Feature: Maintenance windows
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
@@ -100,7 +100,7 @@ Feature: Maintenance windows
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I wait until event "Package List Refresh scheduled" is completed
 
   Scenario: Schedule package installation action
     Given I am on the Systems overview page of this "rhlike_minion"
