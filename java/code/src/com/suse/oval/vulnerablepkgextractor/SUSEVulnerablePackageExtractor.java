@@ -50,6 +50,9 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
     private final OVALLookupHelper ovalLookupHelper;
 
+    /**
+     *
+     * */
     public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinitionIn,
                                           OVALLookupHelper ovalLookupHelperIn) {
         super(vulnerabilityDefinitionIn);
@@ -160,15 +163,13 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             return false;
         }
 
-        String osProduct = definition.getOsFamily().fullname();
-
         // Making sure that the product criterions contain indeed product names
         return productCriterions.stream()
                 .map(CriterionType::getComment)
-                .anyMatch(comment -> comment.startsWith(osProduct));
+                .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise"));
     }
 
-    public Cpe deriveCpe(TestType productTest) {
+    private Cpe deriveCpe(TestType productTest) {
         OsFamily osProduct = definition.getOsFamily();
         if (osProduct == OsFamily.openSUSE_LEAP) {
             return deriveOpenSUSELeapCpe();
@@ -178,7 +179,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         }
     }
 
-    public Cpe deriveOpenSUSELeapCpe() {
+    private Cpe deriveOpenSUSELeapCpe() {
         return new CpeBuilder()
                 .withVendor("opensuse")
                 .withProduct("leap")
@@ -186,7 +187,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .build();
     }
 
-    public Cpe deriveSUSEProductCpe(TestType productTest) {
+    private Cpe deriveSUSEProductCpe(TestType productTest) {
         String testComment = productTest.getComment();
         String productPart = null;
         String versionPart = null;
