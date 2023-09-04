@@ -1,0 +1,1 @@
+- fix X-Instance-Identifier header when doing a product refresh at Cloud RMT Server (bsc#1214889)
