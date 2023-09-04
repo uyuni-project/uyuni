@@ -19,4 +19,14 @@
               AND platVulnerablePkg.vulnerable_pkg_id = vulnerablePkg.id;
         </query>
     </mode>
+
+    <mode name="can_audit_cve">
+        <query params="cve_name">
+            SELECT 1
+            FROM suseOVALPlatformVulnerablePackage platVul,
+                 rhncve cve
+            WHERE platVul.cve_id = cve.id
+              AND cve.name = :cve_name;
+        </query>
+    </mode>
 </datasource_modes>
