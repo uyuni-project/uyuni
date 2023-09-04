@@ -25,7 +25,9 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 import static com.redhat.rhn.testing.ErrataTestUtils.extractAndSaveVulnerablePackages;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -39,6 +41,7 @@ import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.RankedChannel;
+import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -49,6 +52,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -459,6 +464,35 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
         assertEquals(PatchStatus.PATCHED, systemAuditResult.getPatchStatus());
+    }
+
+    @Test
+    public void testListSystemsByPatchStatusUnknownCVE() {
+        String unknownCVE = TestUtils.randomString().substring(0, 13);
+        // Although we add the CVE to rhnCve, the exception should be still thrown because the CVE is not linked to any
+        // OVAL vulnerability in the database .i.e. not present in suseOVALPlatformVulnerablePackage
+        createTestCve(unknownCVE);
+
+        User user = createTestUser();
+
+        assertThrows(UnknownCVEIdentifierException.class,
+                () -> CVEAuditManagerOVAL.listSystemsByPatchStatus(user, unknownCVE,
+                        EnumSet.allOf(PatchStatus.class)));
+    }
+
+    @Test
+    public void testListSystemsByPatchStatusKnownCVE() throws IOException, ClassNotFoundException {
+        User user = createTestUser();
+
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        Cve knownCve = createTestCve("CVE-2022-2991");
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        assertDoesNotThrow(() -> CVEAuditManagerOVAL.listSystemsByPatchStatus(user, knownCve.getName(),
+                EnumSet.allOf(PatchStatus.class)));
     }
 
     /**
