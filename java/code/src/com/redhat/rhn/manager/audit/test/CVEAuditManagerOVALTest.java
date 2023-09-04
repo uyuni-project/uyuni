@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO: Test for AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT
 // TODO: Test that if we get AFFECTED_PATCH_INAPPLICABLE auditServer.Channels and auditServer.Erratas are not null
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVALTest.class);
@@ -370,8 +369,53 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     }
 
     @Test
-    void testDoAuditSystemAffectedPatchInapplicableSuccessorChannel() {
+    void testDoAuditSystemAffectedPatchInapplicableSuccessorProduct() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user);
+
+        // This channel is not assigned to server
+        Channel otherChannel = createTestChannel(user, errata);
+        Set<Channel> assignedChannels = Set.of(channel);
+        Server server = createTestServer(user, assignedChannels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        Package unpatched = createTestPackage(user, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
+
+        // Patch exists in an unassigned channel
+        createTestPackage(user, errata, otherChannel, "noarch",
+                "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(unpatched, server);
+
+        CVEAuditManager.populateCVEChannels();
+        // We set the rank to SUCCESSOR_PRODUCT_RANK_BOUNDARY in order to imply that it's a successor product
+        // migration channel
+        RankedChannel otherChannelRanked = new RankedChannel(otherChannel.getId(), CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY);
+        // We don't have to care about the internals of populateCVEChannels and weather it will assign otherChannel as
+        // a relevant channel to server; we add it ourselves.
+        Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
+        relevantChannels.put(server, List.of(otherChannelRanked));
+        CVEAuditManager.insertRelevantServerChannels(relevantChannels);
+        HibernateFactory.getSession().flush();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT, systemAuditResult.getPatchStatus());
     }
 
     /**
