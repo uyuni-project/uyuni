@@ -134,11 +134,9 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         extractAndSaveVulnerablePackages(ovalRoot);
 
-        Set<Cve> cves = Set.of(cve);
         User user = createTestUser();
 
-        Errata errata = createTestErrata(user, cves);
-        Channel channel = createTestChannel(user, errata);
+        Channel channel = createTestChannel(user);
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
@@ -146,10 +144,10 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         Package unpatched = createTestPackage(user, channel, "noarch");
         unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
-        Package patched = createLaterTestPackage(user, errata, channel, unpatched,
+        Package patched = createLaterTestPackage(user, null, channel, unpatched,
                 "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(createLeap15_4_Package(user, null, channel), server);
         createTestInstalledPackage(patched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -369,6 +367,54 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
         assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, systemAuditResult.getPatchStatus());
+    }
+
+    @Test
+    void testDoAuditSystemAffectedPatchInapplicableSuccessorChannel() {
+
+    }
+
+    /**
+     * Verify that bnc#833783 is fixed:
+     * Test that irrelevant packages do not alter a system's PATCHED status
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testDoAuditSystemPatchedWithIrrelevantErrata() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = Set.of(channel);
+
+        Server server = createTestServer(user, channels);
+        server.setCpe("cpe:/o:opensuse:leap:15.4");
+
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
+        Package patched = createLaterTestPackage(user, errata, channel, unpatched,
+                "0", "4.12.14", "150100.197.137.2");
+
+        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
+        createTestInstalledPackage(patched, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.PATCHED, systemAuditResult.getPatchStatus());
     }
 
     /**
