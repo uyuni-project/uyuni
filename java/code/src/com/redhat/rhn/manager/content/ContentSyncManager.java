@@ -73,7 +73,6 @@ import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.UpgradePathJson;
 import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
@@ -130,12 +129,9 @@ public class ContentSyncManager {
      * repos that are served directly from NCC instead of SCC.
      */
     public static final String OES_CHANNEL_FAMILY = "OES2";
-    private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
-            "OES11-SP2-Pool/sle-11-x86_64/";
+    private static final String OES_URL = "https://nu.novell.com/repo/$RCE/OES2023-Pool/sle-15-x86_64/";
 
     // Static JSON files we parse
-    private static File upgradePathsJson = new File(
-            "/usr/share/susemanager/scc/upgrade_paths.json");
     private static File channelFamiliesJson = new File(
             "/usr/share/susemanager/scc/channel_families.json");
     private static File additionalProductsJson = new File(
@@ -177,14 +173,6 @@ public class ContentSyncManager {
         if (paygMgrIn != null) {
             cloudPaygManager = paygMgrIn;
         }
-    }
-
-    /**
-     * Set the upgrade_paths.json {@link File} to read from.
-     * @param file the upgrade_paths.json file
-     */
-    public void setUpgradePathsJson(File file) {
-        upgradePathsJson = file;
     }
 
     /**
@@ -232,29 +220,6 @@ public class ContentSyncManager {
                     channelFamiliesJson.getAbsolutePath());
         }
         return channelFamilies;
-    }
-
-    /**
-     * Read the upgrade_paths.xml file.
-     *
-     * @return List of upgrade paths
-     * @throws ContentSyncException in case of an error
-     */
-    public List<UpgradePathJson> readUpgradePaths() throws ContentSyncException {
-        Gson gson = new GsonBuilder().create();
-        List<UpgradePathJson> upPaths = new ArrayList<>();
-        try {
-            upPaths = gson.fromJson(new BufferedReader(new InputStreamReader(
-                    new FileInputStream(upgradePathsJson))),
-                    SCCClientUtils.toListType(UpgradePathJson.class));
-        }
-        catch (Exception e) {
-            throw new ContentSyncException(e);
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Read {} upgrade paths from {}", upPaths.size(), upgradePathsJson.getAbsolutePath());
-        }
-        return upPaths;
     }
 
     /**
@@ -364,28 +329,6 @@ public class ContentSyncManager {
         return repos;
     }
 
-    /**
-     * temporary fix to mitigate a duplicate id
-     * @param products broken list of products
-     * @return fixed lst of products
-     */
-    public static List<SCCProductJson> fixAdditionalProducts(List<SCCProductJson> products) {
-        return products.stream().map(p -> {
-            if (p.getId() == -7) {
-                p.getRepositories().forEach(r -> {
-                    if (r.getSCCId() == -81) {
-                        r.setSCCId(-83L);
-                    }
-                });
-                return p;
-            }
-            else {
-                return p;
-            }
-        })
-        .collect(Collectors.toList());
-    }
-
     /*
      * Return static list or OES products
      */
@@ -400,7 +343,7 @@ public class ContentSyncManager {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
-        return fixAdditionalProducts(additionalProducts);
+        return additionalProducts;
     }
 
     /**
@@ -804,20 +747,6 @@ public class ContentSyncManager {
      */
     public void refreshRepositoriesAuthentication(
             Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl) {
-        refreshRepositoriesAuthentication(repositories, c, mirrorUrl, true);
-    }
-
-    /**
-     * Update authentication for all repos of the given credential.
-     * Removes authentication if they have expired
-     *
-     * @param repositories the new repositories
-     * @param c the credentials
-     * @param mirrorUrl optional mirror url
-     * @param withFix if fix for duplicate id -81 should be applied or not
-     */
-    public void refreshRepositoriesAuthentication(
-            Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl, boolean withFix) {
         List<Long> repoIdsFromCredential = new LinkedList<>();
         List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
                 .map(SCCRepository::getSccId)
@@ -983,39 +912,6 @@ public class ContentSyncManager {
                 .filter(repoAuth -> repoAuth.cloudRmtAuth().isEmpty()) // rmtAuth is handled elsewhere
                 .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
                 .forEach(SCCCachingFactory::deleteRepositoryAuth);
-
-        if (withFix) {
-            SUSEProductFactory.lookupPSRByChannelLabel("rhel6-pool-i386").stream().findFirst()
-                    .ifPresent(rhel6 -> SUSEProductFactory.lookupPSRByChannelLabel("rhel7-pool-x86_64").stream()
-                    .findFirst().ifPresent(rhel7 -> {
-                SCCRepository repository6 = rhel6.getRepository();
-                SCCRepository repository7 = rhel7.getRepository();
-                repository6.setDistroTarget("i386");
-                // content source value in susesccrepositoryauth
-                repository6.getBestAuth().ifPresent(auth -> {
-                    Channel channel7 = ChannelFactory.lookupByLabel(rhel7.getChannelLabel());
-                    Channel channel6 = ChannelFactory.lookupByLabel(rhel6.getChannelLabel());
-                    if (channel6 != null && channel7 != null) {
-                        repository7.getRepositoryAuth().forEach(ra -> {
-                            ra.setContentSource(auth.getContentSource());
-                            SCCCachingFactory.saveRepositoryAuth(ra);
-                        });
-                    }
-                    else if (channel6 == null && channel7 != null) {
-                        repository7.getRepositoryAuth().forEach(ra -> {
-                            ra.setContentSource(auth.getContentSource());
-                            SCCCachingFactory.saveRepositoryAuth(ra);
-                        });
-                        repository6.getRepositoryAuth().forEach(ra -> {
-                            ra.setContentSource(null);
-                            SCCCachingFactory.saveRepositoryAuth(ra);
-                        });
-                    }
-                });
-                SCCCachingFactory.saveRepository(repository6);
-                SCCCachingFactory.saveRepository(repository7);
-            }));
-        }
     }
 
     private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
@@ -1621,40 +1517,6 @@ public class ContentSyncManager {
         return loadStaticTree(tag);
     }
 
-    /**
-     * temporary fix to mitigate a duplicate id
-     * @param tree broken product tree
-     * @return fixed product tree
-     */
-    public List<ProductTreeEntry> productTreeFix(List<ProductTreeEntry> tree) {
-        Stream<ProductTreeEntry> productTreeEntries = tree.stream().map(e -> {
-            if (e.getProductId() == -7 && e.getRepositoryId() == -81) {
-                return new ProductTreeEntry(
-                        e.getChannelLabel(),
-                        e.getParentChannelLabel(),
-                        e.getChannelName(),
-                        e.getProductId(),
-                        -83,
-                        e.getParentProductId(),
-                        e.getRootProductId(),
-                        e.getUpdateTag(),
-                        e.isSigned(),
-                        e.isMandatory(),
-                        e.isRecommended(),
-                        e.getUrl(),
-                        e.getReleaseStage(),
-                        e.getProductType(),
-                        e.getTags(),
-                        e.getGpgInfo()
-                );
-            }
-            else {
-                return e;
-            }
-        });
-        return productTreeEntries.collect(Collectors.toList());
-    }
-
     /*
      * load the static tree from file
      */
@@ -1690,9 +1552,9 @@ public class ContentSyncManager {
                     productEntry.getParentChannelLabel().filter(label -> label.contains("amd64")).isPresent());
             }
         }
-        return productTreeFix(
-            tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag)).collect(Collectors.toList())
-        );
+        return tree.stream()
+                .filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -2016,21 +1878,19 @@ public class ContentSyncManager {
                         products.stream(),
                         getAdditionalProducts().stream()
                 ).collect(Collectors.toList()),
-                readUpgradePaths(), loadStaticTree(),
-                getAdditionalRepositories());
+                loadStaticTree(), getAdditionalRepositories());
     }
 
     /**
      * Creates or updates entries in the SUSEProducts database table with a given list of
      * {@link SCCProductJson} objects.
      *
-     * @param products list of products
-     * @param upgradePathJsons list of available upgrade path
-     * @param staticTree suse product tree with fixes and additional data
+     * @param products        list of products
+     * @param staticTree      suse product tree with fixes and additional data
      * @param additionalRepos list of additional static repos
      */
-    public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
-                                   List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
+    public void updateSUSEProducts(List<SCCProductJson> products, List<ProductTreeEntry> staticTree,
+                                   List<SCCRepositoryJson> additionalRepos) {
         LOG.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
@@ -2058,7 +1918,7 @@ public class ContentSyncManager {
 
         SUSEProductFactory.removeAllExcept(processed.values());
 
-        updateUpgradePaths(products, upgradePathJsons);
+        updateUpgradePaths(products);
         HibernateFactory.getSession().flush();
         LOG.info("ContentSyncManager.updateSUSEProducts finished");
     }
@@ -2181,22 +2041,18 @@ public class ContentSyncManager {
     }
 
     /**
-     * Recreate contents of the suseUpgradePaths table with values from upgrade_paths.json
-     * and predecessor_ids from SCC
+     * Recreate contents of the suseUpgradePaths table predecessor_ids from SCC
      *
      * @param products Collection of SCC Products
-     * @param upgradePathJsons list of static upgrade paths
      */
-    public void updateUpgradePaths(Collection<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons) {
+    public void updateUpgradePaths(Collection<SCCProductJson> products) {
         List<SUSEProduct> allSUSEProducts = SUSEProductFactory.findAllSUSEProducts();
         Map<Long, SUSEProduct> productsById = allSUSEProducts
                 .stream().collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
-        Map<Long, Set<Long>> newPaths = Stream.concat(
-                upgradePathJsons.stream().map(u -> new Tuple2<>(u.getFromProductId(), u.getToProductId())),
-                products.stream()
-                        .flatMap(p -> p.getOnlinePredecessorIds().stream().map(pre -> new Tuple2<>(pre, p.getId())))
-        ).collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
+        Map<Long, Set<Long>> newPaths = products.stream()
+                    .flatMap(p -> p.getOnlinePredecessorIds().stream().map(pre -> new Tuple2<>(pre, p.getId())))
+                    .collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
 
         allSUSEProducts.forEach(p -> {
             Set<SUSEProduct> successors = newPaths.getOrDefault(p.getProductId(), Collections.emptySet()).stream()

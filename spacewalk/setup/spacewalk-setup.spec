@@ -95,7 +95,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-Requires:       tomcat
+Requires(post): tomcat
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
@@ -191,13 +191,7 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ -f /etc/rhn/rhn.conf -a $(filesize /etc/rhn/rhn.conf) -gt 1 ]; then
-    # rhn.conf is configured, this is an upgrade
-    # during upgrade, setup new connectionTimeout if the user didn't change it. Keeping it until SUMA 4.2 is maintained
-    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
-    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
-    xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
-else
+if [ ! -f /etc/rhn/rhn.conf -o $(filesize /etc/rhn/rhn.conf) -eq 0 ]; then
     # rhn.conf does not exists or is empty, this is new installation or update of new installation
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
@@ -212,52 +206,6 @@ fi
 if [ -d /var/cache/salt/master/thin ]; then
   # clean the thin cache
   rm -rf /var/cache/salt/master/thin
-fi
-
-if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
-    sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
-fi
-
-# When upgrading to Cobbler 3.3.3, the old /etc/cobbler/settings config file from previous Cobbler version
-# is removed as it not existing anymore in the new version, but a copy is kept with the local changes done
-# at /etc/cobbler/settings.rpmsave. If this file exists, it means we need to perform the migration of these
-# settings and also trigger the migration of stored Cobbler collections.
-if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
-    cp /etc/cobbler/settings.rpmsave /etc/cobbler/settings
-    echo "* Creating a backup from old Cobbler settings to /etc/cobbler/settings.before-migration-backup before migrating settings"
-    cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
-    echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
-    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
-    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
-    touch /var/lib/cobbler/v2_migration_done
-    cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml || exit 1
-    echo "* Disabling Cobbler settings automigration"
-    cobbler-settings automigrate -d || exit 1
-    echo "* Change group to Apache for /etc/cobbler/settings.yaml file"
-    chgrp %{apache_group} /etc/cobbler/settings.yaml
-    echo "* Readjust settings needed for spacewalk"
-    spacewalk-setup-cobbler || exit 1
-    echo "* Done"
-    # At this point, the migration finished successfully, so we can remove
-    # the old /etc/cobbler/settings.rpmsave to prevent migration to run again.
-    rm /etc/cobbler/settings.rpmsave
-fi
-
-# Migration to Cobbler 3.3.3 already performed but not the migration of Cobbler v2 collections to v3
-if [ ! -f /etc/cobbler/settings.rpmsave -a -f /etc/cobbler/settings.before-migration-backup -a ! -f /var/lib/cobbler/v2_migration_done ]; then
-    echo "* Migrating old stored Cobbler version 2 collections"
-    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
-    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
-    cobbler-settings -c /etc/cobbler/settings.before-migration-backup migrate || exit 1
-    touch /var/lib/cobbler/v2_migration_done
-fi
-
-# Wrong execution of v2 script happened, so we fix autoinstall attribute of collections.
-if test -f /var/lib/cobbler/v2_migration_done && ! grep -q autoinstall_fixed /var/lib/cobbler/v2_migration_done; then
-    echo "* Check and fix autoinstall attributes from Cobbler collections"
-    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
-    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --only-fix-autoinstall || exit 1
-    echo "autoinstall_fixed" >> /var/lib/cobbler/v2_migration_done
 fi
 
 exit 0

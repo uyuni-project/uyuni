@@ -80,20 +80,15 @@ def _get_suse_cloud_info():
 
 
 def _get_instance_identification():
-    path = next((p for p in map(lambda f: Path(f), ["/etc/os-release", "/usr/lib/os-release"]) if p.exists()), None)
-    if path is None:
-        return []
+    product_xml = ET.parse("/etc/products.d/baseproduct")
+    if product_xml.find("./vendor").text == 'SUSE':
+        return {
+            "X-Instance-Identifier": product_xml.find("./name").text,
+            "X-Instance-Version": product_xml.find("./version").text,
+            "X-Instance-Arch": product_xml.find("./arch").text
+        }
 
-    with open(path) as stream:
-        reader = csv.reader(stream, delimiter="=")
-        os_release = dict(reader)
-
-    return {
-        "X-Instance-Identifier": os_release["NAME"],
-        "X-Instance-Version": os_release["VERSION_ID"],
-        "X-Instance-Arch": platform.machine()
-    }
-
+    return {}
 
 
 def _extract_http_auth(credentials):

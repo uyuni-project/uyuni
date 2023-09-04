@@ -264,16 +264,6 @@ Requires:       %{name}-server = %{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
-%package cdn
-Summary:        CDN tools
-Group:          System/Management
-Requires:       %{m2crypto}
-Requires:       %{name}-server = %{version}-%{release}
-Requires:       subscription-manager
-
-%description cdn
-Tools for syncing content from Red Hat CDN
-
 %prep
 %setup -q
 
@@ -661,7 +651,6 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
-%attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
 %attr(755,root,root) %{_bindir}/satellite-sync
@@ -695,7 +684,6 @@ fi
 %{python3rhnroot}/satellite_tools/satComputePkgHeaders.py*
 %{python3rhnroot}/satellite_tools/syncCache.py*
 %{python3rhnroot}/satellite_tools/sync_handlers.py*
-%{python3rhnroot}/satellite_tools/rhn_satellite_activate.py*
 %{python3rhnroot}/satellite_tools/rhn_ssl_dbstore.py*
 %{python3rhnroot}/satellite_tools/xmlWireSource.py*
 %{python3rhnroot}/satellite_tools/updatePackages.py*
@@ -734,7 +722,6 @@ fi
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
-%{_mandir}/man8/rhn-satellite-activate.8*
 %{_mandir}/man8/rhn-schema-version.8*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
@@ -779,17 +766,5 @@ fi
 %{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
 %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{python3rhnroot}/satellite_tools/exporter/__pycache__/*
-
-%files cdn
-%defattr(-,root,root)
-%attr(755,root,root) %{_bindir}/cdn-sync
-%dir %{python3rhnroot}/cdn_tools
-%{python3rhnroot}/cdn_tools/*.py*
-%attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
-%{_mandir}/man8/cdn-sync.8*
-%dir %{python3rhnroot}/cdn_tools
-%dir %{python3rhnroot}/cdn_tools/__pycache__/
-%{python3rhnroot}/cdn_tools/__pycache__/*
 
 %changelog

@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 
 Name:           spacewalk-proxy
@@ -40,6 +41,7 @@ BuildRequires:  spacewalk-backend >= 1.7.24
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
 %define rhnconf %{_sysconfdir}/rhn
+%define python3rhnroot %{python3_sitelib}/spacewalk
 %if 0%{?suse_version}
 %define httpdconf %{_sysconfdir}/apache2/conf.d
 %define apache_user wwwrun
@@ -258,7 +260,7 @@ fi
 # In case of an upgrade, get the configured package list directory and clear it
 # out.  Don't worry; it will be rebuilt by the proxy.
 
-RHN_CONFIG_PY=%{rhnroot}/common/rhnConfig.py
+RHN_CONFIG_PY=%{python3rhnroot}/common/rhnConfig.py
 RHN_PKG_DIR=%{_var}/spool/rhn-proxy
 
 if [ -f $RHN_CONFIG_PY ] ; then
@@ -266,9 +268,9 @@ if [ -f $RHN_CONFIG_PY ] ; then
     # Check whether the config command supports the ability to retrieve a
     # config variable arbitrarily.  Versions of  < 4.0.6 (rhn) did not.
 
-    %{python3} $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
-    if [ $? -eq 1 ] ; then
-        RHN_PKG_DIR=$(%{python3} $RHN_CONFIG_PY get proxy.broker pkg_dir)
+    CFG_RHN_PKG_DIR=$(%{__python3} $RHN_CONFIG_PY get proxy.broker pkg_dir)
+    if [ -n "$CFG_RHN_PKG_DIR" -a $CFG_RHN_PKG_DIR != "None" ]; then
+        RHN_PKG_DIR=$CFG_RHN_PKG_DIR
     fi
 fi
 
@@ -284,26 +286,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
-sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
-
-# In case of an update, remove superfluous stuff
-# from cobbler-proxy.conf (bnc#796581)
-
-PROXY_CONF=/etc/apache2/conf.d/cobbler-proxy.conf
-TMPFILE=`mktemp`
-
-if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
-    grep -v "^ProxyPass /ks " $PROXY_CONF | \
-    grep -v "^ProxyPassReverse /ks " | \
-    grep -v "^ProxyPass /download " | \
-    grep -v "^ProxyPassReverse /download " > $TMPFILE
-    mv $TMPFILE $PROXY_CONF
-fi
-
-SSHUSER=mgrsshtunnel
-if getent passwd $SSHUSER | grep ":/home/$SSHUSER:" > /dev/null ; then
-  usermod -m -d %{_var}/lib/spacewalk/$SSHUSER $SSHUSER
-fi
 %endif
 
 %post redirect

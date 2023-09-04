@@ -1,0 +1,2 @@
+- drop obsolete upgrade_paths.json
+- drop unused product_tree.json as it is only used from online resource

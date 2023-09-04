@@ -40,9 +40,6 @@ Requires:       postgresql-contrib >= 12
 Requires:       postgresql-server > 12
 %endif
 Requires:       lsof
-Requires:       spacewalk-dobby
-Requires:       perl(DBD::Pg)
-Obsoletes:      spacewalk-setup-embedded-postgresql
 
 %description
 Script, which will setup PostgreSQL database for Spacewalk.

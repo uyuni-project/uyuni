@@ -13,12 +13,24 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+@susemanager
   Scenario: Add a child channel for Rocky 8 DVD repositories
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Custom Channel for Rocky 8 DVD" as "Channel Name"
     And I enter "rocky-8-iso" as "Channel Label"
     And I select "RHEL8-Pool for x86_64" from "Parent Channel"
+    And I enter "Custom channel" as "Channel Summary"
+    And I click on "Create Channel"
+    Then I should see a "Channel Custom Channel for Rocky 8 DVD created" text
+
+@uyuni
+  Scenario: Add a child channel for Rocky 8 DVD repositories
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Create Channel"
+    And I enter "Custom Channel for Rocky 8 DVD" as "Channel Name"
+    And I enter "rocky-8-iso" as "Channel Label"
+    And I select "Rocky Linux 8 (x86_64)" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for Rocky 8 DVD created" text
@@ -66,6 +78,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "ruby-2.7" text
     And I should see a "python-3.6" text
 
+@susemanager
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 8
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
@@ -78,6 +91,39 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"
+    And I check "Custom Channel for rocky8_minion"
+    And I click on "Save"
+    Then I should see a "Custom Channel for Rocky 8 DVD" text
+    When I click on "Attach/Detach Filters"
+    And I check "python-3.6: enable module python36:3.6"
+    And I check "ruby-2.7: enable module ruby:2.7"
+    And I click on "Save"
+    Then I should see a "python-3.6: enable module python36:3.6" text
+    When I click on "Add Environment"
+    And I enter "result" as "name"
+    And I enter "result" as "label"
+    And I enter "Filtered channels without AppStream channels" as "description"
+    And I click on "Save"
+    Then I should see a "not built" text
+    When I click on "Build"
+    And I enter "Initial build" as "message"
+    And I click the environment build button
+    Then I should see a "Version 1: Initial build" text
+
+@uyuni
+  Scenario: Create a CLM project to remove AppStream metadata from Rocky 8
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "Create Project"
+    And I enter "Remove AppStream metadata from Rocky 8" as "name"
+    And I enter "no-appstream-8" as "label"
+    And I click on "Create"
+    Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
+    When I click on "Attach/Detach Sources"
+    And I wait until I do not see "Loading" text
+    And I select "Rocky Linux 8 (x86_64)" from "selectedBaseChannel"
+    And I check "Uyuni Client Tools for Rocky Linux 8 (x86_64)"
+    And I check "Rocky Linux 8 - AppStream (x86_64)"
+    And I check "Custom Channel for Rocky 8 DVD"
     And I check "Custom Channel for rocky8_minion"
     And I click on "Save"
     Then I should see a "Custom Channel for Rocky 8 DVD" text

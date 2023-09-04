@@ -22,6 +22,9 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -30,6 +33,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -45,6 +49,9 @@ import java.util.concurrent.ExecutionException;
  */
 public class CloudPaygManager {
     private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
+    protected static Path cspBillingAdapterConfig = new File("/var/lib/csp-billing-adapter/csp-config.json").toPath();
+
+    private final Gson gson = new GsonBuilder().setDateFormat(CspBillingAdapterStatus.DATE_FORMAT).create();
 
     private Boolean isPaygInstance;
     private Boolean hasSCCCredentials;
@@ -279,7 +286,26 @@ public class CloudPaygManager {
                 hasPackageModifications("python3-csp-billing-adapter-azure")) {
             return false;
         }
-        return isServiceRunning("csp-billing-adapter.service");
+        if (!isServiceRunning("csp-billing-adapter.service")) {
+            return false;
+        }
+        return checkCspBillingAdapterStatus();
+    }
+
+    protected boolean checkCspBillingAdapterStatus() {
+        try {
+            CspBillingAdapterStatus cspStatus = gson.fromJson(
+                    Files.readString(cspBillingAdapterConfig), CspBillingAdapterStatus.class);
+            if (!cspStatus.getErrors().isEmpty()) {
+                LOG.error("CPS Billing Adapter reported errors: {}", String.join("\n", cspStatus.getErrors()));
+            }
+            return cspStatus.isBillingApiAccessOk();
+        }
+        catch (Exception e) {
+            LOG.error("Unable to read CSP Billing Adapter status file");
+            LOG.info(e.getMessage(), e);
+        }
+        return false;
     }
 
     /**
@@ -313,7 +339,9 @@ public class CloudPaygManager {
         if (retcode != 0) {
             // missing packages result in message "package ... is not installed" and will not match "5"
             // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
-            if (scexec.getLastCommandOutput().lines().anyMatch(l -> l.charAt(2) == '5')) {
+            if (scexec.getLastCommandOutput().lines()
+                    .filter(l -> !l.endsWith(".pyc"))
+                    .anyMatch(l -> l.charAt(2) == '5')) {
                 LOG.error("Package '{}' was modifified", pkg);
                 LOG.info(scexec.getLastCommandOutput());
                 return true;

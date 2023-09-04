@@ -35,10 +35,6 @@ Requires:       perl(MIME::Base64)
 BuildRequires:  make
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  systemd
-Obsoletes:      satellite-utils < 5.3.0
-Provides:       satellite-utils = 5.3.0
-Obsoletes:      rhn-satellite-admin < 5.3.0
-Provides:       rhn-satellite-admin = 5.3.0
 BuildArch:      noarch
 BuildRequires:  spacewalk-config
 BuildRequires:  uyuni-base-common
@@ -79,10 +75,6 @@ if [ -x /usr/bin/systemctl ]; then
     /usr/bin/systemctl daemon-reload || :
 fi
 
-# Fix Uyuni issue 5718: this should happen upgrading from version between 2022.02 and 2022.05
-if grep -E "^report_db_sslrootcert[[:space:]]*=[[:space:]]*/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT" /etc/rhn/rhn.conf; then
-    sed -i "s|^report_db_sslrootcert[[:space:]]*=.*|report_db_sslrootcert = /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT|" /etc/rhn/rhn.conf
-fi
 
 %files
 %license LICENSE
