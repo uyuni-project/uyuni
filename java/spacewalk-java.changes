@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 04 10:02:24 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.63-1
+  * Fix X-Instance-Identifier header when doing a product refresh
+    at Cloud RMT Server (bsc#1214889)
+
+-------------------------------------------------------------------
 Tue Aug 29 16:15:10 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.62-1
