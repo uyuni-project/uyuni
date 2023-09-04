@@ -87,7 +87,7 @@ public class CVEAuditManager {
             new HashMap<>();
 
     /** Magic number signalling a patch present in a product migration channel */
-    private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
+    public static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
     /** Magic number signalling a patch present in a product predecessor channel */
     private static final int PREDECESSOR_PRODUCT_RANK_BOUNDARY = 100_000;
 
