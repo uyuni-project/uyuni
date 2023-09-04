@@ -21,6 +21,7 @@ import com.suse.oval.ovaltypes.AdvisoryCveType;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
+import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OvalRootType;
@@ -57,6 +58,13 @@ public class OVALCleaner {
             root.getDefinitions().removeIf(def -> def.getId().contains("unaffected"));
         }
 
+        if (osFamily == OsFamily.DEBIAN || osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP || osFamily == OsFamily.openSUSE_LEAP) {
+            // For the above OS families, we only need OVAL vulnerability definitions
+            root.getDefinitions().removeIf(def -> def.getDefinitionClass() != DefinitionClassEnum.VULNERABILITY);
+        }
+
+        // Although it's rare, but it's possible to get null criteria trees.
         root.getDefinitions().removeIf(def -> def.getCriteria() == null);
 
         root.getDefinitions().forEach(definition -> doCleanupDefinition(definition, osFamily, osVersion));
