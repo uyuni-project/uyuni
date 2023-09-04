@@ -127,7 +127,7 @@ end
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
   start_time = Time.now
   repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
-    while Time.new - start_time <= timeout
+    while Time.now - start_time <= timeout
       return true if has_text?(text1, wait: 0.5)
       return true if !text2.nil? && has_text?(text2, wait: 0.5)
       next unless has_text?('Request has timed out', wait: 0)
