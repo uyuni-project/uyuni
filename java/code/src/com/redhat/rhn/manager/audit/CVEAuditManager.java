@@ -1046,7 +1046,7 @@ public class CVEAuditManager {
      * @return best candidate channel result for a patch on the specified package,
      * or empty if the package is already patched
      */
-    private static Optional<CVEPatchStatus> getPatchCandidateResult(List<CVEPatchStatus> packageResults) {
+    protected static Optional<CVEPatchStatus> getPatchCandidateResult(List<CVEPatchStatus> packageResults) {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()

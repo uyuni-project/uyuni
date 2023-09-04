@@ -120,6 +120,11 @@ public class CVEAuditManagerOVAL {
     public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier,
                                                       List<CVEAuditManager.CVEPatchStatus> results,
                                                       Server clientServer) {
+        // It's possible to have 2 or more patches for one package. It's necessary to apply all of them because
+        // they will have the same outcome i.e. patch the package; instead we need to choose only one.
+        // To choose the one, we rank patches based on the channel they come from .e.g.
+        // assigned, successor product, etc. And for each vulnerable package we keep only the highest ranking patch
+        results = keepOnlyPatchCandidates(results);
 
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
@@ -150,19 +155,11 @@ public class CVEAuditManagerOVAL {
                 .filter(vulnerablePackage -> vulnerablePackage.getFixVersion().isEmpty()).collect(
                         Collectors.toSet());
 
-        List<CVEAuditManager.CVEPatchStatus> patchesInAssignedChannels = results.stream()
-                .filter(CVEAuditManager.CVEPatchStatus::isChannelAssigned)
-                .collect(Collectors.toList());
-
-        List<CVEAuditManager.CVEPatchStatus> patchesInUnassignedChannels = results.stream()
-                .filter(cvePatchStatus -> !cvePatchStatus.isChannelAssigned())
-                .collect(Collectors.toList());
-
         if (patchedVulnerablePackages.isEmpty() && !unpatchedVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         }
         else {
-            boolean allPatchesInstalled = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
+            boolean allPackagesPatched = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
                             .filter(installedPackage ->
                                     Objects.equals(installedPackage.getName(), patchedPackage.getName()))
@@ -171,10 +168,18 @@ public class CVEAuditManagerOVAL {
                                             .compareTo(PackageEvr.parseRpm(
                                                     patchedPackage.getFixVersion().get())) >= 0));
 
-            if (allPatchesInstalled) {
+            if (allPackagesPatched) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
             }
             else {
+                List<CVEAuditManager.CVEPatchStatus> patchesInAssignedChannels = results.stream()
+                        .filter(CVEAuditManager.CVEPatchStatus::isChannelAssigned)
+                        .collect(Collectors.toList());
+
+                List<CVEAuditManager.CVEPatchStatus> patchesInUnassignedChannels = results.stream()
+                        .filter(cvePatchStatus -> !cvePatchStatus.isChannelAssigned())
+                        .collect(Collectors.toList());
+
                 long numberOfPackagesWithPatchInAssignedChannels =
                         patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInAssignedChannels
                                 .stream()
@@ -217,6 +222,22 @@ public class CVEAuditManagerOVAL {
         LOG.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
 
         return cveAuditServerBuilder;
+    }
+
+    private static List<CVEAuditManager.CVEPatchStatus> keepOnlyPatchCandidates(
+            List<CVEAuditManager.CVEPatchStatus> results) {
+        List<CVEAuditManager.CVEPatchStatus> patchCandidates = new ArrayList<>();
+
+        Map<String, List<CVEAuditManager.CVEPatchStatus>> resultsByPackage = results.stream()
+                .filter(result -> result.getPackageName().isPresent())
+                .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
+
+        for (String packageName : resultsByPackage.keySet()) {
+            List<CVEAuditManager.CVEPatchStatus> packageResults = resultsByPackage.get(packageName);
+            CVEAuditManager.getPatchCandidateResult(packageResults).ifPresent(patchCandidates::add);
+        }
+
+        return patchCandidates;
     }
 
     private static boolean isPackageInstalled(VulnerablePackage pkg, List<ShallowSystemPackage> allInstalledPackages) {
