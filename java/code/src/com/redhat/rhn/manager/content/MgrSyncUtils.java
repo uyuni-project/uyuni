@@ -256,6 +256,7 @@ public class MgrSyncUtils {
         // Case 2
         if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
             mirrorPath = new File(dataPath.getAbsolutePath(), path);
+            LOG.info("SCC mirrorpath: {}", mirrorPath);
         }
         else if (name != null) {
             // Case 3
@@ -263,17 +264,25 @@ public class MgrSyncUtils {
             String[] parts  = URLDecoder.decode(name, StandardCharsets.UTF_8).split("[\\s/]");
             if (!(parts[0].isBlank() || parts[0].equals(".."))) {
                 File oldMirrorPath = Paths.get(dataPath.getAbsolutePath(), "repo", "RPMMD", parts[0]).toFile();
+                LOG.info("SMT mirrorpath for '{}': {}", name, oldMirrorPath);
                 if (oldMirrorPath.exists()) {
                     mirrorPath = oldMirrorPath;
                 }
                 else {
                     // mirror in a common folder (bsc#1201753)
                     File commonMirrorPath = Paths.get(dataPath.getAbsolutePath(), path).toFile();
+                    LOG.info("Common mirrorpath for '{}': {}", name, commonMirrorPath);
                     if (commonMirrorPath.exists()) {
                         mirrorPath = commonMirrorPath;
                     }
+                    else {
+                        LOG.info("Default mirrorpath for '{}': {}", name, mirrorPath);
+                    }
                 }
             }
+        }
+        else {
+            LOG.info("Default mirrorpath: {}", mirrorPath);
         }
         Path cleanPath = mirrorPath.toPath().normalize();
         if (!cleanPath.startsWith(sccDataPath)) {
