@@ -108,6 +108,16 @@ public class OVALCachingFactory extends HibernateFactory {
         }).collect(Collectors.toList());
     }
 
+    public static boolean canAuditCVE(String cve) {
+        SelectMode m = ModeFactory.getMode("oval_queries", "can_audit_cve");
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_name", cve);
+
+        DataResult result = m.execute(params);
+
+        return !result.isEmpty();
+    }
+
     @Override
     protected Logger getLogger() {
         return LOG;
