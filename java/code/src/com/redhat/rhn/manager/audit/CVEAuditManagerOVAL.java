@@ -67,9 +67,9 @@ public class CVEAuditManagerOVAL {
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
                                                                 EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
-  /*      if (CVEAuditManager.isCVEIdentifierUnknown(cveIdentifier)) {
+        if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
-        }*/
+        }
 
         List<CVEAuditServer> result = new ArrayList<>();
 
@@ -112,6 +112,10 @@ public class CVEAuditManagerOVAL {
         }
 
         return result;
+    }
+
+    private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
+        return !OVALCachingFactory.canAuditCVE(cveIdentifier);
     }
 
     public static boolean doesSupportOVALAuditing(Server clientServer) {
