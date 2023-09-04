@@ -16,6 +16,8 @@
 package com.redhat.rhn.manager.audit;
 
 
+import static com.redhat.rhn.manager.audit.CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -207,10 +209,27 @@ public class CVEAuditManagerOVAL {
                                     )
                             ).count();
 
+                    boolean somePackagesHavePatchInUnassignedChannels =
+                            numberOfPackagesWithPatchInUnassignedChannels > 0 &&
+                                    numberOfPackagesWithPatchInUnassignedChannels == patchedVulnerablePackages.size();
+
                     boolean allPackagesHavePatchInUnassignedChannels =
                             numberOfPackagesWithPatchInUnassignedChannels == patchedVulnerablePackages.size();
+
                     if (allPackagesHavePatchInUnassignedChannels) {
-                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
+                        boolean allPackagesHavePatchInSuccessorChannel = patchesInUnassignedChannels.stream()
+                                .allMatch(patch ->
+                                        patch.getChannelRank().orElse(0L) >= SUCCESSOR_PRODUCT_RANK_BOUNDARY);
+                        if (allPackagesHavePatchInSuccessorChannel) {
+                            cveAuditServerBuilder
+                                    .setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT);
+                        } else {
+                            cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
+                        }
+                    }
+                    else if(somePackagesHavePatchInUnassignedChannels) {
+                        //TODO: Not sure how to handle...
+                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
                     }
                     else {
                         cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
