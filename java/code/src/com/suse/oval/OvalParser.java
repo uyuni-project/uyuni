@@ -15,6 +15,7 @@
 
 package com.suse.oval;
 
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.suse.oval.exceptions.OvalParserException;
 import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.AdvisoryAffectedType;
@@ -35,6 +36,12 @@ import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 import com.suse.oval.ovaltypes.VersionType;
+import com.suse.oval.ovaltypes.linux.DpkginfoObject;
+import com.suse.oval.ovaltypes.linux.DpkginfoState;
+import com.suse.oval.ovaltypes.linux.DpkginfoTest;
+import com.suse.oval.ovaltypes.linux.RpminfoObject;
+import com.suse.oval.ovaltypes.linux.RpminfoState;
+import com.suse.oval.ovaltypes.linux.RpminfoTest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,12 +64,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents
  */
 public class OvalParser {
     private static final Logger LOG = LogManager.getLogger(OvalParser.class);
+    private static final List<String> TEST_TYPES = List.of("rpminfo_test", "dpkginfo_test");
+    private static final List<String> OBJECT_TYPES = List.of("rpminfo_object", "dpkginfo_object");
+    private static final List<String> STATE_TYPES = List.of("rpminfo_state", "dpkginfo_state");
 
     /**
      * Parse the given OVAL file
@@ -108,17 +119,20 @@ public class OvalParser {
 
                 if (nextEvent.isStartElement()) {
                     String elementName = nextEvent.asStartElement().getName().getLocalPart();
-                    if (elementName.equals("objects")) {
-                        ovalRoot.setObjects(parseObjects(reader));
-                    }
-                    else if (elementName.equals("states")) {
-                        ovalRoot.setStates(parseStates(reader));
-                    }
-                    else if (elementName.equals("tests")) {
-                        ovalRoot.setTests(parseTests(reader));
-                    }
-                    else if (elementName.equals("definitions")) {
-                        ovalRoot.setDefinitions(parseDefinitions(reader));
+                    switch (elementName) {
+                        case "objects":
+                            ovalRoot.setObjects(parseObjects(reader));
+                            break;
+                        case "states":
+                            ovalRoot.setStates(parseStates(reader));
+                            break;
+                        case "tests":
+                            ovalRoot.setTests(parseTests(reader));
+                            break;
+                        case "definitions":
+                            ovalRoot.setDefinitions(parseDefinitions(reader));
+                            break;
+                        default: // Do nothing
                     }
                 }
             }
@@ -407,9 +421,12 @@ public class OvalParser {
             XMLEvent nextEvent = reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_test")) {
-                    TestType testType = parseTestType(nextEvent.asStartElement(), reader);
-                    tests.add(testType);
+                String element = nextEvent.asStartElement().getName().getLocalPart();
+                if (element.equals("rpminfo_test")) {
+                    tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.RPM));
+                }
+                else if(element.equals("dpkginfo_test_test")) {
+                    tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.DEB));
                 }
             }
 
@@ -423,8 +440,17 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </tests>");
     }
 
-    private TestType parseTestType(StartElement testElement, XMLEventReader reader) throws XMLStreamException {
-        TestType testType = new TestType();
+    private TestType parseTestType(StartElement testElement, XMLEventReader reader, PackageType packageType)
+            throws XMLStreamException {
+
+        Objects.requireNonNull(packageType);
+        TestType testType;
+        if (packageType == PackageType.DEB) {
+            testType = new DpkginfoTest();
+        }
+        else {
+            testType = new RpminfoTest();
+        }
 
         testElement.getAttributes().forEachRemaining(attribute -> {
             String attributeName = attribute.getName().getLocalPart();
@@ -448,10 +474,12 @@ public class OvalParser {
                             new QName("object_ref"));
                     if (objectRefAttribute != null) {
                         testType.setObjectRef(objectRefAttribute.getValue());
-                    } else {
+                    }
+                    else {
                         LOG.warn("objectRef property was not found");
                     }
-                } else if (nextEvent.asStartElement().getName().getLocalPart().equals("state")) {
+                }
+                else if (nextEvent.asStartElement().getName().getLocalPart().equals("state")) {
                     Attribute stateRefAttribute = nextEvent.asStartElement().getAttributeByName(
                             new QName("state_ref"));
                     if (stateRefAttribute != null) {
@@ -464,13 +492,14 @@ public class OvalParser {
             }
 
             if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_test")) {
+                String element = nextEvent.asEndElement().getName().getLocalPart();
+                if (TEST_TYPES.contains(element)) {
                     return testType;
                 }
             }
         }
 
-        throw new OvalParserException("Unable to find the closing tag for </rpminfo_test>");
+        throw new OvalParserException("Unable to find the closing tag for test type");
     }
 
     private List<StateType> parseStates(XMLEventReader reader) throws XMLStreamException {
@@ -480,9 +509,12 @@ public class OvalParser {
             XMLEvent nextEvent = reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_state")) {
-                    StateType stateType = parseStateType(nextEvent.asStartElement(), reader);
-                    states.add(stateType);
+                String element = nextEvent.asStartElement().getName().getLocalPart();
+                if (element.equals("rpminfo_state")) {
+                    states.add(parseStateType(nextEvent.asStartElement(), reader, PackageType.RPM));
+                }
+                else if (element.equals("dpkginfo_state")) {
+                    states.add(parseStateType(nextEvent.asStartElement(), reader, PackageType.DEB));
                 }
             }
 
@@ -496,8 +528,16 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </states>");
     }
 
-    private StateType parseStateType(StartElement rpmStateElement, XMLEventReader reader) throws XMLStreamException {
-        StateType stateType = new StateType();
+    private StateType parseStateType(StartElement rpmStateElement, XMLEventReader reader, PackageType packageType)
+            throws XMLStreamException {
+        Objects.requireNonNull(packageType);
+        StateType stateType;
+        if (packageType == PackageType.DEB) {
+            stateType = new DpkginfoState();
+        }
+        else {
+            stateType = new RpminfoState();
+        }
 
         rpmStateElement.getAttributes().forEachRemaining(attribute -> {
             String attributeName = attribute.getName().getLocalPart();
@@ -530,13 +570,14 @@ public class OvalParser {
             }
 
             if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_state")) {
+                String element = nextEvent.asEndElement().getName().getLocalPart();
+                if (STATE_TYPES.contains(element)) {
                     return stateType;
                 }
             }
         }
 
-        throw new OvalParserException("Unable to find the closing tag for </rpminfo_state>");
+        throw new OvalParserException("Unable to find the closing tag for state type");
     }
 
     private ArchType parseArchStateEntity(StartElement archElement, XMLEventReader reader) throws XMLStreamException {
@@ -560,7 +601,6 @@ public class OvalParser {
 
         evrElement.getAttributes().forEachRemaining(attribute -> {
             String attributeName = attribute.getName().getLocalPart();
-
             if (attributeName.equals("operation")) {
                 evrType.setOperation(OperationEnumeration.fromValue(attribute.getValue()));
             }
@@ -595,9 +635,12 @@ public class OvalParser {
             XMLEvent nextEvent = reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("rpminfo_object")) {
-                    ObjectType objectType = parseObjectType(nextEvent.asStartElement(), reader);
-                    objects.add(objectType);
+                String element = nextEvent.asStartElement().getName().getLocalPart();
+                if (element.equals("rpminfo_object")) {
+                    objects.add(parseObjectType(nextEvent.asStartElement(), reader, PackageType.RPM));
+                }
+                else if (element.equals("dpkginfo_object")) {
+                    objects.add(parseObjectType(nextEvent.asStartElement(), reader, PackageType.DEB));
                 }
             }
 
@@ -611,8 +654,15 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </objects>");
     }
 
-    private ObjectType parseObjectType(StartElement rpmObjectElement, XMLEventReader reader) throws XMLStreamException {
-        ObjectType objectType = new ObjectType();
+    private ObjectType parseObjectType(StartElement rpmObjectElement, XMLEventReader reader, PackageType packageType)
+            throws XMLStreamException {
+        Objects.requireNonNull(packageType);
+        ObjectType objectType;
+        if (packageType == PackageType.DEB) {
+            objectType = new DpkginfoObject();
+        } else {
+            objectType = new RpminfoObject();
+        }
 
         rpmObjectElement.getAttributes().forEachRemaining(attribute -> {
             String attributeName = attribute.getName().getLocalPart();
@@ -639,13 +689,14 @@ public class OvalParser {
             }
 
             if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("rpminfo_object")) {
+                String element = nextEvent.asEndElement().getName().getLocalPart();
+                if (OBJECT_TYPES.contains(element)) {
                     return objectType;
                 }
             }
         }
 
-        throw new OvalParserException("Unable to find the closing tag for </rpminfo_object>");
+        throw new OvalParserException("Unable to find the closing tag for object type");
     }
 
 }
