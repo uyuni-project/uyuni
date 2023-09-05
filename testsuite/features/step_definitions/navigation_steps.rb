@@ -931,7 +931,7 @@ end
 #
 # Test if a radio button is checked
 #
-Then(/^radio button "([^"]*)" is checked$/) do |arg1|
+Then(/^radio button "([^"]*)" should be checked$/) do |arg1|
   raise "#{arg1} is unchecked" unless has_checked_field?(arg1)
 end
 

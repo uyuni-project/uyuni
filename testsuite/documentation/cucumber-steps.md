@@ -284,7 +284,7 @@ The radio button can be identified by name, id or label text.
 * Make sure a radio button is checked
 
 ```gherkin
-  Then radio button "radio-comma" is checked
+  Then radio button "radio-comma" should be checked
 ```
 
 * Click on a given check box

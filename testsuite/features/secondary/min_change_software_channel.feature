@@ -19,7 +19,7 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
@@ -41,7 +41,7 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I check "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
@@ -61,7 +61,7 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as checked
 
@@ -83,7 +83,7 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
