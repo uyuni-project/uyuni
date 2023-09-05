@@ -43,6 +43,7 @@ install -m 0644 upgrade_paths.json    %{buildroot}/usr/share/susemanager/scc/upg
 install -m 0644 additional_products.json    %{buildroot}/usr/share/susemanager/scc/additional_products.json
 install -m 0644 additional_repositories.json    %{buildroot}/usr/share/susemanager/scc/additional_repositories.json
 install -m 0644 product_tree.json    %{buildroot}/usr/share/susemanager/scc/product_tree.json
+install -m 0644 oval.config.json    %{buildroot}/usr/share/susemanager/scc/oval.config.json
 
 %files
 %defattr(-,root,root,-)
@@ -53,5 +54,6 @@ install -m 0644 product_tree.json    %{buildroot}/usr/share/susemanager/scc/prod
 /usr/share/susemanager/scc/additional_products.json
 /usr/share/susemanager/scc/additional_repositories.json
 /usr/share/susemanager/scc/product_tree.json
+/usr/share/susemanager/scc/oval.config.json
 
 %changelog
