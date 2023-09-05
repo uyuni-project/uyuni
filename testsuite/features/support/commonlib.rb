@@ -134,7 +134,7 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
       log 'Request timeout found, performing reload'
       click_button('reload the page')
       start_time = Time.now
-      raise "Request timeout message still present after #{timeout} seconds." unless has_no_text?('Request has timed out')
+      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
     end
     return false
   end
