@@ -41,6 +41,7 @@ public class VulnerablePackagesExtractors {
                                                      OVALLookupHelper ovalLookupHelper) {
         switch (osFamily) {
             case LEAP:
+            case openSUSE_LEAP_MICRO:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
             case SUSE_LINUX_ENTERPRISE_MICRO:
