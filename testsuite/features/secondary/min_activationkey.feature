@@ -41,12 +41,12 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Create a complete minion activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
