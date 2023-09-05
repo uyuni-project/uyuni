@@ -35,6 +35,7 @@ public class VulnerablePackagesExtractors {
             case openSUSE_LEAP:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
+            case SUSE_LINUX_ENTERPRISE_MICRO:
                 return new SUSEVulnerablePackageExtractor(definition, ovalLookupHelper);
             case DEBIAN:
                 return new DebianVulnerablePackagesExtractor(definition);

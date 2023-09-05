@@ -19,6 +19,7 @@ public enum OsFamily {
     openSUSE_LEAP("openSUSE Leap", "leap", "opensuse"),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse"),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse"),
+    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "sle-micro", "suse"),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "enterprise_linux", "redhat"),
     UBUNTU("Ubuntu", "ubuntu", "canonical"),
     DEBIAN("Debian", "debian", "debian");
