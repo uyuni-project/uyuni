@@ -17,6 +17,7 @@ package com.suse.oval;
 
 public enum OsFamily {
     openSUSE_LEAP("openSUSE Leap", "leap", "opensuse"),
+    openSUSE_LEAP_MICRO("openSUSELeap Micro", "leap-micro", "opensuse"),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse"),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse"),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "sle-micro", "suse"),
