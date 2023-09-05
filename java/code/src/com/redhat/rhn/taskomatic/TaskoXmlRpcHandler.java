@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
@@ -83,6 +84,21 @@ public class TaskoXmlRpcHandler {
      */
     public TaskoSchedule lookupScheduleById(Integer scheduleId) {
         return TaskoFactory.lookupScheduleById(scheduleId.longValue());
+    }
+
+    /**
+     * looks up file system path according to channel label
+     * @param channelLabel channel label
+     * @return File System Path URI
+     * @throws TaskomaticApiException if there was an error
+     */
+    public String lookupFSPathByChannelLabel(String channelLabel) throws TaskomaticApiException {
+        try {
+            return MgrSyncUtils.urlToFSPath(null, channelLabel).getPath();
+        }
+        catch (Exception e) {
+            throw new TaskomaticApiException(e);
+        }
     }
 
     /**

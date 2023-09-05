@@ -163,4 +163,14 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         assertContains(opath.toString(), expected.toString());
         assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
+
+    @Test
+    public void testurlToFSPathWithoutURL() throws Exception {
+        String channelLabel = "SLE-Module-Basesystem15-SP3-x86_64";
+
+        URI opath = MgrSyncUtils.urlToFSPath(null, channelLabel);
+        URI expected = new URI(
+                String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
+        assertContains(opath.toString(), expected.toString());
+    }
 }
