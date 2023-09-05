@@ -14,6 +14,7 @@ spec:
         app: uyuni
     spec:
       initContainers:
+{{- if not .Values.migration }}
       - name: init-etc-tls
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -36,6 +37,7 @@ spec:
             name: etc-tls
           - name: tls-key
             mountPath: /etc/pki/spacewalk-tls
+{{- end }}
       - name: init-var-cobbler
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -412,6 +414,10 @@ spec:
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
+{{- if and .Values.migration (and .Values.migration.ssh .Values.migration.ssh.agentSocket) }}
+          - name: SSH_AUTH_SOCK
+            value: /tmp/ssh_auth_sock
+{{- end }}
         volumeMounts:
           - mountPath: /run
             name: tmp
@@ -461,19 +467,41 @@ spec:
             name: etc-cobbler
           - mountPath: /etc/sysconfig
             name: etc-sysconfig
-          - mountPath: /etc/pki/tls
-            name: etc-tls
           - mountPath: /etc/postfix
             name: etc-postfix
+{{- if not .Values.migration }}
+          - mountPath: /etc/pki/tls
+            name: etc-tls
           - name: ca-cert
             mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
             readOnly: true
             subPath: ca.crt
           - name: tls-key
             mountPath: /etc/pki/spacewalk-tls
+{{- end }}
 {{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
           - name: mirror
             mountPath: /mirror
+{{- end }}
+{{- if .Values.migration }}
+  {{- if .Values.migration.ssh }}
+    {{- if .Values.migration.ssh.agentSocket }}
+          - name: ssh-auth-sock
+            mountPath: /tmp/ssh_auth_sock
+    {{- end }}
+    {{- if .Values.migration.ssh.configPath }}
+          - name: ssh-config
+            mountPath: /root/.ssh/config
+    {{- end }}
+    {{- if .Values.migration.ssh.knownHostsPath }}
+          - name: ssh-known-hosts
+            mountPath: /root/.ssh/known_hosts
+    {{- end }}
+  {{- end }}
+  {{- if .Values.migration.dataPath }}
+          - name: migration-data
+            mountPath: /var/lib/uyuni-tools
+  {{- end }}
 {{- end }}
       volumes:
       - name: tmp
@@ -553,6 +581,7 @@ spec:
       - name: etc-postfix
         persistentVolumeClaim:
           claimName: etc-postfix
+{{- if not .Values.migration }}
       - name: ca-cert
         configMap:
           name: uyuni-ca
@@ -568,6 +597,7 @@ spec:
             - key: tls.key
               path: spacewalk.key
               mode: 0600
+{{- end }}
 {{- if .Values.mirror }}
   {{- if .Values.mirror.claimName }}
       - name: mirror
@@ -577,6 +607,30 @@ spec:
       - name: mirror
         hostPath:
           path: {{ .Values.mirror.hostPath }}
+  {{- end }}
+{{- end }}
+{{- if .Values.migration }}
+  {{- if .Values.migration.ssh }}
+    {{- if .Values.migration.ssh.agentSocket }}
+      - name: ssh-auth-sock
+        hostPath:
+          path: {{ .Values.migration.ssh.agentSocket }}
+    {{- end }}
+    {{- if .Values.migration.ssh.configPath }}
+      - name: ssh-config
+        hostPath:
+          path: {{ .Values.migration.ssh.configPath }}
+    {{- end }}
+    {{- if .Values.migration.ssh.knownHostsPath }}
+      - name: ssh-known-hosts
+        hostPath:
+          path: {{ .Values.migration.ssh.knownHostsPath }}
+    {{- end }}
+    {{- if .Values.migration.dataPath }}
+      - name: migration-data
+        hostPath:
+          path: {{ .Values.migration.dataPath }}
+    {{- end }}
   {{- end }}
 {{- end }}
       dnsPolicy: ClusterFirst

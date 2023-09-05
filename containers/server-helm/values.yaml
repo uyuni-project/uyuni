@@ -68,3 +68,11 @@ ingress: "traefik"
 
 # The time zone to set in the containers
 timezone: "Etc/UTC"
+
+# Only used to migrate from an existing non-container server
+# migration:
+#   ssh:
+#     agentSocket: /tmp/socket/path
+#     configPath: /home/mine/.ssh/config
+#     knownHostsPath: /home/mine/.ssh/known_hosts
+#   dataPath: /tmp/uyuni-migration
