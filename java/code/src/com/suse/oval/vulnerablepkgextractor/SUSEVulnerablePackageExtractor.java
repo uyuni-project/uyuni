@@ -173,9 +173,20 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         if (osProduct == OsFamily.LEAP) {
             return deriveOpenSUSELeapCpe();
         }
-        else {
-            return deriveSUSEProductCpe(productTest);
+        else if (osProduct == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO) {
+            return deriveSUSEMicroCpe();
         }
+        else {
+            return deriveFromProductOVALTest(productTest);
+        }
+    }
+
+    private Cpe deriveSUSEMicroCpe() {
+        return new CpeBuilder()
+                .withVendor("suse")
+                .withProduct("sle-micro")
+                .withVersion(definition.getOsVersion())
+                .build();
     }
 
     private Cpe deriveOpenSUSELeapCpe() {
@@ -186,7 +197,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .build();
     }
 
-    private Cpe deriveSUSEProductCpe(TestType productTest) {
+    private Cpe deriveFromProductOVALTest(TestType productTest) {
         String testComment = productTest.getComment();
         String productPart = null;
         String versionPart = null;
@@ -229,7 +240,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         OsFamily osFamily = definitionTypeIn.getOsFamily();
         boolean definitionFromASupportedFamily = osFamily == OsFamily.LEAP ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
-                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP;
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP ||
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO;
 
         return super.isValidDefinition(definitionTypeIn) && definitionFromASupportedFamily;
     }
