@@ -17,6 +17,10 @@
   <property file="conf/rhn_java.conf"/>
 
   <!-- Other properties -->
+  <property name="container.name" value="uyuni-server" />
+  <property name="ssh.key" value="/home/user/.ssh/id_rsa" />
+  <property name="podman.connection.name" value="srv" />
+
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.port" value="22" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
@@ -298,135 +302,156 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="is-kubectl-installed">
-    <exec failifexecutionfails="false" resultproperty="kubectl.installed" outputproperty="deploy.pod" executable="kubectl">
-        <arg line="get" />
-        <arg line="pod" />
-        <arg line="-n" />
-        <arg line="${deploy.namespace}" />
-        <arg line="-o"/>
-        <arg line="jsonpath={.items[0].metadata.name}" />
-        <arg line="-lapp=uyuni" />
+  <!-- podman container related -->
+
+  <target name="check-ssh-key" description="Asserts ssh.key is provided and file exists">
+    <!-- Check if ssh.key property is provided -->
+    <fail message="You must provide a ssh.key like -Dssh.key='&lt;ssh-key-full-path&gt;'">
+      <condition>
+        <or>
+          <not>
+            <isset property="ssh.key"/>
+          </not>
+          <equals arg1="${ssh.key}" arg2=""/>
+        </or>
+      </condition>
+    </fail>
+
+    <!-- Check if the provided key file path exists -->
+    <fail message="The specified ssh.key file does not exist">
+      <condition>
+        <not>
+          <available file="${ssh.key}"/>
+        </not>
+      </condition>
+    </fail>
+  </target>
+
+  <target name="is-podman-installed" description="Cheks if podman is installed">
+    <exec failifexecutionfails="false" resultproperty="podman.installed" executable="podman">
+      <arg line="--version" />
     </exec>
-    <property name="kubectl.args" value="-n ${deploy.namespace} ${deploy.pod}"/>
   </target>
 
-  <target name="warn-if-kubectl-not-installed" depends="is-kubectl-installed" unless="kubectl.installed">
-    <fail>kubectl is not in the PATH. Please install kubectl first.</fail>
+  <target name="warn-if-podman-not-installed" depends="is-podman-installed" unless="podman.installed">
+    <fail>podman is not in the PATH. Please install podman first.</fail>
   </target>
 
-  <target name="deploy-kube" depends="webapp,warn-if-kubectl-not-installed" description="Deploy a new copy of SUSE Manager in a running kubernetes pod">
-    <echo message="Copying files to pod..." />
+  <target name="check-podman-connection" depends="warn-if-podman-not-installed" description="Checks if podman system connection is set">
+    <exec executable="sh" outputproperty="podman.output">
+      <arg line="-c 'podman system connection ls -q | grep -w ${podman.connection.name}'"/>
+    </exec>
+
+    <condition property="podman.connection.exists">
+      <length string="${podman.output}" when="greater" length="0"/>
+    </condition>
+
+    <echo message="Podman connection to '${podman.connection.name}' detected: ${podman.connection.exists}"/>
+  </target>
+
+  <target name="add-podman-connection" depends="check-ssh-key,check-podman-connection" unless="podman.connection.exists" description="Adds podman system connection">
+    <echo message="Adding podman system connection..."/>
+    <exec executable="podman">
+      <arg line="system connection add --identity ${ssh.key} ${podman.connection.name} ssh://${deploy.user}@${podman.connection.name}.${deploy.host}"/>
+    </exec>
+  </target>
+
+  <target name="remove-podman-connection" depends="warn-if-podman-not-installed" description="Removes podman system connection">
+    <echo message="Removing podman system connection..."/>
+    <exec executable="podman">
+      <arg line="system connection rm ${podman.connection.name}"/>
+    </exec>
+  </target>
+
+  <target name="deploy-container" depends="webapp, add-podman-connection" description="Deploy a new copy of SUSE Manager in a running pod container">
+    <echo message="Copying files to pod container... ${build.dir} -> ${deploy.dir}" />
 
     <exec failonerror="true" executable="sh">
-        <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${deploy.dir}'"/>
+      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | uyunictl exec -i -- tar xf - -C ${deploy.dir}'"/>
+      <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
     </exec>
 
     <echo message="Linking the branding jar..." />
-    <exec failonerror="true" executable="kubectl">
-        <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-    </exec>
-
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-    </exec>
+    <wrap-uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+    <wrap-uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
 
     <echo message="Linking jars for Taskomatic..."/>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-    </exec>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-    </exec>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-    </exec>
+    <wrap-uyunictl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+    <wrap-uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+    <wrap-uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+    <antcall target="remove-podman-connection"/>
   </target>
 
-  <target name="deploy-static-resources-kube" depends="build-js,warn-if-kubectl-not-installed" description="Deploy css/js/img/font files in a running kubernetes pod">
-    <echo message="Copying frontend files to remote host..."/>
-    <exec failonerror="true" executable="sh">
-        <arg line="-c 'tar c -p -C ${frontend.dist.dir} -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C /srv/www/htdocs'"/>
-    </exec>
+  <target name="deploy-static-resources-container" depends="build-js,add-podman-connection" description="Deploy css/js/img/font files in a running pod container">
+    <echo message="Copying frontend files to pod container... "/>
+    <copy-to-container source="${frontend.dist.dir}" target="/srv/www/htdocs" failonerror="true"/>
+    <antcall target="remove-podman-connection"/>
   </target>
 
-  <target name="deploy-salt-files-kube" depends="warn-if-kubectl-not-installed" description="Deploy Salt files in a running kubernetes pod">
+  <target name="deploy-salt-files-container" depends="add-podman-connection" description="Deploy Salt files in a running pod container">
     <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
     <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
 
-    <echo message="Copying Salt sls files to remote host.."/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/salt/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${salt.state.files.dir}'"/>
-    </exec>
+    <echo message="Copying Salt sls files to remote host..."/>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/salt/" target="${salt.state.files.dir}"/>
+
     <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_grains/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_beacons/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_modules/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
-    </exec>
-    <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/reactor -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
-    </exec>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/" target="${salt.state.files.dir}/_grains/"/>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/" target="${salt.state.files.dir}/_beacons/"/>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/" target="${salt.state.files.dir}/_modules/"/>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/" target="/usr/share/susemanager/modules/pillar/"/>
+
+    <echo message="Copying Salt reactor to remote host..."/>
+    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/reactor" target="/usr/share/susemanager/modules/pillar/"/>
+
+    <antcall target="remove-podman-connection"/>
   </target>
 
-  <target name="restart-tomcat-kube" depends="warn-if-kubectl-not-installed" description="Restart the tomcat process in a running kubernetes pod">
+  <target name="restart-tomcat-container" depends="add-podman-connection" description="Restarts the tomcat process in a running pod container">
     <echo message="Launching Tomcat restart..."/>
-    <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- rctomcat restart"/>
-    </exec>
+    <wrap-uyunictl argline="exec rctomcat restart"/>
+    <antcall target="remove-podman-connection"/>
   </target>
 
-  <target name="restart-taskomatic-kube" depends="warn-if-kubectl-not-installed" description="Restart the taskomatic process in a running kubernetes pod">
+  <target name="restart-taskomatic-container" depends="add-podman-connection" description="Restarts the taskomatic process in a pod container">
     <echo message="Launching Taskomatic restart..."/>
-    <exec executable="kubectl">
-      <arg line="exec ${kubectl.args} -- rctaskomatic restart"/>
-    </exec>
+    <wrap-uyunictl argline="exec rctaskomatic restart"/>
+    <antcall target="remove-podman-connection"/>
   </target>
 
-  <target name="deploy-restart-kube" depends="deploy-kube, restart-tomcat-kube, restart-taskomatic-kube" />
-
-  <target name="check-tomcat-has-opts">
-    <exec executable="kubectl" resultproperty="tomcat.has_opts_result" failonerror="false">
-      <arg line="exec ${kubectl.args} -- grep JAVA_OPTS /etc/sysconfig/tomcat"/>
-    </exec>
-    <condition property="tomcat.has_opts">
-      <equals arg1="${tomcat.has_opts_result}" arg2="0"/>
-    </condition>
+  <target name="deploy-restart-container">
+    <antcall target="deploy-container"/>
+    <antcall target="restart-tomcat-container"/>
+    <antcall target="restart-taskomatic-container"/>
   </target>
 
-  <target name="append-tomcat-debug-kube" depends="check-tomcat-has-opts" unless="tomcat.has_opts">
-    <exec executable="kubectl">
-        <arg value="exec"/>
-        <arg value="-n"/>
-        <arg value="${deploy.namespace}"/>
-        <arg value="${deploy.pod}"/>
-        <arg value="--"/>
-        <arg value="sh"/>
-        <arg value="-c"/>
-        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
-    </exec>
-  </target>
 
-  <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
-    <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
+  <!-- wraps uyunictl command, executing the given argline and setting the CONTAINER_CONNECTION env var -->
+  <macrodef name="wrap-uyunictl">
+    <attribute name="argline"/>
+    <attribute name="failonerror" default="true"/>
+    <sequential>
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="@{argline}"/>
+        <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
     </exec>
-  </target>
+    </sequential>
+  </macrodef>
 
-  <target name="enable-java-debug-kube" depends="warn-if-kubectl-not-installed, append-tomcat-debug-kube, replace-tomcat-debug-kube" description="Add tomcat and taskomatic options to connect a Java debugger">
-    <exec executable="kubectl">
-      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
+  <!-- copies the given source dir to the given target dir in the container -->
+  <macrodef name="copy-to-container">
+    <attribute name="source"/>
+    <attribute name="target"/>
+    <attribute name="failonerror" default="false"/>
+    <sequential>
+      <exec failonerror="@{failonerror}" executable="sh">
+        <arg line="-c 'tar c -p -C @{source} -f - . | uyunictl exec -i -- tar xf - -C @{target}'"/>
+        <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
     </exec>
-    <echo message="Restart taskomatic and tomcat at your convenience to debug"/>
-  </target>
+    </sequential>
+  </macrodef>
+
+  <!-- ./podman container related -->
 
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
