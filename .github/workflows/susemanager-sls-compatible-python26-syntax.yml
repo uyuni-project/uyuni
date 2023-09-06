@@ -12,7 +12,7 @@ jobs:
     steps:
       # We need to use "checkout@v1" here as is the only version compatible with Python 2.6
       - name: Check out repository code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Configure repos from CentOS vault
         run: |
