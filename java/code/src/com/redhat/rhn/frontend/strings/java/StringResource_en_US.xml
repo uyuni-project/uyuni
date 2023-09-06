@@ -9496,6 +9496,12 @@ For a detailed analysis, please refer to the log files.</source>
       <trans-unit id="notification.subscriptionwarning.detail">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       </trans-unit>
+      <trans-unit id="notification.updateavailable.summary">
+        <source>Updates are available.</source>
+      </trans-unit>
+      <trans-unit id="notification.updateavailable.detail">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
       </trans-unit>

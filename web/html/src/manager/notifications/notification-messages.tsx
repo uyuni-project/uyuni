@@ -56,6 +56,10 @@ const _MESSAGE_TYPE = {
     id: "SubscriptionWarning",
     text: t("Subscription Warning"),
   },
+  UpdateAvailable: {
+    id: "UpdateAvailable",
+    text: t("Update Notification"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {
