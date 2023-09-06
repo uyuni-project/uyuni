@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/hub-xmlrpc-api:latest uyuni/hub-xmlrpc-api:4.4.0 uyuni/hub-xmlrpc-api:4.4.0.%RELEASE%
+#!BuildTag: uyuni/hub-xmlrpc-api:latest
 
 ARG INIT_BASE=registry.opensuse.org/bci/bci-micro
 FROM $INIT_BASE

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:4.4.0 uyuni/proxy-squid:4.4.0.%RELEASE%
+#!BuildTag: uyuni/proxy-squid:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS base
