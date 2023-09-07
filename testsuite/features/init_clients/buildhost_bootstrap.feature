@@ -7,14 +7,6 @@ Feature: Bootstrap a build host via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Update the SLES activation key
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "SUSE Test Key x86_64" in the content area
-    And I wait until I see "Container Build Host" text
-    And I check "Container Build Host"
-    And I check "OS Image Build Host"
-    And I click on "Update Activation Key"
-
   Scenario: Bootstrap a build host
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -22,10 +14,17 @@ Feature: Bootstrap a build host via the GUI
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-BUILD-HOST-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
+
+  Scenario: Enable necessary repositories for the build host
+    When I enable repository "os_pool_repo" on this "build_host" without error control
+    And I enable repository "os_update_repo" on this "build_host" without error control
+    And I enable repository "containers_pool_repo" on this "build_host" without error control
+    And I enable repository "containers_updates_repo" on this "build_host" without error control
+    Then I execute "zypper ref" on the "build_host"
 
   Scenario: Check the new bootstrapped build host in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -60,11 +59,3 @@ Feature: Bootstrap a build host via the GUI
   Scenario: Check events history for failures on SLES build host
     Given I am on the Systems overview page of this "build_host"
     Then I check for failed events on history event page
-
-  Scenario: Cleanup: Restore the SLES activation key to its original state
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "SUSE Test Key x86_64" in the content area
-    And I wait until I see "Container Build Host" text
-    And I uncheck "Container Build Host"
-    And I uncheck "OS Image Build Host"
-    And I click on "Update Activation Key"
