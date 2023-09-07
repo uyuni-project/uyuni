@@ -17,9 +17,7 @@
   <property file="conf/rhn_java.conf"/>
 
   <!-- Other properties -->
-  <property name="container.name" value="uyuni-server" />
-  <property name="ssh.key" value="/home/user/.ssh/id_rsa" />
-  <property name="podman.connection.name" value="srv" />
+  <property name="container.backend" value="" />
 
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.port" value="22" />
