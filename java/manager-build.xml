@@ -302,156 +302,135 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <!-- podman container related -->
-
-  <target name="check-ssh-key" description="Asserts ssh.key is provided and file exists">
-    <!-- Check if ssh.key property is provided -->
-    <fail message="You must provide a ssh.key like -Dssh.key='&lt;ssh-key-full-path&gt;'">
-      <condition>
-        <or>
-          <not>
-            <isset property="ssh.key"/>
-          </not>
-          <equals arg1="${ssh.key}" arg2=""/>
-        </or>
-      </condition>
-    </fail>
-
-    <!-- Check if the provided key file path exists -->
-    <fail message="The specified ssh.key file does not exist">
-      <condition>
-        <not>
-          <available file="${ssh.key}"/>
-        </not>
-      </condition>
-    </fail>
-  </target>
-
-  <target name="is-podman-installed" description="Cheks if podman is installed">
-    <exec failifexecutionfails="false" resultproperty="podman.installed" executable="podman">
+  <!-- container related -->
+  <target name="is-uyunictl-installed" description="Cheks if uyunictl is installed">
+    <exec failifexecutionfails="false" resultproperty="uyunictl.installed" executable="uyunictl">
       <arg line="--version" />
     </exec>
   </target>
 
-  <target name="warn-if-podman-not-installed" depends="is-podman-installed" unless="podman.installed">
-    <fail>podman is not in the PATH. Please install podman first.</fail>
+  <target name="warn-if-uyunictl-not-installed" depends="is-uyunictl-installed" unless="uyunictl.installed">
+    <fail>uyunictl is not in the PATH. Please install uyunictl first.</fail>
   </target>
 
-  <target name="check-podman-connection" depends="warn-if-podman-not-installed" description="Checks if podman system connection is set">
-    <exec executable="sh" outputproperty="podman.output">
-      <arg line="-c 'podman system connection ls -q | grep -w ${podman.connection.name}'"/>
-    </exec>
-
-    <condition property="podman.connection.exists">
-      <length string="${podman.output}" when="greater" length="0"/>
-    </condition>
-
-    <echo message="Podman connection to '${podman.connection.name}' detected: ${podman.connection.exists}"/>
-  </target>
-
-  <target name="add-podman-connection" depends="check-ssh-key,check-podman-connection" unless="podman.connection.exists" description="Adds podman system connection">
-    <echo message="Adding podman system connection..."/>
-    <exec executable="podman">
-      <arg line="system connection add --identity ${ssh.key} ${podman.connection.name} ssh://${deploy.user}@${podman.connection.name}.${deploy.host}"/>
-    </exec>
-  </target>
-
-  <target name="remove-podman-connection" depends="warn-if-podman-not-installed" description="Removes podman system connection">
-    <echo message="Removing podman system connection..."/>
-    <exec executable="podman">
-      <arg line="system connection rm ${podman.connection.name}"/>
-    </exec>
-  </target>
-
-  <target name="deploy-container" depends="webapp, add-podman-connection" description="Deploy a new copy of SUSE Manager in a running pod container">
-    <echo message="Copying files to pod container... ${build.dir} -> ${deploy.dir}" />
+  <target name="deploy-container" depends="webapp, warn-if-uyunictl-not-installed" description="Deploy a new copy of SUSE Manager in a running container">
+    <echo message="Copying files to container..." />
 
     <exec failonerror="true" executable="sh">
-      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | uyunictl exec -i -- tar xf - -C ${deploy.dir}'"/>
-      <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
+      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | uyunictl exec -i -- tar xf - -C ${deploy.dir}'" />
     </exec>
 
     <echo message="Linking the branding jar..." />
-    <wrap-uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-    <wrap-uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar" />
 
-    <echo message="Linking jars for Taskomatic..."/>
-    <wrap-uyunictl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-    <wrap-uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-    <wrap-uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-    <antcall target="remove-podman-connection"/>
+    <echo message="Linking jars for Taskomatic..." />
+    <uyunictl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic" />
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib" />
+
   </target>
 
-  <target name="deploy-static-resources-container" depends="build-js,add-podman-connection" description="Deploy css/js/img/font files in a running pod container">
-    <echo message="Copying frontend files to pod container... "/>
-    <copy-to-container source="${frontend.dist.dir}" target="/srv/www/htdocs" failonerror="true"/>
-    <antcall target="remove-podman-connection"/>
+
+  <target name="deploy-static-resources-container" depends="build-js,warn-if-uyunictl-not-installed" description="Deploy css/js/img/font files in a running container">
+    <echo message="Copying frontend files to container... " />
+    <copy-to-container
+      source="${frontend.dist.dir}"
+      target="/srv/www/htdocs"
+      failonerror="true"
+      backend="${container.backend}" />
   </target>
 
-  <target name="deploy-salt-files-container" depends="add-podman-connection" description="Deploy Salt files in a running pod container">
-    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
-    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+  <target name="deploy-salt-files-container" depends="warn-if-uyunictl-not-installed" description="Deploy Salt files in a running container">
+    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt" />
+    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor" />
 
-    <echo message="Copying Salt sls files to remote host..."/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/salt/" target="${salt.state.files.dir}"/>
+    <echo message="Copying Salt sls files to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
+      target="${salt.state.files.dir}"
+      backend="${container.backend}"
+    />
 
-    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/" target="${salt.state.files.dir}/_grains/"/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/" target="${salt.state.files.dir}/_beacons/"/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/" target="${salt.state.files.dir}/_modules/"/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/" target="/usr/share/susemanager/modules/pillar/"/>
+    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
+      target="${salt.state.files.dir}/_grains/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
+      target="${salt.state.files.dir}/_beacons/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
+      target="${salt.state.files.dir}/_modules/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
 
-    <echo message="Copying Salt reactor to remote host..."/>
-    <copy-to-container source="${basedir}/../susemanager-utils/susemanager-sls/reactor" target="/usr/share/susemanager/modules/pillar/"/>
-
-    <antcall target="remove-podman-connection"/>
+    <echo message="Copying Salt reactor to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
   </target>
 
-  <target name="restart-tomcat-container" depends="add-podman-connection" description="Restarts the tomcat process in a running pod container">
-    <echo message="Launching Tomcat restart..."/>
-    <wrap-uyunictl argline="exec rctomcat restart"/>
-    <antcall target="remove-podman-connection"/>
+  <target name="restart-tomcat-container" depends="warn-if-uyunictl-not-installed" description="Restarts the tomcat process in a running container">
+    <echo message="Launching Tomcat restart..." />
+    <uyunictl argline="exec rctomcat restart" />
   </target>
 
-  <target name="restart-taskomatic-container" depends="add-podman-connection" description="Restarts the taskomatic process in a pod container">
-    <echo message="Launching Taskomatic restart..."/>
-    <wrap-uyunictl argline="exec rctaskomatic restart"/>
-    <antcall target="remove-podman-connection"/>
+  <target name="restart-taskomatic-container" depends="warn-if-uyunictl-not-installed" description="Restarts the taskomatic process in a container">
+    <echo message="Launching Taskomatic restart..." />
+    <uyunictl argline="exec rctaskomatic restart" />
   </target>
 
   <target name="deploy-restart-container">
-    <antcall target="deploy-container"/>
-    <antcall target="restart-tomcat-container"/>
-    <antcall target="restart-taskomatic-container"/>
+    <antcall target="deploy-container" />
+    <antcall target="restart-tomcat-container" />
+    <antcall target="restart-taskomatic-container" />
   </target>
 
 
-  <!-- wraps uyunictl command, executing the given argline and setting the CONTAINER_CONNECTION env var -->
-  <macrodef name="wrap-uyunictl">
-    <attribute name="argline"/>
-    <attribute name="failonerror" default="true"/>
+  <!-- wraps uyunictl command, executing the given argline -->
+  <macrodef name="uyunictl">
+    <attribute name="argline" />
+    <attribute name="failonerror" default="true" />
+    <attribute name="backend" default="" />
     <sequential>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
       <exec failonerror="@{failonerror}" executable="uyunictl">
-        <arg line="@{argline}"/>
-        <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
-    </exec>
+        <arg line="@{argline} ${backend.flag}" />
+      </exec>
     </sequential>
   </macrodef>
 
-  <!-- copies the given source dir to the given target dir in the container -->
+  <!-- copies the given source path to the given target path in the container -->
   <macrodef name="copy-to-container">
-    <attribute name="source"/>
-    <attribute name="target"/>
-    <attribute name="failonerror" default="false"/>
+    <attribute name="source" />
+    <attribute name="target" />
+    <attribute name="failonerror" default="false" />
+    <attribute name="backend" default="" />
     <sequential>
-      <exec failonerror="@{failonerror}" executable="sh">
-        <arg line="-c 'tar c -p -C @{source} -f - . | uyunictl exec -i -- tar xf - -C @{target}'"/>
-        <env key="CONTAINER_CONNECTION" value="${podman.connection.name}"/>
-    </exec>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
+
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="cp @{source} server:@{target} ${backend.flag}" />
+      </exec>
     </sequential>
   </macrodef>
 
-  <!-- ./podman container related -->
+  <!-- ./container related -->
 
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
