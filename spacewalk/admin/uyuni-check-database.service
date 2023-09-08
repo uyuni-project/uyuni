@@ -2,6 +2,7 @@
 Description=Uyuni check database
 Before=tomcat.service apache2.service salt-master.service salt-api.service rhn-search.service cobblerd.service taskomatic.service mgr-events-config.service mgr-websockify.service
 After=network-online.target postgresql.service
+Requires=ca-certificates.service
 
 [Service]
 ExecStart=/usr/sbin/spacewalk-startup-helper check-database 
