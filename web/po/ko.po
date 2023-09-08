@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-25 15:08+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2023-08-23 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -4783,15 +4783,23 @@ msgstr "서버에서 오류가 반환됨: {message}"
 msgid "Matching ssh-push minions..."
 msgstr "ssh-push minion을 일치시키는 중..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:91
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
+msgid ""
+"The formula catalog page enables viewing of currently installed <link>Salt "
+"Formulas</link>. Apply these formulas to individual systems or server "
+"groups. Formulas allow automatic installation and configuration of software "
+"and may be installed via RPM packages."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
 msgstr "수식 카탈로그"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:101
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Filter by formula name"
 msgstr "수식 이름을 기준으로 필터링"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:106
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:110
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Formula"
 msgstr "수식"

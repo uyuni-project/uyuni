@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-25 15:08+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2023-08-20 19:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -4832,15 +4832,23 @@ msgstr "Server vrátil chybu: {message}"
 msgid "Matching ssh-push minions..."
 msgstr "Priraďovanie ssh-push klientom minion..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:91
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
+msgid ""
+"The formula catalog page enables viewing of currently installed <link>Salt "
+"Formulas</link>. Apply these formulas to individual systems or server "
+"groups. Formulas allow automatic installation and configuration of software "
+"and may be installed via RPM packages."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
 msgstr "Katalóg vzorcov"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:101
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Filter by formula name"
 msgstr "Filtrovať podľa názvu vzorca"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:106
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:110
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Formula"
 msgstr "Vzorec"
