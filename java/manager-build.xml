@@ -17,6 +17,8 @@
   <property file="conf/rhn_java.conf"/>
 
   <!-- Other properties -->
+  <property name="container.backend" value="" />
+
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.port" value="22" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
@@ -298,135 +300,135 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="is-kubectl-installed">
-    <exec failifexecutionfails="false" resultproperty="kubectl.installed" outputproperty="deploy.pod" executable="kubectl">
-        <arg line="get" />
-        <arg line="pod" />
-        <arg line="-n" />
-        <arg line="${deploy.namespace}" />
-        <arg line="-o"/>
-        <arg line="jsonpath={.items[0].metadata.name}" />
-        <arg line="-lapp=uyuni" />
+  <!-- container related -->
+  <target name="is-uyunictl-installed" description="Cheks if uyunictl is installed">
+    <exec failifexecutionfails="false" resultproperty="uyunictl.installed" executable="uyunictl">
+      <arg line="--version" />
     </exec>
-    <property name="kubectl.args" value="-n ${deploy.namespace} ${deploy.pod}"/>
   </target>
 
-  <target name="warn-if-kubectl-not-installed" depends="is-kubectl-installed" unless="kubectl.installed">
-    <fail>kubectl is not in the PATH. Please install kubectl first.</fail>
+  <target name="warn-if-uyunictl-not-installed" depends="is-uyunictl-installed" unless="uyunictl.installed">
+    <fail>uyunictl is not in the PATH. Please install uyunictl first.</fail>
   </target>
 
-  <target name="deploy-kube" depends="webapp,warn-if-kubectl-not-installed" description="Deploy a new copy of SUSE Manager in a running kubernetes pod">
-    <echo message="Copying files to pod..." />
+  <target name="deploy-container" depends="webapp, warn-if-uyunictl-not-installed" description="Deploy a new copy of SUSE Manager in a running container">
+    <echo message="Copying files to container..." />
 
     <exec failonerror="true" executable="sh">
-        <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${deploy.dir}'"/>
+      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | uyunictl exec -i -- tar xf - -C ${deploy.dir}'" />
     </exec>
 
     <echo message="Linking the branding jar..." />
-    <exec failonerror="true" executable="kubectl">
-        <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-    </exec>
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar" />
 
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-    </exec>
+    <echo message="Linking jars for Taskomatic..." />
+    <uyunictl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic" />
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib" />
 
-    <echo message="Linking jars for Taskomatic..."/>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-    </exec>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-    </exec>
-    <exec failonerror="true" executable="kubectl">
-      <arg line="exec ${kubectl.args} -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-    </exec>
   </target>
 
-  <target name="deploy-static-resources-kube" depends="build-js,warn-if-kubectl-not-installed" description="Deploy css/js/img/font files in a running kubernetes pod">
-    <echo message="Copying frontend files to remote host..."/>
-    <exec failonerror="true" executable="sh">
-        <arg line="-c 'tar c -p -C ${frontend.dist.dir} -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C /srv/www/htdocs'"/>
-    </exec>
+
+  <target name="deploy-static-resources-container" depends="build-js,warn-if-uyunictl-not-installed" description="Deploy css/js/img/font files in a running container">
+    <echo message="Copying frontend files to container... " />
+    <copy-to-container
+      source="${frontend.dist.dir}"
+      target="/srv/www/htdocs"
+      failonerror="true"
+      backend="${container.backend}" />
   </target>
 
-  <target name="deploy-salt-files-kube" depends="warn-if-kubectl-not-installed" description="Deploy Salt files in a running kubernetes pod">
-    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
-    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+  <target name="deploy-salt-files-container" depends="warn-if-uyunictl-not-installed" description="Deploy Salt files in a running container">
+    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt" />
+    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor" />
 
-    <echo message="Copying Salt sls files to remote host.."/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/salt/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf - -C ${salt.state.files.dir}'"/>
-    </exec>
-    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_grains/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_beacons/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C ${salt.state.files.dir}/_modules/'"/>
-    </exec>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
-    </exec>
-    <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
-    <exec executable="sh">
-      <arg line="-c 'tar c -p -C ${basedir}/../susemanager-utils/susemanager-sls/reactor -f - . | kubectl exec -i ${kubectl.args} -- tar xf -C /usr/share/susemanager/modules/pillar/"/>
-    </exec>
+    <echo message="Copying Salt sls files to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
+      target="${salt.state.files.dir}"
+      backend="${container.backend}"
+    />
+
+    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
+      target="${salt.state.files.dir}/_grains/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
+      target="${salt.state.files.dir}/_beacons/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
+      target="${salt.state.files.dir}/_modules/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
+
+    <echo message="Copying Salt reactor to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
   </target>
 
-  <target name="restart-tomcat-kube" depends="warn-if-kubectl-not-installed" description="Restart the tomcat process in a running kubernetes pod">
-    <echo message="Launching Tomcat restart..."/>
-    <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- rctomcat restart"/>
-    </exec>
+  <target name="restart-tomcat-container" depends="warn-if-uyunictl-not-installed" description="Restarts the tomcat process in a running container">
+    <echo message="Launching Tomcat restart..." />
+    <uyunictl argline="exec rctomcat restart" />
   </target>
 
-  <target name="restart-taskomatic-kube" depends="warn-if-kubectl-not-installed" description="Restart the taskomatic process in a running kubernetes pod">
-    <echo message="Launching Taskomatic restart..."/>
-    <exec executable="kubectl">
-      <arg line="exec ${kubectl.args} -- rctaskomatic restart"/>
-    </exec>
+  <target name="restart-taskomatic-container" depends="warn-if-uyunictl-not-installed" description="Restarts the taskomatic process in a container">
+    <echo message="Launching Taskomatic restart..." />
+    <uyunictl argline="exec rctaskomatic restart" />
   </target>
 
-  <target name="deploy-restart-kube" depends="deploy-kube, restart-tomcat-kube, restart-taskomatic-kube" />
-
-  <target name="check-tomcat-has-opts">
-    <exec executable="kubectl" resultproperty="tomcat.has_opts_result" failonerror="false">
-      <arg line="exec ${kubectl.args} -- grep JAVA_OPTS /etc/sysconfig/tomcat"/>
-    </exec>
-    <condition property="tomcat.has_opts">
-      <equals arg1="${tomcat.has_opts_result}" arg2="0"/>
-    </condition>
+  <target name="deploy-restart-container">
+    <antcall target="deploy-container" />
+    <antcall target="restart-tomcat-container" />
+    <antcall target="restart-taskomatic-container" />
   </target>
 
-  <target name="append-tomcat-debug-kube" depends="check-tomcat-has-opts" unless="tomcat.has_opts">
-    <exec executable="kubectl">
-        <arg value="exec"/>
-        <arg value="-n"/>
-        <arg value="${deploy.namespace}"/>
-        <arg value="${deploy.pod}"/>
-        <arg value="--"/>
-        <arg value="sh"/>
-        <arg value="-c"/>
-        <arg value="echo 'JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n&quot;' >>/etc/sysconfig/tomcat"/>
-    </exec>
-  </target>
 
-  <target name="replace-tomcat-debug-kube" depends="check-tomcat-has-opts" if="tomcat.has_opts">
-    <exec executable="kubectl">
-        <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;\([^&quot;]*\)&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8000,server=y,suspend=n \1&quot;/' -i /etc/sysconfig/tomcat"/>
-    </exec>
-  </target>
+  <!-- wraps uyunictl command, executing the given argline -->
+  <macrodef name="uyunictl">
+    <attribute name="argline" />
+    <attribute name="failonerror" default="true" />
+    <attribute name="backend" default="" />
+    <sequential>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="@{argline} ${backend.flag}" />
+      </exec>
+    </sequential>
+  </macrodef>
 
-  <target name="enable-java-debug-kube" depends="warn-if-kubectl-not-installed, append-tomcat-debug-kube, replace-tomcat-debug-kube" description="Add tomcat and taskomatic options to connect a Java debugger">
-    <exec executable="kubectl">
-      <arg line="exec ${kubectl.args} -- sed 's/JAVA_OPTS=&quot;&quot;/JAVA_OPTS=&quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=\$HOSTNAME:8001,server=y,suspend=n&quot;/' -i /etc/rhn/taskomatic.conf"/>
-    </exec>
-    <echo message="Restart taskomatic and tomcat at your convenience to debug"/>
-  </target>
+  <!-- copies the given source path to the given target path in the container -->
+  <macrodef name="copy-to-container">
+    <attribute name="source" />
+    <attribute name="target" />
+    <attribute name="failonerror" default="false" />
+    <attribute name="backend" default="" />
+    <sequential>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
+
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="cp @{source} server:@{target} ${backend.flag}" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- ./container related -->
 
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
