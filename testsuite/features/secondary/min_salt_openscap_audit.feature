@@ -12,6 +12,10 @@ Feature: OpenSCAP audit of Salt minion
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
 
+@Uyuni
+  Scenario: Enable required repositories
+    When I enable repository "os_pool_repo" on this "sle_minion" without error control
+
   Scenario: Install the OpenSCAP packages on the SLE minion
     When I refresh the metadata for "sle_minion"
     And I install OpenSCAP dependencies on "sle_minion"
@@ -84,3 +88,7 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Cleanup: remove the OpenSCAP packages from the SLE minion
     When I remove OpenSCAP dependencies from "sle_minion"
+
+@Uyuni
+  Scenario: Cleanup: Disable required repositories
+    When I disable repository "os_pool_repo" on this "sle_minion" without error control

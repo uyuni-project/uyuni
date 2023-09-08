@@ -39,6 +39,7 @@ Feature: Register a Salt minion with a bootstrap script
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
     When I query latest Salt changes on "sle_minion"
 
+@susemanager
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -48,6 +49,22 @@ Feature: Register a Salt minion with a bootstrap script
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@uyuni
+  Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

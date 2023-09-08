@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Task Engine Status
@@ -41,6 +41,7 @@ Feature: Task Engine Status
     And I should see a "FINISHED" text
 
 @scc_credentials
+@susemanager
   Scenario: Resync a product to trigger a new task and check if it is visible on the Runtime Status page
     When I follow the left menu "Admin > Task Engine Status > Runtime Status"
     And I follow the left menu "Admin > Setup Wizard > Products"
